@@ -1,0 +1,19 @@
+{
+    "name": "@cocos/creator-types",
+    "version": "3.8.8-121518",
+    "description": "",
+    "scripts": {
+        "test": "cd test && npx tsc",
+        "ci": "npm install && npm run test",
+        "prepublishOnly": "node scripts/prepublish.js",
+        "postpublish": "node scripts/postpublish.js"
+    },
+    "author": "",
+    "license": "ISC",
+    "publishConfig": {
+        "access": "public"
+    },
+    "devDependencies": {
+        "typescript": "^5.2.2"
+    }
+}
