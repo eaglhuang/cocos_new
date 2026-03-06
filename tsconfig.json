@@ -4,6 +4,10 @@
 
   /* Add your custom configuration here. */
   "compilerOptions": {
-    "strict": false
+    "strict": false,
+    "types": [
+      "@cocos/creator-types/engine",
+      "@cocos/creator-types/editor"
+    ]
   }
 }
