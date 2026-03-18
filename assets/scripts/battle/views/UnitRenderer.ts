@@ -99,8 +99,6 @@ export class UnitRenderer extends Component {
   private worldRoot: Node | null = null;
   private uiRoot: Node | null = null;
   private cubeMesh: Mesh | null = null;
-  private playerMaterial: Material | null = null;
-  private enemyMaterial: Material | null = null;
   private atkGainPool: BuffGainEffectPool | null = null;
   private atkLossPool: BuffGainEffectPool | null = null;
   private hpGainPool:  BuffGainEffectPool | null = null;
@@ -707,24 +705,6 @@ export class UnitRenderer extends Component {
       this.worldCamera.convertToUINode(worldPos, this.uiRoot, this.uiProjectionBuffer);
       labelNode.setPosition(this.uiProjectionBuffer);
     }
-  }
-
-  private initMaterials(): void {
-    this.playerMaterial = this.createSolidMaterial(new Color(58, 184, 110, 255));
-    this.enemyMaterial  = this.createSolidMaterial(new Color(214, 100, 100, 255));
-  }
-
-  private createSolidMaterial(color: Color): Material {
-    const material = new Material();
-    material.initialize({
-      effectName: "builtin-unlit",
-      states: {
-        depthStencilState: { depthTest: true, depthWrite: true },
-        rasterizerState: { cullMode: gfx.CullMode.NONE },
-      },
-    });
-    material.setProperty("mainColor", color);
-    return material;
   }
 
   private createUnitView(unit: TroopUnit): UnitView {
