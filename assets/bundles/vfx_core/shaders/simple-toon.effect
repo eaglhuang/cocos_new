@@ -1,0 +1,312 @@
+// Copyright (c) 2017-2020 Xiamen Yaji Software Co., Ltd.
+
+CCEffect %{
+  techniques:
+  - name: opaque
+    passes:
+    - switch: USE_OUTLINE_PASS
+      vert: legacy/main-functions/outline-vs:vert
+      frag: legacy/main-functions/outline-fs:frag
+      rasterizerState:
+        cullMode: front
+      depthStencilState:
+        depthFunc: less_equal
+        depthTest: true
+        depthWrite: true
+      properties: &oulineprops
+        lineWidth:     { value: 10, target: outlineParams.x }
+        depthBias:     { value: 0,  target: outlineParams.y }
+        baseColor:     { editor: { type: color } }
+        baseColorMap:  { value: grey }
+    - vert: toon-vs:vert
+      frag: toon-fs:frag
+      properties: &props
+        tilingOffset:   { value: [1.0, 1.0, 0.0, 0.0] }
+        mainColor:      { value: [0.9, 0.9, 0.9, 1.0], target: baseColor, editor: { displayName: Base Color, type: color } }
+        rimLightColor: { value: [1.0, 1.0, 1.0, 0.5], target: rimColor, editor: { parent: USE_RIM_LIGHT,displayName: Rim Color, type: color } }
+        mainTexture:    { value: white, editor: { displayName: BaseColorMap } }
+        edgeColor: {value: [0.98, 0.80, 0.01,1], linear: true,editor: {parent: USE_NOISE_DISSOLEVE,type: color}}
+        noiseTexture: {value: white,editor: {parent: USE_NOISE_DISSOLEVE}}
+        disRange: {value: 1.0,editor: {parent: USE_NOISE_DISSOLEVE,range: [-1,0,0.01],slide: true}}
+    - &shadow-caster
+      vert: shadow-caster-vs:vert
+      frag: shadow-caster-fs:frag
+      phase: shadow-caster
+      propertyIndex: 1
+      rasterizerState:
+        cullMode: front
+  - switch: USE_OUTLINE_PASS
+    vert: legacy/main-functions/outline-vs:vert
+    frag: legacy/main-functions/outline-fs:frag
+    rasterizerState:
+      cullMode: front
+    depthStencilState:
+      depthFunc: less_equal
+      depthTest: true
+      depthWrite: true
+    properties: &oulineprops
+    name: transparent
+    passes:
+    - vert: toon-vs:vert
+      frag: toon-fs:frag
+      embeddedMacros: { CC_FORCE_FORWARD_SHADING: true }
+      depthStencilState:
+        depthTest: true
+        depthWrite: false
+      blendState:
+        targets:
+        - blend: true
+          blendSrc: src_alpha
+          blendDst: one_minus_src_alpha
+          blendDstAlpha: one_minus_src_alpha
+      properties: *props
+    - *shadow-caster  
+
+}%
+
+CCProgram shared-ubos %{
+  uniform Constants {
+    vec4 tilingOffset;
+    vec4 baseColor;
+    vec4 emissive;
+    vec4 rimColor;
+    vec4 edgeColor;
+    float disRange;
+  };
+}%
+
+
+
+CCProgram toon-vs %{
+  precision highp float;
+  #include <legacy/input-standard>
+  #include <builtin/uniforms/cc-global>
+  #include <legacy/decode-base>
+  #include <legacy/local-batch>
+  #include <legacy/shadow-map-vs>
+  #include <legacy/fog-vs>
+
+  #include <shared-ubos>
+
+  out vec3 v_position;
+  out vec3 v_in_position;
+  out vec2 v_uv;
+  out vec3 v_normal;
+
+  #if USE_RIM_LIGHT
+      out vec3 v_view_normal;
+  #endif  
+
+  #if CC_RECEIVE_SHADOW
+    out mediump vec2 v_shadowBias;
+  #endif  
+
+  #if USE_INSTANCING // when instancing is enabled
+     out float i_disRange;
+     in float a_disRange;
+     in vec4 a_rimColor;
+     out vec4 i_rimColor;
+  #endif
+
+  vec4 vert () {
+    StandardVertInput In;
+    CCVertInput(In);
+    mat4 matWorld, matWorldIT;
+    CCGetWorldMatrixFull(matWorld, matWorldIT);
+
+    vec4 pos = matWorld * In.position;
+    v_position = pos.xyz;
+    v_uv = a_texCoord * tilingOffset.xy + tilingOffset.zw;
+ 
+    vec4 normal = vec4(In.normal,0.0);
+    v_normal = (matWorldIT * normal).xyz;
+    #if USE_RIM_LIGHT
+        v_view_normal = normalize(((cc_matView * matWorldIT) * normal).xyz);
+        #if USE_INSTANCING // when instancing is enabled
+            i_rimColor = a_rimColor;
+        #endif
+    #endif   
+    #if USE_NOISE_DISSOLEVE
+       #if USE_INSTANCING // when instancing is enabled
+            i_disRange = a_disRange;
+        #endif
+    #endif   
+    v_in_position = In.position.xyz;
+    #if CC_RECEIVE_SHADOW
+      v_shadowBias = CCGetShadowBias();
+    #endif
+    CC_TRANSFER_SHADOW(pos);
+
+    CC_TRANSFER_FOG(pos);
+
+    return cc_matProj * (cc_matView * matWorld) * In.position;
+  }
+}%
+
+CCProgram toon-fs %{
+  precision highp float;
+  #include <builtin/uniforms/cc-global>
+  #include <shared-ubos>
+  #include <legacy/output-standard>
+  #include <legacy/shadow-map-base>
+  #include <common/common-define>
+  #include <common/color/gamma>
+  #include <legacy/shadow-map-fs>
+  #include <legacy/fog-fs>
+
+
+  in vec3 v_position;
+
+  in vec2 v_uv;
+
+  #if USE_RIM_LIGHT
+  in vec3 v_view_normal;
+    #if USE_INSTANCING 
+        in vec4  i_rimColor;
+    #endif
+  #endif  
+
+  #if USE_BASE_COLOR_MAP
+    uniform sampler2D mainTexture;
+  #endif
+  #if USE_NOISE_DISSOLEVE
+  uniform sampler2D noiseTexture;
+  in vec3 v_in_position;
+  #if USE_INSTANCING // when instancing is enabled
+      in float i_disRange;
+  #endif
+  #endif  
+
+  #if CC_RECEIVE_SHADOW
+    in mediump vec2 v_shadowBias;
+  #endif
+
+  in vec3 v_normal;
+
+
+  vec4 frag () {
+    vec4 color = baseColor;
+    #if USE_BASE_COLOR_MAP
+      vec4 baseColorMap = texture(mainTexture, v_uv);
+      baseColorMap.rgb = SRGBToLinear(baseColorMap.rgb);
+      color *= baseColorMap;
+    #endif
+
+    vec3 N = normalize(v_normal);
+    vec3 L = normalize(-cc_mainLitDir.xyz);
+    float NL = max(dot(N, L), 0.0);
+   
+    
+    #if CC_RECEIVE_SHADOW && CC_SHADOW_TYPE == CC_SHADOW_MAP
+    
+      float shadow = 1.0;
+        if (cc_shadowLPNNInfo.w > 0.0) {
+          #if CC_DIR_LIGHT_SHADOW_TYPE == CC_DIR_LIGHT_SHADOW_CASCADED
+            shadow = CCCSMFactorBase(v_position, N, v_shadowBias);
+          #endif
+        } else {
+          #if CC_DIR_LIGHT_SHADOW_TYPE == CC_DIR_LIGHT_SHADOW_UNIFORM
+            shadow = CCShadowFactorBase(CC_SHADOW_POSITION, N, v_shadowBias);
+          #endif
+        }
+      color.rgb *=shadow;
+    #endif
+
+
+    #if USE_RIM_LIGHT
+        vec4 rim;
+        #if USE_INSTANCING 
+             rim=i_rimColor;
+        #else
+             rim = rimColor;     
+        #endif
+        float fRim = (1.0 - dot(v_view_normal,vec3(0,0,1.0))) * rim.w;
+        color.rgb = mix(color.rgb,rim.rgb,fRim);
+    #endif  
+
+
+    #if USE_NOISE_DISSOLEVE
+    float range;
+    #if USE_INSTANCING 
+          range= i_disRange;
+    #else
+          range = disRange;     
+    #endif
+    //Noise Color Red
+    float colorR = texture(noiseTexture, v_uv).r;
+    //Subtract Range
+    float dissolveRange = v_in_position.y - (1.+range*2.);
+    //Add noiseRange 0.1
+    float noiseRange = dissolveRange + 0.1;
+    dissolveRange = clamp(dissolveRange, 0.0, 1.0);
+    dissolveRange = step(dissolveRange, colorR);
+    noiseRange = dissolveRange-step(noiseRange, colorR);
+    //Add
+    color.rgb += noiseRange* edgeColor.rgb;
+    //Scale
+    color.a *= dissolveRange;
+    #endif  
+
+    CC_APPLY_FOG(color);
+
+    return CCFragOutput(color);
+  }
+}%
+CCProgram shadow-caster-vs %{
+  precision highp float;
+  #include <legacy/input-standard>
+  #include <legacy/decode-base>
+  #include <legacy/local-batch>
+  #include <shared-ubos>
+  #include <builtin/uniforms/cc-shadow>
+#if CC_SUPPORT_CASCADED_SHADOW_MAP
+  #include <builtin/uniforms/cc-csm>
+#endif
+
+  out vec4 v_worldPos;
+  out highp vec2 v_clip_depth;
+
+  vec4 vert () {
+    StandardVertInput In;
+    CCVertInput(In);
+
+    mat4 matWorld, matWorldIT;
+    CCGetWorldMatrixFull(matWorld, matWorldIT);
+
+    v_worldPos = matWorld * In.position;
+
+    vec4 clipPos = cc_matLightViewProj * v_worldPos;
+
+
+    v_clip_depth = clipPos.zw;
+
+    return clipPos;
+  }
+}%
+
+CCProgram shadow-caster-fs %{
+  precision highp float;
+  #include <shared-ubos>
+  #include <common/data/packing>
+  #include <legacy/shadow-map-base>
+  
+  in vec4 v_worldPos;
+  in highp vec2 v_clip_depth;
+
+  vec4 frag () {
+
+   highp float clipDepth = v_clip_depth.x / v_clip_depth.y * 0.5 + 0.5;
+    // spot use linear
+    if(cc_shadowLPNNInfo.x > 0.000001 && cc_shadowLPNNInfo.x < 1.999999) {
+      // enabled linear depth
+      #if CC_SHADOWMAP_USE_LINEAR_DEPTH
+        clipDepth = CCGetLinearDepth(v_worldPos.xyz);
+      #endif
+    }
+    #if CC_SHADOWMAP_FORMAT == SHADOWMAP_FORMAT_RGBA8
+      return packDepthToRGBA(clipDepth);
+    #else
+      return vec4(clipDepth, 1.0, 1.0, 1.0);
+    #endif
+  }
+}%
