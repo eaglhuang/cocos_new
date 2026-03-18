@@ -1,0 +1,21 @@
+{
+  "minComponentArea": 220,
+  "componentPadding": 14,
+  "alignPadding": 10,
+  "alphaThreshold": 10,
+  "greenKey": {
+    "hard": {
+      "minGreen": 120,
+      "minDelta": 38
+    },
+    "soft": {
+      "minGreen": 95,
+      "minDelta": 20,
+      "alphaScale": 0.35
+    }
+  },
+  "output": {
+    "format": "png",
+    "fps": 12
+  }
+}

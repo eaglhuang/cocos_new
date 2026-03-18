@@ -1,0 +1,72 @@
+CCEffect %{
+  techniques:
+  - name: transparent
+    passes:
+    - vert: board-jelly-vs:vert
+      frag: board-jelly-fs:frag
+      depthStencilState:
+        depthTest: true
+        depthWrite: false
+      blendState:
+        targets:
+        - blend: true
+          blendSrc: src_alpha
+          blendDst: one_minus_src_alpha
+          blendDstAlpha: one_minus_src_alpha
+      rasterizerState:
+        cullMode: none
+      properties:
+        edgeColor: { value: [0.91, 0.95, 0.98, 0.18], editor: { type: color } }
+        fillColor: { value: [0.78, 0.87, 0.95, 0.01], editor: { type: color } }
+        highlightColor: { value: [1.0, 1.0, 1.0, 0.18], editor: { type: color } }
+        jellyParams: { value: [0.075, 0.14, 0.28, 0.58] }
+}%
+
+CCProgram board-jelly-vs %{
+  precision highp float;
+
+  #include <builtin/uniforms/cc-global>
+  #include <builtin/uniforms/cc-local>
+
+  in vec3 a_position;
+  in vec2 a_texCoord;
+
+  out vec2 uv0;
+
+  vec4 vert () {
+    vec4 pos = vec4(a_position, 1.0);
+    pos = cc_matWorld * pos;
+    uv0 = a_texCoord;
+    return cc_matViewProj * pos;
+  }
+}%
+
+CCProgram board-jelly-fs %{
+  precision highp float;
+
+  in vec2 uv0;
+
+  uniform Constant {
+    vec4 edgeColor;
+    vec4 fillColor;
+    vec4 highlightColor;
+    vec4 jellyParams;
+  };
+
+  vec4 frag () {
+    float edgeDistance = min(min(uv0.x, 1.0 - uv0.x), min(uv0.y, 1.0 - uv0.y));
+    float edgeMask = 1.0 - smoothstep(jellyParams.x, jellyParams.x + jellyParams.y, edgeDistance);
+    float fillMask = 1.0 - smoothstep(0.0, 0.5, edgeDistance);
+    float diagonalCoord = uv0.x * 0.78 + uv0.y * 0.22;
+    float highlightBand = smoothstep(jellyParams.w - jellyParams.z, jellyParams.w, diagonalCoord)
+        * (1.0 - smoothstep(jellyParams.w, jellyParams.w + jellyParams.z, diagonalCoord));
+    float highlightMask = highlightBand * (0.55 + fillMask * 0.8);
+
+    vec3 baseRgb = mix(fillColor.rgb, edgeColor.rgb, edgeMask);
+    vec3 rgb = mix(baseRgb, highlightColor.rgb, clamp(highlightMask * highlightColor.a * 2.0, 0.0, 1.0));
+    float alpha = fillColor.a * fillMask + edgeColor.a * edgeMask;
+    alpha += highlightColor.a * highlightMask * 1.15;
+
+    return vec4(rgb, clamp(alpha, 0.0, 1.0));
+  }
+}%

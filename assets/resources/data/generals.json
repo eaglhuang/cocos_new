@@ -1,0 +1,46 @@
+[
+  {
+    "id": "zhang-fei",
+    "name": "張飛",
+    "faction": "player",
+    "hp": 1000,
+    "maxSp": 100,
+    "attackBonus": 0.10,
+    "skillId": "zhang-fei-roar",
+    "preferredTerrain": "plain",
+    "terrainDefenseBonus": 0.05
+  },
+  {
+    "id": "guan-yu",
+    "name": "關羽",
+    "faction": "player",
+    "hp": 1200,
+    "maxSp": 100,
+    "attackBonus": 0.15,
+    "skillId": "guan-yu-slash",
+    "preferredTerrain": "plain",
+    "terrainDefenseBonus": 0.10
+  },
+  {
+    "id": "lu-bu",
+    "name": "呂布",
+    "faction": "enemy",
+    "hp": 1500,
+    "maxSp": 100,
+    "attackBonus": 0.20,
+    "skillId": "lu-bu-rampage",
+    "preferredTerrain": "plain",
+    "terrainDefenseBonus": 0.05
+  },
+  {
+    "id": "cao-cao",
+    "name": "曹操",
+    "faction": "enemy",
+    "hp": 1000,
+    "maxSp": 80,
+    "attackBonus": 0.08,
+    "skillId": "cao-cao-tactics",
+    "preferredTerrain": "plain",
+    "terrainDefenseBonus": 0.15
+  }
+]

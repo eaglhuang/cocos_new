@@ -1,0 +1,31 @@
+{
+  /**
+   * tsconfig.test.json — CLI/Node.js 測試專用 TypeScript 設定
+   *
+   * 此檔案僅供 tools/run-tests.js 呼叫 ts-node 時使用。
+   * 不影響 Cocos Creator 的主要編譯流程。
+   *
+   * 與主 tsconfig.json 的差異：
+   *   - 不 extends Cocos 的 tsconfig（避免 cc 模組找不到 Node types）
+   *   - types: ["node"] — 提供 path, __dirname, process 型別
+   *   - include: 僅包含純邏輯測試檔（不含依賴 cc 的 Cocos 元件）
+   */
+  "compilerOptions": {
+    "target": "ES2017",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "strict": false,
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "types": ["node"],
+    "typeRoots": ["./node_modules/@types"],
+    "baseUrl": ".",
+    "outDir": "./temp/test-output"
+  },
+  "include": [
+    "assets/scripts/tools/tests/**/*.ts"
+  ],
+  "exclude": [
+    "assets/scripts/tools/tests/TestEntryPoint.ts"
+  ]
+}

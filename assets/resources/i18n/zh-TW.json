@@ -1,0 +1,32 @@
+{
+  "_comment": "繁體中文（台灣）語系字串。key 格式：{namespace}.{context}.{id}",
+
+  "ui.back": "返回",
+  "ui.confirm": "確認",
+  "ui.cancel": "取消",
+  "ui.close": "關閉",
+  "ui.start_battle": "開始戰鬥",
+
+  "ui.result.victory": "勝利",
+  "ui.result.defeat": "失敗",
+  "ui.result.draw": "平局",
+
+  "status.poison": "中毒",
+  "status.stun": "暈眩",
+  "status.shield": "護盾",
+  "status.buff_atk": "攻擊強化",
+  "status.buff_hp": "生命強化",
+  "status.curse": "詛咒",
+
+  "battle.deploy_success": "部署成功",
+  "battle.deploy_failed": "DP 不足",
+  "battle.turn_end": "回合結束",
+  "battle.skill_ready": "技能就緒",
+  "battle.damage.receive": "受到 {0} 點傷害",
+  "battle.heal.receive": "恢復 {0} 點生命",
+
+  "duel.challenge": "{0} 發起武將單挑！",
+  "duel.accepted": "{0} 接受挑戰！",
+  "duel.rejected": "{0} 拒絕挑戰！",
+  "duel.penalty": "全軍士氣受挫"
+}

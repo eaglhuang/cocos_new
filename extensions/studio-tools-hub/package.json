@@ -1,0 +1,33 @@
+{
+  "name": "studio-tools-hub",
+  "version": "1.0.0",
+  "package_version": 2,
+  "description": "Project-level tool hub for Cocos Creator.",
+  "main": "main.js",
+  "author": "AI + User",
+  "editor": "^3.8.0",
+  "contributions": {
+    "menu": [
+      {
+        "path": "i18n:menu.extension/Studio Tools/Run Sprite Pipeline",
+        "message": "run-sprite-pipeline"
+      },
+      {
+        "path": "i18n:menu.extension/Studio Tools/Open Sprite Pipeline Folder",
+        "message": "open-sprite-pipeline-folder"
+      }
+    ],
+    "messages": {
+      "run-sprite-pipeline": {
+        "methods": [
+          "runSpritePipeline"
+        ]
+      },
+      "open-sprite-pipeline-folder": {
+        "methods": [
+          "openSpritePipelineFolder"
+        ]
+      }
+    }
+  }
+}

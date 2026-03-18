@@ -4,10 +4,14 @@
 
   /* Add your custom configuration here. */
   "compilerOptions": {
-    "strict": false,
-    "types": [
-      "@cocos/creator-types/engine",
-      "@cocos/creator-types/editor"
-    ]
-  }
+    "strict": false
+  },
+  /* 直接用路徑引入本地型別宣告，不依賴 node_modules 解析
+     （@cocos/creator-types 在專案根目錄的 @cocos/ 資料夾，非 npm 套件）*/
+  "include": [
+    "assets/**/*.ts",
+    "extensions/**/*.ts",
+    "./@cocos/creator-types/engine.d.ts",
+    "./@cocos/creator-types/editor.d.ts"
+  ]
 }

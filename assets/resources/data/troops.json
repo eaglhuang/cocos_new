@@ -1,0 +1,10 @@
+{
+  "cavalry":  { "hp": 100, "attack": 40, "defense": 20, "moveRange": 2, "attackRange": 1 },
+  "infantry": { "hp": 120, "attack": 35, "defense": 25, "moveRange": 1, "attackRange": 1 },
+  "shield":   { "hp": 150, "attack": 20, "defense": 35, "moveRange": 1, "attackRange": 1 },
+  "archer":   { "hp":  80, "attack": 30, "defense": 15, "moveRange": 1, "attackRange": 2 },
+  "pikeman":  { "hp": 110, "attack": 32, "defense": 22, "moveRange": 1, "attackRange": 1 },
+  "engineer": { "hp":  80, "attack": 15, "defense": 10, "moveRange": 1, "attackRange": 1 },
+  "medic":    { "hp":  90, "attack":  0, "defense": 15, "moveRange": 1, "attackRange": 0 },
+  "navy":     { "hp": 100, "attack": 30, "defense": 20, "moveRange": 1, "attackRange": 1 }
+}

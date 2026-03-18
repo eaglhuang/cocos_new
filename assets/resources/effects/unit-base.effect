@@ -1,0 +1,191 @@
+// Copyright (c) Cocos Creator 3.8 — unit-base.effect
+// 參數化角色材質 Shader — 支援服裝染色、漸層、邊緣光、溶解效果
+//
+// ╔══════════════════════════════════════════════════════════════╗
+// ║  兩層參數系統（對應 MaterialSystem 兩個 Tier）              ║
+// ╠══════════════════════════════════════════════════════════════╣
+// ║  Tier 1 Outfit (uniform, 持久)   → material.setProperty()  ║
+// ║    u_primaryColor     主色調染色                            ║
+// ║    u_secondaryColor   次色調（描邊/金屬）                   ║
+// ║    u_gradientTop/Bot  世界Y軸漸層顏色                       ║
+// ║    u_gradientRange    漸層Y範圍 [minY, maxY]               ║
+// ║    u_emissionColor    自發光顏色（稀有裝扮光暈）             ║
+// ║    u_emissionIntensity自發光強度                            ║
+// ╠══════════════════════════════════════════════════════════════╣
+// ║  Tier 2 Battle (instanced attr, 即時) → setInstancedAttr() ║
+// ║    a_rimColor         受擊邊緣光 (rgba, w=intensity)        ║
+// ║    a_dissolve         溶解進度 0=完整 1=消融                 ║
+// ╚══════════════════════════════════════════════════════════════╝
+
+CCEffect %{
+  name: unit-base
+  techniques:
+  # ── Technique 0：不透明（角色本體，效能優先） ────────────────
+  - name: opaque
+    passes:
+    - vert: unit-base-vs:vert
+      frag: unit-base-fs:frag
+      properties: &props
+        # 貼圖
+        mainTexture:         { value: white }
+        # ── Tier 1 Outfit ──
+        u_primaryColor:      { value: [1, 1, 1, 1],       editor: { type: color } }
+        u_secondaryColor:    { value: [0.6, 0.6, 0.6, 1], editor: { type: color } }
+        u_gradientTop:       { value: [1, 1, 1, 1],       editor: { type: color } }
+        u_gradientBottom:    { value: [0.85, 0.85, 0.85, 1], editor: { type: color } }
+        u_gradientRange:     { value: [0, 2, 0, 0] }
+        u_emissionColor:     { value: [0, 0, 0, 0],       editor: { type: color } }
+        u_emissionIntensity: { value: 0 }
+        # ── Tier 2 fallback（單顆 unit 無 Instancing 時使用） ──
+        u_rimColor:          { value: [0, 0, 0, 0],       editor: { type: color } }
+        u_dissolve:          { value: 0,                  editor: { range: [0, 1] } }
+        u_dissolveTex:       { value: white }
+
+  # ── Technique 1：透明（幽靈單位、半透明召喚物） ──────────────
+  - name: transparent
+    passes:
+    - vert: unit-base-vs:vert
+      frag: unit-base-fs:frag
+      blendState:
+        targets:
+        - blend:      true
+          blendSrc:   src_alpha
+          blendDst:   one_minus_src_alpha
+          blendSrcAlpha: src_alpha
+          blendDstAlpha: one_minus_src_alpha
+      depthStencilState:
+        depthWrite: false
+      properties: *props
+}%
+
+// ─────────────────────────────────────────────────────────────────────────────
+//  Vertex Shader
+//  Unity 對照：UnityObjectToClipPos() / UnityObjectToWorldNormal()
+// ─────────────────────────────────────────────────────────────────────────────
+CCProgram unit-base-vs %{
+  precision highp float;
+
+  #include <builtin/uniforms/cc-global>
+  #include <builtin/uniforms/cc-local>
+
+  // 標準頂點屬性
+  in vec3 a_position;
+  in vec3 a_normal;
+  in vec2 a_texCoord;
+
+  // ── Tier 2 Instanced Attributes ──
+  // 透過 MeshRenderer.setInstancedAttribute() 由 CPU 每幀更新
+  // Unity 對照：MaterialPropertyBlock per-renderer 數值
+  in vec4 a_rimColor;   // xy = rimColor RGB, w = intensity (0 = 不啟用)
+  in float a_dissolve;  // 0 = 完整，1 = 完全溶解（-1 = 使用 uniform fallback）
+
+  // 傳遞給 Fragment Shader
+  out vec2 v_uv;
+  out vec3 v_worldPos;
+  out vec3 v_worldNormal;
+  out vec4 v_rimColorInst;
+  out float v_dissolveInst;
+
+  vec4 vert() {
+    // 世界空間位置（用於漸層 Y 軸插值）
+    vec4 worldPos4 = cc_matWorld * vec4(a_position, 1.0);
+    v_worldPos    = worldPos4.xyz;
+
+    // 世界空間法線（用於邊緣光 Rim 計算）
+    // Unity 對照：UnityObjectToWorldNormal(v.normal)
+    v_worldNormal = normalize((cc_matWorldIT * vec4(a_normal, 0.0)).xyz);
+
+    v_uv            = a_texCoord;
+    v_rimColorInst  = a_rimColor;
+    v_dissolveInst  = a_dissolve;
+
+    return cc_matProj * cc_matView * worldPos4;
+  }
+}%
+
+// ─────────────────────────────────────────────────────────────────────────────
+//  Fragment Shader
+//  效果計算順序：貼圖採樣 → 漸層混合 → Rim 邊緣光 → 自發光 → 溶解 Discard
+// ─────────────────────────────────────────────────────────────────────────────
+CCProgram unit-base-fs %{
+  precision highp float;
+
+  #include <builtin/uniforms/cc-global>
+  #include <output>
+
+  in vec2 v_uv;
+  in vec3 v_worldPos;
+  in vec3 v_worldNormal;
+  in vec4 v_rimColorInst;   // Instanced rim（來自 Tier 2）
+  in float v_dissolveInst;  // Instanced dissolve（來自 Tier 2）
+
+  // ── 貼圖採樣器 ──
+  uniform sampler2D mainTexture;
+  uniform sampler2D u_dissolveTex;
+
+  // ── Tier 1 Outfit UBO ──
+  // Cocos 使用 UBO（Uniform Buffer Object）批次傳遞 uniform
+  // Unity 對照：materialPropertyBlock.SetColor() / material.SetColor()
+  uniform UnitOutfit {
+    vec4  u_primaryColor;      // 主色調
+    vec4  u_secondaryColor;    // 次色調（預留；可在變體 shader 中用於 mask）
+    vec4  u_gradientTop;       // 漸層頂端 RGBA
+    vec4  u_gradientBottom;    // 漸層底端 RGBA
+    vec4  u_gradientRange;     // xy = minY, maxY（世界座標）
+    vec4  u_emissionColor;     // 自發光 RGBA
+    vec4  u_rimColor;          // Rim 顏色 uniform fallback（Tier 2 為 0 時啟用）
+    float u_emissionIntensity; // 自發光強度
+    float u_dissolve;          // 溶解進度 uniform fallback
+  };
+
+  vec4 frag() {
+    // ── 1. 基礎貼圖採樣 ──
+    vec4 baseColor = texture(mainTexture, v_uv);
+
+    // ── 2. 主色調染色（乘法混色，不影響明暗） ──
+    vec3 color = baseColor.rgb * u_primaryColor.rgb;
+
+    // ── 3. 世界Y軸漸層（Gradient by World Y）──
+    // 類比 Unity ShaderGraph：World Position → Split Y → Remap → Lerp
+    float yRange = u_gradientRange.y - u_gradientRange.x;
+    float gradT  = (yRange > 0.001)
+        ? clamp((v_worldPos.y - u_gradientRange.x) / yRange, 0.0, 1.0)
+        : 0.5;
+    vec3 gradColor = mix(u_gradientBottom.rgb, u_gradientTop.rgb, gradT);
+    // 以 0.4 因子混入漸層（不覆蓋全部主色）
+    color = mix(color, color * gradColor, 0.4);
+
+    // ── 4. Rim 邊緣光（Fresnel Power）──
+    // Unity 對照：pow(1 - saturate(dot(normalWS, viewDirWS)), rimPower) * rimColor
+    vec3  viewDir = normalize(cc_cameraPos.xyz - v_worldPos);
+    float NdotV   = max(dot(normalize(v_worldNormal), viewDir), 0.0);
+    float rimFactor = pow(1.0 - NdotV, 2.5);
+
+    // 選擇 Tier 2（instanced）或 Tier 1（uniform）rim 顏色
+    // v_rimColorInst.a > 0.01 表示 CPU 端有設定即時 rim
+    vec4 activeRim = (v_rimColorInst.a > 0.01) ? v_rimColorInst : u_rimColor;
+    color += activeRim.rgb * (activeRim.a * rimFactor);
+
+    // ── 5. 自發光（Emission Additive）──
+    color += u_emissionColor.rgb * u_emissionIntensity;
+
+    // ── 6. 溶解效果（Dissolve Discard）──
+    // 選擇 Tier 2（instanced）或 Tier 1（uniform）dissolve 值
+    // a_dissolve = -1 表示未設定，使用 uniform；否則使用 instanced 值
+    float dissolveVal = (v_dissolveInst >= 0.0) ? v_dissolveInst : u_dissolve;
+    if (dissolveVal > 0.001) {
+      // 使用噪聲貼圖 UV 採樣決定溶解邊界（依 dissolveVal 逐漸增大 discard 區域）
+      float noise = texture(u_dissolveTex, v_uv * 1.5).r;
+      if (noise < dissolveVal) {
+        discard;  // 超過噪聲閾值的像素直接丟棄 = 溶解消失
+      }
+      // 溶解邊緣加橘色光暈
+      float edgeFactor = smoothstep(dissolveVal, dissolveVal + 0.05, noise);
+      color = mix(vec3(1.0, 0.4, 0.0), color, edgeFactor);
+    }
+
+    // ── 7. 輸出 ──
+    // CCFragOutput 封裝 HDR / LDR 輸出，自動處理 Gamma 校正
+    return CCFragOutput(vec4(color, baseColor.a * u_primaryColor.a));
+  }
+}%

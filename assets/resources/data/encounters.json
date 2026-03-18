@@ -1,0 +1,42 @@
+{
+  "encounters": [
+    {
+      "id": "encounter-001",
+      "name": "虎牢關之戰",
+      "playerGeneralId": "zhang-fei",
+      "enemyGeneralId": "lu-bu",
+      "backgroundId": "bg_normal_day",
+      "terrain": [
+        ["plain", "plain", "plain", "plain", "river", "river", "plain", "plain"],
+        ["plain", "mountain", "mountain", "plain", "plain", "plain", "plain", "plain"],
+        ["plain", "plain", "plain", "plain", "plain", "plain", "plain", "plain"],
+        ["plain", "mountain", "mountain", "plain", "plain", "plain", "plain", "plain"],
+        ["plain", "plain", "plain", "plain", "river", "river", "plain", "plain"]
+      ],
+      "enemyInitialDeployment": [
+        { "type": "infantry", "lane": 1 },
+        { "type": "cavalry",  "lane": 3 },
+        { "type": "shield",   "lane": 2 }
+      ]
+    },
+    {
+      "id": "encounter-002",
+      "name": "長板坡突圍",
+      "playerGeneralId": "zhang-fei",
+      "enemyGeneralId": "cao-cao",
+      "backgroundId": "bg_normal_night",
+      "terrain": [
+        ["plain", "plain", "forest", "forest", "plain", "plain", "plain", "plain"],
+        ["plain", "plain", "plain", "plain", "plain", "plain", "plain", "plain"],
+        ["river", "river", "river", "plain", "plain", "plain", "plain", "plain"],
+        ["plain", "plain", "plain", "plain", "plain", "plain", "plain", "plain"],
+        ["plain", "plain", "forest", "forest", "plain", "plain", "plain", "plain"]
+      ],
+      "enemyInitialDeployment": [
+        { "type": "archer",   "lane": 0 },
+        { "type": "infantry", "lane": 2 },
+        { "type": "archer",   "lane": 4 }
+      ]
+    }
+  ]
+}

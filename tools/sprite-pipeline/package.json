@@ -1,0 +1,16 @@
+{
+  "name": "sprite-pipeline",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Automated spritesheet cleaner and frame extractor for Cocos Creator.",
+  "main": "process-spritesheet.js",
+  "type": "commonjs",
+  "scripts": {
+    "run": "node process-spritesheet.js",
+    "run:effects": "node process-effect-textures.js",
+    "run:effect-layers": "node process-effect-layers.js"
+  },
+  "dependencies": {
+    "sharp": "^0.33.5"
+  }
+}

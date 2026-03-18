@@ -1,0 +1,16 @@
+{
+  "backgrounds": [
+    {
+      "id": "bg_normal_day",
+      "path": "textures/bg_normal_day",
+      "timeOfDay": "day",
+      "label": "白天平原"
+    },
+    {
+      "id": "bg_normal_night",
+      "path": "textures/bg_normal_night",
+      "timeOfDay": "night",
+      "label": "夜晚平原"
+    }
+  ]
+}

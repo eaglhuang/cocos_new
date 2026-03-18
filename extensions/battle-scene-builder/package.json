@@ -1,0 +1,30 @@
+{
+  "name": "battle-scene-builder",
+  "version": "1.0.0",
+  "package_version": 2,
+  "description": "一鍵生成戰鬥場景節點樹",
+  "main": "./dist/main.js",
+  "author": "Cocos Creator Assistant",
+  "editor": ">=3.8.0",
+  "contributions": {
+    "scene": {
+      "script": "./dist/scene-script.js"
+    },
+    "menu": [
+      {
+        "path": "開發者/戰鬥場景生成器/生成戰鬥場景",
+        "label": "生成戰鬥場景",
+        "message": "build-battle-scene"
+      }
+    ],
+    "messages": {
+      "build-battle-scene": {
+        "methods": ["buildBattleScene"]
+      }
+    }
+  },
+  "devDependencies": {
+    "@types/node": "^25.3.5",
+    "typescript": "^5.9.3"
+  }
+}

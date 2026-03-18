@@ -1,0 +1,109 @@
+CCEffect %{
+  techniques:
+  - name: transparent
+    passes:
+    - vert: vfx-buff-vs:vert
+      frag: vfx-buff-fs:frag
+      depthStencilState: &noDepth
+        depthTest: false
+        depthWrite: false
+      blendState:
+        targets:
+        - blend: true
+          blendSrc: src_alpha
+          blendDst: one_minus_src_alpha
+          blendSrcAlpha: src_alpha
+          blendDstAlpha: one_minus_src_alpha
+      rasterizerState: &noCull
+        cullMode: none
+      properties: &sharedProps
+        mainTexture: { value: white }
+        mainColor: { value: [1.0, 1.0, 1.0, 1.0], linear: true, editor: { type: color } }
+        uvTransform: { value: [1.0, 1.0, 0.0, 0.0] }
+        effectParams: { value: [0.08, 0.02, 1.0, 1.0] }
+  - name: additive
+    passes:
+    - vert: vfx-buff-vs:vert
+      frag: vfx-buff-fs:frag
+      depthStencilState: *noDepth
+      blendState:
+        targets:
+        - blend: true
+          blendSrc: src_alpha
+          blendDst: one
+          blendSrcAlpha: src_alpha
+          blendDstAlpha: one
+      rasterizerState: *noCull
+      properties:
+        mainTexture: { value: white }
+        mainColor: { value: [1.0, 1.0, 1.0, 0.45], linear: true, editor: { type: color } }
+        uvTransform: { value: [1.0, 1.0, 0.0, 0.0] }
+        effectParams: { value: [0.12, 0.08, 1.04, 0.52] }
+  - name: outer-glow
+    passes:
+    - vert: vfx-buff-vs:vert
+      frag: vfx-buff-fs:frag
+      depthStencilState: *noDepth
+      blendState:
+        targets:
+        - blend: true
+          blendSrc: src_alpha
+          blendDst: one
+          blendSrcAlpha: src_alpha
+          blendDstAlpha: one
+      rasterizerState: *noCull
+      properties:
+        mainTexture: { value: white }
+        mainColor: { value: [1.0, 1.0, 1.0, 0.32], linear: true, editor: { type: color } }
+        uvTransform: { value: [1.0, 1.0, 0.0, 0.0] }
+        effectParams: { value: [0.18, 0.14, 0.82, 0.26] }
+}%
+
+CCProgram vfx-buff-vs %{
+  precision highp float;
+
+  #include <builtin/uniforms/cc-global>
+  #include <builtin/uniforms/cc-local>
+
+  in vec3 a_position;
+  in vec2 a_texCoord;
+
+  out vec2 uv0;
+
+  uniform Constant {
+    vec4 mainColor;
+    vec4 uvTransform;
+    vec4 effectParams;
+  };
+
+  vec4 vert () {
+    vec4 pos = cc_matWorld * vec4(a_position, 1.0);
+    uv0 = a_texCoord * uvTransform.xy + uvTransform.zw;
+    return cc_matViewProj * pos;
+  }
+}%
+
+CCProgram vfx-buff-fs %{
+  precision highp float;
+
+  #include <output>
+
+  in vec2 uv0;
+
+  uniform sampler2D mainTexture;
+
+  uniform Constant {
+    vec4 mainColor;
+    vec4 uvTransform;
+    vec4 effectParams;
+  };
+
+  vec4 frag () {
+    vec4 tex = texture(mainTexture, uv0);
+    float softness = max(effectParams.y, 0.0001);
+    float alphaMask = smoothstep(effectParams.x, effectParams.x + softness, tex.a);
+    float alpha = tex.a * alphaMask * mainColor.a * effectParams.w;
+    vec3 rgb = tex.rgb * alphaMask * mainColor.rgb * effectParams.z;
+    return CCFragOutput(vec4(rgb, alpha));
+  }
+}%

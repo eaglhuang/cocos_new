@@ -1,0 +1,39 @@
+{
+  "generatedAt": "2026-03-07T09:28:12.742Z",
+  "reports": [
+    {
+      "fileName": "idle_張飛.png",
+      "outDir": "C:\\Users\\User\\NewProject\\tools\\sprite-pipeline\\output\\zhangfei\\idle",
+      "assetsDir": "C:\\Users\\User\\NewProject\\assets\\resources\\sprites\\zhangfei\\idle",
+      "frameCount": 15,
+      "manifest": {
+        "character": "zhangfei",
+        "action": "idle",
+        "fps": 8,
+        "source": "input\\idle_張飛.png",
+        "frameSize": {
+          "width": 217,
+          "height": 237
+        },
+        "frameCount": 15,
+        "frames": [
+          "zhangfei_idle_01.png",
+          "zhangfei_idle_02.png",
+          "zhangfei_idle_03.png",
+          "zhangfei_idle_04.png",
+          "zhangfei_idle_05.png",
+          "zhangfei_idle_06.png",
+          "zhangfei_idle_07.png",
+          "zhangfei_idle_08.png",
+          "zhangfei_idle_09.png",
+          "zhangfei_idle_10.png",
+          "zhangfei_idle_11.png",
+          "zhangfei_idle_12.png",
+          "zhangfei_idle_13.png",
+          "zhangfei_idle_14.png",
+          "zhangfei_idle_15.png"
+        ]
+      }
+    }
+  ]
+}

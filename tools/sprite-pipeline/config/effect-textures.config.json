@@ -1,0 +1,17 @@
+{
+  "defaults": {
+    "hardMaxLuma": 10,
+    "softMaxLuma": 84,
+    "maxChroma": 28
+  },
+  "targets": [
+    {
+      "source": "assets/resources/textures/effects/buff_addatk.png",
+      "output": "assets/resources/textures/effects/buff_addatk_alpha.png"
+    },
+    {
+      "source": "assets/resources/textures/effects/buff_addlife.png",
+      "output": "assets/resources/textures/effects/buff_addlife_alpha.png"
+    }
+  ]
+}

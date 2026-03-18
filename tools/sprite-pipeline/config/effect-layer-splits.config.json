@@ -1,0 +1,44 @@
+{
+  "defaults": {
+    "centerX": 640,
+    "centerY": 680,
+    "innerRadius": 94,
+    "outerRadius": 168,
+    "feather": 22,
+    "ringOpacity": 1.0,
+    "ringRemovalStrength": 0.96,
+    "focusRadius": 122,
+    "focusFeather": 18,
+    "arrowBottomOffset": -40,
+    "mainTopOffset": -8,
+    "splitFeather": 14
+  },
+  "targets": [
+    {
+      "source": "assets/resources/textures/effects/buff_addatk_alpha.png",
+      "ringOutput": "assets/resources/textures/effects/buff_addatk_ring_alpha.png",
+      "mainOutput": "assets/resources/textures/effects/buff_addatk_main_alpha.png",
+      "arrowOutput": "assets/resources/textures/effects/buff_addatk_arrow_alpha.png",
+      "centerX": 632,
+      "centerY": 676,
+      "innerRadius": 92,
+      "outerRadius": 170,
+      "focusRadius": 116,
+      "arrowBottomOffset": -34,
+      "mainTopOffset": -6
+    },
+    {
+      "source": "assets/resources/textures/effects/buff_addlife_alpha.png",
+      "ringOutput": "assets/resources/textures/effects/buff_addlife_ring_alpha.png",
+      "mainOutput": "assets/resources/textures/effects/buff_addlife_main_alpha.png",
+      "arrowOutput": "assets/resources/textures/effects/buff_addlife_arrow_alpha.png",
+      "centerX": 648,
+      "centerY": 684,
+      "innerRadius": 94,
+      "outerRadius": 172,
+      "focusRadius": 122,
+      "arrowBottomOffset": -36,
+      "mainTopOffset": -4
+    }
+  ]
+}
