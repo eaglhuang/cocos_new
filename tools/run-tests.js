@@ -41,7 +41,11 @@ if (!hasTsNode()) {
 console.log('🚀  執行 UnitTest...\n');
 
 const result = spawnSync(
-    'npx', ['ts-node', '--project', path.join(projectRoot, 'tsconfig.test.json'), entryFile],
+    'npx', ['ts-node',
+        '--transpile-only',          // 跳過型別檢查（cc mock 型別不完整），只做轉譯
+        '-r', 'tsconfig-paths/register',
+        '--project', path.join(projectRoot, 'tsconfig.test.json'),
+        entryFile],
     { stdio: 'inherit', cwd: projectRoot, shell: true }
 );
 

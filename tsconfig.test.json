@@ -20,6 +20,9 @@
     "types": ["node"],
     "typeRoots": ["./node_modules/@types"],
     "baseUrl": ".",
+    "paths": {
+      "cc": ["assets/scripts/tools/tests/cc.mock"]
+    },
     "outDir": "./temp/test-output"
   },
   "include": [

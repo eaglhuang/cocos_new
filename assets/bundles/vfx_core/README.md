@@ -162,3 +162,58 @@
 4. **如果是 Shader** → 放入 `shaders/`，如果是 Mesh 放 `meshes/`。
 5. **更新此 README** → 在對應表格中新增一行。
 6. **封裝為行為積木（可選）** → 若需要專屬的播放邏輯，在 `EffectSystem` 或新建 Pool 組件中加入 API。
+7. **登錄到 vfx-block-registry** → 在 `assets/scripts/tools/vfx-block-registry.ts` 的 `VFX_BLOCK_REGISTRY` 陣列中新增一條 `VfxBlockDef`，包含 `texPath`、`blendMode`、`audio` 與 `scale`。
+
+---
+
+## 音效對照表 (Audio Mapping)
+
+> 完整的積木-音效映射定義於 `assets/scripts/tools/vfx-block-registry.ts` 的 `VFX_BLOCK_REGISTRY`（每個 `VfxBlockDef` 含 `audio?: string` 欄位）。
+
+| 音效 clip 名稱 | 對應積木分類 | 典型使用場景 |
+|---------------|-------------|------------|
+| `light`       | glow (柔光圓、強光圓、衰減光柱) | 光環觸發、蓄力、Buff 閃光 |
+| `laser`       | glow (直線光) | 光柱、激光掃射 |
+| `fireball`    | fire (光暈、粒子、尾焰、魔球) | 火球飛行、火焰噴發 |
+| `boom`        | fire (爆發)、lightning (爆環)、impact (衝擊/環) | 爆炸、重擊落地 |
+| `wave`        | fire (藍焰波動/火環波)、lightning (能量波) | 範圍波浪擴散 |
+| `thunder`     | lightning (紫電動畫) | 閃電劈下 |
+| `weapon`      | trails (大劍/弧線/寬幅/銳利/武器軌跡)、proj (箭矢) | 揮砍、箭矢射出 |
+| `skill1`      | trails (分裂光) | 技能 1 爆發 |
+| `skill2`      | trails (球形擴散) | 技能 2 爆發 |
+| `feijian`     | projectile (飛劍 A/B)、impact (飛行軌跡) | 飛劍投射 |
+| `bat`         | projectile (蝙蝠) | 蝙蝠飛行 |
+| `skill0`      | projectile (魔法陣) | 魔法陣召喚 |
+| `buff`        | status (攻擊法陣) | 增益施加 |
+| `heal`        | status (治癒法陣) | 回血觸發 |
+| `hurt`        | impact (閃耀星光) | 被擊中反應 |
+| `smoke/*`     | ─ (無對應音效) | 煙霧類通常靜音或搭配 boom |
+
+---
+
+## VfxComposerTool — 遊戲內視覺積木組合器
+
+> 檔案：`assets/scripts/tools/VfxComposerTool.ts`
+
+一個可在 Play Mode 中即時預覽特效積木疊加效果的 debug 工具。
+**Unity 對照**：類似 Unity 的 Timeline Preview + Effect Inspector 合體版，在執行模式中以積木拼接的方式測試特效組合。
+
+### 使用步驟
+
+1. 將 `VfxComposerTool` Component 加入任一場景節點（建議直接加在 Canvas 下的子節點）。
+2. 執行遊戲後，畫面**右側會出現 `🎨 VFX` 小按鈕**。
+3. 點擊按鈕展開面板：
+   - 上方 8 個分類頁籤切換積木種類。
+   - 點選積木名稱加入「組合」清單（最多 6 個）。
+   - **▶ 播放**：在世界座標 `(0, 0.6, 0)` 以平放 Quad，用 `builtin-unlit` 加算/透明混合模式渲染貼圖，持續 5 秒後自動清除。
+   - **🔊 音效**：獨立播放組合中所有積木對應的音效（自動去重，先查 AudioSystem clipCache，若不存在則從 audio bundle 動態載入）。
+   - **✕ 清空**：清除組合清單與場景中所有預覽 Quad。
+
+### 預覽座標調整
+
+若需要將預覽 Quad 移動到其他位置，修改 `VfxComposerTool.ts` 頂部的常數：
+
+```typescript
+const PREVIEW_POS = new Vec3(0, 0.6, 0);  // 自訂世界空間的預覽位置
+const PREVIEW_DURATION = 5;               // 自動清除秒數
+```

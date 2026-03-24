@@ -114,20 +114,21 @@ export class BoardRenderer extends Component {
     }
 
     private initMaterials() {
+        // 預設格子：全透明（不顯示顏色，諦變矩形 / 占領提示由專属 material 處理）
         this.defaultFillMaterial = this.createCellMaterial(
-            new Color(194, 220, 236, 3),
-            new Color(232, 242, 248, 36),
-            new Color(255, 255, 255, 34),
-            new Vec4(0.075, 0.14, 0.16, 0.62)
+            new Color(0, 0, 0, 0),
+            new Color(0, 0, 0, 0),
+            new Color(0, 0, 0, 0),
+            new Vec4(0, 0, 0, 0)
         );
         this.defaultBorderMaterial = this.defaultFillMaterial;
         this.defaultBorderMidMaterial = this.defaultFillMaterial;
         this.defaultBorderInnerMaterial = this.defaultFillMaterial;
 
         this.playerOccupiedFillMaterial = this.createCellMaterial(
-            new Color(132, 242, 180, 5),
-            new Color(150, 248, 190, 46),
-            new Color(210, 255, 226, 40),
+            new Color(132, 242, 180, 60),
+            new Color(150, 248, 190, 120),
+            new Color(210, 255, 226, 80),
             new Vec4(0.08, 0.145, 0.17, 0.62)
         );
         this.playerOccupiedBorderMaterial = this.playerOccupiedFillMaterial;
@@ -135,9 +136,9 @@ export class BoardRenderer extends Component {
         this.playerOccupiedBorderInnerMaterial = this.playerOccupiedFillMaterial;
 
         this.enemyOccupiedFillMaterial = this.createCellMaterial(
-            new Color(242, 180, 180, 5),
-            new Color(248, 188, 188, 46),
-            new Color(255, 230, 230, 40),
+            new Color(242, 180, 180, 60),
+            new Color(248, 188, 188, 120),
+            new Color(255, 230, 230, 80),
             new Vec4(0.08, 0.145, 0.17, 0.62)
         );
         this.enemyOccupiedBorderMaterial = this.enemyOccupiedFillMaterial;
@@ -372,9 +373,9 @@ export class BoardRenderer extends Component {
                 const cellNode = this.cellNodes.get(key);
                 if (cellNode) {
                     if (unit.faction === Faction.Player) {
-                        this.applyCellStyle(cellNode, this.playerOccupiedFillMaterial, this.playerOccupiedBorderMaterial);
+                        // this.applyCellStyle(cellNode, this.playerOccupiedFillMaterial, this.playerOccupiedBorderMaterial);
                     } else {
-                        this.applyCellStyle(cellNode, this.enemyOccupiedFillMaterial, this.enemyOccupiedBorderMaterial);
+                        // this.applyCellStyle(cellNode, this.enemyOccupiedFillMaterial, this.enemyOccupiedBorderMaterial);
                     }
                 }
             }

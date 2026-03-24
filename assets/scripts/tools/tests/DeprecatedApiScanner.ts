@@ -24,8 +24,8 @@
  *     reason      棄用原因 / keep.md 條目
  */
 
-import * as fs   from 'fs';
-import * as path from 'path';
+// fs / path 不以頂層 import 載入，避免 Cocos Creator 場景啟動時嘗試載入 Node.js 內建模組導致錯誤。
+// 實際的 require('fs') / require('path') 只在函式內部執行，而這些函式只會在 Node.js CLI（run-tests.js）環境下被呼叫。
 import { TestSuite, assert } from './TestRunner';
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -62,14 +62,45 @@ const DEPRECATED_RULES: DeprecatedRule[] = [
         replacement: 'setMaterialSafe(mr, mat, index) 來自 core/utils/MaterialUtils.ts',
         reason:      'Cocos 3.8.8 ts(6387)，keep.md 引擎 API 注意事項',
     },
-    // ── 未來發現新的棄用 API 時，在此新增一筆 ──
-    // {
-    //     id:      'example.deprecated',
-    //     pattern: /\.someOldApi\s*\(/,
-    //     whitelist: [],
-    //     replacement: 'newApi()',
-    //     reason:  'keep.md 引擎 API 注意事項 CXX',
-    // },
+    // ── Cocos Bundle 安全性規則：防止 Node.js 副作用進入遊戲 Bundle ──────────
+    //
+    // assets/scripts/ 下所有 .ts 都會被 Cocos 打包進 scene bundle。
+    // bundle 載入時會立即評估所有模組頂層程式碼（類似 Unity 的靜態初始化器）。
+    // 以下模式若出現在 bundle 裡，會讓 Cocos Editor 預覽進程崩潰或場景卡住。
+
+    {
+        id:      'process.exit() in bundle',
+        // process.exit 在 Cocos 場景 bundle 中直接執行 → 殺掉 Electron 預覽進程
+        pattern: /process\.exit\s*\(/,
+        whitelist: [
+            // run-cli.ts 已用 `if (typeof window === 'undefined')` 包住，安全豁免
+            'assets/scripts/tools/tests/run-cli.ts',
+            'assets/scripts/tools/tests/DeprecatedApiScanner.ts',  // 規則定義字串
+        ],
+        replacement: '移至 tools/ 目錄（bundle 外）或用 `if (typeof window === "undefined")` 包住',
+        reason:      'process.exit() 在 Cocos bundle 載入時執行，會殺掉 Electron 預覽進程，導致場景無限卡在 loading',
+    },
+    {
+        id:      'top-level import of node:fs / node:path',
+        // 靜態 import 不論環境都會在 bundle 評估時被要求解析
+        // → Cocos 無法提供 node: 內建模組 → 拋出 "Can not load module node:fs"
+        pattern: /^import\s+.*from\s+['"]node:/m,
+        whitelist: [
+            'assets/scripts/tools/tests/DeprecatedApiScanner.ts',  // 規則定義字串
+        ],
+        replacement: '改用函式內部的 require()，並確保只在 Node.js 環境（typeof window === "undefined"）下執行',
+        reason:      'Cocos Creator 不提供 Node.js 內建模組，頂層 import 使場景 Console 報 "Can not load module node:fs"',
+    },
+    {
+        id:      'top-level static import of fs/path',
+        // `import * as fs from 'fs'` 等同 `import * as fs from 'node:fs'`，同樣問題
+        pattern: /^import\s+\*\s+as\s+(fs|path)\s+from\s+['"](fs|path)['"]/m,
+        whitelist: [
+            'assets/scripts/tools/tests/DeprecatedApiScanner.ts',  // 規則定義字串
+        ],
+        replacement: '改用函式內部的 require("fs") / require("path")，並包覆 typeof window === "undefined" guard',
+        reason:      '頂層 import fs/path 在 Cocos bundle 載入時觸發 Node.js 模組解析，導致場景 Console 錯誤',
+    },
 ];
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -82,16 +113,23 @@ interface Violation {
     content: string;   // 該行去除前後空白
 }
 
-/** 收集目錄（含子目錄）下所有 .ts 檔案路徑 */
+/** 收集目錄（含子目錄）下所有 .ts 檔案路徑（排除 node_modules 與 .d.ts） */
 function scanDirectory(dir: string): string[] {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const fs = require('fs') as typeof import('fs');
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const path = require('path') as typeof import('path');
     if (!fs.existsSync(dir)) return [];
     const files: string[] = [];
     const entries = fs.readdirSync(dir, { withFileTypes: true });
     for (const entry of entries) {
         const full = path.join(dir, entry.name);
         if (entry.isDirectory()) {
+            // 跳過 node_modules：第三方套件不是專案代碼，不應被掃描
+            if (entry.name === 'node_modules') continue;
             files.push(...scanDirectory(full));
-        } else if (entry.isFile() && full.endsWith('.ts')) {
+        } else if (entry.isFile() && full.endsWith('.ts') && !full.endsWith('.d.ts')) {
+            // 排除 .d.ts：宣告檔不是執行期代碼，node:xxx 是合法的型別聲明
             files.push(full);
         }
     }
@@ -135,6 +173,10 @@ function scanForRule(
     rule: DeprecatedRule,
     relativeBase: string
 ): Violation[] {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const fs = require('fs') as typeof import('fs');
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const path = require('path') as typeof import('path');
     const violations: Violation[] = [];
     for (const file of files) {
         const relative = path.relative(relativeBase, file).replace(/\\/g, '/');

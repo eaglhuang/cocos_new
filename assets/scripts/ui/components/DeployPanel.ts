@@ -135,10 +135,11 @@ export class DeployPanel extends Component {
     if (!this.btnSkill) return;
 
     if (isReady) {
+      // SP 満：金色高亮 + scale 脈衝循環（類似 Unity 的 PingPong Tween）
       this.btnSkill.node.getComponent(Sprite)!.color = new Color(255, 180, 50, 255);
       this.skillTween = tween(this.btnSkill.node)
-        .by(0.1, { position: new Vec3(0, 5, 0) })
-        .by(0.1, { position: new Vec3(0, -5, 0) })
+        .to(0.35, { scale: new Vec3(1.06, 1.06, 1) })
+        .to(0.35, { scale: new Vec3(1.0,  1.0,  1) })
         .union()
         .repeatForever()
         .start();
@@ -147,8 +148,10 @@ export class DeployPanel extends Component {
         this.skillTween.stop();
         this.skillTween = null;
       }
+      // SP 未満：灰藍色 + 恢復原始 scale
       this.btnSkill.node.getComponent(Sprite)!.color = new Color(60, 60, 180, 200);
       this.btnSkill.node.setPosition(new Vec3(810, -360, 0));
+      this.btnSkill.node.setScale(new Vec3(1, 1, 1));
     }
   }
 
@@ -556,10 +559,40 @@ export class DeployPanel extends Component {
 
   private onSkillClick(): void {
     if (!this.ctrl) return;
+    // 點擊閃光反饋（不論是否能發動都給出視覺回應）
+    this.playSkillClickFlash();
     const success = this.ctrl.triggerGeneralSkill();
     if (!success) {
       this.showToast("技能能量不足！");
     }
+  }
+
+  /**
+   * 技能按鈕點擊閃光動畫：scale 1.0 → 1.15 → 1.0，0.2s。
+   * 間阶專間呼叫 stop() 避免和脈衝循環衝突，完成後自動恢復脈衝循環。
+   */
+  private playSkillClickFlash(): void {
+    if (!this.btnSkill) return;
+    const node = this.btnSkill.node;
+    if (this.skillTween) {
+      this.skillTween.stop();
+      this.skillTween = null;
+    }
+    tween(node)
+      .to(0.08, { scale: new Vec3(1.15, 1.15, 1) })
+      .to(0.12, { scale: new Vec3(1.0,  1.0,  1) })
+      .call(() => {
+        // 閃光完成後，若仍然狀態為 ready 則恢復脈衝循環
+        if (this.isSkillReady) {
+          this.skillTween = tween(node)
+            .to(0.35, { scale: new Vec3(1.06, 1.06, 1) })
+            .to(0.35, { scale: new Vec3(1.0,  1.0,  1) })
+            .union()
+            .repeatForever()
+            .start();
+        }
+      })
+      .start();
   }
 
   private onDuelClick(): void {

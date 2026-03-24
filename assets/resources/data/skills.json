@@ -1,0 +1,59 @@
+[
+  {
+    "id": "zhang-fei-roar",
+    "label": "虎嘯",
+    "description": "張飛大喝，震懾戰場，對所有敵方單位施加暈眩並造成大範圍衝擊。",
+    "costSp": 100,
+    "steps": [
+      { "type": "audio",     "clip": "fireball",    "atTime": 0.0 },
+      { "type": "animation", "clip": "Skill",        "atTime": 0.0 },
+      { "type": "vfx",       "blockId": "fire_burst",  "target": "caster", "offsetY": 0.5, "atTime": 0.2 },
+      { "type": "vfx",       "blockId": "impact_ring", "target": "targets", "atTime": 0.4 },
+      { "type": "damage",    "multiplier": 1.0, "target": "all_enemies",  "atTime": 0.5 },
+      { "type": "buff",      "buffId": "stun", "duration": 1, "target": "all_enemies", "atTime": 0.5 },
+      { "type": "floatText", "text": "虎嘯！", "target": "caster", "atTime": 0.5 }
+    ]
+  },
+  {
+    "id": "guan-yu-slash",
+    "label": "青龍偃月",
+    "description": "關羽揮動青龍偃月刀，對目標造成 2 倍傷害。",
+    "costSp": 100,
+    "steps": [
+      { "type": "audio",     "clip": "feijian",     "atTime": 0.0 },
+      { "type": "animation", "clip": "Skill",        "atTime": 0.0 },
+      { "type": "vfx",       "blockId": "trails",    "target": "caster", "offsetY": 0.8, "atTime": 0.1 },
+      { "type": "vfx",       "blockId": "impact_shock", "target": "targets", "atTime": 0.45 },
+      { "type": "damage",    "multiplier": 2.0, "target": "single",       "atTime": 0.5 },
+      { "type": "floatText", "text": "青龍偃月！", "target": "targets", "atTime": 0.5 }
+    ]
+  },
+  {
+    "id": "lu-bu-rampage",
+    "label": "天下無雙",
+    "description": "呂布以方天畫戟橫掃全場，對所有敵方造成 1.5 倍傷害並施加暈眩。",
+    "costSp": 100,
+    "steps": [
+      { "type": "audio",     "clip": "boom",          "atTime": 0.0 },
+      { "type": "animation", "clip": "Skill",          "atTime": 0.0 },
+      { "type": "vfx",       "blockId": "fire_ringwave", "target": "caster", "offsetY": 0.3, "atTime": 0.1 },
+      { "type": "vfx",       "blockId": "impact_shock",  "target": "targets", "atTime": 0.5 },
+      { "type": "damage",    "multiplier": 1.5, "target": "all_enemies",   "atTime": 0.55 },
+      { "type": "buff",      "buffId": "stun", "duration": 1, "target": "all_enemies", "atTime": 0.55 },
+      { "type": "floatText", "text": "天下無雙！", "target": "caster", "atTime": 0.55 }
+    ]
+  },
+  {
+    "id": "cao-cao-tactics",
+    "label": "奇謀佈陣",
+    "description": "曹操施展兵法，提升自身攻擊增益並恢復部分 DP。",
+    "costSp": 80,
+    "steps": [
+      { "type": "audio",     "clip": "buff",          "atTime": 0.0 },
+      { "type": "animation", "clip": "Skill",          "atTime": 0.0 },
+      { "type": "vfx",       "blockId": "ring_addatk", "target": "caster", "atTime": 0.1 },
+      { "type": "vfx",       "blockId": "glow_soft",   "target": "caster", "offsetY": 1.0, "atTime": 0.2 },
+      { "type": "floatText", "text": "奇謀佈陣！", "target": "caster", "atTime": 0.3 }
+    ]
+  }
+]

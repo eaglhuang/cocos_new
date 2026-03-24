@@ -8,11 +8,17 @@ import {
   HorizontalTextAlignment,
   Label,
   Layers,
+  DirectionalLight,
   Material,
   Mesh,
   MeshRenderer,
   Node,
+  Prefab,
+  SkinnedMeshRenderer,
+  Texture2D,
   primitives,
+  instantiate,
+  assetManager,
   tween,
   Tween,
   UIOpacity,
@@ -30,6 +36,14 @@ import { BoardRenderer } from "./BoardRenderer";
 import { BuffGainEffectPool } from "./effects/BuffGainEffectPool";
 import { services } from "../../core/managers/ServiceLoader";
 import { FloatTextType } from "../../core/systems/FloatTextSystem";
+import {
+  DEFAULT_ENEMY_HERO_ASSET_ID,
+  DEFAULT_PLAYER_HERO_ASSET_ID,
+  HERO_UNIT_ASSET_CATALOG,
+  HeroUnitAssetEntry,
+  TROOP_UNIT_ASSET_CATALOG,
+  TroopUnitAssetEntry,
+} from "../../core/config/UnitAssetCatalog";
 
 const { ccclass, property } = _decorator;
 
@@ -37,7 +51,9 @@ interface UnitView {
   worldNode: Node;   // 世界空間根節點，負責移動 tween（Unity: Root Transform）
   visualNode: Node;  // 本地空間效果層，負責 bump / recoil / charge（Unity: Visual Child Transform）
   bodyNode: Node;
+  ringNode?: Node;
   accentNode: Node;
+  formationRoot: Node;
   labelNode: Node;
   attackLabel: Label;
   typeLabel: Label;
@@ -45,6 +61,7 @@ interface UnitView {
   labelOpacity: UIOpacity;
   bottomNameLabel: Label | null;
   troopType: TroopType;
+  usingTroopFormation: boolean;
 }
 
 interface UnitShapeProfile {
@@ -57,12 +74,15 @@ interface UnitShapeProfile {
 interface GeneralView {
   worldNode: Node;
   bodyNode: Node;
+  modelRoot: Node;
   labelNode: Node;
   attackLabel: Label;
   typeLabel: Label;
   hpLabel: Label;
   labelOpacity: UIOpacity;
   faction: Faction;
+  usingHeroModel: boolean;
+  heroLoading: boolean;
 }
 
 interface BadgeView {
@@ -88,7 +108,7 @@ export class UnitRenderer extends Component {
   public unitScale = 0.56;
 
   @property({ tooltip: "頭頂資訊距離單位的高度" })
-  public labelHeight = 1.05;
+  public labelHeight = 0.55;
 
   @property({ tooltip: "主將 cube 相對小兵尺寸倍率" })
   public generalScaleMultiplier = 1.5;
@@ -99,6 +119,8 @@ export class UnitRenderer extends Component {
   private worldRoot: Node | null = null;
   private uiRoot: Node | null = null;
   private cubeMesh: Mesh | null = null;
+  private discMesh: Mesh | null = null;  // 圓形陰影 mesh，對照 Unity: blob shadow disc
+  private ringMesh: Mesh | null = null;  // Faction Ring mesh
   private atkGainPool: BuffGainEffectPool | null = null;
   private atkLossPool: BuffGainEffectPool | null = null;
   private hpGainPool:  BuffGainEffectPool | null = null;
@@ -112,12 +134,19 @@ export class UnitRenderer extends Component {
   private readonly uiWorldPosBuf = new Vec3();
   private readonly generalViews = new Map<Faction, GeneralView>();
   private readonly tileBuffViews = new Map<string, TileBuffView>();
+  private readonly troopPrefabLoads = new Map<TroopType, Promise<Prefab | null>>();
+  private readonly heroPrefabLoads = new Map<string, Promise<Prefab | null>>();
   private latestState: BattleState | null = null;
 
   onLoad(): void {
     this.cubeMesh = utils.MeshUtils.createMesh(primitives.box());
+    // 建立圓形碟狀 mesh，用於地面陰影（far smaller than box）
+    this.discMesh = utils.MeshUtils.createMesh(primitives.cylinder(0.5, 0.5, 0.01, { radialSegments: 20 }));
+    // 建立六邊形環當作外發光
+    this.ringMesh = utils.MeshUtils.createMesh(primitives.torus(0.40, 0.03, { radialSegments: 8, tubularSegments: 6 }));
     this.node.layer = Layers.Enum.DEFAULT;
     this.ensureRoots();
+    this.ensureSceneKeyLight();
   }
 
   public initialize(boardRenderer: BoardRenderer | null, worldCamera: Camera | null, canvasNode: Node | null): void {
@@ -125,6 +154,7 @@ export class UnitRenderer extends Component {
     this.worldCamera = worldCamera;
     this.canvasNode = canvasNode;
     this.ensureRoots();
+    this.ensureSceneKeyLight();
     // FloatTextSystem 共用 3D→UI 座標轉換逻輯，需在 ensureRoots() 後設定
     if (this.uiRoot && this.worldCamera && this.canvasNode) {
       services().floatText.setup(this.uiRoot, this.worldCamera, this.canvasNode);
@@ -163,15 +193,29 @@ export class UnitRenderer extends Component {
     this.syncTileBuffViews(state);
   }
 
-  public playDeploy(unit: TroopUnit | null): void {
+  public async playDeploy(unit: TroopUnit | null): Promise<void> {
     if (!unit) return;
 
     let view = this.unitViews.get(unit.id);
     if (!view) {
       view = this.createUnitView(unit);
       this.unitViews.set(unit.id, view);
-      this.updateUnitView(view, unit);
     }
+
+    // 等待 formation prefab 載入：確保部署動畫使用正確尺寸（Vec3.ONE）與面向
+    // createUnitView 已呼叫過 ensureTroopFormation，這裡直接等 prefab 並建立
+    if (!view.usingTroopFormation && !this.isGeneralAvatarUnit(unit)) {
+      const entry = TROOP_UNIT_ASSET_CATALOG[unit.type];
+      if (entry) {
+        const prefab = await this.loadTroopPrefab(unit.type, entry);
+        if (prefab && view.worldNode.isValid && view.formationRoot.children.length === 0) {
+          this.buildTroopFormation(view, prefab, unit, entry);
+        }
+      }
+    }
+
+    // 以正確狀態（formation 已就緒）更新視圖，取得最終尺寸與面向
+    this.updateUnitView(view, unit);
 
     const targetScale = view.worldNode.scale.clone();
     view.worldNode.setScale(new Vec3(targetScale.x * 0.01, targetScale.y * 0.01, targetScale.z * 0.01));
@@ -314,15 +358,17 @@ export class UnitRenderer extends Component {
     const attackerNode = this.resolveCombatNode(attackerId);
     if (!attackerNode) return;
 
-    const targetPos = this.boardRenderer?.getCellWorldPosition(defenderLane, defenderDepth, attackerNode.worldPosition.y);
-    if (!targetPos) return;
-
     const attackerUnit = this.findUnitById(attackerId);
-    if (attackerUnit?.type === TroopType.Cavalry) {
-      this.playCavalryChargeAnimation(attackerNode, targetPos);
+    if (!attackerUnit) return;
+
+    if (attackerUnit.type === TroopType.Cavalry) {
+      const targetPos = this.boardRenderer?.getCellWorldPosition(defenderLane, defenderDepth, attackerNode.worldPosition.y);
+      if (targetPos) {
+        this.playCavalryChargeAnimation(attackerNode, targetPos);
+      }
       return;
     }
-    this.bumpNodeTowards(attackerNode, targetPos, 0.38);
+    this.bumpNodeForward(attackerNode, attackerUnit.faction, 0.38);
   }
 
   public playAttackGeneralAnimation(attackerId: string, defenderFaction: Faction): void {
@@ -331,18 +377,22 @@ export class UnitRenderer extends Component {
     if (!attackerNode || !defenderNode) return;
 
     const attackerUnit = this.findUnitById(attackerId);
-    if (attackerUnit?.type === TroopType.Cavalry) {
+    if (!attackerUnit) return;
+
+    if (attackerUnit.type === TroopType.Cavalry) {
       this.playCavalryChargeAnimation(attackerNode, defenderNode.worldPosition);
       return;
     }
-    this.bumpNodeTowards(attackerNode, defenderNode.worldPosition, 0.38);
+    this.bumpNodeForward(attackerNode, attackerUnit.faction, 0.38);
   }
 
   public playHitAnimation(defenderId: string, attackerId: string | null): void {
-    const defenderNode = this.unitViews.get(defenderId)?.worldNode ?? null;
-    if (!defenderNode) return;
+    const defenderView = this.unitViews.get(defenderId);
+    const defenderNode = defenderView?.worldNode ?? null;
+    const defenderUnit = this.findUnitById(defenderId);
+    if (!defenderNode || !defenderUnit) return;
 
-    this.recoilNode(defenderNode, attackerId);
+    this.recoilNode(defenderNode, defenderUnit.faction);
 
     // Rim Color 受擊閃爍（Tier 2 Instancing）
     services().material.setRim(`${defenderId}_body`, "unit-base", new Color(255, 80, 0, 200));
@@ -360,7 +410,7 @@ export class UnitRenderer extends Component {
     const defenderNode = this.generalViews.get(defenderFaction)?.worldNode ?? null;
     if (!defenderNode) return;
 
-    this.recoilNode(defenderNode, attackerId);
+    this.recoilNode(defenderNode, defenderFaction);
   }
 
   public playGeneralValueChange(defenderFaction: Faction, value: number): void {
@@ -368,7 +418,7 @@ export class UnitRenderer extends Component {
     if (!generalView) return;
 
     const worldPos = generalView.worldNode.worldPosition.clone();
-    worldPos.y += this.labelHeight + 0.5;
+    worldPos.y += this.unitHeight * 0.5;
 
     const isPlayerSide = defenderFaction === Faction.Player;
     this.spawnFloatText(`-${value}`, isPlayerSide ? 'dmg_player' : 'dmg_enemy', worldPos);
@@ -377,22 +427,51 @@ export class UnitRenderer extends Component {
   public playValueChange(unit: TroopUnit | null, value: number, kind: "damage" | "heal"): void {
     if (!unit || !this.uiRoot || !this.worldCamera || !this.canvasNode) return;
 
-    const worldPos = this.boardRenderer?.getCellWorldPosition(unit.lane, unit.depth, this.labelHeight + 0.35);
-    if (!worldPos) return;
-
-    const sign = kind === "heal" ? "+" : "-";
-    const dmgType: FloatTextType = kind === "heal" ? 'heal' : (unit.faction === Faction.Player ? 'dmg_player' : 'dmg_enemy');
-    this.spawnFloatText(`${sign}${value}`, dmgType, worldPos);
-
-    const view = this.unitViews.get(unit.id);
-    if (view) {
-      const originalScale = view.worldNode.scale.clone();
-      tween(view.worldNode)
-        .to(0.08, { scale: new Vec3(originalScale.x * 1.15, originalScale.y * 0.9, originalScale.z * 1.15) })
-        .to(0.12, { scale: originalScale })
-        .start();
+    let worldPos = this.boardRenderer?.getCellWorldPosition(unit.lane, unit.depth, this.unitHeight * 0.5);
+    const view = unit ? this.unitViews.get(unit.id) : undefined;
+    
+    if (view && view.usingTroopFormation && view.formationRoot.children.length > 0) {
+      // 找出所有活著的小兵模型（排除陰影節點）
+      const soldiers = view.formationRoot.children.filter(c => c.name.startsWith("Soldier_"));
+      if (soldiers.length > 0) {
+        // 隨機抽選一個被攻擊的小兵身上冒出數字
+        const randomSoldier = soldiers[Math.floor(Math.random() * soldiers.length)];
+        worldPos = randomSoldier.worldPosition.clone();
+        worldPos.y += this.unitHeight * 0.5; // 保留在小兵大約中段的高度
+      }
     }
 
+    if (!worldPos) return;
+
+    // 延遲傷害數字跳出，配合攻擊方抵達的時刻 (0.08s)
+    setTimeout(() => {
+      const sign = kind === "heal" ? "+" : "-";
+      const dmgType: FloatTextType = kind === "heal" ? 'heal' : (unit.faction === Faction.Player ? 'dmg_player' : 'dmg_enemy');
+      this.spawnFloatText(`${sign}${value}`, dmgType, worldPos!);
+
+      const currentView = this.unitViews.get(unit.id);
+      if (currentView) {
+        if (currentView.usingTroopFormation) {
+          // 只針對實際的兵模型做受擊跳動，不要震動到陰影
+          currentView.formationRoot.children.forEach(child => {
+            if (child.name.startsWith("Soldier_")) {
+              const originalPos = child.position.clone();
+              Tween.stopAllByTarget(child);
+              tween(child)
+                .to(0.06, { position: new Vec3(originalPos.x, originalPos.y + 0.06, originalPos.z) })
+                .to(0.1, { position: originalPos })
+                .start();
+            }
+          });
+        } else {
+          const originalScale = currentView.worldNode.scale.clone();
+          tween(currentView.worldNode)
+            .to(0.08, { scale: new Vec3(originalScale.x * 1.15, originalScale.y * 0.9, originalScale.z * 1.15) })
+            .to(0.12, { scale: originalScale })
+            .start();
+        }
+      }
+    }, 80); // 80ms == 0.08s
   }
 
   /**
@@ -431,7 +510,7 @@ export class UnitRenderer extends Component {
     if (!this.uiRoot || !this.worldCamera || !this.canvasNode) return;
 
     // 從擊敗的小兵位置產生
-    const worldPos = this.boardRenderer?.getCellWorldPosition(fromLane, fromDepth, this.labelHeight + 0.35);
+    const worldPos = this.boardRenderer?.getCellWorldPosition(fromLane, fromDepth, this.unitHeight * 0.5);
     if (!worldPos) return;
 
     const startPos = this.toUiPosition(worldPos);
@@ -447,7 +526,7 @@ export class UnitRenderer extends Component {
       const targetFaction = isPlayer ? Faction.Player : Faction.Enemy;
       const generalView = this.generalViews.get(targetFaction);
       const targetWorldPos = generalView?.worldNode.worldPosition.clone() ?? worldPos.clone();
-      targetWorldPos.y += this.labelHeight + 0.8;
+      targetWorldPos.y += this.unitHeight * 0.8;
       endPos = this.toUiPosition(targetWorldPos);
     }
 
@@ -513,7 +592,7 @@ export class UnitRenderer extends Component {
   }
 
   public playBuffConsumeValue(lane: number, depth: number, text: string): void {
-    const worldPos = this.boardRenderer?.getCellWorldPosition(lane, depth, this.labelHeight * 0.75);
+    const worldPos = this.boardRenderer?.getCellWorldPosition(lane, depth, this.unitHeight * 0.5);
     if (!worldPos) return;
     this.spawnFloatText(text, 'status', worldPos);
   }
@@ -547,9 +626,17 @@ export class UnitRenderer extends Component {
       return pool;
     };
 
-    const red = new Color(255, 110, 110, 255);
-    const warm = new Color(255, 236, 196, 255);
-    const lifeGlow = new Color(188, 255, 218, 255);
+    const atkBuffRing = new Color(255, 212, 132, 255);
+    const atkBuffMain = new Color(255, 244, 214, 255);
+    const atkBuffArrow = new Color(255, 191, 96, 255);
+
+    const healBuffRing = new Color(110, 255, 196, 255);
+    const healBuffMain = new Color(210, 255, 236, 255);
+    const healBuffArrow = new Color(144, 255, 206, 255);
+
+    const debuffRing = new Color(96, 28, 28, 220);
+    const debuffMain = new Color(190, 72, 72, 236);
+    const debuffArrow = new Color(128, 42, 42, 220);
 
     this.atkGainPool = makePool("Pool_AtkGain");
     this.atkLossPool = makePool("Pool_AtkLoss");
@@ -557,10 +644,10 @@ export class UnitRenderer extends Component {
     this.hpLossPool  = makePool("Pool_HpLoss");
 
     await Promise.all([
-      this.atkGainPool.initialize({ ringTexturePath: "vfx_core:textures/rings/tex_ring_addatk",  mainTexturePath: "vfx_core:textures/icons/tex_icon_addatk",  arrowTexturePath: "vfx_core:textures/shapes/tex_shape_arrow_addatk",  arrowUp: true,  ringColor: warm, mainColor: warm, arrowColor: warm, label: "AtkGain" }),
-      this.atkLossPool.initialize({ ringTexturePath: "vfx_core:textures/rings/tex_ring_addatk",  mainTexturePath: "vfx_core:textures/icons/tex_icon_addatk",  arrowTexturePath: "vfx_core:textures/shapes/tex_shape_arrow_addatk",  arrowUp: false, ringColor: red,  mainColor: red,  arrowColor: red,  label: "AtkLoss" }),
-      this.hpGainPool.initialize({ ringTexturePath: "vfx_core:textures/rings/tex_ring_addlife", mainTexturePath: "vfx_core:textures/icons/tex_icon_addlife", arrowTexturePath: "vfx_core:textures/shapes/tex_shape_arrow_addlife", arrowUp: true,  useDualArrows: true, ringColor: lifeGlow, mainColor: lifeGlow, arrowColor: lifeGlow, label: "HpGain" }),
-      this.hpLossPool.initialize({ ringTexturePath: "vfx_core:textures/rings/tex_ring_addlife", mainTexturePath: "vfx_core:textures/icons/tex_icon_addlife", arrowTexturePath: "vfx_core:textures/shapes/tex_shape_arrow_addlife", arrowUp: false, useDualArrows: true, ringColor: red,  mainColor: red,  arrowColor: red,  label: "HpLoss" }),
+      this.atkGainPool.initialize({ variant: "AtkGain", prefabPath: "fx/buff/buff_gain_3d", ringTexturePath: "vfx_core:textures/rings/tex_ring_addatk",  mainTexturePath: "vfx_core:textures/icons/tex_icon_addatk",  arrowTexturePath: "vfx_core:textures/shapes/tex_shape_arrow_addatk",  sparkTexturePath: "vfx_core:textures/glow/ex_hit_flash",  arrowUp: true,  mainScaleMultiplier: 0.78, ringColor: atkBuffRing, mainColor: atkBuffMain, arrowColor: atkBuffArrow, label: "AtkGain" }),
+      this.atkLossPool.initialize({ variant: "AtkLoss", prefabPath: "fx/buff/buff_debuff_3d", ringTexturePath: "vfx_core:textures/rings/tex_ring_addatk",  mainTexturePath: "vfx_core:textures/icons/tex_icon_addatk",  arrowTexturePath: "vfx_core:textures/shapes/tex_shape_arrow_addatk",  sparkTexturePath: "vfx_core:textures/glow/ex_hit_flash",  arrowUp: false, mainScaleMultiplier: 0.78, ringColor: debuffRing, mainColor: debuffMain, arrowColor: debuffArrow, label: "AtkLoss" }),
+      this.hpGainPool.initialize({ variant: "HpGain", prefabPath: "fx/buff/buff_gain_3d", ringTexturePath: "vfx_core:textures/rings/tex_ring_addlife", mainTexturePath: "vfx_core:textures/icons/tex_icon_addlife", arrowTexturePath: "vfx_core:textures/shapes/tex_shape_arrow_addlife", sparkTexturePath: "vfx_core:textures/rings/ex_energy_ring", arrowUp: true,  useDualArrows: true, mainRotationDeg: 90, ringColor: healBuffRing, mainColor: healBuffMain, arrowColor: healBuffArrow, label: "HpGain" }),
+      this.hpLossPool.initialize({ variant: "HpLoss", prefabPath: "fx/buff/buff_debuff_3d", ringTexturePath: "vfx_core:textures/rings/tex_ring_addlife", mainTexturePath: "vfx_core:textures/icons/tex_icon_addlife", arrowTexturePath: "vfx_core:textures/shapes/tex_shape_arrow_addlife", sparkTexturePath: "vfx_core:textures/glow/ex_hit_flash", arrowUp: false, useDualArrows: true, mainRotationDeg: 90, ringColor: debuffRing, mainColor: debuffMain, arrowColor: debuffArrow, label: "HpLoss" }),
     ]);
     console.log("[UnitRenderer] ✅ 全部特效 Pool 初始化完成 (ATK±, HP±)");
   }
@@ -618,18 +705,24 @@ export class UnitRenderer extends Component {
       const step = inward.clone().subtract(front).multiplyScalar(1.05);
       const behind = front.clone().subtract(step);
       view.worldNode.setWorldPosition(behind);
-
-      const targetDepth = faction === Faction.Player ? GAME_CONFIG.GRID_DEPTH - 1 : 0;
-      const target = this.boardRenderer?.getCellWorldPosition(centerLane, targetDepth, this.unitHeight * 0.75);
-      if (target) {
-        view.worldNode.lookAt(target);
-      }
     }
+
+    this.alignNodeToFactionFacing(view.worldNode, faction);
 
     const baseScale = this.unitScale * this.generalScaleMultiplier;
     const hScale = this.unitHeight * this.generalScaleMultiplier;
-    view.worldNode.setScale(new Vec3(baseScale, hScale, baseScale));
-    view.bodyNode.setScale(new Vec3(1, 1.15, 1));
+    if (view.usingHeroModel) {
+      view.worldNode.setScale(Vec3.ONE);
+      view.bodyNode.active = false;
+      this.applyGeneralHeroTransform(view, faction);
+    } else {
+      view.worldNode.setScale(Vec3.ONE);
+      view.bodyNode.active = false;
+      view.modelRoot.active = false;
+      if (!view.heroLoading) {
+        void this.ensureGeneralHeroModel(view, faction);
+      }
+    }
 
     view.attackLabel.string = `+${Math.round(general.attackBonus * 100)}%`;
     view.typeLabel.string = "將";
@@ -644,6 +737,18 @@ export class UnitRenderer extends Component {
     const worldNode = new Node(`General_${faction}`);
     worldNode.layer = Layers.Enum.DEFAULT;
     this.worldRoot!.addChild(worldNode);
+
+    const shadowNode = new Node("GeneralShadow");
+    shadowNode.layer = Layers.Enum.DEFAULT;
+    worldNode.addChild(shadowNode);
+    shadowNode.setPosition(0, -(this.unitHeight * this.generalScaleMultiplier * 0.5) + 0.008, 0);
+    shadowNode.setScale(new Vec3(0.28, 1.0, 0.22));
+    const shadowMr = shadowNode.addComponent(MeshRenderer);
+    shadowMr.mesh = this.discMesh ?? this.cubeMesh;
+    const shadowMat = new Material();
+    shadowMat.initialize({ effectName: 'builtin-unlit', technique: 1, states: { rasterizerState: { cullMode: gfx.CullMode.NONE } }});
+    shadowMat.setProperty('mainColor', new Color(0, 0, 0, 90));
+    shadowMr.setSharedMaterial(shadowMat, 0);
 
     const bodyNode = new Node("Body");
     bodyNode.layer = Layers.Enum.DEFAULT;
@@ -662,17 +767,35 @@ export class UnitRenderer extends Component {
     labelNode.layer = this.canvasNode?.layer ?? Layers.Enum.UI_2D;
     this.uiRoot?.addChild(labelNode);
     const badge = this.buildBadge(labelNode, 186, 40);
+    // 武將 HUD 標籤陣營色：玩家藍、敵軍紅
+    badge.typeLabel.color = faction === Faction.Enemy
+      ? new Color(255, 130, 130, 255)
+      : new Color(160, 200, 255, 255);
 
-    return {
+    const modelRoot = new Node("ModelRoot");
+    modelRoot.layer = Layers.Enum.DEFAULT;
+    modelRoot.active = false;
+    worldNode.addChild(modelRoot);
+
+    const view: GeneralView = {
       worldNode,
       bodyNode,
+      modelRoot,
       labelNode,
       attackLabel: badge.attackLabel,
       typeLabel: badge.typeLabel,
       hpLabel: badge.hpLabel,
       labelOpacity: badge.opacity,
       faction,
+      usingHeroModel: false,
+      heroLoading: false,
     };
+
+    bodyNode.active = false;
+
+    void this.ensureGeneralHeroModel(view, faction);
+
+    return view;
   }
 
   private removeGeneralView(faction: Faction): void {
@@ -721,6 +844,9 @@ export class UnitRenderer extends Component {
     visualNode.layer = Layers.Enum.DEFAULT;
     worldNode.addChild(visualNode);
 
+    // 陰影（blob shadow）：不再建立於整體 WorldNode，改為掛載在每個士兵腳下或將軍腳下，以避免位置偏差
+    // -- 此段移除 --
+
     // 主體
     const bodyNode = new Node("Body");
     bodyNode.layer = Layers.Enum.DEFAULT;
@@ -737,10 +863,38 @@ export class UnitRenderer extends Component {
     accentMr.mesh = this.cubeMesh;
     services().material.bindUnit(`${unit.id}_accent`, "unit-base", accentMr);
 
+    // 陣營外發光環 Faction Ring
+    const ringNode = new Node("FactionRing");
+    ringNode.layer = Layers.Enum.DEFAULT;
+    worldNode.addChild(ringNode);
+    // 稍微高於陰影避免 z-fighting，並壓扁
+    ringNode.setPosition(0, -(this.unitHeight * 0.5) + 0.02, 0);
+    ringNode.setScale(new Vec3(0.85, 0.2, 0.85)); // 縮小六邊形底盤
+    const ringMr = ringNode.addComponent(MeshRenderer);
+    ringMr.mesh = this.ringMesh ?? this.cubeMesh; // 若 mesh 初始化失敗仍有備案
+    const ringMat = new Material();
+    ringMat.initialize({
+      effectName: 'builtin-unlit',
+      technique: 1, // transparent
+      states: { rasterizerState: { cullMode: gfx.CullMode.NONE } },
+    });
+    // 給予透明陣營色
+    if (unit.faction === Faction.Player) {
+      ringMat.setProperty('mainColor', new Color(80, 160, 255, 180)); // 我軍藍發光
+    } else {
+      ringMat.setProperty('mainColor', new Color(255, 80, 80, 180));  // 敵軍紅發光
+    }
+    ringMr.setSharedMaterial(ringMat, 0);
+
+    const formationRoot = new Node("Formation");
+    formationRoot.layer = Layers.Enum.DEFAULT;
+    formationRoot.active = false;
+    visualNode.addChild(formationRoot);
+
     // 套用陣營配色 (Tier 1)
     const outfitConfig = services().material.captureOutfit(`${unit.id}_body`, "unit-base");
     if (unit.faction === Faction.Player) {
-      outfitConfig.primaryColor = [0.2, 0.7, 0.4, 1]; // 友軍綠
+      outfitConfig.primaryColor = [0.15, 0.45, 1.0, 1]; // 我軍藍 bottom pad
       services().material.applyOutfit(`${unit.id}_body`, "unit-base", outfitConfig);
       
       outfitConfig.primaryColor = [0.8, 0.3, 0.3, 1]; // 配件對比色
@@ -758,11 +912,21 @@ export class UnitRenderer extends Component {
     this.uiRoot?.addChild(labelNode);
     const badge = this.buildBadge(labelNode, 170, 34);
 
-    return {
+    // 敵軍單位：HUD 上方標籤顯示紅色，不需修改 badge.hpLabel（已是豉紅）
+    if (unit.faction === Faction.Enemy) {
+      badge.typeLabel.color = new Color(255, 130, 130, 255);
+      if (badge.bottomNameLabel) {
+        badge.bottomNameLabel.color = new Color(255, 160, 160, 255);
+      }
+    }
+
+    const view: UnitView = {
       worldNode,
       visualNode,
       bodyNode,
+      ringNode,
       accentNode,
+      formationRoot,
       labelNode,
       attackLabel: badge.attackLabel,
       typeLabel: badge.typeLabel,
@@ -770,7 +934,12 @@ export class UnitRenderer extends Component {
       labelOpacity: badge.opacity,
       bottomNameLabel: badge.bottomNameLabel,
       troopType: unit.type,
+      usingTroopFormation: false,
     };
+
+    void this.ensureTroopFormation(view, unit);
+
+    return view;
   }
 
   private updateUnitView(view: UnitView, unit: TroopUnit): void {
@@ -780,11 +949,25 @@ export class UnitRenderer extends Component {
     }
 
     const profile = this.getShapeProfile(unit.type);
-    view.bodyNode.setScale(profile.bodyScale);
-    view.accentNode.setScale(profile.accentScale);
-    view.accentNode.setPosition(profile.accentOffset);
-    view.accentNode.setRotationFromEuler(profile.accentRotation);
-    view.worldNode.setScale(new Vec3(this.unitScale, this.unitHeight, this.unitScale));
+    if (view.usingTroopFormation) {
+      // formation 模式：隱藏所有 cube fallback 顯示
+      view.accentNode.active = false;
+      view.bodyNode.active = false;
+      view.formationRoot.active = true;
+      this.applyTroopFormationTransform(view, unit);
+      view.worldNode.setScale(Vec3.ONE);
+    } else {
+      view.bodyNode.active = true;
+      view.accentNode.active = true;
+      view.formationRoot.active = false;
+      view.bodyNode.setScale(profile.bodyScale);
+      view.bodyNode.setPosition(0, 0, 0); // 重置 cube 位置（formation 底板與 cube 共用 bodyNode）
+      view.accentNode.setScale(profile.accentScale);
+      view.accentNode.setPosition(profile.accentOffset);
+      view.accentNode.setRotationFromEuler(profile.accentRotation);
+      view.worldNode.setScale(new Vec3(this.unitScale, this.unitHeight, this.unitScale));
+      void this.ensureTroopFormation(view, unit);
+    }
 
     const attackBonus = unit.getEffectiveAttack() - unit.attack;
     const hpBonus = unit.getEffectiveMaxHp() - unit.maxHp;
@@ -811,6 +994,9 @@ export class UnitRenderer extends Component {
       view.bottomNameLabel.string = this.isGeneralAvatarUnit(unit) ? "將" : this.toTroopName(unit.type);
     }
 
+    // worldNode 統一控制所有單位面向（cube placeholder 與 formation 模式皆相同）
+    // formationRoot 不再負責旋轉，各 soldier 以 0° local rotation 繼承 worldNode 方向
+    this.alignNodeToFactionFacing(view.worldNode, unit.faction);
     this.projectWorldLabel(view.worldNode, view.labelNode, this.labelHeight);
   }
 
@@ -819,6 +1005,9 @@ export class UnitRenderer extends Component {
     rootTf.setContentSize(width, height * 2 + 10);
     const opacity = rootNode.addComponent(UIOpacity);
     opacity.opacity = 255;
+
+    // 將 HUD 縮小 (原本尺寸偏大)
+    rootNode.setScale(0.7, 0.7, 1);
 
     // 背景底板：提升頭頂資訊可讀性
     const bgNode = new Node("Bg");
@@ -1038,63 +1227,58 @@ export class UnitRenderer extends Component {
     targetNode.setPosition(this.uiProjectionBuffer);
   }
 
-  private bumpNodeTowards(node: Node, targetWorldPos: Vec3, distance: number): void {
-    const worldPos = node.worldPosition;
-    const direction = targetWorldPos.clone().subtract(worldPos);
-    direction.y = 0;
-    if (direction.lengthSqr() <= 0.0001) return;
-    direction.normalize().multiplyScalar(distance);
-
+  private bumpNodeForward(node: Node, faction: Faction, distance: number): void {
     const visual = node.getChildByName("Visual");
     if (visual) {
-      // 小兵：動畫播在 Visual 子節點的本地空間，父節點的移動 tween 不中斷
-      // 對照 Unity：hit-react 播在 Visual GameObject，Root 上的移動 Animator 繼續運作
+      // worldNode 已經依據陣營轉向，使其 local 的 +X 軸正對著前方（敵方）
+      // 因此在 Visual 的 local 空間中，往前衝就是沿著正 X 軸移動
       const ws = node.worldScale;
-      const localBump = new Vec3(direction.x / ws.x, 0, direction.z / ws.z);
+      // 攻擊方往前撞擊 -> 撞上後停頓(Hit Stop, 頓幀) -> 彈回
+      const localBump = new Vec3(distance / ws.x, 0, 0);
       Tween.stopAllByTarget(visual);
       tween(visual)
-        .to(0.07, { position: localBump }, { easing: "quadOut" })
-        .to(0.1, { position: new Vec3() }, { easing: "quadIn" })
+        .to(0.08, { position: localBump }, { easing: "quadIn" })
+        .delay(0.08) // 打擊頓幀
+        .to(0.12, { position: new Vec3() }, { easing: "quadOut" })
         .start();
     } else {
-      // 將軍節點（無 Visual 子節點）：直接動世界座標，將軍沒有移動 tween
-      const bumpPos = worldPos.clone().add(direction);
+      // 將軍節點（無 Visual 子節點）：直接動世界座標
+      const worldPos = node.worldPosition;
+      let forward = this.getBoardForwardVector(faction) || new Vec3(0, 0, 1);
+      const bumpPos = worldPos.clone().add(forward.clone().normalize().multiplyScalar(distance));
       tween(node)
-        .to(0.07, { worldPosition: bumpPos }, { easing: "quadOut" })
-        .to(0.1, { worldPosition: worldPos.clone() }, { easing: "quadIn" })
+        .to(0.08, { worldPosition: bumpPos }, { easing: "quadIn" })
+        .delay(0.08) // 打擊頓幀
+        .to(0.12, { worldPosition: worldPos.clone() }, { easing: "quadOut" })
         .start();
     }
   }
 
-  private recoilNode(node: Node, attackerId: string | null): void {
-    const worldPos = node.worldPosition;
-    const attackerNode = this.resolveCombatNode(attackerId);
-    let recoilDir = new Vec3(0, 0, -0.18);
-
-    if (attackerNode) {
-      recoilDir = worldPos.clone().subtract(attackerNode.worldPosition);
-      recoilDir.y = 0;
-      if (recoilDir.lengthSqr() > 0.0001) {
-        recoilDir.normalize().multiplyScalar(0.2);
-      }
-    }
-
+  private recoilNode(node: Node, defenderFaction: Faction): void {
     const visual = node.getChildByName("Visual");
     if (visual) {
-      // 小兵：受擊彈退播在 Visual 本地空間，移動 tween 不中斷
+      // worldNode 已經轉向前方 (+X為正前)
+      // 受擊彈退就是在 local 空間往 -X 移動
       const ws = node.worldScale;
-      const localRecoil = new Vec3(recoilDir.x / ws.x, 0, recoilDir.z / ws.z);
+      const localRecoil = new Vec3(-0.2 / ws.x, 0, 0);
       Tween.stopAllByTarget(visual);
       tween(visual)
-        .to(0.05, { position: localRecoil }, { easing: "quadOut" })
-        .to(0.08, { position: new Vec3() }, { easing: "quadIn" })
+        .delay(0.08) // 等待攻擊方撞過來才播放受擊
+        .to(0.06, { position: localRecoil }, { easing: "quadOut" }) // 擊退
+        .delay(0.06) // 受擊頓幀
+        .to(0.12, { position: new Vec3() }, { easing: "quadIn" }) // 歸位
         .start();
     } else {
       // 將軍節點（無 Visual 子節點）：直接動世界座標
+      const worldPos = node.worldPosition;
+      let forward = this.getBoardForwardVector(defenderFaction) || new Vec3(0, 0, 1);
+      let recoilDir = forward.clone().multiplyScalar(-0.2);
       const recoilPos = worldPos.clone().add(recoilDir);
       tween(node)
-        .to(0.05, { worldPosition: recoilPos }, { easing: "quadOut" })
-        .to(0.08, { worldPosition: worldPos.clone() }, { easing: "quadIn" })
+        .delay(0.08)
+        .to(0.06, { worldPosition: recoilPos }, { easing: "quadOut" })
+        .delay(0.06)
+        .to(0.12, { worldPosition: worldPos.clone() }, { easing: "quadIn" })
         .start();
     }
   }
@@ -1165,6 +1349,409 @@ export class UnitRenderer extends Component {
     };
   }
 
+  private async ensureTroopFormation(view: UnitView, unit: TroopUnit): Promise<void> {
+    if (this.isGeneralAvatarUnit(unit)) {
+      return;
+    }
+    if (view.usingTroopFormation || view.formationRoot.children.length > 0) {
+      return;
+    }
+
+    const entry = TROOP_UNIT_ASSET_CATALOG[unit.type];
+    if (!entry) {
+      return;
+    }
+
+    const prefab = await this.loadTroopPrefab(unit.type, entry);
+    if (!prefab || !view.worldNode.isValid || view.formationRoot.children.length > 0) {
+      return;
+    }
+
+    this.buildTroopFormation(view, prefab, unit, entry);
+  }
+
+  private loadTroopPrefab(type: TroopType, entry: TroopUnitAssetEntry): Promise<Prefab | null> {
+    const cached = this.troopPrefabLoads.get(type);
+    if (cached) {
+      return cached;
+    }
+
+    const pending = new Promise<Prefab | null>((resolve) => {
+      const resolveByUuid = (): void => {
+        assetManager.loadAny({ uuid: entry.sceneUuid }, (error, asset) => {
+          if (error || !(asset instanceof Prefab)) {
+            console.warn(`[UnitRenderer] 載入小兵 prefab 失敗: ${entry.glbPath}`, error ?? new Error("asset is not Prefab"));
+            resolve(null);
+            return;
+          }
+          resolve(asset);
+        });
+      };
+
+      if (entry.prefabPath) {
+        services().resource.loadPrefab(entry.prefabPath)
+          .then(prefab => resolve(prefab))
+          .catch(() => resolveByUuid());
+        return;
+      }
+
+      resolveByUuid();
+    });
+
+    this.troopPrefabLoads.set(type, pending);
+    return pending;
+  }
+
+  private buildTroopFormation(view: UnitView, prefab: Prefab, unit: TroopUnit, entry: TroopUnitAssetEntry): void {
+    const offsets = this.getTroopFormationOffsets(entry);
+
+    offsets.forEach((offset, index) => {
+      const soldier = instantiate(prefab);
+      soldier.name = `Soldier_${index}`;
+      soldier.layer = Layers.Enum.DEFAULT;
+      view.formationRoot.addChild(soldier);
+      this.applyDefaultLayerRecursively(soldier);
+      // GLB 如实顯色，陣營區別由底板（bodyNode）顏色處理而非染 shader
+      this.normalizeModelVisuals(soldier);
+      soldier.setPosition(offset);
+      soldier.setRotationFromEuler(0, entry.soldierYawOffset ?? 0, 0);
+      soldier.setScale(entry.modelScale, entry.modelScale, entry.modelScale);
+
+      // 給每個小兵加上專屬腳下陰影。將其加在 formationRoot 之下以避免受到小兵旋轉 (soldierYawOffset) 影響
+      // 這樣可以保持統一的光影方向與形狀（皆為相對於棋盤朝向的橢圓）
+      const soldierShadow = new Node(`Shadow_${index}`);
+      soldierShadow.layer = Layers.Enum.DEFAULT;
+      soldierShadow.setPosition(offset.x, 0.01, offset.z);
+      // 隨同小兵模型縮小一併縮減陰影面積，使其不超過小兵真正的腳步寬度
+      // 讀取 config，如果沒有個別設定（如騎兵的特製橢圓）就套用預設的放大版小扁圓形
+      const shadowScaleX = entry.shadowScaleX ?? 0.28;
+      const shadowScaleZ = entry.shadowScaleZ ?? 0.22;
+      soldierShadow.setScale(new Vec3(shadowScaleX, 0.02, shadowScaleZ));
+      const shadowMr = soldierShadow.addComponent(MeshRenderer);
+      shadowMr.mesh = this.discMesh ?? this.cubeMesh;
+      const shadowMat = new Material();
+      shadowMat.initialize({
+        effectName: 'builtin-unlit',
+        technique: 1, // transparent blend
+        states: { rasterizerState: { cullMode: gfx.CullMode.NONE } },
+      });
+      shadowMat.setProperty('mainColor', new Color(0, 0, 0, 90));
+      shadowMr.setSharedMaterial(shadowMat, 0);
+      view.formationRoot.addChild(soldierShadow);
+    });
+
+    view.usingTroopFormation = true;
+    view.bodyNode.active = false;
+    view.accentNode.active = false;
+    view.formationRoot.active = true;
+    view.worldNode.setScale(Vec3.ONE);
+    this.applyTroopFormationTransform(view, unit);
+  }
+
+  private applyTroopFormationTransform(view: UnitView, unit: TroopUnit): void {
+    const entry = TROOP_UNIT_ASSET_CATALOG[unit.type];
+    if (!entry) {
+      return;
+    }
+    view.formationRoot.setPosition(0, entry.heightOffset, 0);
+    // 面向旋轉由 worldNode 統一負責，formationRoot 只需歸零
+    view.formationRoot.setRotationFromEuler(0, 0, 0);
+  }
+
+  private getTroopFormationOffsets(entry: TroopUnitAssetEntry): Vec3[] {
+      const dx = entry.spacingX * 0.5;
+      const dz = entry.spacingZ * 0.5;
+      
+      // 依據需求：「所有小兵的陣型應該都是正面的 2x2，請不要擺出斜的隊形」
+      // 因為攝影機與棋盤呈現約 45 度的等角視角 (isometric)，直接沿著世界的 X, Z 軸排會導致畫面上看起來是菱形(斜的)。
+      // 因此我們將相對於兵團中心的座標旋轉 45 度，使其在視覺上抵銷畫面的斜角，變成正對攝影機的 2x2 方陣。
+      const angle = -45 * (Math.PI / 180);
+      const cos = Math.cos(angle);
+      const sin = Math.sin(angle);
+
+      const rotate = (x: number, z: number) => {
+          return new Vec3(
+              x * cos - z * sin,
+              0,
+              x * sin + z * cos
+          );
+      };
+
+      return [
+        rotate(-dx, dz),
+        rotate(dx, dz),
+        rotate(-dx, -dz),
+        rotate(dx, -dz),
+      ];
+    }
+
+  private async ensureGeneralHeroModel(view: GeneralView, faction: Faction): Promise<void> {
+    if (view.usingHeroModel || view.heroLoading || view.modelRoot.children.length > 0) {
+      return;
+    }
+
+    view.heroLoading = true;
+
+    const heroId = faction === Faction.Player ? DEFAULT_PLAYER_HERO_ASSET_ID : DEFAULT_ENEMY_HERO_ASSET_ID;
+    const entry = HERO_UNIT_ASSET_CATALOG[heroId];
+    if (!entry) {
+      view.heroLoading = false;
+      return;
+    }
+
+    const prefab = await this.loadHeroPrefab(heroId, entry);
+    if (!prefab || !view.worldNode.isValid || view.modelRoot.children.length > 0) {
+      view.heroLoading = false;
+      view.bodyNode.active = false;
+      view.modelRoot.active = false;
+      return;
+    }
+
+    const hero = instantiate(prefab);
+    hero.name = `${heroId}_Model`;
+    hero.layer = Layers.Enum.DEFAULT;
+    view.modelRoot.addChild(hero);
+    this.applyDefaultLayerRecursively(hero);
+    // 武將保持原色（不染色），陣營由 HUD 標籤顏色區別
+    this.normalizeModelVisuals(hero);
+    hero.setPosition(0, 0, 0);
+    hero.setRotationFromEuler(0, 0, 0);
+    hero.setScale(entry.modelScale, entry.modelScale, entry.modelScale);
+
+    view.usingHeroModel = true;
+    view.heroLoading = false;
+    view.bodyNode.active = false;
+    view.modelRoot.active = true;
+    this.applyGeneralHeroTransform(view, faction);
+  }
+
+  private loadHeroPrefab(heroId: string, entry: HeroUnitAssetEntry): Promise<Prefab | null> {
+    const cached = this.heroPrefabLoads.get(heroId);
+    if (cached) {
+      return cached;
+    }
+
+    const pending = new Promise<Prefab | null>((resolve) => {
+      const resolveByUuid = (): void => {
+        if (!entry.sceneUuid) {
+          console.warn(`[UnitRenderer] 載入武將 prefab 失敗: ${entry.glbPath}`);
+          this.heroPrefabLoads.delete(heroId);
+          resolve(null);
+          return;
+        }
+        assetManager.loadAny({ uuid: entry.sceneUuid }, (error, asset) => {
+          if (error || !(asset instanceof Prefab)) {
+            console.warn(`[UnitRenderer] 載入武將 prefab 失敗: ${entry.glbPath}`, error ?? new Error("asset is not Prefab"));
+            this.heroPrefabLoads.delete(heroId);
+            resolve(null);
+            return;
+          }
+          resolve(asset);
+        });
+      };
+
+      if (entry.prefabPath) {
+        services().resource.loadPrefab(entry.prefabPath)
+          .then(prefab => resolve(prefab))
+          .catch(() => resolveByUuid());
+        return;
+      }
+
+      resolveByUuid();
+    });
+
+    this.heroPrefabLoads.set(heroId, pending);
+    return pending;
+  }
+
+  private applyGeneralHeroTransform(view: GeneralView, faction: Faction): void {
+    const heroId = faction === Faction.Player ? DEFAULT_PLAYER_HERO_ASSET_ID : DEFAULT_ENEMY_HERO_ASSET_ID;
+    const entry = HERO_UNIT_ASSET_CATALOG[heroId];
+    if (!entry) {
+      return;
+    }
+
+    view.modelRoot.setPosition(0, entry.heightOffset, 0);
+    view.modelRoot.setRotationFromEuler(0, entry.yawOffset, 0);
+  }
+
+  private alignNodeToFactionFacing(node: Node, faction: Faction, yawOffsetDeg: number = 0): boolean {
+    // 計算棋盤前方向量並只套用 Y 軸旋轉
+    const forward = this.getBoardForwardVector(faction);
+    if (!forward) {
+      return false;
+    }
+
+    // 本專案所有 troop / hero GLB 模型的視覺正面為 local +X 方向
+    // 需要求 R_y(theta) 使得 R_y(theta) * (+X_local) = forward_world
+    // 即：cos(theta) = f_x, -sin(theta) = f_z  →  theta = atan2(-f_z, f_x)
+    // 驗證（boardYaw=0）：
+    //   player forward=(0,0,+1) → atan2(-1, 0) = -90° → local +X 指向 +Z（面向敵方 depth 增大方向）✓
+    //   enemy  forward=(0,0,-1) → atan2( 1, 0) = +90° → local +X 指向 -Z（面向我方 depth 減小方向）✓
+    const RAD2DEG = 180 / Math.PI;
+    const yawRad = Math.atan2(-forward.z, forward.x);
+    const yawDeg = yawRad * RAD2DEG + yawOffsetDeg;
+
+    node.setRotationFromEuler(0, yawDeg, 0);
+    return true;
+  }
+
+  private getBoardForwardVector(faction: Faction): Vec3 | null {
+    if (!this.boardRenderer) {
+      return null;
+    }
+
+    const centerLane = Math.floor(GAME_CONFIG.GRID_LANES / 2);
+    const fromDepth = faction === Faction.Player ? 0 : GAME_CONFIG.GRID_DEPTH - 1;
+    const toDepth = faction === Faction.Player ? 1 : GAME_CONFIG.GRID_DEPTH - 2;
+    const from = this.boardRenderer.getCellWorldPosition(centerLane, fromDepth, 0);
+    const to = this.boardRenderer.getCellWorldPosition(centerLane, toDepth, 0);
+    const forward = to.subtract(from);
+    forward.y = 0;
+    if (forward.lengthSqr() <= 0.0001) {
+      return null;
+    }
+    forward.normalize();
+    return forward;
+  }
+
+  private normalizeModelVisuals(root: Node, tint: Color = new Color(255, 255, 255, 255)): void {
+    const meshRenderers = root.getComponentsInChildren(MeshRenderer);
+    meshRenderers.forEach(renderer => this.rebindRendererToUnlit(renderer, tint));
+
+    const skinnedRenderers = root.getComponentsInChildren(SkinnedMeshRenderer);
+    skinnedRenderers.forEach(renderer => this.rebindRendererToUnlit(renderer, tint));
+  }
+
+  private rebindRendererToUnlit(renderer: MeshRenderer | SkinnedMeshRenderer, tint: Color = new Color(255, 255, 255, 255)): void {
+    const anyRenderer = renderer as any;
+    const sharedMaterials = Array.isArray(anyRenderer.sharedMaterials)
+      ? anyRenderer.sharedMaterials
+      : (Array.isArray(anyRenderer.materials) ? anyRenderer.materials : []);
+
+    if (!sharedMaterials || sharedMaterials.length === 0) {
+      return;
+    }
+
+    sharedMaterials.forEach((sourceMaterial: Material | null, index: number) => {
+      const unlitMaterial = this.createTexturedUnlitMaterial(sourceMaterial, tint);
+      this.setRendererMaterialSafe(anyRenderer, unlitMaterial, index);
+    });
+
+    if ('shadowCastingMode' in anyRenderer) {
+      anyRenderer.shadowCastingMode = 0;
+    }
+    if ('shadowReceivingMode' in anyRenderer) {
+      anyRenderer.shadowReceivingMode = 0;
+    }
+  }
+
+  private createTexturedUnlitMaterial(sourceMaterial: Material | null, tint: Color = new Color(255, 255, 255, 255)): Material {
+    const mat = new Material();
+    mat.initialize({
+      effectName: 'builtin-unlit',
+      defines: { USE_TEXTURE: true },
+      states: {
+        rasterizerState: { cullMode: gfx.CullMode.NONE },
+      },
+    });
+
+    const texture = this.tryExtractMainTexture(sourceMaterial);
+    if (texture) {
+      mat.setProperty('mainTexture', texture);
+    }
+    mat.setProperty('mainColor', tint);
+    return mat;
+  }
+
+  private tryExtractMainTexture(sourceMaterial: Material | null): Texture2D | null {
+    if (!sourceMaterial) {
+      return null;
+    }
+
+    const propertyNames = ['mainTexture', 'albedoMap', 'baseColorMap', 'diffuseMap'];
+    const anyMaterial = sourceMaterial as any;
+    for (const propertyName of propertyNames) {
+      try {
+        const value = anyMaterial.getProperty?.(propertyName);
+        if (value instanceof Texture2D) {
+          return value;
+        }
+      } catch {
+        // ignore unsupported property name
+      }
+    }
+
+    return null;
+  }
+
+  private setRendererMaterialSafe(renderer: any, mat: Material, index: number): void {
+    try {
+      if (typeof renderer.setSharedMaterial === 'function') {
+        renderer.setSharedMaterial(mat, index);
+        return;
+      }
+      if (typeof renderer.setMaterial === 'function') {
+        try {
+          renderer.setMaterial(mat, index);
+          return;
+        } catch {
+          renderer.setMaterial(index, mat);
+          return;
+        }
+      }
+      if (Array.isArray(renderer.sharedMaterials)) {
+        const copy = renderer.sharedMaterials.slice();
+        copy[index] = mat;
+        renderer.sharedMaterials = copy;
+        return;
+      }
+      if (Array.isArray(renderer.materials)) {
+        const copy = renderer.materials.slice();
+        copy[index] = mat;
+        renderer.materials = copy;
+      }
+    } catch (error) {
+      console.warn('[UnitRenderer] 無法套用保底材質', error);
+    }
+  }
+
+  private ensureSceneKeyLight(): void {
+    const scene = this.node.scene;
+    if (!scene) {
+      return;
+    }
+
+    const existing = scene.getComponentInChildren(DirectionalLight);
+    if (existing) {
+      const anyLight = existing as any;
+      if (typeof anyLight.illuminance === 'number' && anyLight.illuminance < 30000) {
+        anyLight.illuminance = 45000;
+      }
+      return;
+    }
+
+    const lightNode = new Node('RuntimeKeyLight');
+    lightNode.layer = Layers.Enum.DEFAULT;
+    scene.addChild(lightNode);
+    lightNode.setRotationFromEuler(-52, -28, 0);
+
+    const light = lightNode.addComponent(DirectionalLight) as any;
+    if (light) {
+      if ('illuminance' in light) {
+        light.illuminance = 45000;
+      }
+      if ('color' in light) {
+        light.color = new Color(255, 244, 228, 255);
+      }
+    }
+  }
+
+  private applyDefaultLayerRecursively(root: Node): void {
+    root.layer = Layers.Enum.DEFAULT;
+    root.children.forEach(child => this.applyDefaultLayerRecursively(child));
+  }
+
   private toTroopName(type: TroopType): string {
     if (type === TroopType.Cavalry) return "騎兵";
     if (type === TroopType.Infantry) return "步兵";
@@ -1189,6 +1776,7 @@ export class UnitRenderer extends Component {
 
   private playCavalryChargeAnimation(node: Node, targetWorldPos: Vec3): void {
     const worldPos = node.worldPosition;
+    // 取得衝鋒的世界方向
     const direction = targetWorldPos.clone().subtract(worldPos);
     direction.y = 0;
     if (direction.lengthSqr() <= 0.0001) return;
@@ -1196,21 +1784,25 @@ export class UnitRenderer extends Component {
 
     const visual = node.getChildByName("Visual");
     if (visual) {
-      // 衝鋒動畫播在 Visual 本地空間：不呼叫 stopAllByTarget(node)，移動 tween 照常進行
-      // 對照 Unity：Animator 在 Visual Child 播 charge clip，Root Motion 繼續讓怪物移動
       const ws = node.worldScale;
+      // 在 visual 的 local 空間，正前方是 +X 軸。所以衝鋒方向是正 X
       const liftLocal = new Vec3(0, 0.18 / ws.y, 0);
-      const chargeLocal = new Vec3(direction.x * 0.5 / ws.x, 0, direction.z * 0.5 / ws.z);
+      const chargeLocal = new Vec3(0.5 / ws.x, 0, 0); // 取代依照方向計算，一律往 local +X 衝
+      
       Tween.stopAllByTarget(visual);
       tween(visual)
         .parallel(
           tween<Node>()
             .to(0.11, { position: liftLocal }, { easing: "quadOut" })
-            .to(0.08, { position: chargeLocal }, { easing: "quadIn" })
+            .to(0.08, { position: chargeLocal }, { easing: "quadIn" }) // 衝撞
+            .delay(0.08) // 打擊頓幀
             .to(0.13, { position: new Vec3() }, { easing: "quadOut" }),
           tween<Node>()
-            .to(0.11, { eulerAngles: new Vec3(-18, 0, 0) }, { easing: "quadOut" })
-            .to(0.08, { eulerAngles: new Vec3(12, 0, 0) }, { easing: "quadIn" })
+            // 上揚：繞著 local Z 軸旋轉 (因為 local +X 是前方)
+            .to(0.11, { eulerAngles: new Vec3(0, 0, 18) }, { easing: "quadOut" })
+            // 前傾衝刺：繞著 local Z 軸反向旋轉
+            .to(0.08, { eulerAngles: new Vec3(0, 0, -12) }, { easing: "quadIn" })
+            .delay(0.08)
             .to(0.13, { eulerAngles: new Vec3() }, { easing: "quadOut" }),
         )
         .start();
@@ -1226,10 +1818,13 @@ export class UnitRenderer extends Component {
           tween<Node>()
             .to(0.11, { worldPosition: liftPos }, { easing: "quadOut" })
             .to(0.08, { worldPosition: impactPos }, { easing: "quadIn" })
+            .delay(0.08)
             .to(0.13, { worldPosition: originalPos }, { easing: "quadOut" }),
           tween<Node>()
-            .to(0.11, { eulerAngles: new Vec3(originalEuler.x - 18, originalEuler.y, originalEuler.z) }, { easing: "quadOut" })
-            .to(0.08, { eulerAngles: new Vec3(originalEuler.x + 12, originalEuler.y, originalEuler.z) }, { easing: "quadIn" })
+            // 將軍沒有 visual，所以旋轉比較複雜，這裡簡化處理或者保持原本的 X 軸
+            .to(0.11, { eulerAngles: new Vec3(originalEuler.x, originalEuler.y, originalEuler.z + 18) }, { easing: "quadOut" })
+            .to(0.08, { eulerAngles: new Vec3(originalEuler.x, originalEuler.y, originalEuler.z - 12) }, { easing: "quadIn" })
+            .delay(0.08)
             .to(0.13, { eulerAngles: originalEuler }, { easing: "quadOut" }),
         )
         .start();

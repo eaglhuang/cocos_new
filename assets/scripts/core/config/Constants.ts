@@ -42,6 +42,10 @@ export enum TerrainType {
   Forest = "forest",
 }
 
+/**
+ * @deprecated M-1 重構後改用 `LayerType`（UIConfig.ts）。
+ * 保留以避免影響尚未遷移的程式碼，未來版本將移除。
+ */
 export enum UILayerName {
   Scene = "scene",
   Panel = "panel",

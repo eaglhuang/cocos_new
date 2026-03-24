@@ -1,0 +1,78 @@
+{
+  "ver": "2.3.14",
+  "importer": "fbx",
+  "imported": true,
+  "uuid": "7a03e650-7db4-411c-a450-faaf9a5da932",
+  "files": [],
+  "subMetas": {
+    "0692d": {
+      "importer": "gltf-mesh",
+      "uuid": "7a03e650-7db4-411c-a450-faaf9a5da932@0692d",
+      "displayName": "",
+      "id": "0692d",
+      "name": "Plane002.mesh",
+      "userData": {
+        "gltfIndex": 0,
+        "triangleCount": 240
+      },
+      "ver": "1.1.1",
+      "imported": true,
+      "files": [
+        ".bin",
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "645dc": {
+      "importer": "gltf-scene",
+      "uuid": "7a03e650-7db4-411c-a450-faaf9a5da932@645dc",
+      "displayName": "",
+      "id": "645dc",
+      "name": "mesh_scroll.prefab",
+      "userData": {
+        "gltfIndex": 0
+      },
+      "ver": "1.0.14",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    }
+  },
+  "userData": {
+    "imageMetas": [],
+    "fbx": {
+      "smartMaterialEnabled": true
+    },
+    "lods": {
+      "enable": false,
+      "hasBuiltinLOD": false,
+      "options": [
+        {
+          "screenRatio": 0.25,
+          "faceCount": 1
+        },
+        {
+          "screenRatio": 0.125,
+          "faceCount": 0.25
+        },
+        {
+          "screenRatio": 0.01,
+          "faceCount": 0.1
+        }
+      ]
+    },
+    "assetFinder": {
+      "meshes": [
+        "7a03e650-7db4-411c-a450-faaf9a5da932@0692d"
+      ],
+      "skeletons": [],
+      "textures": [],
+      "materials": [],
+      "scenes": [
+        "7a03e650-7db4-411c-a450-faaf9a5da932@645dc"
+      ]
+    }
+  }
+}

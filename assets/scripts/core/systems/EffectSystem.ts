@@ -1,6 +1,9 @@
 import { Animation, Node, ParticleSystem, Vec3 } from "cc";
+import { VfxEffectDef } from "../config/VfxEffectConfig";
 import { PoolSystem } from "./PoolSystem";
 import { services } from "../managers/ServiceLoader";
+import { ParticleOverride, applyParticleOverride } from "../utils/ParticleUtils";
+import { VFX_BLOCK_REGISTRY } from "../../tools/vfx-block-registry";
 
 /**
  * 視覺特效系統
@@ -19,6 +22,8 @@ import { services } from "../managers/ServiceLoader";
  */
 export class EffectSystem {
     private poolSystem: PoolSystem | null = null;
+    /** vfx-effects.json 的快取表（key = 效果 key，如 'hit_enemy'）*/
+    private effectTable = new Map<string, VfxEffectDef>();
 
     public setup(poolSystem: PoolSystem): void {
         this.poolSystem = poolSystem;
@@ -113,5 +118,210 @@ export class EffectSystem {
     /** 停止節點樹下所有 Animation */
     public stopAllAnimations(node: Node): void {
         node.getComponentsInChildren(Animation).forEach(a => a.stop());
+    }
+
+    // ─────────────────────────────────────────
+    //  FxGroup：批次粒子群組控制（S-2）
+    //  Unity 對照：GetComponentsInChildren<ParticleSystem>().ForEach(ps => ps.Play())
+    // ─────────────────────────────────────────
+
+    /**
+     * 播放節點樹下所有 ParticleSystem 與 Animation。
+     * 適用於由多個子粒子系統組成的技能特效 Prefab（例如：主爆炸 + 碎片 + 光環三個子系統）。
+     *
+     * @param node  特效根節點
+     * @param loop  若填入值，強制覆寫每個 ParticleSystem 的 loop 屬性後再播放
+     */
+    public playGroup(node: Node, loop?: boolean): void {
+        const systems = node.getComponentsInChildren(ParticleSystem);
+        if (loop !== undefined) systems.forEach(ps => ps.loop = loop);
+        systems.forEach(ps => ps.play());
+        node.getComponentsInChildren(Animation).forEach(a => a.play());
+    }
+
+    /**
+     * 停止節點樹下所有 ParticleSystem 與 Animation。
+     *
+     * @param node   特效根節點
+     * @param clear  是否同時清除場景中已存在的粒子（預設 false，讓現有粒子自然消亡）
+     */
+    public stopGroup(node: Node, clear = false): void {
+        node.getComponentsInChildren(ParticleSystem).forEach(ps => {
+            ps.stop();
+            if (clear) ps.clear();
+        });
+        node.getComponentsInChildren(Animation).forEach(a => a.stop());
+    }
+
+    /**
+     * 設定節點樹下所有 ParticleSystem 的 loop 屬性。
+     * 用於持續特效（Buff 光環）需要動態切換循環/單次播放時。
+     *
+     * @param node  特效根節點
+     * @param loop  true = 持續循環，false = 播放一次後自動停止
+     */
+    public setGroupLoop(node: Node, loop: boolean): void {
+        node.getComponentsInChildren(ParticleSystem).forEach(ps => ps.loop = loop);
+    }
+
+    // ─────────────────────────────────────────
+    //  playOnce：一次性特效語義明確版（S-4）
+    // ─────────────────────────────────────────
+
+    /**
+     * 播放一次性特效（播放後自動回收，無需手動 recycleEffect）。
+     * 語義等同 playEffect(key, position, duration, parent)，
+     * 但名稱更明確地表達「一次性播放後回收」的意圖，適用於：
+     *   - UnitDied 觸發的死亡爆炸
+     *   - UnitDamaged 觸發的受擊衝擊波
+     *   - 技能命中的一次性衝擊環
+     *
+     * Unity 對照：Object.Instantiate(prefab, pos) + Object.Destroy(go, duration)
+     *
+     * @param key      PoolSystem 中的 Prefab key
+     * @param position 世界座標
+     * @param duration 自動回收的秒數（預設 2.0 秒）
+     * @param parent   掛載的父節點（可選）
+     * @returns        取出的節點，null 表示 key 未在 PoolSystem 中註冊
+     */
+    public playOnce(key: string, position: Vec3, duration: number = 2.0, parent?: Node): Node | null {
+        return this.playEffect(key, position, duration, parent);
+    }
+
+    // ─────────────────────────────────────────
+    //  playBlock：VFX Block Registry 整合（M-3）
+    //  Unity 對照：Addressables.LoadAssetAsync<GameObject>(blockId) + PlayEffect
+    // ─────────────────────────────────────────
+
+    /**
+     * 依 VFX Block Registry 中的 blockId 播放特效，並可套用粒子動態覆寫。
+     *
+     * 這是 S-1~S-4 工作的整合出口：
+     *   blockId → 查 VFX_BLOCK_REGISTRY 取得 renderMode / audio
+     *         → PoolSystem.acquire(blockId) 取出節點
+     *         → applyParticleOverride() 套用覆寫參數（可選）
+     *         → playGroup() 啟動粒子群組
+     *         → duration 秒後自動 release 回 pool
+     *
+     * 若 blockId 有對應的 audio 欄位，自動透過 AudioSystem 播放音效。
+     *
+     * @param blockId   VFX_BLOCK_REGISTRY 中的 id（同時也是 PoolSystem 的 key）
+     * @param position  世界座標
+     * @param override  可選的粒子動態覆寫參數（顏色、速度、大小等）
+     * @param duration  自動回收秒數（預設 2.0），0 = 不自動回收
+     * @param parent    掛載父節點（可選）
+     * @returns         節點實例，null 表示 blockId 未在 PoolSystem 中註冊
+     */
+    public playBlock(
+        blockId: string,
+        position: Vec3,
+        override?: ParticleOverride,
+        duration: number = 2.0,
+        parent?: Node
+    ): Node | null {
+        // 1. 查詢 Block 定義（驗證 blockId 合法性）
+        const block = VFX_BLOCK_REGISTRY.find(b => b.id === blockId);
+        if (!block) {
+            console.warn(`[EffectSystem] playBlock: blockId "${blockId}" 在 VFX_BLOCK_REGISTRY 中不存在`);
+            return null;
+        }
+
+        // 2. 從物件池取出節點
+        const node = this.poolSystem?.acquire(blockId);
+        if (!node) {
+            // 輸出 renderMode 協助診斷（例：開發者忘記為 cpu-only 的 Trail 積木建立 Prefab）
+            console.warn(`[EffectSystem] playBlock: "${blockId}" 未在 PoolSystem 中註冊。renderMode=${block.renderMode}`);
+            return null;
+        }
+
+        // 3. 定位
+        node.active = true;
+        if (parent) node.parent = parent;
+        node.setWorldPosition(position);
+
+        // 4. 套用粒子動態覆寫（若有）
+        if (override) {
+            node.getComponentsInChildren(ParticleSystem)
+                .forEach(ps => applyParticleOverride(ps, override));
+        }
+
+        // 5. 播放粒子群組與動畫
+        this.playGroup(node);
+
+        // 6. 自動播放對應音效（若積木定義了 audio）
+        if (block.audio) {
+            services().audio.playSfx(block.audio);
+        }
+
+        // 7. 定時回收
+        if (duration > 0) {
+            setTimeout(() => {
+                this.stopGroup(node, true);
+                this.poolSystem?.release(blockId, node);
+            }, duration * 1000);
+        }
+
+        return node;
+    }
+
+    // ──────────────────────────────────────────────────────────────────────────
+    // M-7 三位一體：VFX + 音效 + 浮字通知
+    // ──────────────────────────────────────────────────────────────────────────
+
+    /**
+     * 批量注冊 VFX 效果定義（從 vfx-effects.json 載入後呼叫）。
+     * 建議在 ServiceLoader.loadVfxEffects() 中使用。
+     */
+    public registerEffects(table: Record<string, VfxEffectDef>): void {
+        for (const [key, def] of Object.entries(table)) {
+            this.effectTable.set(key, def);
+        }
+    }
+
+    /**
+     * 特效-音效-通知三位一體播放 API。
+     *
+     * 單一入口觸發「特效 + 音效 + 浮字」，防止視/聽/邏輯不一致。
+     *
+     * Unity 對照：類似 SkillEffect.Play(key, position)，將三個子系統的觸發
+     * 封裝成一個語意完整的操作，設計師只需在 vfx-effects.json 配置。
+     *
+     * 使用範例：
+     *   services().effect.playFullEffect('hit_enemy', targetWorldPos);
+     *   services().effect.playFullEffect('skill_zhang_fei', casterPos);
+     *
+     * @param key       vfx-effects.json 中的效果鍵名
+     * @param position  世界座標
+     * @param override  可選的粒子動態覆寫參數
+     */
+    public playFullEffect(key: string, position: Vec3, override?: ParticleOverride): void {
+        const def = this.effectTable.get(key);
+        if (!def) {
+            console.warn(`[EffectSystem] playFullEffect: key "${key}" 未在 effectTable 中找到（已呼叫 loadVfxEffects 嗎？）`);
+            return;
+        }
+
+        // 1. 播放特效 Block
+        this.playBlock(def.blockId, position, override, def.lifetime ?? 2.0);
+
+        // 2. 播放音效
+        if (def.audio) {
+            services().audio.playSfx(def.audio);
+        }
+
+        // 3. 顯示 floatText 通知
+        if (def.notify?.type === 'floatText') {
+            services().floatText.show('status', def.notify.textKey, position);
+        }
+    }
+
+    /** 查詢已注冊的效果定義（給開發工具或 debug 用）。 */
+    public getEffectDef(key: string): VfxEffectDef | undefined {
+        return this.effectTable.get(key);
+    }
+
+    /** 列出所有已注冊的效果鍵名。 */
+    public getAllEffectKeys(): string[] {
+        return Array.from(this.effectTable.keys());
     }
 }

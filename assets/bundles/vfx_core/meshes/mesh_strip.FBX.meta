@@ -1,0 +1,78 @@
+{
+  "ver": "2.3.14",
+  "importer": "fbx",
+  "imported": true,
+  "uuid": "238b8b95-046b-45ae-9664-114269bda9f2",
+  "files": [],
+  "subMetas": {
+    "4e82f": {
+      "importer": "gltf-mesh",
+      "uuid": "238b8b95-046b-45ae-9664-114269bda9f2@4e82f",
+      "displayName": "",
+      "id": "4e82f",
+      "name": "shizi.mesh",
+      "userData": {
+        "gltfIndex": 0,
+        "triangleCount": 6
+      },
+      "ver": "1.1.1",
+      "imported": true,
+      "files": [
+        ".bin",
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "d55a1": {
+      "importer": "gltf-scene",
+      "uuid": "238b8b95-046b-45ae-9664-114269bda9f2@d55a1",
+      "displayName": "",
+      "id": "d55a1",
+      "name": "mesh_strip.prefab",
+      "userData": {
+        "gltfIndex": 0
+      },
+      "ver": "1.0.14",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    }
+  },
+  "userData": {
+    "imageMetas": [],
+    "fbx": {
+      "smartMaterialEnabled": true
+    },
+    "lods": {
+      "enable": false,
+      "hasBuiltinLOD": false,
+      "options": [
+        {
+          "screenRatio": 0.25,
+          "faceCount": 1
+        },
+        {
+          "screenRatio": 0.125,
+          "faceCount": 0.25
+        },
+        {
+          "screenRatio": 0.01,
+          "faceCount": 0.1
+        }
+      ]
+    },
+    "assetFinder": {
+      "meshes": [
+        "238b8b95-046b-45ae-9664-114269bda9f2@4e82f"
+      ],
+      "skeletons": [],
+      "textures": [],
+      "materials": [],
+      "scenes": [
+        "238b8b95-046b-45ae-9664-114269bda9f2@d55a1"
+      ]
+    }
+  }
+}

@@ -1,0 +1,143 @@
+{
+  "ver": "2.3.14",
+  "importer": "gltf",
+  "imported": true,
+  "uuid": "1b99b2a5-d40e-43df-8af5-da6e859906c9",
+  "files": [],
+  "subMetas": {
+    "228e4": {
+      "importer": "gltf-mesh",
+      "uuid": "1b99b2a5-d40e-43df-8af5-da6e859906c9@228e4",
+      "displayName": "",
+      "id": "228e4",
+      "name": "tripo_mesh_fe197fbc-e941-47c3-b370-7455ddaf9816.mesh",
+      "userData": {
+        "gltfIndex": 0,
+        "triangleCount": 1058
+      },
+      "ver": "1.1.1",
+      "imported": true,
+      "files": [
+        ".bin",
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "c8921": {
+      "importer": "gltf-embeded-image",
+      "uuid": "1b99b2a5-d40e-43df-8af5-da6e859906c9@c8921",
+      "displayName": "",
+      "id": "c8921",
+      "name": "步兵3dmodel_basecolor.image",
+      "userData": {
+        "gltfIndex": 0,
+        "fixAlphaTransparencyArtifacts": true,
+        "hasAlpha": false,
+        "type": "texture"
+      },
+      "ver": "1.0.3",
+      "imported": true,
+      "files": [
+        ".jpg",
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "e39f7": {
+      "importer": "texture",
+      "uuid": "1b99b2a5-d40e-43df-8af5-da6e859906c9@e39f7",
+      "displayName": "",
+      "id": "e39f7",
+      "name": "UnnamedTexture.texture",
+      "userData": {
+        "wrapModeS": "repeat",
+        "wrapModeT": "repeat",
+        "minfilter": "linear",
+        "magfilter": "linear",
+        "mipfilter": "linear",
+        "anisotropy": 0,
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "1b99b2a5-d40e-43df-8af5-da6e859906c9@c8921"
+      },
+      "ver": "1.0.22",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "f63e0": {
+      "importer": "gltf-material",
+      "uuid": "1b99b2a5-d40e-43df-8af5-da6e859906c9@f63e0",
+      "displayName": "",
+      "id": "f63e0",
+      "name": "tripo_mat_fe197fbc-e941-47c3-b370-7455ddaf9816.material",
+      "userData": {
+        "gltfIndex": 0
+      },
+      "ver": "1.0.14",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "60f3f": {
+      "importer": "gltf-scene",
+      "uuid": "1b99b2a5-d40e-43df-8af5-da6e859906c9@60f3f",
+      "displayName": "",
+      "id": "60f3f",
+      "name": "unit.prefab",
+      "userData": {
+        "gltfIndex": 0
+      },
+      "ver": "1.0.14",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    }
+  },
+  "userData": {
+    "imageMetas": [
+      {
+        "name": "步兵3dmodel_basecolor",
+        "uri": "1b99b2a5-d40e-43df-8af5-da6e859906c9@c8921"
+      }
+    ],
+    "lods": {
+      "enable": false,
+      "hasBuiltinLOD": false,
+      "options": [
+        {
+          "screenRatio": 0.25,
+          "faceCount": 1
+        },
+        {
+          "screenRatio": 0.125,
+          "faceCount": 0.25
+        },
+        {
+          "screenRatio": 0.01,
+          "faceCount": 0.1
+        }
+      ]
+    },
+    "assetFinder": {
+      "meshes": [
+        "1b99b2a5-d40e-43df-8af5-da6e859906c9@228e4"
+      ],
+      "skeletons": [],
+      "textures": [
+        "1b99b2a5-d40e-43df-8af5-da6e859906c9@e39f7"
+      ],
+      "materials": [
+        "1b99b2a5-d40e-43df-8af5-da6e859906c9@f63e0"
+      ],
+      "scenes": [
+        "1b99b2a5-d40e-43df-8af5-da6e859906c9@60f3f"
+      ]
+    }
+  }
+}

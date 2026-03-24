@@ -1,0 +1,143 @@
+{
+  "ver": "2.3.14",
+  "importer": "gltf",
+  "imported": true,
+  "uuid": "871af9b7-154a-4300-99ef-17777c4dd76f",
+  "files": [],
+  "subMetas": {
+    "1c21f": {
+      "importer": "gltf-mesh",
+      "uuid": "871af9b7-154a-4300-99ef-17777c4dd76f@1c21f",
+      "displayName": "",
+      "id": "1c21f",
+      "name": "tripo_mesh_9103772f-4fd2-4e1f-9ef2-ab14520fbf85.mesh",
+      "userData": {
+        "gltfIndex": 0,
+        "triangleCount": 7454
+      },
+      "ver": "1.1.1",
+      "imported": true,
+      "files": [
+        ".bin",
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "e5a9b": {
+      "importer": "gltf-embeded-image",
+      "uuid": "871af9b7-154a-4300-99ef-17777c4dd76f@e5a9b",
+      "displayName": "",
+      "id": "e5a9b",
+      "name": "粉色棕髮女武將3dmodel_basecolor.image",
+      "userData": {
+        "gltfIndex": 0,
+        "fixAlphaTransparencyArtifacts": true,
+        "hasAlpha": false,
+        "type": "texture"
+      },
+      "ver": "1.0.3",
+      "imported": true,
+      "files": [
+        ".jpg",
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "e39f7": {
+      "importer": "texture",
+      "uuid": "871af9b7-154a-4300-99ef-17777c4dd76f@e39f7",
+      "displayName": "",
+      "id": "e39f7",
+      "name": "UnnamedTexture.texture",
+      "userData": {
+        "wrapModeS": "repeat",
+        "wrapModeT": "repeat",
+        "minfilter": "linear",
+        "magfilter": "linear",
+        "mipfilter": "linear",
+        "anisotropy": 0,
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "871af9b7-154a-4300-99ef-17777c4dd76f@e5a9b"
+      },
+      "ver": "1.0.22",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "3446e": {
+      "importer": "gltf-material",
+      "uuid": "871af9b7-154a-4300-99ef-17777c4dd76f@3446e",
+      "displayName": "",
+      "id": "3446e",
+      "name": "tripo_mat_9103772f-4fd2-4e1f-9ef2-ab14520fbf85.material",
+      "userData": {
+        "gltfIndex": 0
+      },
+      "ver": "1.0.14",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "c6c49": {
+      "importer": "gltf-scene",
+      "uuid": "871af9b7-154a-4300-99ef-17777c4dd76f@c6c49",
+      "displayName": "",
+      "id": "c6c49",
+      "name": "hero.prefab",
+      "userData": {
+        "gltfIndex": 0
+      },
+      "ver": "1.0.14",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    }
+  },
+  "userData": {
+    "imageMetas": [
+      {
+        "name": "粉色棕髮女武將3dmodel_basecolor",
+        "uri": "871af9b7-154a-4300-99ef-17777c4dd76f@e5a9b"
+      }
+    ],
+    "lods": {
+      "enable": false,
+      "hasBuiltinLOD": false,
+      "options": [
+        {
+          "screenRatio": 0.25,
+          "faceCount": 1
+        },
+        {
+          "screenRatio": 0.125,
+          "faceCount": 0.25
+        },
+        {
+          "screenRatio": 0.01,
+          "faceCount": 0.1
+        }
+      ]
+    },
+    "assetFinder": {
+      "meshes": [
+        "871af9b7-154a-4300-99ef-17777c4dd76f@1c21f"
+      ],
+      "skeletons": [],
+      "textures": [
+        "871af9b7-154a-4300-99ef-17777c4dd76f@e39f7"
+      ],
+      "materials": [
+        "871af9b7-154a-4300-99ef-17777c4dd76f@3446e"
+      ],
+      "scenes": [
+        "871af9b7-154a-4300-99ef-17777c4dd76f@c6c49"
+      ]
+    }
+  }
+}

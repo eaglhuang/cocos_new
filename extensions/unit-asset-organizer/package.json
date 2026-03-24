@@ -1,0 +1,27 @@
+{
+  "name": "unit-asset-organizer",
+  "version": "1.0.0",
+  "package_version": 2,
+  "description": "重建執行期單位資產 catalog",
+  "main": "./dist/main.js",
+  "author": "GitHub Copilot",
+  "editor": ">=3.8.0",
+  "contributions": {
+    "menu": [
+      {
+        "path": "開發者/單位資產整理工具/重新產生 UnitAssetCatalog",
+        "label": "重新產生 UnitAssetCatalog",
+        "message": "regenerate-unit-asset-catalog"
+      }
+    ],
+    "messages": {
+      "regenerate-unit-asset-catalog": {
+        "methods": ["regenerateUnitAssetCatalog"]
+      }
+    }
+  },
+  "devDependencies": {
+    "@types/node": "^25.3.5",
+    "typescript": "^5.9.3"
+  }
+}

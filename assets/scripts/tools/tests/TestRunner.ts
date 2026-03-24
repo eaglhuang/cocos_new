@@ -120,6 +120,13 @@ export const assert = {
             throw new AssertionError(msg || `Expected no throw, got: ${(e as Error).message}`);
         }
     },
+
+    /** 值不為 null 也不為 undefined */
+    isDefined<T>(value: T | null | undefined, msg?: string): void {
+        if (value === null || value === undefined) {
+            throw new AssertionError(msg || `Expected defined value, got ${value}`);
+        }
+    },
 };
 
 // ─────────────────────────────────────────────────────────────────────────────

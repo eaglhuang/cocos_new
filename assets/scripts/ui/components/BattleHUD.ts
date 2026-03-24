@@ -58,7 +58,8 @@ export class BattleHUD extends Component {
     this.ensureBindings();
     this.applyReferenceLayout();
     // 確保 ServiceLoader 已初始化（避免 onLoad 早於 BattleScene.start 但需要事件系統）
-    ServiceLoader.getInstance().initialize();
+    // 傳入 this.node 作為 AudioSystem 的 hostNode
+    ServiceLoader.getInstance().initialize(this.node);
     const svc = services();
     this.unsubs.push(
       svc.event.on(EVENT_NAMES.TurnPhaseChanged,   this.onTurnPhaseChanged.bind(this)),

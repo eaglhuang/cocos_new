@@ -20,6 +20,9 @@ const AI_USABLE_TYPES: TroopType[] = [
   TroopType.Pikeman,
 ];
 
+/** AI 使用對抗策略的機率：35% 選巡別兵種，65% 隨機（避免 AI 永遠 100% 针對） */
+const AI_COUNTER_STRATEGY_CHANCE = 0.35;
+
 export class EnemyAI {
   /**
    * 根據當前棋盤狀態與可用 DP 決定本回合部署。
@@ -64,7 +67,8 @@ export class EnemyAI {
     });
 
     // 找出可購買的對抗兵種（TROOP_COUNTER_MAP[counter] === mostCommon 表示 counter 剋 mostCommon）
-    if (mostCommon) {
+    // 僅有 AI_COUNTER_STRATEGY_CHANCE 的機率才嘗試對抗；將軍不是全知全能
+    if (mostCommon && Math.random() < AI_COUNTER_STRATEGY_CHANCE) {
       for (const aiType of affordable) {
         if (TROOP_COUNTER_MAP[aiType] === mostCommon) return aiType;
       }

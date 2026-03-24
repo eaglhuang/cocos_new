@@ -1,4 +1,5 @@
 import { Asset, Font, JsonAsset, Prefab, resources, SpriteFrame } from "cc";
+import { MemoryManager } from "./MemoryManager";
 
 export class ResourceManager {
   // 將 Cache 改為儲存原本的 Asset 物件，並將快取鍵值對應 Asset
@@ -6,6 +7,18 @@ export class ResourceManager {
   private prefabCache = new Map<string, Prefab>();
   private spriteFrameCache = new Map<string, SpriteFrame[]>();
   private fontCache = new Map<string, Font>();
+
+  /** 連動的記憶體管理器（由 ServiceLoader.initialize() 注入） */
+  private memoryManager: MemoryManager | null = null;
+
+  /**
+   * 注入 MemoryManager，讓所有資源的 load/release 操作都通報記憶體管理器。
+   * 由 ServiceLoader.initialize() 呼叫，不需要手動呼叫。
+   * Unity 對照：相當於把 Addressables 的 AsyncOperationHandle 事件統一轉發給 Profiler 追蹤器。
+   */
+  public bindMemoryManager(mm: MemoryManager): void {
+    this.memoryManager = mm;
+  }
 
   public loadJson<T = any>(path: string): Promise<T> {
     const cached = this.jsonCache.get(path);
@@ -22,6 +35,7 @@ export class ResourceManager {
 
         asset.addRef();
         this.jsonCache.set(path, asset);
+        this.memoryManager?.notifyLoaded(path, 'resources', 'JsonAsset');
         resolve(asset.json as T);
       });
     });
@@ -42,6 +56,7 @@ export class ResourceManager {
 
         asset.addRef();
         this.prefabCache.set(path, asset);
+        this.memoryManager?.notifyLoaded(path, 'resources', 'Prefab');
         resolve(asset);
       });
     });
@@ -63,6 +78,7 @@ export class ResourceManager {
         const validAssets = assets || [];
         validAssets.forEach(asset => asset.addRef());
         this.spriteFrameCache.set(path, validAssets);
+        this.memoryManager?.notifyLoaded(path, 'resources', 'SpriteFrame[]');
         resolve(validAssets.slice());
       });
     });
@@ -87,6 +103,7 @@ export class ResourceManager {
         }
         font.addRef();
         this.fontCache.set(path, font);
+        this.memoryManager?.notifyLoaded(path, 'resources', 'Font');
         resolve(font);
       });
     });
@@ -96,18 +113,22 @@ export class ResourceManager {
     if (this.jsonCache.has(path)) {
       this.jsonCache.get(path)?.decRef();
       this.jsonCache.delete(path);
+      this.memoryManager?.notifyReleased(path);
     }
     if (this.prefabCache.has(path)) {
       this.prefabCache.get(path)?.decRef();
       this.prefabCache.delete(path);
+      this.memoryManager?.notifyReleased(path);
     }
     if (this.spriteFrameCache.has(path)) {
       this.spriteFrameCache.get(path)?.forEach(asset => asset.decRef());
       this.spriteFrameCache.delete(path);
+      this.memoryManager?.notifyReleased(path);
     }
     if (this.fontCache.has(path)) {
       this.fontCache.get(path)?.decRef();
       this.fontCache.delete(path);
+      this.memoryManager?.notifyReleased(path);
     }
   }
 
@@ -115,15 +136,19 @@ export class ResourceManager {
    * 清空並釋放所有已快取的資源
    */
   public clearCache(): void {
+    this.jsonCache.forEach((_, path) => this.memoryManager?.notifyReleased(path));
     this.jsonCache.forEach(asset => asset.decRef());
     this.jsonCache.clear();
 
+    this.prefabCache.forEach((_, path) => this.memoryManager?.notifyReleased(path));
     this.prefabCache.forEach(asset => asset.decRef());
     this.prefabCache.clear();
 
+    this.spriteFrameCache.forEach((_, path) => this.memoryManager?.notifyReleased(path));
     this.spriteFrameCache.forEach(assets => assets.forEach(asset => asset.decRef()));
     this.spriteFrameCache.clear();
 
+    this.fontCache.forEach((_, path) => this.memoryManager?.notifyReleased(path));
     this.fontCache.forEach(font => font.decRef());
     this.fontCache.clear();
   }

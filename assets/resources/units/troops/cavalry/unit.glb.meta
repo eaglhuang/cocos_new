@@ -1,0 +1,143 @@
+{
+  "ver": "2.3.14",
+  "importer": "gltf",
+  "imported": true,
+  "uuid": "990fb4a7-b2e2-4648-9a27-8d2178cef578",
+  "files": [],
+  "subMetas": {
+    "33f0c": {
+      "importer": "gltf-mesh",
+      "uuid": "990fb4a7-b2e2-4648-9a27-8d2178cef578@33f0c",
+      "displayName": "",
+      "id": "33f0c",
+      "name": "tripo_mesh_3611bf72-b8f7-4126-8cc9-9108ad983117.mesh",
+      "userData": {
+        "gltfIndex": 0,
+        "triangleCount": 1058
+      },
+      "ver": "1.1.1",
+      "imported": true,
+      "files": [
+        ".bin",
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "5fa26": {
+      "importer": "gltf-embeded-image",
+      "uuid": "990fb4a7-b2e2-4648-9a27-8d2178cef578@5fa26",
+      "displayName": "",
+      "id": "5fa26",
+      "name": "一隻綠色騎兵3dmodel_basecolor.image",
+      "userData": {
+        "gltfIndex": 0,
+        "fixAlphaTransparencyArtifacts": true,
+        "hasAlpha": false,
+        "type": "texture"
+      },
+      "ver": "1.0.3",
+      "imported": true,
+      "files": [
+        ".jpg",
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "e39f7": {
+      "importer": "texture",
+      "uuid": "990fb4a7-b2e2-4648-9a27-8d2178cef578@e39f7",
+      "displayName": "",
+      "id": "e39f7",
+      "name": "UnnamedTexture.texture",
+      "userData": {
+        "wrapModeS": "repeat",
+        "wrapModeT": "repeat",
+        "minfilter": "linear",
+        "magfilter": "linear",
+        "mipfilter": "linear",
+        "anisotropy": 0,
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "990fb4a7-b2e2-4648-9a27-8d2178cef578@5fa26"
+      },
+      "ver": "1.0.22",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "5f88c": {
+      "importer": "gltf-material",
+      "uuid": "990fb4a7-b2e2-4648-9a27-8d2178cef578@5f88c",
+      "displayName": "",
+      "id": "5f88c",
+      "name": "tripo_mat_3611bf72-b8f7-4126-8cc9-9108ad983117.material",
+      "userData": {
+        "gltfIndex": 0
+      },
+      "ver": "1.0.14",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "4483b": {
+      "importer": "gltf-scene",
+      "uuid": "990fb4a7-b2e2-4648-9a27-8d2178cef578@4483b",
+      "displayName": "",
+      "id": "4483b",
+      "name": "unit.prefab",
+      "userData": {
+        "gltfIndex": 0
+      },
+      "ver": "1.0.14",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    }
+  },
+  "userData": {
+    "imageMetas": [
+      {
+        "name": "一隻綠色騎兵3dmodel_basecolor",
+        "uri": "990fb4a7-b2e2-4648-9a27-8d2178cef578@5fa26"
+      }
+    ],
+    "lods": {
+      "enable": false,
+      "hasBuiltinLOD": false,
+      "options": [
+        {
+          "screenRatio": 0.25,
+          "faceCount": 1
+        },
+        {
+          "screenRatio": 0.125,
+          "faceCount": 0.25
+        },
+        {
+          "screenRatio": 0.01,
+          "faceCount": 0.1
+        }
+      ]
+    },
+    "assetFinder": {
+      "meshes": [
+        "990fb4a7-b2e2-4648-9a27-8d2178cef578@33f0c"
+      ],
+      "skeletons": [],
+      "textures": [
+        "990fb4a7-b2e2-4648-9a27-8d2178cef578@e39f7"
+      ],
+      "materials": [
+        "990fb4a7-b2e2-4648-9a27-8d2178cef578@5f88c"
+      ],
+      "scenes": [
+        "990fb4a7-b2e2-4648-9a27-8d2178cef578@4483b"
+      ]
+    }
+  }
+}

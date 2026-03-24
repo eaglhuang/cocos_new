@@ -1,0 +1,49 @@
+{
+  "comment": "S-6 Cyberpunk VFX 素材遷移映射表",
+  "comment_usage": "執行 import-cyberpunk-vfx.js 時讀取本設定，將 input/cyberpunk/ 下的原始檔自動重命名並複製到 vfx_core/textures/",
+  "comment_source": "tools/sprite-pipeline/input/cyberpunk/[source]",
+  "comment_dest": "assets/bundles/vfx_core/textures/[dest]",
+  "entries": [
+    {
+      "source": "spark31.png",
+      "dest": "impact/ex_hit_01.png",
+      "note": "以 spark31 映射為受擊粒子主貼圖"
+    },
+    {
+      "source": "teleporting_lighting.png",
+      "dest": "lightning/ex_thunder_01.png",
+      "note": "以 teleporting_lighting 映射為電系技能放電粒子"
+    },
+    {
+      "source": "flash11.png",
+      "dest": "glow/ex_hit_flash.png",
+      "note": "以 flash11 映射為打擊閃光"
+    },
+    {
+      "source": "laser002.png",
+      "dest": "lightning/ex_line_01a.png",
+      "note": "以 laser002 映射為雷擊線條"
+    },
+    {
+      "source": "explode001.png",
+      "dest": "smoke/ex_smoke_flipbook_4x4.png",
+      "note": "以 explode001 映射為 4x4 爆散煙霧 Flipbook"
+    },
+    {
+      "source": "AxeParticle001.png",
+      "dest": "impact/ex_pieces_01.png",
+      "note": "以 AxeParticle001 映射為環境煙塵碎片"
+    },
+    {
+      "source": "teleporting_circle.png",
+      "dest": "rings/ex_energy_ring.png",
+      "note": "以 teleporting_circle 映射為法陣補強環形光"
+    },
+    {
+      "source": "trail002.png",
+      "dest": "trails/ex_trace_01.png",
+      "note": "以 trail002 映射為路徑拖尾條紋"
+    }
+  ],
+  "comment_pending": "第 9-18 號素材原始檔名待從 Cyberpunk Demo 確認後補入"
+}

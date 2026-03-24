@@ -14,6 +14,7 @@ import { BattleHUD } from "../../ui/components/BattleHUD";
 import { DeployPanel } from "../../ui/components/DeployPanel";
 import { ResultPopup } from "../../ui/components/ResultPopup";
 import { BattleLogPanel } from "../../ui/components/BattleLogPanel";
+import { DuelChallengePanel } from "../../ui/components/DuelChallengePanel";
 import { BoardRenderer } from "./BoardRenderer";
 import { UnitRenderer } from "./UnitRenderer";
 import { SceneBackground } from "./SceneBackground";
@@ -66,6 +67,9 @@ export class BattleScene extends Component {
   @property(BoardRenderer)
   boardRenderer: BoardRenderer = null!;
 
+  @property(DuelChallengePanel)
+  duelChallengePanel: DuelChallengePanel = null!;
+
   @property(UnitRenderer)
   unitRenderer: UnitRenderer = null!;
 
@@ -100,6 +104,8 @@ export class BattleScene extends Component {
   private ctrl: BattleController | null = null;
   private readonly unsubs: Array<() => void> = [];
   private isAdvancingTurn = false;
+  /** 單挑面板開啟中，暫停回合解鎖，直到玩家做出決定 */
+  private isDuelPanelActive = false;
   private enemyThinkingPanel: Node | null = null;
   private readonly combatVisualQueue: Array<() => void> = [];
   private isDrainingCombatVisual = false;
@@ -122,6 +128,14 @@ export class BattleScene extends Component {
       this.ctrl = new BattleController();
       await this.ctrl.loadData();
       console.log("[BattleScene] BattleController 資料載入完成");
+
+      // 2.5 載入技能定義至 ActionSystem（skills.json → action.registerSkills）
+      // 並行載入 vfx-effects.json，兩者互不依賴，同時送出加速啟動
+      await Promise.all([
+          ServiceLoader.getInstance().loadSkills(),
+          ServiceLoader.getInstance().loadVfxEffects(),
+      ]);
+      console.log("[BattleScene] ActionSystem + VFX 效果表載入完成");
 
       // 3. 從 encounters.json 讀取遭遇戰設定
       const encounter = await this.loadEncounter(this.currentEncounterId);
@@ -511,7 +525,12 @@ export class BattleScene extends Component {
   private enqueueCombatVisual(action: () => void): void {
     this.combatVisualQueue.push(action);
     if (this.isDrainingCombatVisual) return;
-    this.drainCombatVisualQueue();
+    
+    // 如果有移動動畫尚未結束，延遲開始清空攻擊序列
+    this.isDrainingCombatVisual = true;
+    this.scheduleOnce(() => {
+        this.drainCombatVisualQueue();
+    }, 1.8);
   }
 
   private drainCombatVisualQueue(): void {
@@ -521,9 +540,8 @@ export class BattleScene extends Component {
       return;
     }
 
-    this.isDrainingCombatVisual = true;
     action();
-    this.scheduleOnce(() => this.drainCombatVisualQueue(), 0.5);
+    this.scheduleOnce(() => this.drainCombatVisualQueue(), 0.5); // 每個攻擊招式之間隔 0.5 秒
   }
 
   private onBattleEnded(data: { result: string }): void {
@@ -558,6 +576,8 @@ export class BattleScene extends Component {
       } finally {
         // 小兵移動動畫為 2s，加緩衝後解鎖玩家操作
         this.scheduleOnce(() => {
+          // 若單挑面板開啟中，延後解鎖（由面板決策回調負責解鎖）
+          if (this.isDuelPanelActive) return;
           this.isAdvancingTurn = false;
           this.playTurnBanner(Faction.Player);
           this.boardRenderer?.setDeployHintFaction(Faction.Player);
@@ -594,7 +614,12 @@ export class BattleScene extends Component {
 
   /**
    * 回合結束後檢查雙方武將是否到達敵將面前，觸發對稱單挑挑戰。
-   * 單挑接受與否由防守方依「血量/兵力/總戰力」評分決策，不再使用隨機。
+   *
+   * 當敵方發起挑戰（challengerFaction === Enemy）：
+   *   → 顯示 DuelChallengePanel，由玩家決定接受或拒絕（互動式）
+   *
+   * 當我方發起挑戰（challengerFaction === Player）：
+   *   → 敵方 AI 依「血量/兵力/總戰力」評分自動決策（同原邏輯）
    */
   private checkDuelChallenge(): void {
     if (!this.ctrl) return;
@@ -611,12 +636,94 @@ export class BattleScene extends Component {
 
     if (challengerFaction === null) return;
 
+    if (challengerFaction === Faction.Enemy) {
+      // 敵將挑戰玩家 → 顯示確認面板，由玩家決定
+      this.showDuelChallengePanel();
+    } else {
+      // 我將挑戰敵將 → AI 自動決策
+      this.resolveEnemyDuelDecision(challengerFaction);
+    }
+  }
+
+  /**
+   * 顯示武將單挑確認面板，等待玩家做出決定。
+   * 玩家決定後透過 node 事件回調觸發最終結算。
+   */
+  private showDuelChallengePanel(): void {
+    if (!this.ctrl) return;
+
+    // 取得武將名稱用於顯示
+    const state = this.ctrl.state;
+    const playerGeneralName = state.playerGeneral?.name ?? "我方武將";
+    const enemyGeneralName  = state.enemyGeneral?.name  ?? "敵方武將";
+
+    // 計算我方防守評分（讓玩家知道勝算）
+    const decision = this.ctrl.evaluateDuelAcceptance(Faction.Enemy);
+    const playerScore = 1.0 - decision.score;  // decision.score 是挑戰方優勢，取反為防守方勝算
+
+    this.isDuelPanelActive = true;
+
+    if (this.duelChallengePanel) {
+      this.duelChallengePanel.show(enemyGeneralName, playerGeneralName, playerScore);
+
+      this.duelChallengePanel.node.once("duelAccepted", () => {
+        this.onPlayerDuelDecision(true);
+      }, this);
+
+      this.duelChallengePanel.node.once("duelRejected", () => {
+        this.onPlayerDuelDecision(false);
+      }, this);
+    } else {
+      // 面板未掛載時（編輯器未設定），自動接受（不卡住遊戲流程）
+      console.warn("[BattleScene] duelChallengePanel 未綁定，自動接受單挑");
+      this.onPlayerDuelDecision(true);
+    }
+  }
+
+  /**
+   * 玩家在單挑面板中做出決定後的處理。
+   * @param accepted 玩家是否接受單挑
+   */
+  private onPlayerDuelDecision(accepted: boolean): void {
+    if (!this.ctrl) return;
+
+    const duelResult = this.ctrl.resolveDuelChallenge(Faction.Enemy, accepted);
+    this.showDuelResultToast(duelResult, accepted, Faction.Enemy);
+
+    // 面板決定完成後，解鎖玩家回合
+    this.isDuelPanelActive = false;
+    this.isAdvancingTurn = false;
+    this.playTurnBanner(Faction.Player);
+    this.boardRenderer?.setDeployHintFaction(Faction.Player);
+    this.refreshBattleViews();
+  }
+
+  /**
+   * 我方武將挑戰敵將時，敵方 AI 自動決策。
+   */
+  private resolveEnemyDuelDecision(challengerFaction: Faction): void {
+    if (!this.ctrl) return;
+
     const decision = this.ctrl.evaluateDuelAcceptance(challengerFaction);
     const defenderName = decision.defenderFaction === Faction.Player ? "我將" : "敵將";
-    this.battleLogPanel?.append(`${defenderName} 單挑評估分數：${decision.score.toFixed(2)}（${decision.accepted ? "接受" : "拒絕"}）`);
+    this.battleLogPanel?.append(
+      `${defenderName} 單挑評估分數：${decision.score.toFixed(2)}（${decision.accepted ? "接受" : "拒絕"}）`
+    );
 
     const duelResult = this.ctrl.resolveDuelChallenge(challengerFaction, decision.accepted);
-    if (decision.accepted) {
+    this.showDuelResultToast(duelResult, decision.accepted, decision.defenderFaction);
+    this.refreshBattleViews();
+  }
+
+  /**
+   * 根據單挑結果顯示對應提示訊息。
+   */
+  private showDuelResultToast(
+    duelResult: string,
+    accepted: boolean,
+    defenderFaction: Faction,
+  ): void {
+    if (accepted) {
       if (duelResult === "player-win") {
         this.deployPanel?.showToast("單挑成立！我方武將獲勝！", 1.3, {
           color: new Color(90, 190, 255, 255),
@@ -638,7 +745,7 @@ export class BattleScene extends Component {
         this.battleLogPanel?.append("單挑成立！雙方武將正面對決！");
       }
     } else {
-      if (decision.defenderFaction === Faction.Player) {
+      if (defenderFaction === Faction.Player) {
         this.deployPanel?.showToast("我將拒絕單挑！我方全軍攻防減半！");
         this.battleLogPanel?.append("我將拒絕單挑！我方全體攻擊力與生命力減半！");
       } else {
@@ -646,8 +753,6 @@ export class BattleScene extends Component {
         this.battleLogPanel?.append("敵將拒絕單挑！敵方全體攻擊力與生命力減半！");
       }
     }
-
-    this.refreshBattleViews();
   }
 
   private onReplay(): void {

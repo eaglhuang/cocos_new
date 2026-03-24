@@ -1,4 +1,4 @@
-import { AudioClip, AudioSource, Node } from "cc";
+import { AudioClip, AudioSource, Node, tween } from "cc";
 
 /**
  * 音效系統
@@ -18,6 +18,12 @@ import { AudioClip, AudioSource, Node } from "cc";
  */
 export class AudioSystem {
     private bgmSource: AudioSource | null = null;
+    /** 第二 BGM 軌，專用於 crossfade 漸進 */
+    private bgmSourceB: AudioSource | null = null;
+    /** 目前活躍 BGM 軌（'A' = bgmSource，'B' = bgmSourceB） */
+    private activeBgm: 'A' | 'B' = 'A';
+    /** 追蹤 BGM 目標音量，crossfade 漸进終點用 */
+    private bgmVolume: number = 0.5;
     private sfxSource: AudioSource | null = null;
     private loopSource: AudioSource | null = null;
 
@@ -44,6 +50,11 @@ export class AudioSystem {
         this.bgmSource = hostNode.addComponent(AudioSource);
         this.bgmSource.loop = true;
         this.bgmSource.volume = 0.5;
+
+        // 第二 BGM 軌：技能毳電時 crossfade 用，很始靜音
+        this.bgmSourceB = hostNode.addComponent(AudioSource);
+        this.bgmSourceB.loop = true;
+        this.bgmSourceB.volume = 0;
 
         this.sfxSource = hostNode.addComponent(AudioSource);
         this.sfxSource.volume = 1.0;
@@ -87,15 +98,67 @@ export class AudioSystem {
             console.warn(`[AudioSystem] BGM clip 不存在: ${clipOrName}`);
             return;
         }
+        this.bgmVolume = volume;
+        // 總是使用 bgmSource（A 軌）直接播放，無漸變
+        this.bgmSourceB?.stop();
+        this.activeBgm = 'A';
         this.bgmSource.clip = clip;
         this.bgmSource.volume = volume;
         this.bgmSource.play();
     }
 
-    public stopBgm(): void { this.bgmSource?.stop(); }
-    public pauseBgm(): void { this.bgmSource?.pause(); }
-    public resumeBgm(): void { this.bgmSource?.play(); }
-    public setBgmVolume(v: number): void { if (this.bgmSource) this.bgmSource.volume = v; }
+    public stopBgm(): void {
+        this.bgmSource?.stop();
+        this.bgmSourceB?.stop();
+    }
+    public pauseBgm(): void {
+        const src = this.activeBgm === 'A' ? this.bgmSource : this.bgmSourceB;
+        src?.pause();
+    }
+    public resumeBgm(): void {
+        const src = this.activeBgm === 'A' ? this.bgmSource : this.bgmSourceB;
+        src?.play();
+    }
+    public setBgmVolume(v: number): void {
+        this.bgmVolume = v;
+        const src = this.activeBgm === 'A' ? this.bgmSource : this.bgmSourceB;
+        if (src) src.volume = v;
+    }
+
+    /**
+     * 漸變切換 BGM：新 BGM 漸入的同時舊 BGM 漸出，無硬切斷感。
+     *
+     * Unity 對照：用兩個 AudioSource + Mathf.Lerp(volume) 實現 Cross-Fade。
+     *   from 軌：to(duration, { volume: 0 })
+     *   to   軌：to(duration, { volume: bgmVolume })
+     *
+     * @param clipOrName  目標 AudioClip 或已注冊的名稱
+     * @param duration    漸變時長（秒，預設 1.5）
+     */
+    public crossfadeTo(clipOrName: AudioClip | string, duration: number = 1.5): void {
+        if (!this.bgmSource || !this.bgmSourceB) return;
+
+        const clip = typeof clipOrName === 'string'
+            ? this.clipCache.get(clipOrName) ?? null
+            : clipOrName;
+        if (!clip) {
+            console.warn(`[AudioSystem] crossfadeTo clip 不存在: ${clipOrName}`);
+            return;
+        }
+
+        const from = this.activeBgm === 'A' ? this.bgmSource : this.bgmSourceB;
+        const to   = this.activeBgm === 'A' ? this.bgmSourceB : this.bgmSource;
+
+        // 開始漸變：to 軌從靖音漸入新曲目
+to.clip = clip;
+        to.volume = 0;
+        to.play();
+
+        tween(from).to(duration, { volume: 0 }).call(() => from.stop()).start();
+        tween(to).to(duration, { volume: this.bgmVolume }).start();
+
+        this.activeBgm = this.activeBgm === 'A' ? 'B' : 'A';
+    }
 
     // ─────────────────────────────────────────
     //  單次音效（SFX）
