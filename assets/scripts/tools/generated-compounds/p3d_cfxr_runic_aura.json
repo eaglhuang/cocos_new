@@ -1,0 +1,82 @@
+{
+  "id": "p3d_cfxr_runic_aura",
+  "label": "CFXR符文光環(複合)",
+  "folder": "cfxr_runic_aura_compound",
+  "scale": 1,
+  "audio": "skill0",
+  "source": {
+    "unityPrefab": "tools\\JMO Assets\\Cartoon FX Remaster\\CFXR Prefabs\\Magic Misc\\CFXR3 Magic Aura A (Runic).prefab"
+  },
+  "warnings": [
+    "Runes: forceOverLifetime: 尚未映射到 compound generator",
+    "Runes: rotationOverLifetime: 尚未映射到 compound generator",
+    "Runes: textureAnimation: 尚未映射到 compound generator",
+    "Runes: limitVelocityOverLifetime: 尚未映射到 compound generator",
+    "Runes: trails: 尚未映射到 compound generator",
+    "Runes: noise: 尚未映射到 compound generator",
+    "Runes: sizeOverLifetime: 目前只支援常數倍率",
+    "Runes: colorOverLifetime: 目前只支援單色或雙色"
+  ],
+  "subPS": [
+    {
+      "name": "Runes",
+      "position": null,
+      "color": {
+        "r": 244,
+        "g": 223,
+        "b": 163,
+        "a": 178
+      },
+      "startSize": 0.3,
+      "startSpeed": 0.02,
+      "startLifetime": 2.0,
+      "gravity": 0,
+      "rateOverTime": 10,
+      "burstCount": 1,
+      "shapeType": 4,
+      "radius": 0.4,
+      "simulationSpace": 1,
+      "loop": true,
+      "duration": 4,
+      "capacity": 5,
+      "renderMode": 0,
+      "velocityScale": 0,
+      "lengthScale": 2,
+      "materialHint": "MAT_ADDITIVE",
+      "texKeyHint": null,
+      "velocityOverLifetime": {
+        "enabled": false,
+        "x": 0,
+        "y": 0,
+        "z": 0,
+        "speedModifier": 1,
+        "space": 1
+      },
+      "sizeOverLifetime": {
+        "enabled": true,
+        "multiplier": 1
+      },
+      "colorOverLifetime": {
+        "enabled": true,
+        "color": {
+          "r": 255,
+          "g": 255,
+          "b": 255,
+          "a": 255
+        },
+        "mode": 1
+      },
+      "unsupported": [
+        "forceOverLifetime: 尚未映射到 compound generator",
+        "rotationOverLifetime: 尚未映射到 compound generator",
+        "textureAnimation: 尚未映射到 compound generator",
+        "limitVelocityOverLifetime: 尚未映射到 compound generator",
+        "trails: 尚未映射到 compound generator",
+        "noise: 尚未映射到 compound generator",
+        "sizeOverLifetime: 目前只支援常數倍率",
+        "colorOverLifetime: 目前只支援單色或雙色"
+      ],
+      "texKey": "cfxr_aura_runic"
+    }
+  ]
+}

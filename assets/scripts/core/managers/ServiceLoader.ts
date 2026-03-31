@@ -1,3 +1,4 @@
+// @spec-source → 見 docs/cross-reference-index.md
 import { Node } from "cc";
 import { AudioSystem } from "../systems/AudioSystem";
 import { BuffSystem } from "../systems/BuffSystem";
@@ -12,6 +13,9 @@ import { PoolSystem } from "../systems/PoolSystem";
 import { ResourceManager } from "../systems/ResourceManager";
 import { ActionSystem } from "../systems/ActionSystem";
 import { BattleSystem } from "../systems/BattleSystem";
+import { NetworkService } from "../systems/NetworkService";
+import { SyncManager } from "../systems/SyncManager";
+import { SceneManager } from "./SceneManager";
 import { GameManager } from "./GameManager";
 import { UIManager } from "./UIManager";
 import { normalizeVfxEffectTable } from "../config/VfxEffectConfig";
@@ -26,8 +30,11 @@ export class ServiceLoader {
     public readonly effect = new EffectSystem();
     public readonly buff = new BuffSystem();
     public readonly battle = new BattleSystem();
+    public readonly scene = new SceneManager();
     public readonly game = new GameManager();
     public readonly ui = new UIManager();
+    public readonly network = new NetworkService();
+    public readonly sync = new SyncManager();
     /** 音效系統：BGM、SFX、循環音效，含 50ms 防重複播放 */
     public readonly audio = new AudioSystem();
     /** 多國語系系統：t(key) 字串查詢 + 語系字型懶載入 / 卸載 */
@@ -87,6 +94,10 @@ export class ServiceLoader {
         } else {
             console.warn("[ServiceLoader] 未傳入 hostNode，AudioSystem 未初始化（音效功能停用）");
         }
+
+        // 啟動跨平台網路偵測與自動離線佇列同步服務
+        this.network.setup(this.event);
+        this.sync.setup(this.event, this.network);
 
         this.initialized = true;
     }

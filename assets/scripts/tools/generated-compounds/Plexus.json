@@ -1,0 +1,150 @@
+{
+  "id": "Plexus",
+  "label": "Plexus (Unity import)",
+  "folder": "Plexus",
+  "scale": 1,
+  "audio": null,
+  "source": {
+    "unityPrefab": "tools\\Magic effects pack\\Prefabs\\Character auras\\Plexus.prefab"
+  },
+  "warnings": [
+    "Trails: forceOverLifetime: 尚未映射到 compound generator",
+    "Trails: rotationOverLifetime: 尚未映射到 compound generator",
+    "Trails: textureAnimation: 尚未映射到 compound generator",
+    "Trails: limitVelocityOverLifetime: 尚未映射到 compound generator",
+    "Trails: trails: 尚未映射到 compound generator",
+    "Trails: noise: 尚未映射到 compound generator",
+    "Trails: sizeOverLifetime: 目前只支援常數倍率",
+    "Trails: colorOverLifetime: 目前只支援單色或雙色",
+    "Plexus: forceOverLifetime: 尚未映射到 compound generator",
+    "Plexus: rotationOverLifetime: 尚未映射到 compound generator",
+    "Plexus: textureAnimation: 尚未映射到 compound generator",
+    "Plexus: limitVelocityOverLifetime: 尚未映射到 compound generator",
+    "Plexus: trails: 尚未映射到 compound generator",
+    "Plexus: noise: 尚未映射到 compound generator",
+    "Plexus: sizeOverLifetime: 目前只支援常數倍率",
+    "Plexus: colorOverLifetime: 目前只支援單色或雙色"
+  ],
+  "subPS": [
+    {
+      "name": "Trails",
+      "position": null,
+      "color": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 255
+      },
+      "startSize": 1,
+      "startSpeed": 4,
+      "startLifetime": 0.7,
+      "gravity": 0,
+      "rateOverTime": 10,
+      "burstCount": 0,
+      "shapeType": 3,
+      "radius": 0.0001,
+      "simulationSpace": 1,
+      "loop": true,
+      "duration": 5,
+      "capacity": 1000,
+      "renderMode": 0,
+      "velocityScale": 0,
+      "lengthScale": 2,
+      "materialHint": "MAT_ADDITIVE",
+      "texKeyHint": null,
+      "velocityOverLifetime": {
+        "enabled": true,
+        "x": 0,
+        "y": 0,
+        "z": 0,
+        "speedModifier": 1,
+        "space": 1
+      },
+      "sizeOverLifetime": {
+        "enabled": true,
+        "multiplier": 1
+      },
+      "colorOverLifetime": {
+        "enabled": true,
+        "color": {
+          "r": 255,
+          "g": 255,
+          "b": 255,
+          "a": 255
+        },
+        "mode": 1
+      },
+      "unsupported": [
+        "forceOverLifetime: 尚未映射到 compound generator",
+        "rotationOverLifetime: 尚未映射到 compound generator",
+        "textureAnimation: 尚未映射到 compound generator",
+        "limitVelocityOverLifetime: 尚未映射到 compound generator",
+        "trails: 尚未映射到 compound generator",
+        "noise: 尚未映射到 compound generator",
+        "sizeOverLifetime: 目前只支援常數倍率",
+        "colorOverLifetime: 目前只支援單色或雙色"
+      ],
+      "texKey": "cfxr_aura_runic"
+    },
+    {
+      "name": "Plexus",
+      "position": null,
+      "color": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 255
+      },
+      "startSize": 0.1,
+      "startSpeed": 0.01,
+      "startLifetime": 2,
+      "gravity": 0,
+      "rateOverTime": 2.5,
+      "burstCount": 0,
+      "shapeType": 3,
+      "radius": 2,
+      "simulationSpace": 1,
+      "loop": true,
+      "duration": 1,
+      "capacity": 1000,
+      "renderMode": 0,
+      "velocityScale": 0,
+      "lengthScale": 2,
+      "materialHint": "MAT_ADDITIVE",
+      "texKeyHint": null,
+      "velocityOverLifetime": {
+        "enabled": true,
+        "x": 0,
+        "y": 0,
+        "z": 0,
+        "speedModifier": 1,
+        "space": 1
+      },
+      "sizeOverLifetime": {
+        "enabled": true,
+        "multiplier": 1
+      },
+      "colorOverLifetime": {
+        "enabled": true,
+        "color": {
+          "r": 255,
+          "g": 255,
+          "b": 255,
+          "a": 255
+        },
+        "mode": 1
+      },
+      "unsupported": [
+        "forceOverLifetime: 尚未映射到 compound generator",
+        "rotationOverLifetime: 尚未映射到 compound generator",
+        "textureAnimation: 尚未映射到 compound generator",
+        "limitVelocityOverLifetime: 尚未映射到 compound generator",
+        "trails: 尚未映射到 compound generator",
+        "noise: 尚未映射到 compound generator",
+        "sizeOverLifetime: 目前只支援常數倍率",
+        "colorOverLifetime: 目前只支援單色或雙色"
+      ],
+      "texKey": "cfxr_aura_runic"
+    }
+  ]
+}

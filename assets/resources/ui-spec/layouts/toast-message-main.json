@@ -1,0 +1,24 @@
+{
+  "id": "toast-message-main",
+  "version": 1,
+  "canvas": { "fitWidth": true, "fitHeight": true, "safeArea": true, "designWidth": 1920, "designHeight": 1080 },
+  "root": {
+    "type": "panel",
+    "name": "ToastRoot",
+    "width": 500,
+    "height": 60,
+    "widget": { "top": 120 },
+    "skinSlot": "toast.bg",
+    "transition": { "enter": "fadeIn", "exit": "fadeOut", "duration": 0.3 },
+    "layout": { "type": "horizontal", "spacing": 0, "paddingLeft": 20, "paddingRight": 20 },
+    "children": [
+      {
+        "type": "label",
+        "name": "Message",
+        "width": "100%",
+        "bind": "message",
+        "styleSlot": "toast.label"
+      }
+    ]
+  }
+}

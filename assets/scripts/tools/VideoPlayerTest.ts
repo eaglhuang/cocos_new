@@ -1,3 +1,4 @@
+// @spec-source → 見 docs/cross-reference-index.md
 import {
     _decorator, Component, Node, VideoPlayer,
     UITransform, Canvas, find, Size, view, VideoClip,
@@ -46,6 +47,8 @@ export class VideoPlayerTest extends Component {
     private _nativeVideo: HTMLVideoElement | null = null; // <video> 元素本身，供最終清掃用
     private _isPlaying: boolean = false;
     private _playStartTime: number = 0;
+    /** 影片結束（或跳過）後的回呼，在 overlay 開始淡出的瞬間觸發，場景特效與淡出同步進行 */
+    private _onCompleteCallback: (() => void) | null = null;
 
     start() {
         console.log('[VideoPlayerTest] 就緒。按空白鍵播放影片，按 ESC 跳過。');
@@ -71,7 +74,15 @@ export class VideoPlayerTest extends Component {
     //  公開 API
     // ─────────────────────────────────────────
 
-    public playFullScreen() {
+    /**
+     * 全螢幕播放影片。
+     *
+     * @param onComplete 影片播畢（或跳過）時的回呼。
+     *   **觸發時機**: overlay 開始淡出的瞬間，此時黑幕正在 0.3s 淡出，
+     *   遊戲場景特效可與淡出動畫同步播放，達到無縫銜接。 \
+     *   Unity 對照: Timeline 的 Signal 或 PlayableDirector.stopped 事件。
+     */
+    public playFullScreen(onComplete?: () => void) {
         if (this._isPlaying) {
             console.warn('[VideoPlayerTest] 影片正在播放中');
             return;
@@ -84,6 +95,7 @@ export class VideoPlayerTest extends Component {
         console.log('[VideoPlayerTest] 開始播放...');
         this._isPlaying = true;
         this._playStartTime = Date.now() / 1000;
+        this._onCompleteCallback = onComplete ?? null;
 
         // 1. 建立純 CSS 黑底遮罩（不走 WebGL，不干擾 DOM 分層）
         this._buildCssOverlay(0);
@@ -340,6 +352,19 @@ export class VideoPlayerTest extends Component {
         } else {
             console.warn('[VideoPlayerTest] cssOverlay 不存在');
         }
+
+        // ─── 回呼：在 overlay 開始淡出的瞬間立即觸發 ─────────────────────
+        // 不等 350ms 清理完成，讓場景特效與黑幕淡出同步進行，達到無縫銜接。
+        // Unity 對照：相當於 Timeline 的 Signal Emitter 在最後一幀發送信號，
+        //             Director.stopped 事件此時才觸發，而畫面已恢復可見狀態。
+        const cb = this._onCompleteCallback;
+        this._onCompleteCallback = null;
+        if (cb) {
+            console.log('[VideoPlayerTest] onComplete 回呼觸發（overlay 淡出中，場景可立即恢復）');
+            cb();
+        }
+        // 同時發送 node 事件，供外部元件監聽（鬆耦合）
+        this.node.emit('video-completed');
 
         // 等淡出完成再清理
         console.log('[VideoPlayerTest] 350ms 後執行 _cleanup()...');

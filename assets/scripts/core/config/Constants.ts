@@ -1,3 +1,4 @@
+// @spec-source → 見 docs/cross-reference-index.md
 export const GAME_CONFIG = {
   GRID_LANES: 5,
   GRID_DEPTH: 8,
@@ -7,6 +8,13 @@ export const GAME_CONFIG = {
   MAX_PLAYER_DEPLOY_PER_TURN: 1,
   MAX_ENEMY_DEPLOY_PER_TURN: 1,
   TURN_LIMIT: 50,
+  AI_COUNTER_STRATEGY_CHANCE: 0.35,
+  // 武將化身單挑：暴擊與閃躲參數（對應 E-11/E-14）
+  GENERAL_BASE_CRIT_CHANCE: 0.05,         // 基礎暴擊率 5%（與 E-11 baseCrit 對應）
+  GENERAL_MAX_CRIT_CHANCE: 0.50,          // 暴擊率上限 50%
+  GENERAL_CRIT_DAMAGE_MULTIPLIER: 1.5,    // 暴擊傷害倍率 1.5x（E-11 crit_damage）
+  GENERAL_BASE_DODGE_CHANCE: 0.03,        // 基礎閃躲率 3%
+  GENERAL_MAX_DODGE_CHANCE: 0.40,         // 閃躲率上限 40%
 };
 
 export enum TurnPhase {
@@ -127,4 +135,17 @@ export const EVENT_NAMES = {
   GeneralDuelAccepted:  "general-duel-accepted",
   GeneralDuelRejected:  "general-duel-rejected",
   DuelPenaltyApplied:   "duel-penalty-applied",
+  // 武將快覽彈窗
+  ShowGeneralQuickView: "show-general-quickview",
+  // 戰鬥控制列
+  AutoBattleToggled:    "auto-battle-toggled",   // payload: boolean (isEnabled)
+  BattleSpeedToggled:   "battle-speed-toggled",  // payload: number  (1 | 2)
+  ShowSettingsRequested:"show-settings-requested",
 };
+
+export enum SceneName {
+  Login   = "LoginScene",
+  Loading = "LoadingScene",
+  Lobby   = "LobbyScene",
+  Battle = "BattleScene",
+}

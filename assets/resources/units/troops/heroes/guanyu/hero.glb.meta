@@ -1,0 +1,239 @@
+{
+  "ver": "2.3.14",
+  "importer": "gltf",
+  "imported": true,
+  "uuid": "7b8d1ce1-8b9a-488f-85eb-ba4f05e50ad1",
+  "files": [],
+  "subMetas": {
+    "08caa": {
+      "importer": "gltf-mesh",
+      "uuid": "7b8d1ce1-8b9a-488f-85eb-ba4f05e50ad1@08caa",
+      "displayName": "",
+      "id": "08caa",
+      "name": "tripo_mesh_26f69bf9-85bf-4af8-96d9-b9116a4a24e3.mesh",
+      "userData": {
+        "gltfIndex": 0,
+        "triangleCount": 8360
+      },
+      "ver": "1.1.1",
+      "imported": true,
+      "files": [
+        ".bin",
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "52ed8": {
+      "importer": "gltf-embeded-image",
+      "uuid": "7b8d1ce1-8b9a-488f-85eb-ba4f05e50ad1@52ed8",
+      "displayName": "",
+      "id": "52ed8",
+      "name": "fantasywarrior3dmodel_normal.image",
+      "userData": {
+        "gltfIndex": 0,
+        "fixAlphaTransparencyArtifacts": true,
+        "hasAlpha": false,
+        "type": "texture"
+      },
+      "ver": "1.0.3",
+      "imported": true,
+      "files": [
+        ".jpg",
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "b4af7": {
+      "importer": "gltf-embeded-image",
+      "uuid": "7b8d1ce1-8b9a-488f-85eb-ba4f05e50ad1@b4af7",
+      "displayName": "",
+      "id": "b4af7",
+      "name": "fantasywarrior3dmodel_basecolor.image",
+      "userData": {
+        "gltfIndex": 1,
+        "fixAlphaTransparencyArtifacts": true,
+        "hasAlpha": false,
+        "type": "texture"
+      },
+      "ver": "1.0.3",
+      "imported": true,
+      "files": [
+        ".jpg",
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "8f04b": {
+      "importer": "gltf-embeded-image",
+      "uuid": "7b8d1ce1-8b9a-488f-85eb-ba4f05e50ad1@8f04b",
+      "displayName": "",
+      "id": "8f04b",
+      "name": "fantasywarrior3dmodel_rm.image",
+      "userData": {
+        "gltfIndex": 2,
+        "fixAlphaTransparencyArtifacts": true,
+        "hasAlpha": false,
+        "type": "texture"
+      },
+      "ver": "1.0.3",
+      "imported": true,
+      "files": [
+        ".json",
+        ".png"
+      ],
+      "subMetas": {}
+    },
+    "3effa": {
+      "importer": "texture",
+      "uuid": "7b8d1ce1-8b9a-488f-85eb-ba4f05e50ad1@3effa",
+      "displayName": "",
+      "id": "3effa",
+      "name": "UnnamedTexture-0.texture",
+      "userData": {
+        "wrapModeS": "repeat",
+        "wrapModeT": "repeat",
+        "minfilter": "linear",
+        "magfilter": "linear",
+        "mipfilter": "linear",
+        "anisotropy": 0,
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "7b8d1ce1-8b9a-488f-85eb-ba4f05e50ad1@52ed8"
+      },
+      "ver": "1.0.22",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "221a5": {
+      "importer": "texture",
+      "uuid": "7b8d1ce1-8b9a-488f-85eb-ba4f05e50ad1@221a5",
+      "displayName": "",
+      "id": "221a5",
+      "name": "UnnamedTexture-1.texture",
+      "userData": {
+        "wrapModeS": "repeat",
+        "wrapModeT": "repeat",
+        "minfilter": "linear",
+        "magfilter": "linear",
+        "mipfilter": "linear",
+        "anisotropy": 0,
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "7b8d1ce1-8b9a-488f-85eb-ba4f05e50ad1@b4af7"
+      },
+      "ver": "1.0.22",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "0089c": {
+      "importer": "texture",
+      "uuid": "7b8d1ce1-8b9a-488f-85eb-ba4f05e50ad1@0089c",
+      "displayName": "",
+      "id": "0089c",
+      "name": "UnnamedTexture-2.texture",
+      "userData": {
+        "wrapModeS": "repeat",
+        "wrapModeT": "repeat",
+        "minfilter": "linear",
+        "magfilter": "linear",
+        "mipfilter": "linear",
+        "anisotropy": 0,
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "7b8d1ce1-8b9a-488f-85eb-ba4f05e50ad1@8f04b"
+      },
+      "ver": "1.0.22",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "0cfd4": {
+      "importer": "gltf-material",
+      "uuid": "7b8d1ce1-8b9a-488f-85eb-ba4f05e50ad1@0cfd4",
+      "displayName": "",
+      "id": "0cfd4",
+      "name": "tripo_mat_26f69bf9-85bf-4af8-96d9-b9116a4a24e3.material",
+      "userData": {
+        "gltfIndex": 0
+      },
+      "ver": "1.0.14",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "ff881": {
+      "importer": "gltf-scene",
+      "uuid": "7b8d1ce1-8b9a-488f-85eb-ba4f05e50ad1@ff881",
+      "displayName": "",
+      "id": "ff881",
+      "name": "hero.prefab",
+      "userData": {
+        "gltfIndex": 0
+      },
+      "ver": "1.0.14",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    }
+  },
+  "userData": {
+    "imageMetas": [
+      {
+        "name": "fantasywarrior3dmodel_normal",
+        "uri": "7b8d1ce1-8b9a-488f-85eb-ba4f05e50ad1@52ed8"
+      },
+      {
+        "name": "fantasywarrior3dmodel_basecolor",
+        "uri": "7b8d1ce1-8b9a-488f-85eb-ba4f05e50ad1@b4af7"
+      },
+      {
+        "name": "fantasywarrior3dmodel_rm",
+        "uri": "7b8d1ce1-8b9a-488f-85eb-ba4f05e50ad1@8f04b"
+      }
+    ],
+    "lods": {
+      "enable": false,
+      "hasBuiltinLOD": false,
+      "options": [
+        {
+          "screenRatio": 0.25,
+          "faceCount": 1
+        },
+        {
+          "screenRatio": 0.125,
+          "faceCount": 0.25
+        },
+        {
+          "screenRatio": 0.01,
+          "faceCount": 0.1
+        }
+      ]
+    },
+    "assetFinder": {
+      "meshes": [
+        "7b8d1ce1-8b9a-488f-85eb-ba4f05e50ad1@08caa"
+      ],
+      "skeletons": [],
+      "textures": [
+        "7b8d1ce1-8b9a-488f-85eb-ba4f05e50ad1@3effa",
+        "7b8d1ce1-8b9a-488f-85eb-ba4f05e50ad1@221a5",
+        "7b8d1ce1-8b9a-488f-85eb-ba4f05e50ad1@0089c"
+      ],
+      "materials": [
+        "7b8d1ce1-8b9a-488f-85eb-ba4f05e50ad1@0cfd4"
+      ],
+      "scenes": [
+        "7b8d1ce1-8b9a-488f-85eb-ba4f05e50ad1@ff881"
+      ]
+    }
+  }
+}

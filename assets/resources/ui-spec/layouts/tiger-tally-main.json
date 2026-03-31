@@ -1,0 +1,101 @@
+{
+  "id": "tiger-tally-main",
+  "version": 2,
+  "_doc": "Zone 3: 虎符卡片區。左側螢幕，TopBar 下方，固定 4 張卡片。每張卡 160px 高；點擊任一卡片觸發 UnitInfoPanel 滑出。",
+  "canvas": { "fitWidth": true, "fitHeight": true, "safeArea": true, "designWidth": 1920, "designHeight": 1080 },
+  "root": {
+    "type": "container",
+    "name": "TigerTallyRoot",
+    "id": "tigerTallyRoot",
+    "widget": { "top": 88, "left": 0, "bottom": 0 },
+    "width": "16%",
+    "layout": { "type": "vertical", "spacing": 4, "paddingTop": 8, "paddingBottom": 8, "paddingLeft": 8, "paddingRight": 8 },
+    "_doc": "寬度 16% ≈ 307px (@1920)。上接 TopBar(88px)，下接螢幕底部。",
+    "children": [
+      {
+        "type": "button",
+        "name": "TallyCard1",
+        "id": "tallyCard1",
+        "width": "100%",
+        "height": 160,
+        "skinSlot": "tally.card.bg",
+        "_doc": "虎符卡 1（玩家目前上場武將的第1支兵種）",
+        "children": [
+          { "type": "image",  "name": "ArtBg1",       "id": "artBg1",        "widget": { "top": 0, "left": 0, "right": 0, "bottom": 0 }, "skinSlot": "tally.card.art" },
+          { "type": "image",  "name": "RarityBorder1", "id": "rarityBorder1", "widget": { "top": 0, "left": 0, "right": 0, "bottom": 0 }, "skinSlot": "tally.card.rarity.normal" },
+          { "type": "label",  "name": "AtkLabel1",     "id": "atkLabel1",     "widget": { "left": 6, "top": 6 },    "width": 56, "height": 20, "styleSlot": "tally.label.atk", "_doc": "攻擊值：⚔N" },
+          { "type": "label",  "name": "HpLabel1",      "id": "hpLabel1",      "widget": { "right": 6, "top": 6 },   "width": 56, "height": 20, "styleSlot": "tally.label.hp",  "_doc": "生命值：❤N" },
+          { "type": "image",  "name": "UnitTypeBadge1","id": "unitTypeBadge1","widget": { "left": 4, "bottom": 4 }, "width": 32, "height": 32, "skinSlot": "tally.badge.type", "_doc": "兵種圓徽章 32×32" },
+          { "type": "label",  "name": "UnitName1",     "id": "unitName1",     "widget": { "left": 40, "bottom": 10 }, "width": 110, "height": 18, "styleSlot": "tally.label.name" },
+          { "type": "label",  "name": "CostBadge1",    "id": "costBadge1",    "widget": { "right": 6, "bottom": 6 }, "width": 28, "height": 28, "styleSlot": "tally.label.cost" },
+          { "type": "image",  "name": "DisabledMask1", "id": "disabledMask1", "widget": { "top": 0, "left": 0, "right": 0, "bottom": 0 }, "skinSlot": "tally.card.disabled", "active": false }
+        ]
+      },
+      {
+        "type": "button",
+        "name": "TallyCard2",
+        "id": "tallyCard2",
+        "width": "100%",
+        "height": 160,
+        "skinSlot": "tally.card.bg",
+        "_doc": "虎符卡 2",
+        "children": [
+          { "type": "image",  "name": "ArtBg2",       "id": "artBg2",        "widget": { "top": 0, "left": 0, "right": 0, "bottom": 0 }, "skinSlot": "tally.card.art" },
+          { "type": "image",  "name": "RarityBorder2", "id": "rarityBorder2", "widget": { "top": 0, "left": 0, "right": 0, "bottom": 0 }, "skinSlot": "tally.card.rarity.normal" },
+          { "type": "label",  "name": "AtkLabel2",     "id": "atkLabel2",     "widget": { "left": 6, "top": 6 },    "width": 56, "height": 20, "styleSlot": "tally.label.atk" },
+          { "type": "label",  "name": "HpLabel2",      "id": "hpLabel2",      "widget": { "right": 6, "top": 6 },   "width": 56, "height": 20, "styleSlot": "tally.label.hp" },
+          { "type": "image",  "name": "UnitTypeBadge2","id": "unitTypeBadge2","widget": { "left": 4, "bottom": 4 }, "width": 32, "height": 32, "skinSlot": "tally.badge.type" },
+          { "type": "label",  "name": "UnitName2",     "id": "unitName2",     "widget": { "left": 40, "bottom": 10 }, "width": 110, "height": 18, "styleSlot": "tally.label.name" },
+          { "type": "label",  "name": "CostBadge2",    "id": "costBadge2",    "widget": { "right": 6, "bottom": 6 }, "width": 28, "height": 28, "styleSlot": "tally.label.cost" },
+          { "type": "image",  "name": "DisabledMask2", "id": "disabledMask2", "widget": { "top": 0, "left": 0, "right": 0, "bottom": 0 }, "skinSlot": "tally.card.disabled", "active": false }
+        ]
+      },
+      {
+        "type": "button",
+        "name": "TallyCard3",
+        "id": "tallyCard3",
+        "width": "100%",
+        "height": 160,
+        "skinSlot": "tally.card.bg",
+        "_doc": "虎符卡 3",
+        "children": [
+          { "type": "image",  "name": "ArtBg3",       "id": "artBg3",        "widget": { "top": 0, "left": 0, "right": 0, "bottom": 0 }, "skinSlot": "tally.card.art" },
+          { "type": "image",  "name": "RarityBorder3", "id": "rarityBorder3", "widget": { "top": 0, "left": 0, "right": 0, "bottom": 0 }, "skinSlot": "tally.card.rarity.normal" },
+          { "type": "label",  "name": "AtkLabel3",     "id": "atkLabel3",     "widget": { "left": 6, "top": 6 },    "width": 56, "height": 20, "styleSlot": "tally.label.atk" },
+          { "type": "label",  "name": "HpLabel3",      "id": "hpLabel3",      "widget": { "right": 6, "top": 6 },   "width": 56, "height": 20, "styleSlot": "tally.label.hp" },
+          { "type": "image",  "name": "UnitTypeBadge3","id": "unitTypeBadge3","widget": { "left": 4, "bottom": 4 }, "width": 32, "height": 32, "skinSlot": "tally.badge.type" },
+          { "type": "label",  "name": "UnitName3",     "id": "unitName3",     "widget": { "left": 40, "bottom": 10 }, "width": 110, "height": 18, "styleSlot": "tally.label.name" },
+          { "type": "label",  "name": "CostBadge3",    "id": "costBadge3",    "widget": { "right": 6, "bottom": 6 }, "width": 28, "height": 28, "styleSlot": "tally.label.cost" },
+          { "type": "image",  "name": "DisabledMask3", "id": "disabledMask3", "widget": { "top": 0, "left": 0, "right": 0, "bottom": 0 }, "skinSlot": "tally.card.disabled", "active": false }
+        ]
+      },
+      {
+        "type": "button",
+        "name": "TallyCard4",
+        "id": "tallyCard4",
+        "width": "100%",
+        "height": 160,
+        "skinSlot": "tally.card.bg",
+        "_doc": "虎符卡 4（冷卻中，預設 disabledMask active:true）",
+        "children": [
+          { "type": "image",  "name": "ArtBg4",       "id": "artBg4",        "widget": { "top": 0, "left": 0, "right": 0, "bottom": 0 }, "skinSlot": "tally.card.art" },
+          { "type": "image",  "name": "RarityBorder4", "id": "rarityBorder4", "widget": { "top": 0, "left": 0, "right": 0, "bottom": 0 }, "skinSlot": "tally.card.rarity.normal" },
+          { "type": "label",  "name": "AtkLabel4",     "id": "atkLabel4",     "widget": { "left": 6, "top": 6 },    "width": 56, "height": 20, "styleSlot": "tally.label.atk" },
+          { "type": "label",  "name": "HpLabel4",      "id": "hpLabel4",      "widget": { "right": 6, "top": 6 },   "width": 56, "height": 20, "styleSlot": "tally.label.hp" },
+          { "type": "image",  "name": "UnitTypeBadge4","id": "unitTypeBadge4","widget": { "left": 4, "bottom": 4 }, "width": 32, "height": 32, "skinSlot": "tally.badge.type" },
+          { "type": "label",  "name": "UnitName4",     "id": "unitName4",     "widget": { "left": 40, "bottom": 10 }, "width": 110, "height": 18, "styleSlot": "tally.label.name" },
+          { "type": "label",  "name": "CostBadge4",    "id": "costBadge4",    "widget": { "right": 6, "bottom": 6 }, "width": 28, "height": 28, "styleSlot": "tally.label.cost" },
+          { "type": "image",  "name": "DisabledMask4", "id": "disabledMask4", "widget": { "top": 0, "left": 0, "right": 0, "bottom": 0 }, "skinSlot": "tally.card.disabled", "active": true,
+            "_doc": "第4張卡預設冷卻中，active:true 顯示灰色遮罩" }
+        ]
+      }
+    ]
+  },
+  "interactions": {
+    "_doc": "TS 實作參考",
+    "onCardClick": "TigerTallyPanel.ts 監聽各 tallyCard 的 Button.EventType.CLICK：傳入 cardIndex → 呼叫 onCardSelect(cardIndex, cardData)",
+    "onCardSelect": "BattleScenePanel.ts 透過 tigerTallyPanel.onCardSelect = callback 接收 → 呼叫 unitInfoPanel.show(cardData)",
+    "setCards": "TigerTallyPanel.setCards(cards: TallyCardData[]) 一次性重繪4張卡；cards.length < 4 的剩餘卡設為 disabled",
+    "disabledState": "disabledMask active:true 時同步將對應 tallyCard 的 Button.interactable = false（仍可查看資訊）"
+  }
+}

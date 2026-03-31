@@ -1,3 +1,4 @@
+// @spec-source → 見 docs/cross-reference-index.md
 import { instantiate, Node, Prefab, NodePool, Vec3 } from "cc";
 
 /**

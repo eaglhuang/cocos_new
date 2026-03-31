@@ -1,3 +1,4 @@
+// @spec-source → 見 docs/cross-reference-index.md
 import { _decorator, Component, Sprite, SpriteFrame, UITransform, resources } from "cc";
 
 const { ccclass, property, executeInEditMode } = _decorator;

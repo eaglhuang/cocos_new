@@ -1,0 +1,218 @@
+{
+  "id": "Lightning aura",
+  "label": "Lightning aura (Unity import)",
+  "folder": "Lightning aura",
+  "scale": 1,
+  "audio": null,
+  "source": {
+    "unityPrefab": "tools\\Magic effects pack\\Prefabs\\Character auras\\Lightning aura.prefab"
+  },
+  "warnings": [
+    "Smoke: forceOverLifetime: 尚未映射到 compound generator",
+    "Smoke: rotationOverLifetime: 尚未映射到 compound generator",
+    "Smoke: textureAnimation: 尚未映射到 compound generator",
+    "Smoke: limitVelocityOverLifetime: 尚未映射到 compound generator",
+    "Smoke: trails: 尚未映射到 compound generator",
+    "Smoke: noise: 尚未映射到 compound generator",
+    "Smoke: sizeOverLifetime: 目前只支援常數倍率",
+    "Smoke: colorOverLifetime: 目前只支援單色或雙色",
+    "Sparks: forceOverLifetime: 尚未映射到 compound generator",
+    "Sparks: rotationOverLifetime: 尚未映射到 compound generator",
+    "Sparks: textureAnimation: 尚未映射到 compound generator",
+    "Sparks: limitVelocityOverLifetime: 尚未映射到 compound generator",
+    "Sparks: trails: 尚未映射到 compound generator",
+    "Sparks: noise: 尚未映射到 compound generator",
+    "Sparks: sizeOverLifetime: 目前只支援常數倍率",
+    "Sparks: colorOverLifetime: 目前只支援單色或雙色",
+    "Lightning aura: forceOverLifetime: 尚未映射到 compound generator",
+    "Lightning aura: rotationOverLifetime: 尚未映射到 compound generator",
+    "Lightning aura: textureAnimation: 尚未映射到 compound generator",
+    "Lightning aura: limitVelocityOverLifetime: 尚未映射到 compound generator",
+    "Lightning aura: trails: 尚未映射到 compound generator",
+    "Lightning aura: noise: 尚未映射到 compound generator",
+    "Lightning aura: sizeOverLifetime: 目前只支援常數倍率",
+    "Lightning aura: colorOverLifetime: 目前只支援單色或雙色"
+  ],
+  "subPS": [
+    {
+      "name": "Smoke",
+      "position": null,
+      "color": {
+        "r": 85,
+        "g": 151,
+        "b": 255,
+        "a": 36
+      },
+      "startSize": 1,
+      "startSpeed": 0,
+      "startLifetime": 1,
+      "gravity": 0,
+      "rateOverTime": 30,
+      "burstCount": 0,
+      "shapeType": 3,
+      "radius": 1,
+      "simulationSpace": 1,
+      "loop": true,
+      "duration": 1,
+      "capacity": 1000,
+      "renderMode": 0,
+      "velocityScale": 0.1,
+      "lengthScale": 2,
+      "materialHint": "MAT_ADDITIVE",
+      "texKeyHint": null,
+      "velocityOverLifetime": {
+        "enabled": true,
+        "x": 0,
+        "y": 0,
+        "z": 0,
+        "speedModifier": 1,
+        "space": 1
+      },
+      "sizeOverLifetime": {
+        "enabled": true,
+        "multiplier": 1
+      },
+      "colorOverLifetime": {
+        "enabled": true,
+        "color": {
+          "r": 255,
+          "g": 255,
+          "b": 255,
+          "a": 255
+        },
+        "mode": 1
+      },
+      "unsupported": [
+        "forceOverLifetime: 尚未映射到 compound generator",
+        "rotationOverLifetime: 尚未映射到 compound generator",
+        "textureAnimation: 尚未映射到 compound generator",
+        "limitVelocityOverLifetime: 尚未映射到 compound generator",
+        "trails: 尚未映射到 compound generator",
+        "noise: 尚未映射到 compound generator",
+        "sizeOverLifetime: 目前只支援常數倍率",
+        "colorOverLifetime: 目前只支援單色或雙色"
+      ],
+      "texKey": "cfxr_aura_runic"
+    },
+    {
+      "name": "Sparks",
+      "position": null,
+      "color": {
+        "r": 83,
+        "g": 145,
+        "b": 255,
+        "a": 255
+      },
+      "startSize": 0.03,
+      "startSpeed": 3,
+      "startLifetime": 0.5,
+      "gravity": 0,
+      "rateOverTime": 15,
+      "burstCount": 1,
+      "shapeType": 1,
+      "radius": 0.1,
+      "simulationSpace": 1,
+      "loop": true,
+      "duration": 1,
+      "capacity": 1000,
+      "renderMode": 1,
+      "velocityScale": 0.05,
+      "lengthScale": 2,
+      "materialHint": "MAT_ADDITIVE",
+      "texKeyHint": null,
+      "velocityOverLifetime": {
+        "enabled": true,
+        "x": 0,
+        "y": 0,
+        "z": 0,
+        "speedModifier": 1,
+        "space": 1
+      },
+      "sizeOverLifetime": {
+        "enabled": true,
+        "multiplier": 1
+      },
+      "colorOverLifetime": {
+        "enabled": true,
+        "color": {
+          "r": 255,
+          "g": 255,
+          "b": 255,
+          "a": 255
+        },
+        "mode": 1
+      },
+      "unsupported": [
+        "forceOverLifetime: 尚未映射到 compound generator",
+        "rotationOverLifetime: 尚未映射到 compound generator",
+        "textureAnimation: 尚未映射到 compound generator",
+        "limitVelocityOverLifetime: 尚未映射到 compound generator",
+        "trails: 尚未映射到 compound generator",
+        "noise: 尚未映射到 compound generator",
+        "sizeOverLifetime: 目前只支援常數倍率",
+        "colorOverLifetime: 目前只支援單色或雙色"
+      ],
+      "texKey": "cfxr_aura_runic"
+    },
+    {
+      "name": "Lightning aura",
+      "position": null,
+      "color": {
+        "r": 40,
+        "g": 142,
+        "b": 255,
+        "a": 255
+      },
+      "startSize": 0.6,
+      "startSpeed": 0,
+      "startLifetime": 0.1,
+      "gravity": 0,
+      "rateOverTime": 100,
+      "burstCount": 0,
+      "shapeType": 1,
+      "radius": 1,
+      "simulationSpace": 1,
+      "loop": true,
+      "duration": 1,
+      "capacity": 1000,
+      "renderMode": 0,
+      "velocityScale": 0.1,
+      "lengthScale": 2,
+      "materialHint": "MAT_ADDITIVE",
+      "texKeyHint": null,
+      "velocityOverLifetime": {
+        "enabled": true,
+        "x": 0,
+        "y": 0,
+        "z": 0,
+        "speedModifier": 1,
+        "space": 1
+      },
+      "sizeOverLifetime": {
+        "enabled": true,
+        "multiplier": 1
+      },
+      "colorOverLifetime": {
+        "enabled": true,
+        "color": {
+          "r": 255,
+          "g": 255,
+          "b": 255,
+          "a": 255
+        },
+        "mode": 1
+      },
+      "unsupported": [
+        "forceOverLifetime: 尚未映射到 compound generator",
+        "rotationOverLifetime: 尚未映射到 compound generator",
+        "textureAnimation: 尚未映射到 compound generator",
+        "limitVelocityOverLifetime: 尚未映射到 compound generator",
+        "trails: 尚未映射到 compound generator",
+        "noise: 尚未映射到 compound generator",
+        "sizeOverLifetime: 目前只支援常數倍率",
+        "colorOverLifetime: 目前只支援單色或雙色"
+      ],
+      "texKey": "cfxr_aura_runic"
+    }
+  ]
+}

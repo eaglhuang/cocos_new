@@ -1,0 +1,13 @@
+{
+  "id": "result-popup-screen",
+  "version": 1,
+  "uiId": "ResultPopup",
+  "layer": "Popup",
+  "bundle": "ui_common",
+  "layout": "result-popup-main",
+  "skin": "result-popup-default",
+  "validation": {
+    "devices": ["phone-16-9", "phone-19_5-9", "tablet-4-3"],
+    "allowMissingSkin": true
+  }
+}

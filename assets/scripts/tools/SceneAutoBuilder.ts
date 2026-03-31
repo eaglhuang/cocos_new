@@ -1,3 +1,4 @@
+// @spec-source → 見 docs/cross-reference-index.md
 import { _decorator, Component, Node, Canvas, UITransform, Label, Button, ProgressBar, Sprite, Color, Widget, Vec3 } from "cc";
 import { EDITOR } from "cc/env";
 

@@ -1,5 +1,7 @@
+// @spec-source → 見 docs/cross-reference-index.md
 import {
   _decorator,
+  ImageAsset,
   Camera,
   Color,
   Component,
@@ -27,6 +29,7 @@ import {
   utils,
   Vec3,
   VerticalTextAlignment,
+  resources,
 } from "cc";
 import { Faction, GAME_CONFIG, TroopType } from "../../core/config/Constants";
 import { GeneralUnit } from "../../core/models/GeneralUnit";
@@ -43,6 +46,9 @@ import {
   HeroUnitAssetEntry,
   TROOP_UNIT_ASSET_CATALOG,
   TroopUnitAssetEntry,
+  SubFaction,
+  GENERAL_SUBFACTION_MAP,
+  getTroopSubFactionPrefabPath,
 } from "../../core/config/UnitAssetCatalog";
 
 const { ccclass, property } = _decorator;
@@ -134,8 +140,11 @@ export class UnitRenderer extends Component {
   private readonly uiWorldPosBuf = new Vec3();
   private readonly generalViews = new Map<Faction, GeneralView>();
   private readonly tileBuffViews = new Map<string, TileBuffView>();
-  private readonly troopPrefabLoads = new Map<TroopType, Promise<Prefab | null>>();
+  private readonly troopPrefabLoads = new Map<string, Promise<Prefab | null>>();
   private readonly heroPrefabLoads = new Map<string, Promise<Prefab | null>>();
+  // MatCap 貼圖快取（所有英雄共用同一張，載入一次後復用）
+  private heroMatcapTex: Texture2D | null = null;
+  private matcapLoadPromise: Promise<Texture2D | null> | null = null;
   private latestState: BattleState | null = null;
 
   onLoad(): void {
@@ -207,7 +216,9 @@ export class UnitRenderer extends Component {
     if (!view.usingTroopFormation && !this.isGeneralAvatarUnit(unit)) {
       const entry = TROOP_UNIT_ASSET_CATALOG[unit.type];
       if (entry) {
-        const prefab = await this.loadTroopPrefab(unit.type, entry);
+        const general = this.latestState?.getGeneral(unit.faction);
+        const subFaction = general ? (GENERAL_SUBFACTION_MAP[general.id] ?? SubFaction.Shu) : SubFaction.Shu;
+        const prefab = await this.loadTroopPrefab(unit.type, entry, subFaction);
         if (prefab && view.worldNode.isValid && view.formationRoot.children.length === 0) {
           this.buildTroopFormation(view, prefab, unit, entry);
         }
@@ -413,15 +424,17 @@ export class UnitRenderer extends Component {
     this.recoilNode(defenderNode, defenderFaction);
   }
 
-  public playGeneralValueChange(defenderFaction: Faction, value: number): void {
+  public playGeneralValueChange(defenderFaction: Faction, value: number, isCrit = false): void {
     const generalView = this.generalViews.get(defenderFaction);
     if (!generalView) return;
 
     const worldPos = generalView.worldNode.worldPosition.clone();
     worldPos.y += this.unitHeight * 0.5;
 
+    // 暴擊時使用 dmg_crit 字體，否則依陣營選色
     const isPlayerSide = defenderFaction === Faction.Player;
-    this.spawnFloatText(`-${value}`, isPlayerSide ? 'dmg_player' : 'dmg_enemy', worldPos);
+    const floatType = isCrit ? 'dmg_crit' : (isPlayerSide ? 'dmg_player' : 'dmg_enemy');
+    this.spawnFloatText(`-${value}`, floatType, worldPos);
   }
 
   public playValueChange(unit: TroopUnit | null, value: number, kind: "damage" | "heal"): void {
@@ -1362,7 +1375,11 @@ export class UnitRenderer extends Component {
       return;
     }
 
-    const prefab = await this.loadTroopPrefab(unit.type, entry);
+    // 根據主將 ID 決定所屬國籍子陣營（綠/藍/紅）
+    const general = this.latestState?.getGeneral(unit.faction);
+    const subFaction = general ? (GENERAL_SUBFACTION_MAP[general.id] ?? SubFaction.Shu) : SubFaction.Shu;
+
+    const prefab = await this.loadTroopPrefab(unit.type, entry, subFaction);
     if (!prefab || !view.worldNode.isValid || view.formationRoot.children.length > 0) {
       return;
     }
@@ -1370,15 +1387,20 @@ export class UnitRenderer extends Component {
     this.buildTroopFormation(view, prefab, unit, entry);
   }
 
-  private loadTroopPrefab(type: TroopType, entry: TroopUnitAssetEntry): Promise<Prefab | null> {
-    const cached = this.troopPrefabLoads.get(type);
+  private loadTroopPrefab(type: TroopType, entry: TroopUnitAssetEntry, subFaction: SubFaction): Promise<Prefab | null> {
+    const cacheKey = `${type}_${subFaction}`;
+    const cached = this.troopPrefabLoads.get(cacheKey);
     if (cached) {
       return cached;
     }
 
     const pending = new Promise<Prefab | null>((resolve) => {
+      // 最終 UUID 回退：Wu 陣營優先使用 sceneUuidRed，其他陣營使用 sceneUuid
       const resolveByUuid = (): void => {
-        assetManager.loadAny({ uuid: entry.sceneUuid }, (error, asset) => {
+        const uuid = (subFaction === SubFaction.Wu && entry.sceneUuidRed)
+          ? entry.sceneUuidRed
+          : entry.sceneUuid;
+        assetManager.loadAny({ uuid }, (error, asset) => {
           if (error || !(asset instanceof Prefab)) {
             console.warn(`[UnitRenderer] 載入小兵 prefab 失敗: ${entry.glbPath}`, error ?? new Error("asset is not Prefab"));
             resolve(null);
@@ -1388,17 +1410,25 @@ export class UnitRenderer extends Component {
         });
       };
 
-      if (entry.prefabPath) {
-        services().resource.loadPrefab(entry.prefabPath)
-          .then(prefab => resolve(prefab))
-          .catch(() => resolveByUuid());
-        return;
-      }
-
-      resolveByUuid();
+      // 優先載入子陣營特定的 Prefab (例如 unit_red)
+      const subFactionPath = getTroopSubFactionPrefabPath(type, subFaction);
+      
+      services().resource.loadPrefab(subFactionPath)
+        .then(prefab => resolve(prefab))
+        .catch(() => {
+          // 若子陣營特定的 Prefab 不存在 (例如還沒做藍兵)，回退到預設 Prefab (綠兵)
+          console.log(`[UnitRenderer] 找不到子陣營 Prefab: ${subFactionPath}, 回退到預設路徑`);
+          if (entry.prefabPath && subFactionPath !== entry.prefabPath) {
+            services().resource.loadPrefab(entry.prefabPath)
+              .then(p => resolve(p))
+              .catch(() => resolveByUuid());
+          } else {
+            resolveByUuid();
+          }
+        });
     });
 
-    this.troopPrefabLoads.set(type, pending);
+    this.troopPrefabLoads.set(cacheKey, pending);
     return pending;
   }
 
@@ -1513,7 +1543,12 @@ export class UnitRenderer extends Component {
     view.modelRoot.addChild(hero);
     this.applyDefaultLayerRecursively(hero);
     // 武將保持原色（不染色），陣營由 HUD 標籤顏色區別
-    this.normalizeModelVisuals(hero);
+    // 並行載入 MatCap 貼圖與 RM 貼圖，再套用 heroine-toon 著色器
+    const [matcap, rmTex] = await Promise.all([
+      this.loadHeroMatcap(),
+      this.loadHeroRmTex(entry),
+    ]);
+    this.applyHeroineToonMaterial(hero, matcap, rmTex);
     hero.setPosition(0, 0, 0);
     hero.setRotationFromEuler(0, 0, 0);
     hero.setScale(entry.modelScale, entry.modelScale, entry.modelScale);
@@ -1623,6 +1658,148 @@ export class UnitRenderer extends Component {
     skinnedRenderers.forEach(renderer => this.rebindRendererToUnlit(renderer, tint));
   }
 
+  /**
+   * 以非同步方式載入並快取 MatCap 貼圖（resources/textures/tex_matcap_cold_blue_128）。
+   * 多次呼叫只觸發一次 resources.load，後續直接回傳快取。
+   */
+  private loadHeroMatcap(): Promise<Texture2D | null> {
+    if (this.heroMatcapTex) return Promise.resolve(this.heroMatcapTex);
+    if (this.matcapLoadPromise) return this.matcapLoadPromise;
+    this.matcapLoadPromise = new Promise<Texture2D | null>((resolve) => {
+      const matcapPath = 'textures/tex_matcap_cold_blue_128';
+
+      resources.load(`${matcapPath}/texture`, Texture2D, (err, tex) => {
+        if (tex) {
+          this.heroMatcapTex = tex;
+          resolve(tex);
+          return;
+        }
+
+        resources.load(matcapPath, ImageAsset, (imageErr, imageAsset) => {
+          if (imageErr || !imageAsset) {
+            console.warn('[UnitRenderer] MatCap 貼圖載入失敗', imageErr ?? err);
+            resolve(null);
+            return;
+          }
+
+          const fallbackTex = new Texture2D();
+          fallbackTex.image = imageAsset;
+          this.heroMatcapTex = fallbackTex;
+          resolve(fallbackTex);
+        });
+      });
+    });
+    return this.matcapLoadPromise;
+  }
+
+  /**
+   * 武將專用：以 heroine-toon Effect 取代所有原始材質，
+   * 保留原始主貼圖作為 mainTexture，套入 MatCap 貼圖。
+   * （Unity 對照：替換 Material.shader = Shader.Find("Custom/HeroineToon")）
+   */
+  private applyHeroineToonMaterial(root: Node, matcap: Texture2D | null, rmOverride?: Texture2D | null): void {
+    const allRenderers: (MeshRenderer | SkinnedMeshRenderer)[] = [
+      ...root.getComponentsInChildren(MeshRenderer),
+      ...root.getComponentsInChildren(SkinnedMeshRenderer),
+    ];
+    for (const renderer of allRenderers) {
+      const anyRenderer = renderer as any;
+      const sharedMaterials = Array.isArray(anyRenderer.sharedMaterials)
+        ? anyRenderer.sharedMaterials
+        : (Array.isArray(anyRenderer.materials) ? anyRenderer.materials : []);
+      if (!sharedMaterials || sharedMaterials.length === 0) continue;
+
+      sharedMaterials.forEach((sourceMaterial: Material | null, index: number) => {
+        const toonMat = this.createHeroineToonMaterial(sourceMaterial, matcap, rmOverride);
+        this.setRendererMaterialSafe(anyRenderer, toonMat, index);
+      });
+
+      if ('shadowCastingMode' in anyRenderer) anyRenderer.shadowCastingMode = 0;
+      if ('shadowReceivingMode' in anyRenderer) anyRenderer.shadowReceivingMode = 0;
+    }
+  }
+
+  /**
+   * 建立一個 heroine-toon 材質實例，從原始 PBR 材質提取：
+   * - mainTexture (Base Color)
+   * - controlMap (從 _rm / pbrMap 提取 Roughness-Metallic 合圖)
+   * - matcapTex (外部傳入的 MatCap 反射球)
+   *
+   * _rm 圖的通道映射到 controlMap：
+   *   R(AO) → R(Ramp偏移)  |  G(Roughness) → G(BlushMask, 暫用)  |  B(Metallic) → B(MetalMask)
+   */
+  private createHeroineToonMaterial(sourceMaterial: Material | null, matcap: Texture2D | null, rmOverride?: Texture2D | null): Material {
+    const mat = new Material();
+    mat.initialize({
+      effectName: 'heroine-toon',
+      states: {
+        rasterizerState: { cullMode: gfx.CullMode.NONE },
+      },
+    });
+
+    const texture = this.tryExtractMainTexture(sourceMaterial);
+    if (texture) {
+      mat.setProperty('mainTexture', texture);
+    }
+    // rmOverride 優先（由 catalog rmTexUuid 直接載入）；fallback 再試 material property 提取
+    // 若兩者皆失敗，controlMap 維持 YAML 預設值 black → metalMask=0，避免全身金屬
+    const rmTex = rmOverride ?? this.tryExtractRMTexture(sourceMaterial);
+    if (rmTex) {
+      mat.setProperty('controlMap', rmTex);
+    }
+    if (matcap) {
+      mat.setProperty('matcapTex', matcap);
+    }
+    return mat;
+  }
+
+  /**
+   * 從 PBR 材質提取 Roughness-Metallic 合圖（fallback 用）。
+   * 優先路徑：catalog 的 rmTexUuid → loadHeroRmTex() 直接以 UUID 載入（最可靠）。
+   * 此函數為次要 fallback，嘗試從 Cocos gltf-material 的 property 讀出 RM Texture2D。
+   * glTF 標準在 Cocos Creator 中的屬性名稱會依版本而異，嘗試多種候選。
+   * Unity 對照：material.GetTexture("_MetallicGlossMap")
+   */
+  private tryExtractRMTexture(sourceMaterial: Material | null): Texture2D | null {
+    if (!sourceMaterial) return null;
+    // Cocos Creator 3.x builtin-standard 材質的 RM 屬性名稱候選
+    const candidates = ['pbrMap', 'metallicRoughnessMap', 'metallicGlossMap', 'occlusionMap', 'ormMap'];
+    const anyMat = sourceMaterial as any;
+    for (const name of candidates) {
+      try {
+        const val = anyMat.getProperty?.(name);
+        if (val instanceof Texture2D) return val;
+      } catch { /* ignore */ }
+    }
+    return null;
+  }
+
+  /**
+   * 以 catalog 內的 rmTexUuid 直接從 assetManager 載入 RM 貼圖。
+   * 相比 tryExtractRMTexture 從 material property 提取，這個方法完全不依賴
+   * Cocos gltf-material 的 effect property name，因此更可靠。
+   * GLB 一旦被 loadHeroPrefab 載入，所有 sub-asset 便已快取，此處為同步回呼。
+   * Unity 對照：AssetDatabase.LoadAssetAtPath<Texture2D>(...)
+   */
+  private loadHeroRmTex(entry: HeroUnitAssetEntry): Promise<Texture2D | null> {
+    if (!entry.rmTexUuid) return Promise.resolve(null);
+    return new Promise<Texture2D | null>(resolve => {
+      assetManager.loadAny({ uuid: entry.rmTexUuid! }, (err, asset) => {
+        if (err || !asset) {
+          console.warn('[UnitRenderer] 武將 RM 貼圖載入失敗', err);
+          resolve(null);
+          return;
+        }
+        if (asset instanceof Texture2D) {
+          resolve(asset);
+        } else {
+          console.warn('[UnitRenderer] 武將 RM 資產非 Texture2D，type:', (asset as any)?.constructor?.name);
+          resolve(null);
+        }
+      });
+    });
+  }
+
   private rebindRendererToUnlit(renderer: MeshRenderer | SkinnedMeshRenderer, tint: Color = new Color(255, 255, 255, 255)): void {
     const anyRenderer = renderer as any;
     const sharedMaterials = Array.isArray(anyRenderer.sharedMaterials)
@@ -1691,12 +1868,12 @@ export class UnitRenderer extends Component {
         renderer.setSharedMaterial(mat, index);
         return;
       }
-      if (typeof renderer.setMaterial === 'function') {
+      if (typeof renderer['setMaterial'] === 'function') {
         try {
-          renderer.setMaterial(mat, index);
+          renderer['setMaterial'](mat, index);
           return;
         } catch {
-          renderer.setMaterial(index, mat);
+          renderer['setMaterial'](index, mat);
           return;
         }
       }

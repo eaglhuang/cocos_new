@@ -1,0 +1,131 @@
+{
+  "id": "tiger-tally-default",
+  "version": 2,
+  "bundle": "battle_ui",
+  "atlasPolicy": "tiger_tally",
+  "_doc": "虎符卡片區皮膚。水墨+鋼鐵主題：深色底板、金色稀有度框、兵種標章。",
+  "slots": {
+    "tally.card.bg": {
+      "kind": "sprite-frame",
+      "path": "sprites/battle/tally_card_bg/spriteFrame",
+      "spriteType": "sliced",
+      "border": [8, 8, 8, 8],
+      "bleed": 2,
+      "allowAutoAtlas": true,
+      "_fallback": "#1A1E26"
+    },
+    "tally.card.shadow": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/shadow/shadow_01",
+      "spriteType": "sliced",
+      "border": [20, 20, 20, 20],
+      "allowAutoAtlas": true
+    },
+    "tally.card.bg.hard": {
+      "kind": "sprite-frame",
+      "path": "sprites/battle/tally_card_bg_hard/spriteFrame",
+      "spriteType": "sliced",
+      "border": [8, 8, 8, 8],
+      "bleed": 2,
+      "allowAutoAtlas": true,
+      "_fallback": "#1A1208",
+      "_doc": "虎符卡面硬版：暖鐵棕底板 + 金色邊框，更貼近實體軍牌質感"
+    },
+    "tally.card.art": {
+      "kind": "sprite-frame",
+      "path": "sprites/battle/tally_card_art_placeholder/spriteFrame",
+      "spriteType": "simple",
+      "allowAutoAtlas": true,
+      "_fallback": "#2A3040"
+    },
+    "tally.card.rarity.normal": {
+      "kind": "sprite-frame",
+      "path": "sprites/battle/tally_rarity_normal/spriteFrame",
+      "spriteType": "sliced",
+      "border": [4, 4, 4, 4],
+      "allowAutoAtlas": true,
+      "_fallback": "#6E7A8A"
+    },
+    "tally.card.rarity.rare": {
+      "kind": "sprite-frame",
+      "path": "sprites/battle/tally_rarity_rare/spriteFrame",
+      "spriteType": "sliced",
+      "border": [4, 4, 4, 4],
+      "allowAutoAtlas": true,
+      "_fallback": "#D4AF37"
+    },
+    "tally.card.rarity.epic": {
+      "kind": "sprite-frame",
+      "path": "sprites/battle/tally_rarity_epic/spriteFrame",
+      "spriteType": "sliced",
+      "border": [4, 4, 4, 4],
+      "allowAutoAtlas": true,
+      "_fallback": "#A855F7"
+    },
+    "tally.card.disabled": {
+      "kind": "sprite-frame",
+      "path": "sprites/battle/tally_card_disabled/spriteFrame",
+      "spriteType": "sliced",
+      "border": [0, 0, 0, 0],
+      "allowAutoAtlas": true,
+      "_fallback": "#000000",
+      "_fallbackOpacity": 160,
+      "_doc": "冷卻遮罩：半透明黑色疊加，含冷卻 icon（由TS動態添加Label顯示回合數）"
+    },
+    "tally.badge.type": {
+      "kind": "sprite-frame",
+      "path": "sprites/battle/tally_badge_type/spriteFrame",
+      "spriteType": "simple",
+      "allowAutoAtlas": true,
+      "_doc": "兵種符頭像：cavalry/infantry/archer/pike/shield/engineer。TS 依 TroopType 切換不同 spriteFrame。"
+    },
+    "tally.label.atk": {
+      "kind": "label-style",
+      "font": "fonts/manrope/font",
+      "fontSize": 13,
+      "lineHeight": 16,
+      "color": "#FF6B6B",
+      "horizontalAlign": "LEFT",
+      "isBold": true,
+      "_doc": "攻擊值；格式 ⚔N"
+    },
+    "tally.label.hp": {
+      "kind": "label-style",
+      "font": "fonts/manrope/font",
+      "fontSize": 13,
+      "lineHeight": 16,
+      "color": "#6BCB77",
+      "horizontalAlign": "RIGHT",
+      "isBold": true,
+      "_doc": "生命值；格式 ❤N"
+    },
+    "tally.label.name": {
+      "kind": "label-style",
+      "font": "fonts/notosans_tc/font",
+      "fontSize": 15,
+      "lineHeight": 18,
+      "color": "#E8E4DC",
+      "horizontalAlign": "LEFT",
+      "isBold": true,
+      "overflow": "truncate"
+    },
+    "tally.label.stats": {
+      "kind": "label-style",
+      "font": "fonts/notosans_tc/font",
+      "fontSize": 12,
+      "lineHeight": 14,
+      "color": "#A8B4C4",
+      "horizontalAlign": "LEFT"
+    },
+    "tally.label.cost": {
+      "kind": "label-style",
+      "font": "fonts/manrope/font",
+      "fontSize": 13,
+      "lineHeight": 16,
+      "color": "#D4AF37",
+      "horizontalAlign": "CENTER",
+      "isBold": true,
+      "_doc": "糧草費用數字，金色顯示"
+    }
+  }
+}

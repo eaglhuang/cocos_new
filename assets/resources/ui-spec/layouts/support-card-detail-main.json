@@ -1,0 +1,61 @@
+{
+  "id": "support-card-detail-main",
+  "version": 1,
+  "description": "支援卡詳情頁基本骨架：頂欄、分頁列、內容區、底部操作列。",
+  "canvas": { "fitWidth": true, "fitHeight": true, "safeArea": true, "designWidth": 1920, "designHeight": 1080 },
+  "nodes": [
+    {
+      "name": "SupportCardDetailRoot",
+      "type": "Node",
+      "w": 1920,
+      "h": 1080,
+      "children": [
+        {
+          "name": "TopBar",
+          "type": "Node",
+          "w": 1080,
+          "h": 120,
+          "offsetTop": 0,
+          "children": [
+            { "name": "BackBtn", "type": "Button", "w": 88, "h": 88, "offsetLeft": 24, "skinSlot": "topbar.btn.back" },
+            { "name": "TitleLabel", "type": "Label", "skinSlot": "topbar.label.title", "text": "支援卡詳情" }
+          ]
+        },
+        {
+          "name": "DetailTabBar",
+          "type": "Node",
+          "w": 1080,
+          "h": 88,
+          "offsetTop": 120,
+          "layout": { "type": "HORIZONTAL", "spacingX": 0 },
+          "children": [
+            { "name": "TabEffects", "type": "Toggle", "flexGrow": 1, "h": 88, "skinSlot": "detail.tab.effects", "text": "支援效果" },
+            { "name": "TabEvents", "type": "Toggle", "flexGrow": 1, "h": 88, "skinSlot": "detail.tab.events", "text": "培育事件" },
+            { "name": "TabStory", "type": "Toggle", "flexGrow": 1, "h": 88, "skinSlot": "detail.tab.story", "text": "小插曲" }
+          ]
+        },
+        {
+          "name": "ContentPanel",
+          "type": "Node",
+          "w": 1080,
+          "h": 720,
+          "offsetTop": 220,
+          "children": [
+            { "name": "CardHeader", "type": "Node", "w": 1080, "h": 220 },
+            { "name": "TabContent", "type": "Node", "w": 1080, "h": 500, "offsetTop": 220 }
+          ]
+        },
+        {
+          "name": "ActionBar",
+          "type": "Node",
+          "w": 1080,
+          "h": 112,
+          "offsetBottom": 0,
+          "children": [
+            { "name": "BreakthroughBtn", "type": "Button", "w": 240, "h": 72, "offsetRight": 24, "text": "突破" }
+          ]
+        }
+      ]
+    }
+  ]
+}

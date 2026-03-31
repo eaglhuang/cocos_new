@@ -21,14 +21,14 @@
     "typeRoots": ["./node_modules/@types"],
     "baseUrl": ".",
     "paths": {
-      "cc": ["assets/scripts/tools/tests/cc.mock"]
+      "cc": ["tests/cc.mock"]
     },
     "outDir": "./temp/test-output"
   },
   "include": [
-    "assets/scripts/tools/tests/**/*.ts"
+    "tests/**/*.ts"
   ],
   "exclude": [
-    "assets/scripts/tools/tests/TestEntryPoint.ts"
+    "tests/TestEntryPoint.ts"
   ]
 }

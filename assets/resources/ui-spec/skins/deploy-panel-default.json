@@ -1,0 +1,52 @@
+{
+  "id": "deploy-panel-default",
+  "version": 2,
+  "bundle": "battle_ui",
+  "atlasPolicy": "battle_ui",
+  "slots": {
+    "deploy.root.bg": {
+      "kind": "color",
+      "color": "#0F0F0F",
+      "alpha": 220
+    },
+    "deploy.root.shadow": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/shadow/shadow_01",
+      "spriteType": "sliced",
+      "border": [20, 20, 20, 20],
+      "allowAutoAtlas": true
+    },
+    "deploy.slot.card": {
+      "kind": "color",
+      "color": "#1A2030",
+      "alpha": 230,
+      "spriteType": "sliced",
+      "border": [8, 8, 8, 8]
+    },
+    "deploy.label.troop": {
+      "kind": "label-style",
+      "font": "fonts/notosans_tc/font",
+      "fontSize": 16,
+      "lineHeight": 20,
+      "color": "#D4AF37",
+      "isBold": true,
+      "overflow": "CLAMP"
+    },
+    "deploy.label.cost": {
+      "kind": "label-style",
+      "font": "fonts/manrope/font",
+      "fontSize": 15,
+      "lineHeight": 19,
+      "color": "#FFE088",
+      "overflow": "CLAMP"
+    },
+    "deploy.label.hint": {
+      "kind": "label-style",
+      "font": "fonts/notosans_tc/font",
+      "fontSize": 13,
+      "lineHeight": 17,
+      "color": "#888888",
+      "overflow": "CLAMP"
+    }
+  }
+}

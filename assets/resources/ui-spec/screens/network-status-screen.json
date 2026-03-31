@@ -1,0 +1,13 @@
+{
+  "id": "network-status-screen",
+  "version": 1,
+  "uiId": "NetworkStatus",
+  "layer": "Game",
+  "bundle": "ui_common",
+  "layout": "network-status-main",
+  "skin": "network-status-default",
+  "validation": {
+    "devices": ["phone-16-9", "phone-19_5-9"],
+    "allowMissingSkin": true
+  }
+}

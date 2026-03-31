@@ -1,3 +1,4 @@
+// @spec-source → 見 docs/cross-reference-index.md
 /**
  * VFX 積木使用宣告表 (VFX Usage Table)
  *

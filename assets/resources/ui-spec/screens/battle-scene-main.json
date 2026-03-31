@@ -1,0 +1,46 @@
+{
+  "id": "battle-scene-main",
+  "version": 1,
+  "uiId": "BattleScenePanel",
+  "type": "composite",
+  "_doc": "戰場主視圖組合 Screen。列出所有同時存在的 UI 面板；BattleScenePanel.ts 依序初始化並串聯事件。對應 Unity 的 UIDocument 或 Canvas 組合多個 Panel Prefab。",
+  "layer": "Game",
+  "bundle": "battle_ui",
+  "panels": [
+    {
+      "id": "battleHUD",
+      "screen": "battle-hud-screen",
+      "zOrder": 10,
+      "_doc": "Zone 1: TopBar HUD，88px，全寬，最底層"
+    },
+    {
+      "id": "tigerTally",
+      "screen": "tiger-tally-screen",
+      "zOrder": 10,
+      "_doc": "Zone 3: 左側虎符卡片欄（16%寬），TopBar下方"
+    },
+    {
+      "id": "battleLog",
+      "screen": "battle-log-screen",
+      "zOrder": 10,
+      "_doc": "Zone 5: 右側面板（10%寬）：控制列＋戰鬥日誌＋3個工具按鈕"
+    },
+    {
+      "id": "actionCommand",
+      "screen": "action-command-screen",
+      "zOrder": 10,
+      "_doc": "Zone 7: 右下角奧義大圓 + 3個技能小圓弧形排列"
+    },
+    {
+      "id": "unitInfoPanel",
+      "screen": "unit-info-panel-screen",
+      "zOrder": 20,
+      "initialActive": false,
+      "_doc": "Zone 3 延伸：點擊虎符卡片後滑入，zOrder較高確保覆蓋其他面板"
+    }
+  ],
+  "validation": {
+    "devices": ["phone-16-9", "phone-19_5-9"],
+    "allowMissingSkin": true
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "createdAt": "2026-03-31T12:25:15.896Z",
+  "host": "http://localhost:7456",
+  "machine": "DESKTOP-NREHEQ8",
+  "captures": [
+    {
+      "target": "Gacha",
+      "screenId": "gacha-main-screen",
+      "file": "artifacts\\ui-qa\\UI-2-0023\\Gacha.png"
+    }
+  ]
+}

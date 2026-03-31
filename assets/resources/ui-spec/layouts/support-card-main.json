@@ -1,0 +1,211 @@
+{
+  "id": "support-card-main",
+  "version": 1,
+  "description": "支援卡系統主畫面：卡牌列表 + 編組 + 借用入口。分兩大區：頂部工具列 + 主體 3 欄格子列表。",
+  "canvas": { "fitWidth": true, "fitHeight": true, "safeArea": true, "designWidth": 1920, "designHeight": 1080 },
+
+  "nodes": [
+    {
+      "name": "SupportCard_Root",
+      "type": "Node",
+      "anchorX": 0.5, "anchorY": 0.5,
+      "w": 1920, "h": 1080,
+      "children": [
+
+        {
+          "name": "TopBar",
+          "type": "Node",
+          "anchorX": 0.5, "anchorY": 1.0,
+          "offsetTop": 0,
+          "w": 1080, "h": 120,
+          "children": [
+            {
+              "name": "BackBtn",
+              "type": "Button",
+              "w": 88, "h": 88,
+              "anchorX": 0, "anchorY": 0.5,
+              "offsetLeft": 24,
+              "skinSlot": "topbar.btn.back"
+            },
+            {
+              "name": "TitleLabel",
+              "type": "Label",
+              "anchorX": 0.5, "anchorY": 0.5,
+              "skinSlot": "topbar.label.title",
+              "text": "教官・支援卡"
+            },
+            {
+              "name": "BorrowBtn",
+              "type": "Button",
+              "w": 160, "h": 72,
+              "anchorX": 1, "anchorY": 0.5,
+              "offsetRight": 24,
+              "skinSlot": "topbar.btn.borrow",
+              "tooltip": "好友借用"
+            }
+          ]
+        },
+
+        {
+          "name": "TabBar",
+          "type": "Node",
+          "anchorX": 0.5, "anchorY": 1.0,
+          "offsetTop": 120,
+          "w": 1080, "h": 88,
+          "layout": { "type": "HORIZONTAL", "spacingX": 0, "paddingLeft": 0 },
+          "children": [
+            { "name": "Tab_All",     "type": "Toggle", "flexGrow": 1, "h": 88, "skinSlot": "tab.toggle", "text": "全部" },
+            { "name": "Tab_SSR",     "type": "Toggle", "flexGrow": 1, "h": 88, "skinSlot": "tab.toggle", "text": "SSR" },
+            { "name": "Tab_SR",      "type": "Toggle", "flexGrow": 1, "h": 88, "skinSlot": "tab.toggle", "text": "SR" },
+            { "name": "Tab_Synergy", "type": "Toggle", "flexGrow": 1, "h": 88, "skinSlot": "tab.toggle", "text": "師友" }
+          ]
+        },
+
+        {
+          "name": "FilterSortBar",
+          "type": "Node",
+          "anchorX": 0.5, "anchorY": 1.0,
+          "offsetTop": 208,
+          "w": 1080, "h": 72,
+          "children": [
+            {
+              "name": "FilterBtn",
+              "type": "Button",
+              "w": 160, "h": 60,
+              "anchorX": 0, "anchorY": 0.5,
+              "offsetLeft": 24,
+              "skinSlot": "filterbar.btn.filter",
+              "text": "篩選"
+            },
+            {
+              "name": "SortLabel",
+              "type": "Label",
+              "anchorX": 1, "anchorY": 0.5,
+              "offsetRight": 24,
+              "skinSlot": "filterbar.label.sort",
+              "text": "排序：稀有度"
+            }
+          ]
+        },
+
+        {
+          "name": "CardGrid",
+          "type": "ScrollView",
+          "anchorX": 0.5, "anchorY": 1.0,
+          "offsetTop": 280,
+          "w": 1080, "h": 1440,
+          "scrollDirection": "VERTICAL",
+          "layout": {
+            "type": "GRID",
+            "columns": 3,
+            "cellW": 340,
+            "cellH": 460,
+            "spacingX": 10,
+            "spacingY": 12,
+            "paddingLeft": 10,
+            "paddingRight": 10,
+            "paddingTop": 16
+          },
+          "itemTemplate": "SupportCardItem",
+          "children": [
+            {
+              "name": "SupportCardItem",
+              "type": "Node",
+              "w": 340, "h": 460,
+              "children": [
+                {
+                  "name": "CardBg",
+                  "type": "Sprite",
+                  "w": 340, "h": 460,
+                  "skinSlot": "card.bg.rarity",
+                  "nineSlice": true
+                },
+                {
+                  "name": "CardPortrait",
+                  "type": "Sprite",
+                  "anchorX": 0.5, "anchorY": 1.0,
+                  "w": 320, "h": 340,
+                  "offsetTop": 8,
+                  "skinSlot": "card.portrait"
+                },
+                {
+                  "name": "StarRow",
+                  "type": "Node",
+                  "anchorX": 0.5, "anchorY": 0,
+                  "h": 40,
+                  "offsetBottom": 72,
+                  "layout": { "type": "HORIZONTAL", "spacingX": 4 },
+                  "children": [
+                    { "name": "Star_1", "type": "Sprite", "w": 32, "h": 32, "skinSlot": "card.star" },
+                    { "name": "Star_2", "type": "Sprite", "w": 32, "h": 32, "skinSlot": "card.star" },
+                    { "name": "Star_3", "type": "Sprite", "w": 32, "h": 32, "skinSlot": "card.star" },
+                    { "name": "Star_4", "type": "Sprite", "w": 32, "h": 32, "skinSlot": "card.star.empty" },
+                    { "name": "Star_5", "type": "Sprite", "w": 32, "h": 32, "skinSlot": "card.star.empty" }
+                  ]
+                },
+                {
+                  "name": "CardName",
+                  "type": "Label",
+                  "anchorX": 0.5, "anchorY": 0,
+                  "h": 44,
+                  "offsetBottom": 20,
+                  "skinSlot": "card.label.name"
+                },
+                {
+                  "name": "LockOverlay",
+                  "type": "Node",
+                  "active": false,
+                  "w": 340, "h": 460,
+                  "children": [
+                    { "name": "LockBg", "type": "Sprite", "w": 340, "h": 460, "skinSlot": "card.overlay.lock" },
+                    { "name": "LockLabel", "type": "Label", "anchorX": 0.5, "anchorY": 0.5, "skinSlot": "card.label.lock", "text": "使用中" }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+
+        {
+          "name": "BottomActionBar",
+          "type": "Node",
+          "anchorX": 0.5, "anchorY": 0,
+          "offsetBottom": 0,
+          "w": 1080, "h": 160,
+          "children": [
+            {
+              "name": "GachaBtn",
+              "type": "Button",
+              "w": 320, "h": 100,
+              "anchorX": 0.5, "anchorY": 0.5,
+              "offsetX": -180,
+              "skinSlot": "bottombar.btn.gacha",
+              "text": "前往轉蛋"
+            },
+            {
+              "name": "TeamEditBtn",
+              "type": "Button",
+              "w": 320, "h": 100,
+              "anchorX": 0.5, "anchorY": 0.5,
+              "offsetX": 180,
+              "skinSlot": "bottombar.btn.team",
+              "text": "編組教官"
+            }
+          ]
+        }
+
+      ]
+    }
+  ],
+
+  "validation": {
+    "touchTargetMin": 44,
+    "notes": [
+      "3 欄格子，每格 340×460px，間距 10px；列表可垂直捲動",
+      "TabBar 分：全部 / SSR / SR / 師友羈絆",
+      "底部固定 ActionBar 不隨列表捲動",
+      "BorrowBtn 觸控熱區 ≥ 88×72",
+      "CardItem tap → 進入支援卡詳情頁"
+    ]
+  }
+}

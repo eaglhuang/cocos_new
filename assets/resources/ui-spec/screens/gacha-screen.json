@@ -1,0 +1,168 @@
+{
+  "id": "gacha-screen",
+  "version": 1,
+  "description": "轉蛋 UI 三層 — 主畫面 / 抽卡結果 / 天命商店 + 機率公告 / 求籤定向 Popups",
+
+  "screens": [
+
+    {
+      "id": "gacha-main",
+      "layout": "gacha-main",
+      "skin": "gacha-default",
+      "data_source": "PlayerGachaState",
+      "data_bindings": [
+        { "node": "PoolTabBar/TabHero",    "field": "active_tab",  "eq": "hero",    "effect": "tab-selected" },
+        { "node": "PoolTabBar/TabSupport", "field": "active_tab",  "eq": "support", "effect": "tab-selected" },
+        { "node": "PoolTabBar/TabLimited", "field": "active_tab",  "eq": "limited", "effect": "tab-selected" },
+
+        { "node": "BgArt",   "field": "active_tab",  "effect": "slot-variant", "slot": "gacha.bg.pool" },
+
+        { "node": "FeaturedBanner/BannerArt",     "field": "current_pool.Banner_Image" },
+        { "node": "FeaturedBanner/FeaturedLabel", "field": "current_pool.Featured_Label" },
+        { "node": "FeaturedBanner/TimerLabel",    "field": "current_pool.End_Time",  "format": "countdown" },
+        { "node": "FeaturedBanner/RateUpBadge",   "field": "current_pool.Rate_Up_Active", "effect": "visible-if-true" },
+
+        { "node": "PityInfoBar/SmallPityLabel", "field": "pity.sr_pity_remaining", "format": "保底SR+：距{0}抽" },
+        { "node": "PityInfoBar/BigPityLabel",   "field": "pity.destiny_value",     "format": "天命值：{0}/200" },
+
+        { "node": "CurrencyBar/SpiritJadeCount",  "field": "Player_Currency.Spirit_Jade" },
+        { "node": "CurrencyBar/BronzeCharmCount", "field": "Player_Currency.Bronze_Charm" },
+        { "node": "CurrencyBar/BronzeCharmCount", "field": "active_tab",
+          "condition": { "eq": "hero", "effect": "visible-if-true" },
+          "note": "銅錢符只在英靈名將池顯示" },
+
+        { "node": "DivinationTokenBar/TokenCountLabel", "field": "Player_Currency.Divination_Token" },
+
+        { "node": "PullButtons/Pull1Btn",
+          "field": "pull_cost.single",
+          "effect": "label-cost",
+          "subNode": "Pull1Cost" },
+        { "node": "PullButtons/Pull10Btn",
+          "field": "pull_cost.ten",
+          "effect": "label-cost",
+          "subNode": "Pull10Cost" }
+      ],
+      "actions": [
+        { "node": "TopBar/BackBtn",          "type": "tap", "action": "navigate-back" },
+        { "node": "TopBar/DestinyShopBtn",   "type": "tap", "action": "open-screen", "target": "gacha-destiny-shop" },
+        { "node": "PoolTabBar/TabHero",      "type": "tap", "action": "set-tab",     "value": "hero" },
+        { "node": "PoolTabBar/TabSupport",   "type": "tap", "action": "set-tab",     "value": "support" },
+        { "node": "PoolTabBar/TabLimited",   "type": "tap", "action": "set-tab",     "value": "limited" },
+        { "node": "RateInfoBtn",             "type": "tap", "action": "open-popup",  "target": "rate-info-popup" },
+        { "node": "CurrencyBar/AddCurrencyBtn", "type": "tap", "action": "open-shop" },
+        { "node": "PullButtons/Pull1Btn",    "type": "tap", "action": "pull",        "count": 1 },
+        { "node": "PullButtons/Pull10Btn",   "type": "tap", "action": "pull",        "count": 10 },
+        { "node": "DivinationTokenBar/DivinationBtn", "type": "tap", "action": "open-popup", "target": "divination-popup" }
+      ]
+    },
+
+    {
+      "id": "gacha-result",
+      "layout": "gacha-main",
+      "skin": "gacha-default",
+      "note": "Overlay 層，由 gacha-main 的 pull action 觸發，覆蓋在主畫面上",
+      "description": "同時三列展示所有卡牌，SSR 放大 + 金光閃爍動效",
+      "data_bindings": [
+        { "node": "ResultScreen/CardGrid", "field": "pull_result.cards",
+          "template": "ResultCardItem",
+          "sort": "rarity-desc",
+          "note": "10連時最多10張，1連時1張" }
+      ],
+      "card_reveal": {
+        "mode": "simultaneous",
+        "ssr_highlight": true,
+        "ssr_scale": 1.15,
+        "ssr_particle_effect": "fx/gacha_ssr_burst",
+        "reveal_delay_ms": 0,
+        "note": "所有卡同框出現，SSR 放大並觸發粒子特效，符合 Q&A 預設值（同時揭示）"
+      },
+      "actions": [
+        { "node": "ResultScreen/ConfirmBtn", "type": "tap", "action": "close-result" }
+      ],
+      "popups": [
+        {
+          "id": "overflow-notify",
+          "trigger": "on-close-result-if-overflow",
+          "note": "A5/B5 確認：抽到已滿星（★5）的卡時，不顯示選擇，直接自動溢出轉化為積分「點數商店」",
+          "nodes": [
+            { "name": "CardPreview",   "widget": "sprite", "size": [180, 240] },
+            { "name": "MessageLabel",  "widget": "label",  "text-binding": "overflow.card.name",
+                                        "format": "「{0}」教官已滿★5，轉化為積分" },
+            { "name": "PointsLabel",   "widget": "label",  "text-binding": "overflow.reward_points",
+                                        "format": "積分 +{0}" },
+            { "name": "ConfirmBtn",    "widget": "button", "label": "確認入帳", "action": "collect-overflow" }
+          ]
+        }
+      ]
+    },
+
+    {
+      "id": "gacha-destiny-shop",
+      "layout": "gacha-main",
+      "skin": "gacha-default",
+      "note": "天命商店：天命值200時可依定向取一張指定 SSR",
+      "data_bindings": [
+        { "node": "DestinyShop/CounterLabel", "field": "pity.destiny_value", "format": "天命積分：{0}/200" },
+        { "node": "DestinyShop/ShopItemList", "field": "destiny_shop_items", "template": "ShopItem" }
+      ],
+      "actions": [
+        { "node": "TopBar/BackBtn",         "type": "tap",  "action": "navigate-back" },
+        { "node": "DestinyShop/ShopItemList", "type": "item-tap", "action": "open-redeem-confirm" }
+      ]
+    }
+  ],
+
+  "popups": [
+    {
+      "id": "rate-info-popup",
+      "trigger": "explicit",
+      "description": "機率公告彈窗：兩池機率表、保底說明",
+      "nodes": [
+        { "name": "PopupBg",      "widget": "color-rect",  "color": "#1A1A1A", "size": [840, 1200] },
+        { "name": "TitleLabel",   "widget": "label", "slot": "gacha.label.title", "text": "卡池機率公告" },
+        { "name": "HeroTable",    "widget": "rich-text",
+          "content": "### 英靈名將池\n| 稀有度 | 基礎機率 | 保底 |\n|--------|---------|------|\n| SSR | 3% | 大保底 200 抽，小保底無 |\n| SR+ | 10% | — |\n| R | 87% | — |" },
+        { "name": "HeroNote",     "widget": "label", "fontSize": 18, "color": "#99907C",
+          "text": "銅錢符可用此池。保底天命值累積至200可至天命商店兌換。" },
+        { "name": "SupportTable", "widget": "rich-text",
+          "content": "### 策謀紅類池\n| 穀有度 | 基礎機率 | 保底 |\n|--------|---------|------|\n| SSR | 5% | 大保底 200 抗 |\n| SR+ | 25% | — |\n| R | 70% | — |" },
+        { "name": "SupportNote",  "widget": "label", "fontSize": 18, "color": "#99907C",
+          "text": "限靈玉使用。SR 機率高於英靈池，適合培育用教官穩定產出。" },
+        { "name": "PityNote",     "widget": "label", "fontSize": 18, "color": "#86E1A5",
+          "text": "兩池保底計數器獨立，切換池子不重置。" },
+        { "name": "CloseBtn",     "widget": "button", "slot": "gacha.btn.back", "action": "close-popup" }
+      ]
+    },
+
+    {
+      "id": "divination-popup",
+      "trigger": "explicit",
+      "description": "求籤定向保底：消耗求籤令，將大保底鎖定為指定 SSR",
+      "data_bindings": [
+        { "node": "TokenCount",   "field": "Player_Currency.Divination_Token", "format": "持有求籤令：{0}" },
+        { "node": "CandidateList","field": "destiny_candidates", "template": "DivinationItem",
+          "note": "候選為當池 Rate-Up SSR 列表" }
+      ],
+      "nodes": [
+        { "name": "PopupBg",      "widget": "color-rect", "color": "#1A1A1A", "size": [840, 1300] },
+        { "name": "TitleLabel",   "widget": "label", "slot": "gacha.label.title", "text": "求籤定向保底" },
+        { "name": "TokenCount",   "widget": "label", "slot": "gacha.label.token_count" },
+        { "name": "Desc",         "widget": "label", "fontSize": 20, "color": "#99907C",
+          "text": "消耗 1 枚求籤令，下次大保底必得所選教官。每次求籤僅可指定一位，重複求籤可覆蓋。" },
+        { "name": "CandidateList","widget": "list-scroll", "direction": "vertical",
+          "template": "DivinationItem" },
+        { "name": "ConfirmBtn",   "widget": "button", "slot": "result.btn.confirm",
+          "label": "確認求籤", "action": "confirm-divination",
+          "disabled-if": "selected_candidate == null || Player_Currency.Divination_Token < 1" },
+        { "name": "CancelBtn",    "widget": "button", "slot": "gacha.btn.back",
+          "label": "取消", "action": "close-popup" }
+      ]
+    }
+  ],
+
+  "validation": {
+    "requiredScreens": ["gacha-main", "gacha-result", "gacha-destiny-shop"],
+    "requiredPopups":  ["rate-info-popup", "divination-popup"],
+    "dataSourceCheck": ["PlayerGachaState.pity.destiny_value", "Player_Currency.Divination_Token"]
+  }
+}

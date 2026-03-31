@@ -1,149 +1,95 @@
-# 中文字串編碼防災作業手冊
+# 編碼防災 Playbook
 
-本文件整理專案目前的 UTF-8 防災規範、提交流程與災難回救方式。
+本文件只補充編碼防災的操作流程。通用規則以 [keep.md](./keep.md) 為準，不在此重複。
 
-對照 Unity 經驗，這份手冊的用途很像團隊的 Prefab / YAML 保護規範：
-檔案不只要「能打開」，還要確保內容沒有先被錯誤碼頁解碼再寫回。
+## 1. 目的
 
-## Repo 基線
+- 防止中文檔、註解、template string、log 被錯誤編碼破壞。
+- 讓災難處理流程標準化，不靠人工猜測回補。
 
-- 專案文字檔一律以 UTF-8 + LF 為標準。
-- 受控副檔名至少包含 `.ts`、`.js`、`.json`、`.md`、`.ps1`。
-- 主要設定檔：
-  - `.editorconfig`
-  - `.gitattributes`
-  - `.vscode/settings.json`
-- VS Code 必須固定：
-  - `files.encoding = utf8`
-  - `files.autoGuessEncoding = false`
+Unity 對照：這和保護 Unity 的 YAML / Prefab 類似，最怕的不是格式壞掉，而是內容先被錯誤工具讀壞再存回。
 
-## 自動檢查
+## 2. 必跑指令
 
-- 編碼檢查腳本：`tools_node/check-encoding-integrity.js`
-- 預設掃描範圍：git 追蹤中的專案文字檔
-- 排除範圍：
-  - vendored / 第三方型別來源
-  - 工作樹中已不存在的舊追蹤路徑
-- 必須攔截的問題：
-  - `U+FFFD` replacement character
-  - 非預期 BOM
-  - 可疑 mojibake 特徵
-  - 高風險檔非 ASCII 基線異常漂移
+```bash
+npm run check:encoding
+npm run check:acceptance
+```
 
-## 執行入口
+只檢查 staged 檔案時可用：
 
-- 本機快速檢查：
-  ```bash
-  npm run check:encoding
-  ```
-- 驗收檢查：
-  ```bash
-  npm run check:acceptance
-  ```
-- 提交前檢查：
-  ```bash
-  node tools_node/check-encoding-integrity.js --staged
-  ```
+```bash
+node tools_node/check-encoding-integrity.js --staged
+```
 
-## Git 與提交流程
+## 3. 高風險檔編輯流程
 
-- 必須安裝 hooks：
-  ```bash
-  npm run install:hooks
-  ```
-- `pre-commit` 會自動執行 staged 編碼檢查。
-- commit message 固定格式：
-  ```text
-  [bug|feat|chore] 任務卡號 功能描述 [AgentX]
-  ```
-- git commit 是災難回救保底，不是取代 pre-commit 的理由。
+高風險檔定義與單寫者規則見 [keep.md](./keep.md)。
 
-## 高風險中文檔
+編輯前：
 
-高風險中文檔包含：
+```bash
+npm run prepare:high-risk-edit -- <file>
+```
 
-- 大量中文 template string
-- 大量中文 log
-- 長段中文註解
-- 大量非 ASCII 文案常數
+此流程應產出：
 
-處理規則：
+- SHA256 記錄
+- `local/encoding-backups/` 備份
+- 編輯前檢查結果
 
-- 採單寫者規則，同一時間只允許一位 Agent / 開發者修改。
-- 修改前先執行：
-  ```bash
-  npm run prepare:high-risk-edit -- <file>
-  ```
-- 該步驟會：
-  - 記錄 SHA256
-  - 建立 `local/encoding-backups/` 備份
-  - 先跑一次檢查，確認原始狀態
+編輯後：
 
-## 禁止的寫檔方式
+- 重新執行 `npm run check:encoding`
+- 檢查非 ASCII diff
+- 再提交
 
-下列流程容易讓中文經過主控台碼頁或 PowerShell 預設編碼污染，禁止用於回救或覆寫中文檔：
+## 4. 禁止流程
+
+不要用會經過主控台碼頁的方式覆寫中文檔，例如：
 
 - `Set-Content`
 - `Out-File`
-- `git show ... | Out-String | WriteAllText(...)`
+- 先把 `git show` 轉成 PowerShell 字串，再寫回檔案
 - 任何未明確指定 UTF-8 的整檔重寫工具
 
-## 允許的安全方式
+## 5. 建議流程
 
 - `apply_patch`
-- 明確指定 UTF-8（無 BOM）的檔案 API
-- 二進位安全覆寫，例如：
-  ```bash
-  cmd /c "git show HEAD:path\\to\\file > path\\to\\file"
-  ```
+- 明確指定 UTF-8 的寫檔 API
+- 直接用 git blob 回救：
 
-## 災難回救流程
+```bash
+cmd /c "git show HEAD:path\\to\\file > path\\to\\file"
+```
 
-如果檔案疑似亂碼，先停止繼續編輯，不要在損毀內容上反覆存檔。
+## 6. 災難回救
 
-建議流程：
+若檔案已疑似亂碼：
 
-1. 先複製當前壞檔到 `local/encoding-backups/` 保留現場。
-2. 檢查最近乾淨版本：
-   ```bash
-   git show HEAD:path/to/file
-   git diff --word-diff -- path/to/file
-   ```
-3. 用二進位安全方式從 git blob 回救。
-4. 回救後立即重跑：
-   ```bash
-   npm run check:encoding
-   ```
+1. 立刻停止繼續編輯。
+2. 保留當前壞檔到 `local/encoding-backups/`。
+3. 比對 git 歷史：
 
-## 400 行硬規則
+```bash
+git show HEAD:path/to/file
+git diff --word-diff -- path/to/file
+```
 
-- 任一代碼檔只要超過 400 行，就必須被視為強制重構對象。
-- 不接受「先放著，下次再拆」作為常態做法。
-- 若當輪任務無法完整拆分，至少必須：
-  - 開正式任務卡
-  - 在當輪 notes / 規格中記錄拆分責任與下一步
-  - 避免再把新功能繼續堆進同一檔
+4. 用 git blob 或乾淨備份回救。
+5. 回救後重新跑 `npm run check:encoding`。
 
-對照 Unity，這條規則等同於：
-不要把所有行為、資料綁定、視覺組裝、除錯輸出都繼續塞在同一支超肥 `MonoBehaviour`。
+## 7. 與拆分規則的關係
 
-## `UIPreviewBuilder.ts` 的專案特例
+- `400` 行以上代碼檔必拆，詳見 [keep.md](./keep.md)。
+- 中文密集大檔優先拆成 text、diagnostics、layout、style、factory 等模組。
+- 目標是縮小災難半徑與 merge conflict 面積。
 
-- `UIPreviewBuilder.ts` 目前屬高風險中文密集檔。
-- 後續必須朝下列方向拆分：
-  - orchestrator
-  - text catalog
-  - diagnostics
-  - layout builder
-  - style builder
-  - node factory
+## 8. 驗收
 
-## 驗收標準
-
-以下條件同時成立，才算這套防線有效：
+下列條件都成立才算完成：
 
 - `npm run check:encoding` 通過
 - `npm run check:acceptance` 通過
 - 高風險檔修改前有備份與 SHA
-- commit 前 hooks 真的有執行
-- review 時有檢查非 ASCII 變更
+- 提交前通過 pre-commit

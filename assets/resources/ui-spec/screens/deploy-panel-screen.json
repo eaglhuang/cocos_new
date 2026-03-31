@@ -1,0 +1,13 @@
+{
+  "id": "deploy-panel-screen",
+  "version": 1,
+  "uiId": "DeployPanel",
+  "layer": "Game",
+  "bundle": "battle_ui",
+  "layout": "deploy-panel-main",
+  "skin": "deploy-panel-default",
+  "validation": {
+    "devices": ["phone-16-9", "phone-19_5-9"],
+    "allowMissingSkin": true
+  }
+}

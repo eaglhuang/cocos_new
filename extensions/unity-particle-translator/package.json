@@ -1,0 +1,31 @@
+{
+  "name": "unity-particle-translator",
+  "version": "1.0.0",
+  "package_version": 2,
+  "description": "將 Unity 3D ParticleSystem 屬性翻譯為 Cocos Creator 3.x 格式（ParticleLayerProfile / ParticleOverride）",
+  "main": "main.js",
+  "author": "AI + User",
+  "editor": "^3.8.0",
+  "contributions": {
+    "panels": {
+      "default": {
+        "title": "Unity Particle Translator",
+        "type": "dockable",
+        "main": "static/panel.html",
+        "size": { "width": 780, "height": 640 },
+        "min-size": { "width": 560, "height": 440 }
+      }
+    },
+    "menu": [
+      {
+        "path": "i18n:menu.extension/VFX Tools/Unity Particle Translator",
+        "message": "open-panel"
+      }
+    ],
+    "messages": {
+      "open-panel": {
+        "methods": ["openPanel"]
+      }
+    }
+  }
+}

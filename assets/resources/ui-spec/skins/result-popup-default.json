@@ -1,0 +1,99 @@
+{
+  "id": "result-popup-default",
+  "version": 2,
+  "bundle": "ui_common",
+  "atlasPolicy": "common_popup",
+  "slots": {
+    "popup.overlay": {
+      "kind": "sprite-frame",
+      "path": "sprites/common/overlay_dark/spriteFrame",
+      "spriteType": "sliced",
+      "border": [1, 1, 1, 1],
+      "allowAutoAtlas": false,
+      "_note": "全螢幕黑色半透明遮罩，不進 atlas 因為尺寸特殊"
+    },
+    "popup.card.bg": {
+      "kind": "sprite-frame",
+      "path": "sprites/common/popup_card_bg/spriteFrame",
+      "spriteType": "sliced",
+      "border": [40, 40, 40, 40],
+      "bleed": 4,
+      "allowAutoAtlas": true
+    },
+    "popup.card.shadow": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/shadow/shadow_01",
+      "spriteType": "sliced",
+      "border": [20, 20, 20, 20],
+      "allowAutoAtlas": true
+    },
+    "popup.card.win": {
+      "kind": "sprite-frame",
+      "path": "sprites/common/popup_card_win/spriteFrame",
+      "spriteType": "sliced",
+      "border": [40, 40, 40, 40],
+      "bleed": 4,
+      "allowAutoAtlas": true
+    },
+    "popup.card.lose": {
+      "kind": "sprite-frame",
+      "path": "sprites/common/popup_card_lose/spriteFrame",
+      "spriteType": "sliced",
+      "border": [40, 40, 40, 40],
+      "bleed": 4,
+      "allowAutoAtlas": true
+    },
+    "popup.label.title": {
+      "kind": "label-style",
+      "fontSize": 42,
+      "lineHeight": 52,
+      "color": "#D4AF37",
+      "horizontalAlign": "CENTER",
+      "overflow": "SHRINK"
+    },
+    "popup.label.desc": {
+      "kind": "label-style",
+      "fontSize": 22,
+      "lineHeight": 30,
+      "color": "#D0C5AF",
+      "horizontalAlign": "CENTER",
+      "overflow": "SHRINK"
+    },
+    "ui-common-metal.equipment.primary": {
+      "kind": "button-skin",
+      "normal": "sprites/ui_families/common/equipment/btn_primary_normal",
+      "pressed": "sprites/ui_families/common/equipment/btn_primary_pressed",
+      "disabled": "sprites/ui_families/common/equipment/btn_primary_disabled",
+      "spriteType": "sliced",
+      "border": [20, 20, 20, 20],
+      "allowAutoAtlas": true
+    },
+    "result.button.primary": {
+      "kind": "button-skin",
+      "normal": "sprites/ui_families/common/equipment/btn_primary_normal",
+      "pressed": "sprites/ui_families/common/equipment/btn_primary_pressed",
+      "disabled": "sprites/ui_families/common/equipment/btn_primary_disabled",
+      "spriteType": "sliced",
+      "border": [20, 20, 20, 20],
+      "allowAutoAtlas": true
+    },
+    "common.button.primary": {
+      "kind": "button-skin",
+      "normal": "sprites/ui_families/common/equipment/btn_primary_normal",
+      "pressed": "sprites/ui_families/common/equipment/btn_primary_pressed",
+      "disabled": "sprites/ui_families/common/equipment/btn_primary_disabled",
+      "spriteType": "sliced",
+      "border": [20, 20, 20, 20],
+      "allowAutoAtlas": true
+    },
+    "common.button.secondary": {
+      "kind": "button-skin",
+      "normal": "sprites/common/btn_secondary_normal/spriteFrame",
+      "pressed": "sprites/common/btn_secondary_pressed/spriteFrame",
+      "disabled": "sprites/common/btn_secondary_disabled/spriteFrame",
+      "spriteType": "sliced",
+      "border": [20, 20, 20, 20],
+      "allowAutoAtlas": true
+    }
+  }
+}

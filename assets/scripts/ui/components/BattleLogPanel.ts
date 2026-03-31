@@ -1,175 +1,221 @@
-import { _decorator, Button, Color, Component, Label, Mask, Node, ScrollBar, ScrollView, Sprite, UITransform, Vec3 } from "cc";
+// @spec-source → 見 docs/cross-reference-index.md
+/**
+ * BattleLogPanel — Zone 5: 右側面板（控制列 + 戰鬥日誌）
+ *
+ * 職責：
+ *   1. 顯示滾動式戰鬥日誌
+ *   2. BtnCollapse：折疊/展開日誌區（tween 0.3s）
+ *   3. Auto/x2/⚙ 控制列位於日誌上方（常駐顯示）
+ *
+ * 注意（v3）：結束回合 / 計謀 / 單挑 已移至 ActionCommandPanel (Zone 7)，
+ * 不再由 BattleLogPanel 處理。
+ *
+ * 架構模式：繼承 UIPreviewBuilder，在 onBuildComplete() 用 _deepFind 取得節點引用
+ * Unity 對照：BattleRightPanel（含 BattleLog + CollapseArrow）
+ * 規格書：見 battle-log-{main/default/screen}.json (battle_ui bundle)
+ */
+import { _decorator, Button, Label, Node, ScrollView, tween, UITransform } from "cc";
+import { UIPreviewBuilder } from '../core/UIPreviewBuilder';
+import { UISpecLoader } from '../core/UISpecLoader';
+import { EVENT_NAMES, Faction } from '../../core/config/Constants';
+import { services } from '../../core/managers/ServiceLoader';
 
 const { ccclass, property } = _decorator;
 
 @ccclass("BattleLogPanel")
-export class BattleLogPanel extends Component {
-  @property(Label)
-  logLabel: Label = null!;
+export class BattleLogPanel extends UIPreviewBuilder {
 
-  @property(ScrollView)
-  scrollView: ScrollView = null!;
+    // ── Inspector 備用綁定（@property 優先；未綁定時由 onBuildComplete 自動填入）──
+    @property(Label)
+    logLabel: Label = null!;
 
-  @property
-  maxLines = 80;
+    @property(ScrollView)
+    scrollView: ScrollView = null!;
 
-  private expanded = true;
-  private headerNode: Node | null = null;
-  private bodyNode: Node | null = null;
-  private titleLabel: Label | null = null;
-  private contentNode: Node | null = null;
-  private readonly expandedSize = new Vec3(0, 0, 0);
+    @property
+    maxLines = 80;
 
-  private readonly lines: string[] = [];
+    // ── 私有狀態 ─────────────────────────────────────────────────────────────
+    private readonly _lines: string[] = [];
+    private _contentNode: Node | null = null;
+    private _collapsed = false;
+    private _logPanelNode: Node | null = null;   // BattleLogPanel 子節點（可折疊區段）
+    private _collapsedHeight = 0;
+    private _expandedHeight = 410;
+    private _initialized = false;
+    // 控制列狀態
+    private _isAuto   = false;  // 自動戰鬥開關
+    private _speed    = 1;      // 遊戲速度（1 | 2）
+    // 控制列節點引用（供視覺反饋使用）
+    private _btnAuto:    Node | null = null;
+    private _btnSpeed:   Node | null = null;
 
-  onLoad(): void {
-    this.ensureBindings();
-    this.clear();
-  }
+    private readonly _specLoader = new UISpecLoader();
 
-  public clear(): void {
-    this.lines.length = 0;
-    this.flush();
-  }
+    // ── 生命週期 ─────────────────────────────────────────────────────────────
 
-  public append(text: string): void {
-    if (!text) return;
-    this.lines.push(text);
-    while (this.lines.length > Math.max(1, this.maxLines)) {
-      this.lines.shift();
-    }
-    this.flush();
-  }
-
-  private flush(): void {
-    if (!this.logLabel) return;
-    this.logLabel.string = this.lines.join("\n");
-
-    const contentTf = this.contentNode?.getComponent(UITransform);
-    if (contentTf) {
-      const estimatedHeight = Math.max(180, this.lines.length * (this.logLabel.lineHeight || 18) + 24);
-      contentTf.setContentSize(308, estimatedHeight);
-      this.contentNode!.setPosition(new Vec3(0, (estimatedHeight - 180) * 0.5, 0));
-      this.scrollView?.scrollToBottom(0.05);
-    }
-  }
-
-  private ensureBindings(): void {
-    const rootTf = this.node.getComponent(UITransform) ?? this.node.addComponent(UITransform);
-    rootTf.setContentSize(360, 236);
-
-    const rootSprite = this.node.getComponent(Sprite) ?? this.node.addComponent(Sprite);
-    rootSprite.color = new Color(24, 28, 34, 205);
-
-    if (this.node.position.equals(Vec3.ZERO)) {
-      this.node.setPosition(new Vec3(760, 285, 0));
+    async onLoad(): Promise<void> {
+        services().initialize(this.node);
+        await this._initialize();
+        this.clear();
     }
 
-    this.headerNode = this.node.getChildByName("Header") ?? new Node("Header");
-    if (!this.headerNode.parent) this.node.addChild(this.headerNode);
-    this.headerNode.addComponent(UITransform).setContentSize(360, 34);
-    this.headerNode.setPosition(new Vec3(0, 96, 0));
-    const headerSprite = this.headerNode.getComponent(Sprite) ?? this.headerNode.addComponent(Sprite);
-    headerSprite.color = new Color(48, 58, 74, 235);
-    const headerButton = this.headerNode.getComponent(Button) ?? this.headerNode.addComponent(Button);
-    this.headerNode.off(Button.EventType.CLICK);
-    this.headerNode.on(Button.EventType.CLICK, this.toggleOpen, this);
-
-    const titleNode = this.headerNode.getChildByName("Title") ?? new Node("Title");
-    if (!titleNode.parent) this.headerNode.addChild(titleNode);
-    titleNode.addComponent(UITransform).setContentSize(320, 28);
-    titleNode.setPosition(new Vec3(0, 0, 0));
-    this.titleLabel = titleNode.getComponent(Label) ?? titleNode.addComponent(Label);
-    this.titleLabel.string = "戰鬥紀錄 ▼";
-    this.titleLabel.fontSize = 18;
-    this.titleLabel.lineHeight = 20;
-    this.titleLabel.color = new Color(230, 235, 242, 255);
-    this.titleLabel.isBold = true;
-
-    this.bodyNode = this.node.getChildByName("Body") ?? new Node("Body");
-    if (!this.bodyNode.parent) this.node.addChild(this.bodyNode);
-    this.bodyNode.addComponent(UITransform).setContentSize(344, 188);
-    this.bodyNode.setPosition(new Vec3(0, -8, 0));
-
-    const viewport = this.bodyNode.getChildByName("view") ?? new Node("view");
-    if (!viewport.parent) this.bodyNode.addChild(viewport);
-    (viewport.getComponent(UITransform) ?? viewport.addComponent(UITransform)).setContentSize(320, 180);
-    viewport.setPosition(new Vec3(-8, 0, 0));
-    const oldViewportSprite = viewport.getComponent(Sprite);
-    if (oldViewportSprite) {
-      oldViewportSprite.destroy();
+    private async _initialize(): Promise<void> {
+        if (this._initialized) return;
+        try {
+            const [fullScreen, i18n] = await Promise.all([
+                this._specLoader.loadFullScreen('battle-log-screen'),
+                this._specLoader.loadI18n('zh-TW'),
+            ]);
+            await this.buildScreen(fullScreen.layout, fullScreen.skin, i18n);
+            this._initialized = true;
+        } catch (e) {
+            console.warn('[BattleLogPanel] 規格載入失敗，退回白模', e);
+            this._initialized = true;
+        }
     }
-    // Mask 會使用 Graphics，不能與 Sprite 掛在同一節點，因此背景改放子節點。
-    const viewportBg = viewport.getChildByName("Background") ?? new Node("Background");
-    if (!viewportBg.parent) viewport.addChild(viewportBg);
-    (viewportBg.getComponent(UITransform) ?? viewportBg.addComponent(UITransform)).setContentSize(320, 180);
-    viewportBg.setPosition(Vec3.ZERO);
-    const viewportSprite = viewportBg.getComponent(Sprite) ?? viewportBg.addComponent(Sprite);
-    viewportSprite.color = new Color(12, 16, 24, 165);
 
-    if (!viewport.getComponent(Mask)) viewport.addComponent(Mask);
+    // ── 覆寫建構點：綁定節點引用 ─────────────────────────────────────────────
 
-    this.contentNode = viewport.getChildByName("Content") ?? new Node("Content");
-    if (!this.contentNode.parent) viewport.addChild(this.contentNode);
-    const contentTf = this.contentNode.getComponent(UITransform) ?? this.contentNode.addComponent(UITransform);
-    contentTf.setContentSize(308, 180);
-    this.contentNode.setPosition(new Vec3(0, 0, 0));
+    protected onBuildComplete(_rootNode: Node): void {
+        const find = (name: string) => this._deepFind(name);
 
-    if (!this.logLabel) {
-      this.logLabel = this.contentNode.getComponent(Label) ?? this.contentNode.addComponent(Label);
+        // 日誌捲動區
+        if (!this.scrollView) {
+            this.scrollView = find('ScrollView')?.getComponent(ScrollView) ?? null!;
+        }
+
+        // 日誌 Label（ContentNode → LogLabel）
+        if (!this.logLabel) {
+            this.logLabel = find('LogLabel')?.getComponent(Label) ?? null!;
+        }
+        this._contentNode = find('ContentNode');
+
+        // 可折疊的日誌面板節點
+        this._logPanelNode = find('BattleLogPanel');
+        const tf = this._logPanelNode?.getComponent(UITransform);
+        if (tf) {
+            this._expandedHeight = tf.height;
+        }
+
+        // ── 控制列按鈕（BtnAuto / BtnSpeed / BtnSetting）────────────────────
+        this._btnAuto  = find('BtnAuto')  ?? null;
+        this._btnSpeed = find('BtnSpeed') ?? null;
+        this._btnAuto?.on(Button.EventType.CLICK,    this._onAutoClick,    this);
+        this._btnSpeed?.on(Button.EventType.CLICK,   this._onSpeedClick,   this);
+        find('BtnSetting')?.on(Button.EventType.CLICK, this._onSettingClick, this);
+
+        // BtnCollapse：折疊 / 展開日誌
+        find('BtnCollapse')?.on(Button.EventType.CLICK, this._onCollapseClick, this);
+
+        console.log(
+            `[BattleLogPanel] 綁定完成 — ` +
+            `scrollView:${!!this.scrollView} label:${!!this.logLabel} contentNode:${!!this._contentNode}`
+        );
     }
-    this.logLabel.fontSize = 15;
-    this.logLabel.lineHeight = 18;
-    this.logLabel.color = new Color(238, 238, 238, 255);
-    this.logLabel.overflow = Label.Overflow.RESIZE_HEIGHT;
 
-    const scrollBarNode = this.bodyNode.getChildByName("VScroll") ?? new Node("VScroll");
-    if (!scrollBarNode.parent) this.bodyNode.addChild(scrollBarNode);
-    scrollBarNode.addComponent(UITransform).setContentSize(10, 180);
-    scrollBarNode.setPosition(new Vec3(160, 0, 0));
-    const scrollBarSprite = scrollBarNode.getComponent(Sprite) ?? scrollBarNode.addComponent(Sprite);
-    scrollBarSprite.color = new Color(60, 72, 92, 180);
+    // ── 公開 API ──────────────────────────────────────────────────────────────
 
-    const handleNode = scrollBarNode.getChildByName("Handle") ?? new Node("Handle");
-    if (!handleNode.parent) scrollBarNode.addChild(handleNode);
-    handleNode.addComponent(UITransform).setContentSize(10, 44);
-    const handleSprite = handleNode.getComponent(Sprite) ?? handleNode.addComponent(Sprite);
-    handleSprite.color = new Color(170, 190, 220, 235);
-
-    const scrollBar = scrollBarNode.getComponent(ScrollBar) ?? scrollBarNode.addComponent(ScrollBar);
-    scrollBar.handle = handleSprite;
-    scrollBar.direction = ScrollBar.Direction.VERTICAL;
-
-    this.scrollView = this.bodyNode.getComponent(ScrollView) ?? this.bodyNode.addComponent(ScrollView);
-    this.scrollView.content = this.contentNode;
-    this.scrollView.vertical = true;
-    this.scrollView.horizontal = false;
-    this.scrollView.verticalScrollBar = scrollBar;
-    this.scrollView.brake = 0.55;
-
-    if (!this.node.parent) return;
-    this.applyExpandedState();
-  }
-
-  private toggleOpen(): void {
-    this.expanded = !this.expanded;
-    this.applyExpandedState();
-  }
-
-  private applyExpandedState(): void {
-    const rootTf = this.node.getComponent(UITransform);
-    if (!rootTf) return;
-
-    if (this.expanded) {
-      rootTf.setContentSize(360, 236);
-      this.bodyNode && (this.bodyNode.active = true);
-      this.headerNode?.setPosition(new Vec3(0, 96, 0));
-      if (this.titleLabel) this.titleLabel.string = "戰鬥紀錄 ▼";
-    } else {
-      rootTf.setContentSize(152, 34);
-      this.bodyNode && (this.bodyNode.active = false);
-      this.headerNode?.setPosition(new Vec3(0, 0, 0));
-      if (this.titleLabel) this.titleLabel.string = "戰鬥紀錄 ▶";
+    /** 清空日誌。Unity 對照：ClearLog() */
+    public clear(): void {
+        this._lines.length = 0;
+        this._flush();
     }
-  }
+
+    /**
+     * 追加一行文字到日誌末尾。
+     * 超出 maxLines 時自動刪除最舊一行。
+     * Unity 對照：AppendLine(string text)
+     */
+    public append(text: string): void {
+        if (!text) return;
+        this._lines.push(text);
+        while (this._lines.length > Math.max(1, this.maxLines)) {
+            this._lines.shift();
+        }
+        this._flush();
+    }
+
+    // ── 私有：日誌刷新 ───────────────────────────────────────────────────────
+
+    private _flush(): void {
+        if (!this.logLabel) return;
+        this.logLabel.string = this._lines.join('\n');
+
+        // 依內容行數動態調整 ContentNode 高度，再捲至底部
+        const contentTf = this._contentNode?.getComponent(UITransform);
+        if (contentTf) {
+            const lineH = this.logLabel.lineHeight || 18;
+            const estimated = Math.max(180, this._lines.length * lineH + 24);
+            contentTf.setContentSize(contentTf.width, estimated);
+        }
+        this.scrollView?.scrollToBottom(0.05);
+    }
+
+    // ── 私有：按鈕事件處理 ───────────────────────────────────────────────────
+
+    /** 自動戰鬥開關（Auto） */
+    private _onAutoClick(): void {
+        this._isAuto = !this._isAuto;
+        // 視覺反饋：開啟時降低透明度（模擬按下狀態）
+        const op = this._btnAuto?.getComponent('cc.UIOpacity') as any;
+        if (op) op.opacity = this._isAuto ? 180 : 255;
+        services().event.emit(EVENT_NAMES.AutoBattleToggled, this._isAuto);
+        console.log(`[BattleLogPanel] AutoBattle → ${this._isAuto}`);
+    }
+
+    /** 戰鬥速度切換（x1 ↔ x2） */
+    private _onSpeedClick(): void {
+        this._speed = this._speed === 1 ? 2 : 1;
+        const op = this._btnSpeed?.getComponent('cc.UIOpacity') as any;
+        if (op) op.opacity = this._speed === 2 ? 180 : 255;
+        services().event.emit(EVENT_NAMES.BattleSpeedToggled, this._speed);
+        console.log(`[BattleLogPanel] BattleSpeed → ${this._speed}x`);
+    }
+
+    /** 開啟設定面板 */
+    private _onSettingClick(): void {
+        services().event.emit(EVENT_NAMES.ShowSettingsRequested);
+        console.log('[BattleLogPanel] ShowSettings requested');
+    }
+
+    /**
+     * 折疊 / 展開日誌面板。
+     * tween 0.3s 動畫改變 BattleLogPanel 子節點的 height。
+     * Unity 對照：ToggleLogPanel() 搭配 DOTween
+     */
+    private _onCollapseClick(): void {        this._collapsed = !this._collapsed;
+        const panelNode = this._logPanelNode;
+        if (!panelNode) return;
+
+        const tf = panelNode.getComponent(UITransform);
+        if (!tf) return;
+
+        const targetH = this._collapsed ? this._collapsedHeight : this._expandedHeight;
+
+        if (!this._collapsed) {
+            // 展開時先顯示節點再做動畫
+            panelNode.active = true;
+        }
+
+        tween(tf)
+            .to(0.3, { height: targetH } as any, { easing: 'quadOut' })
+            .call(() => {
+                if (panelNode && this._collapsed) panelNode.active = false;
+            })
+            .start();
+    }
+
+    // ── 私有工具：BFS 尋找子孫節點 ──────────────────────────────────────────
+
+    private _deepFind(name: string): Node | null {
+        const queue: Node[] = [this.node];
+        while (queue.length > 0) {
+            const cur = queue.shift()!;
+            if (cur.name === name) return cur;
+            queue.push(...cur.children);
+        }
+        return null;
+    }
 }
+

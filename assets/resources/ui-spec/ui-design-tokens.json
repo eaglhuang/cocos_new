@@ -1,0 +1,135 @@
+{
+  "id": "3klife-v2-integrated",
+  "version": 2.2,
+  "description": "三國志・生存 — 七重稀有度與水墨鋼鐵融合主題。融合說明：1.稀有度採用白/綠/藍/紫/金/紅/彩七階標準；2.質感為水墨宣紙(Ink & Parchment)與冷冽金屬(Steel)的視覺衝突與融合；3.適用 Cocos Creator 2.5D/3.5D 專案。",
+
+  "colors": {
+    "primary":           "#B22222",
+    "primaryLight":      "#FFBFB8",
+    "secondary":         "#D4AF37",
+    "secondaryLight":    "#FFE088",
+    "tertiary":          "#2E8B57",
+    "tertiaryLight":     "#86E1A5",
+    "error":             "#FF6B6B",
+    "success":           "#86E1A5",
+    "warning":           "#E9C349",
+
+    "background":        "#0F0F0F",
+    "surface":           "#1A1A1A",
+    "surfaceContainer":  "#20201F",
+    "surfaceHigh":       "#2A2A2A",
+    "surfaceHighest":    "#353535",
+    "surfaceParchment":  "#E8DFD0",
+    "surfaceParchmentFill": "#F0E8D8",
+
+    "textPrimary":       "#E5E2E1",
+    "textSecondary":     "#D0C5AF",
+    "textMuted":         "#99907C",
+    "textAccent":        "#FFE088",
+    "textInk":           "#2D2926",
+    "textOnParchment":   "#2D2926",
+    "textPositive":      "#86E1A5",
+    "textNegative":      "#FF6B6B",
+
+    "outline":           "#4D4635",
+    "outlineSubtle":     "#353535",
+    "divider":           "#2A2A2A",
+    "dividerOnParchment": "#8C7A66",
+
+    "rarityWhite":       "#E0E0E0",
+    "rarityGreen":       "#4CAF50",
+    "rarityBlue":        "#2196F3",
+    "rarityPurple":      "#9C27B0",
+    "rarityGold":        "#FFC107",
+    "rarityRed":         "#D32F2F",
+    "rarityRainbow":     "#00FBFF"
+  },
+
+  "typography": {
+    "headlineFont":  "fonts/newsreader/font",
+    "bodyFont":      "fonts/notosans_tc/font",
+    "labelFont":     "fonts/manrope/font",
+
+    "headlineLg":    { "fontSize": 42, "lineHeight": 50, "fontWeight": "bold" },
+    "headlineMd":    { "fontSize": 34, "lineHeight": 42, "fontWeight": "bold" },
+    "headlineSm":    { "fontSize": 28, "lineHeight": 36, "fontWeight": "bold" },
+    "bodyLg":        { "fontSize": 22, "lineHeight": 30 },
+    "bodyMd":        { "fontSize": 18, "lineHeight": 26 },
+    "bodyOnParchment": { "fontSize": 18, "lineHeight": 26, "outlineWidth": 0 },
+    "bodySm":        { "fontSize": 14, "lineHeight": 20 },
+    "labelLg":       { "fontSize": 16, "lineHeight": 22 },
+    "labelMd":       { "fontSize": 14, "lineHeight": 18 },
+    "labelOnParchment": { "fontSize": 14, "lineHeight": 18, "outlineWidth": 0 },
+    "labelSm":       { "fontSize": 12, "lineHeight": 16 },
+
+    "outlineWidth":  2,
+    "outlineColor":  "#1A1A1A"
+  },
+
+  "spacing": {
+    "xs":      4,
+    "sm":      8,
+    "md":      12,
+    "lg":      16,
+    "xl":      24,
+    "xxl":     32,
+    "section": 48
+  },
+
+  "shape": {
+    "radiusNone":      0,
+    "radiusSm":        4,
+    "radiusMd":        8,
+    "radiusLg":        16,
+    "radiusXl":        24,
+    "radiusFull":      9999,
+    "preferredCorner": "radiusMd"
+  },
+
+  "opacity": {
+    "overlay":       0.75,
+    "disabled":      0.38,
+    "hover":         0.08,
+    "pressed":       0.12,
+    "glassmorphism": 0.75
+  },
+
+  "elevation": {
+    "shadowColor":  "#000000",
+    "shadowNone":   { "offsetY": 0,  "blur": 0,  "opacity": 0   },
+    "shadowSm":     { "offsetY": 2,  "blur": 4,  "opacity": 0.2 },
+    "shadowMd":     { "offsetY": 4,  "blur": 12, "opacity": 0.3 },
+    "shadowDefault": { "offsetY": 4, "blur": 12, "opacity": 0.24 },
+    "shadowLg":     { "offsetY": 12, "blur": 24, "opacity": 0.4 },
+    "glowGold":     { "offsetY": 0,  "blur": 15, "opacity": 0.6, "color": "#FFC107" },
+    "glowRainbow":  { "offsetY": 0,  "blur": 20, "opacity": 0.8, "color": "#00FBFF" }
+  },
+
+  "animation": {
+    "durationFast":   0.15,
+    "durationNormal": 0.25,
+    "durationSlow":   0.4,
+    "easingDefault":  "cubicBezier(0.4, 0, 0.2, 1)",
+    "easingEnter":    "cubicBezier(0, 0, 0.2, 1)",
+    "easingExit":     "cubicBezier(0.4, 0, 1, 1)"
+  },
+
+  "interaction": {
+    "minTouchTarget": 44,
+    "buttonHeightSm": 36,
+    "buttonHeightMd": 48,
+    "buttonHeightLg": 56,
+    "buttonMinWidth": 120,
+    "tooltipDelay":   500
+  },
+
+  "nineSlice": {
+    "defaultBorderSm": [8,  8,  8,  8 ],
+    "defaultBorderMd": [16, 16, 16, 16],
+    "defaultBorderLg": [24, 24, 24, 24],
+    "scrollBorder":    [30, 45, 30, 45],
+    "metalFrame":      [20, 20, 20, 20],
+    "defaultBleed":    4,
+    "safeMargin":      2
+  }
+}

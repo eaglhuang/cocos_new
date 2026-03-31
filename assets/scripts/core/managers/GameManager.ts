@@ -1,3 +1,4 @@
+// @spec-source → 見 docs/cross-reference-index.md
 import { EVENT_NAMES } from "../config/Constants";
 import { EventSystem } from "../systems/EventSystem";
 

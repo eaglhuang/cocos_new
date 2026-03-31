@@ -1,0 +1,78 @@
+{
+  "ver": "2.3.14",
+  "importer": "fbx",
+  "imported": true,
+  "uuid": "831eb3a7-bec4-44aa-8001-b5eaa32dc84d",
+  "files": [],
+  "subMetas": {
+    "2d3ec": {
+      "importer": "gltf-mesh",
+      "uuid": "831eb3a7-bec4-44aa-8001-b5eaa32dc84d@2d3ec",
+      "displayName": "",
+      "id": "2d3ec",
+      "name": "Crystal1.mesh",
+      "userData": {
+        "gltfIndex": 0,
+        "triangleCount": 100
+      },
+      "ver": "1.1.1",
+      "imported": true,
+      "files": [
+        ".bin",
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "b3189": {
+      "importer": "gltf-scene",
+      "uuid": "831eb3a7-bec4-44aa-8001-b5eaa32dc84d@b3189",
+      "displayName": "",
+      "id": "b3189",
+      "name": "mep_model_crystal.prefab",
+      "userData": {
+        "gltfIndex": 0
+      },
+      "ver": "1.0.14",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    }
+  },
+  "userData": {
+    "imageMetas": [],
+    "fbx": {
+      "smartMaterialEnabled": true
+    },
+    "lods": {
+      "enable": false,
+      "hasBuiltinLOD": false,
+      "options": [
+        {
+          "screenRatio": 0.25,
+          "faceCount": 1
+        },
+        {
+          "screenRatio": 0.125,
+          "faceCount": 0.25
+        },
+        {
+          "screenRatio": 0.01,
+          "faceCount": 0.1
+        }
+      ]
+    },
+    "assetFinder": {
+      "meshes": [
+        "831eb3a7-bec4-44aa-8001-b5eaa32dc84d@2d3ec"
+      ],
+      "skeletons": [],
+      "textures": [],
+      "materials": [],
+      "scenes": [
+        "831eb3a7-bec4-44aa-8001-b5eaa32dc84d@b3189"
+      ]
+    }
+  }
+}

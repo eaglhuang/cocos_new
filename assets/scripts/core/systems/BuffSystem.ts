@@ -1,3 +1,4 @@
+// @spec-source → 見 docs/cross-reference-index.md
 import { StatusEffect } from "../config/Constants";
 
 interface BuffEntry {

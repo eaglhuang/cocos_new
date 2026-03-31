@@ -1,0 +1,579 @@
+{
+  "id": "general-detail-default",
+  "version": 7,
+  "bundle": "lobby_ui",
+  "atlasPolicy": "lobby",
+  "$fragments": ["common-parchment-default"],
+  "slots": {
+    "common.overlay": {
+      "kind": "color-rect",
+      "color": "#0F0F0FCC"
+    },
+    "detail.overlay": {
+      "kind": "color-rect",
+      "color": "#000000AA"
+    },
+    "detail.blockInput": {
+      "kind": "color-rect",
+      "color": "#00000000"
+    },
+     "detail.summary.card.bleed": {
+       "kind": "sprite-frame",
+       "path": "sprites/ui_families/general_detail/detail_summary_bleed",
+       "spriteType": "sliced",
+       "border": [40, 40, 40, 40],
+       "allowAutoAtlas": true
+     },
+    "detail.tab.idle.bleed": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/detail_tabbar_rail_bleed",
+      "spriteType": "sliced",
+      "border": [40, 40, 40, 40],
+      "allowAutoAtlas": true
+    },
+    "detail.tab.active.bleed": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/detail_tabbar_rail_bleed",
+      "spriteType": "sliced",
+      "border": [40, 40, 40, 40],
+      "allowAutoAtlas": true
+    },
+    "general.portrait.placeholder": {
+      "kind": "color-rect",
+      "color": "#00000000"
+    },
+    "detail.bg.fullscreen": {
+      "kind": "sprite-frame",
+      "path": "ui-spec/placeholders/bg_ink_main",
+      "spriteType": "sliced",
+      "border": [96, 360, 96, 420],
+      "allowAutoAtlas": false
+    },
+    "detail.bg": {
+      "kind": "sprite-frame",
+      "path": "ui-spec/placeholders/bg_ink_detail",
+      "spriteType": "sliced",
+      "border": [96, 96, 96, 96],
+      "allowAutoAtlas": false
+    },
+    "detail.root.shadow": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/shadow/shadow_01",
+      "spriteType": "sliced",
+      "border": [20, 20, 20, 20],
+      "allowAutoAtlas": true
+    },
+    "detail.root.bleed": {
+      "kind": "color-rect",
+      "color": "#1C171278"
+    },
+    "detail.root.frame": {
+      "kind": "sprite-frame",
+      "path": "ui-spec/placeholders/bg_ink_detail",
+      "spriteType": "sliced",
+      "border": [96, 96, 96, 96],
+      "allowAutoAtlas": false
+    },
+    "detail.root.fill": {
+      "kind": "color-rect",
+      "color": "#0F0E0DDD"
+    },
+    "detail.header.frame": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/detail_header_frame",
+      "spriteType": "sliced",
+      "border": [40, 40, 40, 40],
+      "bleed": 4,
+      "allowAutoAtlas": true
+    },
+    "detail.header.bleed": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/detail_header_bleed",
+      "spriteType": "sliced",
+      "border": [40, 40, 40, 40],
+      "allowAutoAtlas": true
+    },
+    "detail.header.fill": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/detail_header_fill",
+      "spriteType": "sliced",
+      "border": [40, 40, 40, 40],
+      "allowAutoAtlas": true
+    },
+    "detail.header.noise": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/noise/metal_noise_256",
+      "spriteType": "tiled",
+      "opacity": 24,
+      "blendMode": "overlay",
+      "allowAutoAtlas": true
+    },
+    "detail.header.bg": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/detail_header_bg",
+      "spriteType": "sliced",
+      "border": [40, 40, 40, 40],
+      "bleed": 4,
+      "allowAutoAtlas": true
+    },
+    "detail.summary.frame": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/detail_summary_frame",
+      "spriteType": "sliced",
+      "border": [40, 40, 40, 40],
+      "bleed": 4,
+      "allowAutoAtlas": true
+    },
+    "detail.summary.bleed": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/detail_summary_bleed",
+      "spriteType": "sliced",
+      "border": [40, 40, 40, 40],
+      "allowAutoAtlas": true
+    },
+    "detail.summary.fill": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/detail_summary_fill",
+      "spriteType": "sliced",
+      "border": [40, 40, 40, 40],
+      "allowAutoAtlas": true
+    },
+    "detail.summary.noise": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/noise/metal_noise_256",
+      "spriteType": "tiled",
+      "opacity": 22,
+      "blendMode": "overlay",
+      "allowAutoAtlas": true
+    },
+    "detail.summary.bg": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/detail_summary_bg",
+      "spriteType": "sliced",
+      "border": [40, 40, 40, 40],
+      "bleed": 4,
+      "allowAutoAtlas": true
+    },
+    "detail.summary.card.frame": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/detail_summary_card_frame",
+      "spriteType": "sliced",
+      "border": [40, 40, 40, 40],
+      "bleed": 4,
+      "allowAutoAtlas": true
+    },
+    "detail.summary.card.fill": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/detail_summary_card_fill",
+      "spriteType": "sliced",
+      "border": [40, 40, 40, 40],
+      "allowAutoAtlas": true
+    },
+    "detail.summary.card.accent": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/detail_summary_card_accent",
+      "spriteType": "sliced",
+      "border": [40, 40, 40, 40],
+      "allowAutoAtlas": true
+    },
+    "detail.summary.card": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/detail_summary_card_bg",
+      "spriteType": "sliced",
+      "border": [40, 40, 40, 40],
+      "bleed": 4,
+      "allowAutoAtlas": true
+    },
+    "detail.tabbar.rail.frame": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/detail_tabbar_rail_frame",
+      "spriteType": "sliced",
+      "border": [40, 40, 40, 40],
+      "bleed": 4,
+      "allowAutoAtlas": true
+    },
+    "detail.tabbar.rail.bleed": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/detail_tabbar_rail_bleed",
+      "spriteType": "sliced",
+      "border": [40, 40, 40, 40],
+      "allowAutoAtlas": true
+    },
+    "detail.tabbar.rail.fill": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/detail_tabbar_rail_fill",
+      "spriteType": "sliced",
+      "border": [40, 40, 40, 40],
+      "allowAutoAtlas": true
+    },
+    "detail.tabbar.rail.noise": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/noise/metal_noise_256",
+      "spriteType": "tiled",
+      "opacity": 20,
+      "blendMode": "overlay",
+      "allowAutoAtlas": true
+    },
+    "detail.tabbar.bg": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/detail_tabbar_rail_bg",
+      "spriteType": "sliced",
+      "border": [40, 40, 40, 40],
+      "bleed": 4,
+      "allowAutoAtlas": true
+    },
+    "detail.tab.idle.frame": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/detail_tab_idle_frame",
+      "spriteType": "sliced",
+      "border": [40, 40, 40, 40],
+      "allowAutoAtlas": true
+    },
+    "detail.tab.idle.fill": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/detail_tab_idle_fill",
+      "spriteType": "sliced",
+      "border": [40, 40, 40, 40],
+      "allowAutoAtlas": true
+    },
+    "detail.tab.active.frame": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/detail_tab_active_frame",
+      "spriteType": "sliced",
+      "border": [40, 40, 40, 40],
+      "allowAutoAtlas": true
+    },
+    "detail.tab.active.fill": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/detail_tab_active_fill",
+      "spriteType": "sliced",
+      "border": [40, 40, 40, 40],
+      "allowAutoAtlas": true
+    },
+    "detail.tab.active.accent": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/detail_tab_active_accent",
+      "spriteType": "sliced",
+      "border": [40, 40, 40, 40],
+      "allowAutoAtlas": true
+    },
+    "detail.tab.idle": {
+      "kind": "button-skin",
+      "normal": "sprites/ui_families/general_detail/tab_idle_button",
+      "pressed": "sprites/ui_families/general_detail/tab_active_button",
+      "disabled": "sprites/ui_families/general_detail/tab_disabled_button",
+      "spriteType": "sliced",
+      "border": [40, 40, 40, 40],
+      "allowAutoAtlas": true
+    },
+    "detail.content.frame": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/detail_content_frame",
+      "spriteType": "sliced",
+      "border": [96, 96, 96, 96],
+      "allowAutoAtlas": false
+    },
+    "detail.content.bleed": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/detail_content_bleed",
+      "spriteType": "sliced",
+      "border": [96, 96, 96, 96],
+      "allowAutoAtlas": false
+    },
+    "detail.content.fill": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/detail_content_fill",
+      "spriteType": "sliced",
+      "border": [96, 96, 96, 96],
+      "allowAutoAtlas": false
+    },
+    "detail.content.noise": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/noise/metal_noise_256",
+      "spriteType": "tiled",
+      "opacity": 18,
+      "blendMode": "overlay",
+      "allowAutoAtlas": true
+    },
+    "detail.content.bg": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/detail_content_bg",
+      "spriteType": "sliced",
+      "border": [96, 96, 96, 96],
+      "allowAutoAtlas": false
+    },
+    "detail.section.frame": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/detail_section_frame",
+      "spriteType": "sliced",
+      "border": [40, 40, 40, 40],
+      "bleed": 4,
+      "allowAutoAtlas": true
+    },
+    "detail.section.bleed": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/detail_section_bleed",
+      "spriteType": "sliced",
+      "border": [40, 40, 40, 40],
+      "allowAutoAtlas": true
+    },
+    "detail.section.fill": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/detail_section_fill",
+      "spriteType": "sliced",
+      "border": [40, 40, 40, 40],
+      "allowAutoAtlas": true
+    },
+    "detail.section.bg": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/detail_section_bg",
+      "spriteType": "sliced",
+      "border": [40, 40, 40, 40],
+      "bleed": 4,
+      "allowAutoAtlas": true
+    },
+    "detail.footer.frame": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/detail_footer_frame",
+      "spriteType": "sliced",
+      "border": [40, 40, 40, 40],
+      "bleed": 4,
+      "allowAutoAtlas": true
+    },
+    "detail.footer.bleed": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/detail_footer_bleed",
+      "spriteType": "sliced",
+      "border": [40, 40, 40, 40],
+      "allowAutoAtlas": true
+    },
+    "detail.footer.fill": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/detail_footer_fill",
+      "spriteType": "sliced",
+      "border": [40, 40, 40, 40],
+      "allowAutoAtlas": true
+    },
+    "detail.footer.noise": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/noise/metal_noise_256",
+      "spriteType": "tiled",
+      "opacity": 22,
+      "blendMode": "overlay",
+      "allowAutoAtlas": true
+    },
+    "detail.footer.bg": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/detail_footer_bg",
+      "spriteType": "sliced",
+      "border": [40, 40, 40, 40],
+      "bleed": 4,
+      "allowAutoAtlas": true
+    },
+    "detail.tree.node.frame": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/detail_tree_node_frame",
+      "spriteType": "sliced",
+      "border": [18, 18, 18, 18],
+      "allowAutoAtlas": true
+    },
+    "detail.tree.node.fill": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/detail_tree_node_fill",
+      "spriteType": "sliced",
+      "border": [18, 18, 18, 18],
+      "allowAutoAtlas": true
+    },
+    "detail.tree.node": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/detail_tree_node_bg",
+      "spriteType": "sliced",
+      "border": [18, 18, 18, 18],
+      "allowAutoAtlas": true
+    },
+    "detail.tree.node.bleed": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/detail_section_bleed",
+      "spriteType": "sliced",
+      "border": [18, 18, 18, 18],
+      "allowAutoAtlas": true
+    },
+    "detail.action.frame": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/detail_action_frame",
+      "spriteType": "sliced",
+      "border": [40, 40, 40, 40],
+      "allowAutoAtlas": true
+    },
+    "detail.action.fill": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/detail_action_fill",
+      "spriteType": "sliced",
+      "border": [40, 40, 40, 40],
+      "allowAutoAtlas": true
+    },
+    "detail.action.accent": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/detail_action_accent",
+      "spriteType": "sliced",
+      "border": [40, 40, 40, 40],
+      "allowAutoAtlas": true
+    },
+    "detail.action.bleed": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/detail_section_bleed",
+      "spriteType": "sliced",
+      "border": [40, 40, 40, 40],
+      "allowAutoAtlas": true
+    },
+    "detail.field.bg": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/detail_field_bg",
+      "spriteType": "sliced",
+      "border": [18, 18, 18, 18],
+      "allowAutoAtlas": true
+    },
+    "detail.field.title.bg": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/detail_field_title_bg",
+      "spriteType": "sliced",
+      "border": [24, 24, 24, 24],
+      "allowAutoAtlas": true
+    },
+    "detail.field.name.bg": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/detail_field_name_bg",
+      "spriteType": "sliced",
+      "border": [20, 20, 20, 20],
+      "allowAutoAtlas": true
+    },
+    "detail.field.meta.bg": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/detail_field_meta_bg",
+      "spriteType": "sliced",
+      "border": [20, 20, 20, 20],
+      "allowAutoAtlas": true
+    },
+    "detail.label.title": {
+      "kind": "label-style",
+      "fontSize": 46,
+      "lineHeight": 52,
+      "color": "secondaryLight",
+      "outlineColor": "#000000CC",
+      "outlineWidth": 2,
+      "horizontalAlign": "LEFT"
+    },
+    "detail.label.subtitle": {
+      "kind": "label-style",
+      "fontSize": 24,
+      "lineHeight": 30,
+      "color": "textAccent",
+      "outlineColor": "#000000AA",
+      "outlineWidth": 1,
+      "horizontalAlign": "LEFT"
+    },
+    "detail.label.meta": {
+      "kind": "label-style",
+      "fontSize": 18,
+      "lineHeight": 24,
+      "color": "textSecondary",
+      "horizontalAlign": "LEFT"
+    },
+    "detail.label.section": {
+      "kind": "label-style",
+      "fontSize": 22,
+      "lineHeight": 28,
+      "color": "secondary",
+      "outlineColor": "#000000AA",
+      "outlineWidth": 1,
+      "horizontalAlign": "LEFT"
+    },
+    "detail.label.caption": {
+      "kind": "label-style",
+      "fontSize": 14,
+      "lineHeight": 18,
+      "color": "textMuted",
+      "horizontalAlign": "LEFT"
+    },
+    "detail.label.summary": {
+      "kind": "label-style",
+      "fontSize": 24,
+      "lineHeight": 30,
+      "color": "textPrimary",
+      "outlineColor": "#000000AA",
+      "outlineWidth": 1,
+      "horizontalAlign": "LEFT"
+    },
+    "detail.label.value": {
+      "kind": "label-style",
+      "fontSize": 20,
+      "lineHeight": 28,
+      "color": "textPrimary",
+      "outlineColor": "#00000099",
+      "outlineWidth": 1,
+      "horizontalAlign": "LEFT"
+    },
+    "detail.label.valueDense": {
+      "kind": "label-style",
+      "fontSize": 18,
+      "lineHeight": 26,
+      "color": "textPrimary",
+      "outlineColor": "#00000099",
+      "outlineWidth": 1,
+      "horizontalAlign": "LEFT"
+    },
+    "detail.label.note": {
+      "kind": "label-style",
+      "fontSize": 16,
+      "lineHeight": 22,
+      "color": "textSecondary",
+      "outlineColor": "#00000088",
+      "outlineWidth": 1,
+      "horizontalAlign": "LEFT"
+    },
+    "detail.label.muted": {
+      "kind": "label-style",
+      "fontSize": 18,
+      "lineHeight": 24,
+      "color": "textMuted",
+      "horizontalAlign": "LEFT"
+    },
+    "detail.label.button": {
+      "kind": "label-style",
+      "fontSize": 16,
+      "lineHeight": 20,
+      "color": "textPrimary",
+      "outlineColor": "#000000CC",
+      "outlineWidth": 1,
+      "horizontalAlign": "CENTER",
+      "verticalAlign": "CENTER"
+    },
+    "ui-common-metal.equipment.primary": {
+      "kind": "button-skin",
+      "normal": "sprites/ui_families/common/equipment/btn_primary_normal",
+      "pressed": "sprites/ui_families/common/equipment/btn_primary_pressed",
+      "disabled": "sprites/ui_families/common/equipment/btn_primary_disabled",
+      "spriteType": "sliced",
+      "border": [20, 20, 20, 20],
+      "allowAutoAtlas": true
+    },
+    "detail.button.primary": {
+      "kind": "button-skin",
+      "normal": "sprites/ui_families/common/equipment/btn_primary_normal",
+      "pressed": "sprites/ui_families/common/equipment/btn_primary_pressed",
+      "disabled": "sprites/ui_families/common/equipment/btn_primary_disabled",
+      "spriteType": "sliced",
+      "border": [20, 20, 20, 20],
+      "allowAutoAtlas": true
+    },
+    "common.button.primary": {
+      "kind": "button-skin",
+      "normal": "sprites/ui_families/common/equipment/btn_primary_normal",
+      "pressed": "sprites/ui_families/common/equipment/btn_primary_pressed",
+      "disabled": "sprites/ui_families/common/equipment/btn_primary_disabled",
+      "spriteType": "sliced",
+      "border": [20, 20, 20, 20],
+      "allowAutoAtlas": true
+    }
+  }
+}

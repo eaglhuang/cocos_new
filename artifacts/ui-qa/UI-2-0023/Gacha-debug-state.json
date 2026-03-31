@@ -1,0 +1,95 @@
+{
+  "createdAt": "2026-03-31T12:24:37.484Z",
+  "target": "Gacha",
+  "error": "TimeoutError: Waiting failed: 45000ms exceeded",
+  "state": {
+    "href": "http://localhost:7456/?previewMode=true&previewTarget=3&t=1774959831750&scene=05b67b52-831e-4d74-a8a7-5955746bde7f",
+    "title": "Cocos Creator - 3KLife",
+    "captureState": {
+      "status": "ready",
+      "screenId": "gacha-main-screen",
+      "timestamp": 1774959835008
+    },
+    "bodyText": "设计分辨率 (1920X1080)\nRotate\nDebug Mode:\nNone\nVerbose\nInfo\nWarn\nError\nInfo For Web Page\nWarn For Web Page\nError For Web Page\nShow FPS\nFPS:\nPause\n.",
+    "iframeCount": 0,
+    "canvasCount": 1
+  },
+  "diagnostics": {
+    "console": [
+      {
+        "type": "timeEnd",
+        "text": "Init Base: 0.3330078125 ms [\"Init Base: 0.3330078125 ms\"]"
+      },
+      {
+        "type": "timeEnd",
+        "text": "Init Infrastructure: 45.658935546875 ms [\"Init Infrastructure: 45.658935546875 ms\"]"
+      },
+      {
+        "type": "log",
+        "text": "meshopt wasm decoder initialized [\"meshopt wasm decoder initialized\"]"
+      },
+      {
+        "type": "log",
+        "text": "[bullet]:bullet wasm lib loaded. [\"[bullet]:bullet wasm lib loaded.\"]"
+      },
+      {
+        "type": "log",
+        "text": "[PHYSICS2D]: register box2d. [\"[PHYSICS2D]: register box2d.\"]"
+      },
+      {
+        "type": "log",
+        "text": "[PHYSICS]: register bullet. [\"[PHYSICS]: register bullet.\"]"
+      },
+      {
+        "type": "log",
+        "text": "[PHYSICS]: using bullet. [\"[PHYSICS]: using bullet.\"]"
+      },
+      {
+        "type": "timeEnd",
+        "text": "Init SubSystem: 266.52294921875 ms [\"Init SubSystem: 266.52294921875 ms\"]"
+      },
+      {
+        "type": "log",
+        "text": "Cocos Creator v3.8.8 [\"Cocos Creator v3.8.8\"]"
+      },
+      {
+        "type": "log",
+        "text": "Using custom pipeline: Builtin [\"Using custom pipeline: Builtin\"]"
+      },
+      {
+        "type": "timeEnd",
+        "text": "Init Project: 351.113037109375 ms [\"Init Project: 351.113037109375 ms\"]"
+      },
+      {
+        "type": "log",
+        "text": "[LoadingScene] Preview target -> gacha-main-screen [\"[LoadingScene] Preview target -> gacha-main-screen\"]"
+      },
+      {
+        "type": "warn",
+        "text": "[UISkinResolver] 載入 SpriteFrame 失敗: gacha.btn.back → ui/common/btn_back_normal Error: load spriteFrame failed: ui/common/btn_back_normal/spriteFrame (raw: ui/common/btn_back_normal) | attempts=SpriteFrame:ui/common/btn_back_normal ; SpriteFrame:ui/common/btn_back_normal/spriteFrame ; Texture2D:ui/common/btn_back_normal [\"[UISkinResolver] 載入 SpriteFrame 失敗: gacha.btn.back → ui/common/btn_back_normal\",{}]"
+      },
+      {
+        "type": "warn",
+        "text": "[UISkinResolver] 載入 SpriteFrame 失敗: gacha.btn.destiny_shop → ui/gacha/btn_destiny_shop_normal Error: load spriteFrame failed: ui/gacha/btn_destiny_shop_normal/spriteFrame (raw: ui/gacha/btn_destiny_shop_normal) | attempts=SpriteFrame:ui/gacha/btn_destiny_shop_normal ; SpriteFrame:ui/gacha/btn_destiny_shop_normal/spriteFrame ; Texture2D:ui/gacha/btn_destiny_shop_normal [\"[UISkinResolver] 載入 SpriteFrame 失敗: gacha.btn.destiny_shop → ui/gacha/btn_destiny_shop_normal\",{}]"
+      },
+      {
+        "type": "warn",
+        "text": "[UISkinResolver] 載入 SpriteFrame 失敗: gacha.btn.pull1 → ui/gacha/btn_pull1_normal Error: load spriteFrame failed: ui/gacha/btn_pull1_normal/spriteFrame (raw: ui/gacha/btn_pull1_normal) | attempts=SpriteFrame:ui/gacha/btn_pull1_normal ; SpriteFrame:ui/gacha/btn_pull1_normal/spriteFrame ; Texture2D:ui/gacha/btn_pull1_normal [\"[UISkinResolver] 載入 SpriteFrame 失敗: gacha.btn.pull1 → ui/gacha/btn_pull1_normal\",{}]"
+      },
+      {
+        "type": "log",
+        "text": "[UIPreviewBuilder] buildScreen 完成 (layout: gacha-preview-main) root.children=6 [\"[UIPreviewBuilder] buildScreen 完成 (layout: gacha-preview-main) root.children=6\"]"
+      },
+      {
+        "type": "log",
+        "text": "[UIScreenPreviewHost] mounted gacha-main-screen -> GachaMain [\"[UIScreenPreviewHost] mounted gacha-main-screen -> GachaMain\"]"
+      },
+      {
+        "type": "warn",
+        "text": "[UISkinResolver] 載入 SpriteFrame 失敗: gacha.btn.pull10 → ui/gacha/btn_pull10_normal Error: load spriteFrame failed: ui/gacha/btn_pull10_normal/spriteFrame (raw: ui/gacha/btn_pull10_normal) | attempts=SpriteFrame:ui/gacha/btn_pull10_normal ; SpriteFrame:ui/gacha/btn_pull10_normal/spriteFrame ; Texture2D:ui/gacha/btn_pull10_normal [\"[UISkinResolver] 載入 SpriteFrame 失敗: gacha.btn.pull10 → ui/gacha/btn_pull10_normal\",{}]"
+      }
+    ],
+    "pageErrors": [],
+    "requestFailures": []
+  }
+}

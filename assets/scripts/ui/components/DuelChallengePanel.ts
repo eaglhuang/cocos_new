@@ -1,8 +1,8 @@
+// @spec-source → 見 docs/cross-reference-index.md
 import {
   _decorator,
   Button,
   Color,
-  Component,
   Graphics,
   Label,
   Node,
@@ -12,6 +12,7 @@ import {
   UITransform,
   Vec3,
 } from "cc";
+import { UIPreviewBuilder } from '../core/UIPreviewBuilder';
 
 const { ccclass } = _decorator;
 
@@ -34,7 +35,7 @@ const { ccclass } = _decorator;
  * 但 Cocos 用 Node.emit() 做一次性事件回調，避免緊耦合。
  */
 @ccclass("DuelChallengePanel")
-export class DuelChallengePanel extends Component {
+export class DuelChallengePanel extends UIPreviewBuilder {
   private titleLabel: Label | null = null;
   private scoreLabel: Label | null = null;
 

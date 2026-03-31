@@ -1,0 +1,116 @@
+{
+  "id": "general-quickview-main",
+  "version": 1,
+  "_doc": "v3-5: 主將屬性戰法快覽小窗 (GeneralQuickView)。點擊 TopBar 我方/敵方頭像觸發。320×400px modal 彈窗，可點擊外部關閉。",
+  "canvas": { "fitWidth": true, "fitHeight": true, "safeArea": true, "designWidth": 1920, "designHeight": 1080 },
+  "root": {
+    "type": "container",
+    "name": "QuickViewRoot",
+    "id": "quickViewRoot",
+    "widget": { "hCenter": 0, "vCenter": 0 },
+    "width": 320,
+    "height": 420,
+    "skinSlot": "quickview.bg",
+    "active": false,
+    "_doc": "預設 active:false；由 BattleHUD 點擊頭像後設為 true。",
+    "children": [
+      {
+        "type": "button",
+        "name": "BgOverlay",
+        "id": "bgOverlay",
+        "widget": { "top": -1080, "left": -1920, "right": -1920, "bottom": -1080 },
+        "skinSlot": "quickview.overlay",
+        "_doc": "全螢幕透明按鈕，點擊關閉彈窗（攔截背景點擊）。向外超出父容器確保全覆蓋。"
+      },
+      {
+        "type": "panel",
+        "name": "Header",
+        "widget": { "top": 0, "left": 0, "right": 0 },
+        "height": 96,
+        "skinSlot": "quickview.header.bg",
+        "layout": { "type": "horizontal", "spacing": 12, "paddingLeft": 12, "paddingRight": 12, "alignItems": "center" },
+        "children": [
+          { "type": "image",  "name": "GQPortrait", "id": "gqPortrait", "width": 72, "height": 72, "skinSlot": "quickview.portrait" },
+          {
+            "type": "container",
+            "name": "GQHeaderInfo",
+            "width": 200,
+            "height": 80,
+            "layout": { "type": "vertical", "spacing": 4 },
+            "children": [
+              { "type": "label", "name": "GQName",    "id": "gqName",    "width": 200, "height": 28, "styleSlot": "quickview.label.name" },
+              { "type": "label", "name": "GQTitle",   "id": "gqTitle",   "width": 200, "height": 20, "styleSlot": "quickview.label.title" },
+              { "type": "label", "name": "GQFaction", "id": "gqFaction", "width": 200, "height": 20, "styleSlot": "quickview.label.faction" }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "panel",
+        "name": "StatsSection",
+        "widget": { "top": 96, "left": 0, "right": 0 },
+        "height": 90,
+        "skinSlot": "quickview.section.bg",
+        "layout": { "type": "vertical", "spacing": 4, "paddingLeft": 12, "paddingRight": 12, "paddingTop": 8, "paddingBottom": 8 },
+        "children": [
+          { "type": "label", "name": "GQHpRow", "id": "gqHpRow", "width": "100%", "height": 22, "styleSlot": "quickview.label.stat" },
+          {
+            "type": "container",
+            "name": "GQStatsGrid",
+            "width": "100%",
+            "height": 22,
+            "layout": { "type": "horizontal", "spacing": 12 },
+            "children": [
+              { "type": "label", "name": "GQAtk", "id": "gqAtk", "width": "50%", "height": 22, "styleSlot": "quickview.label.stat" },
+              { "type": "label", "name": "GQDef", "id": "gqDef", "width": "50%", "height": 22, "styleSlot": "quickview.label.stat" }
+            ]
+          },
+          {
+            "type": "container",
+            "name": "GQStatsGrid2",
+            "width": "100%",
+            "height": 22,
+            "layout": { "type": "horizontal", "spacing": 12 },
+            "children": [
+              { "type": "label", "name": "GQSpd", "id": "gqSpd", "width": "50%", "height": 22, "styleSlot": "quickview.label.stat" },
+              { "type": "label", "name": "GQInt", "id": "gqInt", "width": "50%", "height": 22, "styleSlot": "quickview.label.stat" }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "panel",
+        "name": "SkillsSection",
+        "id": "skillsSection",
+        "widget": { "top": 186, "left": 0, "right": 0 },
+        "height": 164,
+        "skinSlot": "quickview.section.bg",
+        "layout": { "type": "vertical", "spacing": 4, "paddingLeft": 12, "paddingRight": 12, "paddingTop": 8, "paddingBottom": 8 },
+        "children": [
+          { "type": "label", "name": "GQSkillsTitle", "width": "100%", "height": 18, "text": "戰法:", "styleSlot": "quickview.label.section" },
+          { "type": "label", "name": "GQSkill1", "id": "gqSkill1", "width": "100%", "height": 20, "styleSlot": "quickview.label.skill" },
+          { "type": "label", "name": "GQSkill2", "id": "gqSkill2", "width": "100%", "height": 20, "styleSlot": "quickview.label.skill" },
+          { "type": "label", "name": "GQSkill3", "id": "gqSkill3", "width": "100%", "height": 20, "styleSlot": "quickview.label.skill" }
+        ]
+      },
+      {
+        "type": "button",
+        "name": "GQCloseBtn",
+        "id": "gqCloseBtn",
+        "widget": { "top": 8, "right": 8 },
+        "width": 28,
+        "height": 28,
+        "skinSlot": "quickview.btn.close",
+        "styleSlot": "quickview.label.close",
+        "text": "×",
+        "_doc": "右上角關閉按鈕"
+      }
+    ]
+  },
+  "interactions": {
+    "_doc": "TS 實作參考",
+    "open": "GeneralQuickViewPanel.show(data: GeneralQuickViewData, faction: 'player'|'enemy') → 填入資料 + active:true",
+    "close": "點擊 BgOverlay 或 GQCloseBtn → active:false",
+    "enemyObfuscation": "faction=enemy 時，部分屬性顯示 '???' (obfuscated:true)，未知戰法顯示 '🔒 未知戰法'"
+  }
+}

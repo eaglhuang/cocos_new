@@ -1,0 +1,13 @@
+{
+  "id": "general-list-screen",
+  "version": 1,
+  "uiId": "GeneralList",
+  "layer": "Game",
+  "bundle": "lobby_ui",
+  "layout": "general-list-main",
+  "skin": "general-list-default",
+  "validation": {
+    "devices": ["phone-16-9", "phone-19_5-9", "tablet-4-3"],
+    "allowMissingSkin": true
+  }
+}

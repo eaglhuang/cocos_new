@@ -1,3 +1,4 @@
+// @spec-source → 見 docs/cross-reference-index.md
 export type BuffEffectVariant = "AtkGain" | "AtkLoss" | "HpGain" | "HpLoss";
 
 export type ParticleColorValue = [number, number, number, number];

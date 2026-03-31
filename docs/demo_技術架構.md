@@ -3,7 +3,7 @@
 > 第一階段 Demo 的程式架構、模組分工、資料流與技術決策。  
 > 玩法規格請參考 `docs/demo_playbook.md`。
 
-**最後更新**: 2026-03-17
+**最後更新**: 2026-03-30
 
 ---
 
@@ -72,7 +72,7 @@ assets/scripts/
 │   │   ├── ResourceManager.ts   ← resources 目錄載入 & 快取
 │   │   ├── EffectSystem.ts      ← 傷害飄字 / 受擊特效（骨架）
 │   │   ├── BuffSystem.ts        ← 狀態效果管理（暈眩等）
-│   │   └── BattleSystem.ts      ← 回合階段狀態機 & DP 管理
+│   │   └── BattleSystem.ts      ← 回合階段狀態機 & 戰場部署資源 / 冷卻管理
 │   └── models/
 │       ├── TroopUnit.ts         ← 兵種單位資料模型（含移動力、攻擊距離、盾牆狀態）
 │       └── GeneralUnit.ts       ← 武將資料模型（含 SP 能量系統、技能 ID）
@@ -95,8 +95,8 @@ assets/scripts/
 │   ├── layers/
 │   │   └── UILayer.ts           ← UI 層級基底 Component (show/hide 淡入淡出)
 │   └── components/
-│       ├── BattleHUD.ts         ← 抬頭顯示器：回合/DP/SP/堡壘/狀態
-│       ├── DeployPanel.ts       ← 部署面板：兵種選擇 + 路線部署 + 技能 + 結束回合 + Toast 提示
+│       ├── BattleHUD.ts         ← 抬頭顯示器：回合/糧草/SP/堡壘/狀態
+│       ├── DeployPanel.ts       ← 部署面板：兵種選擇 + 路線部署 + 技能 + 結束回合 + 糧草 / 冷卻 Toast 提示
 │       ├── BattleLogPanel.ts    ← 戰鬥紀錄小面板：顯示近期事件（部署/移動/陣亡/回合）
 │       ├── ToastMessage.ts      ← 輕量提示元件：短訊息自動消失
 │       └── ResultPopup.ts       ← 結果彈窗：勝/負/平 + 再來一場
@@ -146,8 +146,8 @@ tools/sprite-pipeline/
 
 ### 4.2 BattleSystem（回合狀態機）
 - 管理 5 個階段循環：`PlayerDeploy → AutoMove → BattleResolve → SpecialResolve → TurnEnd`
-- 管理玩家部署點數（DP），每回合回復，有上限
-- `nextTurn()` 推進回合計數、補充 DP、重置階段回 PlayerDeploy（由 BattleController 呼叫）
+- 管理戰場部署資源（糧草）、兵種冷卻與普通小兵降級產出的相關狀態
+- `nextTurn()` 推進回合計數、重置回合型冷卻或階段狀態，並回到 `PlayerDeploy`（由 BattleController 呼叫）
 - `advancePhase()` 逐階段推進（保留接口，目前未使用）
 - 階段變化時透過 EventSystem 發送 `TurnPhaseChanged` 通知
 
@@ -433,14 +433,15 @@ DEPRECATED_RULES 現有規則：
   → DeployPanel.selectLane(lane) → onDeployClick()
     → BattleController.tryDeployTroop(type, lane)
       → 檢查每回合部署上限（MAX_PLAYER_DEPLOY_PER_TURN）
-      → BattleSystem.spendDp(cost)
+      → BattleSystem.consumeFood(cost) / 檢查兵種冷卻
       → 建立 TroopUnit（從 troops.json 讀取數值）
       → BattleState.addUnit(unit)
       → EventSystem.emit("unit-deployed")
-      → BattleScene.onUnitDeployed → 即時更新 HUD 的 DP 與 DeployPanel
+      → BattleScene.onUnitDeployed → 即時更新 HUD 的糧草與 DeployPanel
       → DeployPanel 發出 "playerDeployed" → BattleScene 自動呼叫 advanceTurn()
       → BattleLogPanel 新增一筆部署紀錄
-    → 若部署失敗（DP 不足 / 格位被佔用 / 本回合已部署）
+    → 若部署失敗（糧草不足 / 格位被佔用 / 本回合已部署）
+      → 若允許降級產出，改派普通小兵並記錄品質為 BASIC
       → DeployPanel 以 Toast 顯示失敗原因
 
 [玩家點擊「結束回合」（本回合選擇不部署）]
@@ -453,6 +454,18 @@ DEPRECATED_RULES 現有規則：
         → FormulaSystem.calculateDamage(context)
       → 特殊行動（醫護治療、工兵破城、敵將自動技能）
       → 勝敗判定
+
+### 4.11 模組化戰場環境（Tile-State Machine）
+
+> **整併來源**：模組化戰場系統開發策略.md、戰場互動矩陣與養成動力.md
+
+- 場景（Scene）只作為外殼；真正的玩法差異由格子狀態與任務變數驅動。
+- 建議維持統一的 Tile-State 模組：`Normal`、`Hazard`、`Force-Move`、`Stealth`。
+- 火燒、水淹、夜襲、落石等特殊戰場，不另做一套新戰鬥框架，而是在同一個 5×8 棋盤上替換：
+  - 地表貼圖 / Decal
+  - 環境粒子 / VFX
+  - Tile 行為（受傷、推移、隱匿）
+- 這種設計對應 Unity 中「同一個 Grid + 不同 Tile Metadata / Scriptable Rule Set」的做法，便於在 Cocos 內保持資料驅動與低維護成本。
       → 若 "ongoing"：BuffSystem.tickBuff() → BattleSystem.nextTurn()
       → BattleLogPanel 追加回合推進與移動/陣亡紀錄
 
@@ -570,3 +583,214 @@ assets/resources/data/
 - **陣列與集合的重用**：
   - 如果可以，避免在每回合或每幀回傳新陣列。改為傳入暫存陣列（`outArray`）來填充資料，或使用 iterator。
   - `PoolSystem.clear()` 執行時會確保 `NodePool.clear()` 被明確呼叫，真正釋放引擎層的 Node 物件。
+
+---
+
+## 12. 多場景切換架構 (Multi-Scene Transition Architecture)
+
+> **Unity 對照**：等同 Unity 的 A -> Empty Scene C -> B 換場法，目的是利用 C 確保 A 的記憶體在進入 B 之前已全數卸載，避免記憶體峰值觸發 Android / iOS 系統強殺（OOM Kill）或 Web 分頁崩潰。
+
+### 12.1 場景清單
+
+| 場景名稱 | 檔案 | 說明 |
+|---------|------|------|
+| `LoginScene` | `LoginScene.scene` | 登入 / 語系選擇入口（預留） |
+| `LoadingScene` | `LoadingScene.scene` | 中繼卸載場景 C；另支援 UI screen-driven preview hub 模式 |
+| `LobbyScene` | `LobbyScene.scene` | 大廳 / 選關選武將（預留） |
+| `BattleScene` | `demo.scene` | 戰鬥主場景（已存在） |
+
+場景常數統一定義在 `assets/scripts/core/config/Constants.ts` 的 `SceneName` 列舉中：
+
+```typescript
+export enum SceneName {
+  Login   = "LoginScene",
+  Loading = "LoadingScene",
+  Lobby   = "LobbyScene",
+  Battle  = "BattleScene",
+}
+```
+
+### 12.2 換場流程（A → LoadingScene → B）
+
+```
+任何場景（A）
+  └─ services().scene.switchScene(SceneName.Lobby)
+        └─ director.loadScene("LoadingScene")   ← SceneManager 統一攔截
+              └─ LoadingScene.start()
+                    ├─ assetManager.releaseUnusedAssets()   ← 清除 A 的未引用資源
+                    ├─ (Native) garbageCollect()             ← iOS/Android 額外 GC
+                    ├─ this._loadedBgFrame.decRef()          ← 釋放 Loading 自身圖片
+                    └─ director.preloadScene("Lobby", onProgress, onComplete)
+                          └─ director.loadScene("Lobby")    ← 全部清乾淨後才切換
+```
+
+> **Web 端特別說明**：瀏覽器（尤其 iOS Safari）單一分頁記憶體上限約 1~1.5 GB，超過後分頁直接被系統重整，無法捕捉。中繼卸載場景是唯一可靠的防崩措施。
+
+### 12.3 SceneManager
+
+- 位置：`assets/scripts/core/managers/SceneManager.ts`
+- 掛載：透過 `ServiceLoader` 全域存取（`services().scene`）
+- **主要 API**：
+
+| 方法 | 說明 |
+|------|------|
+| `switchScene(name, data?)` | 換場唯一入口，所有換場必須走此 API |
+| `getTargetScene()` | 供 LoadingScene 讀取目標場景名稱與夾帶資料 |
+
+```typescript
+// 任意腳本中換場
+services().scene.switchScene(SceneName.Lobby);
+
+// 夾帶資料（例如：選中的關卡 ID）
+services().scene.switchScene(SceneName.Battle, { encounterId: 'encounter_01' });
+```
+
+### 12.4 ResourceManager 資源標籤 (Tags)
+
+所有 Load API 均支援 `options?: { tags?: string[] }`，可以為資源貼上場景標籤，方便在換場時精準釋放：
+
+```typescript
+// 在 LoginScene 中載入資源時加上標籤
+await services().resource.loadJson('data/login-config', { tags: ['LoginScene'] });
+
+// 進入 LoadingScene 後，一行清掉 Login 的所有標籤資源
+services().resource.releaseByTag('LoginScene');
+```
+
+| API | 說明 |
+|-----|------|
+| `loadJson(path, { tags })` | 載入並記錄標籤 |
+| `loadPrefab(path, { tags })` | 同上 |
+| `loadSpriteFrames(path, { tags })` | 同上 |
+| `loadFont(path, { tags })` | 同上 |
+| `releaseByTag(tag)` | 批次釋放指定標籤下的所有資源（decRef） |
+| `releaseAsset(path)` | 釋放單一路徑資源 |
+| `clearCache()` | 清空所有快取 |
+
+### 12.5 LoadingScene 自我釋放機制
+
+LoadingScene 自身動態載入的背景圖透過 `resources.load` 取得後立即 `addRef()`，在呼叫 `director.loadScene(target)` 之前呼叫 `decRef()`，確保場景卸載後圖片引用計數歸零，引擎可即時回收。
+
+```typescript
+// 切換前先釋放 Loading 自身的背景圖
+if (this._loadedBgFrame) {
+    this._loadedBgFrame.decRef();
+    this._loadedBgFrame = null;
+}
+director.loadScene(target.name);
+```
+
+> Unity 對照：等同在 `OnDestroy()` 呼叫 `Addressables.Release(handle)`。
+
+### 12.6 背景圖替換方式
+
+`LoadingScene.ts` 使用 `@property bgTexturePath` 讓圖片路徑可在 Cocos Inspector 面板中修改，不需要改程式碼。預設使用 `textures/bg_normal_day`。
+
+### 12.7 加入新場景的 SOP
+
+1. 在 Cocos Editor「Assets」面板右鍵 → Create → Scene，命名（例如 `LobbyScene`）
+2. 在 `Constants.ts` 的 `SceneName` 列舉加一個新值
+3. 在 Editor「Project Settings → Build → Included Scenes」列表中加入新場景（確保編譯時打包）
+4. 新場景腳本繼承 `Component`，換場時統一呼叫 `services().scene.switchScene(SceneName.新場景)`
+5. 若是一般換場需求，無需修改 `LoadingScene.ts` 的既有中繼流程；若是 UI QA / screen-driven 預覽需求，改在 Inspector 切 `previewMode` 與 `previewTarget`
+
+### 12.8 UI Preview Hub 模式
+
+`LoadingScene.ts` 現在除了負責 A → Loading → B 的中繼卸載，也支援 QA 專用的 preview hub 模式。
+
+| 欄位 | 用途 |
+|------|------|
+| `previewMode` | 啟用後不再執行一般換場流程，改為直接掛載 screen-driven UI |
+| `previewTarget` | 指定要預覽的 screen：`LobbyMain` / `ShopMain` / `Gacha` / `DuelChallenge` |
+
+實作方式：
+
+1. `LoadingScene` 會在 preview mode 下建立 `UIScreenPreviewHost`。
+2. `UIScreenPreviewHost` 透過 `UISpecLoader.loadFullScreen(...)` 載入 screen/layout/skin 三層契約。
+3. QA 或開發者可在同一個場景中反覆切換不同 UI screen，而不需為每個畫面建立獨立測試 scene。
+
+Unity 對照：這相當於保留原本的 loading scene，但再額外讓它兼任一個「UI screen sandbox」，用 enum 決定要 instantiate 哪組 prefab/JSON 組合來做驗收。
+
+---
+
+## 13. 技術分類索引（工具 / UI 技術 / 核心代碼）
+
+> **2026-03-30 新增**：為了讓三類技術需求清晰可查，以下將專案所有技術元件分為三大類別。
+
+### 13.1 工具類（產生器 / 模擬器 / 編輯器擴展）
+
+> 工具類元件不參與 runtime 遊戲邏輯，僅供開發階段或離線批次使用。
+
+| 工具名稱 | 代碼位置 | 對應規格書 | 功能說明 |
+|---|---|---|---|
+| **血統矩陣計算器** | 待實作 | 血統理論系統.md | 輸入父母 → 計算 14 人祖先矩陣 → 預估 EP |
+| **名士占卜模擬器** | 待實作 | 名士預言系統.md | 選名士 + 父母 → 預覽子嗣因子傾向 |
+| **虛擬祖先生成器** | 待實作 | 血統理論系統.md K 節 | 初代名將 → 自動補齊 3 代 14 人虛擬祖先 |
+| **因子分配計算器** | 待實作 | 因子爆發系統.md | 14 人因子 + 標籤 → EP 與共鳴加成 |
+| **配種最佳化計算** | 待實作 | 結緣系統（配種）.md | 父母組合 → 預估 EP、因子、五維範圍 |
+| **傷害計算器** | FormulaSystem.ts（runtime 共用） | 數值系統.md + 戰場適性系統.md | 攻防 + 適性 + 兵種 + 地形 + 天氣 → 最終傷害 |
+| SceneAutoBuilder | assets/scripts/tools/SceneAutoBuilder.ts | 場景搭建指南.md | 運行時場景生成器（已被編輯器擴展取代） |
+| VfxComposerTool | assets/scripts/tools/VfxComposerTool.ts | demo_技術架構.md | 即時特效預覽工具 |
+| vfx-block-registry | assets/scripts/tools/vfx-block-registry.ts | 美術素材規劃與使用說明.md | 特效積木登錄與路徑治理 |
+| vfx-usage-table | assets/scripts/tools/vfx-usage-table.ts | demo_技術架構.md | 積木組合宣告 + 死資源偵測 |
+| UnityParticlePrefabParser | assets/scripts/tools/UnityParticlePrefabParser.ts | — | Unity 粒子遷移工具 |
+| UnityParticleCompoundMapper | assets/scripts/tools/UnityParticleCompoundMapper.ts | — | Unity 複合粒子映射 |
+| DeprecatedApiScanner | assets/scripts/tools/tests/ | 本文件 UnitTest 章節 | 棄用 API 靜態掃描 |
+| battle-scene-builder | extensions/battle-scene-builder/ | 場景搭建指南.md | 編輯器擴展：一鍵生成戰鬥場景節點樹 |
+| studio-tools-hub | extensions/studio-tools-hub/ | 美術素材規劃與使用說明.md | 編輯器擴展：精靈管線工具 |
+| unit-asset-organizer | extensions/unit-asset-organizer/ | 美術素材規劃與使用說明.md | 編輯器擴展：單位資產整理 |
+| unity-particle-translator | extensions/unity-particle-translator/ | — | 編輯器擴展：Unity 粒子翻譯 |
+| sprite-pipeline | tools/sprite-pipeline/ | 美術素材規劃與使用說明.md | Node.js 圖集拆幀與特效貼圖轉 alpha |
+
+### 13.2 UI 技術（畫面框架 / 三層契約 / 元件）
+
+| 元件名稱 | 代碼位置 | 對應規格書 | 功能說明 |
+|---|---|---|---|
+| **UIManager** | assets/scripts/core/managers/UIManager.ts | UI 規格書.md | 六層 UI 生命週期管理 |
+| **UISpecLoader** | assets/scripts/ui/UISpecLoader.ts | UI技術規格書.md | 三層 JSON 契約載入（layouts/skins/screens） |
+| **UIPreviewBuilder** | 待實作 | UI技術規格書.md | 從 JSON 契約動態生成 Prefab 預覽 |
+| **UIValidationRunner** | 待實作 | UI技術規格書.md | 驗證 skinSlot 路徑、textKey、bind 欄位合法性 |
+| **UILayer** | assets/scripts/ui/layers/UILayer.ts | UI 規格書.md | UI 層級基底 Component |
+| **UIConfig** | assets/scripts/core/config/UIConfig.ts | 主戰場UI規格書.md | UIID / LayerType 定義 |
+| **SolidBackground** | assets/scripts/ui/components/SolidBackground.ts | UI技術規格書.md | 純色白模背景生成 |
+| **BattleHUD** | assets/scripts/ui/components/BattleHUD.ts | 主戰場UI規格書.md | 回合/糧草/SP 即時 HUD |
+| **DeployPanel** | assets/scripts/ui/components/DeployPanel.ts | 戰場部署系統.md | 兵種選擇 + 路線部署 |
+| **GeneralDetailPanel** | assets/scripts/ui/components/GeneralDetailPanel.ts | 武將人物介面規格書.md | 武將詳細面板（6 頁籤） |
+| **GeneralListPanel** | assets/scripts/ui/components/GeneralListPanel.ts | 武將人物介面規格書.md | 武將列表 |
+| **DuelChallengePanel** | assets/scripts/ui/components/DuelChallengePanel.ts | 名將挑戰賽系統.md | 單挑挑戰/接受 UI |
+| **ResultPopup** | assets/scripts/ui/components/ResultPopup.ts | 戰場部署系統.md | 戰鬥結算面板 |
+| **ToastMessage** | assets/scripts/ui/components/ToastMessage.ts | UI 規格書.md | 通知 Toast |
+| **NetworkStatusIndicator** | assets/scripts/ui/components/NetworkStatusIndicator.ts | Data Schema文件.md | 斷線警示與同步提示 |
+| **ui-design-tokens.json** | assets/resources/ui-spec/ui-design-tokens.json | UI技術規格書.md | 全域色彩/排版/間距 token |
+| **三層 JSON 契約** | assets/resources/ui-spec/layouts\|skins\|screens/ | UI技術規格書.md | 結構層/樣式層/組裝層 |
+| **i18n/zh-TW.json** | assets/resources/i18n/zh-TW.json | — | 繁體中文 UI 字串 |
+
+### 13.3 核心代碼（戰鬥邏輯 / 資料模型 / 架設框架）
+
+| 元件名稱 | 代碼位置 | 對應規格書 | 功能說明 |
+|---|---|---|---|
+| **ServiceLoader** | assets/scripts/core/managers/ServiceLoader.ts | 本文件 § 4.1 | DI 容器（9+ 服務註冊） |
+| **GameManager** | assets/scripts/core/managers/GameManager.ts | MVP遊戲驗證規格書.md | 全域模式切換 |
+| **SceneManager** | assets/scripts/core/managers/SceneManager.ts | 本文件 § 12.3 | A→Loading→B 場景切換 |
+| **BattleSystem** | assets/scripts/core/systems/BattleSystem.ts | 戰場部署系統.md | 回合階段狀態機 + 糧草管理 |
+| **FormulaSystem** | assets/scripts/core/systems/FormulaSystem.ts | 數值系統.md | 集中傷害/治療/互剋公式 |
+| **BuffSystem** | assets/scripts/core/systems/BuffSystem.ts | 因子爆發系統.md | 狀態效果管理 |
+| **ActionSystem** | assets/scripts/core/systems/ActionSystem.ts | 戰法系統.md + 奧義系統.md | 技能時間軸演出 |
+| **EventSystem** | assets/scripts/core/systems/EventSystem.ts | 本文件 § 4.4 | Pub/Sub 事件匯流排 |
+| **PoolSystem** | assets/scripts/core/systems/PoolSystem.ts | 本文件 § 4.5 | NodePool 物件池 |
+| **ResourceManager** | assets/scripts/core/systems/ResourceManager.ts | Data Schema文件.md | JSON/Prefab 載入與快取 |
+| **EffectSystem** | assets/scripts/core/systems/EffectSystem.ts | 本文件 § 4.7 | VFX 生命週期管理 |
+| **AudioSystem** | assets/scripts/core/systems/AudioSystem.ts | 本文件 | BGM/SFX 混音管理 |
+| **MaterialSystem** | assets/scripts/core/systems/MaterialSystem.ts | 美術素材規劃與使用說明.md | 材質實例與 Shader warmup |
+| **MemoryManager** | assets/scripts/core/systems/MemoryManager.ts | 本文件 § 11 | 資產追蹤與釋放 |
+| **NetworkService** | assets/scripts/core/systems/NetworkService.ts | Data Schema文件.md | 離線網路狀態偵測 |
+| **SyncManager** | assets/scripts/core/systems/SyncManager.ts | Data Schema文件.md | 離線 Action Log + HMAC 同步 |
+| **BattleController** | assets/scripts/battle/controllers/BattleController.ts | 戰場部署系統.md | 遭遇戰主控 |
+| **EnemyAI** | assets/scripts/battle/controllers/EnemyAI.ts | 治理模式他國AI系統.md | 敵方 AI 部署策略 |
+| **BattleState** | assets/scripts/battle/models/BattleState.ts | 戰場部署系統.md | 5×8 棋盤格子 + 單位索引 |
+| **TroopUnit** | assets/scripts/core/models/TroopUnit.ts | 兵種（虎符）系統.md | 兵種單位資料模型 |
+| **GeneralUnit** | assets/scripts/core/models/GeneralUnit.ts | 武將系統.md | 武將資料模型 + GeneralConfig DTO |
+| **Constants** | assets/scripts/core/config/Constants.ts | 數值系統.md | 列舉、常數、互剋表、地形修正 |
+| **UnitAssetCatalog** | assets/scripts/core/config/UnitAssetCatalog.ts | 美術素材規劃與使用說明.md | 單位資產路徑映射 |
+| **VfxEffectConfig** | assets/scripts/core/config/VfxEffectConfig.ts | 本文件 | VFX Effect 定義 |
+| **server/src/index.ts** | server/src/index.ts | Data Schema文件.md | 後端驗證引擎原型 |

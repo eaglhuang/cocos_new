@@ -1,0 +1,250 @@
+{
+  "id": "gacha-default",
+  "version": 3,
+  "bundle": "lobby_ui",
+  "atlasPolicy": "lobby_gacha",
+  "$fragments": ["item-cell-default", "common-parchment-default"],
+  "description": "轉蛋系統 skin：主畫面、卡池分頁、抽卡按鈕、結果頁、天命商店",
+
+  "slots": {
+
+    "gacha.bg.pool": {
+      "kind": "sprite-frame",
+      "note": "按池子切換：hero=bg_pool_hero / support=bg_pool_support / limited=bg_pool_limited",
+      "frames": {
+        "hero":    "ui/gacha/bg_pool_hero",
+        "support": "ui/gacha/bg_pool_support",
+        "limited": "ui/gacha/bg_pool_limited"
+      }
+    },
+    "gacha.banner.shadow": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/shadow/shadow_01",
+      "spriteType": "sliced",
+      "border": [20, 20, 20, 20],
+      "allowAutoAtlas": true
+    },
+
+    "gacha.btn.back": {
+      "kind": "sprite-button",
+      "normal":   "ui/common/btn_back_normal",
+      "pressed":  "ui/common/btn_back_pressed",
+      "border": [4,4,4,4]
+    },
+    "gacha.label.title": {
+      "kind": "label-style",
+      "font": "fonts/newsreader/font",
+      "fontSize": 34,
+      "color": "#FFE088",
+      "horizontalAlign": "CENTER",
+      "overflow": "SHRINK"
+    },
+    "gacha.btn.destiny_shop": {
+      "kind": "sprite-button",
+      "normal":   "ui/gacha/btn_destiny_shop_normal",
+      "pressed":  "ui/gacha/btn_destiny_shop_pressed",
+      "labelColor": "#D4AF37",
+      "fontSize": 20,
+      "border": [12,12,12,12]
+    },
+
+    "gacha.tab.toggle": {
+      "kind": "toggle-style",
+      "normal_bg":            { "color": "#151513", "opacity": 0.85 },
+      "selected_bg":          { "color": "#2A2010", "opacity": 1.0 },
+      "normal_text_color":    "#99907C",
+      "selected_text_color":  "#FFE088",
+      "border_bottom_selected": { "color": "#D4AF37", "thickness": 3 },
+      "fontSize": 22
+    },
+
+    "gacha.banner.art": {
+      "kind": "sprite-frame",
+      "note": "由 Pool_ID 決定 Banner 圖片路徑 ui/gacha/banner_{pool_id}"
+    },
+    "gacha.label.featured": {
+      "kind": "label-style",
+      "fontSize": 22,
+      "color": "#FFE088",
+      "outlineColor": "#2D2926",
+      "outlineWidth": 2
+    },
+    "gacha.badge.rateup": {
+      "kind": "sprite-9slice",
+      "frame": "ui/gacha/badge_rateup",
+      "border": [8,8,8,8]
+    },
+    "gacha.label.timer": {
+      "kind": "label-style",
+      "fontSize": 18,
+      "color": "#E9C349",
+      "overflow": "SHRINK"
+    },
+
+    "gacha.label.pity_small": {
+      "kind": "label-style",
+      "fontSize": 20,
+      "color": "#86E1A5",
+      "overflow": "SHRINK"
+    },
+    "gacha.label.pity_big": {
+      "kind": "label-style",
+      "fontSize": 20,
+      "color": "#D4AF37",
+      "overflow": "SHRINK"
+    },
+
+    "gacha.btn.rate_info": {
+      "kind": "sprite-button",
+      "normal":  "ui/gacha/btn_rate_info_normal",
+      "pressed": "ui/gacha/btn_rate_info_pressed",
+      "labelColor": "#99907C",
+      "fontSize": 18,
+      "border": [8,8,8,8]
+    },
+
+    "currency.icon.spirit_jade": {
+      "kind": "sprite-frame",
+      "frame": "ui/currency/icon_spirit_jade"
+    },
+    "currency.icon.bronze_charm": {
+      "kind": "sprite-frame",
+      "frame": "ui/currency/icon_bronze_charm"
+    },
+    "currency.label.count": {
+      "kind": "label-style",
+      "fontSize": 22,
+      "color": "#E5E2E1",
+      "overflow": "SHRINK"
+    },
+    "gacha.btn.add_currency": {
+      "kind": "sprite-button",
+      "normal":  "ui/common/btn_add_normal",
+      "pressed": "ui/common/btn_add_pressed",
+      "border": [6,6,6,6]
+    },
+
+    "gacha.btn.pull1": {
+      "kind": "sprite-button",
+      "normal":   "ui/gacha/btn_pull1_normal",
+      "pressed":  "ui/gacha/btn_pull1_pressed",
+      "disabled": "ui/gacha/btn_disabled",
+      "border": [20,20,20,20]
+    },
+    "gacha.btn.pull10": {
+      "kind": "sprite-button",
+      "normal":   "ui/gacha/btn_pull10_normal",
+      "pressed":  "ui/gacha/btn_pull10_pressed",
+      "disabled": "ui/gacha/btn_disabled",
+      "border": [20,20,20,20],
+      "note": "btn_pull10_normal 帶有金色邊框發光效果，突出 10 連推薦"
+    },
+    "gacha.label.pull_btn": {
+      "kind": "label-style",
+      "fontSize": 28,
+      "color": "#E5E2E1",
+      "fontWeight": "bold"
+    },
+    "gacha.label.pull_cost": {
+      "kind": "label-style",
+      "fontSize": 18,
+      "color": "#D0C5AF"
+    },
+
+    "gacha.btn.divination": {
+      "kind": "sprite-button",
+      "normal":  "ui/gacha/btn_divination_normal",
+      "pressed": "ui/gacha/btn_divination_pressed",
+      "labelColor": "#FFE088",
+      "fontSize": 22,
+      "border": [12,12,12,12]
+    },
+    "gacha.label.token_count": {
+      "kind": "label-style",
+      "fontSize": 20,
+      "color": "#E9C349"
+    },
+
+    "result.screen.bg": {
+      "kind": "color-rect",
+      "color": "#0F0F0F"
+    },
+    "item.cell.bg": {
+      "kind": "color-rect",
+      "color": "#00000000"
+    },
+    "item.cell.shadow": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/shadow/shadow_01",
+      "spriteType": "sliced",
+      "border": [20, 20, 20, 20],
+      "allowAutoAtlas": true
+    },
+    "item.cell.bleed": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/bleed/bleed_parchment",
+      "spriteType": "sliced",
+      "border": [32, 32, 32, 32],
+      "opacity": 0.3
+    },
+    "item.cell.frame": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/item_cell/bg",
+      "spriteType": "sliced",
+      "border": [12, 12, 12, 12]
+    },
+    "parchment.bg.shadow": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/shadow/shadow_01",
+      "spriteType": "sliced",
+      "border": [20, 20, 20, 20],
+      "allowAutoAtlas": true
+    },
+    "parchment.bg.noise": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/noise/paper_noise_256",
+      "spriteType": "tiled",
+      "opacity": 0.10,
+      "blendMode": "alpha"
+    },
+    "parchment.bg.accent": {
+      "kind": "color-rect",
+      "color": "#00000000"
+    },
+    "destiny_shop.item.bg": {
+      "kind": "sprite-9slice",
+      "frame": "ui/gacha/destiny_shop_item_bg",
+      "border": [10,10,10,10]
+    },
+    "gacha.pity.carrier.bg": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/parchment/bg",
+      "spriteType": "sliced",
+      "border": [8, 8, 8, 8],
+      "opacity": 0.75,
+      "allowAutoAtlas": true,
+      "comment": "D-2 QA anchor: PityInfoBar light-surface carrier，提升保底計數區在深色背景上的可讀性"
+    },
+    "gacha.pity.carrier.frame": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/parchment/frame",
+      "spriteType": "sliced",
+      "border": [16, 16, 16, 16],
+      "allowAutoAtlas": true
+    }
+  },
+
+  "validation": {
+    "requiredSlots": [
+      "gacha.btn.pull1", "gacha.btn.pull10",
+      "gacha.label.pity_small", "gacha.label.pity_big",
+      "result.card.bg.SSR", "result.card.bg.SR", "result.card.bg.R",
+      "currency.icon.spirit_jade", "currency.icon.bronze_charm"
+    ],
+    "nineSliceIntegerCheck": [
+      "gacha.btn.pull1", "gacha.btn.pull10",
+      "result.card.bg.SSR", "result.card.bg.SR", "result.card.bg.R",
+      "result.btn.confirm"
+    ]
+  }
+}

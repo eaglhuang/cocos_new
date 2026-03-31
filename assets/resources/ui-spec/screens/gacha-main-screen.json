@@ -1,0 +1,13 @@
+{
+  "id": "gacha-main-screen",
+  "version": 1,
+  "uiId": "GachaMain",
+  "layer": "UI2D",
+  "bundle": "lobby_ui",
+  "layout": "gacha-preview-main",
+  "skin": "gacha-default",
+  "validation": {
+    "devices": ["phone-16-9", "phone-19_5-9"],
+    "allowMissingSkin": true
+  }
+}

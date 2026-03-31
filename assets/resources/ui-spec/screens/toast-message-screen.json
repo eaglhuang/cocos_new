@@ -1,0 +1,9 @@
+{
+  "id": "toast-message-screen",
+  "version": 1,
+  "uiId": "ToastMessage",
+  "layer": "System",
+  "bundle": "common_ui",
+  "layout": "toast-message-main",
+  "skin": "toast-message-default"
+}

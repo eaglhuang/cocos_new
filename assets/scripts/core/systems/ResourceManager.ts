@@ -1,12 +1,21 @@
-import { Asset, Font, JsonAsset, Prefab, resources, SpriteFrame } from "cc";
+// @spec-source → 見 docs/cross-reference-index.md
+import { Asset, Font, ImageAsset, JsonAsset, Prefab, resources, SpriteFrame, Texture2D } from "cc";
 import { MemoryManager } from "./MemoryManager";
+
+export interface LoadOptions {
+    tags?: string[];
+}
 
 export class ResourceManager {
   // 將 Cache 改為儲存原本的 Asset 物件，並將快取鍵值對應 Asset
   private jsonCache = new Map<string, JsonAsset>();
   private prefabCache = new Map<string, Prefab>();
   private spriteFrameCache = new Map<string, SpriteFrame[]>();
+  private singleSpriteFrameCache = new Map<string, SpriteFrame>();
   private fontCache = new Map<string, Font>();
+  
+  // 管理資源綁定的標籤
+  private pathTags = new Map<string, Set<string>>();
 
   /** 連動的記憶體管理器（由 ServiceLoader.initialize() 注入） */
   private memoryManager: MemoryManager | null = null;
@@ -14,13 +23,59 @@ export class ResourceManager {
   /**
    * 注入 MemoryManager，讓所有資源的 load/release 操作都通報記憶體管理器。
    * 由 ServiceLoader.initialize() 呼叫，不需要手動呼叫。
-   * Unity 對照：相當於把 Addressables 的 AsyncOperationHandle 事件統一轉發給 Profiler 追蹤器。
    */
   public bindMemoryManager(mm: MemoryManager): void {
     this.memoryManager = mm;
   }
 
-  public loadJson<T = any>(path: string): Promise<T> {
+  private normalizeResourcePath(path: string): string {
+    return path
+      .trim()
+      .replace(/\\/g, '/')
+      .replace(/^db:\/\/assets\/resources\//i, '')
+      .replace(/^assets\/resources\//i, '')
+      .replace(/^resources\//i, '')
+      .replace(/^\/+/, '')
+      .replace(/\.(png|jpg|jpeg|webp)$/i, '')
+      .replace(/\/+/g, '/');
+  }
+
+  private buildSpriteFrameCandidates(path: string): string[] {
+    const normalizedPath = this.normalizeResourcePath(path);
+    const basePath = normalizedPath.replace(/\/spriteFrame$/, '');
+    const candidates = new Set<string>();
+
+    if (normalizedPath.endsWith('/spriteFrame')) {
+      candidates.add(normalizedPath);
+      candidates.add(basePath);
+    } else {
+      candidates.add(normalizedPath);
+      candidates.add(`${basePath}/spriteFrame`);
+    }
+
+    return [...candidates].filter(candidate => candidate.length > 0);
+  }
+
+  private buildTextureCandidates(path: string): string[] {
+    const normalizedPath = this.normalizeResourcePath(path);
+    const basePath = normalizedPath.replace(/\/spriteFrame$/, '');
+    return basePath ? [basePath] : [];
+  }
+
+  /**
+   * 將路徑加上指定標籤
+   */
+  private tagAsset(path: string, tags?: string[]) {
+    if (!tags || tags.length === 0) return;
+    if (!this.pathTags.has(path)) {
+      this.pathTags.set(path, new Set());
+    }
+    const set = this.pathTags.get(path)!;
+    tags.forEach(t => set.add(t));
+  }
+
+  public loadJson<T = any>(path: string, options?: LoadOptions): Promise<T> {
+    this.tagAsset(path, options?.tags);
     const cached = this.jsonCache.get(path);
     if (cached) {
       return Promise.resolve(cached.json as T);
@@ -41,7 +96,8 @@ export class ResourceManager {
     });
   }
 
-  public loadPrefab(path: string): Promise<Prefab> {
+  public loadPrefab(path: string, options?: LoadOptions): Promise<Prefab> {
+    this.tagAsset(path, options?.tags);
     const cached = this.prefabCache.get(path);
     if (cached) {
       return Promise.resolve(cached);
@@ -62,7 +118,8 @@ export class ResourceManager {
     });
   }
 
-  public loadSpriteFrames(path: string): Promise<SpriteFrame[]> {
+  public loadSpriteFrames(path: string, options?: LoadOptions): Promise<SpriteFrame[]> {
+    this.tagAsset(path, options?.tags);
     const cached = this.spriteFrameCache.get(path);
     if (cached) {
       return Promise.resolve(cached.slice());
@@ -84,14 +141,71 @@ export class ResourceManager {
     });
   }
 
-  /**
-   * 釋放指定路徑的資源，呼叫 decRef() 交由 Cocos GC 處理
-   */
-  /**
-   * 載入字型，結果快取，使用 addRef 防止 GC
-   * 取用後由 releaseAsset 或 clearCache 釋放
-   */
-  public loadFont(path: string): Promise<Font> {
+  public loadSpriteFrame(path: string, options?: LoadOptions): Promise<SpriteFrame> {
+    this.tagAsset(path, options?.tags);
+
+    const normalizedPath = this.normalizeResourcePath(path);
+    const cacheKey = normalizedPath.endsWith('/spriteFrame') ? normalizedPath : `${normalizedPath}/spriteFrame`;
+    const spriteFrameCandidates = this.buildSpriteFrameCandidates(path);
+    const textureCandidates = this.buildTextureCandidates(path);
+
+    const cached = this.singleSpriteFrameCache.get(cacheKey);
+    if (cached) return Promise.resolve(cached);
+
+    return new Promise((resolve, reject) => {
+      const failures: string[] = [];
+
+      const tryLoadTexture = (index: number) => {
+        if (index >= textureCandidates.length) {
+          reject(new Error(`load spriteFrame failed: ${cacheKey} (raw: ${path}) | attempts=${failures.join(' ; ')}`));
+          return;
+        }
+
+        const candidate = textureCandidates[index];
+        resources.load(candidate, Texture2D, (textureError, textureAsset) => {
+          if (textureError || !textureAsset) {
+            failures.push(`Texture2D:${candidate}`);
+            tryLoadTexture(index + 1);
+            return;
+          }
+
+          const frame = new SpriteFrame();
+          frame.texture = textureAsset;
+          frame.name = candidate.split('/').pop() ?? 'generated-sprite-frame';
+          frame.addRef();
+          this.singleSpriteFrameCache.set(cacheKey, frame);
+          this.memoryManager?.notifyLoaded(cacheKey, 'resources', 'SpriteFrame(Texture2D fallback)');
+          resolve(frame);
+        });
+      };
+
+      const tryLoadSpriteFrame = (index: number) => {
+        if (index >= spriteFrameCandidates.length) {
+          tryLoadTexture(0);
+          return;
+        }
+
+        const candidate = spriteFrameCandidates[index];
+        resources.load(candidate, SpriteFrame, (error, asset) => {
+          if (error || !asset) {
+            failures.push(`SpriteFrame:${candidate}`);
+            tryLoadSpriteFrame(index + 1);
+            return;
+          }
+
+          asset.addRef();
+          this.singleSpriteFrameCache.set(cacheKey, asset);
+          this.memoryManager?.notifyLoaded(cacheKey, 'resources', 'SpriteFrame');
+          resolve(asset);
+        });
+      };
+
+      tryLoadSpriteFrame(0);
+    });
+  }
+
+  public loadFont(path: string, options?: LoadOptions): Promise<Font> {
+    this.tagAsset(path, options?.tags);
     const cached = this.fontCache.get(path);
     if (cached) return Promise.resolve(cached);
 
@@ -109,32 +223,77 @@ export class ResourceManager {
     });
   }
 
+  public loadImageAsset(path: string, options?: LoadOptions): Promise<ImageAsset> {
+    this.tagAsset(path, options?.tags);
+    return new Promise((resolve, reject) => {
+      resources.load(path, ImageAsset, (error, asset) => {
+        if (error || !asset) {
+          reject(error || new Error(`load image asset failed: ${path}`));
+          return;
+        }
+        // ImageAsset 通常不直接 addRef，但為了記帳通報
+        this.memoryManager?.notifyLoaded(path, 'resources', 'ImageAsset');
+        resolve(asset);
+      });
+    });
+  }
+
   public releaseAsset(path: string): void {
+    let released = false;
+    const spriteFrameCandidates = this.buildSpriteFrameCandidates(path);
     if (this.jsonCache.has(path)) {
       this.jsonCache.get(path)?.decRef();
       this.jsonCache.delete(path);
-      this.memoryManager?.notifyReleased(path);
+      released = true;
     }
     if (this.prefabCache.has(path)) {
       this.prefabCache.get(path)?.decRef();
       this.prefabCache.delete(path);
-      this.memoryManager?.notifyReleased(path);
+      released = true;
     }
     if (this.spriteFrameCache.has(path)) {
       this.spriteFrameCache.get(path)?.forEach(asset => asset.decRef());
       this.spriteFrameCache.delete(path);
-      this.memoryManager?.notifyReleased(path);
+      released = true;
     }
     if (this.fontCache.has(path)) {
       this.fontCache.get(path)?.decRef();
       this.fontCache.delete(path);
+      released = true;
+    }
+    spriteFrameCandidates.forEach(candidate => {
+      const asset = this.singleSpriteFrameCache.get(candidate);
+      if (!asset) {
+        return;
+      }
+      asset.decRef();
+      this.singleSpriteFrameCache.delete(candidate);
+      this.memoryManager?.notifyReleased(candidate);
+      released = true;
+    });
+    
+    if (released) {
+      this.pathTags.delete(path);
       this.memoryManager?.notifyReleased(path);
     }
   }
 
   /**
-   * 清空並釋放所有已快取的資源
+   * 根據單一標籤，全域釋放符合該標籤的所有資源
    */
+  public releaseByTag(tag: string): void {
+    const pathsToRelease: string[] = [];
+    this.pathTags.forEach((tags, path) => {
+      if (tags.has(tag)) {
+        pathsToRelease.push(path);
+      }
+    });
+
+    pathsToRelease.forEach(path => {
+      this.releaseAsset(path);
+    });
+  }
+
   public clearCache(): void {
     this.jsonCache.forEach((_, path) => this.memoryManager?.notifyReleased(path));
     this.jsonCache.forEach(asset => asset.decRef());
@@ -151,5 +310,12 @@ export class ResourceManager {
     this.fontCache.forEach((_, path) => this.memoryManager?.notifyReleased(path));
     this.fontCache.forEach(font => font.decRef());
     this.fontCache.clear();
+    
+    this.singleSpriteFrameCache.forEach((_, path) => this.memoryManager?.notifyReleased(path));
+    this.singleSpriteFrameCache.forEach(asset => asset.decRef());
+    this.singleSpriteFrameCache.clear();
+    
+    // 清除標籤紀錄
+    this.pathTags.clear();
   }
 }

@@ -1,0 +1,27 @@
+{
+  "id": "toast-message-default",
+  "version": 1,
+  "bundle": "common_ui",
+  "atlasPolicy": "common",
+  "slots": {
+    "toast.bg": {
+      "kind": "color-rect",
+      "color": "surfaceHigh"
+    },
+    "toast.shadow": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/shadow/shadow_01",
+      "spriteType": "sliced",
+      "border": [20, 20, 20, 20],
+      "allowAutoAtlas": true
+    },
+    "toast.label": {
+      "kind": "label-style",
+      "fontSize": 24,
+      "color": "textInk",
+      "horizontalAlign": "CENTER",
+      "verticalAlign": "CENTER",
+      "overflow": "SHRINK"
+    }
+  }
+}

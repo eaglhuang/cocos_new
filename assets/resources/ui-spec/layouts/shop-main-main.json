@@ -1,0 +1,70 @@
+{
+  "id": "shop-main-main",
+  "version": 1,
+  "canvas": { "fitWidth": true, "fitHeight": true, "safeArea": true, "designWidth": 1920, "designHeight": 1080 },
+  "root": {
+    "type": "container",
+    "name": "ShopRoot",
+    "widget": { "top": 0, "left": 0, "right": 0, "bottom": 0 },
+    "children": [
+      {
+        "type": "sprite",
+        "name": "Background",
+        "widget": { "top": 0, "left": 0, "right": 0, "bottom": 0 },
+        "skinSlot": "shop.bg",
+        "zIndex": 0
+      },
+      {
+        "type": "panel",
+        "name": "TitleBar",
+        "widget": { "top": 0, "left": 0, "right": 0 },
+        "height": 72,
+        "skinSlot": "shop.titlebar.bg",
+        "layout": { "type": "horizontal", "spacing": 16, "paddingLeft": 24, "paddingRight": 24 },
+        "children": [
+          { "type": "label", "name": "Title",     "id": "shopTitle",    "width": 240, "height": 44, "textKey": "UI_SHOP_TITLE",    "styleSlot": "shop.label.title" },
+          { "type": "label", "name": "GemCount",  "id": "shopGemCount", "width": 200, "height": 36, "styleSlot": "shop.label.resource" },
+          { "type": "button","name": "BtnClose",  "id": "btnClose",     "width": 52,  "height": 52, "skinSlot": "shop.btn.close" }
+        ]
+      },
+      {
+        "type": "panel",
+        "name": "TabRow",
+        "widget": { "top": 72, "left": 0, "right": 0 },
+        "height": 52,
+        "skinSlot": "shop.tabs.bg",
+        "layout": { "type": "horizontal", "spacing": 0 },
+        "children": [
+          { "type": "button", "name": "TabGem",   "id": "tabGem",   "width": "25%", "height": 52, "skinSlot": "shop.tab.btn", "children": [ { "type": "label", "name": "Label", "textKey": "UI_SHOP_TAB_GEM",   "styleSlot": "shop.label.tab" } ] },
+          { "type": "button", "name": "TabGold",  "id": "tabGold",  "width": "25%", "height": 52, "skinSlot": "shop.tab.btn", "children": [ { "type": "label", "name": "Label", "textKey": "UI_SHOP_TAB_GOLD",  "styleSlot": "shop.label.tab" } ] },
+          { "type": "button", "name": "TabStamp", "id": "tabStamp", "width": "25%", "height": 52, "skinSlot": "shop.tab.btn", "children": [ { "type": "label", "name": "Label", "textKey": "UI_SHOP_TAB_STAMP", "styleSlot": "shop.label.tab" } ] },
+          { "type": "button", "name": "TabScore", "id": "tabScore", "width": "25%", "height": 52, "skinSlot": "shop.tab.btn", "children": [ { "type": "label", "name": "Label", "textKey": "UI_SHOP_TAB_SCORE", "styleSlot": "shop.label.tab" } ] }
+        ]
+      },
+      {
+        "type": "panel",
+        "name": "MainContainer",
+        "widget": { "top": 124, "left": 40, "right": 40, "bottom": 40 },
+        "$ref": "fragments/layouts/parchment-panel",
+        "children": [
+          {
+            "type": "scroll-view",
+            "name": "ShopItems",
+            "id": "shopItemList",
+            "widget": { "top": 0, "left": 0, "right": 0, "bottom": 0 },
+            "children": [
+              {
+                "type": "container",
+                "name": "ItemGrid",
+                "id": "itemGrid",
+                "width": "100%",
+                "layout": { "type": "grid", "cellWidth": 280, "cellHeight": 200, "spacing": 24, "paddingTop": 24, "paddingBottom": 24, "paddingLeft": 36, "paddingRight": 36, "startAxis": "horizontal" },
+                "itemTemplate": { "$ref": "fragments/layouts/item-cell" }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

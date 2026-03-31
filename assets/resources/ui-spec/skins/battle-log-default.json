@@ -1,0 +1,90 @@
+{
+  "id": "battle-log-default",
+  "version": 2,
+  "bundle": "battle_ui",
+  "atlasPolicy": "battle_ui",
+  "slots": {
+    "log.root.bg": {
+      "kind": "color",
+      "color": "#181C22",
+      "alpha": 205
+    },
+    "log.root.shadow": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/shadow/shadow_01",
+      "spriteType": "sliced",
+      "border": [20, 20, 20, 20],
+      "allowAutoAtlas": true
+    },
+    "log.header.bg": {
+      "kind": "color",
+      "color": "#303A4A",
+      "alpha": 235
+    },
+    "log.btn.toggle": {
+      "kind": "color",
+      "color": "#D4AF37",
+      "alpha": 200,
+      "spriteType": "sliced",
+      "border": [4, 4, 4, 4]
+    },
+    "log.btn.auto": {
+      "kind": "color",
+      "color": "#2A5A3A",
+      "alpha": 220,
+      "_doc": "Auto 自動戰鬥按鈕，32×32"
+    },
+    "log.btn.speed": {
+      "kind": "color",
+      "color": "#2A3A5A",
+      "alpha": 220,
+      "_doc": "x2 加速按鈕，32×32"
+    },
+    "log.btn.setting": {
+      "kind": "color",
+      "color": "#3A3A3A",
+      "alpha": 220,
+      "_doc": "⚙ 設定按鈕，32×32"
+    },
+    "log.btn.collapse": {
+      "kind": "color",
+      "color": "#202830",
+      "alpha": 200,
+      "_doc": "📋 收合/展開日誌按鈕，全寬 28px"
+    },
+    "log.label.title": {
+      "kind": "label-style",
+      "font": "fonts/newsreader/font",
+      "fontSize": 16,
+      "lineHeight": 20,
+      "color": "#E5E2E1",
+      "isBold": true,
+      "overflow": "CLAMP",
+      "horizontalAlign": "LEFT"
+    },
+    "log.label.toggle": {
+      "kind": "label-style",
+      "font": "fonts/notosans_tc/font",
+      "fontSize": 14,
+      "lineHeight": 18,
+      "color": "#B0A880",
+      "horizontalAlign": "CENTER"
+    },
+    "log.label.content": {
+      "kind": "label-style",
+      "font": "fonts/notosans_tc/font",
+      "fontSize": 13,
+      "lineHeight": 18,
+      "color": "#C8C8C8",
+      "overflow": "RESIZE_HEIGHT"
+    },
+    "log.label.btn": {
+      "kind": "label-style",
+      "font": "fonts/notosans_tc/font",
+      "fontSize": 12,
+      "lineHeight": 16,
+      "color": "#E0E0E0",
+      "horizontalAlign": "CENTER"
+    }
+  }
+}

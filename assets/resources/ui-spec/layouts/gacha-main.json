@@ -1,0 +1,269 @@
+{
+  "id": "gacha-main",
+  "version": 2,
+  "description": "轉蛋系統主畫面。三池分頁（英靈名將池/策謀紅顏池/期間限定）+ 抽卡操作區 + 天命商店入口。",
+  "canvas": { "fitWidth": true, "fitHeight": true, "safeArea": true, "designWidth": 1920, "designHeight": 1080 },
+
+  "nodes": [
+    {
+      "name": "Gacha_Root",
+      "type": "Node",
+      "w": 1920, "h": 1080,
+      "children": [
+
+        {
+          "name": "BgArt",
+          "type": "Sprite",
+          "w": 1080, "h": 1920,
+          "anchorX": 0.5, "anchorY": 0.5,
+          "skinSlot": "gacha.bg.pool",
+          "note": "背景隨當前池子切換（名將池=古戰場/紅顏池=水墨庭院/限定=特效背景）"
+        },
+
+        {
+          "name": "TopBar",
+          "type": "Node",
+          "anchorX": 0.5, "anchorY": 1.0,
+          "offsetTop": 0,
+          "w": 1080, "h": 120,
+          "children": [
+            {
+              "name": "BackBtn",
+              "type": "Button",
+              "w": 88, "h": 88,
+              "anchorX": 0, "anchorY": 0.5,
+              "offsetLeft": 24,
+              "skinSlot": "gacha.btn.back"
+            },
+            {
+              "name": "TitleLabel",
+              "type": "Label",
+              "anchorX": 0.5, "anchorY": 0.5,
+              "skinSlot": "gacha.label.title"
+            },
+            {
+              "name": "DestinyShopBtn",
+              "type": "Button",
+              "w": 160, "h": 72,
+              "anchorX": 1, "anchorY": 0.5,
+              "offsetRight": 24,
+              "skinSlot": "gacha.btn.destiny_shop",
+              "text": "天命商店"
+            }
+          ]
+        },
+
+        {
+          "name": "PoolTabBar",
+          "type": "Node",
+          "anchorX": 0.5, "anchorY": 1.0,
+          "offsetTop": 120,
+          "w": 1080, "h": 80,
+          "layout": { "type": "HORIZONTAL", "spacingX": 0 },
+          "children": [
+            { "name": "Tab_Hero",    "type": "Toggle", "flexGrow": 1, "h": 80, "skinSlot": "gacha.tab.toggle", "text": "英靈名將池" },
+            { "name": "Tab_Support", "type": "Toggle", "flexGrow": 1, "h": 80, "skinSlot": "gacha.tab.toggle", "text": "策謀紅顏池" },
+            { "name": "Tab_Limited", "type": "Toggle", "flexGrow": 1, "h": 80, "skinSlot": "gacha.tab.toggle", "text": "期間限定" }
+          ]
+        },
+
+        {
+          "name": "FeaturedBanner",
+          "type": "Node",
+          "anchorX": 0.5, "anchorY": 1.0,
+          "offsetTop": 200,
+          "w": 1040, "h": 540,
+          "children": [
+            {
+              "name": "BannerArt",
+              "type": "Sprite",
+              "w": 1040, "h": 520,
+              "skinSlot": "gacha.banner.art",
+              "note": "各池子主視覺 Banner（SSR 角色全身立繪）"
+            },
+            {
+              "name": "FeaturedLabel",
+              "type": "Label",
+              "anchorX": 0, "anchorY": 0,
+              "offsetLeft": 20, "offsetBottom": 16,
+              "skinSlot": "gacha.label.featured"
+            },
+            {
+              "name": "RateUpBadge",
+              "type": "Sprite",
+              "anchorX": 1, "anchorY": 0,
+              "offsetRight": 20, "offsetBottom": 16,
+              "skinSlot": "gacha.badge.rateup"
+            },
+            {
+              "name": "TimerLabel",
+              "type": "Label",
+              "anchorX": 0.5, "anchorY": 0,
+              "offsetBottom": 0,
+              "skinSlot": "gacha.label.timer",
+              "note": "限定池顯示剩餘時間；常設池顯示空或換為名將名稱列表"
+            }
+          ]
+        },
+
+        {
+          "name": "PityInfoBar",
+          "type": "Node",
+          "anchorX": 0.5, "anchorY": 1.0,
+          "offsetTop": 740,
+          "w": 1040, "h": 80,
+          "skinSlot": "gacha.pity.carrier.bg",
+          "comment": "D-2 QA anchor: parchment light-surface carrier 在深色背景提供可識別底面",
+          "children": [
+            {
+              "name": "SmallPityLabel",
+              "type": "Label",
+              "anchorX": 0, "anchorY": 0.5,
+              "offsetLeft": 8,
+              "skinSlot": "gacha.label.pity_small",
+              "text": "保底 SR+：距 {N} 抽"
+            },
+            {
+              "name": "BigPityLabel",
+              "type": "Label",
+              "anchorX": 1, "anchorY": 0.5,
+              "offsetRight": 8,
+              "skinSlot": "gacha.label.pity_big",
+              "text": "天命值：{N}/200"
+            }
+          ]
+        },
+
+        {
+          "name": "RateInfoBtn",
+          "type": "Button",
+          "anchorX": 0.5, "anchorY": 1.0,
+          "offsetTop": 820,
+          "w": 300, "h": 60,
+          "skinSlot": "gacha.btn.rate_info",
+          "text": "卡池機率公告"
+        },
+
+        {
+          "name": "CurrencyBar",
+          "type": "Node",
+          "anchorX": 0.5, "anchorY": 1.0,
+          "offsetTop": 900,
+          "w": 1040, "h": 80,
+          "children": [
+            {
+              "name": "SpiritJadeIcon",
+              "type": "Sprite",
+              "w": 48, "h": 48,
+              "anchorX": 0, "anchorY": 0.5,
+              "offsetLeft": 0,
+              "skinSlot": "currency.icon.spirit_jade"
+            },
+            {
+              "name": "SpiritJadeCount",
+              "type": "Label",
+              "anchorX": 0, "anchorY": 0.5,
+              "offsetLeft": 56,
+              "skinSlot": "currency.label.count"
+            },
+            {
+              "name": "BronzeCharmIcon",
+              "type": "Sprite",
+              "w": 48, "h": 48,
+              "anchorX": 0.5, "anchorY": 0.5,
+              "skinSlot": "currency.icon.bronze_charm"
+            },
+            {
+              "name": "BronzeCharmCount",
+              "type": "Label",
+              "anchorX": 0.5, "anchorY": 0.5,
+              "offsetLeft": 60,
+              "skinSlot": "currency.label.count"
+            },
+            {
+              "name": "AddCurrencyBtn",
+              "type": "Button",
+              "w": 72, "h": 60,
+              "anchorX": 1, "anchorY": 0.5,
+              "offsetRight": 0,
+              "skinSlot": "gacha.btn.add_currency"
+            }
+          ]
+        },
+
+        {
+          "name": "PullButtons",
+          "type": "Node",
+          "anchorX": 0.5, "anchorY": 0,
+          "offsetBottom": 200,
+          "w": 1040, "h": 120,
+          "layout": { "type": "HORIZONTAL", "spacingX": 24 },
+          "children": [
+            {
+              "name": "Pull1Btn",
+              "type": "Button",
+              "flexGrow": 1,
+              "h": 120,
+              "skinSlot": "gacha.btn.pull1",
+              "children": [
+                { "name": "Pull1Icon",   "type": "Sprite", "w": 52, "h": 52, "skinSlot": "currency.icon.spirit_jade" },
+                { "name": "Pull1Label",  "type": "Label",  "text": "1 抽", "skinSlot": "gacha.label.pull_btn" },
+                { "name": "Pull1Cost",   "type": "Label",  "text": "靈玉 ×150", "skinSlot": "gacha.label.pull_cost" }
+              ]
+            },
+            {
+              "name": "Pull10Btn",
+              "type": "Button",
+              "flexGrow": 1,
+              "h": 120,
+              "skinSlot": "gacha.btn.pull10",
+              "children": [
+                { "name": "Pull10Icon",  "type": "Sprite", "w": 52, "h": 52, "skinSlot": "currency.icon.spirit_jade" },
+                { "name": "Pull10Label", "type": "Label",  "text": "10 連", "skinSlot": "gacha.label.pull_btn" },
+                { "name": "Pull10Cost",  "type": "Label",  "text": "靈玉 ×1500 (1 抽免費)", "skinSlot": "gacha.label.pull_cost" }
+              ]
+            }
+          ]
+        },
+
+        {
+          "name": "DivinationTokenBar",
+          "type": "Node",
+          "anchorX": 0.5, "anchorY": 0,
+          "offsetBottom": 100,
+          "w": 1040, "h": 80,
+          "children": [
+            {
+              "name": "DivinationBtn",
+              "type": "Button",
+              "w": 480, "h": 72,
+              "anchorX": 0.5, "anchorY": 0.5,
+              "skinSlot": "gacha.btn.divination",
+              "text": "求籤（定向保底）"
+            },
+            {
+              "name": "DivinationCountLabel",
+              "type": "Label",
+              "anchorX": 1, "anchorY": 0.5,
+              "offsetRight": 0,
+              "skinSlot": "gacha.label.token_count",
+              "text": "求籤令 ×{N}"
+            }
+          ]
+        }
+
+      ]
+    }
+  ],
+
+  "validation": {
+    "touchTargetMin": 44,
+    "notes": [
+      "Pull1Btn / Pull10Btn 觸控熱區 ≥ 120px 高度，寬度各佔 50% 扣除間距",
+      "PityInfoBar 兩端對齊，不溢出螢幕寬度",
+      "所有 Label 設置 overflow: SHRINK 防止數字過長溢出",
+      "BgArt 不進 Auto Atlas（大背景圖）",
+      "DestinyShopBtn 觸控熱區 ≥ 72px 高"
+    ]
+  }
+}

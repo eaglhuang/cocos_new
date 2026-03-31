@@ -1,0 +1,99 @@
+{
+  "id": "item-cell-default",
+  "version": 2,
+  "description": "物品格子共用 skin fragment：base bg + 7 階稀有度邊框 + 投影 + 數量標籤",
+  "slots": {
+    "item.cell.bg": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/item_cell/bg",
+      "spriteType": "sliced",
+      "border": [8, 8, 8, 8],
+      "allowAutoAtlas": true
+    },
+    "item.cell.frame": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/item_cell/border_common",
+      "spriteType": "sliced",
+      "border": [8, 8, 8, 8],
+      "allowAutoAtlas": true
+    },
+    "item.cell.bleed": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/bleed/bleed_dark",
+      "spriteType": "sliced",
+      "border": [12, 12, 12, 12],
+      "allowAutoAtlas": true
+    },
+    "item.cell.shadow": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/shadow/shadow_01",
+      "spriteType": "sliced",
+      "border": [20, 20, 20, 20],
+      "allowAutoAtlas": true,
+      "opacity": 0.24,
+      "offsetY": 4
+    },
+    "item.label.count": {
+      "kind": "label-style",
+      "fontSize": 18,
+      "color": "#D0C5AF",
+      "outlineColor": "#000000CC",
+      "outlineWidth": 1,
+      "horizontalAlign": "RIGHT",
+      "verticalAlign": "BOTTOM"
+    },
+    "rarity.default.bg": {
+      "kind": "color-rect",
+      "color": "#2A2520"
+    },
+    "rarity.common.border": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/item_cell/border_common",
+      "spriteType": "sliced",
+      "border": [8, 8, 8, 8],
+      "allowAutoAtlas": true
+    },
+    "rarity.uncommon.border": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/item_cell/border_uncommon",
+      "spriteType": "sliced",
+      "border": [8, 8, 8, 8],
+      "allowAutoAtlas": true
+    },
+    "rarity.rare.border": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/item_cell/border_rare",
+      "spriteType": "sliced",
+      "border": [8, 8, 8, 8],
+      "allowAutoAtlas": true
+    },
+    "rarity.epic.border": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/item_cell/border_epic",
+      "spriteType": "sliced",
+      "border": [8, 8, 8, 8],
+      "allowAutoAtlas": true
+    },
+    "rarity.legendary.border": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/item_cell/border_legendary",
+      "spriteType": "sliced",
+      "border": [8, 8, 8, 8],
+      "allowAutoAtlas": true
+    },
+    "rarity.artifact.border": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/item_cell/border_artifact",
+      "spriteType": "sliced",
+      "border": [8, 8, 8, 8],
+      "allowAutoAtlas": true
+    },
+    "rarity.special.border": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/item_cell/border_special",
+      "spriteType": "sliced",
+      "border": [8, 8, 8, 8],
+      "allowAutoAtlas": true
+    }
+  }
+}

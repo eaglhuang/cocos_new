@@ -1,0 +1,43 @@
+{
+  "id": "duel-challenge-main",
+  "version": 1,
+  "canvas": { "fitWidth": true, "fitHeight": true, "safeArea": true, "designWidth": 1920, "designHeight": 1080 },
+  "root": {
+    "type": "popup",
+    "name": "DuelChallengePanelRoot",
+    "width": 560,
+    "height": 240,
+    "widget": { "center": true },
+    "skinSlot": "duel.root.bg",
+    "children": [
+      {
+        "type": "panel",
+        "name": "Header",
+        "widget": { "top": 0, "left": 0, "right": 0 },
+        "height": 44,
+        "skinSlot": "duel.header.bg",
+        "children": [
+          { "type": "label", "name": "TitleLabel", "id": "titleLabel", "widget": { "left": 16, "right": 16 }, "height": 36, "styleSlot": "duel.label.title" }
+        ]
+      },
+      {
+        "type": "panel",
+        "name": "Body",
+        "layout": { "type": "vertical", "spacing": 16, "paddingTop": 16, "paddingBottom": 16, "paddingLeft": 24, "paddingRight": 24 },
+        "children": [
+          { "type": "label", "name": "ScoreLabel", "id": "scoreLabel", "width": 512, "height": 32, "styleSlot": "duel.label.score" },
+          {
+            "type": "panel",
+            "name": "Buttons",
+            "layout": { "type": "horizontal", "spacing": 24 },
+            "height": 56,
+            "children": [
+              { "type": "button", "name": "BtnAccept", "id": "btnAccept", "width": 200, "height": 52, "skinSlot": "duel.btn.accept", "children": [ { "type": "label", "name": "Label", "textKey": "UI_DUEL_ACCEPT", "styleSlot": "duel.label.btn" } ] },
+              { "type": "button", "name": "BtnReject", "id": "btnReject", "width": 200, "height": 52, "skinSlot": "duel.btn.reject", "children": [ { "type": "label", "name": "Label", "textKey": "UI_DUEL_REJECT", "styleSlot": "duel.label.btn" } ] }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

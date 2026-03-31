@@ -1,0 +1,13 @@
+{
+  "id": "general-detail-screen",
+  "version": 2,
+  "uiId": "GeneralDetail",
+  "layer": "Popup",
+  "bundle": "lobby_ui",
+  "layout": "general-detail-main",
+  "skin": "general-detail-default",
+  "validation": {
+    "devices": ["phone-16-9", "phone-19_5-9", "tablet-4-3"],
+    "allowMissingSkin": false
+  }
+}

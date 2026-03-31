@@ -1,3 +1,4 @@
+// @spec-source → 見 docs/cross-reference-index.md
 import { Animation, Node, Vec3 } from "cc";
 import { StatusEffect, EVENT_NAMES } from "../config/Constants";
 import { services } from "../managers/ServiceLoader";

@@ -1,0 +1,286 @@
+{
+  "id": "Buff",
+  "label": "Buff (Unity import)",
+  "folder": "Buff",
+  "scale": 1,
+  "audio": null,
+  "source": {
+    "unityPrefab": "tools\\Magic effects pack\\Prefabs\\Character auras\\Buff.prefab"
+  },
+  "warnings": [
+    "Trails: forceOverLifetime: 尚未映射到 compound generator",
+    "Trails: rotationOverLifetime: 尚未映射到 compound generator",
+    "Trails: textureAnimation: 尚未映射到 compound generator",
+    "Trails: limitVelocityOverLifetime: 尚未映射到 compound generator",
+    "Trails: trails: 尚未映射到 compound generator",
+    "Trails: noise: 尚未映射到 compound generator",
+    "Trails: sizeOverLifetime: 目前只支援常數倍率",
+    "Trails: colorOverLifetime: 目前只支援單色或雙色",
+    "Smoke: forceOverLifetime: 尚未映射到 compound generator",
+    "Smoke: rotationOverLifetime: 尚未映射到 compound generator",
+    "Smoke: textureAnimation: 尚未映射到 compound generator",
+    "Smoke: limitVelocityOverLifetime: 尚未映射到 compound generator",
+    "Smoke: trails: 尚未映射到 compound generator",
+    "Smoke: noise: 尚未映射到 compound generator",
+    "Smoke: sizeOverLifetime: 目前只支援常數倍率",
+    "Smoke: colorOverLifetime: 目前只支援單色或雙色",
+    "Buff: forceOverLifetime: 尚未映射到 compound generator",
+    "Buff: rotationOverLifetime: 尚未映射到 compound generator",
+    "Buff: textureAnimation: 尚未映射到 compound generator",
+    "Buff: limitVelocityOverLifetime: 尚未映射到 compound generator",
+    "Buff: trails: 尚未映射到 compound generator",
+    "Buff: noise: 尚未映射到 compound generator",
+    "Buff: sizeOverLifetime: 目前只支援常數倍率",
+    "Buff: colorOverLifetime: 目前只支援單色或雙色",
+    "Flares: forceOverLifetime: 尚未映射到 compound generator",
+    "Flares: rotationOverLifetime: 尚未映射到 compound generator",
+    "Flares: textureAnimation: 尚未映射到 compound generator",
+    "Flares: limitVelocityOverLifetime: 尚未映射到 compound generator",
+    "Flares: trails: 尚未映射到 compound generator",
+    "Flares: noise: 尚未映射到 compound generator",
+    "Flares: sizeOverLifetime: 目前只支援常數倍率",
+    "Flares: colorOverLifetime: 目前只支援單色或雙色"
+  ],
+  "subPS": [
+    {
+      "name": "Trails",
+      "position": null,
+      "color": {
+        "r": 255,
+        "g": 231,
+        "b": 83,
+        "a": 255
+      },
+      "startSize": 0.03,
+      "startSpeed": 2,
+      "startLifetime": 1,
+      "gravity": 0,
+      "rateOverTime": 10,
+      "burstCount": 0,
+      "shapeType": 3,
+      "radius": 1,
+      "simulationSpace": 1,
+      "loop": true,
+      "duration": 1,
+      "capacity": 1000,
+      "renderMode": 1,
+      "velocityScale": 0,
+      "lengthScale": 25,
+      "materialHint": "MAT_ADDITIVE",
+      "texKeyHint": null,
+      "velocityOverLifetime": {
+        "enabled": true,
+        "x": 0,
+        "y": 0,
+        "z": 0,
+        "speedModifier": 1,
+        "space": 1
+      },
+      "sizeOverLifetime": {
+        "enabled": true,
+        "multiplier": 1
+      },
+      "colorOverLifetime": {
+        "enabled": true,
+        "color": {
+          "r": 255,
+          "g": 255,
+          "b": 255,
+          "a": 255
+        },
+        "mode": 1
+      },
+      "unsupported": [
+        "forceOverLifetime: 尚未映射到 compound generator",
+        "rotationOverLifetime: 尚未映射到 compound generator",
+        "textureAnimation: 尚未映射到 compound generator",
+        "limitVelocityOverLifetime: 尚未映射到 compound generator",
+        "trails: 尚未映射到 compound generator",
+        "noise: 尚未映射到 compound generator",
+        "sizeOverLifetime: 目前只支援常數倍率",
+        "colorOverLifetime: 目前只支援單色或雙色"
+      ],
+      "texKey": "cfxr_aura_runic"
+    },
+    {
+      "name": "Smoke",
+      "position": null,
+      "color": {
+        "r": 255,
+        "g": 216,
+        "b": 85,
+        "a": 36
+      },
+      "startSize": 1,
+      "startSpeed": 0,
+      "startLifetime": 1,
+      "gravity": 0,
+      "rateOverTime": 30,
+      "burstCount": 0,
+      "shapeType": 3,
+      "radius": 1,
+      "simulationSpace": 1,
+      "loop": true,
+      "duration": 1,
+      "capacity": 1000,
+      "renderMode": 0,
+      "velocityScale": 0.1,
+      "lengthScale": 2,
+      "materialHint": "MAT_ADDITIVE",
+      "texKeyHint": null,
+      "velocityOverLifetime": {
+        "enabled": true,
+        "x": 0,
+        "y": 0,
+        "z": 0,
+        "speedModifier": 1,
+        "space": 1
+      },
+      "sizeOverLifetime": {
+        "enabled": true,
+        "multiplier": 1
+      },
+      "colorOverLifetime": {
+        "enabled": true,
+        "color": {
+          "r": 255,
+          "g": 255,
+          "b": 255,
+          "a": 255
+        },
+        "mode": 1
+      },
+      "unsupported": [
+        "forceOverLifetime: 尚未映射到 compound generator",
+        "rotationOverLifetime: 尚未映射到 compound generator",
+        "textureAnimation: 尚未映射到 compound generator",
+        "limitVelocityOverLifetime: 尚未映射到 compound generator",
+        "trails: 尚未映射到 compound generator",
+        "noise: 尚未映射到 compound generator",
+        "sizeOverLifetime: 目前只支援常數倍率",
+        "colorOverLifetime: 目前只支援單色或雙色"
+      ],
+      "texKey": "cfxr_aura_runic"
+    },
+    {
+      "name": "Buff",
+      "position": null,
+      "color": {
+        "r": 255,
+        "g": 216,
+        "b": 160,
+        "a": 255
+      },
+      "startSize": 0.1,
+      "startSpeed": 0,
+      "startLifetime": 1,
+      "gravity": 0,
+      "rateOverTime": 5,
+      "burstCount": 0,
+      "shapeType": 3,
+      "radius": 1,
+      "simulationSpace": 1,
+      "loop": true,
+      "duration": 1,
+      "capacity": 1000,
+      "renderMode": 1,
+      "velocityScale": 0,
+      "lengthScale": 1.5,
+      "materialHint": "MAT_ADDITIVE",
+      "texKeyHint": null,
+      "velocityOverLifetime": {
+        "enabled": true,
+        "x": 0,
+        "y": 1,
+        "z": 0,
+        "speedModifier": 1,
+        "space": 1
+      },
+      "sizeOverLifetime": {
+        "enabled": true,
+        "multiplier": 1
+      },
+      "colorOverLifetime": {
+        "enabled": true,
+        "color": {
+          "r": 255,
+          "g": 255,
+          "b": 255,
+          "a": 255
+        },
+        "mode": 1
+      },
+      "unsupported": [
+        "forceOverLifetime: 尚未映射到 compound generator",
+        "rotationOverLifetime: 尚未映射到 compound generator",
+        "textureAnimation: 尚未映射到 compound generator",
+        "limitVelocityOverLifetime: 尚未映射到 compound generator",
+        "trails: 尚未映射到 compound generator",
+        "noise: 尚未映射到 compound generator",
+        "sizeOverLifetime: 目前只支援常數倍率",
+        "colorOverLifetime: 目前只支援單色或雙色"
+      ],
+      "texKey": "cfxr_aura_runic"
+    },
+    {
+      "name": "Flares",
+      "position": null,
+      "color": {
+        "r": 255,
+        "g": 214,
+        "b": 40,
+        "a": 255
+      },
+      "startSize": 0.1,
+      "startSpeed": 2,
+      "startLifetime": 0.4,
+      "gravity": 0,
+      "rateOverTime": 10,
+      "burstCount": 0,
+      "shapeType": 3,
+      "radius": 1,
+      "simulationSpace": 1,
+      "loop": true,
+      "duration": 1,
+      "capacity": 1000,
+      "renderMode": 0,
+      "velocityScale": 0.1,
+      "lengthScale": 2,
+      "materialHint": "MAT_ADDITIVE",
+      "texKeyHint": null,
+      "velocityOverLifetime": {
+        "enabled": true,
+        "x": 0,
+        "y": 0,
+        "z": 0,
+        "speedModifier": 1,
+        "space": 1
+      },
+      "sizeOverLifetime": {
+        "enabled": true,
+        "multiplier": 1
+      },
+      "colorOverLifetime": {
+        "enabled": true,
+        "color": {
+          "r": 255,
+          "g": 255,
+          "b": 255,
+          "a": 255
+        },
+        "mode": 1
+      },
+      "unsupported": [
+        "forceOverLifetime: 尚未映射到 compound generator",
+        "rotationOverLifetime: 尚未映射到 compound generator",
+        "textureAnimation: 尚未映射到 compound generator",
+        "limitVelocityOverLifetime: 尚未映射到 compound generator",
+        "trails: 尚未映射到 compound generator",
+        "noise: 尚未映射到 compound generator",
+        "sizeOverLifetime: 目前只支援常數倍率",
+        "colorOverLifetime: 目前只支援單色或雙色"
+      ],
+      "texKey": "cfxr_aura_runic"
+    }
+  ]
+}

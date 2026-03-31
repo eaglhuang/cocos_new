@@ -1,0 +1,13 @@
+{
+  "id": "shop-main-screen",
+  "version": 1,
+  "uiId": "ShopMain",
+  "layer": "Popup",
+  "bundle": "lobby_ui",
+  "layout": "shop-main-main",
+  "skin": "shop-main-default",
+  "validation": {
+    "devices": ["phone-16-9", "phone-19_5-9"],
+    "allowMissingSkin": true
+  }
+}

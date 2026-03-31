@@ -1,0 +1,112 @@
+{
+  "id": "action-command-main",
+  "version": 2,
+  "_doc": "Zone 7 v3: 奧義大圓（120px 含SP填充環，右下角錨點）+ 3個操作小圓（結束回合/計謀/單挑，80px，分布在大圓左/上/右）。點擊奧義且SP滿時彈出奧義選擇小窗。",
+  "canvas": { "fitWidth": true, "fitHeight": true, "safeArea": true, "designWidth": 1920, "designHeight": 1080 },
+  "root": {
+    "type": "container",
+    "name": "ActionCommandRoot",
+    "widget": { "bottom": 24, "right": 40 },
+    "width": 320,
+    "height": 240,
+    "children": [
+      {
+        "type": "button",
+        "name": "TacticsBtn",
+        "id": "tacticsBtn",
+        "widget": { "hCenter": 0, "top": 0 },
+        "width": 80,
+        "height": 80,
+        "skinSlot": "action.util.tactics",
+        "_doc": "計謀按鈕：大圓正上方，80px。觸發計謀面板。",
+        "children": [
+          { "type": "label", "name": "TacticsLabel", "width": 56, "height": 22, "text": "計謀", "styleSlot": "action.util.label" }
+        ]
+      },
+      {
+        "type": "button",
+        "name": "EndTurnBtn",
+        "id": "endTurnBtn",
+        "widget": { "left": 0, "bottom": 60 },
+        "width": 80,
+        "height": 80,
+        "skinSlot": "action.util.endturn",
+        "_doc": "結束回合按鈕：大圓左側，80px。",
+        "children": [
+          { "type": "label", "name": "EndTurnLabel", "width": 56, "height": 22, "text": "結束", "styleSlot": "action.util.label" }
+        ]
+      },
+      {
+        "type": "button",
+        "name": "DuelBtn",
+        "id": "duelBtn",
+        "widget": { "right": 0, "bottom": 60 },
+        "width": 80,
+        "height": 80,
+        "skinSlot": "action.util.duel",
+        "_doc": "單挑按鈕：大圓右側，80px。條件不足時灰度。",
+        "children": [
+          { "type": "label", "name": "DuelLabel", "width": 56, "height": 22, "text": "單挑", "styleSlot": "action.util.label" }
+        ]
+      },
+      {
+        "type": "container",
+        "name": "UltimateBtn",
+        "id": "ultimateBtn",
+        "widget": { "hCenter": 0, "bottom": 0 },
+        "width": 120,
+        "height": 120,
+        "skinSlot": "action.ultimate.bg",
+        "_doc": "奧義大圓，120px。SP環+文字+點擊彈出選擇窗（SP>=100%才可發動）。",
+        "children": [
+          {
+            "type": "image",
+            "name": "SpRing",
+            "id": "spRing",
+            "widget": { "top": -8, "bottom": -8, "left": -8, "right": -8 },
+            "skinSlot": "action.sp.ring",
+            "_doc": "SP填充環（8px寬圓環）。TS透過 Sprite.fillRange(0.0~1.0) 控制，順時針填充。滿SP切換skin→action.sp.ring.ready"
+          },
+          {
+            "type": "label",
+            "name": "UltLabel",
+            "id": "ultLabel",
+            "width": 80,
+            "height": 28,
+            "styleSlot": "action.ultimate.label",
+            "_doc": "SP未滿顯示'奧義'；SP滿顯示'發動'"
+          },
+          {
+            "type": "label",
+            "name": "SpPctLabel",
+            "id": "spPctLabel",
+            "width": 70,
+            "height": 20,
+            "styleSlot": "action.sp.pct.label",
+            "_doc": "顯示'SP 75%'，SP滿時隱藏"
+          }
+        ]
+      },
+      {
+        "type": "container",
+        "name": "UltimatePopup",
+        "id": "ultimatePopup",
+        "widget": { "hCenter": 0, "bottom": 130 },
+        "width": 220,
+        "height": 0,
+        "skinSlot": "action.popup.bg",
+        "active": false,
+        "_doc": "奧義技能選擇彈窗。SP滿時點擊大圓觸發 → active:true + Tween高度展開(技能數×56+16)。點擊外部關閉。",
+        "children": []
+      }
+    ]
+  },
+  "interactions": {
+    "_doc": "TS實作參考",
+    "onEndTurnClick": "ActionCommandPanel.ts 監聽 EndTurnBtn.click → emit endTurn 事件（BattleScene 接收）",
+    "onTacticsClick": "ActionCommandPanel.ts 監聽 TacticsBtn.click → emit tactics 事件",
+    "onDuelClick": "ActionCommandPanel.ts 監聽 DuelBtn.click → emit GeneralDuelChallenge 全域事件",
+    "spUpdate": "BattleManager 廣播 SP_CHANGED → ActionCommandPanel 更新 spRing 填充值、ultLabel 文字",
+    "onUltimateClick": "SP>=100% → 開啟 UltimatePopup（由TS動態填充技能項目）；SP<100% → toast '奧義蓄力中'"
+  }
+}

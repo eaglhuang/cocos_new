@@ -55,5 +55,21 @@
       { "type": "vfx",       "blockId": "glow_soft",   "target": "caster", "offsetY": 1.0, "atTime": 0.2 },
       { "type": "floatText", "text": "奇謀佈陣！", "target": "caster", "atTime": 0.3 }
     ]
+  },
+  {
+    "id": "zhao-yun-pierce",
+    "label": "龍魂突刺",
+    "description": "趙雲化身青龍貫穿敵陣，對單體造成 2.5 倍極高傷害，並機率性施加破防效果。",
+    "costSp": 100,
+    "steps": [
+      { "type": "audio",     "clip": "fireball",      "atTime": 0.0 },
+      { "type": "animation", "clip": "Skill",          "atTime": 0.0 },
+      { "type": "vfx",       "blockId": "trails",      "target": "caster", "offsetY": 0.8, "atTime": 0.1 },
+      { "type": "vfx",       "blockId": "fire_burst",  "target": "caster", "atTime": 0.25 },
+      { "type": "audio",     "clip": "feijian",        "atTime": 0.4 },
+      { "type": "vfx",       "blockId": "impact_shock", "target": "targets", "atTime": 0.5 },
+      { "type": "damage",    "multiplier": 2.5, "target": "single",        "atTime": 0.55 },
+      { "type": "floatText", "text": "龍魂突刺！", "target": "targets", "atTime": 0.55 }
+    ]
   }
 ]

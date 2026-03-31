@@ -1,7 +1,7 @@
+// @spec-source → 見 docs/cross-reference-index.md
 import {
   _decorator,
   Button,
-  Component,
   EventMouse,
   EventTouch,
   Graphics,
@@ -20,6 +20,7 @@ import {
   resources,
 } from "cc";
 import { GAME_CONFIG, TroopType, TROOP_DEPLOY_COST } from "../../core/config/Constants";
+import { UIPreviewBuilder } from '../core/UIPreviewBuilder';
 import { BattleController, DeployFailReason } from "../../battle/controllers/BattleController";
 import { ToastMessage, ToastOptions } from "./ToastMessage";
 
@@ -40,7 +41,7 @@ const { ccclass, property } = _decorator;
  *   2. 必須是武將前方第一排（BattleScene.onTouchEnd 限制 depth === 0 才呼叫 selectLane）。
  */
 @ccclass("DeployPanel")
-export class DeployPanel extends Component {
+export class DeployPanel extends UIPreviewBuilder {
   // ─── 兵種按鈕（5 個對應 Inspector 綁定，實際只顯示 4 個隨機槽位） ──────────
   @property(Button)
   btnCavalry: Button = null!;

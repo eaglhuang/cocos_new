@@ -1,141 +1,181 @@
-import { _decorator, Button, Color, Graphics, Label, Node, Sprite, UITransform, Vec3 } from "cc";
-import { UILayer } from "../layers/UILayer";
-
-const { ccclass, property } = _decorator;
-
+// @spec-source → 見 docs/cross-reference-index.md
 /**
- * ResultPopup — 戰鬥結果彈出層。
- * 顯示勝/負/平局文字，提供「再來一場」按鈕。
- * 
- * 繼承自 UILayer，可透過 show() / hide() 淡入淡出。
- * 開啟時自動建立半透明遮罩 + 有色底板，且節點層級會被推到最頂層。
+ * ResultPopup — 戰鬥結果彈出層（新架構版）
+ *
+ * ⭐ 已遷移至 UIPreviewBuilder 架構
+ *
+ * 繼承 UIPreviewBuilder，佈局由 result-popup-main.json 定義，
+ * 皮膚由 result-popup-default.json 提供（三種卡片背景：預設/勝利/失敗）。
+ *
+ * 業務職責（保留於此）：
+ *   - 依據戰果切換卡片背景（skinSlot）
+ *   - 更新標題與描述文字
+ *   - 發出 "replay" 事件
+ *
+ * 呼叫方式：
+ *   const popup = services().ui.show<ResultPopup>(UIID.ResultPopup);
+ *   await popup.showResult('player-win');
+ *
+ * Unity 對照：PopupController + Animator（狀態機:win/lose/draw）
  */
-@ccclass("ResultPopup")
-export class ResultPopup extends UILayer {
-  @property(Label)
-  titleLabel: Label = null!;
+import { _decorator, Label, Node, Color } from 'cc';
+import { UIPreviewBuilder } from '../core/UIPreviewBuilder';
+import { UISpecLoader } from '../core/UISpecLoader';
+import { UISkinResolver } from '../core/UISkinResolver';
 
-  @property(Label)
-  descLabel: Label = null!;
+const { ccclass } = _decorator;
 
-  @property(Button)
-  btnReplay: Button = null!;
+/** 戰鬥結果類型 */
+export type BattleResult = 'player-win' | 'enemy-win' | 'draw';
 
-  onLoad(): void {
-    super.onLoad?.();
-    this.btnReplay?.node.on(Button.EventType.CLICK, this.onReplayClick, this);
-    // 預設隱藏
-    this.node.active = false;
+/** 各結果的顯示設定 */
+const RESULT_CONFIG: Record<BattleResult, {
+    titleI18nKey: string;
+    descText: string;
+    cardSkinSlot: string;
+}> = {
+    'player-win': {
+        titleI18nKey: 'ui.result.victory',
+        descText: '我方成功擊敗敵軍，取得大勝！',
+        cardSkinSlot: 'popup.card.win',
+    },
+    'enemy-win': {
+        titleI18nKey: 'ui.result.defeat',
+        descText: '敵方突破防線，再接再厲！',
+        cardSkinSlot: 'popup.card.lose',
+    },
+    'draw': {
+        titleI18nKey: 'ui.result.draw',
+        descText: '雙方勢均力敵，不分勝負。',
+        cardSkinSlot: 'popup.card.bg',
+    },
+};
 
-    this.ensureBackground();
-  }
+@ccclass('ResultPopup')
+export class ResultPopup extends UIPreviewBuilder {
 
-  /**
-   * 確保底板存在：建立全螢幕半透明遮罩 + 中央有色底板。
-   * 只建立一次，後續 showResult 直接顯示。
-   */
-  private ensureBackground(): void {
-    // 1. 讓 Popup 節點本身填滿全畫面（方便攔截觸控事件）
-    const rootTf = this.node.getComponent(UITransform) ?? this.node.addComponent(UITransform);
-    rootTf.setContentSize(1920, 1024);
+    private _specLoader = new UISpecLoader();
+    private _initialized = false;
 
-    // 2. 半透明黑色遮罩（全螢幕）
-    const mask = this.node.getChildByName("_Mask") ?? new Node("_Mask");
-    if (!mask.parent) {
-      mask.layer = this.node.layer;
-      this.node.insertChild(mask, 0); // 最底層
-    }
-    (mask.getComponent(UITransform) ?? mask.addComponent(UITransform)).setContentSize(1920, 1024);
-    mask.setPosition(Vec3.ZERO);
-    this.paintSolidRect(mask, 1920, 1024, new Color(0, 0, 0, 160));
+    // ── 生命週期 ─────────────────────────────────────────────
 
-    // 3. 中央有色底板
-    const card = this.node.getChildByName("_CardBg") ?? new Node("_CardBg");
-    if (!card.parent) {
-      card.layer = this.node.layer;
-      // 置於 Mask 後面、文字+按鈕前面
-      this.node.insertChild(card, 1);
-    }
-    (card.getComponent(UITransform) ?? card.addComponent(UITransform)).setContentSize(600, 340);
-    card.setPosition(Vec3.ZERO);
-    this.paintSolidRect(card, 600, 340, new Color(30, 30, 50, 230));
-
-    // 4. 確保文字與按鈕在底板上方
-    this.titleLabel?.node && this.ensureChildOnTop(this.titleLabel.node);
-    this.descLabel?.node  && this.ensureChildOnTop(this.descLabel.node);
-    this.btnReplay?.node  && this.ensureChildOnTop(this.btnReplay.node);
-  }
-
-  private ensureChildOnTop(child: Node): void {
-    if (child.parent === this.node) {
-      child.setSiblingIndex(this.node.children.length - 1);
-    }
-  }
-
-  /**
-   * 顯示結果彈窗。
-   * @param result "player-win" | "enemy-win" | "draw"
-   */
-  public showResult(result: string): void {
-    let title = "";
-    let desc  = "";
-    let cardColor = new Color(30, 30, 50, 230);
-
-    switch (result) {
-      case "player-win":
-        title = "🎉 勝利！";
-        desc  = "我方成功擊敗敵軍，取得大勝！";
-        cardColor = new Color(20, 60, 30, 230);
-        break;
-      case "enemy-win":
-        title = "💀 落敗";
-        desc  = "敵方突破防線，再接再厲！";
-        cardColor = new Color(70, 20, 20, 230);
-        break;
-      case "draw":
-        title = "⚔️ 平局";
-        desc  = "雙方勢均力敵，不分勝負。";
-        break;
-      default:
-        title = "戰鬥結束";
-        desc  = "";
+    async onLoad(): Promise<void> {
+        this.node.active = false;
+        await this._initialize();
     }
 
-    if (this.titleLabel) this.titleLabel.string = title;
-    if (this.descLabel)  this.descLabel.string  = desc;
+    private async _initialize(): Promise<void> {
+        if (this._initialized) return;
 
-    // 更新底板顏色
-    const cardBg = this.node.getChildByName("_CardBg");
-    if (cardBg) {
-      this.paintSolidRect(cardBg, 600, 340, cardColor);
+        try {
+            // 載入三層規格 + i18n
+            const [fullScreen, i18n] = await Promise.all([
+                this._specLoader.loadFullScreen('result-popup-screen'),
+                this._specLoader.loadI18n('zh-TW'),
+            ]);
+
+            // 建構節點樹
+            await this.buildScreen(fullScreen.layout, fullScreen.skin, i18n);
+            this._initialized = true;
+        } catch (e) {
+            console.warn('[ResultPopup] 規格載入失敗，退回白模模式', e);
+            // 白模 fallback：仍然可以顯示文字
+            this._initialized = true;
+        }
     }
 
-    // 推到父節點的最頂層，確保 UI 層級最高
-    if (this.node.parent) {
-      this.node.setSiblingIndex(this.node.parent.children.length - 1);
+    // ── 覆寫建構點 ───────────────────────────────────────────
+
+    protected onBuildComplete(_rootNode: Node): void {
+        // 按鈕事件
+        this.node.on('onClickBack',   this.onClickBack,   this);
+        this.node.on('onClickReplay', this.onClickReplay, this);
     }
 
-    this.node.active = true;
-    this.show();
-  }
+    // ── 公開 API ─────────────────────────────────────────────
 
-  private onReplayClick(): void {
-    this.hide();
-    // 通知父節點重新開局
-    this.node.emit("replay");
-  }
+    /**
+     * 顯示戰鬥結果彈窗
+     * @param result 戰鬥結果
+     */
+    public async showResult(result: BattleResult): Promise<void> {
+        if (!this._initialized) {
+            await this._initialize();
+        }
 
-  private paintSolidRect(node: Node, width: number, height: number, color: Color): void {
-    // 若節點上存在 Sprite，先移除，避免與 Graphics 行為互相干擾。
-    const sprite = node.getComponent(Sprite);
-    if (sprite) {
-      sprite.destroy();
+        const config = RESULT_CONFIG[result];
+
+        // 更新標題
+        const titleLabel = this.node.getChildByPath('Card/TitleLabel')?.getComponent(Label);
+        if (titleLabel) {
+            titleLabel.string = this.t(config.titleI18nKey);
+        }
+
+        // 更新描述（目前寫死，未來可加入 i18n key）
+        const descLabel = this.node.getChildByPath('Card/DescLabel')?.getComponent(Label);
+        if (descLabel) {
+            descLabel.string = config.descText;
+        }
+
+        // 切換卡片背景 skin（依勝負結果）
+        await this._switchCardSkin(config.cardSkinSlot);
+
+        // 推到最頂層
+        if (this.node.parent) {
+            this.node.setSiblingIndex(this.node.parent.children.length - 1);
+        }
+
+        this.node.active = true;
+        this.playEnterTransition(this.node);
     }
 
-    const g = node.getComponent(Graphics) ?? node.addComponent(Graphics);
-    g.clear();
-    g.fillColor = color;
-    g.roundRect(-width * 0.5, -height * 0.5, width, height, 18);
-    g.fill();
-  }
+    // ── 私有方法 ─────────────────────────────────────────────
+
+    /**
+     * 切換卡片背景到對應的 skin slot
+     * 失敗時靜默（仍顯示文字）
+     */
+    private async _switchCardSkin(skinSlot: string): Promise<void> {
+        const cardNode = this.node.getChildByName('Card');
+        if (!cardNode) return;
+
+        try {
+            const frame = await this.skinResolver.getSpriteFrame(skinSlot);
+            if (frame) {
+                const { Sprite } = await import('cc');
+                const sprite = cardNode.getComponent(Sprite) ?? cardNode.addComponent(Sprite);
+                sprite.spriteFrame = frame;
+                sprite.type = Sprite.Type.SLICED;
+                sprite.sizeMode = Sprite.SizeMode.CUSTOM;
+            }
+        } catch {
+            // fallback：保留現有背景
+        }
+    }
+
+    // ── 按鈕回呼 ─────────────────────────────────────────────
+
+    private onClickBack(): void {
+        this.playExitTransition(this.node, undefined, () => {
+            this.node.active = false;
+            this.node.emit('back');
+        });
+    }
+
+    private onClickReplay(): void {
+        this.playExitTransition(this.node, undefined, () => {
+            this.node.active = false;
+            this.node.emit('replay');
+        });
+    }
+
+    // ── resetState (UILayer 協定) ─────────────────────────────
+
+    /** 從快取取出前重置：清除文字殘留 */
+    public resetState(): void {
+        const titleLabel = this.node.getChildByPath('Card/TitleLabel')?.getComponent(Label);
+        const descLabel  = this.node.getChildByPath('Card/DescLabel')?.getComponent(Label);
+        if (titleLabel) titleLabel.string = '';
+        if (descLabel)  descLabel.string  = '';
+    }
 }

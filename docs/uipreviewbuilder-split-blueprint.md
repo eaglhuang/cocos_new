@@ -1,83 +1,82 @@
 # `UIPreviewBuilder.ts` 拆分藍圖
 
-本文件定義 `UIPreviewBuilder.ts` 的拆分方向與強制邊界。
+本文件只描述 `UIPreviewBuilder.ts` 的拆分方向。通用的高風險檔、單寫者與 400 行硬規則，統一以 [keep.md](./keep.md) 為準。
 
-對照 Unity，`UIPreviewBuilder.ts` 現況很像一支過胖的 `MonoBehaviour`：
-同時承擔節點建立、版面配置、樣式套用、中文字串、fallback、diagnostics 與 preview orchestration。
-這種檔案會同時放大三種風險：
+## 1. 為什麼要拆
 
-- merge conflict
-- 編碼災害半徑
-- review 成本
+`UIPreviewBuilder.ts` 同時承擔 preview orchestration、中文字串、diagnostics、layout、style 與節點建立，風險過高。
 
-## 硬規則
+主要問題：
 
-- 任一代碼檔超過 400 行，即視為必須拆分。
-- `UIPreviewBuilder.ts` 已明確屬於強制拆分對象。
-- 之後不得再把新功能長期堆進這支檔案。
+- 容易 merge conflict
+- 編碼災難半徑過大
+- review 困難
+- 超過 400 行硬限制
 
-## 目標分層
+Unity 對照：這很像一支過肥的 `MonoBehaviour` 同時包 UI 建構、文案、fallback 與 log，長期一定難維護。
 
-### 1. `UIPreviewBuilder.ts`
+## 2. 拆分目標
 
-- 只保留總協調與公開入口
-- 負責高層 orchestration
-- 不再承擔大量細節邏輯
-
-### 2. `UIPreviewNodeFactory.ts`
-
-- 專責建立節點
-- 管理 container / panel / label / button / sprite 等基本節點工廠
-
-### 3. `UIPreviewLayoutBuilder.ts`
-
-- 專責 anchor / widget / layout / padding / spacing
-- 處理版面幾何與佈局規則
-
-### 4. `UIPreviewStyleBuilder.ts`
-
-- 專責 skin 套用
-- 管理 frame / shadow / noise / overlay / sprite style
-
-### 5. `UIPreviewTextCatalog.ts`
-
-- 專責中文 placeholder、預設文案與測試文案
-- 降低大段中文常數混在主邏輯中的風險
-
-### 6. `UIPreviewDiagnostics.ts`
-
-- 專責 warning / fallback / debug log
-- 集中管理 preview 期的診斷輸出
-
-## 拆分原則
-
-- 每個新檔都要有單一主要責任。
-- 中文常數與視覺組裝邏輯不要再和 orchestration 混在一起。
-- 不允許只是把同樣耦合的內容平移到別的檔案。
-- 拆分後仍需保持原有行為不變，再逐步做結構優化。
-
-## 推薦拆分順序
+保留 `UIPreviewBuilder.ts` 為協調器，逐步拆出：
 
 1. `UIPreviewTextCatalog.ts`
 2. `UIPreviewDiagnostics.ts`
 3. `UIPreviewLayoutBuilder.ts`
 4. `UIPreviewStyleBuilder.ts`
 5. `UIPreviewNodeFactory.ts`
-6. 最後縮減 `UIPreviewBuilder.ts`
 
-## 驗收條件
+## 3. 職責分工
 
-- `UIPreviewBuilder.ts` 行數下降到合理範圍
-- 新檔職責清楚，不互相重疊
+### `UIPreviewBuilder.ts`
+
+- 只保留流程協調
+- 不再承載大量細節實作
+
+### `UIPreviewTextCatalog.ts`
+
+- 中文 placeholder
+- 測試用文案
+- 預覽字串常數
+
+### `UIPreviewDiagnostics.ts`
+
+- warning
+- fallback 記錄
+- debug log
+
+### `UIPreviewLayoutBuilder.ts`
+
+- anchor / widget / layout / spacing / padding
+
+### `UIPreviewStyleBuilder.ts`
+
+- frame / shadow / noise / overlay / sprite style
+
+### `UIPreviewNodeFactory.ts`
+
+- container / panel / label / button / sprite 的建立與掛件
+
+## 4. 拆分順序
+
+建議順序：
+
+1. `UIPreviewTextCatalog.ts`
+2. `UIPreviewDiagnostics.ts`
+3. `UIPreviewLayoutBuilder.ts`
+4. `UIPreviewStyleBuilder.ts`
+5. `UIPreviewNodeFactory.ts`
+6. 最後再瘦身 `UIPreviewBuilder.ts`
+
+## 5. 施工規則
+
+- 單寫者規則依 [keep.md](./keep.md)
+- 每次拆分只處理單一責任
+- 先搬移，不先改行為
+- 新檔一律納入 UTF-8 防災檢查
+
+## 6. 驗收
+
+- 行為不變
 - `npm run check:encoding` 通過
 - `npm run check:acceptance` 通過
-- 非 ASCII 大量變更有專門 reviewer 檢查
-
-## 協作規則
-
-- 拆分期間採單寫者規則
-- 若需要多 Agent 併行，必須明確切開 write scope
-- commit message 仍遵循：
-  ```text
-  [bug|feat|chore] 任務卡號 功能描述 [AgentX]
-  ```
+- `UIPreviewBuilder.ts` 行數下降，責任明確

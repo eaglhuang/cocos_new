@@ -1,0 +1,13 @@
+{
+  "id": "tiger-tally-screen",
+  "version": 1,
+  "uiId": "TigerTallyPanel",
+  "layer": "Game",
+  "bundle": "battle_ui",
+  "layout": "tiger-tally-main",
+  "skin": "tiger-tally-default",
+  "validation": {
+    "devices": ["phone-16-9", "phone-19_5-9"],
+    "allowMissingSkin": true
+  }
+}

@@ -1,0 +1,233 @@
+{
+  "id": "support-card-default",
+  "version": 2,
+  "bundle": "lobby_ui",
+  "atlasPolicy": "lobby_support_card",
+  "description": "支援卡系統 skin：主列表、卡片格子、詳情頁（四頁籤）、編組預覽、突破UI",
+
+  "slots": {
+
+    "topbar.btn.back": {
+      "kind": "sprite-button",
+      "normal":   "ui/support_card/btn_back_normal",
+      "pressed":  "ui/support_card/btn_back_pressed",
+      "disabled": "ui/support_card/btn_back_disabled",
+      "border": [4,4,4,4]
+    },
+    "topbar.label.title": {
+      "kind": "label-style",
+      "font": "fonts/newsreader/font",
+      "fontSize": 34,
+      "color": "#FFE088",
+      "horizontalAlign": "CENTER",
+      "overflow": "SHRINK"
+    },
+    "topbar.btn.borrow": {
+      "kind": "sprite-button",
+      "normal":   "ui/support_card/btn_borrow_normal",
+      "pressed":  "ui/support_card/btn_borrow_pressed",
+      "border": [12,12,12,12]
+    },
+
+    "tab.toggle": {
+      "kind": "toggle-style",
+      "normal_bg":   "#1A1A1A",
+      "selected_bg": "#2A2010",
+      "normal_text_color":   "#99907C",
+      "selected_text_color": "#FFE088",
+      "fontSize": 22,
+      "border_bottom_selected": { "color": "#D4AF37", "thickness": 3 }
+    },
+
+    "filterbar.btn.filter": {
+      "kind": "sprite-button",
+      "normal":  "ui/common/btn_filter_normal",
+      "pressed": "ui/common/btn_filter_pressed",
+      "border": [8,8,8,8]
+    },
+    "filterbar.label.sort": {
+      "kind": "label-style",
+      "fontSize": 20,
+      "color": "#D0C5AF"
+    },
+
+    "card.bg.rarity": {
+      "kind": "sprite-9slice",
+      "note": "根據 card.rarity 動態換圖：SSR=bg_card_ssr / SR=bg_card_sr / R=bg_card_r",
+      "frames": {
+        "SSR": "ui/support_card/bg_card_ssr",
+        "SR":  "ui/support_card/bg_card_sr",
+        "R":   "ui/support_card/bg_card_r"
+      },
+      "border": [12,12,12,12]
+    },
+    "card.shadow": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/shadow/shadow_01",
+      "spriteType": "sliced",
+      "border": [20, 20, 20, 20],
+      "allowAutoAtlas": true
+    },
+    "card.portrait": {
+      "kind": "sprite-frame",
+      "note": "動態 → 由 Support_Template 對應圖片路徑 ui/portraits/support/{template_id}"
+    },
+    "card.star": {
+      "kind": "sprite-frame",
+      "frame": "ui/support_card/icon_star_filled"
+    },
+    "card.star.empty": {
+      "kind": "sprite-frame",
+      "frame": "ui/support_card/icon_star_empty"
+    },
+    "card.label.name": {
+      "kind": "label-style",
+      "fontSize": 22,
+      "color": "#E5E2E1",
+      "horizontalAlign": "CENTER",
+      "overflow": "SHRINK"
+    },
+    "card.overlay.lock": {
+      "kind": "color-rect",
+      "color": "#000000",
+      "opacity": 0.5
+    },
+    "card.label.lock": {
+      "kind": "label-style",
+      "fontSize": 20,
+      "color": "#99907C",
+      "horizontalAlign": "CENTER"
+    },
+
+    "ui-common-metal.commerce.primary": {
+      "kind": "button-skin",
+      "normal": "sprites/ui_families/common/commerce/btn_primary_normal",
+      "pressed": "sprites/ui_families/common/commerce/btn_primary_pressed",
+      "disabled": "sprites/ui_families/common/commerce/btn_primary_disabled",
+      "spriteType": "sliced",
+      "border": [20, 20, 20, 20],
+      "allowAutoAtlas": true
+    },
+    "bottombar.btn.gacha": {
+      "kind": "button-skin",
+      "normal": "sprites/ui_families/common/commerce/btn_primary_normal",
+      "pressed": "sprites/ui_families/common/commerce/btn_primary_pressed",
+      "disabled": "sprites/ui_families/common/commerce/btn_primary_disabled",
+      "spriteType": "sliced",
+      "border": [20, 20, 20, 20],
+      "allowAutoAtlas": true
+    },
+    "bottombar.label.gacha": {
+      "kind": "label-style",
+      "fontSize": 24,
+      "color": "#2D2926"
+    },
+    "bottombar.btn.team": {
+      "kind": "sprite-button",
+      "normal":   "ui/common/btn_secondary_normal",
+      "pressed":  "ui/common/btn_secondary_pressed",
+      "labelColor": "#FFE088",
+      "fontSize": 24,
+      "border": [16,16,16,16]
+    },
+
+    "detail.tab.effects": {
+      "kind": "toggle-style",
+      "normal_bg":   "#1A1A1A",
+      "selected_bg": "#20201F",
+      "normal_text_color":   "#99907C",
+      "selected_text_color": "#FFE088",
+      "fontSize": 22
+    },
+    "detail.tab.events": { "$ref": "detail.tab.effects" },
+    "detail.tab.story":  { "$ref": "detail.tab.effects" },
+
+    "detail.star.active": {
+      "kind": "sprite-frame",
+      "frame": "ui/support_card/icon_star_filled_lg"
+    },
+    "detail.star.locked": {
+      "kind": "sprite-frame",
+      "frame": "ui/support_card/icon_star_locked"
+    },
+
+    "detail.event.row.unlocked": {
+      "kind": "color-rect",
+      "color": "#20201F"
+    },
+    "detail.event.row.locked": {
+      "kind": "color-rect",
+      "color": "#151513"
+    },
+    "detail.event.label.locked": {
+      "kind": "label-style",
+      "fontSize": 18,
+      "color": "#4D4635"
+    },
+    "detail.event.label.skill": {
+      "kind": "label-style",
+      "fontSize": 20,
+      "color": "#E5E2E1",
+      "overflow": "SHRINK"
+    },
+    "detail.event.icon.lock": {
+      "kind": "sprite-frame",
+      "frame": "ui/common/icon_lock"
+    },
+    "detail.event.label.starReq": {
+      "kind": "label-style",
+      "fontSize": 16,
+      "color": "#D4AF37"
+    },
+
+    "breakthrough.btn.confirm": {
+      "kind": "sprite-button",
+      "normal":  "ui/support_card/btn_breakthrough_normal",
+      "pressed": "ui/support_card/btn_breakthrough_pressed",
+      "labelColor": "#2D2926",
+      "fontSize": 26,
+      "border": [20,20,20,20]
+    },
+    "breakthrough.btn.fragment": {
+      "kind": "sprite-button",
+      "normal":  "ui/common/btn_secondary_normal",
+      "pressed": "ui/common/btn_secondary_pressed",
+      "labelColor": "#FFE088",
+      "fontSize": 22,
+      "border": [16,16,16,16]
+    },
+
+    "borrow.card.bg": {
+      "kind": "sprite-9slice",
+      "frame": "ui/support_card/bg_card_borrow",
+      "border": [12,12,12,12]
+    },
+    "borrow.label.owner": {
+      "kind": "label-style",
+      "fontSize": 18,
+      "color": "#D0C5AF"
+    },
+
+    "synergy.badge": {
+      "kind": "sprite-frame",
+      "frame": "ui/support_card/badge_synergy"
+    },
+    "synergy.label": {
+      "kind": "label-style",
+      "fontSize": 18,
+      "color": "#86E1A5"
+    }
+  },
+
+  "validation": {
+    "requiredSlots": [
+      "card.bg.rarity", "card.portrait", "card.star", "card.star.empty",
+      "card.label.name", "bottombar.btn.gacha", "bottombar.btn.team",
+      "detail.event.icon.lock"
+    ],
+    "nineSliceIntegerCheck": [
+      "card.bg.rarity", "breakthrough.btn.confirm",
+      "bottombar.btn.gacha"
+    ]
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "id": "network-status-default",
+  "version": 1,
+  "bundle": "ui_common",
+  "atlasPolicy": "ui_common",
+  "slots": {
+    "netstat.icon.bg": {
+      "kind": "color",
+      "color": "#000000",
+      "alpha": 0
+    },
+    "netstat.icon.shadow": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/shadow/shadow_01",
+      "spriteType": "sliced",
+      "border": [20, 20, 20, 20],
+      "allowAutoAtlas": true
+    },
+    "netstat.icon.sprite": {
+      "kind": "sprite-frame",
+      "path": "sprites/common/icon_network/spriteFrame",
+      "spriteType": "simple",
+      "allowAutoAtlas": true,
+      "bleed": 2
+    }
+  }
+}

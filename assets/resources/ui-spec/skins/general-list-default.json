@@ -1,0 +1,139 @@
+{
+  "id": "general-list-default",
+  "version": 5,
+  "bundle": "lobby_ui",
+  "atlasPolicy": "lobby_general",
+  "$fragments": ["common-parchment-default"],
+  "slots": {
+    "general.bg": {
+      "kind": "color-rect",
+      "color": "surfaceContainer"
+    },
+    "general.header.bg": {
+      "kind": "color-rect",
+      "color": "parchment.divider"
+    },
+    "parchment.bg.shadow": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/shadow/shadow_01",
+      "spriteType": "sliced",
+      "border": [20, 20, 20, 20],
+      "allowAutoAtlas": true
+    },
+    "parchment.bg.noise": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/noise/paper_noise_256",
+      "spriteType": "tiled",
+      "opacity": 0.10,
+      "blendMode": "alpha"
+    },
+    "parchment.bg.accent": {
+      "kind": "color-rect",
+      "color": "#00000000"
+    },
+    "detail.bg.fullscreen": {
+      "kind": "sprite-frame",
+      "path": "ui-spec/placeholders/bg_ink_main",
+      "spriteType": "sliced",
+      "border": [96, 360, 96, 420],
+      "allowAutoAtlas": false
+    },
+    "general.list.bg": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/parchment/bg",
+      "spriteType": "sliced",
+      "border": [8, 8, 8, 8],
+      "opacity": 0.6,
+      "allowAutoAtlas": true
+    },
+    "general.list.shadow": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/shadow/shadow_01",
+      "spriteType": "sliced",
+      "border": [20, 20, 20, 20],
+      "allowAutoAtlas": true
+    },
+    "general.row.bg": {
+      "kind": "color-rect",
+      "color": "parchment.divider",
+      "alpha": 40
+    },
+    "general.label.title": {
+      "kind": "label-style",
+      "fontSize": 32,
+      "lineHeight": 40,
+      "color": "secondary",
+      "horizontalAlign": "LEFT",
+      "overflow": "SHRINK"
+    },
+    "general.label.header": {
+      "kind": "label-style",
+      "fontSize": 20,
+      "lineHeight": 28,
+      "color": "parchment.text.primary",
+      "horizontalAlign": "LEFT",
+      "overflow": "SHRINK",
+      "outlineWidth": 0
+    },
+    "general.label.name": {
+      "kind": "label-style",
+      "fontSize": 20,
+      "lineHeight": 26,
+      "color": "parchment.text.primary",
+      "horizontalAlign": "LEFT",
+      "overflow": "SHRINK",
+      "outlineWidth": 0
+    },
+    "general.label.value": {
+      "kind": "label-style",
+      "fontSize": 20,
+      "lineHeight": 26,
+      "color": "parchment.text.secondary",
+      "horizontalAlign": "LEFT",
+      "outlineWidth": 0
+    },
+    "general.label.faction": {
+      "kind": "label-style",
+      "fontSize": 20,
+      "lineHeight": 26,
+      "color": "parchment.text.secondary",
+      "horizontalAlign": "LEFT",
+      "outlineWidth": 0
+    },
+    "general.label.positive": {
+      "kind": "label-style",
+      "fontSize": 20,
+      "lineHeight": 26,
+      "color": "parchment.text.accent",
+      "horizontalAlign": "LEFT",
+      "outlineWidth": 0
+    },
+    "ui-common-metal.equipment.primary": {
+      "kind": "button-skin",
+      "normal": "sprites/ui_families/common/equipment/btn_primary_normal",
+      "pressed": "sprites/ui_families/common/equipment/btn_primary_pressed",
+      "disabled": "sprites/ui_families/common/equipment/btn_primary_disabled",
+      "spriteType": "sliced",
+      "border": [20, 20, 20, 20],
+      "allowAutoAtlas": true
+    },
+    "list.button.primary": {
+      "kind": "button-skin",
+      "normal": "sprites/ui_families/common/equipment/btn_primary_normal",
+      "pressed": "sprites/ui_families/common/equipment/btn_primary_pressed",
+      "disabled": "sprites/ui_families/common/equipment/btn_primary_disabled",
+      "spriteType": "sliced",
+      "border": [20, 20, 20, 20],
+      "allowAutoAtlas": true
+    },
+    "common.button.primary": {
+      "kind": "button-skin",
+      "normal": "sprites/ui_families/common/equipment/btn_primary_normal",
+      "pressed": "sprites/ui_families/common/equipment/btn_primary_pressed",
+      "disabled": "sprites/ui_families/common/equipment/btn_primary_disabled",
+      "spriteType": "sliced",
+      "border": [20, 20, 20, 20],
+      "allowAutoAtlas": true
+    }
+  }
+}

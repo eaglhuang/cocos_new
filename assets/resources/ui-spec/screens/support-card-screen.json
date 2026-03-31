@@ -1,0 +1,146 @@
+{
+  "id": "support-card-screen",
+  "version": 1,
+  "description": "支援卡系統畫面組裝：主列表 + 詳情頁 + 編組預覽 + 好友借用彈窗 + 突破確認彈窗",
+  "bundle": "lobby_ui",
+
+  "screens": [
+
+    {
+      "screen_id": "support-card-list",
+      "title": "教官・支援卡列表",
+      "layout": "support-card-main",
+      "skin": "support-card-default",
+      "entry_animation": "slide_right_in",
+      "exit_animation": "slide_right_out",
+      "navigation": {
+        "back": "lobby-main",
+        "drill_into": "support-card-detail"
+      },
+      "data_bindings": [
+        { "node": "CardGrid", "source": "PlayerSupportCards", "filter": "active_tab" },
+        { "node": "Tab_All",     "value": "ALL" },
+        { "node": "Tab_SSR",     "value": "SSR" },
+        { "node": "Tab_SR",      "value": "SR" },
+        { "node": "Tab_Synergy", "value": "SYNERGY" }
+      ]
+    },
+
+    {
+      "screen_id": "support-card-detail",
+      "title": "支援卡詳情",
+      "layout": "support-card-detail-main",
+      "skin": "support-card-default",
+      "entry_animation": "zoom_in",
+      "exit_animation": "zoom_out",
+      "tabs": [
+        {
+          "tab_id": "effects",
+          "label": "支援效果",
+          "content": [
+            { "type": "stat_list",   "source": "Passive_Effects",         "show_lock_if": "Min_Star > card.Current_Star" },
+            { "type": "rate_list",   "source": "Friendship_Bonus",        "label": "曉蔭加成" },
+            { "type": "rate_list",   "source": "Training_Effect",         "label": "訓練效果" },
+            { "type": "slot_info",   "source": "Training_Slot_Affinity",  "label": "擅長訓練格",
+                                  "extra": "Slot_Burst_Rate", "extra_label": "爆發機率" }
+          ]
+        },
+        {
+          "tab_id": "events",
+          "label": "培育事件",
+          "content": [
+            {
+              "type": "event_list",
+              "source": "Tactic_Inspire_Events",
+              "row_template": {
+                "show_skill_icon": true,
+                "show_trigger_window": true,
+                "show_base_rate": true,
+                "locked_if": "event.Min_Star > card.Current_Star",
+                "locked_display": { "skill_name": "★{Min_Star} 解鎖", "icon": "icon_lock" }
+              }
+            }
+          ]
+        },
+        {
+          "tab_id": "story",
+          "label": "小插曲",
+          "content": [
+            { "type": "story_list", "source": "Story_Events", "locked_if": "!is_unlocked" }
+          ]
+        }
+      ],
+      "action_buttons": [
+        {
+          "btn_id": "breakthrough",
+          "label": "突破",
+          "enabled_if": "duplicate_available && Current_Star < 5",
+          "on_press": "trigger_breakthrough_animation",
+          "note": "B5 確認：直接觸發突破動畫，無選擇彈窗"
+        }
+      ]
+    },
+
+    {
+      "screen_id": "support-card-team-edit",
+      "title": "培育教官編組",
+      "layout": "support-card-team-edit-main",
+      "skin": "support-card-default",
+      "features": [
+        "6 個教官槽（第 6 槽可放好友借用卡）",
+        "右側顯示預計屬性加成試算（TP 總量 + 主要屬性加倍率）",
+        "已被鎖定在其他培育的卡顯示灰色+鎖頭",
+        "師友羈絆已達成組合時，顯示綠色羈絆標章"
+      ],
+      "data_bindings": [
+        { "node": "SlotList",    "source": "TrainingTeam.slots" },
+        { "node": "PreviewPanel", "source": "calc_team_bonuses(TrainingTeam)" }
+      ]
+    }
+
+  ],
+
+  "popups": [
+    {
+      "popup_id": "breakthrough-animation",
+      "title": "突破演出",
+      "note": "B5 確認：無選擇彈窗，由突破動畫直接呈現。動畫完成後顯示結果。Current_Star==5 時為溢出動畫，顯示點數入帳 Toast。",
+      "trigger": "on-get-duplicate-card",
+      "mode": "animation-then-result",
+      "layout_inline": {
+        "w": 720, "h": 480,
+        "children": [
+          { "name": "CardPortrait",  "type": "Sprite",  "skinSlot": "card.portrait" },
+          { "name": "StarBefore",    "type": "Label",   "text": "★{before}" },
+          { "name": "Arrow",         "type": "Sprite",  "frame": "ui/common/icon_arrow_right" },
+          { "name": "StarAfter",     "type": "Label",   "text": "★{after}", "skinSlot": "topbar.label.title" },
+          { "name": "UnlockPreview", "type": "Label",   "text": "解鎖：{new_event_name}", "visible_if": "new_event_unlocked" },
+          { "name": "OverflowToast", "type": "Label",   "text": "滿突破，轉化為積分×{overflow_points}",
+                                      "visible_if": "is_overflow" },
+          { "name": "CloseBtn",      "type": "Button",  "skinSlot": "breakthrough.btn.confirm",
+                                      "text": "確認", "on_press": "close" }
+        ]
+      }
+    },
+
+    {
+      "popup_id": "borrow-mentor",
+      "title": "好友借用教官",
+      "layout_inline": {
+        "w": 900, "h": 800,
+        "children": [
+          { "name": "DailyCountLabel", "type": "Label", "text": "今日剩餘借用次數：{remaining}/1" },
+          { "name": "FriendList",      "type": "ScrollView", "note": "每行顯示好友頭像 + 展示教官名稱 + 星等 + 是否可借" },
+          { "name": "BorrowConfirmBtn","type": "Button", "skinSlot": "breakthrough.btn.confirm", "text": "借入此教官" }
+        ]
+      }
+    }
+  ],
+
+  "validation_rules": [
+    { "rule": "touch_target_min", "value": 44 },
+    { "rule": "text_overflow_check", "nodes": ["CardName", "TitleLabel"] },
+    { "rule": "nineSlice_integer_border", "slots": ["card.bg.rarity"] },
+    { "rule": "scroll_content_margin", "bottom": 80, "note": "BottomActionBar 固定 160px，確保卡片不被遮擋" }
+  ]
+}

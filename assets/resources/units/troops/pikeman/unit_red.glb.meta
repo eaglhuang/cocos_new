@@ -1,0 +1,143 @@
+{
+  "ver": "2.3.14",
+  "importer": "gltf",
+  "imported": true,
+  "uuid": "5429a9a2-c311-475f-8fc9-ca256c135fb7",
+  "files": [],
+  "subMetas": {
+    "f7819": {
+      "importer": "gltf-mesh",
+      "uuid": "5429a9a2-c311-475f-8fc9-ca256c135fb7@f7819",
+      "displayName": "",
+      "id": "f7819",
+      "name": "tripo_mesh_3172ac4b-a24c-4b6a-9afb-5abfe525d5d6.mesh",
+      "userData": {
+        "gltfIndex": 0,
+        "triangleCount": 1014
+      },
+      "ver": "1.1.1",
+      "imported": true,
+      "files": [
+        ".bin",
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "d2b2c": {
+      "importer": "gltf-embeded-image",
+      "uuid": "5429a9a2-c311-475f-8fc9-ca256c135fb7@d2b2c",
+      "displayName": "",
+      "id": "d2b2c",
+      "name": "紅槍兵3Dmodel_1K_basecolor.image",
+      "userData": {
+        "gltfIndex": 0,
+        "fixAlphaTransparencyArtifacts": true,
+        "hasAlpha": false,
+        "type": "texture"
+      },
+      "ver": "1.0.3",
+      "imported": true,
+      "files": [
+        ".jpg",
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "e39f7": {
+      "importer": "texture",
+      "uuid": "5429a9a2-c311-475f-8fc9-ca256c135fb7@e39f7",
+      "displayName": "",
+      "id": "e39f7",
+      "name": "UnnamedTexture.texture",
+      "userData": {
+        "wrapModeS": "repeat",
+        "wrapModeT": "repeat",
+        "minfilter": "linear",
+        "magfilter": "linear",
+        "mipfilter": "linear",
+        "anisotropy": 0,
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "5429a9a2-c311-475f-8fc9-ca256c135fb7@d2b2c"
+      },
+      "ver": "1.0.22",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "d57b4": {
+      "importer": "gltf-material",
+      "uuid": "5429a9a2-c311-475f-8fc9-ca256c135fb7@d57b4",
+      "displayName": "",
+      "id": "d57b4",
+      "name": "tripo_mat_3172ac4b-a24c-4b6a-9afb-5abfe525d5d6.material",
+      "userData": {
+        "gltfIndex": 0
+      },
+      "ver": "1.0.14",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "891e1": {
+      "importer": "gltf-scene",
+      "uuid": "5429a9a2-c311-475f-8fc9-ca256c135fb7@891e1",
+      "displayName": "",
+      "id": "891e1",
+      "name": "unit_red.prefab",
+      "userData": {
+        "gltfIndex": 0
+      },
+      "ver": "1.0.14",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    }
+  },
+  "userData": {
+    "imageMetas": [
+      {
+        "name": "紅槍兵3Dmodel_1K_basecolor",
+        "uri": "5429a9a2-c311-475f-8fc9-ca256c135fb7@d2b2c"
+      }
+    ],
+    "lods": {
+      "enable": false,
+      "hasBuiltinLOD": false,
+      "options": [
+        {
+          "screenRatio": 0.25,
+          "faceCount": 1
+        },
+        {
+          "screenRatio": 0.125,
+          "faceCount": 0.25
+        },
+        {
+          "screenRatio": 0.01,
+          "faceCount": 0.1
+        }
+      ]
+    },
+    "assetFinder": {
+      "meshes": [
+        "5429a9a2-c311-475f-8fc9-ca256c135fb7@f7819"
+      ],
+      "skeletons": [],
+      "textures": [
+        "5429a9a2-c311-475f-8fc9-ca256c135fb7@e39f7"
+      ],
+      "materials": [
+        "5429a9a2-c311-475f-8fc9-ca256c135fb7@d57b4"
+      ],
+      "scenes": [
+        "5429a9a2-c311-475f-8fc9-ca256c135fb7@891e1"
+      ]
+    }
+  }
+}

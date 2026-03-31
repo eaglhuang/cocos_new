@@ -1,71 +1,74 @@
-import { _decorator, Color, Component, Label, Node, Tween, tween, UITransform, Vec3 } from "cc";
+// @spec-source → 見 docs/cross-reference-index.md
+import { _decorator, Color, Label, Node, Tween, tween, UITransform, UIOpacity } from "cc";
+import { services } from "../../core/managers/ServiceLoader";
+import { UIPreviewBuilder } from "../core/UIPreviewBuilder";
+import { UISpecLoader } from "../core/UISpecLoader";
 
-const { ccclass, property } = _decorator;
+const { ccclass } = _decorator;
 
 export interface ToastOptions {
   color?: Color;
-  position?: Vec3;
-  fontSize?: number;
-  width?: number;
+  duration?: number;
 }
 
 @ccclass("ToastMessage")
-export class ToastMessage extends Component {
-  @property(Label)
-  messageLabel: Label = null!;
+export class ToastMessage extends UIPreviewBuilder {
+  
+  private _specLoader = new UISpecLoader();
+  private hideTween: Tween<UIOpacity> | null = null;
+  private _isBuilt = false;
 
-  private hideTween: Tween<Node> | null = null;
-  private readonly defaultPosition = new Vec3(0, 120, 0);
-  private defaultFontSize = 26;
-  private defaultWidth = 520;
-
-  onLoad(): void {
-    this.ensureBindings();
+  start(): void {
     this.node.active = false;
+    // 監聽全域事件以便讓 SyncManager 等非 UI 腳本可以發送提示
+    services().event.onBind('SHOW_TOAST', (payload: { message: string, duration?: number }) => {
+        this.show(payload.message, payload.duration);
+    }, this);
   }
 
-  public show(message: string, duration = 1.2, options?: ToastOptions): void {
-    if (!this.messageLabel) return;
+  public async show(message: string, duration = 1.2, options?: ToastOptions): Promise<void> {
+    if (!this._isBuilt) {
+        // 1. 動態載入三層結構契約與 Design Tokens v2.2
+        const layout = await this._specLoader.loadLayout('toast-message-main');
+        const skin = await this._specLoader.loadSkin('toast-message-default');
+        const i18n = await this._specLoader.loadI18n('zh-TW');
+        const tokens = await this._specLoader.loadDesignTokens();
+        
+        // 2. 透過 UI 建構引擎產生節點樹
+        await this.buildScreen(layout, skin, i18n, tokens);
+        this._isBuilt = true;
+    }
 
-    this.messageLabel.string = message;
-    this.messageLabel.fontSize = options?.fontSize ?? this.defaultFontSize;
-    this.messageLabel.lineHeight = this.messageLabel.fontSize + 6;
-    this.messageLabel.color = options?.color ?? new Color(255, 255, 255, 255);
-
-    const tf = this.node.getComponent(UITransform) ?? this.node.addComponent(UITransform);
-    tf.setContentSize(options?.width ?? this.defaultWidth, Math.max(40, this.messageLabel.lineHeight + 10));
-    this.node.setPosition(options?.position ?? this.defaultPosition);
     this.node.active = true;
 
-    const current = this.messageLabel.color;
-    this.messageLabel.color = new Color(current.r, current.g, current.b, 255);
+    const rootNode = this.node.getChildByName('ToastRoot');
+    if (!rootNode) return;
+
+    // 3. 更新動態文字內容
+    const lblNode = rootNode.getChildByName('Message');
+    if (lblNode) {
+        const lbl = lblNode.getComponent(Label);
+        if (lbl) {
+            lbl.string = message;
+            if (options?.color) lbl.color = options.color;
+        }
+    }
+
+    // 4. 動態顯示與自動隱藏 (取代舊版的 node-level tween)
+    const opacity = rootNode.getComponent(UIOpacity) ?? rootNode.addComponent(UIOpacity);
+    opacity.opacity = 255; // 每次顯示直接重設為不透明，避免快速點擊產生的閃爍
 
     if (this.hideTween) {
       this.hideTween.stop();
       this.hideTween = null;
     }
 
-    this.hideTween = tween(this.node)
+    this.hideTween = tween(opacity)
       .delay(Math.max(0.2, duration))
+      .to(0.3, { opacity: 0 })
       .call(() => {
-        const c = this.messageLabel.color;
-        this.messageLabel.color = new Color(c.r, c.g, c.b, 0);
         this.node.active = false;
       })
       .start();
-  }
-
-  private ensureBindings(): void {
-    if (!this.messageLabel) {
-      this.messageLabel = this.node.getComponent(Label) ?? this.node.addComponent(Label);
-    }
-
-    const tf = this.node.getComponent(UITransform) ?? this.node.addComponent(UITransform);
-    tf.setContentSize(this.defaultWidth, 40);
-
-    this.defaultFontSize = this.messageLabel.fontSize || 26;
-
-    if (!this.node.parent) return;
-    this.node.setPosition(this.defaultPosition);
   }
 }

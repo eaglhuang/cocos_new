@@ -1,0 +1,13 @@
+{
+  "id": "general-quickview-screen",
+  "version": 1,
+  "uiId": "GeneralQuickViewPanel",
+  "layer": "UI_2D",
+  "bundle": "battle_ui",
+  "layout": "general-quickview-main",
+  "skin": "general-quickview-default",
+  "validation": {
+    "devices": ["phone-16-9", "phone-19_5-9"],
+    "allowMissingSkin": true
+  }
+}

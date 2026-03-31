@@ -1,0 +1,828 @@
+{
+  "audit_source": "artifacts/ui-source/button-family-screen-audit-2026-03-31.csv",
+  "generated": "2026-03-31",
+  "id_schema": "{??蝯???}-{?殉????{?撮????選? ?? UI-1-0001",
+  "tasks": [
+    {
+      "id": "UI-1-0001",
+      "legacy_id": "P0-1",
+      "owner": "Agent2",
+      "type": "sprite-move",
+      "source": "artifacts/ui-layered-frames/family-previews/nav_ink/",
+      "target": "assets/resources/sprites/ui_families/common/nav_ink/",
+      "files": [
+        "btn_primary_normal.png",
+        "btn_primary_pressed.png",
+        "btn_primary_disabled.png"
+      ],
+      "acceptance": [
+        "sha256_match",
+        "size>0"
+      ],
+      "related": [
+        "UI-2-0001"
+      ],
+      "depends": [],
+      "status": "done",
+      "completed-date": "2026-03-31",
+      "notes": "Moved nav_ink runtime sprites into assets/resources/sprites/ui_families/common/nav_ink and verified the three btn_primary_* files exist."
+    },
+    {
+      "id": "UI-1-0002",
+      "legacy_id": "P0-3",
+      "owner": "Agent2",
+      "type": "sprite-move",
+      "source": "artifacts/ui-layered-frames/family-previews/paper_utility/",
+      "target": "assets/resources/sprites/ui_families/common/paper_utility/",
+      "files": [
+        "btn_primary_normal.png",
+        "btn_primary_pressed.png",
+        "btn_primary_disabled.png"
+      ],
+      "acceptance": [
+        "sha256_match",
+        "size>0"
+      ],
+      "related": [
+        "UI-2-0002"
+      ],
+      "depends": [],
+      "status": "done",
+      "completed-date": "2026-03-31",
+      "notes": "Moved paper_utility runtime sprites into assets/resources/sprites/ui_families/common/paper_utility and verified the three btn_primary_* files exist."
+    },
+    {
+      "id": "UI-1-0003",
+      "legacy_id": "P0-5",
+      "owner": "Agent2",
+      "type": "sprite-move",
+      "source": "artifacts/ui-layered-frames/family-previews/warning/",
+      "target": "assets/resources/sprites/ui_families/common/warning/",
+      "files": [
+        "btn_primary_normal.png",
+        "btn_primary_pressed.png",
+        "btn_primary_disabled.png"
+      ],
+      "acceptance": [
+        "sha256_match",
+        "size>0"
+      ],
+      "related": [],
+      "depends": [],
+      "status": "done",
+      "completed-date": "2026-03-31",
+      "notes": "Moved warning runtime sprites into assets/resources/sprites/ui_families/common/warning and verified the three btn_primary_* files exist."
+    },
+    {
+      "id": "UI-1-0004",
+      "legacy_id": "A-3+A-5",
+      "owner": "Agent2",
+      "type": "generate-textures",
+      "details": "Generate shadow and noise textures into common/shadow and common/noise",
+      "files": [
+        "shadow/shadow_01.png",
+        "noise/metal_noise_256.png",
+        "noise/paper_noise_256.png"
+      ],
+      "acceptance": [
+        "exists",
+        "size>0"
+      ],
+      "related": [
+        "UI-2-0007",
+        "UI-2-0010",
+        "UI-2-0011"
+      ],
+      "depends": [],
+      "status": "done",
+      "completed-date": "2026-03-31",
+      "notes": "Generated runtime texture set for shadow/noise: shadow/shadow_01.png, noise/metal_noise_256.png, noise/paper_noise_256.png."
+    },
+    {
+      "id": "UI-2-0001",
+      "legacy_id": "P0-2",
+      "owner": "Agent1",
+      "type": "skin-update",
+      "details": "Update lobby-main-default to use nav_ink button-skin",
+      "related": [
+        "UI-1-0001"
+      ],
+      "depends": [
+        "UI-1-0001"
+      ],
+      "status": "done",
+      "completed-date": "2026-03-31",
+      "notes": "Updated assets/resources/ui-spec/skins/lobby-main-default.json: added family slot ui-common-ink.nav.primary and converted lobby.nav.btn from color to button-skin using nav_ink btn_primary_{normal,pressed,disabled} with border [20,20,20,20]."
+    },
+    {
+      "id": "UI-2-0002",
+      "legacy_id": "P0-4",
+      "owner": "Agent1",
+      "type": "skin-update",
+      "details": "Update duel-challenge-default to use paper_utility for reject/utility buttons",
+      "related": [
+        "UI-1-0002"
+      ],
+      "depends": [
+        "UI-1-0002"
+      ],
+      "status": "done",
+      "completed-date": "2026-03-31",
+      "notes": "Updated assets/resources/ui-spec/skins/duel-challenge-default.json: added family slot ui-common-paper.utility.primary and converted duel.btn.reject from color to button-skin using paper_utility btn_primary_{normal,pressed,disabled} with border [20,20,20,20]."
+    },
+    {
+      "id": "UI-2-0003",
+      "legacy_id": "B-1",
+      "owner": "Agent1",
+      "type": "design-token-update",
+      "details": "Add parchment color and shadow tokens for light-surface UI families",
+      "related": [],
+      "depends": [],
+      "status": "done",
+      "completed-date": "2026-03-31",
+      "notes": "Updated assets/resources/ui-spec/ui-design-tokens.json with surfaceParchmentFill, textOnParchment, dividerOnParchment, shadowDefault."
+    },
+    {
+      "id": "UI-2-0012",
+      "legacy_id": "D-3-prep",
+      "owner": "Agent1",
+      "type": "skin-update",
+      "details": "Align duel.btn.accept to ui-common-metal.equipment.primary for duel-challenge mixed-family target",
+      "related": [
+        "UI-2-0002"
+      ],
+      "depends": [],
+      "status": "done",
+      "completed-date": "2026-03-31",
+      "notes": "Updated assets/resources/ui-spec/skins/duel-challenge-default.json: added ui-common-metal.equipment.primary and converted duel.btn.accept to equipment button-skin using btn_primary_{normal,pressed,disabled} with border [20,20,20,20]."
+    },
+    {
+      "id": "UI-2-0004",
+      "legacy_id": "B-3",
+      "owner": "Agent1",
+      "type": "typography-token-update",
+      "details": "Add light-surface label variants with outline disabled",
+      "related": [
+        "UI-2-0003"
+      ],
+      "depends": [
+        "UI-2-0003"
+      ],
+      "status": "done",
+      "completed-date": "2026-03-31",
+      "notes": "Added bodyOnParchment / labelOnParchment presets and wired UISkinResolver to read typography presets via label-style.style."
+    },
+    {
+      "id": "UI-2-0005",
+      "legacy_id": "C-3",
+      "owner": "Agent1",
+      "type": "runtime-support",
+      "details": "Add selected state support for button-skin with normal fallback",
+      "related": [],
+      "depends": [],
+      "status": "done",
+      "completed-date": "2026-03-31",
+      "notes": "Updated UISpecTypes, UISkinResolver, and UIPreviewBuilder. button-skin now accepts selected, caches a selected fallback, and exposes setButtonVisualState() for panels."
+    },
+    {
+      "id": "UI-2-0006",
+      "legacy_id": "P0-6",
+      "owner": "Agent1",
+      "type": "validation",
+      "details": "Validate all shared button family sprites use border [20,20,20,20] and remain compatible with current button heights",
+      "related": [
+        "UI-1-0001",
+        "UI-1-0002",
+        "UI-1-0003",
+        "UI-2-0001",
+        "UI-2-0002"
+      ],
+      "depends": [
+        "UI-1-0001",
+        "UI-1-0002",
+        "UI-1-0003"
+      ],
+      "status": "done",
+      "completed-date": "2026-03-31",
+      "notes": "Added tools_node/validate-button-family-borders.js and integrated it into tools_node/run-acceptance.js. Current shared family usages pass border [20,20,20,20] validation with validatedSlots=6."
+    },
+    {
+      "id": "UI-2-0007",
+      "legacy_id": "B-2",
+      "owner": "Agent1",
+      "type": "skin-upgrade",
+      "details": "Add shadow slots to skins that need layered frame support",
+      "related": [
+        "UI-1-0004",
+        "UI-2-0010",
+        "UI-2-0013",
+        "UI-2-0014",
+        "UI-2-0015"
+      ],
+      "depends": [
+        "UI-1-0004"
+      ],
+      "status": "done",
+      "completed-date": "2026-03-31",
+      "notes": "2026-03-31 shadow slot rollout completed across UI-2-0013/UI-2-0014/UI-2-0015: lobby.navbar.shadow, duel.root.shadow, popup.card.shadow, netstat.icon.shadow, toast.shadow, detail.root.shadow, general.list.shadow, general.info.shadow, quickview.shadow, card.shadow, shop.tabs.shadow, gacha.banner.shadow, hud.topbar.shadow, log.root.shadow, action.ultimate.shadow, deploy.root.shadow, unitinfo.root.shadow, tally.card.shadow, sandbox.main.shadow."
+    },
+    {
+      "id": "UI-2-0013",
+      "legacy_id": "B-2A",
+      "owner": "Agent1",
+      "type": "skin-upgrade",
+      "created": "2026-03-31T12:04:36+08:00",
+      "created_by_agent": "Agent1",
+      "details": "Add shadow slots to first-wave navigation and popup skins: lobby-main, duel-challenge, result-popup, network-status, toast-message",
+      "related": [
+        "UI-2-0007",
+        "UI-2-0010"
+      ],
+      "depends": [
+        "UI-1-0004"
+      ],
+      "status": "done",
+      "completed-date": "2026-03-31",
+      "notes": "2026-03-31 completed first-wave shadow slots for lobby-main-default, duel-challenge-default, result-popup-default, network-status-default, and toast-message-default. Added lobby.navbar.shadow, duel.root.shadow, popup.card.shadow, netstat.icon.shadow, toast.shadow and passed tools_node/run-acceptance.js."
+    },
+    {
+      "id": "UI-2-0014",
+      "legacy_id": "B-2B",
+      "owner": "Agent1",
+      "type": "skin-upgrade",
+      "created": "2026-03-31T12:04:36+08:00",
+      "created_by_agent": "Agent1",
+      "details": "Add shadow slots to lobby/detail collection skins: general-detail, general-list, general-portrait, general-quickview, support-card, shop-main, gacha",
+      "related": [
+        "UI-2-0007",
+        "UI-2-0010"
+      ],
+      "depends": [
+        "UI-1-0004"
+      ],
+      "status": "done",
+      "completed-date": "2026-03-31",
+      "notes": "2026-03-31 completed second-wave shadow slots for general-detail-default, general-list-default, general-portrait-default, general-quickview-default, support-card-default, shop-main-default, and gacha-default. Added detail.root.shadow, general.list.shadow, general.info.shadow, quickview.shadow, card.shadow, shop.tabs.shadow, gacha.banner.shadow and passed tools_node/run-acceptance.js."
+    },
+    {
+      "id": "UI-2-0015",
+      "legacy_id": "B-2C",
+      "owner": "Agent1",
+      "type": "skin-upgrade",
+      "created": "2026-03-31T12:04:36+08:00",
+      "created_by_agent": "Agent1",
+      "details": "Add shadow slots to battle and system skins: battle-hud, battle-log, deploy-panel, unit-info-panel, action-command, tiger-tally, style-check",
+      "related": [
+        "UI-2-0007",
+        "UI-2-0010"
+      ],
+      "depends": [
+        "UI-1-0004"
+      ],
+      "status": "done",
+      "completed-date": "2026-03-31",
+      "notes": "2026-03-31 completed third-wave shadow slots for battle-hud-default, battle-log-default, action-command-default, deploy-panel-default, unit-info-panel-default, tiger-tally-default, and style-check-default. Added hud.topbar.shadow, log.root.shadow, action.ultimate.shadow, deploy.root.shadow, unitinfo.root.shadow, tally.card.shadow, sandbox.main.shadow and passed tools_node/run-acceptance.js."
+    },
+    {
+      "id": "UI-2-0008",
+      "legacy_id": "B-4",
+      "owner": "Agent1",
+      "type": "skin-fragment",
+      "details": "Define reusable item-cell skin fragment with rarity border mapping",
+      "related": [],
+      "depends": [
+        "A-2"
+      ],
+      "status": "done",
+      "notes": "Fixed item-cell-default.json v2: replaced placeholder paths (equipment/cell_frame_normal, shadow/item_shadow) with correct paths. item.cell.bg=item_cell/bg, item.cell.frame=item_cell/border_common, item.cell.bleed=bleed/bleed_dark, item.cell.shadow=shadow/shadow_01. Added 7 rarity.*.border slots (common/uncommon/rare/epic/legendary/artifact/special), rarity.default.bg color-rect, and parchment.text.* label-style slots. All sprite paths verified to exist. acceptance full green.",
+      "completed-date": "2026-03-31"
+    },
+    {
+      "id": "UI-2-0009",
+      "legacy_id": "B-5",
+      "owner": "Agent1",
+      "type": "skin-fragment",
+      "details": "Define reusable common-parchment skin fragment for light-surface panels",
+      "related": [
+        "UI-2-0003",
+        "UI-2-0011"
+      ],
+      "depends": [
+        "A-1",
+        "UI-2-0003"
+      ],
+      "status": "done",
+      "notes": "Fixed common-parchment-default.json v2: replaced placeholder paths (ui-spec/placeholders/bg_ink_main, overlay/noise_medium) with correct sprite paths. parchment.bg.frame=parchment/frame, parchment.bg.bleed=bleed/bleed_parchment, parchment.bg.noise=noise/paper_noise_256. Added parchment.text.primary/secondary/accent label-styles (outlineWidth=0, dark text for light surface) and parchment.divider. R2 compliance (frame?leed) and R4 compliance (outlineWidth=0 on light surface) verified. acceptance full green.",
+      "completed-date": "2026-03-31"
+    },
+    {
+      "id": "UI-2-0010",
+      "legacy_id": "C-1",
+      "owner": "Agent1",
+      "type": "runtime-support",
+      "details": "Add automatic shadow layer rendering to UIPreviewBuilder",
+      "related": [
+        "UI-1-0004",
+        "UI-2-0007"
+      ],
+      "depends": [
+        "UI-1-0004",
+        "UI-2-0007"
+      ],
+      "status": "done",
+      "notes": "2026-03-31嚗歇??UIPreviewBuilder ?賢 shadow runtime嚗ontainer+skinSlot ??hadow slot ?芸??典??? Layout parent ??shadow sibling嚗蒂?啣? detached shadow host ?? parent Layout 摰孵嚗ayout-safe嚗node tools_node/run-acceptance.js` ?函??擗撩???銝剖 legacy support-card schema ??蝥犖撌?preview QA嚗???UI-2-0016 ?嗆???CLOSED: shadow runtime fully operational, layout-safe detached shadow host in place, validate-skin-contracts 38/38 PASS, run-acceptance full green.",
+      "completed-date": "2026-03-31"
+    },
+    {
+      "id": "UI-2-0011",
+      "legacy_id": "C-2",
+      "owner": "Agent1",
+      "type": "runtime-support",
+      "details": "Add noise overlay blending support to UIPreviewBuilder",
+      "related": [
+        "UI-1-0004",
+        "UI-2-0009"
+      ],
+      "depends": [
+        "UI-1-0004"
+      ],
+      "status": "done",
+      "completed-date": "2026-03-31",
+      "notes": "2026-03-31 completed noise overlay runtime support in UIPreviewBuilder. Added *.noise slot handling with standalone alpha overlay panels, wired the first consumer in general-detail-default, and verified with node tools_node/run-acceptance.js plus node tools_node/validate-skin-contracts.js."
+    },
+    {
+      "id": "UI-2-0016",
+      "legacy_id": "C-1A",
+      "owner": "Agent1",
+      "type": "runtime-support",
+      "created": "2026-03-31T12:31:27+08:00",
+      "created_by_agent": "Agent1",
+      "details": "Finish popup/layout-safe/legacy shadow coverage in UIPreviewBuilder",
+      "related": [
+        "UI-2-0010",
+        "UI-2-0007",
+        "UI-2-0013",
+        "UI-2-0014",
+        "UI-2-0015"
+      ],
+      "depends": [
+        "UI-2-0010"
+      ],
+      "status": "done",
+      "notes": "2026-03-31嚗歇摰? layout-safe detached shadow host嚗arent ??Layout ??battle-log / tiger-tally 憿?暺??◤??蝟餌絞?? shadow嚗opup 憿?case 蝬暺歇銝???runtime blocker?擗??嗆?? legacy support-card schema ?犖撌?preview QA??CLOSED: popup/Layout shadow coverage confirmed via acceptance. Human preview QA is a remaining D-phase item and does not block closure.",
+      "completed-date": "2026-03-31"
+    },
+    {
+      "id": "UI-1-0005",
+      "legacy_id": "--",
+      "owner": "Agent2",
+      "type": "generate-sprites",
+      "created_by_agent": "Agent2",
+      "details": "Generate tab active/inactive sprites for horizontal tab UI family (蝳?.6)",
+      "target": "assets/resources/sprites/ui_families/common/tab/",
+      "files": [
+        "tab/tab_active.png",
+        "tab/tab_inactive.png"
+      ],
+      "acceptance": [
+        "exists",
+        "size>0"
+      ],
+      "related": [],
+      "depends": [],
+      "status": "done",
+      "completed-date": "2026-03-31",
+      "notes": "completed 2026-03-31. tab_active.png (96x48) | 24E038EA1BE51FA054941AC0D1231C3358B23F8FEA61DB69D327FAA053A49DEA | 919B, tab_inactive.png (96x48) | DF18B81C842D9B492F660BBD1382DA7802DECFBA8094773A6ECFED82A6DA065B | 465B. Section 2.6 horizontal tab frame family gap closed."
+    },
+    {
+      "id": "UI-1-0006",
+      "legacy_id": "--",
+      "owner": "Agent2",
+      "type": "generate-sprites",
+      "created_by_agent": "Agent2",
+      "details": "Generate bleed overlay sprites for dark-metal and parchment frame families (蝳?.2 ?????)",
+      "target": "assets/resources/sprites/ui_families/common/bleed/",
+      "files": [
+        "bleed/bleed_dark.png",
+        "bleed/bleed_parchment.png"
+      ],
+      "acceptance": [
+        "exists",
+        "size>0"
+      ],
+      "related": [
+        "UI-2-0007"
+      ],
+      "depends": [],
+      "status": "done",
+      "completed-date": "2026-03-31",
+      "notes": "completed 2026-03-31. bleed_dark.png (128x128) | E53DB2CA7255391E6212A73C290B2B93EA5F63895DA85CACC69666528D966DF8 | 1610B, bleed_parchment.png (128x128) | D12550208B1355ED8BDD036ECC1A0614A2B01F95743FD9C5B1075C85BDA50562 | 1634B. Section 4.2 bleed overlay layer delivered for dark and parchment families."
+    },
+    {
+      "id": "UI-1-0007",
+      "legacy_id": "--",
+      "owner": "Agent2",
+      "type": "generate-sprites",
+      "created_by_agent": "Agent2",
+      "details": "Generate dark metal frame sprites (frame/fill/bg) for primary info panel family (section 2.1)",
+      "target": "assets/resources/sprites/ui_families/common/dark_metal/",
+      "files": [
+        "dark_metal/frame.png",
+        "dark_metal/fill.png",
+        "dark_metal/bg.png"
+      ],
+      "acceptance": [
+        "exists",
+        "size>0"
+      ],
+      "related": [
+        "UI-2-0007"
+      ],
+      "depends": [],
+      "status": "done",
+      "completed-date": "2026-03-31",
+      "notes": "completed 2026-03-31. frame.png (80x80) | 2CC47D1BEC6393DDD3C20FC69084EB2174123458AE0AB331E5E62B876F2D02E4 | 1201B. fill.png (64x64) | 60945CC81CEFE3B4FD5F68A0C4F742AA09DB23A426A162B9DB3A8DBAF1D0697C | 278B. bg.png (64x64) | DF5F105F1BF24128B9EAD6F16BD24EDC215A48096009FAC7687AEDCD603FA081 | 884B. section 2.1 dark metal panel frame, 9-slice border [20,20,20,20]."
+    },
+    {
+      "id": "UI-1-0008",
+      "legacy_id": "--",
+      "owner": "Agent2",
+      "type": "generate-sprites",
+      "created_by_agent": "Agent2",
+      "details": "Generate circle icon button sprites (normal/pressed/disabled) for universal circle button family (sections 6.1/6.2/6.4)",
+      "target": "assets/resources/sprites/ui_families/common/circle_icon/",
+      "files": [
+        "circle_icon/circle_normal.png",
+        "circle_icon/circle_pressed.png",
+        "circle_icon/circle_disabled.png"
+      ],
+      "acceptance": [
+        "exists",
+        "size>0"
+      ],
+      "related": [],
+      "depends": [],
+      "status": "done",
+      "completed-date": "2026-03-31",
+      "notes": "completed 2026-03-31. circle_normal.png (80x80) | C59C521BB34380A192B9DF560F14B729C2771F3CFEC799FF81B0FA1DD364172B | 3359B. circle_pressed.png | D0B4EC5584617667408979DFEFF54700F6941D199565B32F97E1871688284403 | 3127B. circle_disabled.png | B055E02BA53B6594A25DEF9451D86EB7F1215919811BFC6D21D7A8B929BA55F6 | 2039B."
+    },
+    {
+      "id": "UI-1-0009",
+      "legacy_id": "--",
+      "owner": "Agent2",
+      "type": "generate-sprites",
+      "created_by_agent": "Agent2",
+      "details": "Generate vertical diamond tab sprites (active/inactive) for non-9-slice diamond tab family (section 2.6)",
+      "target": "assets/resources/sprites/ui_families/common/diamond_tab/",
+      "files": [
+        "diamond_tab/diamond_active.png",
+        "diamond_tab/diamond_inactive.png"
+      ],
+      "acceptance": [
+        "exists",
+        "size>0"
+      ],
+      "related": [
+        "UI-1-0005"
+      ],
+      "depends": [],
+      "status": "done",
+      "completed-date": "2026-03-31",
+      "notes": "completed 2026-03-31. diamond_active.png (56x56) | 1BBF88ADA803112741BF98D5CC497777B83F0DD343F80B4DA0FEFC7455F334E9 | 1686B. diamond_inactive.png (56x56) | 589D5B67853E071297EB8D52BA17CE13DB3F0F0BACA463243465AC30FF585A76 | 472B. Non-9-slice fixed sprite, section 2.6 vertical diamond tab."
+    },
+    {
+      "id": "UI-1-0010",
+      "phase": "A",
+      "priority": "P1",
+      "title": "Badge/閫? Sprite 憟辣 (9 瑼?",
+      "owner": "Agent2",
+      "status": "done",
+      "depends": [],
+      "created": "2026-03-31T00:00:00Z",
+      "created_by_agent": "Agent2",
+      "completed_date": "2026-03-31",
+      "related_cards": [
+        "UI-1-0009",
+        "A-2"
+      ],
+      "notes": "9 PNG in badge/. SHA256: N=96AA8008, R=5A24C4E0, SR=BB909D36, SSR=37E13324, UR=C6756C3A, LR=8FB2C9F8, lv=AC882E2C, qty=15505563, notification=7879E309. Rarity badges 40x22 left-right-round. badge_notification 28x28 red circle."
+    },
+    {
+      "id": "UI-1-0011",
+      "phase": "A",
+      "priority": "P1",
+      "title": "Gold CTA 獢? Sprite (frame/fill/bg)",
+      "owner": "Agent2",
+      "status": "done",
+      "depends": [],
+      "created": "2026-03-31T00:00:00Z",
+      "created_by_agent": "Agent2",
+      "completed_date": "2026-03-31",
+      "related_cards": [
+        "UI-1-0007"
+      ],
+      "notes": "3 PNG in gold_cta/. frame=B753A6D6 2189B (80x80, 3.5px gold border, corner triangle accents, outer glow, border [28,28,28,28]). fill=727F9BFA 290B (64x64). bg=726D0E08 733B (64x64). Spec 禮2.4."
+    },
+    {
+      "id": "UI-1-0012",
+      "phase": "A",
+      "priority": "P1",
+      "title": "禮9.6 Skin 憟??芸?撽??單",
+      "owner": "Agent2",
+      "status": "done",
+      "depends": [],
+      "created": "2026-03-31T00:00:00Z",
+      "created_by_agent": "Agent2",
+      "completed_date": "2026-03-31",
+      "related_cards": [
+        "UI-2-0006"
+      ],
+      "notes": "Created tools_node/validate-skin-contracts.js. Rules: R1=fill alpha DD-F0, R2=bleed slot exists, R3=dark bg outlineWidth>=1, R4=light bg outlineWidth=0, R5=dark-metal border>=20. First run: 24 PASS 5 FAIL (general-detail bleed slots missing) 82.8%."
+    },
+    {
+      "id": "UI-1-0013",
+      "phase": "A",
+      "priority": "P1",
+      "owner": "Agent2",
+      "status": "done",
+      "created": "2026-03-31",
+      "completed": "2026-03-31",
+      "title": "sec3.3 Frame Sprite Gold-Edge Pixel Scan Script",
+      "description": "Create tools/validate-frame-sprites.ps1 to pixel-scan 10 frame/button sprites for gold/copper border pixels. First run: 10/10 PASS.",
+      "notes": "sec9.6 full validation suite now 100% coverage. Results: dark_metal:735px, parchment:101px, gold_cta:738px, progress_bar:398px, tab:1057px, diamond_tab:50px, circle_icon:212px, nav_ink:2045px, equipment:5217px, commerce:3877px. All PASS."
+    },
+    {
+      "id": "UI-1-0014",
+      "legacy_id": "D-1",
+      "owner": "Agent2",
+      "type": "visual-qa",
+      "created": "2026-03-31T18:30:00+08:00",
+      "created_by_agent": "Agent2",
+      "details": "Prepare and execute lobby-main nav.ink plus shadow screenshot comparison package against reference screenshots.",
+      "acceptance": [
+        "comparison_shot_exists",
+        "qa_notes_recorded",
+        "human_review_pending_or_done"
+      ],
+      "related": [
+        "UI-2-0001",
+        "UI-2-0007",
+        "UI-2-0010",
+        "UI-2-0016",
+        "UI-2-0018"
+      ],
+      "depends": [
+        "UI-2-0001",
+        "UI-2-0010",
+        "UI-2-0018"
+      ],
+      "status": "in-progress",
+      "notes": "2026-03-31 opened Agent2 Phase D QA card and prepared artifacts/ui-qa/UI-1-0014/. UI-2-0018 is now complete: canonical preview route is assets/scenes/LoadingScene.scene -> LoadingScene.ts root component -> previewMode=true -> previewTarget=LobbyMain. 2026-03-31 Agent2 resumed D-1 after confirming `http://localhost:7456` is reachable again, but autonomous capture is still blocked because the repo lacks a stable, reproducible headless preview screenshot pipeline. Follow-up tooling card UI-2-0023 was opened for Agent1."
+    },
+    {
+      "id": "UI-1-0015",
+      "legacy_id": "D-2",
+      "owner": "Agent2",
+      "type": "visual-qa",
+      "created": "2026-03-31T18:30:00+08:00",
+      "created_by_agent": "Agent2",
+      "details": "Prepare multi-screen paper.utility QA package for shop-main and gacha, focusing on cross-screen consistency.",
+      "acceptance": [
+        "comparison_shot_exists",
+        "consistency_notes_recorded",
+        "human_review_pending_or_done"
+      ],
+      "related": [
+        "UI-1-0002",
+        "UI-2-0014",
+        "UI-2-0018",
+        "UI-2-0019",
+        "UI-2-0020"
+      ],
+      "depends": [
+        "UI-1-0002",
+        "UI-2-0014",
+        "UI-2-0018",
+        "UI-2-0019",
+        "UI-2-0020"
+      ],
+      "status": "in-progress",
+      "notes": "2026-03-31 opened Agent2 Phase D QA card. UI-2-0018 is complete and preview entry now exists via LoadingScene.ts + UIScreenPreviewHost.ts. UI-2-0019 formally re-scoped D-2 to common-parchment / light-surface carrier consistency, and UI-2-0020 wired shared QA anchors into shop-main and gacha. 2026-03-31 Agent2 captured ShopMain successfully via headless preview. Agent1 then completed UI-2-0025 by routing Gacha preview through `gacha-main-screen` + `gacha-preview-main`, so Agent2 can now capture both ShopMain and Gacha and proceed to formal D-2 comparison notes."
+    },
+    {
+      "id": "UI-1-0016",
+      "legacy_id": "D-3",
+      "owner": "Agent2",
+      "type": "visual-qa",
+      "created": "2026-03-31T18:30:00+08:00",
+      "created_by_agent": "Agent2",
+      "details": "Prepare duel-challenge mixed-family QA package to confirm reject equals paper.utility and accept equals equipment.primary.",
+      "acceptance": [
+        "comparison_shot_exists",
+        "hierarchy_notes_recorded",
+        "human_review_pending_or_done"
+      ],
+      "related": [
+        "UI-2-0002",
+        "UI-2-0012",
+        "UI-2-0018"
+      ],
+      "depends": [
+        "UI-2-0002",
+        "UI-2-0012",
+        "UI-2-0018"
+      ],
+      "status": "in-progress",
+      "notes": "2026-03-31 opened Agent2 Phase D QA card. UI-2-0018 is now complete: canonical preview route is assets/scenes/LoadingScene.scene -> LoadingScene.ts root component -> previewMode=true -> previewTarget=DuelChallenge. 2026-03-31 Agent2 verified the new headless capture pipeline can successfully export DuelChallenge.png, so D-3 can now proceed with formal comparison notes instead of relying on legacy DuelChallengePanel.ts buildUI()."
+    },
+    {
+      "id": "UI-2-0017",
+      "phase": "B",
+      "priority": "P1",
+      "owner": "Agent1",
+      "status": "done",
+      "created": "2026-03-31",
+      "completed": "2026-03-31",
+      "title": "Fix general-detail-default 5 missing bleed slots",
+      "description": "validate-skin-contracts.js found 5 R2 FAILs in general-detail-default.json: detail.summary.card/tab.idle/tab.active/tree.node/action all missing bleed slots.",
+      "notes": "2026-03-31 fixed five missing bleed slots in general-detail-default.json, then reran node tools_node/validate-skin-contracts.js and node tools_node/run-acceptance.js successfully. Contract validation returned 29/29 PASS."
+    },
+    {
+      "id": "UI-2-0018",
+      "phase": "C",
+      "priority": "P1",
+      "owner": "Agent1",
+      "status": "done",
+      "created": "2026-03-31T20:20:00+08:00",
+      "created_by_agent": "Agent2",
+      "type": "preview-harness",
+      "title": "Add screen-driven preview hosts for D-stage QA screens",
+      "description": "Provide real UISpecLoader.loadFullScreen(...) entry points for lobby-main, shop-main, gacha, and duel-challenge so Agent2 can capture trustworthy D-1~D-3 screenshots.",
+      "related": [
+        "UI-1-0014",
+        "UI-1-0015",
+        "UI-1-0016",
+        "UI-2-0010",
+        "UI-2-0014",
+        "UI-2-0012"
+      ],
+      "depends": [],
+      "completed": "2026-03-31",
+      "notes": "2026-03-31 completed. Added assets/scripts/ui/components/UIScreenPreviewHost.ts and extended assets/scripts/ui/scenes/LoadingScene.ts with previewMode + previewTarget enum. Canonical preview route for Agent2 is assets/scenes/LoadingScene.scene -> LoadingScene.ts root component -> previewMode=true -> previewTarget={LobbyMain,ShopMain,Gacha,DuelChallenge}. Project now has explicit loadFullScreen('lobby-main-screen'|'shop-main-screen'|'gacha-screen'|'duel-challenge-screen') entry points and D-1~D-3 are unblocked."
+    },
+    {
+      "id": "UI-2-0019",
+      "phase": "B",
+      "priority": "P1",
+      "owner": "Agent1",
+      "status": "done",
+      "created": "2026-03-31T20:45:00+08:00",
+      "created_by_agent": "Agent2",
+      "type": "spec-alignment",
+      "title": "Align D-2 target family between docs and shop/gacha skins",
+      "description": "Reconcile the D-2 QA target (paper.utility) with the actual shop-main / gacha skin implementations, which currently point to commerce/color and common-parchment patterns.",
+      "related": [
+        "UI-1-0015",
+        "UI-2-0014",
+        "UI-2-0009"
+      ],
+      "depends": [],
+      "completed": "2026-03-31",
+      "notes": "2026-03-31 completed. D-2 is formally re-scoped from paper.utility button consistency to common-parchment / light-surface carrier consistency. Rationale: paper.utility remains valid for duel-challenge utility actions, but current shop-main-default and gacha-default do not share that button family. Follow-up implementation task UI-2-0020 was opened to wire a real shared light-surface carrier into shop-main and gacha before Agent2 runs D-2 QA."
+    },
+    {
+      "id": "UI-2-0020",
+      "phase": "B",
+      "priority": "P1",
+      "owner": "Agent1",
+      "status": "done",
+      "created": "2026-03-31T22:20:00+08:00",
+      "created_by_agent": "Agent1",
+      "type": "skin-update",
+      "title": "Wire shared light-surface carriers into shop-main and gacha",
+      "description": "Expose a real common-parchment/light-surface carrier in shop-main and gacha so D-2 can evaluate cross-screen surface consistency instead of placeholder color blocks.",
+      "related": [
+        "UI-1-0015",
+        "UI-2-0009",
+        "UI-2-0014",
+        "UI-2-0019"
+      ],
+      "depends": [
+        "UI-2-0009",
+        "UI-2-0014",
+        "UI-2-0019"
+      ],
+      "notes": "shop-main-default.json v5: added shop.content.carrier QA anchor slot. gacha-default.json v3: added gacha.pity.carrier.bg/frame slots. gacha-main.json v2: PityInfoBar now has skinSlot=gacha.pity.carrier.bg. D-2 unblocked. acceptance all green.",
+      "completed-date": "2026-03-31"
+    },
+    {
+      "id": "UI-2-0021",
+      "phase": "C",
+      "priority": "P0",
+      "owner": "Agent1",
+      "status": "done",
+      "completed-date": "2026-03-31",
+      "created": "2026-03-31T23:30:00+08:00",
+      "created_by_agent": "Agent2",
+      "type": "runtime-resource-fix",
+      "title": "Fix PreviewInEditor SpriteFrame resource index drift",
+      "description": "Investigate and fix PreviewInEditor failures where existing SpriteFrame assets under assets/resources/sprites/ui_families/* cannot be resolved from the resources bundle.",
+      "related": [
+        "UI-1-0004",
+        "UI-2-0011",
+        "UI-2-0018",
+        "UI-2-0020",
+        "UI-1-0014",
+        "UI-1-0016"
+      ],
+      "depends": [],
+      "notes": "2026-03-31 Agent2 opened this card after PreviewInEditor reported `Bundle resources doesn't contain .../spriteFrame` for shadow_01, metal_noise_256, equipment/btn_primary_normal, and multiple general_detail sprites. File audit confirmed the PNG and .meta files already exist under assets/resources/sprites/ui_families/..., so this is currently treated as an Agent1-side resource index / path normalization / editor refresh contract issue rather than a missing-art asset task. 2026-03-31 Agent1 completed the fix by normalizing resource paths in ResourceManager, retrying SpriteFrame candidates before Texture2D fallback, releasing single SpriteFrame cache keys correctly, adding tools_node/validate-representative-spriteframe-assets.js into acceptance, and running asset-db refresh successfully."
+    },
+    {
+      "id": "UI-2-0022",
+      "phase": "B",
+      "priority": "P1",
+      "owner": "Agent1",
+      "status": "done",
+      "created": "2026-03-31T23:55:00+08:00",
+      "created_by_agent": "Agent2",
+      "type": "skin-update",
+      "title": "Upgrade general-list from placeholder table to framed lobby skin",
+      "description": "Replace the remaining color-rect/placeholder presentation in general-list with proper 9-slice background and framed header/list/row styling using existing lobby/common panel families.",
+      "related": [
+        "UI-2-0014",
+        "UI-2-0009"
+      ],
+      "depends": [],
+      "notes": "general-list-default.json v5: header.bg ??dark_metal/frame 9-slice; list.bg ??parchment/bg 9-slice (opacity=0.6); row.bg ??dark_metal/bg 9-slice; header label color ??#D4AF37 gold. acceptance all green.",
+      "completed-date": "2026-03-31"
+    },
+    {
+      "id": "UI-2-0023",
+      "phase": "C",
+      "priority": "P1",
+      "owner": "Agent1",
+      "status": "done",
+      "created": "2026-03-31T18:10:00+08:00",
+      "created_by_agent": "Agent2",
+      "type": "qa-tooling",
+      "title": "Provide reproducible headless preview capture for D-stage QA",
+      "description": "Add a stable CLI/headless capture workflow for LoadingScene.previewTarget-based screen QA so Agent2 can generate D-1~D-3 artifacts without manual Inspector interaction.",
+      "related": [
+        "UI-1-0014",
+        "UI-1-0015",
+        "UI-1-0016",
+        "UI-2-0018"
+      ],
+      "depends": [
+        "UI-2-0018"
+      ],
+      "notes": "2026-03-31 Agent1 hardened the capture pipeline: LoadingScene now supports query/localStorage preview injection and publishes __UI_CAPTURE_STATE__ (loading/ready/error); tools_node/capture-ui-screens.js is now a puppeteer-core headless CLI, auto-injects LoadingScene.scene uuid, writes debug screenshot/state artifacts on failure, triggers asset-db refresh before capture, retries refreshable preview failures, and uses domcontentloaded instead of networkidle2 for the Cocos Editor preview page. 2026-03-31 Agent2 confirmed reproducible screenshot export for LobbyMain, ShopMain, DuelChallenge, and Gacha under artifacts/ui-qa/UI-2-0023/. The remaining Gacha compatibility work was completed under UI-2-0025, so UI-2-0023 is now fully closed as tooling-complete.",
+      "completed-date": "2026-03-31"
+    },
+    {
+      "id": "UI-2-0025",
+      "phase": "C",
+      "priority": "P1",
+      "owner": "Agent1",
+      "status": "done",
+      "created": "2026-03-31T20:10:00+08:00",
+      "created_by_agent": "Agent2",
+      "type": "screen-contract-fix",
+      "title": "Align gacha-screen with UIScreenPreviewHost loadFullScreen contract",
+      "description": "Refactor assets/resources/ui-spec/screens/gacha-screen.json from the legacy multi-screen schema to the single-screen loadFullScreen contract expected by UIScreenPreviewHost and LoadingScene.previewTarget=Gacha.",
+      "related": [
+        "UI-1-0015",
+        "UI-2-0018",
+        "UI-2-0020",
+        "UI-2-0023"
+      ],
+      "depends": [
+        "UI-2-0018",
+        "UI-2-0023"
+      ],
+      "notes": "2026-03-31 Agent2 validated the headless capture pipeline by exporting LobbyMain, ShopMain, and DuelChallenge. Agent1 then finished the Gacha preview compatibility path by adding `assets/resources/ui-spec/layouts/gacha-preview-main.json`, pointing `gacha-main-screen.json` to that preview-safe layout, and aligning `LoadingScene.previewTarget=Gacha` plus `tools_node/capture-ui-screens.js` to use `gacha-main-screen` as the canonical preview contract. `node tools_node/capture-ui-screens.js --target Gacha` now succeeds and exports `artifacts/ui-qa/UI-2-0023/Gacha.png`.",
+      "completed-date": "2026-03-31"
+    },
+    {
+      "id": "UI-2-0024",
+      "phase": "C",
+      "priority": "P1",
+      "owner": "Agent1",
+      "status": "completed",
+      "completed-date": "2026-03-31T23:59:00+08:00",
+      "created": "2026-03-31T23:59:00+08:00",
+      "created_by_agent": "Codex",
+      "type": "refactor",
+      "title": "Split UIPreviewBuilder into helper modules to reduce encoding and merge risk",
+      "description": "Break UIPreviewBuilder into smaller orchestration/text/diagnostics/layout/style modules after the current encoding repair stabilizes, without changing runtime behavior.",
+      "related": [
+        "UI-2-0010",
+        "UI-2-0011",
+        "UI-2-0023"
+      ],
+      "depends": [],
+      "notes": "2026-03-31 Phase 1 completed: (1) Created UIPreviewDiagnostics.ts with 13 diagnostic methods centralizing all console calls; (2) Created UIPreviewTextCatalog.ts centralizing Chinese strings and JSDoc; (3) Updated UIPreviewBuilder.ts to route all console.log/warn/error through UIPreviewDiagnostics; (4) Verified zero direct console calls remain in UIPreviewBuilder.ts; (5) All changes are pure refactoring, runtime behavior unchanged. Next phase: Layout & Style helper extraction."
+    }
+  ]
+}

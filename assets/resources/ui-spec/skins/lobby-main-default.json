@@ -1,0 +1,88 @@
+{
+  "id": "lobby-main-default",
+  "version": 2,
+  "bundle": "lobby_ui",
+  "atlasPolicy": "lobby_ui",
+  "slots": {
+    "lobby.bg": {
+      "kind": "sprite-frame",
+      "path": "sprites/lobby/bg_lobby/spriteFrame",
+      "spriteType": "simple",
+      "allowAutoAtlas": false,
+      "comment": "大面積背景圖，不進 Auto Atlas"
+    },
+    "lobby.topbar.bg": {
+      "kind": "color",
+      "color": "#0A0A0A",
+      "alpha": 220
+    },
+    "lobby.navbar.bg": {
+      "kind": "color",
+      "color": "#0F0F0F",
+      "alpha": 240
+    },
+    "lobby.navbar.shadow": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/shadow/shadow_01",
+      "spriteType": "sliced",
+      "border": [20, 20, 20, 20],
+      "allowAutoAtlas": true
+    },
+    "ui-common-ink.nav.primary": {
+      "kind": "button-skin",
+      "normal": "sprites/ui_families/common/nav_ink/btn_primary_normal",
+      "pressed": "sprites/ui_families/common/nav_ink/btn_primary_pressed",
+      "disabled": "sprites/ui_families/common/nav_ink/btn_primary_disabled",
+      "spriteType": "sliced",
+      "border": [20, 20, 20, 20],
+      "allowAutoAtlas": true
+    },
+    "lobby.nav.btn": {
+      "kind": "button-skin",
+      "normal": "sprites/ui_families/common/nav_ink/btn_primary_normal",
+      "pressed": "sprites/ui_families/common/nav_ink/btn_primary_pressed",
+      "disabled": "sprites/ui_families/common/nav_ink/btn_primary_disabled",
+      "spriteType": "sliced",
+      "border": [20, 20, 20, 20],
+      "allowAutoAtlas": true
+    },
+    "lobby.avatar": {
+      "kind": "sprite-frame",
+      "path": "sprites/lobby/icon_avatar_default/spriteFrame",
+      "spriteType": "simple",
+      "allowAutoAtlas": true
+    },
+    "lobby.icon.network": {
+      "kind": "sprite-frame",
+      "path": "sprites/common/icon_network/spriteFrame",
+      "spriteType": "simple",
+      "allowAutoAtlas": true
+    },
+    "lobby.label.name": {
+      "kind": "label-style",
+      "font": "fonts/notosans_tc/font",
+      "fontSize": 20,
+      "lineHeight": 26,
+      "color": "#FFE088",
+      "isBold": true,
+      "overflow": "CLAMP"
+    },
+    "lobby.label.resource": {
+      "kind": "label-style",
+      "font": "fonts/manrope/font",
+      "fontSize": 16,
+      "lineHeight": 20,
+      "color": "#E5E2E1",
+      "overflow": "CLAMP"
+    },
+    "lobby.label.nav": {
+      "kind": "label-style",
+      "font": "fonts/notosans_tc/font",
+      "fontSize": 15,
+      "lineHeight": 19,
+      "color": "#D4AF37",
+      "overflow": "CLAMP",
+      "horizontalAlign": "CENTER"
+    }
+  }
+}

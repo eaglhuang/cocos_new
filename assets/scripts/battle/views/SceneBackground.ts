@@ -1,3 +1,4 @@
+// @spec-source → 見 docs/cross-reference-index.md
 import {
     _decorator, Component, Node, Camera, Color,
     MeshRenderer, Material, ImageAsset, Texture2D, JsonAsset, resources, gfx

@@ -1,0 +1,13 @@
+{
+  "id": "action-command-screen",
+  "version": 1,
+  "uiId": "ActionCommandPanel",
+  "layer": "Game",
+  "bundle": "battle_ui",
+  "layout": "action-command-main",
+  "skin": "action-command-default",
+  "validation": {
+    "devices": ["phone-16-9", "phone-19_5-9"],
+    "allowMissingSkin": true
+  }
+}

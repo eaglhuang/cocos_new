@@ -1,0 +1,13 @@
+{
+  "id": "unit-info-panel-screen",
+  "version": 1,
+  "uiId": "UnitInfoPanel",
+  "layer": "Game",
+  "bundle": "battle_ui",
+  "layout": "unit-info-panel-main",
+  "skin": "unit-info-panel-default",
+  "validation": {
+    "devices": ["phone-16-9", "phone-19_5-9"],
+    "allowMissingSkin": true
+  }
+}

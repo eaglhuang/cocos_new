@@ -1,3 +1,4 @@
+// @spec-source → 見 docs/cross-reference-index.md
 /**
  * CurveSystem — 可視化數值曲線系統
  *

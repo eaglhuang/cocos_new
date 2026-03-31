@@ -1,3 +1,4 @@
+// @spec-source → 見 docs/cross-reference-index.md
 /**
  * 記憶體管理器 (MemoryManager) — 追蹤層空殼，預留完整擴充點
  *

@@ -1,0 +1,218 @@
+{
+  "id": "Healing",
+  "label": "Healing (Unity import)",
+  "folder": "Healing",
+  "scale": 1,
+  "audio": null,
+  "source": {
+    "unityPrefab": "tools\\Magic effects pack\\Prefabs\\Character auras\\Healing.prefab"
+  },
+  "warnings": [
+    "Smoke: forceOverLifetime: 尚未映射到 compound generator",
+    "Smoke: rotationOverLifetime: 尚未映射到 compound generator",
+    "Smoke: textureAnimation: 尚未映射到 compound generator",
+    "Smoke: limitVelocityOverLifetime: 尚未映射到 compound generator",
+    "Smoke: trails: 尚未映射到 compound generator",
+    "Smoke: noise: 尚未映射到 compound generator",
+    "Smoke: sizeOverLifetime: 目前只支援常數倍率",
+    "Smoke: colorOverLifetime: 目前只支援單色或雙色",
+    "Sparks: forceOverLifetime: 尚未映射到 compound generator",
+    "Sparks: rotationOverLifetime: 尚未映射到 compound generator",
+    "Sparks: textureAnimation: 尚未映射到 compound generator",
+    "Sparks: limitVelocityOverLifetime: 尚未映射到 compound generator",
+    "Sparks: trails: 尚未映射到 compound generator",
+    "Sparks: noise: 尚未映射到 compound generator",
+    "Sparks: sizeOverLifetime: 目前只支援常數倍率",
+    "Sparks: colorOverLifetime: 目前只支援單色或雙色",
+    "Healing: forceOverLifetime: 尚未映射到 compound generator",
+    "Healing: rotationOverLifetime: 尚未映射到 compound generator",
+    "Healing: textureAnimation: 尚未映射到 compound generator",
+    "Healing: limitVelocityOverLifetime: 尚未映射到 compound generator",
+    "Healing: trails: 尚未映射到 compound generator",
+    "Healing: noise: 尚未映射到 compound generator",
+    "Healing: sizeOverLifetime: 目前只支援常數倍率",
+    "Healing: colorOverLifetime: 目前只支援單色或雙色"
+  ],
+  "subPS": [
+    {
+      "name": "Smoke",
+      "position": null,
+      "color": {
+        "r": 93,
+        "g": 255,
+        "b": 98,
+        "a": 52
+      },
+      "startSize": 1,
+      "startSpeed": 1,
+      "startLifetime": 1,
+      "gravity": 0,
+      "rateOverTime": 30,
+      "burstCount": 0,
+      "shapeType": 3,
+      "radius": 1,
+      "simulationSpace": 1,
+      "loop": true,
+      "duration": 4,
+      "capacity": 1000,
+      "renderMode": 0,
+      "velocityScale": 0.1,
+      "lengthScale": 2,
+      "materialHint": "MAT_ADDITIVE",
+      "texKeyHint": null,
+      "velocityOverLifetime": {
+        "enabled": true,
+        "x": 0,
+        "y": 0,
+        "z": 0,
+        "speedModifier": 1,
+        "space": 1
+      },
+      "sizeOverLifetime": {
+        "enabled": true,
+        "multiplier": 1
+      },
+      "colorOverLifetime": {
+        "enabled": true,
+        "color": {
+          "r": 255,
+          "g": 255,
+          "b": 255,
+          "a": 255
+        },
+        "mode": 1
+      },
+      "unsupported": [
+        "forceOverLifetime: 尚未映射到 compound generator",
+        "rotationOverLifetime: 尚未映射到 compound generator",
+        "textureAnimation: 尚未映射到 compound generator",
+        "limitVelocityOverLifetime: 尚未映射到 compound generator",
+        "trails: 尚未映射到 compound generator",
+        "noise: 尚未映射到 compound generator",
+        "sizeOverLifetime: 目前只支援常數倍率",
+        "colorOverLifetime: 目前只支援單色或雙色"
+      ],
+      "texKey": "cfxr_aura_runic"
+    },
+    {
+      "name": "Sparks",
+      "position": null,
+      "color": {
+        "r": 93,
+        "g": 255,
+        "b": 98,
+        "a": 255
+      },
+      "startSize": 0.05,
+      "startSpeed": 2,
+      "startLifetime": 0.5,
+      "gravity": 0,
+      "rateOverTime": 30,
+      "burstCount": 0,
+      "shapeType": 3,
+      "radius": 1,
+      "simulationSpace": 1,
+      "loop": true,
+      "duration": 4,
+      "capacity": 1000,
+      "renderMode": 1,
+      "velocityScale": 0.1,
+      "lengthScale": 2,
+      "materialHint": "MAT_ADDITIVE",
+      "texKeyHint": null,
+      "velocityOverLifetime": {
+        "enabled": true,
+        "x": 0,
+        "y": 0,
+        "z": 0,
+        "speedModifier": 1,
+        "space": 1
+      },
+      "sizeOverLifetime": {
+        "enabled": true,
+        "multiplier": 1
+      },
+      "colorOverLifetime": {
+        "enabled": true,
+        "color": {
+          "r": 255,
+          "g": 255,
+          "b": 255,
+          "a": 255
+        },
+        "mode": 1
+      },
+      "unsupported": [
+        "forceOverLifetime: 尚未映射到 compound generator",
+        "rotationOverLifetime: 尚未映射到 compound generator",
+        "textureAnimation: 尚未映射到 compound generator",
+        "limitVelocityOverLifetime: 尚未映射到 compound generator",
+        "trails: 尚未映射到 compound generator",
+        "noise: 尚未映射到 compound generator",
+        "sizeOverLifetime: 目前只支援常數倍率",
+        "colorOverLifetime: 目前只支援單色或雙色"
+      ],
+      "texKey": "cfxr_aura_runic"
+    },
+    {
+      "name": "Healing",
+      "position": null,
+      "color": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 255
+      },
+      "startSize": 0.1,
+      "startSpeed": 0,
+      "startLifetime": 1,
+      "gravity": 0,
+      "rateOverTime": 30,
+      "burstCount": 0,
+      "shapeType": 3,
+      "radius": 1,
+      "simulationSpace": 1,
+      "loop": true,
+      "duration": 4,
+      "capacity": 1000,
+      "renderMode": 0,
+      "velocityScale": 0.1,
+      "lengthScale": 2,
+      "materialHint": "MAT_ADDITIVE",
+      "texKeyHint": null,
+      "velocityOverLifetime": {
+        "enabled": true,
+        "x": 0,
+        "y": 3,
+        "z": 0,
+        "speedModifier": 1,
+        "space": 1
+      },
+      "sizeOverLifetime": {
+        "enabled": true,
+        "multiplier": 1
+      },
+      "colorOverLifetime": {
+        "enabled": true,
+        "color": {
+          "r": 255,
+          "g": 255,
+          "b": 255,
+          "a": 255
+        },
+        "mode": 1
+      },
+      "unsupported": [
+        "forceOverLifetime: 尚未映射到 compound generator",
+        "rotationOverLifetime: 尚未映射到 compound generator",
+        "textureAnimation: 尚未映射到 compound generator",
+        "limitVelocityOverLifetime: 尚未映射到 compound generator",
+        "trails: 尚未映射到 compound generator",
+        "noise: 尚未映射到 compound generator",
+        "sizeOverLifetime: 目前只支援常數倍率",
+        "colorOverLifetime: 目前只支援單色或雙色"
+      ],
+      "texKey": "cfxr_aura_runic"
+    }
+  ]
+}

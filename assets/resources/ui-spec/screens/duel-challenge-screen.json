@@ -1,0 +1,13 @@
+{
+  "id": "duel-challenge-screen",
+  "version": 1,
+  "uiId": "DuelChallenge",
+  "layer": "Popup",
+  "bundle": "battle_ui",
+  "layout": "duel-challenge-main",
+  "skin": "duel-challenge-default",
+  "validation": {
+    "devices": ["phone-16-9", "phone-19_5-9"],
+    "allowMissingSkin": true
+  }
+}

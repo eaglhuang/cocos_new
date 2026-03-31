@@ -1,0 +1,93 @@
+{
+  "id": "general-portrait-default",
+  "version": 2,
+  "bundle": "lobby_ui",
+  "slots": {
+    "common.overlay": {
+      "kind": "color-rect",
+      "color": "#0F0F0FE6"
+    },
+    "general.portrait.placeholder": {
+      "kind": "color-rect",
+      "color": "#33333300"
+    },
+    "general.info.bg": {
+      "kind": "color-rect",
+      "color": "surface"
+    },
+    "general.info.shadow": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/shadow/shadow_01",
+      "spriteType": "sliced",
+      "border": [20, 20, 20, 20],
+      "allowAutoAtlas": true
+    },
+    "general.box.bg": {
+      "kind": "color-rect",
+      "color": "surfaceHigh"
+    },
+    "general.label.title": {
+      "kind": "label-style",
+      "fontSize": 24,
+      "color": "textSecondary",
+      "horizontalAlign": "LEFT"
+    },
+    "general.label.name": {
+      "kind": "label-style",
+      "fontSize": 48,
+      "color": "secondary",
+      "horizontalAlign": "LEFT"
+    },
+    "general.label.desc": {
+      "kind": "label-style",
+      "fontSize": 22,
+      "color": "textSecondary",
+      "horizontalAlign": "LEFT"
+    },
+    "general.label.section": {
+      "kind": "label-style",
+      "fontSize": 20,
+      "color": "primary",
+      "horizontalAlign": "LEFT"
+    },
+    "general.label.statName": {
+      "kind": "label-style",
+      "fontSize": 24,
+      "color": "textPrimary",
+      "horizontalAlign": "LEFT"
+    },
+    "general.label.statValue": {
+      "kind": "label-style",
+      "fontSize": 24,
+      "color": "textPositive",
+      "horizontalAlign": "LEFT"
+    },
+    "ui-common-metal.equipment.primary": {
+      "kind": "button-skin",
+      "normal": "sprites/ui_families/common/equipment/btn_primary_normal",
+      "pressed": "sprites/ui_families/common/equipment/btn_primary_pressed",
+      "disabled": "sprites/ui_families/common/equipment/btn_primary_disabled",
+      "spriteType": "sliced",
+      "border": [20, 20, 20, 20],
+      "allowAutoAtlas": true
+    },
+    "portrait.button.primary": {
+      "kind": "button-skin",
+      "normal": "sprites/ui_families/common/equipment/btn_primary_normal",
+      "pressed": "sprites/ui_families/common/equipment/btn_primary_pressed",
+      "disabled": "sprites/ui_families/common/equipment/btn_primary_disabled",
+      "spriteType": "sliced",
+      "border": [20, 20, 20, 20],
+      "allowAutoAtlas": true
+    },
+    "common.button.primary": {
+      "kind": "button-skin",
+      "normal": "sprites/ui_families/common/equipment/btn_primary_normal",
+      "pressed": "sprites/ui_families/common/equipment/btn_primary_pressed",
+      "disabled": "sprites/ui_families/common/equipment/btn_primary_disabled",
+      "spriteType": "sliced",
+      "border": [20, 20, 20, 20],
+      "allowAutoAtlas": true
+    }
+  }
+}

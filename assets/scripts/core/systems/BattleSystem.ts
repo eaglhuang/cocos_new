@@ -1,3 +1,4 @@
+// @spec-source → 見 docs/cross-reference-index.md
 import { EVENT_NAMES, GAME_CONFIG, TurnPhase } from "../config/Constants";
 import { EventSystem } from "./EventSystem";
 

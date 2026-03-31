@@ -1,0 +1,85 @@
+{
+  "ver": "2.3.14",
+  "importer": "fbx",
+  "imported": true,
+  "uuid": "ced8244a-9035-4f00-9b64-222518474adc",
+  "files": [],
+  "subMetas": {
+    "c6026": {
+      "importer": "gltf-mesh",
+      "uuid": "ced8244a-9035-4f00-9b64-222518474adc@c6026",
+      "displayName": "",
+      "id": "c6026",
+      "name": "star01.mesh",
+      "userData": {
+        "gltfIndex": 0,
+        "triangleCount": 216
+      },
+      "ver": "1.1.1",
+      "imported": true,
+      "files": [
+        ".bin",
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "006b8": {
+      "importer": "gltf-scene",
+      "uuid": "ced8244a-9035-4f00-9b64-222518474adc@006b8",
+      "displayName": "",
+      "id": "006b8",
+      "name": "star01.prefab",
+      "userData": {
+        "gltfIndex": 0
+      },
+      "ver": "1.0.14",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    }
+  },
+  "userData": {
+    "imageMetas": [],
+    "legacyFbxImporter": true,
+    "dumpMaterials": true,
+    "disableMeshSplit": true,
+    "materialDumpDir": "db://assets/resources/effect/star",
+    "assetFinder": {
+      "meshes": [
+        "ced8244a-9035-4f00-9b64-222518474adc@c6026"
+      ],
+      "skeletons": [],
+      "textures": [],
+      "materials": [
+        "60e96079-e0ce-407a-92ca-1e2e1f38400e"
+      ],
+      "scenes": [
+        "ced8244a-9035-4f00-9b64-222518474adc@006b8"
+      ]
+    },
+    "fbx": {
+      "smartMaterialEnabled": false,
+      "matchMeshNames": false
+    },
+    "lods": {
+      "enable": false,
+      "hasBuiltinLOD": false,
+      "options": [
+        {
+          "screenRatio": 0.25,
+          "faceCount": 1
+        },
+        {
+          "screenRatio": 0.125,
+          "faceCount": 0.25
+        },
+        {
+          "screenRatio": 0.01,
+          "faceCount": 0.1
+        }
+      ]
+    }
+  }
+}

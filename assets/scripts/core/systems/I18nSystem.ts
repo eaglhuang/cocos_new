@@ -1,3 +1,4 @@
+// @spec-source → 見 docs/cross-reference-index.md
 import { Font, JsonAsset, resources } from "cc";
 
 /**

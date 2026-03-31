@@ -1,3 +1,4 @@
+// @spec-source → 見 docs/cross-reference-index.md
 import { Animation, Node, ParticleSystem, Vec3 } from "cc";
 import { VfxEffectDef } from "../config/VfxEffectConfig";
 import { PoolSystem } from "./PoolSystem";
@@ -247,11 +248,6 @@ export class EffectSystem {
 
         // 5. 播放粒子群組與動畫
         this.playGroup(node);
-
-        // 6. 自動播放對應音效（若積木定義了 audio）
-        if (block.audio) {
-            services().audio.playSfx(block.audio);
-        }
 
         // 7. 定時回收
         if (duration > 0) {

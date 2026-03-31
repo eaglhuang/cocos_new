@@ -1,3 +1,4 @@
+// @spec-source → 見 docs/cross-reference-index.md
 export interface VfxEffectNotifyDef {
     readonly type: 'floatText';
     readonly textKey: string;

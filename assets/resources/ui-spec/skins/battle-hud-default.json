@@ -1,0 +1,108 @@
+{
+  "id": "battle-hud-default",
+  "version": 2,
+  "bundle": "battle_ui",
+  "atlasPolicy": "battle_hud",
+  "slots": {
+    "hud.topbar.bg": {
+      "kind": "sprite-frame",
+      "path": "sprites/battle/topbar_bg/spriteFrame",
+      "spriteType": "sliced",
+      "border": [16, 16, 16, 16],
+      "bleed": 4,
+      "allowAutoAtlas": true
+    },
+    "hud.topbar.shadow": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/shadow/shadow_01",
+      "spriteType": "sliced",
+      "border": [20, 20, 20, 20],
+      "allowAutoAtlas": true
+    },
+    "hud.bar.hp": {
+      "kind": "sprite-frame",
+      "path": "sprites/battle/bar_hp_player/spriteFrame",
+      "spriteType": "sliced",
+      "border": [8, 8, 8, 8],
+      "allowAutoAtlas": true
+    },
+    "hud.bar.hp.enemy": {
+      "kind": "sprite-frame",
+      "path": "sprites/battle/bar_hp_enemy/spriteFrame",
+      "spriteType": "sliced",
+      "border": [8, 8, 8, 8],
+      "allowAutoAtlas": true
+    },
+    "hud.portrait.player": {
+      "kind": "sprite-frame",
+      "path": "sprites/battle/portrait_player_placeholder/spriteFrame",
+      "spriteType": "simple",
+      "allowAutoAtlas": true,
+      "_fallback": "#3A8FD9"
+    },
+    "hud.portrait.enemy": {
+      "kind": "sprite-frame",
+      "path": "sprites/battle/portrait_enemy_placeholder/spriteFrame",
+      "spriteType": "simple",
+      "allowAutoAtlas": true,
+      "_fallback": "#D94A3A"
+    },
+    "hud.label.name": {
+      "kind": "label-style",
+      "font": "fonts/notosans_tc/font",
+      "fontSize": 20,
+      "lineHeight": 26,
+      "color": "#FFE088",
+      "horizontalAlign": "LEFT"
+    },
+    "hud.label.name.enemy": {
+      "kind": "label-style",
+      "font": "fonts/notosans_tc/font",
+      "fontSize": 20,
+      "lineHeight": 26,
+      "color": "#f09090",
+      "horizontalAlign": "RIGHT"
+    },
+    "hud.label.round": {
+      "kind": "label-style",
+      "font": "fonts/notosans_tc/font",
+      "fontSize": 24,
+      "lineHeight": 30,
+      "color": "#D4AF37",
+      "horizontalAlign": "CENTER"
+    },
+    "hud.label.food": {
+      "kind": "label-style",
+      "font": "fonts/notosans_tc/font",
+      "fontSize": 14,
+      "lineHeight": 18,
+      "color": "#F0E68C",
+      "horizontalAlign": "CENTER"
+    },
+    "hud.label.hp": {
+      "kind": "label-style",
+      "font": "fonts/notosans_tc/font",
+      "fontSize": 20,
+      "lineHeight": 26,
+      "color": "#E5E2E1",
+      "horizontalAlign": "LEFT"
+    },
+    "hud.label.hp.enemy": {
+      "kind": "label-style",
+      "font": "fonts/notosans_tc/font",
+      "fontSize": 20,
+      "lineHeight": 26,
+      "color": "#FF8888",
+      "horizontalAlign": "RIGHT"
+    },
+    "hud.label.status": {
+      "kind": "label-style",
+      "font": "fonts/notosans_tc/font",
+      "fontSize": 20,
+      "lineHeight": 26,
+      "color": "#FFE088",
+      "horizontalAlign": "CENTER",
+      "overflow": "SHRINK"
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "id": "network-status-main",
+  "version": 1,
+  "canvas": { "fitWidth": true, "fitHeight": true, "safeArea": true, "designWidth": 1920, "designHeight": 1080 },
+  "root": {
+    "type": "container",
+    "name": "NetworkStatusRoot",
+    "width": 40,
+    "height": 40,
+    "widget": { "top": 16, "right": 16 },
+    "skinSlot": "netstat.icon.bg",
+    "children": [
+      { "type": "sprite", "name": "StatusIcon", "id": "statusIcon", "width": 32, "height": 32, "skinSlot": "netstat.icon.sprite" }
+    ]
+  }
+}

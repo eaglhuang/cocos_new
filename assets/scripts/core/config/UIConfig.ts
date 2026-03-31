@@ -1,3 +1,4 @@
+// @spec-source → 見 docs/cross-reference-index.md
 /**
  * UIConfig.ts — UI 分層配置表
  *

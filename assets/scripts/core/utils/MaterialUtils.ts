@@ -1,3 +1,4 @@
+// @spec-source → 見 docs/cross-reference-index.md
 import { MeshRenderer, Material } from 'cc';
 
 /**

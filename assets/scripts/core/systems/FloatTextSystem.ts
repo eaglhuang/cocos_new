@@ -1,3 +1,4 @@
+// @spec-source → 見 docs/cross-reference-index.md
 import { Camera, Color, Font, Label, Node, Tween, tween, UIOpacity, UITransform, Vec3 } from "cc";
 
 /**
@@ -243,6 +244,7 @@ export class FloatTextSystem {
         tf.setContentSize(220, 60);
         const opacity = node.addComponent(UIOpacity);
         const label = node.addComponent(Label);
+        label.string = '';   // 明確清空預設字串 "label"，避免設定 BMFont 時觸發 atlas 找不到 ASCII 字元的警告
         label.lineHeight = 60;
         label.overflow = Label.Overflow.NONE;
         return { node, label, opacity };

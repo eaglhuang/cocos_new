@@ -1,0 +1,73 @@
+{
+  "id": "battle-hud-main",
+  "version": 1,
+  "canvas": { "fitWidth": true, "fitHeight": true, "safeArea": true, "designWidth": 1920, "designHeight": 1080 },
+  "root": {
+    "type": "container",
+    "name": "BattleHUDRoot",
+    "widget": { "top": 0, "left": 0, "right": 0, "bottom": 0 },
+    "children": [
+      {
+        "type": "panel",
+        "name": "TopBar",
+        "widget": { "top": 0, "left": 0, "right": 0 },
+        "height": 88,
+        "skinSlot": "hud.topbar.bg",
+        "layout": { "type": "horizontal", "spacing": 0, "paddingLeft": 24, "paddingRight": 24 },
+        "children": [
+          {
+            "type": "panel",
+            "name": "PlayerSide",
+            "width": "40%",
+            "height": 88,
+            "layout": { "type": "horizontal", "spacing": 12 },
+            "children": [
+              { "type": "image", "name": "PlayerPortrait", "id": "playerPortrait", "width": 64, "height": 64, "skinSlot": "hud.portrait.player", "interactable": true },
+              { "type": "label", "name": "PlayerName",      "id": "playerName",      "width": 100, "height": 28, "styleSlot": "hud.label.name" },
+              { "type": "label", "name": "PlayerFortressLabel","id": "playerFortressLabel","width": 120, "height": 36, "styleSlot": "hud.label.hp" }
+            ]
+          },
+          {
+            "type": "panel",
+            "name": "CenterInfo",
+            "width": "20%",
+            "height": 88,
+            "layout": { "type": "vertical", "spacing": 4 },
+            "children": [
+              { "type": "label", "name": "TurnLabel",   "id": "turnLabel",   "width": 200, "height": 28, "styleSlot": "hud.label.round" },
+              { "type": "label", "name": "FoodLabel",   "id": "foodLabel",   "width": 200, "height": 24, "styleSlot": "hud.label.food" },
+              { "type": "label", "name": "StatusLabel", "id": "statusLabel", "width": 400, "height": 24, "styleSlot": "hud.label.status" }
+            ]
+          },
+          {
+            "type": "panel",
+            "name": "EnemySide",
+            "width": "40%",
+            "height": 88,
+            "layout": { "type": "horizontal", "spacing": 12 },
+            "children": [
+              { "type": "label", "name": "EnemyFortressLabel","id": "enemyFortressLabel","width": 120, "height": 36, "styleSlot": "hud.label.hp.enemy" },
+              { "type": "label", "name": "EnemyName",        "id": "enemyName",        "width": 100, "height": 28, "styleSlot": "hud.label.name.enemy" },
+              { "type": "image", "name": "EnemyPortrait",    "id": "enemyPortrait",    "width": 64, "height": 64, "skinSlot": "hud.portrait.enemy", "interactable": true }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "panel",
+        "name": "ProgressBars",
+        "widget": { "top": 88, "left": 24, "right": 24 },
+        "height": 24,
+        "layout": { "type": "horizontal", "spacing": 8 },
+        "children": [
+          { "type": "image", "name": "PlayerFortressBar","id": "playerFortressBar","width": "45%", "skinSlot": "hud.bar.hp" },
+          { "type": "spacer","name": "MidSpacer",        "width": "10%" },
+          { "type": "image", "name": "EnemyFortressBar", "id": "enemyFortressBar", "width": "45%", "skinSlot": "hud.bar.hp.enemy" }
+        ]
+      },
+      {
+        "_comment": "SP moved to Zone 7 UltimateBtn ring; BottomRight panel removed in v3"
+      }
+    ]
+  }
+}

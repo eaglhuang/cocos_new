@@ -1,0 +1,159 @@
+{
+  "id": "action-command-default",
+  "version": 1,
+  "bundle": "battle_ui",
+  "atlasPolicy": "action_command",
+  "_doc": "Zone 7: 奧義大圓 + 3個技能小圓皮膚。深色底板，金色奧義環，SP填充藍環。",
+  "slots": {
+    "action.ultimate.bg": {
+      "kind": "sprite-frame",
+      "path": "sprites/battle/action_ult_bg/spriteFrame",
+      "spriteType": "sliced",
+      "border": [8, 8, 8, 8],
+      "bleed": 4,
+      "allowAutoAtlas": true,
+      "_fallback": "#1A2040",
+      "_doc": "大圓底板，120px圓形，深藍底"
+    },
+    "action.ultimate.shadow": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/shadow/shadow_01",
+      "spriteType": "sliced",
+      "border": [20, 20, 20, 20],
+      "allowAutoAtlas": true
+    },
+    "action.ultimate.bg.ready": {
+      "kind": "sprite-frame",
+      "path": "sprites/battle/action_ult_bg_ready/spriteFrame",
+      "spriteType": "sliced",
+      "border": [8, 8, 8, 8],
+      "allowAutoAtlas": true,
+      "_fallback": "#2A4080",
+      "_doc": "SP滿時切換到此 skin（發光效果）"
+    },
+    "action.sp.ring": {
+      "kind": "sprite-frame",
+      "path": "sprites/battle/action_sp_ring/spriteFrame",
+      "spriteType": "filled",
+      "fillType": "radial",
+      "allowAutoAtlas": true,
+      "_fallback": "#3A8FD9",
+      "_doc": "SP填充環。TS透過 Sprite.fillRange (0.0~1.0) 控制進度。"
+    },
+    "action.sp.ring.ready": {
+      "kind": "sprite-frame",
+      "path": "sprites/battle/action_sp_ring_ready/spriteFrame",
+      "spriteType": "filled",
+      "fillType": "radial",
+      "allowAutoAtlas": true,
+      "_fallback": "#D4AF37",
+      "_doc": "SP滿時的金色光環"
+    },
+    "action.skill.circle": {
+      "kind": "sprite-frame",
+      "path": "sprites/battle/action_skill_circle/spriteFrame",
+      "spriteType": "sliced",
+      "border": [6, 6, 6, 6],
+      "allowAutoAtlas": true,
+      "_fallback": "#1E2E4A"
+    },
+    "action.skill.circle.ready": {
+      "kind": "sprite-frame",
+      "path": "sprites/battle/action_skill_circle_ready/spriteFrame",
+      "spriteType": "sliced",
+      "border": [6, 6, 6, 6],
+      "allowAutoAtlas": true,
+      "_fallback": "#3A8FD9",
+      "_doc": "技能可發動時-亮起"
+    },
+    "action.skill.circle.locked": {
+      "kind": "sprite-frame",
+      "path": "sprites/battle/action_skill_circle_locked/spriteFrame",
+      "spriteType": "sliced",
+      "border": [6, 6, 6, 6],
+      "allowAutoAtlas": true,
+      "_fallback": "#141820",
+      "_doc": "技能鎖定時（SP不足）-暗色"
+    },
+    "action.util.endturn": {
+      "kind": "sprite-frame",
+      "path": "sprites/battle/action_util_endturn/spriteFrame",
+      "spriteType": "sliced",
+      "border": [6, 6, 6, 6],
+      "allowAutoAtlas": true,
+      "_fallback": "#1a6a2a"
+    },
+    "action.util.tactics": {
+      "kind": "sprite-frame",
+      "path": "sprites/battle/action_util_tactics/spriteFrame",
+      "spriteType": "sliced",
+      "border": [6, 6, 6, 6],
+      "allowAutoAtlas": true,
+      "_fallback": "#1E3A4A"
+    },
+    "action.util.duel": {
+      "kind": "sprite-frame",
+      "path": "sprites/battle/action_util_duel/spriteFrame",
+      "spriteType": "sliced",
+      "border": [6, 6, 6, 6],
+      "allowAutoAtlas": true,
+      "_fallback": "#4A3A1E"
+    },
+    "action.ultimate.label": {
+      "kind": "label-style",
+      "font": "fonts/notosans_tc/font",
+      "fontSize": 16,
+      "lineHeight": 20,
+      "color": "#E8E4DC",
+      "horizontalAlign": "CENTER",
+      "isBold": true,
+      "_doc": "SP未滿顯示'奧義'；SP滿時顯示'發動'（金色）"
+    },
+    "action.sp.pct.label": {
+      "kind": "label-style",
+      "font": "fonts/manrope/font",
+      "fontSize": 12,
+      "lineHeight": 14,
+      "color": "#88AAFF",
+      "horizontalAlign": "CENTER"
+    },
+    "action.skill.label": {
+      "kind": "label-style",
+      "font": "fonts/notosans_tc/font",
+      "fontSize": 11,
+      "lineHeight": 13,
+      "color": "#C8D4E8",
+      "horizontalAlign": "CENTER"
+    },
+    "action.util.label": {
+      "kind": "label-style",
+      "font": "fonts/notosans_tc/font",
+      "fontSize": 12,
+      "lineHeight": 14,
+      "color": "#E8E4DC",
+      "horizontalAlign": "CENTER"
+    },
+    "action.popup.bg": {
+      "kind": "color",
+      "color": "#0A0C19",
+      "alpha": 242,
+      "_doc": "奧義選擇彈窗背景。圓角8px，金色邊框1px（邊框由TS Graphics或Sprite sliced實作）。",
+      "spriteType": "sliced",
+      "border": [8, 8, 8, 8]
+    },
+    "action.popup.item.bg": {
+      "kind": "color",
+      "color": "#1A2040",
+      "alpha": 200,
+      "_doc": "彈窗每一個技能項目的背景色"
+    },
+    "action.popup.label": {
+      "kind": "label-style",
+      "font": "fonts/notosans_tc/font",
+      "fontSize": 14,
+      "lineHeight": 18,
+      "color": "#E8E4DC",
+      "horizontalAlign": "LEFT"
+    }
+  }
+}

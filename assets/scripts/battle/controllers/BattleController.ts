@@ -1,3 +1,4 @@
+// @spec-source → 見 docs/cross-reference-index.md
 import {
   EVENT_NAMES,
   Faction,
@@ -529,6 +530,20 @@ export class BattleController {
     const general = this.state.getGeneral(enemyFaction);
     if (!general || general.isDead()) return;
 
+    // 武將可以閃躲兵硬攻擊（對應 E-14 閃躲機率）
+    const wasDodged = svc.formula.rollDodge(general.luk);
+    if (wasDodged) {
+      svc.event.emit(EVENT_NAMES.GeneralDamaged, {
+        faction: enemyFaction,
+        hp: general.currentHp,
+        damage: 0,
+        attackerId: attacker.id,
+        wasDodged: true,
+        isCrit: false,
+      });
+      return;
+    }
+
     const atk = attacker.getEffectiveAttack();
     general.takeDamage(atk);
     svc.event.emit(EVENT_NAMES.GeneralDamaged, {
@@ -536,6 +551,8 @@ export class BattleController {
       hp: general.currentHp,
       damage: atk,
       attackerId: attacker.id,
+      wasDodged: false,
+      isCrit: false,
     });
   }
 
@@ -900,7 +917,7 @@ export class BattleController {
     // 建立武將化身小兵：使用將軍的 HP、高攻擊、1 格攻擊距離、2 格移動
     const stats: TroopStats = {
       hp: pg.currentHp,
-      attack: Math.floor(pg.maxHp * 0.08), // 武將攻擊力 = 基礎HP的8%
+      attack: services().formula.calculateGeneralAttack({ str: pg.str, int: pg.int, lea: pg.lea, maxHp: pg.maxHp }),
       defense: 30,
       moveRange: 2,
       attackRange: 1,
@@ -996,19 +1013,34 @@ export class BattleController {
 
     const getAttack = (general: GeneralUnit, unit: TroopUnit | null): number => {
       if (unit) return unit.getEffectiveAttack();
-      return Math.max(1, Math.floor(general.maxHp * 0.08));
+      return services().formula.calculateGeneralAttack({ str: general.str, int: general.int, lea: general.lea, maxHp: general.maxHp });
     };
 
     const challengerAttack = getAttack(challengerGeneral, challengerUnit);
     const defenderAttack = getAttack(defenderGeneral, defenderUnit);
 
     while (!challengerGeneral.isDead() && !defenderGeneral.isDead()) {
-      defenderGeneral.takeDamage(challengerAttack);
+      // 對手閃躲判定（使用守方 LUK）
+      const defenderDodged = svc.formula.rollDodge(defenderGeneral.luk);
+      let attackDmg = challengerAttack;
+      let challengerCrit = false;
+      if (defenderDodged) {
+        attackDmg = 0;
+      } else {
+        // 暴擊判定（使用攻方 LUK）
+        challengerCrit = svc.formula.rollCrit(challengerGeneral.luk);
+        if (challengerCrit) {
+          attackDmg = Math.floor(attackDmg * GAME_CONFIG.GENERAL_CRIT_DAMAGE_MULTIPLIER);
+        }
+        defenderGeneral.takeDamage(attackDmg);
+      }
       svc.event.emit(EVENT_NAMES.GeneralDamaged, {
         faction: defenderFaction,
         hp: defenderGeneral.currentHp,
-        damage: challengerAttack,
+        damage: attackDmg,
         attackerId: challengerUnit?.id ?? null,
+        isCrit: challengerCrit,
+        wasDodged: defenderDodged,
       });
 
       if (defenderUnit) {
@@ -1017,12 +1049,26 @@ export class BattleController {
 
       if (defenderGeneral.isDead()) break;
 
-      challengerGeneral.takeDamage(defenderAttack);
+      // 正方閃躲判定（使用挑戰方的 LUK）
+      const challengerDodged = svc.formula.rollDodge(challengerGeneral.luk);
+      let defenseDmg = defenderAttack;
+      let defenderCrit = false;
+      if (challengerDodged) {
+        defenseDmg = 0;
+      } else {
+        defenderCrit = svc.formula.rollCrit(defenderGeneral.luk);
+        if (defenderCrit) {
+          defenseDmg = Math.floor(defenseDmg * GAME_CONFIG.GENERAL_CRIT_DAMAGE_MULTIPLIER);
+        }
+        challengerGeneral.takeDamage(defenseDmg);
+      }
       svc.event.emit(EVENT_NAMES.GeneralDamaged, {
         faction: challengerFaction,
         hp: challengerGeneral.currentHp,
-        damage: defenderAttack,
+        damage: defenseDmg,
         attackerId: defenderUnit?.id ?? null,
+        isCrit: defenderCrit,
+        wasDodged: challengerDodged,
       });
 
       if (challengerUnit) {

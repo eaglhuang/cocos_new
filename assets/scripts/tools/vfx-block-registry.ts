@@ -1,3 +1,4 @@
+// @spec-source → 見 docs/cross-reference-index.md
 /**
  * VFX 積木登錄表 (VFX Block Registry)
  *
@@ -17,7 +18,7 @@ export interface VfxBlockDef {
     readonly label: string;
     /** 所屬分類 ID */
     readonly category: string;
-    /** 貼圖路徑，相對 vfx_core bundle root，不含副檔名 */
+    /** 貼圖路徑，相對 vfx_core bundle root，不含副檔名（Quad 預覽用） */
     readonly texPath: string;
     /** 渲染混合模式 */
     readonly blendMode: 'additive' | 'transparent';
@@ -45,6 +46,12 @@ export interface VfxBlockDef {
      * Unity 對照：3d ≈ World Space Particle；2d ≈ UI Canvas 下的 Particle
      */
     readonly space: '2d' | '3d' | 'both';
+    /**
+     * 3D 粒子 Prefab 路徑（相對 vfx_core bundle root，不含副檔名）。
+     * 設定此欄位後，Particle Prefab 預覽模式會優先從 vfx_core bundle 載入此 prefab。
+     * Unity 對照：Addressable Asset Reference 指向一個完整的 ParticleSystem Prefab。
+     */
+    readonly prefabPath?: string;
 }
 
 export const VFX_CATEGORIES: { id: string; label: string }[] = [
@@ -56,6 +63,9 @@ export const VFX_CATEGORIES: { id: string; label: string }[] = [
     { id: 'smoke',      label: '煙霧'   },
     { id: 'projectile', label: '投射物' },
     { id: 'status',     label: '狀態'   },
+    { id: 'shapes',     label: '形狀'   },  // MEP: 通用粒子形狀貼圖
+    { id: 'rings',      label: '法陣環' },  // MEP: 魔法陣 / 科技環
+    { id: 'particle3d', label: '3D粒子' },
 ];
 
 export const VFX_BLOCK_REGISTRY: VfxBlockDef[] = [
@@ -128,6 +138,120 @@ export const VFX_BLOCK_REGISTRY: VfxBlockDef[] = [
     { id: 'ring_addlife',    label: '治癒法陣', category: 'status',     texPath: 'textures/rings/tex_ring_addlife',                blendMode: 'additive',    audio: 'heal',     scale: 1.5, renderMode: 'auto', space: '3d'   },
     { id: 'icon_addatk',     label: '劍圖示',   category: 'status',     texPath: 'textures/icons/tex_icon_addatk',                 blendMode: 'transparent', audio: undefined,  scale: 0.8, renderMode: 'auto', space: 'both' },
     { id: 'icon_addlife',    label: '心圖示',   category: 'status',     texPath: 'textures/icons/tex_icon_addlife',                blendMode: 'transparent', audio: undefined,  scale: 0.8, renderMode: 'auto', space: 'both' },
+    // ─── 3D 粒子特效 (Particle 3D — 來源：Cocos 3D Particle Effects Pack) ──
+    // 這些積木 prefabPath 指向 vfx_core bundle 中的完整粒子 Prefab，
+    // Particle Prefab 模式會直接實例化、播放所有子粒子系統。
+    // texPath 保留空字串，Quad 預覽不適用，選擇此分類時會自動切換為 Particle Prefab 模式。
+    { id: 'p3d_boss_anger',      label: 'Boss怒氣',    category: 'particle3d', texPath: '', prefabPath: 'prefabs/bossAnger/bossAnger',             blendMode: 'additive',    audio: undefined, scale: 1.0, renderMode: 'auto', space: '3d' },
+    { id: 'p3d_boss_smoke',      label: 'Boss煙霧',    category: 'particle3d', texPath: '', prefabPath: 'prefabs/bossAttackSmoke/attckSmoke',      blendMode: 'transparent', audio: undefined, scale: 1.0, renderMode: 'auto', space: '3d' },
+    { id: 'p3d_box_hit',         label: '箱子受擊',    category: 'particle3d', texPath: '', prefabPath: 'prefabs/box/boxHit',                      blendMode: 'additive',    audio: 'hurt',    scale: 1.0, renderMode: 'auto', space: '3d' },
+    { id: 'p3d_box_open',        label: '開箱光效',    category: 'particle3d', texPath: '', prefabPath: 'prefabs/box/boxOpen',                     blendMode: 'additive',    audio: undefined, scale: 1.0, renderMode: 'auto', space: '3d' },
+    { id: 'p3d_bubble_green',    label: '綠泡泡',      category: 'particle3d', texPath: '', prefabPath: 'prefabs/bubble/bubbleG',                   blendMode: 'additive',    audio: undefined, scale: 1.0, renderMode: 'auto', space: '3d' },
+    { id: 'p3d_bubble_red',      label: '紅泡泡',      category: 'particle3d', texPath: '', prefabPath: 'prefabs/bubble/bubbleR',                   blendMode: 'additive',    audio: undefined, scale: 1.0, renderMode: 'auto', space: '3d' },
+    { id: 'p3d_bubble_yellow',   label: '黃泡泡',      category: 'particle3d', texPath: '', prefabPath: 'prefabs/bubble/bubbleY',                   blendMode: 'additive',    audio: undefined, scale: 1.0, renderMode: 'auto', space: '3d' },
+    { id: 'p3d_change_color',    label: '變色光柱',    category: 'particle3d', texPath: '', prefabPath: 'prefabs/changeColor/changeColor',          blendMode: 'additive',    audio: undefined, scale: 1.0, renderMode: 'auto', space: '3d' },
+    { id: 'p3d_change_green',    label: '綠光變換',    category: 'particle3d', texPath: '', prefabPath: 'prefabs/changeColor/changeGreen',          blendMode: 'additive',    audio: undefined, scale: 1.0, renderMode: 'auto', space: '3d' },
+    { id: 'p3d_change_red',      label: '紅光變換',    category: 'particle3d', texPath: '', prefabPath: 'prefabs/changeColor/changeRed',            blendMode: 'additive',    audio: undefined, scale: 1.0, renderMode: 'auto', space: '3d' },
+    { id: 'p3d_change_yellow',   label: '黃光變換',    category: 'particle3d', texPath: '', prefabPath: 'prefabs/changeColor/changeYellow',         blendMode: 'additive',    audio: undefined, scale: 1.0, renderMode: 'auto', space: '3d' },
+    { id: 'p3d_collect_purple',  label: '紫色收集',    category: 'particle3d', texPath: '', prefabPath: 'prefabs/collectColor/collectPurple',        blendMode: 'additive',    audio: undefined, scale: 1.0, renderMode: 'auto', space: '3d' },
+    { id: 'p3d_collect_yellow',  label: '黃色收集',    category: 'particle3d', texPath: '', prefabPath: 'prefabs/collectColor/collectYellow',        blendMode: 'additive',    audio: undefined, scale: 1.0, renderMode: 'auto', space: '3d' },
+    { id: 'p3d_color_bar',       label: '彩虹光條',    category: 'particle3d', texPath: '', prefabPath: 'prefabs/colorBar/colorBar',                blendMode: 'additive',    audio: undefined, scale: 1.0, renderMode: 'auto', space: '3d' },
+    { id: 'p3d_common_light',    label: '通用光效',    category: 'particle3d', texPath: '', prefabPath: 'prefabs/commonLight/commonLight',          blendMode: 'additive',    audio: undefined, scale: 1.0, renderMode: 'auto', space: '3d' },
+    { id: 'p3d_fight_boom',      label: '戰鬥爆炸',    category: 'particle3d', texPath: '', prefabPath: 'prefabs/fightBoom/fightBoom',              blendMode: 'additive',    audio: 'boom',    scale: 1.0, renderMode: 'auto', space: '3d' },
+    { id: 'p3d_fire',            label: '火焰粒子',    category: 'particle3d', texPath: '', prefabPath: 'prefabs/fire/fire01',                      blendMode: 'additive',    audio: 'fireball',scale: 1.0, renderMode: 'auto', space: '3d' },
+    { id: 'p3d_fly_light',       label: '飛行光線',    category: 'particle3d', texPath: '', prefabPath: 'prefabs/flyFight/flyLight',                blendMode: 'additive',    audio: undefined, scale: 1.0, renderMode: 'auto', space: '3d' },
+    { id: 'p3d_hit',             label: '打擊特效',    category: 'particle3d', texPath: '', prefabPath: 'prefabs/hit/hit',                          blendMode: 'additive',    audio: 'hurt',    scale: 1.0, renderMode: 'auto', space: '3d' },
+    { id: 'p3d_hit_box',         label: '方塊打擊',    category: 'particle3d', texPath: '', prefabPath: 'prefabs/hit/boxHit',                      blendMode: 'additive',    audio: 'hurt',    scale: 1.0, renderMode: 'auto', space: '3d' },
+    { id: 'p3d_level_up',        label: '升級光效',    category: 'particle3d', texPath: '', prefabPath: 'prefabs/levelUp/leveUp',                   blendMode: 'additive',    audio: 'buff',    scale: 1.0, renderMode: 'auto', space: '3d' },
+    { id: 'p3d_smoke_light',     label: '煙光特效',    category: 'particle3d', texPath: '', prefabPath: 'prefabs/smokeLight/smokeLight01',           blendMode: 'transparent', audio: undefined, scale: 1.0, renderMode: 'auto', space: '3d' },
+    { id: 'p3d_star',            label: '星星特效',    category: 'particle3d', texPath: '', prefabPath: 'prefabs/star/star01',                      blendMode: 'additive',    audio: undefined, scale: 1.0, renderMode: 'auto', space: '3d' },
+
+    // ─── [MEP] 粒子特效 (Magic Effects Pack — Particle Prefabs) ────────────────
+    // 來源: tools/mep-prefab-generator.mjs 批次生成，基於 bubbleG.prefab 模板
+    // 適合: 各類戰鬥/技能/狀態場景
+    { id: 'p3d_mep_buff_aura',     label: 'MEP增益光環',     category: 'particle3d', texPath: '', prefabPath: 'prefabs/mep_buff_aura/mep_buff_aura',         blendMode: 'additive',    audio: 'buff',    scale: 2.0, renderMode: 'cpu', space: '3d' },
+    { id: 'p3d_mep_debuff_aura',   label: 'MEP負面光環',     category: 'particle3d', texPath: '', prefabPath: 'prefabs/mep_debuff_aura/mep_debuff_aura',     blendMode: 'additive',    audio: undefined, scale: 2.0, renderMode: 'cpu', space: '3d' },
+    { id: 'p3d_mep_healing_aura',  label: 'MEP治癒光環',     category: 'particle3d', texPath: '', prefabPath: 'prefabs/mep_healing_aura/mep_healing_aura',   blendMode: 'additive',    audio: 'heal',    scale: 2.0, renderMode: 'cpu', space: '3d' },
+    { id: 'p3d_mep_sparks_orange', label: 'MEP橘色星火',     category: 'particle3d', texPath: '', prefabPath: 'prefabs/mep_sparks_orange/mep_sparks_orange', blendMode: 'additive',    audio: 'hurt',    scale: 1.5, renderMode: 'cpu', space: '3d' },
+    { id: 'p3d_mep_sparks_blue',   label: 'MEP藍色星火',     category: 'particle3d', texPath: '', prefabPath: 'prefabs/mep_sparks_blue/mep_sparks_blue',     blendMode: 'additive',    audio: 'hurt',    scale: 1.5, renderMode: 'cpu', space: '3d' },
+    { id: 'p3d_mep_explosion',     label: 'MEP爆炸效果',     category: 'particle3d', texPath: '', prefabPath: 'prefabs/mep_explosion/mep_explosion',         blendMode: 'additive',    audio: 'boom',    scale: 3.0, renderMode: 'cpu', space: '3d' },
+    { id: 'p3d_mep_electro_hit',   label: 'MEP雷擊命中',     category: 'particle3d', texPath: '', prefabPath: 'prefabs/mep_electro_hit/mep_electro_hit',     blendMode: 'additive',    audio: 'thunder', scale: 2.0, renderMode: 'cpu', space: '3d' },
+    { id: 'p3d_mep_charge_slash',  label: 'MEP蓄力斬擊',     category: 'particle3d', texPath: '', prefabPath: 'prefabs/mep_charge_slash/mep_charge_slash',   blendMode: 'additive',    audio: 'weapon',  scale: 2.5, renderMode: 'cpu', space: '3d' },
+    { id: 'p3d_mep_magic_ring',    label: 'MEP魔法粒子環',   category: 'particle3d', texPath: '', prefabPath: 'prefabs/mep_magic_ring/mep_magic_ring',       blendMode: 'additive',    audio: 'skill0',  scale: 3.0, renderMode: 'cpu', space: '3d' },
+
+    // ─── [CFXR] Cartoon FX Remaster FREE 粒子特效 (偏卡通/2D風格) ──────────
+    // 來源: tools/JMO Assets/Cartoon FX Remaster/ → 貼圖複製到 textures/cfxr/
+    // 說明: 需先在 Cocos Creator 做 asset-db refresh，再執行 tools/cfxr-prefab-generator.mjs
+    { id: 'p3d_cfxr_hit_red',       label: 'CFXR紅色打擊',   category: 'particle3d', texPath: '', prefabPath: 'prefabs/cfxr_hit_red/cfxr_hit_red',             blendMode: 'additive',    audio: 'hurt',    scale: 1.5, renderMode: 'cpu', space: '3d' },
+    { id: 'p3d_cfxr_hit_yellow',    label: 'CFXR黃色打擊',   category: 'particle3d', texPath: '', prefabPath: 'prefabs/cfxr_hit_yellow/cfxr_hit_yellow',         blendMode: 'additive',    audio: 'hurt',    scale: 1.5, renderMode: 'cpu', space: '3d' },
+    { id: 'p3d_cfxr_spikes_impact', label: 'CFXR尖刺衝擊',   category: 'particle3d', texPath: '', prefabPath: 'prefabs/cfxr_spikes_impact/cfxr_spikes_impact',   blendMode: 'additive',    audio: 'hurt',    scale: 2.0, renderMode: 'cpu', space: '3d' },
+    { id: 'p3d_cfxr_electric_spark',label: 'CFXR電火花',     category: 'particle3d', texPath: '', prefabPath: 'prefabs/cfxr_electric_spark/cfxr_electric_spark', blendMode: 'additive',    audio: 'thunder', scale: 1.5, renderMode: 'cpu', space: '3d' },
+    { id: 'p3d_cfxr_electric_ring', label: 'CFXR電氣環',     category: 'particle3d', texPath: '', prefabPath: 'prefabs/cfxr_electric_ring/cfxr_electric_ring',   blendMode: 'additive',    audio: 'thunder', scale: 2.5, renderMode: 'cpu', space: '3d' },
+    { id: 'p3d_cfxr_star_gold',     label: 'CFXR金色星星',   category: 'particle3d', texPath: '', prefabPath: 'prefabs/cfxr_star_gold/cfxr_star_gold',           blendMode: 'additive',    audio: undefined, scale: 2.0, renderMode: 'cpu', space: '3d' },
+    { id: 'p3d_cfxr_star_blurred',  label: 'CFXR星光散射',   category: 'particle3d', texPath: '', prefabPath: 'prefabs/cfxr_star_blurred/cfxr_star_blurred',     blendMode: 'additive',    audio: undefined, scale: 2.0, renderMode: 'cpu', space: '3d' },
+    { id: 'p3d_cfxr_flare_heal',    label: 'CFXR治癒光暈',   category: 'particle3d', texPath: '', prefabPath: 'prefabs/cfxr_flare_heal/cfxr_flare_heal',         blendMode: 'additive',    audio: 'heal',    scale: 2.5, renderMode: 'cpu', space: '3d' },
+    { id: 'p3d_cfxr_fire_crisp',    label: 'CFXR清晰火焰',   category: 'particle3d', texPath: '', prefabPath: 'prefabs/cfxr_fire_crisp/cfxr_fire_crisp',         blendMode: 'additive',    audio: 'fireball',scale: 2.0, renderMode: 'cpu', space: '3d' },
+    { id: 'p3d_cfxr_fire_circle',   label: 'CFXR火圈',       category: 'particle3d', texPath: '', prefabPath: 'prefabs/cfxr_fire_circle/cfxr_fire_circle',       blendMode: 'additive',    audio: 'fireball',scale: 2.5, renderMode: 'cpu', space: '3d' },
+    { id: 'p3d_cfxr_smoke',         label: 'CFXR煙霧',       category: 'particle3d', texPath: '', prefabPath: 'prefabs/cfxr_smoke/cfxr_smoke',                   blendMode: 'transparent', audio: undefined, scale: 2.5, renderMode: 'cpu', space: '3d' },
+    { id: 'p3d_cfxr_smoke_white',   label: 'CFXR白煙',       category: 'particle3d', texPath: '', prefabPath: 'prefabs/cfxr_smoke_white/cfxr_smoke_white',       blendMode: 'transparent', audio: undefined, scale: 2.0, renderMode: 'cpu', space: '3d' },
+    { id: 'p3d_cfxr_bubble',        label: 'CFXR泡泡',       category: 'particle3d', texPath: '', prefabPath: 'prefabs/cfxr_bubble/cfxr_bubble',                 blendMode: 'additive',    audio: undefined, scale: 1.5, renderMode: 'cpu', space: '3d' },
+    { id: 'p3d_cfxr_aura_runic',    label: 'CFXR符文光環',   category: 'particle3d', texPath: '', prefabPath: 'prefabs/cfxr_aura_runic/cfxr_aura_runic',         blendMode: 'additive',    audio: 'skill0',  scale: 2.5, renderMode: 'cpu', space: '3d' },
+    { id: 'p3d_cfxr_runic_aura',   label: 'CFXR符文光環(複合)', category: 'particle3d', texPath: '', prefabPath: 'prefabs/cfxr_runic_aura_compound/cfxr_runic_aura_compound', blendMode: 'additive', audio: 'skill0', scale: 1.0, renderMode: 'cpu', space: '3d' },
+    { id: 'p3d_cfxr_aura_rays',     label: 'CFXR射線光環',   category: 'particle3d', texPath: '', prefabPath: 'prefabs/cfxr_aura_rays/cfxr_aura_rays',           blendMode: 'additive',    audio: 'buff',    scale: 2.5, renderMode: 'cpu', space: '3d' },
+    { id: 'p3d_cfxr_heart',         label: 'CFXR愛心',       category: 'particle3d', texPath: '', prefabPath: 'prefabs/cfxr_heart/cfxr_heart',                   blendMode: 'additive',    audio: 'heal',    scale: 2.0, renderMode: 'cpu', space: '3d' },
+    { id: 'p3d_cfxr_skull',         label: 'CFXR骷髏頭',     category: 'particle3d', texPath: '', prefabPath: 'prefabs/cfxr_skull/cfxr_skull',                   blendMode: 'additive',    audio: undefined, scale: 2.0, renderMode: 'cpu', space: '3d' },
+    { id: 'p3d_cfxr_ring_ice',      label: 'CFXR冰其環',     category: 'particle3d', texPath: '', prefabPath: 'prefabs/cfxr_ring_ice/cfxr_ring_ice',             blendMode: 'additive',    audio: undefined, scale: 3.0, renderMode: 'cpu', space: '3d' },
+    { id: 'p3d_cfxr_ember',         label: 'CFXR火星飛濺',   category: 'particle3d', texPath: '', prefabPath: 'prefabs/cfxr_ember/cfxr_ember',                   blendMode: 'additive',    audio: undefined, scale: 1.5, renderMode: 'cpu', space: '3d' },
+    { id: 'p3d_cfxr_slash_ray',     label: 'CFXR斬擊射線',   category: 'particle3d', texPath: '', prefabPath: 'prefabs/cfxr_slash_ray/cfxr_slash_ray',           blendMode: 'additive',    audio: 'weapon',  scale: 2.0, renderMode: 'cpu', space: '3d' },
+
+    // ─── [MEP] 發光/漸層 (Magic Effects Pack — Glow) ────────────────────────
+    // 來源: tools/Magic effects pack/Textures/ → 複製為 mep_glow_*.png
+    // 適合: 命中閃光、技能爆光、光源強調
+    { id: 'mep_glow_flash',       label: 'MEP閃爍光',  category: 'glow',       texPath: 'textures/glow/mep_glow_flash',             blendMode: 'additive',    audio: 'light',    scale: 2.0, renderMode: 'auto', space: 'both' },
+    { id: 'mep_glow_flash_free1', label: 'MEP閃光A',   category: 'glow',       texPath: 'textures/glow/mep_glow_flash_free1',       blendMode: 'additive',    audio: 'light',    scale: 2.0, renderMode: 'auto', space: 'both' },
+    { id: 'mep_glow_flash_free2', label: 'MEP閃光B',   category: 'glow',       texPath: 'textures/glow/mep_glow_flash_free2',       blendMode: 'additive',    audio: 'light',    scale: 2.0, renderMode: 'auto', space: 'both' },
+    { id: 'mep_glow_flash_free3', label: 'MEP閃光C',   category: 'glow',       texPath: 'textures/glow/mep_glow_flash_free3',       blendMode: 'additive',    audio: 'boom',     scale: 3.0, renderMode: 'auto', space: 'both' },
+    { id: 'mep_glow_soft_alt',    label: 'MEP柔光',    category: 'glow',       texPath: 'textures/glow/mep_glow_soft_alt',          blendMode: 'additive',    audio: 'light',    scale: 1.5, renderMode: 'auto', space: 'both' },
+    { id: 'mep_glow_flare',       label: 'MEP炫光',    category: 'glow',       texPath: 'textures/glow/mep_glow_flare',             blendMode: 'additive',    audio: undefined,  scale: 1.5, renderMode: 'auto', space: 'both' },
+    { id: 'mep_glow_point',       label: 'MEP點光',    category: 'glow',       texPath: 'textures/glow/mep_glow_point',             blendMode: 'additive',    audio: undefined,  scale: 1.0, renderMode: 'auto', space: 'both' },
+    { id: 'mep_glow_gradient',    label: 'MEP線性漸層',category: 'glow',       texPath: 'textures/glow/mep_glow_gradient',          blendMode: 'additive',    audio: undefined,  scale: 2.0, renderMode: 'auto', space: 'both' },
+    { id: 'mep_glow_gradient_r',  label: 'MEP徑向漸層',category: 'glow',       texPath: 'textures/glow/mep_glow_gradient_radial',   blendMode: 'additive',    audio: undefined,  scale: 2.0, renderMode: 'auto', space: 'both' },
+
+    // ─── [MEP] 衝擊/地面效果 (Magic Effects Pack — Impact) ──────────────────
+    { id: 'mep_impact_crack',     label: 'MEP地裂',    category: 'impact',     texPath: 'textures/impact/mep_impact_crack',          blendMode: 'transparent', audio: 'boom',     scale: 3.0, renderMode: 'auto', space: '3d' },
+    { id: 'mep_impact_crater',    label: 'MEP彈坑',    category: 'impact',     texPath: 'textures/impact/mep_impact_crater',         blendMode: 'transparent', audio: 'boom',     scale: 2.5, renderMode: 'auto', space: '3d' },
+    { id: 'mep_impact_splat',     label: 'MEP濺射',    category: 'impact',     texPath: 'textures/impact/mep_impact_splat',          blendMode: 'transparent', audio: 'hurt',     scale: 2.0, renderMode: 'auto', space: '3d' },
+    { id: 'mep_impact_stone',     label: 'MEP石塊',    category: 'impact',     texPath: 'textures/impact/mep_impact_stone',          blendMode: 'transparent', audio: 'boom',     scale: 1.5, renderMode: 'auto', space: '3d' },
+
+    // ─── [MEP] 煙霧 (Magic Effects Pack — Smoke) ────────────────────────────
+    { id: 'mep_smoke_puff',       label: 'MEP飄散煙',  category: 'smoke',      texPath: 'textures/smoke/mep_smoke_puff',             blendMode: 'transparent', audio: undefined,  scale: 2.0, renderMode: 'gpu',  space: '3d' },
+    { id: 'mep_smoke_cloud',      label: 'MEP雲狀煙',  category: 'smoke',      texPath: 'textures/smoke/mep_smoke_cloud',            blendMode: 'transparent', audio: undefined,  scale: 2.5, renderMode: 'gpu',  space: '3d' },
+
+    // ─── [MEP] 刀光軌跡 (Magic Effects Pack — Trails) ───────────────────────
+    { id: 'mep_trail_soft',       label: 'MEP柔光軌跡',category: 'trails',     texPath: 'textures/trails/mep_trail_soft',            blendMode: 'additive',    audio: undefined,  scale: 1.5, renderMode: 'cpu',  gpuIncompatibleModules: ['trail'], space: '3d' },
+
+    // ─── [MEP] 投射物 (Magic Effects Pack — Projectile) ─────────────────────
+    { id: 'mep_proj_bolt',        label: 'MEP能量箭',  category: 'projectile', texPath: 'textures/projectile/mep_proj_bolt',         blendMode: 'additive',    audio: 'feijian',  scale: 1.0, renderMode: 'auto', space: '3d' },
+
+    // ─── [MEP] 形狀 (Magic Effects Pack — Shapes) ───────────────────────────
+    // 適合: 粒子形狀貼圖 (Unity: Particle System → Renderer → Billboard)
+    { id: 'mep_shape_arrow',      label: 'MEP箭頭',    category: 'shapes',     texPath: 'textures/shapes/mep_shape_arrow',           blendMode: 'additive',    audio: undefined,  scale: 1.0, renderMode: 'auto', space: 'both' },
+    { id: 'mep_shape_circle',     label: 'MEP圓形A',   category: 'shapes',     texPath: 'textures/shapes/mep_shape_circle',          blendMode: 'additive',    audio: undefined,  scale: 1.5, renderMode: 'auto', space: 'both' },
+    { id: 'mep_shape_circle2',    label: 'MEP圓形B',   category: 'shapes',     texPath: 'textures/shapes/mep_shape_circle2',         blendMode: 'additive',    audio: undefined,  scale: 1.5, renderMode: 'auto', space: 'both' },
+    { id: 'mep_shape_star',       label: 'MEP星形',    category: 'shapes',     texPath: 'textures/shapes/mep_shape_star',            blendMode: 'additive',    audio: undefined,  scale: 1.0, renderMode: 'auto', space: 'both' },
+    { id: 'mep_shape_heart',      label: 'MEP愛心',    category: 'shapes',     texPath: 'textures/shapes/mep_shape_heart',           blendMode: 'transparent', audio: undefined,  scale: 1.0, renderMode: 'auto', space: 'both' },
+    { id: 'mep_shape_snowflake',  label: 'MEP雪花',    category: 'shapes',     texPath: 'textures/shapes/mep_shape_snowflake',       blendMode: 'transparent', audio: undefined,  scale: 1.0, renderMode: 'auto', space: 'both' },
+    { id: 'mep_shape_slash',      label: 'MEP斬擊形',  category: 'shapes',     texPath: 'textures/shapes/mep_shape_slash',           blendMode: 'additive',    audio: 'weapon',   scale: 2.0, renderMode: 'auto', space: '3d'   },
+    { id: 'mep_shape_electro',    label: 'MEP閃電形',  category: 'shapes',     texPath: 'textures/shapes/mep_shape_electro',         blendMode: 'additive',    audio: 'thunder',  scale: 2.0, renderMode: 'auto', space: '3d'   },
+    { id: 'mep_shape_mask',       label: 'MEP遮罩圓',  category: 'shapes',     texPath: 'textures/shapes/mep_shape_mask',            blendMode: 'transparent', audio: undefined,  scale: 1.5, renderMode: 'auto', space: 'both' },
+    { id: 'mep_shape_crystal',    label: 'MEP晶體形',  category: 'shapes',     texPath: 'textures/shapes/mep_shape_crystal',         blendMode: 'transparent', audio: undefined,  scale: 1.0, renderMode: 'auto', space: '3d'   },
+
+    // ─── [MEP] 魔法陣/科技環 (Magic Effects Pack — Rings) ──────────────────
+    // 適合: 地面施法法陣、角色光環底盤、傳送門效果
+    { id: 'mep_ring_magic_circle', label: 'MEP魔法陣A',category: 'rings',      texPath: 'textures/rings/mep_ring_magic_circle',      blendMode: 'additive',    audio: 'skill0',   scale: 2.5, renderMode: 'auto', space: '3d' },
+    { id: 'mep_ring_magic_circle2',label: 'MEP魔法陣B',category: 'rings',      texPath: 'textures/rings/mep_ring_magic_circle2',     blendMode: 'additive',    audio: 'skill0',   scale: 2.5, renderMode: 'auto', space: '3d' },
+    { id: 'mep_ring_tech_circle',  label: 'MEP科技環A',category: 'rings',      texPath: 'textures/rings/mep_ring_tech_circle',       blendMode: 'additive',    audio: undefined,  scale: 2.5, renderMode: 'auto', space: '3d' },
+    { id: 'mep_ring_tech_circle2', label: 'MEP科技環B',category: 'rings',      texPath: 'textures/rings/mep_ring_tech_circle2',      blendMode: 'additive',    audio: undefined,  scale: 2.5, renderMode: 'auto', space: '3d' },
 ];
 
 /** 全部音效 clip 名稱與積木的對應說明 (文檔用) */

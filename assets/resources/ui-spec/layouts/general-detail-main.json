@@ -1,0 +1,456 @@
+{
+  "id": "general-detail-main",
+  "version": 7,
+  "canvas": {
+    "fitWidth": true,
+    "fitHeight": true,
+    "safeArea": true,
+    "designWidth": 1920,
+    "designHeight": 1080
+  },
+  "root": {
+    "type": "container",
+    "name": "GeneralDetailRoot",
+    "widget": { "top": 0, "bottom": 0, "left": 0, "right": 0 },
+    "transition": { "enter": "scaleIn", "exit": "scaleOut", "duration": 0.2, "easing": "backOut" },
+    "children": [
+      {
+        "type": "image",
+        "name": "BackgroundFull",
+        "widget": { "top": 0, "bottom": 0, "left": 0, "right": 0 },
+        "skinSlot": "detail.bg.fullscreen"
+      },
+      {
+        "type": "panel",
+        "name": "ClickBlocker",
+        "widget": { "top": 0, "bottom": 0, "left": 0, "right": 0 },
+        "skinSlot": "detail.blockInput"
+      },
+      {
+        "type": "image",
+        "name": "PortraitImage",
+        "widget": { "bottom": 56, "left": 36 },
+        "width": "47%",
+        "height": "88%",
+        "skinSlot": "general.portrait.placeholder"
+      },
+      {
+        "$ref": "fragments/layouts/parchment-panel",
+        "name": "TopLeftInfo",
+        "widget": { "top": 68, "left": 40 },
+        "width": "23%",
+        "height": 196,
+        "skinSlot": "detail.header.bg",
+        "children": [
+          {
+            "name": "Content",
+            "layout": { "type": "vertical", "spacing": 10, "paddingTop": 20, "paddingBottom": 18, "paddingLeft": 18, "paddingRight": 18 },
+            "children": [
+              { "type": "label", "name": "TitleLabel", "width": "100%", "height": 68, "skinSlot": "detail.field.title.bg", "styleSlot": "detail.label.title" },
+              { "type": "label", "name": "NameLabel", "width": "100%", "height": 44, "skinSlot": "detail.field.name.bg", "styleSlot": "detail.label.subtitle" },
+              { "type": "label", "name": "MetaLabel", "width": "100%", "height": 54, "skinSlot": "detail.field.meta.bg", "styleSlot": "detail.label.meta" }
+            ]
+          }
+        ]
+      },
+      {
+        "$ref": "fragments/layouts/parchment-panel",
+        "name": "BottomLeftInfo",
+        "widget": { "top": 68, "right": 152 },
+        "width": "31%",
+        "height": 92,
+        "skinSlot": "detail.summary.bg",
+        "children": [
+          {
+            "name": "Content",
+            "layout": { "type": "horizontal", "spacing": 16 },
+            "children": [
+              {
+                "type": "panel",
+                "name": "EpCard",
+                "width": "48%",
+                "height": "100%",
+                "skinSlot": "detail.summary.card",
+                "layout": { "type": "vertical", "spacing": 4, "paddingTop": 14, "paddingBottom": 12, "paddingLeft": 18, "paddingRight": 18 },
+                "children": [
+                  { "type": "label", "name": "EpLabel", "width": "100%", "height": 30, "styleSlot": "detail.label.meta" },
+                  { "type": "label", "name": "EpValue", "width": "100%", "height": 36, "styleSlot": "detail.label.summary" }
+                ]
+              },
+              {
+                "type": "panel",
+                "name": "VitCard",
+                "width": "48%",
+                "height": "100%",
+                "skinSlot": "detail.summary.card",
+                "layout": { "type": "vertical", "spacing": 4, "paddingTop": 14, "paddingBottom": 12, "paddingLeft": 18, "paddingRight": 18 },
+                "children": [
+                  { "type": "label", "name": "VitLabel", "width": "100%", "height": 30, "styleSlot": "detail.label.meta" },
+                  { "type": "label", "name": "VitValue", "width": "100%", "height": 36, "styleSlot": "detail.label.summary" }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "panel",
+        "name": "RightTabBarFill",
+        "widget": { "top": 60, "bottom": 56, "right": 24 },
+        "width": 112,
+        "skinSlot": "detail.tabbar.rail.fill"
+      },
+      {
+        "type": "panel",
+        "name": "RightTabBarBleed",
+        "widget": { "top": 60, "bottom": 56, "right": 24 },
+        "width": 112,
+        "skinSlot": "detail.tabbar.rail.bleed"
+      },
+      {
+        "type": "panel",
+        "name": "RightTabBarFrame",
+        "widget": { "top": 60, "bottom": 56, "right": 24 },
+        "width": 112,
+        "skinSlot": "detail.tabbar.rail.frame"
+      },
+      {
+        "type": "container",
+        "name": "RightTabBar",
+        "widget": { "top": 60, "bottom": 56, "right": 24 },
+        "width": 112,
+        "layout": { "type": "vertical", "spacing": 14, "paddingTop": 18, "paddingBottom": 18, "paddingLeft": 8, "paddingRight": 8 },
+        "children": [
+          { "type": "button", "name": "BtnTabBasics", "width": 96, "height": 84, "skinSlot": "detail.tab.idle", "styleSlot": "detail.label.button", "textKey": "ui.general.tab.basics" },
+          { "type": "button", "name": "BtnTabStats", "width": 96, "height": 84, "skinSlot": "detail.tab.idle", "styleSlot": "detail.label.button", "textKey": "ui.general.tab.stats" },
+          { "type": "button", "name": "BtnTabBloodline", "width": 96, "height": 84, "skinSlot": "detail.tab.idle", "styleSlot": "detail.label.button", "textKey": "ui.general.tab.bloodline" },
+          { "type": "button", "name": "BtnTabSkills", "width": 96, "height": 84, "skinSlot": "detail.tab.idle", "styleSlot": "detail.label.button", "textKey": "ui.general.tab.skills" },
+          { "type": "button", "name": "BtnTabAptitude", "width": 96, "height": 84, "skinSlot": "detail.tab.idle", "styleSlot": "detail.label.button", "textKey": "ui.general.tab.aptitude" },
+          { "type": "button", "name": "BtnTabExtended", "width": 96, "height": 84, "skinSlot": "detail.tab.idle", "styleSlot": "detail.label.button", "textKey": "ui.general.tab.extended" },
+          { "type": "button", "name": "BtnClose", "width": 96, "height": 84, "skinSlot": "common.button.primary", "styleSlot": "detail.label.button", "textKey": "ui.close" }
+        ]
+      },
+      {
+        "type": "panel",
+        "name": "RightContentAreaFill",
+        "widget": { "top": 174, "bottom": 56, "right": 152 },
+        "width": "38%",
+        "skinSlot": "detail.content.fill"
+      },
+      {
+        "type": "panel",
+        "name": "RightContentAreaBleed",
+        "widget": { "top": 174, "bottom": 56, "right": 152 },
+        "width": "38%",
+        "skinSlot": "detail.content.bleed"
+      },
+      {
+        "type": "panel",
+        "name": "RightContentAreaFrame",
+        "widget": { "top": 174, "bottom": 56, "right": 152 },
+        "width": "38%",
+        "skinSlot": "detail.content.frame"
+      },
+      {
+        "type": "container",
+        "name": "RightContentArea",
+        "widget": { "top": 174, "bottom": 56, "right": 152 },
+        "width": "38%",
+        "children": [
+          {
+            "type": "panel",
+            "name": "TabBasics",
+            "widget": { "top": 28, "bottom": 112, "left": 28, "right": 28 },
+            "layout": { "type": "vertical", "spacing": 12, "paddingTop": 0, "paddingBottom": 0, "paddingLeft": 0, "paddingRight": 0 },
+            "children": [
+              { "type": "label", "name": "UidValue", "width": "100%", "height": 30, "skinSlot": "detail.field.bg", "styleSlot": "detail.label.value" },
+              { "type": "label", "name": "NameValue", "width": "100%", "height": 30, "skinSlot": "detail.field.bg", "styleSlot": "detail.label.value" },
+              { "type": "label", "name": "TitleValue", "width": "100%", "height": 30, "skinSlot": "detail.field.bg", "styleSlot": "detail.label.value" },
+              { "type": "label", "name": "TemplateValue", "width": "100%", "height": 30, "skinSlot": "detail.field.bg", "styleSlot": "detail.label.value" },
+              { "type": "label", "name": "FactionValue", "width": "100%", "height": 30, "skinSlot": "detail.field.bg", "styleSlot": "detail.label.value" },
+              { "type": "label", "name": "GenderValue", "width": "100%", "height": 30, "skinSlot": "detail.field.bg", "styleSlot": "detail.label.value" },
+              { "type": "label", "name": "AgeValue", "width": "100%", "height": 30, "skinSlot": "detail.field.bg", "styleSlot": "detail.label.value" },
+              { "type": "label", "name": "RoleValue", "width": "100%", "height": 30, "skinSlot": "detail.field.bg", "styleSlot": "detail.label.value" },
+              { "type": "label", "name": "StatusValue", "width": "100%", "height": 30, "skinSlot": "detail.field.bg", "styleSlot": "detail.label.value" },
+              { "type": "label", "name": "LifespanValue", "width": "100%", "height": 30, "skinSlot": "detail.field.bg", "styleSlot": "detail.label.value" },
+              { "type": "label", "name": "VitalityValue", "width": "100%", "height": 30, "skinSlot": "detail.field.bg", "styleSlot": "detail.label.value" },
+              { "type": "label", "name": "SourceValue", "width": "100%", "height": 30, "skinSlot": "detail.field.bg", "styleSlot": "detail.label.value" }
+            ]
+          },
+          {
+            "type": "panel",
+            "name": "TabStats",
+            "widget": { "top": 28, "bottom": 112, "left": 28, "right": 28 },
+            "layout": { "type": "vertical", "spacing": 18, "paddingTop": 0, "paddingBottom": 0, "paddingLeft": 0, "paddingRight": 0 },
+            "children": [
+              { "type": "label", "name": "StrValue", "width": "100%", "height": 40, "skinSlot": "detail.field.bg", "styleSlot": "detail.label.value" },
+              { "type": "label", "name": "IntValue", "width": "100%", "height": 40, "skinSlot": "detail.field.bg", "styleSlot": "detail.label.value" },
+              { "type": "label", "name": "LeaValue", "width": "100%", "height": 40, "skinSlot": "detail.field.bg", "styleSlot": "detail.label.value" },
+              { "type": "label", "name": "PolValue", "width": "100%", "height": 40, "skinSlot": "detail.field.bg", "styleSlot": "detail.label.value" },
+              { "type": "label", "name": "ChaValue", "width": "100%", "height": 40, "skinSlot": "detail.field.bg", "styleSlot": "detail.label.value" },
+              { "type": "label", "name": "LukValue", "width": "100%", "height": 40, "skinSlot": "detail.field.bg", "styleSlot": "detail.label.value" },
+              { "type": "label", "name": "StatsRoleValue", "width": "100%", "height": 50, "skinSlot": "detail.field.name.bg", "styleSlot": "detail.label.subtitle" }
+            ]
+          },
+          {
+            "type": "panel",
+            "name": "TabBloodline",
+            "widget": { "top": 28, "bottom": 112, "left": 28, "right": 28 },
+            "layout": { "type": "vertical", "spacing": 12, "paddingTop": 0, "paddingBottom": 0, "paddingLeft": 0, "paddingRight": 0 },
+            "children": [
+              {
+                "type": "panel",
+                "name": "BloodlineSummaryCard",
+                "width": "100%",
+                "height": 180,
+                "skinSlot": "detail.section.bg",
+                "layout": { "type": "vertical", "spacing": 8, "paddingTop": 18, "paddingBottom": 18, "paddingLeft": 20, "paddingRight": 20 },
+                "children": [
+                  { "type": "label", "name": "EpRatingValue", "width": "100%", "height": 32, "styleSlot": "detail.label.subtitle" },
+                  { "type": "label", "name": "BloodlineValue", "width": "100%", "height": 32, "styleSlot": "detail.label.subtitle" },
+                  { "type": "label", "name": "ParentsValue", "width": "100%", "height": 40, "styleSlot": "detail.label.valueDense" },
+                  { "type": "label", "name": "AncestorsValue", "width": "100%", "height": 40, "styleSlot": "detail.label.valueDense" }
+                ]
+              },
+              {
+                "type": "panel",
+                "name": "AncestorTree",
+                "width": "100%",
+                "height": 320,
+                "skinSlot": "detail.section.bg",
+                "layout": { "type": "vertical", "spacing": 10, "paddingTop": 16, "paddingBottom": 16, "paddingLeft": 16, "paddingRight": 16 },
+                "children": [
+                  { "type": "label", "name": "TreeTitle", "width": "100%", "height": 34, "styleSlot": "detail.label.section", "textKey": "ui.general.bloodline.tree" },
+                  {
+                    "type": "container", "name": "Gen1Container", "width": "100%", "height": 45,
+                    "layout": { "type": "horizontal", "spacing": 4, "paddingLeft": 0, "paddingRight": 0 },
+                    "children": [
+                       {"type": "panel", "name": "G1_0", "width": 85, "height": 45, "skinSlot": "detail.tree.node", "children": [{"type": "label", "name": "Txt", "styleSlot": "detail.label.meta", "width": 85, "height": 45 }]},
+                       {"type": "panel", "name": "G1_1", "width": 85, "height": 45, "skinSlot": "detail.tree.node", "children": [{"type": "label", "name": "Txt", "styleSlot": "detail.label.meta", "width": 85, "height": 45 }]},
+                       {"type": "panel", "name": "G1_2", "width": 85, "height": 45, "skinSlot": "detail.tree.node", "children": [{"type": "label", "name": "Txt", "styleSlot": "detail.label.meta", "width": 85, "height": 45 }]},
+                       {"type": "panel", "name": "G1_3", "width": 85, "height": 45, "skinSlot": "detail.tree.node", "children": [{"type": "label", "name": "Txt", "styleSlot": "detail.label.meta", "width": 85, "height": 45 }]},
+                       {"type": "spacer", "name": "Spc1", "width": 10},
+                       {"type": "panel", "name": "G1_4", "width": 85, "height": 45, "skinSlot": "detail.tree.node", "children": [{"type": "label", "name": "Txt", "styleSlot": "detail.label.meta", "width": 85, "height": 45 }]},
+                       {"type": "panel", "name": "G1_5", "width": 85, "height": 45, "skinSlot": "detail.tree.node", "children": [{"type": "label", "name": "Txt", "styleSlot": "detail.label.meta", "width": 85, "height": 45 }]},
+                       {"type": "panel", "name": "G1_6", "width": 85, "height": 45, "skinSlot": "detail.tree.node", "children": [{"type": "label", "name": "Txt", "styleSlot": "detail.label.meta", "width": 85, "height": 45 }]},
+                       {"type": "panel", "name": "G1_7", "width": 85, "height": 45, "skinSlot": "detail.tree.node", "children": [{"type": "label", "name": "Txt", "styleSlot": "detail.label.meta", "width": 85, "height": 45 }]}
+                    ]
+                  },
+                  {
+                    "type": "container", "name": "Gen2Container", "width": "100%", "height": 55,
+                    "layout": { "type": "horizontal", "spacing": 18, "paddingLeft": 36, "paddingRight": 36 },
+                    "children": [
+                       {"type": "panel", "name": "G2_0", "width": 140, "height": 55, "skinSlot": "detail.tree.node", "children": [{"type": "label", "name": "Txt", "styleSlot": "detail.label.meta", "width": 140, "height": 55 }]},
+                       {"type": "panel", "name": "G2_1", "width": 140, "height": 55, "skinSlot": "detail.tree.node", "children": [{"type": "label", "name": "Txt", "styleSlot": "detail.label.meta", "width": 140, "height": 55 }]},
+                       {"type": "spacer", "name": "Spc2", "width": 30},
+                       {"type": "panel", "name": "G2_2", "width": 140, "height": 55, "skinSlot": "detail.tree.node", "children": [{"type": "label", "name": "Txt", "styleSlot": "detail.label.meta", "width": 140, "height": 55 }]},
+                       {"type": "panel", "name": "G2_3", "width": 140, "height": 55, "skinSlot": "detail.tree.node", "children": [{"type": "label", "name": "Txt", "styleSlot": "detail.label.meta", "width": 140, "height": 55 }]}
+                    ]
+                  },
+                  {
+                    "type": "container", "name": "Gen3Container", "width": "100%", "height": 65,
+                    "layout": { "type": "horizontal", "spacing": 56, "paddingLeft": 120, "paddingRight": 120 },
+                    "children": [
+                       {"type": "panel", "name": "G3_0", "width": 180, "height": 65, "skinSlot": "detail.tree.node", "children": [{"type": "label", "name": "Txt", "styleSlot": "detail.label.meta", "width": 180, "height": 65 }]},
+                       {"type": "panel", "name": "G3_1", "width": 180, "height": 65, "skinSlot": "detail.tree.node", "children": [{"type": "label", "name": "Txt", "styleSlot": "detail.label.meta", "width": 180, "height": 65 }]}
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "panel",
+                "name": "GeneListCard",
+                "width": "100%",
+                "height": 220,
+                "skinSlot": "detail.section.bg",
+                "layout": { "type": "vertical", "spacing": 8, "paddingTop": 18, "paddingBottom": 18, "paddingLeft": 20, "paddingRight": 20 },
+                "children": [
+                  { "type": "label", "name": "Gene1Value", "width": "100%", "height": 26, "styleSlot": "detail.label.valueDense" },
+                  { "type": "label", "name": "Gene2Value", "width": "100%", "height": 26, "styleSlot": "detail.label.valueDense" },
+                  { "type": "label", "name": "Gene3Value", "width": "100%", "height": 26, "styleSlot": "detail.label.valueDense" },
+                  { "type": "label", "name": "Gene4Value", "width": "100%", "height": 26, "styleSlot": "detail.label.valueDense" },
+                  { "type": "label", "name": "Gene5Value", "width": "100%", "height": 26, "styleSlot": "detail.label.valueDense" }
+                ]
+              },
+              {
+                "type": "panel",
+                "name": "AwakeningCard",
+                "width": "100%",
+                "height": 68,
+                "skinSlot": "detail.section.bg",
+                "layout": { "type": "vertical", "spacing": 0, "paddingTop": 18, "paddingBottom": 18, "paddingLeft": 20, "paddingRight": 20 },
+                "children": [
+                  { "type": "label", "name": "AwakeningValue", "width": "100%", "height": 30, "styleSlot": "detail.label.subtitle" }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "panel",
+            "name": "TabSkills",
+            "widget": { "top": 28, "bottom": 112, "left": 28, "right": 28 },
+            "layout": { "type": "vertical", "spacing": 16, "paddingTop": 0, "paddingBottom": 0, "paddingLeft": 0, "paddingRight": 0 },
+            "children": [
+              {
+                "type": "panel",
+                "name": "PrimarySkillCard",
+                "width": "100%",
+                "height": 72,
+                "skinSlot": "detail.section.bg",
+                "layout": { "type": "vertical", "spacing": 0, "paddingTop": 16, "paddingBottom": 16, "paddingLeft": 20, "paddingRight": 20 },
+                "children": [
+                  { "type": "label", "name": "PrimarySkillValue", "width": "100%", "height": 36, "styleSlot": "detail.label.subtitle" }
+                ]
+              },
+              {
+                "type": "panel",
+                "name": "LearnedSkillsCard",
+                "width": "100%",
+                "height": 126,
+                "skinSlot": "detail.section.bg",
+                "layout": { "type": "vertical", "spacing": 0, "paddingTop": 16, "paddingBottom": 16, "paddingLeft": 20, "paddingRight": 20 },
+                "children": [
+                  { "type": "label", "name": "LearnedSkillsValue", "width": "100%", "height": 94, "styleSlot": "detail.label.valueDense" }
+                ]
+              },
+              {
+                "type": "panel",
+                "name": "InspiredSkillsCard",
+                "width": "100%",
+                "height": 126,
+                "skinSlot": "detail.section.bg",
+                "layout": { "type": "vertical", "spacing": 0, "paddingTop": 16, "paddingBottom": 16, "paddingLeft": 20, "paddingRight": 20 },
+                "children": [
+                  { "type": "label", "name": "InspiredSkillsValue", "width": "100%", "height": 94, "styleSlot": "detail.label.valueDense" }
+                ]
+              },
+              {
+                "type": "panel",
+                "name": "LockedSkillsCard",
+                "width": "100%",
+                "height": 126,
+                "skinSlot": "detail.section.bg",
+                "layout": { "type": "vertical", "spacing": 0, "paddingTop": 16, "paddingBottom": 16, "paddingLeft": 20, "paddingRight": 20 },
+                "children": [
+                  { "type": "label", "name": "LockedSkillsValue", "width": "100%", "height": 94, "styleSlot": "detail.label.valueDense" }
+                ]
+              },
+              {
+                "type": "panel",
+                "name": "SkillNoteCard",
+                "width": "100%",
+                "height": 76,
+                "skinSlot": "detail.section.bg",
+                "layout": { "type": "vertical", "spacing": 0, "paddingTop": 16, "paddingBottom": 16, "paddingLeft": 20, "paddingRight": 20 },
+                "children": [
+                  { "type": "label", "name": "SkillNoteValue", "width": "100%", "height": 44, "styleSlot": "detail.label.note" }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "panel",
+            "name": "TabAptitude",
+            "widget": { "top": 28, "bottom": 112, "left": 28, "right": 28 },
+            "layout": { "type": "vertical", "spacing": 16, "paddingTop": 0, "paddingBottom": 0, "paddingLeft": 0, "paddingRight": 0 },
+            "children": [
+              {
+                "type": "panel",
+                "name": "TroopCard",
+                "width": "100%",
+                "height": 148,
+                "skinSlot": "detail.section.bg",
+                "layout": { "type": "vertical", "spacing": 0, "paddingTop": 18, "paddingBottom": 18, "paddingLeft": 20, "paddingRight": 20 },
+                "children": [
+                  { "type": "label", "name": "TroopValue", "width": "100%", "height": 112, "styleSlot": "detail.label.valueDense" }
+                ]
+              },
+              {
+                "type": "panel",
+                "name": "TerrainCard",
+                "width": "100%",
+                "height": 168,
+                "skinSlot": "detail.section.bg",
+                "layout": { "type": "vertical", "spacing": 0, "paddingTop": 18, "paddingBottom": 18, "paddingLeft": 20, "paddingRight": 20 },
+                "children": [
+                  { "type": "label", "name": "TerrainValue", "width": "100%", "height": 132, "styleSlot": "detail.label.valueDense" }
+                ]
+              },
+              {
+                "type": "panel",
+                "name": "WeatherCard",
+                "width": "100%",
+                "height": 196,
+                "skinSlot": "detail.section.bg",
+                "layout": { "type": "vertical", "spacing": 0, "paddingTop": 18, "paddingBottom": 18, "paddingLeft": 20, "paddingRight": 20 },
+                "children": [
+                  { "type": "label", "name": "WeatherValue", "width": "100%", "height": 160, "styleSlot": "detail.label.valueDense" }
+                ]
+              },
+              {
+                "type": "panel",
+                "name": "TerrainSummaryCard",
+                "width": "100%",
+                "height": 92,
+                "skinSlot": "detail.section.bg",
+                "layout": { "type": "vertical", "spacing": 8, "paddingTop": 18, "paddingBottom": 18, "paddingLeft": 20, "paddingRight": 20 },
+                "children": [
+                  { "type": "label", "name": "PreferredTerrainValue", "width": "100%", "height": 24, "styleSlot": "detail.label.subtitle" },
+                  { "type": "label", "name": "TerrainBonusValue", "width": "100%", "height": 24, "styleSlot": "detail.label.subtitle" }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "panel",
+            "name": "TabExtended",
+            "widget": { "top": 28, "bottom": 112, "left": 28, "right": 28 },
+            "layout": { "type": "vertical", "spacing": 16, "paddingTop": 0, "paddingBottom": 0, "paddingLeft": 0, "paddingRight": 0 },
+            "children": [
+              { "type": "label", "name": "CurrentHpValue", "width": "100%", "height": 40, "styleSlot": "detail.label.value" },
+              { "type": "label", "name": "CurrentSpValue", "width": "100%", "height": 40, "styleSlot": "detail.label.value" },
+              { "type": "label", "name": "AttackBonusValue", "width": "100%", "height": 40, "styleSlot": "detail.label.value" },
+              { "type": "label", "name": "HiddenFlagsValue", "width": "100%", "height": 120, "styleSlot": "detail.label.value" },
+              { "type": "label", "name": "NotesValue", "width": "100%", "height": 60, "styleSlot": "detail.label.value" },
+              { "type": "label", "name": "DevNoteValue", "width": "100%", "height": 60, "styleSlot": "detail.label.value" }
+            ]
+          },
+          {
+            "type": "panel",
+            "name": "FooterPanelFill",
+            "widget": { "left": 24, "right": 24, "bottom": 24 },
+            "height": 72,
+            "skinSlot": "detail.footer.fill"
+          },
+          {
+            "type": "panel",
+            "name": "FooterPanelBleed",
+            "widget": { "left": 24, "right": 24, "bottom": 24 },
+            "height": 72,
+            "skinSlot": "detail.footer.bleed"
+          },
+          {
+            "type": "panel",
+            "name": "FooterPanelFrame",
+            "widget": { "left": 24, "right": 24, "bottom": 24 },
+            "height": 72,
+            "skinSlot": "detail.footer.frame"
+          },
+          {
+            "type": "container",
+            "name": "FooterPanel",
+            "widget": { "left": 24, "right": 24, "bottom": 24 },
+            "height": 72,
+            "layout": { "type": "horizontal", "spacing": 10, "paddingTop": 8, "paddingBottom": 8, "paddingLeft": 14, "paddingRight": 14 },
+            "children": [
+              { "type": "button", "name": "BtnFavorite", "width": 128, "height": 56, "skinSlot": "common.button.primary", "styleSlot": "detail.label.button", "text": "收藏" },
+              { "type": "button", "name": "BtnLock", "width": 128, "height": 56, "skinSlot": "common.button.primary", "styleSlot": "detail.label.button", "text": "鎖定" },
+              { "type": "button", "name": "BtnCompare", "width": 128, "height": 56, "skinSlot": "common.button.primary", "styleSlot": "detail.label.button", "text": "比較" },
+              { "type": "button", "name": "BtnShare", "width": 128, "height": 56, "skinSlot": "common.button.primary", "styleSlot": "detail.label.button", "text": "分享" }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

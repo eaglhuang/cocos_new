@@ -1,0 +1,55 @@
+{
+  "id": "lobby-main-main",
+  "version": 1,
+  "canvas": { "fitWidth": true, "fitHeight": true, "safeArea": true, "designWidth": 1920, "designHeight": 1080 },
+  "root": {
+    "type": "container",
+    "name": "LobbyRoot",
+    "widget": { "top": 0, "left": 0, "right": 0, "bottom": 0 },
+    "children": [
+      {
+        "type": "sprite",
+        "name": "Background",
+        "widget": { "top": 0, "left": 0, "right": 0, "bottom": 0 },
+        "skinSlot": "lobby.bg",
+        "zIndex": 0
+      },
+      {
+        "type": "panel",
+        "name": "TopBar",
+        "widget": { "top": 0, "left": 0, "right": 0 },
+        "height": 72,
+        "skinSlot": "lobby.topbar.bg",
+        "layout": { "type": "horizontal", "spacing": 12, "paddingLeft": 24, "paddingRight": 24 },
+        "children": [
+          { "type": "sprite", "name": "Avatar",       "id": "avatarIcon",    "width": 56, "height": 56, "skinSlot": "lobby.avatar" },
+          { "type": "label",  "name": "PlayerName",   "id": "playerName",    "width": 200, "height": 40, "styleSlot": "lobby.label.name" },
+          { "type": "label",  "name": "ResourceGold", "id": "resourceGold",  "width": 160, "height": 32, "styleSlot": "lobby.label.resource" },
+          { "type": "label",  "name": "ResourceGem",  "id": "resourceGem",   "width": 160, "height": 32, "styleSlot": "lobby.label.resource" },
+          { "type": "sprite", "name": "NetworkStatus", "width": 36, "height": 36, "skinSlot": "lobby.icon.network" }
+        ]
+      },
+      {
+        "type": "panel",
+        "name": "NavBar",
+        "widget": { "bottom": 0, "left": 0, "right": 0 },
+        "height": 88,
+        "skinSlot": "lobby.navbar.bg",
+        "layout": { "type": "horizontal", "spacing": 0, "paddingLeft": 8, "paddingRight": 8 },
+        "children": [
+          { "type": "button", "name": "BtnBattle",       "id": "btnBattle",      "width": "20%", "height": 80, "skinSlot": "lobby.nav.btn", "children": [ { "type": "label", "name": "Label", "textKey": "UI_NAV_BATTLE",       "styleSlot": "lobby.label.nav" } ] },
+          { "type": "button", "name": "BtnGenerals",     "id": "btnGenerals",    "width": "20%", "height": 80, "skinSlot": "lobby.nav.btn", "children": [ { "type": "label", "name": "Label", "textKey": "UI_NAV_GENERALS",     "styleSlot": "lobby.label.nav" } ] },
+          { "type": "button", "name": "BtnSupportCard",  "id": "btnSupportCard", "width": "20%", "height": 80, "skinSlot": "lobby.nav.btn", "children": [ { "type": "label", "name": "Label", "textKey": "UI_NAV_SUPPORT",      "styleSlot": "lobby.label.nav" } ] },
+          { "type": "button", "name": "BtnGacha",        "id": "btnGacha",       "width": "20%", "height": 80, "skinSlot": "lobby.nav.btn", "children": [ { "type": "label", "name": "Label", "textKey": "UI_NAV_GACHA",        "styleSlot": "lobby.label.nav" } ] },
+          { "type": "button", "name": "BtnShop",         "id": "btnShop",        "width": "20%", "height": 80, "skinSlot": "lobby.nav.btn", "children": [ { "type": "label", "name": "Label", "textKey": "UI_NAV_SHOP",         "styleSlot": "lobby.label.nav" } ] }
+        ]
+      },
+      {
+        "type": "panel",
+        "name": "ContentArea",
+        "id": "contentArea",
+        "widget": { "top": 72, "left": 0, "right": 0, "bottom": 88 }
+      }
+    ]
+  }
+}

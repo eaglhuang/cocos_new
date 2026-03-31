@@ -1,3 +1,4 @@
+// @spec-source → 見 docs/cross-reference-index.md
 import { Component, Node } from "cc";
 
 type EventHandler<T = any> = (payload?: T) => void;

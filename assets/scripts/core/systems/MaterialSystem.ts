@@ -1,4 +1,5 @@
-import { Color, Material, MeshRenderer, Node, primitives, renderer, resources, utils, Vec4 } from "cc";
+// @spec-source → 見 docs/cross-reference-index.md
+import { Color, EffectAsset, Material, MeshRenderer, Node, primitives, renderer, resources, utils, Vec4 } from "cc";
 import { setMaterialSafe } from "../utils/MaterialUtils";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -171,7 +172,14 @@ export class MaterialSystem {
         // 建立最小 mesh 並套用材質
         const mr = warmupNode.addComponent(MeshRenderer);
         mr.mesh = utils.MeshUtils.createMesh(primitives.box({ width: 0.001, height: 0.001, length: 0.001 }));
-        mr.material = mat;
+        // 安全套用：若 Effect GLSL 有問題只 warn，不讓整個場景崩潰
+        try {
+            mr.material = mat;
+        } catch (e) {
+            console.warn(`[MaterialSystem] Shader "${entry.id}" 暖機失敗 — 材質套用錯誤:`, e);
+            if (warmupNode.isValid) warmupNode.destroy();
+            return;
+        }
 
         // 移至鏡頭不可見的遠處，避免出現在畫面中
         warmupNode.setPosition(99999, 99999, 99999);
@@ -185,12 +193,30 @@ export class MaterialSystem {
     private loadMaterial(path: string): Promise<Material> {
         return new Promise((resolve, reject) => {
             // 支援動態初始化 Effect（不需實體 .mtl 檔案）
+            // 改用 resources.load(EffectAsset) 確保 EffectAsset 已被載入並註冊，
+            // 避免 EffectAsset.get(name) 因時序問題查不到而建立空 passes 的 Material。
+            // Unity 對照：相當於先 await Resources.LoadAsync<Shader> 再 new Material(shader)
             if (path.startsWith('effect:')) {
                 const effectName = path.substring(7);
-                const mat = new Material();
-                mat.initialize({ effectName });
-                mat.addRef();
-                resolve(mat);
+                resources.load(`effects/${effectName}`, EffectAsset, (err, effectAsset) => {
+                    if (err || !effectAsset) {
+                        // Fallback：嘗試從全域 registry 查（已被其他資產觸發載入的情況）
+                        console.warn(`[MaterialSystem] resources.load effect "${effectName}" 失敗，嘗試全域 registry fallback:`, err);
+                        const mat = new Material();
+                        mat.initialize({ effectName });
+                        if (mat.passes.length === 0) {
+                            reject(new Error(`[MaterialSystem] Effect "${effectName}" 未找到且 passes 為空`));
+                            return;
+                        }
+                        mat.addRef();
+                        resolve(mat);
+                        return;
+                    }
+                    const mat = new Material();
+                    mat.initialize({ effectAsset });
+                    mat.addRef();
+                    resolve(mat);
+                });
                 return;
             }
 

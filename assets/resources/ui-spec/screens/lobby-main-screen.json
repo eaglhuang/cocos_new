@@ -1,0 +1,13 @@
+{
+  "id": "lobby-main-screen",
+  "version": 1,
+  "uiId": "LobbyMain",
+  "layer": "UI2D",
+  "bundle": "lobby_ui",
+  "layout": "lobby-main-main",
+  "skin": "lobby-main-default",
+  "validation": {
+    "devices": ["phone-16-9", "phone-19_5-9"],
+    "allowMissingSkin": true
+  }
+}

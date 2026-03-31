@@ -1,0 +1,95 @@
+{
+  "id": "general-portrait-main",
+  "version": 1,
+  "canvas": { "fitWidth": true, "fitHeight": true, "safeArea": true, "designWidth": 1920, "designHeight": 1080 },
+  "root": {
+    "type": "container",
+    "name": "GeneralPortraitRoot",
+    "widget": { "top": 0, "bottom": 0, "left": 0, "right": 0 },
+    "transition": { "enter": "fadeIn", "exit": "fadeOut", "duration": 0.3 },
+    "children": [
+      {
+        "type": "panel",
+        "name": "Overlay",
+        "widget": { "top": 0, "bottom": 0, "left": 0, "right": 0 },
+        "skinSlot": "common.overlay"
+      },
+      {
+        "type": "image",
+        "name": "PortraitImage",
+        "widget": { "left": 300, "bottom": 0 },
+        "width": 1024,
+        "height": 1024,
+        "skinSlot": "general.portrait.placeholder"
+      },
+      {
+        "type": "panel",
+        "name": "InfoPanel",
+        "widget": { "right": 80, "top": 80, "bottom": 80 },
+        "width": 650,
+        "skinSlot": "general.info.bg",
+        "layout": { "type": "vertical", "spacing": 20, "paddingTop": 40, "paddingLeft": 50, "paddingRight": 50 },
+        "children": [
+          {
+            "type": "container",
+            "name": "HeaderContent",
+            "width": "100%",
+            "height": 110,
+            "children": [
+              { "type": "label", "name": "TitleText", "widget": { "top": 10, "left": 10 }, "bind": "title", "styleSlot": "general.label.title", "height": 30, "width": 400 },
+              { "type": "label", "name": "NameText", "widget": { "top": 45, "left": 10 }, "bind": "name", "styleSlot": "general.label.name", "height": 55, "width": 150 },
+              { "type": "label", "name": "AgeRoleText", "widget": { "top": 60, "left": 160 }, "bind": "ageRole", "styleSlot": "general.label.desc", "height": 30, "width": 300 }
+            ]
+          },
+          {
+            "type": "panel",
+            "name": "VitalityBox",
+            "height": 60,
+            "skinSlot": "general.box.bg",
+            "layout": { "type": "horizontal", "spacing": 20, "paddingLeft": 20 },
+            "children": [
+              { "type": "label", "name": "VitLabel", "textKey": "ui.general.vitality", "styleSlot": "general.label.statName", "height": 60, "width": 80 },
+              { "type": "label", "name": "VitValue", "bind": "vitality", "styleSlot": "general.label.statValue", "height": 60, "width": 150 }
+            ]
+          },
+          {
+            "type": "panel",
+            "name": "StatsBox",
+            "height": 260,
+            "skinSlot": "general.box.bg",
+            "layout": { "type": "vertical", "spacing": 10, "paddingTop": 20, "paddingLeft": 20 },
+            "children": [
+              { "type": "label", "name": "StatsTitle", "textKey": "ui.general.sixStats", "styleSlot": "general.label.section", "height": 30, "width": 550 },
+              { "type": "label", "name": "StatStr", "bind": "statStr", "styleSlot": "general.label.statValue", "height": 30, "width": 550 },
+              { "type": "label", "name": "StatInt", "bind": "statInt", "styleSlot": "general.label.statValue", "height": 30, "width": 550 },
+              { "type": "label", "name": "StatLea", "bind": "statLea", "styleSlot": "general.label.statValue", "height": 30, "width": 550 },
+              { "type": "label", "name": "StatPol", "bind": "statPol", "styleSlot": "general.label.statValue", "height": 30, "width": 550 },
+              { "type": "label", "name": "StatCha", "bind": "statCha", "styleSlot": "general.label.statValue", "height": 30, "width": 550 },
+              { "type": "label", "name": "StatLuk", "bind": "statLuk", "styleSlot": "general.label.statValue", "height": 30, "width": 550 }
+            ]
+          },
+          {
+            "type": "panel",
+            "name": "TagsBox",
+            "height": 100,
+            "skinSlot": "general.box.bg",
+            "layout": { "type": "vertical", "spacing": 10, "paddingTop": 20, "paddingLeft": 20 },
+            "children": [
+              { "type": "label", "name": "TagsTitle", "textKey": "ui.general.coreTags", "styleSlot": "general.label.section", "height": 30, "width": 550 },
+              { "type": "label", "name": "TagsValue", "bind": "coreTags", "styleSlot": "general.label.desc", "height": 40, "width": 550 }
+            ]
+          },
+          {
+            "type": "button",
+            "name": "BtnClose",
+            "width": 200,
+            "height": 60,
+            "skinSlot": "common.button.primary",
+            "textKey": "ui.close",
+            "onClick": "onClickClose"
+          }
+        ]
+      }
+    ]
+  }
+}

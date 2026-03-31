@@ -1,0 +1,258 @@
+{
+  "ver": "2.3.14",
+  "importer": "gltf",
+  "imported": true,
+  "uuid": "34cf5c0c-66a8-470f-8e36-fce0673002ca",
+  "files": [],
+  "subMetas": {
+    "58776": {
+      "importer": "gltf-mesh",
+      "uuid": "34cf5c0c-66a8-470f-8e36-fce0673002ca@58776",
+      "displayName": "",
+      "id": "58776",
+      "name": "tripo_mesh_2e78f165-e114-45d7-b428-fcbcc98de0ca.mesh",
+      "userData": {
+        "gltfIndex": 0,
+        "triangleCount": 7644
+      },
+      "ver": "1.1.1",
+      "imported": true,
+      "files": [
+        ".bin",
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "f9d1d": {
+      "importer": "gltf-skeleton",
+      "uuid": "34cf5c0c-66a8-470f-8e36-fce0673002ca@f9d1d",
+      "displayName": "",
+      "id": "f9d1d",
+      "name": "Armature.skeleton",
+      "userData": {
+        "gltfIndex": 0,
+        "jointsLength": 39
+      },
+      "ver": "1.0.1",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "f49b0": {
+      "importer": "gltf-embeded-image",
+      "uuid": "34cf5c0c-66a8-470f-8e36-fce0673002ca@f49b0",
+      "displayName": "",
+      "id": "f49b0",
+      "name": "armoredwarrior3dmodel_normal.image",
+      "userData": {
+        "gltfIndex": 0,
+        "fixAlphaTransparencyArtifacts": true,
+        "hasAlpha": false,
+        "type": "texture"
+      },
+      "ver": "1.0.3",
+      "imported": true,
+      "files": [
+        ".jpg",
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "3e17a": {
+      "importer": "gltf-embeded-image",
+      "uuid": "34cf5c0c-66a8-470f-8e36-fce0673002ca@3e17a",
+      "displayName": "",
+      "id": "3e17a",
+      "name": "armoredwarrior3dmodel_basecolor.image",
+      "userData": {
+        "gltfIndex": 1,
+        "fixAlphaTransparencyArtifacts": true,
+        "hasAlpha": false,
+        "type": "texture"
+      },
+      "ver": "1.0.3",
+      "imported": true,
+      "files": [
+        ".jpg",
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "c5d74": {
+      "importer": "gltf-embeded-image",
+      "uuid": "34cf5c0c-66a8-470f-8e36-fce0673002ca@c5d74",
+      "displayName": "",
+      "id": "c5d74",
+      "name": "armoredwarrior3dmodel_rm.image",
+      "userData": {
+        "gltfIndex": 2,
+        "fixAlphaTransparencyArtifacts": true,
+        "hasAlpha": false,
+        "type": "texture"
+      },
+      "ver": "1.0.3",
+      "imported": true,
+      "files": [
+        ".json",
+        ".png"
+      ],
+      "subMetas": {}
+    },
+    "3effa": {
+      "importer": "texture",
+      "uuid": "34cf5c0c-66a8-470f-8e36-fce0673002ca@3effa",
+      "displayName": "",
+      "id": "3effa",
+      "name": "UnnamedTexture-0.texture",
+      "userData": {
+        "wrapModeS": "repeat",
+        "wrapModeT": "repeat",
+        "minfilter": "linear",
+        "magfilter": "linear",
+        "mipfilter": "linear",
+        "anisotropy": 0,
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "34cf5c0c-66a8-470f-8e36-fce0673002ca@f49b0"
+      },
+      "ver": "1.0.22",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "221a5": {
+      "importer": "texture",
+      "uuid": "34cf5c0c-66a8-470f-8e36-fce0673002ca@221a5",
+      "displayName": "",
+      "id": "221a5",
+      "name": "UnnamedTexture-1.texture",
+      "userData": {
+        "wrapModeS": "repeat",
+        "wrapModeT": "repeat",
+        "minfilter": "linear",
+        "magfilter": "linear",
+        "mipfilter": "linear",
+        "anisotropy": 0,
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "34cf5c0c-66a8-470f-8e36-fce0673002ca@3e17a"
+      },
+      "ver": "1.0.22",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "0089c": {
+      "importer": "texture",
+      "uuid": "34cf5c0c-66a8-470f-8e36-fce0673002ca@0089c",
+      "displayName": "",
+      "id": "0089c",
+      "name": "UnnamedTexture-2.texture",
+      "userData": {
+        "wrapModeS": "repeat",
+        "wrapModeT": "repeat",
+        "minfilter": "linear",
+        "magfilter": "linear",
+        "mipfilter": "linear",
+        "anisotropy": 0,
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "34cf5c0c-66a8-470f-8e36-fce0673002ca@c5d74"
+      },
+      "ver": "1.0.22",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "ea608": {
+      "importer": "gltf-material",
+      "uuid": "34cf5c0c-66a8-470f-8e36-fce0673002ca@ea608",
+      "displayName": "",
+      "id": "ea608",
+      "name": "tripo_mat_2e78f165-e114-45d7-b428-fcbcc98de0ca.material",
+      "userData": {
+        "gltfIndex": 0
+      },
+      "ver": "1.0.14",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "9e02a": {
+      "importer": "gltf-scene",
+      "uuid": "34cf5c0c-66a8-470f-8e36-fce0673002ca@9e02a",
+      "displayName": "",
+      "id": "9e02a",
+      "name": "zhangfei.prefab",
+      "userData": {
+        "gltfIndex": 0
+      },
+      "ver": "1.0.14",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    }
+  },
+  "userData": {
+    "imageMetas": [
+      {
+        "name": "armoredwarrior3dmodel_normal",
+        "uri": "34cf5c0c-66a8-470f-8e36-fce0673002ca@f49b0"
+      },
+      {
+        "name": "armoredwarrior3dmodel_basecolor",
+        "uri": "34cf5c0c-66a8-470f-8e36-fce0673002ca@3e17a"
+      },
+      {
+        "name": "armoredwarrior3dmodel_rm",
+        "uri": "34cf5c0c-66a8-470f-8e36-fce0673002ca@c5d74"
+      }
+    ],
+    "lods": {
+      "enable": false,
+      "hasBuiltinLOD": false,
+      "options": [
+        {
+          "screenRatio": 0.25,
+          "faceCount": 1
+        },
+        {
+          "screenRatio": 0.125,
+          "faceCount": 0.25
+        },
+        {
+          "screenRatio": 0.01,
+          "faceCount": 0.1
+        }
+      ]
+    },
+    "assetFinder": {
+      "meshes": [
+        "34cf5c0c-66a8-470f-8e36-fce0673002ca@58776"
+      ],
+      "skeletons": [
+        "34cf5c0c-66a8-470f-8e36-fce0673002ca@f9d1d"
+      ],
+      "textures": [
+        "34cf5c0c-66a8-470f-8e36-fce0673002ca@3effa",
+        "34cf5c0c-66a8-470f-8e36-fce0673002ca@221a5",
+        "34cf5c0c-66a8-470f-8e36-fce0673002ca@0089c"
+      ],
+      "materials": [
+        "34cf5c0c-66a8-470f-8e36-fce0673002ca@ea608"
+      ],
+      "scenes": [
+        "34cf5c0c-66a8-470f-8e36-fce0673002ca@9e02a"
+      ]
+    }
+  }
+}

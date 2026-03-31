@@ -1,3 +1,4 @@
+// @spec-source → 見 docs/cross-reference-index.md
 /**
  * ParticleUtils — 粒子系統動態覆寫工具（S-3）
  *

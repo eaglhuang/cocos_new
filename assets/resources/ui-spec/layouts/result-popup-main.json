@@ -1,0 +1,82 @@
+{
+  "id": "result-popup-main",
+  "version": 1,
+  "canvas": { "fitWidth": true, "fitHeight": true, "safeArea": true, "designWidth": 1920, "designHeight": 1080 },
+  "root": {
+    "type": "container",
+    "name": "ResultPopupRoot",
+    "widget": { "top": 0, "left": 0, "right": 0, "bottom": 0 },
+    "transition": { "enter": "fadeIn", "exit": "fadeOut", "duration": 0.25 },
+    "children": [
+      {
+        "type": "panel",
+        "name": "Overlay",
+        "widget": { "top": 0, "left": 0, "right": 0, "bottom": 0 },
+        "skinSlot": "popup.overlay"
+      },
+      {
+        "type": "panel",
+        "name": "Card",
+        "id": "card",
+        "width": 640,
+        "height": 380,
+        "skinSlot": "popup.card.bg",
+        "layout": { "type": "vertical", "spacing": 16, "paddingTop": 40, "paddingBottom": 32, "paddingLeft": 48, "paddingRight": 48 },
+        "children": [
+          {
+            "type": "label",
+            "name": "TitleLabel",
+            "id": "titleLabel",
+            "width": "100%",
+            "height": 64,
+            "textKey": "ui.result.victory",
+            "styleSlot": "popup.label.title"
+          },
+          {
+            "type": "label",
+            "name": "DescLabel",
+            "id": "descLabel",
+            "width": "100%",
+            "height": 48,
+            "textKey": "ui.result.title",
+            "styleSlot": "popup.label.desc"
+          },
+          {
+            "type": "spacer",
+            "name": "Spacer",
+            "height": 16
+          },
+          {
+            "type": "panel",
+            "name": "ButtonRow",
+            "width": "100%",
+            "height": 56,
+            "layout": { "type": "horizontal", "spacing": 16 },
+            "children": [
+              {
+                "type": "button",
+                "name": "BtnBack",
+                "id": "btnBack",
+                "width": "48%",
+                "height": 56,
+                "skinSlot": "common.button.secondary",
+                "textKey": "ui.result.back_to_lobby",
+                "onClick": "onClickBack"
+              },
+              {
+                "type": "button",
+                "name": "BtnReplay",
+                "id": "btnReplay",
+                "width": "48%",
+                "height": 56,
+                "skinSlot": "common.button.primary",
+                "textKey": "ui.result.retry",
+                "onClick": "onClickReplay"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

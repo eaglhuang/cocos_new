@@ -1,0 +1,47 @@
+{
+  "name": "ParchmentPanel",
+  "type": "container",
+  "children": [
+    {
+      "name": "Shadow",
+      "type": "shadow",
+      "widget": { "top": -4, "bottom": -4, "left": -4, "right": -4 },
+      "skinSlot": "parchment.bg.shadow",
+      "zIndex": -1
+    },
+    {
+      "name": "Fill",
+      "type": "panel",
+      "widget": { "top": 0, "bottom": 0, "left": 0, "right": 0 },
+      "skinSlot": "parchment.bg.fill",
+      "zIndex": 0
+    },
+    {
+      "name": "Noise",
+      "type": "panel",
+      "widget": { "top": 0, "bottom": 0, "left": 0, "right": 0 },
+      "skinSlot": "parchment.bg.noise",
+      "zIndex": 5
+    },
+    {
+      "name": "Bleed",
+      "type": "panel",
+      "widget": { "top": 0, "bottom": 0, "left": 0, "right": 0 },
+      "skinSlot": "parchment.bg.bleed",
+      "zIndex": 10
+    },
+    {
+      "name": "Content",
+      "type": "container",
+      "widget": { "top": 0, "bottom": 0, "left": 0, "right": 0 },
+      "zIndex": 20
+    },
+    {
+      "name": "Frame",
+      "type": "panel",
+      "widget": { "top": 0, "bottom": 0, "left": 0, "right": 0 },
+      "skinSlot": "parchment.bg.frame",
+      "zIndex": 30
+    }
+  ]
+}

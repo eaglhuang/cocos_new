@@ -1,5 +1,9 @@
-import { promises as fs } from 'node:fs';
-import * as path from 'node:path';
+
+/**
+ * 腳本使用 node:fs / node:path。
+ * 注意：這些模組僅在 Node.js (Editor/CLI) 環境可用。
+ * 在 Cocos 預覽網頁環境下會跳過執行。
+ */
 
 type TroopDefaults = {
   modelScale: number;
@@ -58,6 +62,8 @@ function formatNumber(value: number): string {
 }
 
 async function exists(filePath: string): Promise<boolean> {
+  if (typeof window !== 'undefined') return false;
+  const fs = require('node:fs').promises;
   try {
     await fs.access(filePath);
     return true;
@@ -77,6 +83,8 @@ function pickSceneUuid(meta: any): string | undefined {
 }
 
 async function buildTroopEntries(projectPath: string): Promise<Array<{ enumKey: string; entry: TroopCatalogEntry }>> {
+  const path = require('node:path');
+  const fs = require('node:fs').promises;
   const troopsRoot = path.join(projectPath, 'assets', 'resources', 'units', 'troops');
   const entries = await fs.readdir(troopsRoot, { withFileTypes: true });
   const result: Array<{ enumKey: string; entry: TroopCatalogEntry }> = [];
@@ -124,6 +132,8 @@ async function buildTroopEntries(projectPath: string): Promise<Array<{ enumKey: 
 }
 
 async function buildHeroEntries(projectPath: string): Promise<Array<{ heroId: string; entry: HeroCatalogEntry }>> {
+  const path = require('node:path');
+  const fs = require('node:fs').promises;
   const heroesRoot = path.join(projectPath, 'assets', 'resources', 'units', 'heroes');
   const entries = await fs.readdir(heroesRoot, { withFileTypes: true });
   const result: Array<{ heroId: string; entry: HeroCatalogEntry }> = [];
@@ -138,6 +148,7 @@ async function buildHeroEntries(projectPath: string): Promise<Array<{ heroId: st
     const metaPath = `${glbPath}.meta`;
     const prefabFilePath = path.join(heroesRoot, heroId, 'hero.prefab');
     const prefabPath = await exists(prefabFilePath) ? `units/heroes/${heroId}/hero` : undefined;
+    const fs = require('node:fs').promises;
     const sceneUuid = await exists(metaPath)
       ? pickSceneUuid(JSON.parse(await fs.readFile(metaPath, 'utf8')))
       : undefined;
@@ -226,6 +237,8 @@ export const methods = {
 
       const troopEntries = await buildTroopEntries(projectPath);
       const heroEntries = await buildHeroEntries(projectPath);
+      const path = require('node:path');
+      const fs = require('node:fs').promises;
       const outputPath = path.join(projectPath, 'assets', 'scripts', 'core', 'config', 'UnitAssetCatalog.ts');
       const content = renderCatalogFile(troopEntries, heroEntries);
       await fs.writeFile(outputPath, content, 'utf8');

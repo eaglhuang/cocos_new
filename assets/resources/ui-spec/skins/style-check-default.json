@@ -1,0 +1,21 @@
+{
+  "id": "style-check-default",
+  "version": 1,
+  "bundle": "ui_common",
+  "slots": {
+    "sandbox.main_bg": { "kind": "sprite-frame", "path": "sprites/common/bg_ink/spriteFrame", "spriteType": "sliced", "border": [1, 1, 1, 1], "allowAutoAtlas": false },
+    "sandbox.main.shadow": { "kind": "sprite-frame", "path": "sprites/ui_families/common/shadow/shadow_01", "spriteType": "sliced", "border": [20, 20, 20, 20], "allowAutoAtlas": true },
+    "rarity.white":   { "kind": "color-rect", "color": "rarityWhite" },
+    "rarity.green":   { "kind": "color-rect", "color": "rarityGreen" },
+    "rarity.blue":    { "kind": "color-rect", "color": "rarityBlue" },
+    "rarity.purple":  { "kind": "color-rect", "color": "rarityPurple" },
+    "rarity.gold":    { "kind": "color-rect", "color": "rarityGold" },
+    "rarity.red":     { "kind": "color-rect", "color": "rarityRed" },
+    "rarity.rainbow": { "kind": "color-rect", "color": "rarityRainbow" },
+    "sandbox.label.headline": { "kind": "label-style", "style": "headlineLg", "color": "secondary" },
+    "sandbox.label.body": { "kind": "label-style", "style": "bodyMd", "color": "textSecondary" },
+    "sandbox.button.primary": { "kind": "button-skin", "normal": "primary", "pressed": "primaryLight", "textKey": "ui.style_check.primary" },
+    "sandbox.button.secondary": { "kind": "button-skin", "normal": "secondary", "pressed": "secondaryLight", "textKey": "ui.style_check.secondary" },
+    "sandbox.button.parchment": { "kind": "button-skin", "normal": "surfaceParchment", "pressed": "surfaceHigh", "textColor": "textInk", "textKey": "ui.style_check.parchment" }
+  }
+}

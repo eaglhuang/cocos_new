@@ -1,0 +1,225 @@
+{
+  "id": "gacha-preview-main",
+  "version": 1,
+  "canvas": { "fitWidth": true, "fitHeight": true, "safeArea": true, "designWidth": 1920, "designHeight": 1080 },
+  "root": {
+    "type": "container",
+    "name": "GachaPreviewRoot",
+    "widget": { "top": 0, "left": 0, "right": 0, "bottom": 0 },
+    "children": [
+      {
+        "type": "panel",
+        "name": "Backdrop",
+        "widget": { "top": 0, "left": 0, "right": 0, "bottom": 0 },
+        "color": "#0F0F0F"
+      },
+      {
+        "type": "panel",
+        "name": "HeroGlow",
+        "x": 0,
+        "y": 80,
+        "width": 1240,
+        "height": 620,
+        "color": "#241A0D",
+        "opacity": 0.92
+      },
+      {
+        "type": "container",
+        "name": "TopBar",
+        "widget": { "top": 24, "left": 32, "right": 32 },
+        "height": 88,
+        "layout": { "type": "horizontal", "spacing": 24, "paddingLeft": 0, "paddingRight": 0, "verticalDirection": "top-to-bottom" },
+        "children": [
+          {
+            "type": "button",
+            "name": "BackBtn",
+            "width": 88,
+            "height": 88,
+            "skinSlot": "gacha.btn.back"
+          },
+          {
+            "type": "label",
+            "name": "TitleLabel",
+            "width": 300,
+            "height": 52,
+            "text": "招募",
+            "styleSlot": "gacha.label.title"
+          },
+          {
+            "type": "container",
+            "name": "TopSpacer",
+            "height": 8,
+            "layout": { "type": "horizontal" }
+          },
+          {
+            "type": "button",
+            "name": "DestinyShopBtn",
+            "width": 180,
+            "height": 72,
+            "skinSlot": "gacha.btn.destiny_shop",
+            "children": [
+              {
+                "type": "label",
+                "name": "Label",
+                "width": 140,
+                "height": 36,
+                "text": "天命商店",
+                "styleSlot": "gacha.label.pull_cost"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "container",
+        "name": "FeaturedBanner",
+        "x": 0,
+        "y": 84,
+        "width": 1080,
+        "height": 450,
+        "children": [
+          {
+            "type": "shadow",
+            "name": "BannerShadow",
+            "widget": { "top": -8, "left": -8, "right": -8, "bottom": -8 },
+            "skinSlot": "gacha.banner.shadow"
+          },
+          {
+            "type": "panel",
+            "name": "BannerPlate",
+            "widget": { "top": 0, "left": 0, "right": 0, "bottom": 0 },
+            "color": "#2A2010",
+            "opacity": 0.95
+          },
+          {
+            "type": "label",
+            "name": "FeaturedLabel",
+            "x": -320,
+            "y": -166,
+            "width": 420,
+            "height": 40,
+            "text": "限時精選．名將招募",
+            "styleSlot": "gacha.label.featured"
+          },
+          {
+            "type": "label",
+            "name": "TimerLabel",
+            "x": 0,
+            "y": -166,
+            "width": 300,
+            "height": 32,
+            "text": "剩餘 03:12:44",
+            "styleSlot": "gacha.label.timer"
+          }
+        ]
+      },
+      {
+        "type": "container",
+        "name": "PityInfoBar",
+        "x": 0,
+        "y": -180,
+        "width": 1080,
+        "height": 90,
+        "children": [
+          {
+            "type": "panel",
+            "name": "CarrierBg",
+            "widget": { "top": 0, "left": 0, "right": 0, "bottom": 0 },
+            "skinSlot": "gacha.pity.carrier.bg"
+          },
+          {
+            "type": "panel",
+            "name": "CarrierFrame",
+            "widget": { "top": 0, "left": 0, "right": 0, "bottom": 0 },
+            "skinSlot": "gacha.pity.carrier.frame"
+          },
+          {
+            "type": "label",
+            "name": "SmallPityLabel",
+            "x": -330,
+            "y": 0,
+            "width": 420,
+            "height": 32,
+            "text": "再 8 抽必得 SR+",
+            "styleSlot": "gacha.label.pity_small"
+          },
+          {
+            "type": "label",
+            "name": "BigPityLabel",
+            "x": 300,
+            "y": 0,
+            "width": 320,
+            "height": 32,
+            "text": "天命值 120/200",
+            "styleSlot": "gacha.label.pity_big"
+          }
+        ]
+      },
+      {
+        "type": "container",
+        "name": "PullButtons",
+        "x": 0,
+        "y": -356,
+        "width": 860,
+        "height": 136,
+        "layout": { "type": "horizontal", "spacing": 24, "paddingLeft": 0, "paddingRight": 0 },
+        "children": [
+          {
+            "type": "button",
+            "name": "Pull1Btn",
+            "width": 300,
+            "height": 110,
+            "skinSlot": "gacha.btn.pull1",
+            "children": [
+              {
+                "type": "label",
+                "name": "Pull1Label",
+                "y": 16,
+                "width": 180,
+                "height": 34,
+                "text": "1 抽",
+                "styleSlot": "gacha.label.pull_btn"
+              },
+              {
+                "type": "label",
+                "name": "Pull1Cost",
+                "y": -22,
+                "width": 220,
+                "height": 28,
+                "text": "靈玉 ×150",
+                "styleSlot": "gacha.label.pull_cost"
+              }
+            ]
+          },
+          {
+            "type": "button",
+            "name": "Pull10Btn",
+            "width": 536,
+            "height": 110,
+            "skinSlot": "gacha.btn.pull10",
+            "children": [
+              {
+                "type": "label",
+                "name": "Pull10Label",
+                "y": 16,
+                "width": 240,
+                "height": 34,
+                "text": "10 連",
+                "styleSlot": "gacha.label.pull_btn"
+              },
+              {
+                "type": "label",
+                "name": "Pull10Cost",
+                "y": -22,
+                "width": 360,
+                "height": 28,
+                "text": "靈玉 ×1500",
+                "styleSlot": "gacha.label.pull_cost"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

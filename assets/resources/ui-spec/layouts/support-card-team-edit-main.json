@@ -1,0 +1,49 @@
+{
+  "id": "support-card-team-edit-main",
+  "version": 1,
+  "description": "支援卡培育編組頁骨架：頂欄、槽位列表、預覽區與底部操作列。",
+  "canvas": { "fitWidth": true, "fitHeight": true, "safeArea": true, "designWidth": 1920, "designHeight": 1080 },
+  "nodes": [
+    {
+      "name": "SupportCardTeamEditRoot",
+      "type": "Node",
+      "w": 1920,
+      "h": 1080,
+      "children": [
+        {
+          "name": "TopBar",
+          "type": "Node",
+          "w": 1080,
+          "h": 120,
+          "offsetTop": 0,
+          "children": [
+            { "name": "BackBtn", "type": "Button", "w": 88, "h": 88, "offsetLeft": 24, "skinSlot": "topbar.btn.back" },
+            { "name": "TitleLabel", "type": "Label", "skinSlot": "topbar.label.title", "text": "培育教官編組" }
+          ]
+        },
+        {
+          "name": "MainContent",
+          "type": "Node",
+          "w": 1080,
+          "h": 840,
+          "offsetTop": 132,
+          "layout": { "type": "HORIZONTAL", "spacingX": 24 },
+          "children": [
+            { "name": "SlotList", "type": "Node", "w": 520, "h": 840 },
+            { "name": "PreviewPanel", "type": "Node", "w": 536, "h": 840 }
+          ]
+        },
+        {
+          "name": "BottomBar",
+          "type": "Node",
+          "w": 1080,
+          "h": 108,
+          "offsetBottom": 0,
+          "children": [
+            { "name": "ConfirmBtn", "type": "Button", "w": 240, "h": 72, "offsetRight": 24, "text": "套用編組" }
+          ]
+        }
+      ]
+    }
+  ]
+}

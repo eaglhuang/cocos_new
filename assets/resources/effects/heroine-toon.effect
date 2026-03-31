@@ -1,0 +1,190 @@
+﻿// heroine-toon.effect — 女主角專用卡通渲染器 — PBR-Toon 混合著色器
+// ════════════════════════════════════════════════════════════════════════════
+//  設計參考（類比 Unity URP / ShaderGraph 架構）：
+//  1. Outline-free PBR-Toon Hybrid    — 無描邊 PBR 卡通混合模式
+//  2. High-Diffusion Ramp Toon Shadows — smoothstep 色階陰影過渡
+//  3. Fake SSS via Blush Mask          — 次表面散射臉部暈染模擬
+//  4. Material-ID Layering (Metal Mask) — 金屬 / 皮膚材質分層渲染
+//  5. Ethereal Rim Light               — 背光夢幻邊緣暈光效果
+// ════════════════════════════════════════════════════════════════════════════
+
+CCEffect %{
+  name: heroine-toon
+  techniques:
+  - name: opaque
+    passes:
+    - vert: heroine-toon-vs:vert
+      frag: heroine-toon-fs:frag
+      properties: &props
+        mainTexture:         { value: white }
+        controlMap:          { value: black }
+        matcapTex:           { value: white }
+        u_shadowColor:       { value: [0.65, 0.55, 0.62, 1.0], linear: true, editor: { type: color } }
+        u_sssColor:          { value: [1.0, 0.42, 0.38, 1.0],  linear: true, editor: { type: color } }
+        u_metalTint:         { value: [0.72, 0.78, 0.88, 1.0], linear: true, editor: { type: color } }
+        u_rimColor:          { value: [1.0, 0.88, 0.6, 1.0],   linear: true, editor: { type: color } }
+        u_rampSmooth:        { value: 0.25 }
+        u_rampOffset:        { value: 0.0 }
+        u_sssIntensity:      { value: 0.55 }
+        u_metalSpecPower:    { value: 32.0 }
+        u_metalSpecStrength: { value: 0.6 }
+        u_matcapStrength:    { value: 0.35 }
+        u_rimPower:          { value: 2.8 }
+        u_rimStrength:       { value: 0.45 }
+        u_rimSpread:         { value: 0.3 }
+        u_qualityLevel:      { value: 1.0 }
+
+  - name: transparent
+    passes:
+    - vert: heroine-toon-vs:vert
+      frag: heroine-toon-fs:frag
+      blendState:
+        targets:
+        - blend: true
+          blendSrc: src_alpha
+          blendDst: one_minus_src_alpha
+          blendSrcAlpha: src_alpha
+          blendDstAlpha: one_minus_src_alpha
+      depthStencilState:
+        depthWrite: false
+      properties: *props
+}%
+
+
+// ════════════════════════════════════════════════════════════════════════════
+//  Vertex Shader
+//  Unity 對照：appdata → v2f，UnityObjectToClipPos / WorldSpaceViewDir
+// ════════════════════════════════════════════════════════════════════════════
+CCProgram heroine-toon-vs %{
+  precision highp float;
+
+  #include <builtin/uniforms/cc-global>
+  #include <builtin/uniforms/cc-local>
+
+  in vec3 a_position;
+  in vec3 a_normal;
+  in vec2 a_texCoord;
+
+  out vec2 v_uv;
+  out vec3 v_worldNormal;
+  out vec3 v_worldPos;
+  out vec2 v_matcapUV;
+  out float v_rimBasic;
+
+  vec4 vert() {
+    vec4 worldPos4   = cc_matWorld * vec4(a_position, 1.0);
+    v_worldPos       = worldPos4.xyz;
+    v_worldNormal    = normalize((cc_matWorldIT * vec4(a_normal, 0.0)).xyz);
+    v_uv             = a_texCoord;
+
+    // MatCap UV：將 View Space Normal 對應到 [0,1] 貼圖座標
+    // Unity 對照：mul(UNITY_MATRIX_V, float4(worldNormal, 0)).xy * 0.5 + 0.5
+    vec3 worldN      = v_worldNormal;
+    vec3 viewNormal  = normalize((cc_matView * vec4(worldN, 0.0)).xyz);
+    v_matcapUV       = viewNormal.xy * 0.5 + 0.5;
+
+    // Rim Fresnel 預計算（逐頂點，降低 Fragment 運算量）
+    vec3 viewDir     = normalize(cc_cameraPos.xyz - worldPos4.xyz);
+    float NdotV      = max(dot(v_worldNormal, viewDir), 0.0);
+    v_rimBasic       = 1.0 - NdotV;
+
+    return cc_matProj * cc_matView * worldPos4;
+  }
+}%
+
+
+// ════════════════════════════════════════════════════════════════════════════
+//  Fragment Shader
+// ════════════════════════════════════════════════════════════════════════════
+CCProgram heroine-toon-fs %{
+  precision highp float;
+
+  #include <output>
+
+  in vec2 v_uv;
+  in vec3 v_worldNormal;
+  in vec3 v_worldPos;
+  in vec2 v_matcapUV;
+  in float v_rimBasic;
+
+  uniform sampler2D mainTexture;
+  uniform sampler2D controlMap;
+  uniform sampler2D matcapTex;
+
+  // UBO 規則：vec4（顏色）優先排列，float 置後，避免對齊填充造成浪費
+  // 屬性名稱直接對應 CCEffect properties 區段
+  uniform HeroineToon {
+    vec4  u_shadowColor;
+    vec4  u_sssColor;
+    vec4  u_metalTint;
+    vec4  u_rimColor;
+    float u_rampSmooth;
+    float u_rampOffset;
+    float u_sssIntensity;
+    float u_metalSpecPower;
+    float u_metalSpecStrength;
+    float u_matcapStrength;
+    float u_rimPower;
+    float u_rimStrength;
+    float u_rimSpread;
+    float u_qualityLevel;
+  };
+
+  vec4 frag() {
+    // 1. 讀取基礎色貼圖
+    vec4 baseColor = texture(mainTexture, v_uv);
+
+    // 2. 控制貼圖解包：R=Ramp 偏移  G=BlushMask 暈染遮罩  B=MetalMask 金屬遮罩
+    vec3  ctrl      = texture(controlMap, v_uv).rgb;
+    float rampBias  = ctrl.r;
+    float blushMask = ctrl.g;
+    float metalMask = ctrl.b;
+
+    // 3. Half-Lambert 光照計算（柔化明暗交界，避免純 Lambert 過暗）
+    // Unity 對照：NdotL * 0.5 + 0.5（Half Lambert trick）
+    vec3  N         = normalize(v_worldNormal);
+    vec3  L         = normalize(-cc_mainLitDir.xyz);
+    float NdotL     = dot(N, L);
+    float halfLambert = clamp(NdotL * 0.5 + 0.5 + (rampBias - 0.5) * 0.4 + u_rampOffset, 0.0, 1.0);
+
+    // 4. smoothstep Ramp 色階分層（卡通二值化陰影邊界）
+    float rampEdge  = 0.45;
+    float half_s    = u_rampSmooth * 0.5;
+    float toonRamp  = smoothstep(rampEdge - half_s, rampEdge + half_s, halfLambert);
+
+    // 陰影混合：暗部替換為 u_shadowColor，亮部保留原色
+    vec3 shadedColor = mix(baseColor.rgb * u_shadowColor.rgb, baseColor.rgb, toonRamp);
+
+    // 5. Fake SSS 次表面散射模擬（臉部透光暈染效果）
+    // sssBand：在 Ramp 邊界附近提取薄帶（注意 edge0 < edge1 方向）
+    float sssBand  = smoothstep(0.1, 0.4, toonRamp) * (1.0 - smoothstep(0.4, 0.7, toonRamp));
+    float sssAmt   = sssBand * blushMask * u_sssIntensity * u_qualityLevel;
+    shadedColor    = mix(shadedColor, shadedColor + u_sssColor.rgb * 0.5, clamp(sssAmt, 0.0, 1.0));
+
+    // 6. 金屬材質混合：MatCap 環境反射 + Blinn-Phong 高光
+    vec3 matcapColor = texture(matcapTex, v_matcapUV).rgb;
+
+    vec3  V         = normalize(cc_cameraPos.xyz - v_worldPos);
+    vec3  H         = normalize(L + V);
+    float NdotH     = max(dot(N, H), 0.0);
+    float spec      = pow(NdotH, u_metalSpecPower) * u_metalSpecStrength;
+
+    vec3 metalColor = shadedColor * u_metalTint.rgb
+                    + matcapColor * u_matcapStrength
+                    + vec3(spec);
+
+    vec3 finalColor = mix(shadedColor, metalColor, metalMask);
+
+    // 7. 背光邊緣光（Ethereal Rim Light）：Fresnel + 寬帶疊加，受光面強化
+    float rimFresnel = pow(v_rimBasic, u_rimPower);
+    float rimWide    = pow(v_rimBasic, max(u_rimPower * 0.4, 0.1)) * u_rimSpread;
+    float rimLitBias = smoothstep(0.0, 0.6, halfLambert);
+    float rimTotal   = clamp(rimFresnel + rimWide, 0.0, 1.0)
+                     * u_rimStrength * u_qualityLevel
+                     * mix(0.3, 1.0, rimLitBias);
+    finalColor      += u_rimColor.rgb * rimTotal;
+
+    // 8. 最終輸出（保留原始 Alpha）
+    return CCFragOutput(vec4(finalColor, baseColor.a));
+  }
+}%

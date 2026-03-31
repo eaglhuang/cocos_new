@@ -1,0 +1,103 @@
+CCEffect %{
+  techniques:
+  - name: opaque
+    passes:
+    - vert: vs:vert
+      frag: fs:frag
+      properties: &props
+        mainTexture:         { value: white }
+        controlMap:          { value: white }
+        matcapTex:           { value: white }
+        u_shadowColor:       { value: [0.65, 0.55, 0.62, 1.0], linear: true, editor: { type: color } }
+        u_sssColor:          { value: [1.0, 0.42, 0.38, 1.0],  linear: true, editor: { type: color } }
+        u_metalTint:         { value: [0.72, 0.78, 0.88, 1.0], linear: true, editor: { type: color } }
+        u_rimColor:          { value: [1.0, 0.88, 0.6, 1.0],   linear: true, editor: { type: color } }
+        u_rampSmooth:        { value: 0.25 }
+        u_rampOffset:        { value: 0.0 }
+        u_sssIntensity:      { value: 0.55 }
+        u_metalSpecPower:    { value: 32.0 }
+        u_metalSpecStrength: { value: 0.6 }
+        u_matcapStrength:    { value: 0.35 }
+        u_rimPower:          { value: 2.8 }
+        u_rimStrength:       { value: 0.45 }
+        u_rimSpread:         { value: 0.3 }
+        u_qualityLevel:      { value: 1.0 }
+
+  - name: transparent
+    passes:
+    - vert: vs:vert
+      frag: fs:frag
+      blendState:
+        targets:
+        - blend: true
+          blendSrc: src_alpha
+          blendDst: one_minus_src_alpha
+          blendSrcAlpha: src_alpha
+          blendDstAlpha: one_minus_src_alpha
+      depthStencilState:
+        depthWrite: false
+      properties: *props
+}%
+
+CCProgram vs %{
+  precision highp float;
+
+  #include <builtin/uniforms/cc-global>
+  #include <builtin/uniforms/cc-local>
+
+  in vec3 a_position;
+  in vec3 a_normal;
+  in vec2 a_texCoord;
+
+  out vec2 v_uv;
+  out vec3 v_worldNormal;
+  out vec3 v_worldPos;
+  out vec2 v_matcapUV;
+  out float v_rimBasic;
+
+  vec4 vert() {
+    vec4 worldPos4   = cc_matWorld * vec4(a_position, 1.0);
+    v_worldPos       = worldPos4.xyz;
+    v_worldNormal    = normalize((cc_matWorldIT * vec4(a_normal, 0.0)).xyz);
+    v_uv             = a_texCoord;
+    vec3 worldN      = v_worldNormal;
+    vec3 viewNormal  = normalize((cc_matView * vec4(worldN, 0.0)).xyz);
+    v_matcapUV       = viewNormal.xy * 0.5 + 0.5;
+    vec3 viewDir     = normalize(cc_cameraPos.xyz - worldPos4.xyz);
+    float NdotV      = max(dot(v_worldNormal, viewDir), 0.0);
+    v_rimBasic       = 1.0 - NdotV;
+    return cc_matProj * cc_matView * worldPos4;
+  }
+}%
+
+CCProgram fs %{
+  precision highp float;
+  #include <output>
+  in vec2 v_uv;
+  in vec3 v_worldNormal;
+  in vec3 v_worldPos;
+  in vec2 v_matcapUV;
+  in float v_rimBasic;
+  uniform sampler2D mainTexture;
+  uniform sampler2D controlMap;
+  uniform sampler2D matcapTex;
+  // UBO 規則：4個 vec4（colors）+ 10個 float（scalars），vec4 先放、float 後放
+  // 不使用 target: — 直接映射同名屬性（和 unit-base.effect 相同模式）
+  uniform TestUBO {
+    vec4  u_shadowColor;
+    vec4  u_sssColor;
+    vec4  u_metalTint;
+    vec4  u_rimColor;
+    float u_rampSmooth;
+    float u_rampOffset;
+    float u_sssIntensity;
+    float u_metalSpecPower;
+    float u_metalSpecStrength;
+    float u_matcapStrength;
+    float u_rimPower;
+    float u_rimStrength;
+    float u_rimSpread;
+    float u_qualityLevel;
+  };
+  vec4 frag() { return CCFragOutput(u_shadowColor); }
+}%

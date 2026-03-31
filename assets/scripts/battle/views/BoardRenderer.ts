@@ -1,3 +1,4 @@
+// @spec-source → 見 docs/cross-reference-index.md
 import { _decorator, Component, Node, Vec3, Vec4, MeshRenderer, primitives, utils, Material, Color, Layers, gfx, tween, resources, EffectAsset } from 'cc';
 import { Faction, GAME_CONFIG } from '../../core/config/Constants';
 import { BattleState } from '../models/BattleState';
@@ -290,7 +291,14 @@ export class BoardRenderer extends Component {
 
     public getCellWorldPosition(lane: number, depth: number, yOffset = 0): Vec3 {
         const cellNode = this.cellNodes.get(`${lane},${depth}`);
-        const base = cellNode?.root.worldPosition ?? this.node.worldPosition;
+        // 雙重 null guard：cellNode 可能未找到，root 節點可能已被銷毀
+        if (!cellNode || !cellNode.root || !cellNode.root.isValid) {
+            if (cellNode && (!cellNode.root || !cellNode.root.isValid)) {
+                console.warn(`[BoardRenderer] getCellWorldPosition: 格 (${lane},${depth}) 的 root 節點無效或已銷毀`);
+            }
+            return new Vec3(this.node.worldPosition.x, this.node.worldPosition.y + yOffset, this.node.worldPosition.z);
+        }
+        const base = cellNode.root.worldPosition;
         return new Vec3(base.x, base.y + yOffset, base.z);
     }
 
@@ -299,6 +307,11 @@ export class BoardRenderer extends Component {
         const totalSize = this.cellSize + this.cellGap;
         let best: { key: string; dist: number } | null = null;
         for (const [key, cellView] of this.cellNodes.entries()) {
+            // null guard：根節點可能在場景切換時被銷毀
+            if (!cellView?.root || !cellView.root.isValid) {
+                console.warn(`[BoardRenderer] getCellFromWorldPos: 格 ${key} 的 root 節點無效，跳過`);
+                continue;
+            }
             const dx = Math.abs(cellView.root.worldPosition.x - pos.x);
             const dz = Math.abs(cellView.root.worldPosition.z - pos.z);
             if (dx <= totalSize * 0.55 && dz <= totalSize * 0.55) {
@@ -318,6 +331,11 @@ export class BoardRenderer extends Component {
 
         const cellNode = this.cellNodes.get(`${lane},${depth}`);
         if (!cellNode) return;
+        // null guard：root 節點可能已被銷毀（例如棋盤重建時）
+        if (!cellNode.root || !cellNode.root.isValid) {
+            console.warn(`[BoardRenderer] playCellImpact: 格 (${lane},${depth}) 的 root 節點無效，跳過特效`);
+            return;
+        }
 
         const flashNode = new Node(`Impact_${lane}_${depth}`);
         flashNode.layer = Layers.Enum.DEFAULT;

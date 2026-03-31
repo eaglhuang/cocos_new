@@ -1,0 +1,68 @@
+{
+  "id": "p3d_unity_sample_auto",
+  "label": "p3d_unity_sample_auto (Unity import)",
+  "folder": "p3d_unity_sample_auto",
+  "scale": 1,
+  "audio": null,
+  "source": {
+    "unityPrefab": "..\\AppData\\Local\\Temp\\unity-particle-sample.prefab"
+  },
+  "warnings": [],
+  "subPS": [
+    {
+      "name": "Runes",
+      "position": {
+        "x": 0,
+        "y": 0.2,
+        "z": 0
+      },
+      "color": {
+        "r": 255,
+        "g": 219,
+        "b": 110,
+        "a": 235
+      },
+      "startSize": 1.2,
+      "startSpeed": 0.8,
+      "startLifetime": 1.5,
+      "gravity": -0.3,
+      "rateOverTime": 10,
+      "burstCount": 1,
+      "shapeType": 4,
+      "radius": 0.7,
+      "simulationSpace": 1,
+      "loop": true,
+      "duration": 1.5,
+      "capacity": 64,
+      "renderMode": 1,
+      "velocityScale": 2,
+      "lengthScale": 1,
+      "materialHint": "MAT_ADDITIVE",
+      "texKeyHint": null,
+      "velocityOverLifetime": {
+        "enabled": true,
+        "x": 0.3,
+        "y": 1.5,
+        "z": 0,
+        "speedModifier": 1,
+        "space": 1
+      },
+      "sizeOverLifetime": {
+        "enabled": true,
+        "multiplier": 0.55
+      },
+      "colorOverLifetime": {
+        "enabled": true,
+        "color": {
+          "r": 255,
+          "g": 133,
+          "b": 31,
+          "a": 128
+        },
+        "mode": 0
+      },
+      "unsupported": [],
+      "texKey": "cfxr_aura_runic"
+    }
+  ]
+}

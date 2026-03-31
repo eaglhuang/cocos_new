@@ -1,6 +1,8 @@
+// @spec-source → 見 docs/cross-reference-index.md
 import {
   COUNTER_MULTIPLIER,
   DISADVANTAGE_MULTIPLIER,
+  GAME_CONFIG,
   MIN_DAMAGE,
   TERRAIN_ATTACK_MOD,
   TERRAIN_DEFENSE_MOD,
@@ -8,6 +10,27 @@ import {
   TroopType,
   TROOP_COUNTER_MAP,
 } from "../config/Constants";
+
+/**
+ * 武將化身（單挑）攻擊力計算參數。
+ * 對應規格書：數值系統.md E-12（武將屬性→兵種）與 E-14（武將化身數值）。
+ *
+ * 物理型：提供 str + lea → ATK = STR × 0.7 + LEA × 0.3
+ * 謀略型：提供 int + lea → ATK = INT × 0.7 + LEA × 0.3
+ * 備用：只提供 maxHp   → ATK = maxHp × 8%（舊公式，向後兼容）
+ */
+export interface GeneralCombatParams {
+  /** 武力（物理型首選）*/
+  str?: number;
+  /** 智力（謀略型首選）*/
+  int?: number;
+  /** 統率（任意型皆使用）*/
+  lea?: number;
+  /** 運氣（暴擊與閃躲機率，對應 E-11）*/
+  luk?: number;
+  /** 備用：缺少六色屬性時以 maxHp × 8% 計算 */
+  maxHp?: number;
+}
 
 export interface DamageContext {
   attackerAttack: number;
@@ -21,6 +44,28 @@ export interface DamageContext {
 }
 
 export class FormulaSystem {
+  /**
+   * 武將化身（單挑）攻擊力計算。
+   * - 物理型（有 str + lea）：STR × 0.7 + LEA × 0.3  ← 對應 E-12
+   * - 謀略型（有 int + lea）：INT × 0.7 + LEA × 0.3  ← 對應 E-12
+   * - 備用（只有 maxHp）  ：maxHp × 8%             ← 舊 E-14 向後兼容
+   */
+  public calculateGeneralAttack(params: GeneralCombatParams, floorValue = 1): number {
+    const { str, int: intelligence, lea, maxHp } = params;
+    if (lea !== undefined) {
+      if (str !== undefined) {
+        // 物理型：武力 × 0.7 + 統率 × 0.3
+        return Math.max(floorValue, Math.floor(str * 0.7 + lea * 0.3));
+      }
+      if (intelligence !== undefined) {
+        // 謀略型：智力 × 0.7 + 統率 × 0.3
+        return Math.max(floorValue, Math.floor(intelligence * 0.7 + lea * 0.3));
+      }
+    }
+    // 備用：舊公式 maxHp × 8%
+    return Math.max(floorValue, Math.floor((maxHp ?? 0) * 0.08));
+  }
+
   public calculateDamage(context: DamageContext): number {
     const counterMultiplier = this.getCounterMultiplier(context.attackerType, context.defenderType);
     const attackTerrain = 1 + (TERRAIN_ATTACK_MOD[context.attackerTerrain] || 0);
@@ -35,6 +80,40 @@ export class FormulaSystem {
 
   public calculateHeal(maxHp: number, ratio = 0.12, floorValue = 20): number {
     return Math.max(floorValue, Math.floor(maxHp * ratio));
+  }
+
+  /**
+   * 取得武將化身單挑的暴擊機率（純計算，不擲骰子）。
+   * 公式：BASE_CRIT + LUK / 200，上限 50%（對應 E-11）
+   */
+  public getCritChance(luk = 0): number {
+    const raw = GAME_CONFIG.GENERAL_BASE_CRIT_CHANCE + luk / 200;
+    return Math.min(raw, GAME_CONFIG.GENERAL_MAX_CRIT_CHANCE);
+  }
+
+  /**
+   * 取得武將化身單挑的閃躲機率（純計算，不擲骰子）。
+   * 公式：BASE_DODGE + LUK / 400，上限 40%（對應 E-14）
+   */
+  public getDodgeChance(luk = 0): number {
+    const raw = GAME_CONFIG.GENERAL_BASE_DODGE_CHANCE + luk / 400;
+    return Math.min(raw, GAME_CONFIG.GENERAL_MAX_DODGE_CHANCE);
+  }
+
+  /**
+   * 擲暴擊骰子：回傳 true 表示觸發暴擊。
+   * 僅用於武將化身單挑對成0（resolveAcceptedGeneralDuel）。
+   */
+  public rollCrit(luk = 0): boolean {
+    return Math.random() < this.getCritChance(luk);
+  }
+
+  /**
+   * 擲閃躲骰子：回傳 true 表示武將閃障。
+   * 僅用於武將化身對戰（對其中一次攻擊進行閃躲判定）。
+   */
+  public rollDodge(luk = 0): boolean {
+    return Math.random() < this.getDodgeChance(luk);
   }
 
   public getCounterMultiplier(attackerType: TroopType, defenderType: TroopType): number {

@@ -3,8 +3,8 @@
   "reports": [
     {
       "fileName": "idle_張飛.png",
-      "outDir": "C:\\Users\\User\\NewProject\\tools\\sprite-pipeline\\output\\zhangfei\\idle",
-      "assetsDir": "C:\\Users\\User\\NewProject\\assets\\resources\\sprites\\zhangfei\\idle",
+      "outDir": "C:\\Users\\User\\3KLife\\tools\\sprite-pipeline\\output\\zhangfei\\idle",
+      "assetsDir": "C:\\Users\\User\\3KLife\\assets\\resources\\sprites\\zhangfei\\idle",
       "frameCount": 15,
       "manifest": {
         "character": "zhangfei",

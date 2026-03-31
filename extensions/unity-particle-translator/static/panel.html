@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<title>Unity Particle Translator</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #1e1e1e; color: #d4d4d4;
+    font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+    font-size: 13px; padding: 12px; overflow-y: auto;
+  }
+  h2 { color: #9cdcfe; font-size: 14px; margin-bottom: 4px; }
+  .desc { color: #808080; font-size: 11px; margin-bottom: 10px; line-height: 1.5; }
+  label { display: block; color: #4ec9b0; margin-bottom: 3px; font-size: 11px; font-weight: 600; }
+  textarea {
+    width: 100%; background: #252526; color: #d4d4d4;
+    border: 1px solid #3c3c3c; border-radius: 3px;
+    padding: 7px; font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 11.5px; resize: vertical; outline: none; tab-size: 2;
+  }
+  textarea:focus { border-color: #007acc; }
+  .btn {
+    padding: 5px 14px; border: none; border-radius: 3px;
+    cursor: pointer; font-size: 12px; margin-right: 6px;
+  }
+  .btn-primary { background: #0e639c; color: #fff; }
+  .btn-primary:hover { background: #1177bb; }
+  .btn-secondary { background: #3c3c3c; color: #d4d4d4; }
+  .btn-secondary:hover { background: #505050; }
+  .btn-small { padding: 3px 9px; font-size: 11px; }
+  .action-bar { margin: 8px 0 10px; display: flex; align-items: center; gap: 4px; }
+  .file-label {
+    padding: 5px 14px; border: 1px solid #3c3c3c; border-radius: 3px;
+    cursor: pointer; font-size: 12px; background: #2d2d2d; color: #d4d4d4;
+  }
+  .file-label:hover { background: #3c3c3c; }
+  .hint { color: #608b4e; font-size: 11px; margin-top: 5px; line-height: 1.4; }
+  .result-section { margin-top: 10px; }
+  .tabs { display: flex; border-bottom: 1px solid #3c3c3c; margin-bottom: 8px; }
+  .tab-btn {
+    padding: 5px 12px; background: none; border: none; color: #808080;
+    cursor: pointer; font-size: 12px; border-bottom: 2px solid transparent;
+  }
+  .tab-btn.active { color: #9cdcfe; border-bottom-color: #007acc; }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+  .copy-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+  .copy-bar-info { color: #608b4e; font-size: 11px; }
+  .notes-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 4px; }
+  .notes-table th { background: #2d2d2d; padding: 4px 8px; text-align: left; color: #808080; font-weight: 500; }
+  .notes-table td { padding: 3px 8px; border-bottom: 1px solid #252526; vertical-align: top; }
+  .st-ok          { color: #4ec9b0; }
+  .st-manual      { color: #dcdcaa; }
+  .st-unsupported { color: #f44747; }
+  .st-skip        { color: #5a5a5a; }
+  .st-approx      { color: #ce9178; }
+  .error-box { color: #f44747; padding: 8px 10px; background: #2d0000; border: 1px solid #5a0000; border-radius: 3px; font-size: 12px; white-space: pre-wrap; }
+  .multi-hint { color: #808080; font-size: 11px; margin-top: 6px; }
+  .sep { color: #3c3c3c; margin: 0 4px; }
+</style>
+</head>
+<body>
+
+<h2>🎆 Unity → Cocos 3D 粒子翻譯工具</h2>
+<p class="desc">
+  貼上 Unity <code style="color:#ce9178">.prefab</code> 全文（以文字編輯器開啟）或只貼 <code style="color:#ce9178">ParticleSystem:</code> 區塊。<br>
+  工具會提取粒子屬性並轉換為 <strong>ParticleLayerProfile</strong>（我們專案格式）和 <strong>ParticleOverride</strong>（applyParticleOverride 參數）。
+</p>
+
+<div>
+  <label>Unity .prefab 內容</label>
+  <textarea id="unity-input" rows="10" placeholder="--- !u!198 &123456789&#10;ParticleSystem:&#10;  lengthInSec: 2&#10;  looping: 1&#10;  ...&#10;&#10;（或直接貼全部 .prefab 文字，工具會自動找 !u!198 區塊）"></textarea>
+  <p class="hint">💡 Unity 操作：Project 視窗 → 右鍵 .prefab → Show in Explorer → 記事本開啟 → 全選複製。<br>
+     或在 Unity Editor Settings → Text Serialization（確認資產格式為 Text）後才能開啟文字。</p>
+</div>
+
+<div class="action-bar">
+  <button class="btn btn-primary" onclick="doConvert()">🔄 轉換</button>
+  <label class="file-label">
+    📂 載入 .prefab 檔案
+    <input type="file" id="file-input" accept=".prefab,.txt" style="display:none" onchange="handleFile(this)">
+  </label>
+  <button class="btn btn-secondary" onclick="doClear()">✕ 清空</button>
+  <span id="file-name" style="color:#808080;font-size:11px;margin-left:4px"></span>
+</div>
+
+<div id="error-box" style="display:none" class="error-box"></div>
+
+<div id="result-section" class="result-section" style="display:none">
+  <div class="tabs">
+    <button class="tab-btn active" id="tab-btn-profile" onclick="switchTab('profile')">ParticleLayerProfile</button>
+    <button class="tab-btn" id="tab-btn-override" onclick="switchTab('override')">ParticleOverride TS</button>
+    <button class="tab-btn" id="tab-btn-notes" onclick="switchTab('notes')">轉換說明</button>
+  </div>
+
+  <!-- Tab: ParticleLayerProfile -->
+  <div id="tab-profile" class="tab-content active">
+    <div class="copy-bar">
+      <span class="copy-bar-info">→ 貼入 BuffParticleProfileConfig.ts 的 variants[&apos;MyEffect&apos;] 物件</span>
+      <button class="btn btn-secondary btn-small" onclick="copyEl('out-profile', this)">📋 複製</button>
+    </div>
+    <textarea id="out-profile" rows="22" readonly></textarea>
+  </div>
+
+  <!-- Tab: ParticleOverride -->
+  <div id="tab-override" class="tab-content">
+    <div class="copy-bar">
+      <span class="copy-bar-info">→ 傳入 applyParticleOverride(ps, override)</span>
+      <button class="btn btn-secondary btn-small" onclick="copyEl('out-override', this)">📋 複製</button>
+    </div>
+    <textarea id="out-override" rows="22" readonly></textarea>
+  </div>
+
+  <!-- Tab: Notes -->
+  <div id="tab-notes" class="tab-content">
+    <div id="notes-body"></div>
+    <p class="multi-hint" style="margin-top:8px">※ 若 prefab 含多個 ParticleSystem（子發射器等），目前只轉換第一個 !u!198 區塊。</p>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════════════
+// Unity → Cocos 3D ParticleSystem 屬性翻譯器
+//
+// Unity 對照架構：
+//   Unity  ParticleSystem.MainModule       ↔  Cocos ps.duration / loop / startLifetime / startSpeed / startSize
+//   Unity  ParticleSystem.EmissionModule   ↔  Cocos ps.rateOverTime / ps.bursts
+//   Unity  ParticleSystem.ShapeModule      ↔  Cocos ps.shapeModule.radius / angle
+//   Unity  ParticleSystem.InitialModule    ↔  Cocos startColor / gravityModifier / startDelay
+//
+// Unity YAML minMaxCurve 格式（三種常見模式）：
+//   minMaxState: 0 = Constant            → 直接取 scalar
+//   minMaxState: 2 = RandomBetweenTwoConstants → 取 (scalar + minScalar) / 2
+//   minMaxState: 1 = Curve               → 近似取前一個 key 的 value（僅提示）
+// ═══════════════════════════════════════════════════════════════════════
+
+// ─── 基礎工具 ─────────────────────────────────────────────────────────
+
+function gf(text, rx) {
+    const m = text.match(rx);
+    return m ? parseFloat(m[1]) : null;
+}
+function gi(text, rx) {
+    const m = text.match(rx);
+    return m ? parseInt(m[1]) : null;
+}
+function round(v, d = 3) {
+    const f = Math.pow(10, d);
+    return Math.round(v * f) / f;
+}
+
+/**
+ * 從 Unity minMaxCurve 區塊提取有效常數值。
+ * 典型 Unity YAML 結構：
+ *   fieldName:
+ *     serializedVersion: 2
+ *     minMaxState: 0       ← 此值決定解讀方式
+ *     scalar: 5.0          ← Constant 模式的值
+ *     minScalar: 2.0       ← RandomBetweenTwo 的下界
+ *
+ * Unity 對照：ParticleSystem.main.startLifetime (ParticleMinMaxCurve)
+ */
+function getMinMaxScalar(text, fieldName) {
+    // 找欄位名後，在前 15 行內取 minMaxState + scalar
+    const rx = new RegExp(
+        '\\b' + fieldName + ':[ \\t]*\\n' +
+        '(?:[ \\t]+[^\\n]*\\n){0,4}?' +
+        '[ \\t]+minMaxState:\\s*(\\d)[ \\t]*\\n' +
+        '(?:[ \\t]+[^\\n]*\\n){0,3}?' +
+        '[ \\t]+scalar:\\s*([\\d.eE+-]+)',
+        'm'
+    );
+    const m = text.match(rx);
+    if (m) {
+        const state  = parseInt(m[1]);
+        const scalar = parseFloat(m[2]);
+        if (state === 2) {
+            // RandomBetweenTwoConstants → 取平均
+            const rx2 = new RegExp('\\b' + fieldName + ':[\\s\\S]{0,400}?minScalar:\\s*([\\d.eE+-]+)', 'm');
+            const m2  = text.match(rx2);
+            const minS = m2 ? parseFloat(m2[1]) : scalar;
+            return (scalar + minS) / 2;
+        }
+        if (state === 1 || state === 3) {
+            // Curve mode → 嘗試取第一個 key value 作近似
+            const approxRx = new RegExp('\\b' + fieldName + ':[\\s\\S]{0,800}?value:\\s*([\\d.eE+-]+)', 'm');
+            const am = text.match(approxRx);
+            return am ? parseFloat(am[1]) : scalar; // scalar 通常是 multiplier
+        }
+        return scalar;
+    }
+    // Fallback: 找到欄位後 500 字元內最近的 scalar
+    const fbRx = new RegExp('\\b' + fieldName + ':[\\s\\S]{0,350}?\\bscalar:\\s*([\\d.eE+-]+)', 'm');
+    const fbM  = text.match(fbRx);
+    return fbM ? parseFloat(fbM[1]) : null;
+}
+
+/**
+ * 從 Unity startColor 類型區塊提取顏色。
+ * Unity 格式：color: {r: 1.0, g: 0.5, b: 0.2, a: 1.0}  (0–1 float)
+ * 輸出：[R, G, B, A] in 0–255 int
+ */
+function getColor(text, fieldName) {
+    const rx = new RegExp(
+        '\\b' + fieldName + ':[\\s\\S]{0,400}?' +
+        'color:\\s*\\{r:\\s*([\\d.]+),\\s*g:\\s*([\\d.]+),\\s*b:\\s*([\\d.]+),\\s*a:\\s*([\\d.]+)\\}',
+        'm'
+    );
+    const m = text.match(rx);
+    if (m) {
+        return [
+            Math.round(parseFloat(m[1]) * 255),
+            Math.round(parseFloat(m[2]) * 255),
+            Math.round(parseFloat(m[3]) * 255),
+            Math.round(parseFloat(m[4]) * 255),
+        ];
+    }
+    return [255, 255, 255, 255]; // 預設白色
+}
+
+/**
+ * 解析 EmissionModule 的 Burst 列表。
+ * Unity 格式：
+ *   m_BurstCount: 2
+ *   m_Bursts:
+ *   - serializedVersion: 2
+ *     time: 0
+ *     minCount: 30
+ *     maxCount: 30
+ *     cycleCount: 1
+ *     repeatInterval: 0.01
+ */
+function getBursts(text) {
+    const cnt = gi(text, /m_BurstCount:\s*(\d+)/);
+    if (!cnt || cnt === 0) return [];
+    const bursts = [];
+    // 逐一匹配 burst 條目（time / minCount / maxCount / cycleCount / repeatInterval）
+    const rx = /time:\s*([\d.]+)[\s\S]{0,200}?minCount:\s*(\d+)[\s\S]{0,100}?maxCount:\s*(\d+)[\s\S]{0,100}?cycleCount:\s*(\d+)[\s\S]{0,100}?repeatInterval:\s*([\d.]+)/g;
+    let match;
+    while ((match = rx.exec(text)) !== null) {
+        bursts.push({
+            time:           parseFloat(match[1]),
+            count:          Math.round((parseInt(match[2]) + parseInt(match[3])) / 2),
+            cycleCount:     parseInt(match[4]),
+            repeatInterval: parseFloat(match[5]),
+        });
+    }
+    return bursts;
+}
+
+/**
+ * 解析 ShapeModule 幾何參數。
+ * Unity shapeType 對照：0/1=球體, 2/3=半球, 4=錐形(Cone), 5=盒子, 7=錐殼, 9=錐體積
+ * Cocos ShapeType：SPHERE=0, HEMISPHERE=1, CYLINDER=2, CONE=3
+ */
+const UNITY_SHAPE_NAMES = {
+    0:'Sphere', 1:'SphereShell', 2:'Hemisphere', 3:'HemisphereShell',
+    4:'Cone',   5:'Box',         7:'ConeShell',  9:'ConeVolume',
+    11:'Circle',18:'Donut',      6:'Mesh',
+};
+const COCOS_SHAPE_NOTE = {
+    0:'→ Cocos SPHERE(0)',  1:'→ Cocos SPHERE(0)',
+    2:'→ Cocos HEMISPHERE(1)', 3:'→ Cocos HEMISPHERE(1)',
+    4:'→ Cocos CONE(3)',    9:'→ Cocos CONE(3)',
+    5:'→ Cocos CUBE（無完全對應）', 11:'→ Cocos CIRCLE（如有）',
+};
+
+function getShape(text) {
+    const idx = text.indexOf('ShapeModule:');
+    if (idx === -1) return { radius: 0.5, angle: 25, shapeType: 4 };
+    const sec = text.slice(idx, idx + 1200);
+    return {
+        radius:    gf(sec, /\bradius:\s*([\d.]+)/)    ?? 0.5,
+        angle:     gf(sec, /\bangle:\s*([\d.]+)/)     ?? 25,
+        shapeType: gi(sec, /\bshapeType:\s*(\d+)/)    ?? 4,
+    };
+}
+
+/** 檢查某個 Unity Module 是否 enabled */
+function isEnabled(text, moduleName) {
+    const rx = new RegExp(moduleName + ':[\\s\\S]{0,150}?enabled:\\s*1', 'm');
+    return rx.test(text);
+}
+
+/** 從 Unity 取 minMaxState 模式說明 */
+function getMinMaxStateLabel(text, fieldName) {
+    const rx = new RegExp('\\b' + fieldName + ':[\\s\\S]{0,200}?minMaxState:\\s*(\\d)', 'm');
+    const m  = text.match(rx);
+    if (!m) return '';
+    const labels = { 0:'Constant', 1:'Curve（近似）', 2:'RandomBetweenTwoConstants（取均值）', 3:'RandomBetweenTwoCurves（近似）' };
+    return labels[parseInt(m[1])] ?? '';
+}
+
+// ─── 主轉換函式 ────────────────────────────────────────────────────────
+
+function convertUnity(rawText) {
+    let text = rawText;
+
+    // 若是完整 prefab，找 ParticleSystem 組件區塊（tag !u!198）
+    const psTag = '--- !u!198';
+    const tagIdx = text.indexOf(psTag);
+    if (tagIdx !== -1) {
+        const nextSep = text.indexOf('\n---', tagIdx + 10);
+        text = (nextSep !== -1) ? text.slice(tagIdx, nextSep) : text.slice(tagIdx);
+    }
+
+    const hasPsData = text.includes('ParticleSystem:') || text.includes('InitialModule:') || text.includes('lengthInSec:');
+    if (!hasPsData) {
+        return { error: '找不到有效的 ParticleSystem 資料。\n請確認貼上的內容包含 "ParticleSystem:" 或 "--- !u!198" 區塊。\n\n提示：在 Unity → Edit → Project Settings → Editor 確認 Asset Serialization Mode 為 "Force Text"。' };
+    }
+
+    // ── Main Module ────────────────────────────────────────────────────
+    const duration     = gf(text, /\blengthInSec:\s*([\d.]+)/) ?? gf(text, /\bduration:\s*([\d.]+)/) ?? 5;
+    const loop         = (gi(text, /\blooping:\s*(\d)/)         ?? 1) === 1;
+    const simSpeed     = gf(text, /\bsimulationSpeed:\s*([\d.]+)/) ?? 1;
+    const playOnAwake  = (gi(text, /\bplayOnAwake:\s*(\d)/)     ?? 1) === 1;
+    const prewarm      = (gi(text, /\bprewarm:\s*(\d)/)         ?? 0) === 1;
+
+    // ── InitialModule ──────────────────────────────────────────────────
+    const startLifetime = getMinMaxScalar(text, 'startLifetime') ?? 1;
+    const startSpeed    = getMinMaxScalar(text, 'startSpeed')    ?? 1;
+    // Unity size3D=0 → startSizeX = 均等大小；size3D=1 → 獨立 XYZ
+    const size3D        = gi(text, /\bsize3D:\s*(\d)/) === 1;
+    const startSizeX    = getMinMaxScalar(text, 'startSizeX');
+    const startSizeU    = getMinMaxScalar(text, 'startSize');
+    const startSize     = startSizeX ?? startSizeU ?? 0.1;
+    const gravityMod    = getMinMaxScalar(text, 'gravityModifier') ?? 0;
+    const startDelay    = getMinMaxScalar(text, 'startDelay')      ?? 0;
+    const capacity      = gi(text, /maxNumParticles:\s*(\d+)/)      ?? 100;
+    const startColor    = getColor(text, 'startColor');
+
+    // ── EmissionModule ─────────────────────────────────────────────────
+    const rateOverTime = getMinMaxScalar(text, 'rateOverTime')    ?? 10;
+    const rateOverDist = getMinMaxScalar(text, 'rateOverDistance') ?? 0;
+    const bursts       = getBursts(text);
+    const fb           = bursts[0] ?? { time: 0, count: 0, cycleCount: 1, repeatInterval: 0 };
+
+    // ── ShapeModule ────────────────────────────────────────────────────
+    const shape = getShape(text);
+
+    // ── 先蒐集 minMaxState 標籤，用於轉換說明 ──────────────────────────
+    const timingLabel  = getMinMaxStateLabel(text, 'startLifetime');
+    const speedLabel   = getMinMaxStateLabel(text, 'startSpeed');
+    const sizeLabel    = getMinMaxStateLabel(text, 'startSizeX') || getMinMaxStateLabel(text, 'startSize');
+    const rateLabel    = getMinMaxStateLabel(text, 'rateOverTime');
+    const shapeN       = UNITY_SHAPE_NAMES[shape.shapeType] ?? `type${shape.shapeType}`;
+    const shapeCocosN  = COCOS_SHAPE_NOTE[shape.shapeType]  ?? '需確認 Cocos shapeType 對照';
+
+    // ── 輸出：ParticleLayerProfile ─────────────────────────────────────
+    // 對照 assets/scripts/battle/views/effects/BuffParticleProfileConfig.ts
+    const profile = {
+        capacity:        capacity,
+        rateOverTime:    round(rateOverTime),
+        burstCount:      fb.count,
+        burstTime:       round(fb.time),
+        startSize:       round(startSize),
+        startLifetime:   round(startLifetime),
+        startSpeed:      round(startSpeed),
+        gravityModifier: round(gravityMod),
+        startDelay:      round(startDelay),
+        simulationSpeed: round(simSpeed),
+        shapeRadius:     round(shape.radius),
+        shapeAngle:      round(shape.angle),
+        // ↓ 以下為專案獨有欄位（無 Unity 對應），需手動填入
+        startY:    0,
+        floatY:    0,
+        quadCount: 0,
+        quadRadius:0,
+        quadRise:  0,
+        color: startColor,
+    };
+
+    // ── 輸出：ParticleOverride ─────────────────────────────────────────
+    // 對照 assets/scripts/core/utils/ParticleUtils.ts :: ParticleOverride
+    const overrideData = {
+        startColor:      startColor,
+        startLifetime:   round(startLifetime),
+        startSpeed:      round(startSpeed),
+        startSize:       round(startSize),
+        gravityModifier: round(gravityMod),
+        startDelay:      round(startDelay),
+        rateOverTime:    round(rateOverTime),
+        capacity:        capacity,
+        duration:        round(duration),
+        simulationSpeed: round(simSpeed),
+        loop:            loop,
+        playOnAwake:     playOnAwake,
+        shapeRadius:     round(shape.radius),
+        shapeAngle:      round(shape.angle),
+        bursts:          bursts.map(b => ({
+            time:           b.time,
+            count:          b.count,
+            repeatCount:    b.cycleCount,
+            repeatInterval: b.repeatInterval,
+        })),
+    };
+
+    // ── 轉換說明（每個欄位的狀態） ────────────────────────────────────
+    const notes = [];
+    const ok     = (key, val, note='') => notes.push({ status:'ok',          key, val: String(val), note });
+    const approx = (key, val, note='') => notes.push({ status:'approx',      key, val: String(val), note });
+    const manual = (key, val, note='') => notes.push({ status:'manual',      key, val,               note });
+    const no     = (key, val, note='') => notes.push({ status:'unsupported', key, val,               note });
+    const skip   = (key, note='')       => notes.push({ status:'skip',       key, val:'─',           note });
+
+    ok('duration',         round(duration) + 's');
+    ok('loop',             loop);
+    ok('simulationSpeed',  round(simSpeed));
+    ok('playOnAwake',      playOnAwake);
+    if (prewarm) ok('prewarm', true, 'Cocos ps.prewarm = true');
+    timingLabel.includes('Curve')  ? approx('startLifetime', round(startLifetime), timingLabel) : ok('startLifetime', round(startLifetime), timingLabel);
+    speedLabel.includes('Curve')   ? approx('startSpeed',    round(startSpeed),    speedLabel)  : ok('startSpeed',    round(startSpeed),    speedLabel);
+    sizeLabel.includes('Curve')    ? approx('startSize',     round(startSize),     sizeLabel)   : ok('startSize',     round(startSize),     sizeLabel);
+    if (size3D)  manual('startSizeY / startSizeZ', '同 startSize（需補 startSize3D=true）', 'Unity startSize3D=1 開啟 → Cocos ps.startSize3D = true');
+    ok('startColor', `rgba(${startColor.join(', ')})`, '只轉換 constant color，漸層見 ColorOverLifetime');
+    ok('gravityModifier', round(gravityMod), '只在 CPU 渲染器有效');
+    ok('startDelay',      round(startDelay));
+    ok('capacity',        capacity);
+    rateLabel.includes('Curve') ? approx('rateOverTime', round(rateOverTime), rateLabel) : ok('rateOverTime', round(rateOverTime), rateLabel);
+    if (rateOverDist > 0) ok('rateOverDistance', round(rateOverDist));
+    bursts.length > 0 ? ok('bursts', bursts.length + ' 個', '只取第一個用於 burstCount/burstTime') : skip('bursts', '無 burst 定義');
+    ok(`shapeRadius (${shapeN})`, round(shape.radius), shapeCocosN);
+    ok('shapeAngle',  round(shape.angle));
+    manual('startY / floatY / quadCount / quadRadius / quadRise', '0（需手動填）', '專案獨有欄位，無 Unity 對應');
+
+    // 進階模組檢查
+    if (isEnabled(text, 'ColorOverLifetimeModule'))
+        manual('ColorOverLifetime', '需手動設定', 'Cocos 有 colorOverLifetimeModule — 直接設定 ps.colorOverLifetimeModule.gradient');
+    if (isEnabled(text, 'SizeOverLifetimeModule') || isEnabled(text, 'SizeBySpeedModule'))
+        manual('SizeOverLifetime', '需手動設定', 'Cocos 有 sizeOvertimeModule — 設定 ps.sizeOvertimeModule.size (CurveRange)');
+    if (isEnabled(text, 'VelocityModule'))
+        manual('VelocityOverLifetime', '需手動設定', 'Cocos 有 velocityOvertimeModule — 設定 speedMode 與速度曲線');
+    if (isEnabled(text, 'RotationOverLifetimeModule'))
+        manual('RotationOverLifetime', '需手動設定', 'Cocos 有 rotationOvertimeModule');
+    if (isEnabled(text, 'LimitVelocityModule'))
+        manual('LimitVelocityOverLifetime', '需手動設定', 'Cocos 有 limitVelocityOvertimeModule');
+    if (isEnabled(text, 'ForceModule'))
+        manual('ForceOverLifetime', '需手動設定', 'Cocos 有 forceOvertimeModule');
+    if (isEnabled(text, 'SubModule'))
+        no('SubEmitters', '⚠️ Cocos 無 sub-emitter module', '拆成多個獨立 ParticleSystem 組合，透過 EffectSystem.playGroup() 同步啟動');
+    if (text.includes('TextureSheetAnimationModule') || text.includes('textureSheetAnimation'))
+        manual('TextureSheetAnimation', '改用 Quad flipbook', '→ VfxComposerTool 已支援 _sheet4 格式的 flipbook UV 動畫');
+    if (isEnabled(text, 'TrailModule'))
+        no('Trails', '⚠️ Cocos 粒子系統目前無 trail module', '考慮改用 cc.Line 或 MeshRenderer 動態更新頂點');
+    if (isEnabled(text, 'NoiseModule'))
+        manual('Noise', '無直接對應', 'Cocos 無 Noise module — 可在腳本中對每個粒子施加隨機速度擾動近似');
+    if (isEnabled(text, 'InheritVelocityModule'))
+        manual('InheritVelocity', '需手動設定', 'Cocos 有 inheritVelocityModule');
+    if (isEnabled(text, 'LightsModule'))
+        no('Lights', '⚠️ Cocos 無 Lights module', '改用手動在特效節點上加 Light Component');
+
+    return { profile, overrideData, notes };
+}
+
+// ─── 輸出格式化 ────────────────────────────────────────────────────────
+
+function toProfileJson(p) {
+    const lines = ['{'];
+    const entries = Object.entries(p);
+    entries.forEach(([k, v], i) => {
+        const comma = i < entries.length - 1 ? ',' : '';
+        if (k === 'startY') lines.push('    // ↓ 專案獨有欄位：無 Unity 對應，需手動調整');
+        if (k === 'color') {
+            lines.push(`    "color": [${v.join(', ')}]${comma}`);
+        } else {
+            lines.push(`    "${k}": ${JSON.stringify(v)}${comma}`);
+        }
+    });
+    lines.push('}');
+    return lines.join('\n');
+}
+
+function toTypescriptSnippet(d) {
+    const c = d.startColor;
+    const hasShape = (d.shapeRadius !== 0.5 || d.shapeAngle !== 25);
+    const out = [];
+    out.push('// 套用：applyParticleOverride(ps, override)  （來自 ParticleUtils.ts）');
+    out.push('const override: ParticleOverride = {');
+    out.push(`    startColor:      new Color(${c[0]}, ${c[1]}, ${c[2]}, ${c[3]}),`);
+    out.push(`    startLifetime:   ${d.startLifetime},`);
+    out.push(`    startSpeed:      ${d.startSpeed},`);
+    out.push(`    startSize:       ${d.startSize},`);
+    if (d.gravityModifier !== 0) out.push(`    gravityModifier: ${d.gravityModifier},`);
+    if (d.startDelay      !== 0) out.push(`    startDelay:      ${d.startDelay},`);
+    out.push(`    rateOverTime:    ${d.rateOverTime},`);
+    out.push(`    capacity:        ${d.capacity},`);
+    out.push(`    duration:        ${d.duration},`);
+    if (d.simulationSpeed !== 1)  out.push(`    simulationSpeed: ${d.simulationSpeed},`);
+    out.push(`    loop:            ${d.loop},`);
+    if (!d.playOnAwake)           out.push(`    playOnAwake:     false,`);
+    if (hasShape) {
+        out.push(`    shapeRadius:     ${d.shapeRadius},`);
+        out.push(`    shapeAngle:      ${d.shapeAngle},`);
+    }
+    if (d.bursts && d.bursts.length > 0) {
+        const bStr = d.bursts.map(b =>
+            `{ time: ${b.time}, count: ${b.count}, repeatCount: ${b.repeatCount ?? 1}, repeatInterval: ${b.repeatInterval ?? 0} }`
+        ).join(', ');
+        out.push(`    bursts:          [${bStr}],`);
+    }
+    out.push('};');
+    return out.join('\n');
+}
+
+// ─── UI 事件處理 ────────────────────────────────────────────────────────
+
+let currentResult = null;
+
+function doConvert() {
+    const input = document.getElementById('unity-input').value.trim();
+    if (!input) { showError('請先貼入或載入 Unity .prefab 內容。'); return; }
+
+    const res = convertUnity(input);
+    if (res.error) { showError(res.error); hideResult(); return; }
+
+    currentResult = res;
+    hideError();
+
+    document.getElementById('out-profile').value  = toProfileJson(res.profile);
+    document.getElementById('out-override').value = toTypescriptSnippet(res.overrideData);
+    renderNotes(res.notes);
+    showResult();
+}
+
+function doClear() {
+    document.getElementById('unity-input').value = '';
+    document.getElementById('file-name').textContent  = '';
+    hideError(); hideResult(); currentResult = null;
+}
+
+function handleFile(input) {
+    const file = input.files[0];
+    if (!file) return;
+    document.getElementById('file-name').textContent = file.name;
+    const reader = new FileReader();
+    reader.onload = e => {
+        document.getElementById('unity-input').value = e.target.result;
+        doConvert();
+    };
+    reader.readAsText(file, 'utf-8');
+    input.value = ''; // 允許重複選取同一檔案
+}
+
+function switchTab(name) {
+    ['profile', 'override', 'notes'].forEach(t => {
+        document.getElementById('tab-' + t).classList.toggle('active', t === name);
+        document.getElementById('tab-btn-' + t).classList.toggle('active', t === name);
+    });
+}
+
+function copyEl(id, btn) {
+    const el = document.getElementById(id);
+    el.select();
+    document.execCommand('copy');
+    const orig = btn.textContent;
+    btn.textContent = '✓ 已複製';
+    setTimeout(() => btn.textContent = orig, 1600);
+}
+
+function showError(msg) {
+    const el = document.getElementById('error-box');
+    el.textContent = msg; el.style.display = 'block';
+}
+function hideError() { document.getElementById('error-box').style.display = 'none'; }
+function showResult()  { document.getElementById('result-section').style.display = 'block'; }
+function hideResult()  { document.getElementById('result-section').style.display = 'none'; }
+
+function renderNotes(notes) {
+    const ICON  = { ok:'✅', approx:'⚠️', manual:'🔧', unsupported:'❌', skip:'⬜' };
+    const CLASS = { ok:'st-ok', approx:'st-approx', manual:'st-manual', unsupported:'st-unsupported', skip:'st-skip' };
+    const rows  = notes.map(n => {
+        const cl   = CLASS[n.status] ?? '';
+        const icon = ICON[n.status] ?? '';
+        const noteHtml = n.note ? `<br><span style="color:#5a5a5a;font-size:10.5px">${n.note}</span>` : '';
+        return `<tr>
+            <td style="width:18px;text-align:center">${icon}</td>
+            <td class="${cl}" style="white-space:nowrap">${n.key}</td>
+            <td class="${cl}">${n.val}</td>
+            <td style="color:#808080;font-size:11px">${noteHtml}</td>
+        </tr>`;
+    }).join('');
+
+    document.getElementById('notes-body').innerHTML = `
+        <p style="color:#808080;font-size:11px;margin-bottom:8px">
+            ✅ 已直接轉換 &nbsp;⚠️ Curve 近似值 &nbsp;🔧 需手動補齊 &nbsp;❌ 無對應 &nbsp;⬜ 未使用
+        </p>
+        <table class="notes-table">
+            <thead><tr><th></th><th style="width:35%">Unity 屬性</th><th style="width:20%">轉換結果</th><th>備注</th></tr></thead>
+            <tbody>${rows}</tbody>
+        </table>`;
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+{
+  "id": "battle-log-screen",
+  "version": 1,
+  "uiId": "BattleLog",
+  "layer": "Game",
+  "bundle": "battle_ui",
+  "layout": "battle-log-main",
+  "skin": "battle-log-default",
+  "validation": {
+    "devices": ["phone-16-9", "phone-19_5-9"],
+    "allowMissingSkin": true
+  }
+}

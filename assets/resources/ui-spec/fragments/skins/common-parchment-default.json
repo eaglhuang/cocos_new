@@ -1,0 +1,63 @@
+{
+  "id": "common-parchment-default",
+  "version": 2,
+  "description": "羊皮紙淺色底共用 skin fragment：frame/bleed/fill/shadow/noise + 深褐文字配色",
+  "slots": {
+    "parchment.bg.fill": {
+      "kind": "color-rect",
+      "color": "#F0E8D8E6"
+    },
+    "parchment.bg.frame": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/parchment/frame",
+      "spriteType": "sliced",
+      "border": [16, 16, 16, 16],
+      "allowAutoAtlas": true
+    },
+    "parchment.bg.bleed": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/bleed/bleed_parchment",
+      "spriteType": "sliced",
+      "border": [12, 12, 12, 12],
+      "allowAutoAtlas": true
+    },
+    "parchment.bg.shadow": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/shadow/shadow_01",
+      "spriteType": "sliced",
+      "border": [20, 20, 20, 20],
+      "allowAutoAtlas": true,
+      "opacity": 0.24,
+      "offsetY": 8
+    },
+    "parchment.bg.noise": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/noise/paper_noise_256",
+      "spriteType": "tiled",
+      "opacity": 0.10,
+      "blendMode": "alpha"
+    },
+    "parchment.text.primary": {
+      "kind": "label-style",
+      "fontSize": 18,
+      "color": "#2D2926",
+      "outlineWidth": 0
+    },
+    "parchment.text.secondary": {
+      "kind": "label-style",
+      "fontSize": 14,
+      "color": "#6B5E4E",
+      "outlineWidth": 0
+    },
+    "parchment.text.accent": {
+      "kind": "label-style",
+      "fontSize": 14,
+      "color": "#D4AF37",
+      "outlineWidth": 0
+    },
+    "parchment.divider": {
+      "kind": "color-rect",
+      "color": "#8C7A66"
+    }
+  }
+}

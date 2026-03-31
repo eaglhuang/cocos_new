@@ -57,18 +57,26 @@ export class BattleHUD extends UIPreviewBuilder {
         if (this._initialized) return;
 
         console.log('[BattleHUD] _initialize: 開始載入 battle-hud-screen 規格');
+        console.log(`[BattleHUD] _initialize: 掛載節點 name="${this.node?.name}" parent="${this.node?.parent?.name ?? 'null'}" active=${this.node?.active}`);
         try {
             const t0 = Date.now();
             const [fullScreen, i18n] = await Promise.all([
                 this._specLoader.loadFullScreen('battle-hud-screen'),
                 this._specLoader.loadI18n('zh-TW'),
             ]);
-            console.log(`[BattleHUD] _initialize: 規格載入完成 (${Date.now() - t0}ms)，開始 buildScreen`);
+            console.log(`[BattleHUD] _initialize: 規格載入完成 (${Date.now() - t0}ms) layout="${fullScreen?.layout?.id ?? '?'}" skin="${fullScreen?.skin?.id ?? '?'}"`);
+            if (!fullScreen?.layout) {
+                console.error('[BattleHUD] _initialize: fullScreen.layout 為 null/undefined，battle-hud-screen.json 可能缺少 layout 欄位或對應 layout JSON 不存在');
+                this._initialized = true;
+                return;
+            }
+            console.log('[BattleHUD] _initialize: 開始 buildScreen');
             await this.buildScreen(fullScreen.layout, fullScreen.skin, i18n);
             console.log('[BattleHUD] _initialize: buildScreen 完成');
             this._initialized = true;
         } catch (e) {
             console.error('[BattleHUD] _initialize: 規格載入或建構失敗，退回白模', e);
+            console.error('[BattleHUD] _initialize: 錯誤堆疊 →', (e as Error)?.stack ?? e);
             this._initialized = true;
         }
     }

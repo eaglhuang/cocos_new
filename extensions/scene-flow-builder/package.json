@@ -1,0 +1,40 @@
+{
+  "name": "scene-flow-builder",
+  "version": "1.0.0",
+  "package_version": 2,
+  "description": "一鍵建立 LoginScene / LoadingScene / LobbyScene 節點樹並掛好腳本與 Click Events",
+  "main": "./dist/main.js",
+  "author": "Cocos Creator Assistant",
+  "editor": ">=3.8.0",
+  "contributions": {
+    "scene": {
+      "script": "./dist/scene-script.js"
+    },
+    "menu": [
+      {
+        "path": "開發者/場景流程生成器/① 建立 LoginScene 節點樹",
+        "label": "① 建立 LoginScene 節點樹",
+        "message": "build-login-scene"
+      },
+      {
+        "path": "開發者/場景流程生成器/② 建立 LoadingScene 節點樹",
+        "label": "② 建立 LoadingScene 節點樹",
+        "message": "build-loading-scene"
+      },
+      {
+        "path": "開發者/場景流程生成器/③ 建立 LobbyScene 節點樹",
+        "label": "③ 建立 LobbyScene 節點樹",
+        "message": "build-lobby-scene"
+      }
+    ],
+    "messages": {
+      "build-login-scene":   { "methods": ["buildLoginScene"]   },
+      "build-loading-scene": { "methods": ["buildLoadingScene"] },
+      "build-lobby-scene":   { "methods": ["buildLobbyScene"]   }
+    }
+  },
+  "devDependencies": {
+    "@types/node": "^25.3.5",
+    "typescript": "^5.9.3"
+  }
+}
