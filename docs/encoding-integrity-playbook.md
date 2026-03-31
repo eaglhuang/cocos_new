@@ -16,10 +16,30 @@ npm run check:encoding
 npm run check:acceptance
 ```
 
+每次修改高風險文字檔後，先跑 touched-files 快檢。多人協作時，優先只檢查你這輪剛改的檔案：
+
+```bash
+npm run check:encoding:touched -- --files <file...>
+```
+
+若要掃整個目前 dirty working tree，再用：
+
+```bash
+npm run check:encoding:touched
+```
+
+這一步比全 repo 快很多，適合每次編輯後立刻做。
+
+若 PowerShell 被 execution policy 擋住 `npm.ps1`，可改用：
+
+```bash
+cmd /c npm run check:encoding:touched -- --files <file...>
+```
+
 只檢查 staged 檔案時可用：
 
 ```bash
-node tools_node/check-encoding-integrity.js --staged
+npm run check:encoding:staged
 ```
 
 ## 3. 高風險檔編輯流程
@@ -40,9 +60,13 @@ npm run prepare:high-risk-edit -- <file>
 
 編輯後：
 
-- 重新執行 `npm run check:encoding`
+- 先執行 `npm run check:encoding:touched -- --files <file...>`
+- 收工前再執行一次對應本輪輸出的 touched 檢查
+- 必要時再執行 `npm run check:encoding`
 - 檢查非 ASCII diff
 - 再提交
+
+不要只等最後一次才檢查。越晚發現，越難知道是哪一步把中文寫壞。
 
 ## 4. 禁止流程
 

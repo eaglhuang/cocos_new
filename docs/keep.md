@@ -94,6 +94,20 @@ Unity 對照：`screen/layout/skin` 可以理解為 Prefab 組裝規則、版面
 - 專案文字檔統一使用 UTF-8。
 - `.ts`、`.js`、`.json`、`.md`、`.ps1` 都受 UTF-8 規則約束。
 - `tools_node/check-encoding-integrity.js` 預設掃描 repo 內 git 追蹤的專案文字檔。
+- Agent 每次修改高風險文字檔後，必須先跑一次 touched-files 快檢。多人協作時優先只檢查自己剛改的檔案：
+
+```bash
+npm run check:encoding:touched -- --files <file...>
+```
+
+- 若要檢查整個目前 dirty working tree，再用：
+
+```bash
+npm run check:encoding:touched
+```
+
+- Agent 準備結束本輪工作、交接或提交前，必須至少再跑一次與本輪輸出對應的 touched 檢查。
+- `pre-commit` 仍維持 staged-files 檢查，作為最後硬保底，不可只依賴最後一次手動檢查。
 - pre-commit 與 acceptance 至少要攔下：
   - replacement character `U+FFFD`
   - 非預期 BOM

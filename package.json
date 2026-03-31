@@ -8,6 +8,8 @@
     "test": "node tools_node/run-tests.js",
     "test:watch": "node tools_node/watch-tests.js",
     "check:encoding": "node tools_node/check-encoding-integrity.js",
+    "check:encoding:touched": "node tools_node/check-encoding-touched.js",
+    "check:encoding:staged": "node tools_node/check-encoding-touched.js --staged",
     "check:ts-syntax": "node tools_node/check-ts-syntax.js",
     "check:ui-spec": "node tools_node/validate-ui-specs.js",
     "check:general-detail": "node tools_node/validate-general-detail-ui.js",
