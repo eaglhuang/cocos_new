@@ -30,20 +30,49 @@ Phase 4: 修復與驗證
 
 ## Phase 1 — 視覺確認
 
-### Step 1.1：截圖
+### Step 1.1：截圖（PrintWindow 指定視窗，不受前台遮擋影響）
 
 ```powershell
-Add-Type -AssemblyName System.Windows.Forms
-Add-Type -AssemblyName System.Drawing
-$bounds = [System.Windows.Forms.Screen]::PrimaryScreen.Bounds
-$bmp    = New-Object System.Drawing.Bitmap($bounds.Width, $bounds.Height)
-$g      = [System.Drawing.Graphics]::FromImage($bmp)
-$g.CopyFromScreen($bounds.Location, [System.Drawing.Point]::Empty, $bounds.Size)
-$outPath = "c:\Users\User\3KLife\temp\cocos-screenshot.png"
-$bmp.Save($outPath, [System.Drawing.Imaging.ImageFormat]::Png)
-$g.Dispose(); $bmp.Dispose()
-Write-Host "截圖完成: $outPath ($(([System.IO.FileInfo]$outPath).Length / 1KB -as [int]) KB)"
+Add-Type @"
+using System; using System.Collections.Generic; using System.Drawing;
+using System.Drawing.Imaging; using System.Runtime.InteropServices; using System.Text;
+public class WinEnum {
+    public delegate bool EnumWindowsProc(IntPtr hWnd, IntPtr lParam);
+    [DllImport("user32.dll")] public static extern bool EnumWindows(EnumWindowsProc lpEnumFunc, IntPtr lParam);
+    [DllImport("user32.dll")] public static extern int GetWindowText(IntPtr hWnd, StringBuilder lpString, int nMaxCount);
+    [DllImport("user32.dll")] public static extern bool IsWindowVisible(IntPtr hWnd);
+    [DllImport("user32.dll")] public static extern bool GetWindowRect(IntPtr hWnd, out RECT rect);
+    [DllImport("user32.dll")] public static extern bool PrintWindow(IntPtr hWnd, IntPtr hdcBlt, uint nFlags);
+    [StructLayout(LayoutKind.Sequential)] public struct RECT { public int Left, Top, Right, Bottom; }
+    public static IntPtr FindByTitle(string keyword) {
+        IntPtr found = IntPtr.Zero;
+        EnumWindows((hWnd, _) => {
+            if (!IsWindowVisible(hWnd)) return true;
+            var sb = new StringBuilder(256); GetWindowText(hWnd, sb, 256);
+            if (sb.ToString().IndexOf(keyword, StringComparison.OrdinalIgnoreCase) >= 0) { found = hWnd; return false; }
+            return true;
+        }, IntPtr.Zero); return found;
+    }
+    public static bool Snap(IntPtr hWnd, string path) {
+        RECT r; GetWindowRect(hWnd, out r);
+        int w = r.Right - r.Left, h = r.Bottom - r.Top;
+        if (w <= 0 || h <= 0) return false;
+        using (var bmp = new Bitmap(w, h, PixelFormat.Format32bppArgb))
+        using (var g = Graphics.FromImage(bmp)) {
+            IntPtr hdc = g.GetHdc(); bool ok = PrintWindow(hWnd, hdc, 2); g.ReleaseHdc(hdc);
+            if (!ok) return false; bmp.Save(path, ImageFormat.Png); return true;
+        }
+    }
+}
+"@ -ReferencedAssemblies System.Drawing
+$hwnd = [WinEnum]::FindByTitle("Cocos Creator")
+if ($hwnd -eq [IntPtr]::Zero) { Write-Error "找不到 Cocos Creator 視窗"; return }
+$out = "c:\Users\User\3KLife\temp\cocos-screenshot.png"
+$ok = [WinEnum]::Snap($hwnd, $out)
+if ($ok) { Write-Host "截圖完成: $out ($([int]((Get-Item $out).Length/1KB)) KB)" } else { Write-Error "PrintWindow 失敗" }
 ```
+
+> **提示**：若 `WinEnum` 已在同一 PowerShell session 載入，直接從 `$hwnd = ...` 開始即可。
 
 ### Step 1.2：用 `view_image` 讀取截圖
 
