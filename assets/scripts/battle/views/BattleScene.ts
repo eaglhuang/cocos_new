@@ -1,5 +1,5 @@
 // @spec-source → 見 docs/cross-reference-index.md
-import { _decorator, Component, Color, Label, Node, UITransform, Vec3, Button, Sprite, Prefab } from "cc";
+import { _decorator, Component, Color, Label, Node, UITransform, Vec3, Button, Sprite, Prefab, Widget } from "cc";
 import {
   EVENT_NAMES,
   Faction,
@@ -965,10 +965,20 @@ export class BattleScene extends Component {
     if (!node) {
       node = new Node("BattleLogPanel");
       canvas.addChild(node);
-      const tf = node.addComponent(UITransform);
-      tf.setContentSize(360, 236);
-      node.setPosition(new Vec3(760, 285, 0));
+      node.addComponent(UITransform);
     }
+
+    // Fallback host 必須拉滿 Canvas，避免子面板 widget 以錯誤父尺寸計算導致錯位。
+    const widget = node.getComponent(Widget) ?? node.addComponent(Widget);
+    widget.isAlignTop = true;
+    widget.isAlignBottom = true;
+    widget.isAlignLeft = true;
+    widget.isAlignRight = true;
+    widget.top = 0;
+    widget.bottom = 0;
+    widget.left = 0;
+    widget.right = 0;
+    widget.alignMode = Widget.AlignMode.ALWAYS;
 
     this.battleLogPanel = node.getComponent(BattleLogPanel) ?? node.addComponent(BattleLogPanel);
   }
@@ -993,6 +1003,18 @@ export class BattleScene extends Component {
       canvas.addChild(node);
       node.addComponent(UITransform);
     }
+
+    // 協調器 host 拉滿 Canvas，讓其下自動建立的子面板根節點對齊一致。
+    const widget = node.getComponent(Widget) ?? node.addComponent(Widget);
+    widget.isAlignTop = true;
+    widget.isAlignBottom = true;
+    widget.isAlignLeft = true;
+    widget.isAlignRight = true;
+    widget.top = 0;
+    widget.bottom = 0;
+    widget.left = 0;
+    widget.right = 0;
+    widget.alignMode = Widget.AlignMode.ALWAYS;
 
     this.battleScenePanel = node.getComponent(BattleScenePanel) ?? node.addComponent(BattleScenePanel);
     console.log('[BattleScene] ensureBattleScenePanel: BattleScenePanel 已就緒');

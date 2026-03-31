@@ -74,6 +74,7 @@
             "width": 80,
             "height": 28,
             "styleSlot": "action.ultimate.label",
+            "bind": "dynamic",
             "_doc": "SP未滿顯示'奧義'；SP滿顯示'發動'"
           },
           {
@@ -83,6 +84,7 @@
             "width": 70,
             "height": 20,
             "styleSlot": "action.sp.pct.label",
+            "bind": "dynamic",
             "_doc": "顯示'SP 75%'，SP滿時隱藏"
           }
         ]

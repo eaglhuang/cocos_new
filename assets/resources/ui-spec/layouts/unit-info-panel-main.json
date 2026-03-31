@@ -35,8 +35,8 @@
             "height": 38,
             "layout": { "type": "vertical", "spacing": 2 },
             "children": [
-              { "type": "label", "name": "UnitName", "id": "unitName", "width": "100%", "height": 20, "styleSlot": "unitinfo.label.name" },
-              { "type": "label", "name": "UnitSub",  "id": "unitSub",  "width": "100%", "height": 14, "styleSlot": "unitinfo.label.sub" }
+              { "type": "label", "name": "UnitName", "id": "unitName", "width": "100%", "height": 20, "styleSlot": "unitinfo.label.name", "bind": "dynamic" },
+              { "type": "label", "name": "UnitSub",  "id": "unitSub",  "width": "100%", "height": 14, "styleSlot": "unitinfo.label.sub", "bind": "dynamic" }
             ]
           },
           {
@@ -71,11 +71,11 @@
                 "layout": { "type": "vertical", "spacing": 4, "paddingLeft": 8, "paddingRight": 8, "paddingTop": 8, "paddingBottom": 8 },
                 "children": [
                   { "type": "label", "name": "SectionTitle1", "width": "100%", "height": 14, "text": "基礎數值", "styleSlot": "unitinfo.label.section" },
-                  { "type": "label", "name": "AtkRow",   "id": "atkRow",   "width": "100%", "height": 16, "styleSlot": "unitinfo.label.stat" },
-                  { "type": "label", "name": "DefRow",   "id": "defRow",   "width": "100%", "height": 16, "styleSlot": "unitinfo.label.stat" },
-                  { "type": "label", "name": "HpRow",    "id": "hpRow",    "width": "100%", "height": 16, "styleSlot": "unitinfo.label.stat" },
-                  { "type": "label", "name": "SpdRow",   "id": "spdRow",   "width": "100%", "height": 16, "styleSlot": "unitinfo.label.stat" },
-                  { "type": "label", "name": "CostRow",  "id": "costRow",  "width": "100%", "height": 16, "styleSlot": "unitinfo.label.stat" }
+                  { "type": "label", "name": "AtkRow",   "id": "atkRow",   "width": "100%", "height": 16, "styleSlot": "unitinfo.label.stat", "bind": "dynamic" },
+                  { "type": "label", "name": "DefRow",   "id": "defRow",   "width": "100%", "height": 16, "styleSlot": "unitinfo.label.stat", "bind": "dynamic" },
+                  { "type": "label", "name": "HpRow",    "id": "hpRow",    "width": "100%", "height": 16, "styleSlot": "unitinfo.label.stat", "bind": "dynamic" },
+                  { "type": "label", "name": "SpdRow",   "id": "spdRow",   "width": "100%", "height": 16, "styleSlot": "unitinfo.label.stat", "bind": "dynamic" },
+                  { "type": "label", "name": "CostRow",  "id": "costRow",  "width": "100%", "height": 16, "styleSlot": "unitinfo.label.stat", "bind": "dynamic" }
                 ]
               },
               {
@@ -108,7 +108,7 @@
                 "layout": { "type": "vertical", "spacing": 4, "paddingLeft": 8, "paddingRight": 8, "paddingTop": 8, "paddingBottom": 8 },
                 "children": [
                   { "type": "label", "name": "SectionTitle4", "width": "100%", "height": 14, "text": "兵種描述", "styleSlot": "unitinfo.label.section" },
-                  { "type": "label", "name": "DescText", "id": "descText", "width": "100%", "height": 80, "styleSlot": "unitinfo.label.desc" }
+                  { "type": "label", "name": "DescText", "id": "descText", "width": "100%", "height": 80, "styleSlot": "unitinfo.label.desc", "bind": "dynamic" }
                 ]
               }
             ]

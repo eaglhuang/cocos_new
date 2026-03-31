@@ -23,8 +23,8 @@
             "layout": { "type": "horizontal", "spacing": 12 },
             "children": [
               { "type": "image", "name": "PlayerPortrait", "id": "playerPortrait", "width": 64, "height": 64, "skinSlot": "hud.portrait.player", "interactable": true },
-              { "type": "label", "name": "PlayerName",      "id": "playerName",      "width": 100, "height": 28, "styleSlot": "hud.label.name" },
-              { "type": "label", "name": "PlayerFortressLabel","id": "playerFortressLabel","width": 120, "height": 36, "styleSlot": "hud.label.hp" }
+              { "type": "label", "name": "PlayerName",      "id": "playerName",      "width": 100, "height": 28, "styleSlot": "hud.label.name",       "bind": "dynamic" },
+              { "type": "label", "name": "PlayerFortressLabel","id": "playerFortressLabel","width": 120, "height": 36, "styleSlot": "hud.label.hp",        "bind": "dynamic" }
             ]
           },
           {
@@ -34,9 +34,9 @@
             "height": 88,
             "layout": { "type": "vertical", "spacing": 4 },
             "children": [
-              { "type": "label", "name": "TurnLabel",   "id": "turnLabel",   "width": 200, "height": 28, "styleSlot": "hud.label.round" },
-              { "type": "label", "name": "FoodLabel",   "id": "foodLabel",   "width": 200, "height": 24, "styleSlot": "hud.label.food" },
-              { "type": "label", "name": "StatusLabel", "id": "statusLabel", "width": 400, "height": 24, "styleSlot": "hud.label.status" }
+              { "type": "label", "name": "TurnLabel",   "id": "turnLabel",   "width": 200, "height": 28, "styleSlot": "hud.label.round",  "bind": "dynamic" },
+              { "type": "label", "name": "FoodLabel",   "id": "foodLabel",   "width": 200, "height": 24, "styleSlot": "hud.label.food",   "bind": "dynamic" },
+              { "type": "label", "name": "StatusLabel", "id": "statusLabel", "width": 400, "height": 24, "styleSlot": "hud.label.status",  "bind": "dynamic" }
             ]
           },
           {
@@ -46,8 +46,8 @@
             "height": 88,
             "layout": { "type": "horizontal", "spacing": 12 },
             "children": [
-              { "type": "label", "name": "EnemyFortressLabel","id": "enemyFortressLabel","width": 120, "height": 36, "styleSlot": "hud.label.hp.enemy" },
-              { "type": "label", "name": "EnemyName",        "id": "enemyName",        "width": 100, "height": 28, "styleSlot": "hud.label.name.enemy" },
+              { "type": "label", "name": "EnemyFortressLabel","id": "enemyFortressLabel","width": 120, "height": 36, "styleSlot": "hud.label.hp.enemy", "bind": "dynamic" },
+              { "type": "label", "name": "EnemyName",        "id": "enemyName",        "width": 100, "height": 28, "styleSlot": "hud.label.name.enemy", "bind": "dynamic" },
               { "type": "image", "name": "EnemyPortrait",    "id": "enemyPortrait",    "width": 64, "height": 64, "skinSlot": "hud.portrait.enemy", "interactable": true }
             ]
           }

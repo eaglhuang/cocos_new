@@ -55,7 +55,7 @@
                 "width": "100%",
                 "height": 340,
                 "children": [
-                  { "type": "label", "name": "LogLabel", "id": "logLabel", "width": "100%", "height": 340, "styleSlot": "log.label.content" }
+                  { "type": "label", "name": "LogLabel", "id": "logLabel", "width": "100%", "height": 340, "styleSlot": "log.label.content", "bind": "dynamic" }
                 ]
               }
             ]

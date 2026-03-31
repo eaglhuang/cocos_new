@@ -23,11 +23,11 @@
         "children": [
           { "type": "image",  "name": "ArtBg1",       "id": "artBg1",        "widget": { "top": 0, "left": 0, "right": 0, "bottom": 0 }, "skinSlot": "tally.card.art" },
           { "type": "image",  "name": "RarityBorder1", "id": "rarityBorder1", "widget": { "top": 0, "left": 0, "right": 0, "bottom": 0 }, "skinSlot": "tally.card.rarity.normal" },
-          { "type": "label",  "name": "AtkLabel1",     "id": "atkLabel1",     "widget": { "left": 6, "top": 6 },    "width": 56, "height": 20, "styleSlot": "tally.label.atk", "_doc": "攻擊值：⚔N" },
-          { "type": "label",  "name": "HpLabel1",      "id": "hpLabel1",      "widget": { "right": 6, "top": 6 },   "width": 56, "height": 20, "styleSlot": "tally.label.hp",  "_doc": "生命值：❤N" },
+          { "type": "label",  "name": "AtkLabel1",     "id": "atkLabel1",     "widget": { "left": 6, "top": 6 },    "width": 56, "height": 20, "styleSlot": "tally.label.atk", "bind": "dynamic", "_doc": "攻擊值：⚔N" },
+          { "type": "label",  "name": "HpLabel1",      "id": "hpLabel1",      "widget": { "right": 6, "top": 6 },   "width": 56, "height": 20, "styleSlot": "tally.label.hp",  "bind": "dynamic", "_doc": "生命值：❤N" },
           { "type": "image",  "name": "UnitTypeBadge1","id": "unitTypeBadge1","widget": { "left": 4, "bottom": 4 }, "width": 32, "height": 32, "skinSlot": "tally.badge.type", "_doc": "兵種圓徽章 32×32" },
-          { "type": "label",  "name": "UnitName1",     "id": "unitName1",     "widget": { "left": 40, "bottom": 10 }, "width": 110, "height": 18, "styleSlot": "tally.label.name" },
-          { "type": "label",  "name": "CostBadge1",    "id": "costBadge1",    "widget": { "right": 6, "bottom": 6 }, "width": 28, "height": 28, "styleSlot": "tally.label.cost" },
+          { "type": "label",  "name": "UnitName1",     "id": "unitName1",     "widget": { "left": 40, "bottom": 10 }, "width": 110, "height": 18, "styleSlot": "tally.label.name", "bind": "dynamic" },
+          { "type": "label",  "name": "CostBadge1",    "id": "costBadge1",    "widget": { "right": 6, "bottom": 6 }, "width": 28, "height": 28, "styleSlot": "tally.label.cost", "bind": "dynamic" },
           { "type": "image",  "name": "DisabledMask1", "id": "disabledMask1", "widget": { "top": 0, "left": 0, "right": 0, "bottom": 0 }, "skinSlot": "tally.card.disabled", "active": false }
         ]
       },
@@ -42,11 +42,11 @@
         "children": [
           { "type": "image",  "name": "ArtBg2",       "id": "artBg2",        "widget": { "top": 0, "left": 0, "right": 0, "bottom": 0 }, "skinSlot": "tally.card.art" },
           { "type": "image",  "name": "RarityBorder2", "id": "rarityBorder2", "widget": { "top": 0, "left": 0, "right": 0, "bottom": 0 }, "skinSlot": "tally.card.rarity.normal" },
-          { "type": "label",  "name": "AtkLabel2",     "id": "atkLabel2",     "widget": { "left": 6, "top": 6 },    "width": 56, "height": 20, "styleSlot": "tally.label.atk" },
-          { "type": "label",  "name": "HpLabel2",      "id": "hpLabel2",      "widget": { "right": 6, "top": 6 },   "width": 56, "height": 20, "styleSlot": "tally.label.hp" },
+          { "type": "label",  "name": "AtkLabel2",     "id": "atkLabel2",     "widget": { "left": 6, "top": 6 },    "width": 56, "height": 20, "styleSlot": "tally.label.atk", "bind": "dynamic" },
+          { "type": "label",  "name": "HpLabel2",      "id": "hpLabel2",      "widget": { "right": 6, "top": 6 },   "width": 56, "height": 20, "styleSlot": "tally.label.hp", "bind": "dynamic" },
           { "type": "image",  "name": "UnitTypeBadge2","id": "unitTypeBadge2","widget": { "left": 4, "bottom": 4 }, "width": 32, "height": 32, "skinSlot": "tally.badge.type" },
-          { "type": "label",  "name": "UnitName2",     "id": "unitName2",     "widget": { "left": 40, "bottom": 10 }, "width": 110, "height": 18, "styleSlot": "tally.label.name" },
-          { "type": "label",  "name": "CostBadge2",    "id": "costBadge2",    "widget": { "right": 6, "bottom": 6 }, "width": 28, "height": 28, "styleSlot": "tally.label.cost" },
+          { "type": "label",  "name": "UnitName2",     "id": "unitName2",     "widget": { "left": 40, "bottom": 10 }, "width": 110, "height": 18, "styleSlot": "tally.label.name", "bind": "dynamic" },
+          { "type": "label",  "name": "CostBadge2",    "id": "costBadge2",    "widget": { "right": 6, "bottom": 6 }, "width": 28, "height": 28, "styleSlot": "tally.label.cost", "bind": "dynamic" },
           { "type": "image",  "name": "DisabledMask2", "id": "disabledMask2", "widget": { "top": 0, "left": 0, "right": 0, "bottom": 0 }, "skinSlot": "tally.card.disabled", "active": false }
         ]
       },
@@ -61,11 +61,11 @@
         "children": [
           { "type": "image",  "name": "ArtBg3",       "id": "artBg3",        "widget": { "top": 0, "left": 0, "right": 0, "bottom": 0 }, "skinSlot": "tally.card.art" },
           { "type": "image",  "name": "RarityBorder3", "id": "rarityBorder3", "widget": { "top": 0, "left": 0, "right": 0, "bottom": 0 }, "skinSlot": "tally.card.rarity.normal" },
-          { "type": "label",  "name": "AtkLabel3",     "id": "atkLabel3",     "widget": { "left": 6, "top": 6 },    "width": 56, "height": 20, "styleSlot": "tally.label.atk" },
-          { "type": "label",  "name": "HpLabel3",      "id": "hpLabel3",      "widget": { "right": 6, "top": 6 },   "width": 56, "height": 20, "styleSlot": "tally.label.hp" },
+          { "type": "label",  "name": "AtkLabel3",     "id": "atkLabel3",     "widget": { "left": 6, "top": 6 },    "width": 56, "height": 20, "styleSlot": "tally.label.atk", "bind": "dynamic" },
+          { "type": "label",  "name": "HpLabel3",      "id": "hpLabel3",      "widget": { "right": 6, "top": 6 },   "width": 56, "height": 20, "styleSlot": "tally.label.hp", "bind": "dynamic" },
           { "type": "image",  "name": "UnitTypeBadge3","id": "unitTypeBadge3","widget": { "left": 4, "bottom": 4 }, "width": 32, "height": 32, "skinSlot": "tally.badge.type" },
-          { "type": "label",  "name": "UnitName3",     "id": "unitName3",     "widget": { "left": 40, "bottom": 10 }, "width": 110, "height": 18, "styleSlot": "tally.label.name" },
-          { "type": "label",  "name": "CostBadge3",    "id": "costBadge3",    "widget": { "right": 6, "bottom": 6 }, "width": 28, "height": 28, "styleSlot": "tally.label.cost" },
+          { "type": "label",  "name": "UnitName3",     "id": "unitName3",     "widget": { "left": 40, "bottom": 10 }, "width": 110, "height": 18, "styleSlot": "tally.label.name", "bind": "dynamic" },
+          { "type": "label",  "name": "CostBadge3",    "id": "costBadge3",    "widget": { "right": 6, "bottom": 6 }, "width": 28, "height": 28, "styleSlot": "tally.label.cost", "bind": "dynamic" },
           { "type": "image",  "name": "DisabledMask3", "id": "disabledMask3", "widget": { "top": 0, "left": 0, "right": 0, "bottom": 0 }, "skinSlot": "tally.card.disabled", "active": false }
         ]
       },
@@ -80,11 +80,11 @@
         "children": [
           { "type": "image",  "name": "ArtBg4",       "id": "artBg4",        "widget": { "top": 0, "left": 0, "right": 0, "bottom": 0 }, "skinSlot": "tally.card.art" },
           { "type": "image",  "name": "RarityBorder4", "id": "rarityBorder4", "widget": { "top": 0, "left": 0, "right": 0, "bottom": 0 }, "skinSlot": "tally.card.rarity.normal" },
-          { "type": "label",  "name": "AtkLabel4",     "id": "atkLabel4",     "widget": { "left": 6, "top": 6 },    "width": 56, "height": 20, "styleSlot": "tally.label.atk" },
-          { "type": "label",  "name": "HpLabel4",      "id": "hpLabel4",      "widget": { "right": 6, "top": 6 },   "width": 56, "height": 20, "styleSlot": "tally.label.hp" },
+          { "type": "label",  "name": "AtkLabel4",     "id": "atkLabel4",     "widget": { "left": 6, "top": 6 },    "width": 56, "height": 20, "styleSlot": "tally.label.atk", "bind": "dynamic" },
+          { "type": "label",  "name": "HpLabel4",      "id": "hpLabel4",      "widget": { "right": 6, "top": 6 },   "width": 56, "height": 20, "styleSlot": "tally.label.hp", "bind": "dynamic" },
           { "type": "image",  "name": "UnitTypeBadge4","id": "unitTypeBadge4","widget": { "left": 4, "bottom": 4 }, "width": 32, "height": 32, "skinSlot": "tally.badge.type" },
-          { "type": "label",  "name": "UnitName4",     "id": "unitName4",     "widget": { "left": 40, "bottom": 10 }, "width": 110, "height": 18, "styleSlot": "tally.label.name" },
-          { "type": "label",  "name": "CostBadge4",    "id": "costBadge4",    "widget": { "right": 6, "bottom": 6 }, "width": 28, "height": 28, "styleSlot": "tally.label.cost" },
+          { "type": "label",  "name": "UnitName4",     "id": "unitName4",     "widget": { "left": 40, "bottom": 10 }, "width": 110, "height": 18, "styleSlot": "tally.label.name", "bind": "dynamic" },
+          { "type": "label",  "name": "CostBadge4",    "id": "costBadge4",    "widget": { "right": 6, "bottom": 6 }, "width": 28, "height": 28, "styleSlot": "tally.label.cost", "bind": "dynamic" },
           { "type": "image",  "name": "DisabledMask4", "id": "disabledMask4", "widget": { "top": 0, "left": 0, "right": 0, "bottom": 0 }, "skinSlot": "tally.card.disabled", "active": true,
             "_doc": "第4張卡預設冷卻中，active:true 顯示灰色遮罩" }
         ]

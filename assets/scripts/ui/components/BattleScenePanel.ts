@@ -12,7 +12,7 @@
  *
  * Unity 對照：BattleUIManager（掛 Canvas 根的 Coordinator Component）
  */
-import { _decorator, Component, Node, UITransform } from 'cc';
+import { _decorator, Component, Node, UITransform, Widget } from 'cc';
 import { EVENT_NAMES, Faction, TurnPhase } from '../../core/config/Constants';
 import { services } from '../../core/managers/ServiceLoader';
 import { ActionCommandPanel } from './ActionCommandPanel';
@@ -75,18 +75,48 @@ export class BattleScenePanel extends Component {
         if (!this.tigerTallyPanel) {
             let n = canvas.getChildByName('TigerTallyPanel');
             if (!n) { n = new Node('TigerTallyPanel'); n.addComponent(UITransform); canvas.addChild(n); }
+            const widget = n.getComponent(Widget) ?? n.addComponent(Widget);
+            widget.isAlignTop = true;
+            widget.isAlignBottom = true;
+            widget.isAlignLeft = true;
+            widget.isAlignRight = true;
+            widget.top = 0;
+            widget.bottom = 0;
+            widget.left = 0;
+            widget.right = 0;
+            widget.alignMode = Widget.AlignMode.ALWAYS;
             this.tigerTallyPanel = n.getComponent(TigerTallyPanel) ?? n.addComponent(TigerTallyPanel);
         }
 
         if (!this.unitInfoPanel) {
             let n = canvas.getChildByName('UnitInfoPanel');
             if (!n) { n = new Node('UnitInfoPanel'); n.addComponent(UITransform); canvas.addChild(n); }
+            const widget = n.getComponent(Widget) ?? n.addComponent(Widget);
+            widget.isAlignTop = true;
+            widget.isAlignBottom = true;
+            widget.isAlignLeft = true;
+            widget.isAlignRight = true;
+            widget.top = 0;
+            widget.bottom = 0;
+            widget.left = 0;
+            widget.right = 0;
+            widget.alignMode = Widget.AlignMode.ALWAYS;
             this.unitInfoPanel = n.getComponent(UnitInfoPanel) ?? n.addComponent(UnitInfoPanel);
         }
 
         if (!this.actionCommandPanel) {
             let n = canvas.getChildByName('ActionCommandPanel');
             if (!n) { n = new Node('ActionCommandPanel'); n.addComponent(UITransform); canvas.addChild(n); }
+            const widget = n.getComponent(Widget) ?? n.addComponent(Widget);
+            widget.isAlignTop = true;
+            widget.isAlignBottom = true;
+            widget.isAlignLeft = true;
+            widget.isAlignRight = true;
+            widget.top = 0;
+            widget.bottom = 0;
+            widget.left = 0;
+            widget.right = 0;
+            widget.alignMode = Widget.AlignMode.ALWAYS;
             this.actionCommandPanel = n.getComponent(ActionCommandPanel) ?? n.addComponent(ActionCommandPanel);
         }
     }
