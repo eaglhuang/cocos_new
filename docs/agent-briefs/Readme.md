@@ -7,6 +7,7 @@
 ## 硬規則
 
 - 正式工作原則上先有任務卡，再開始實作、重構、批次文件整理或正式 QA。
+- 拿卡即鎖卡。開始做之前，先把任務卡與 manifest 標成 `in-progress`，補上 `started_at` / `started_by_agent`，再進入實作。
 - bug 修復可視情況不先開卡，但仍要保留可追蹤性，commit 必須寫清楚 bug 內容、修法與 Agent 標籤。
 - 例外只限很小的錯字、一次性查詢、或使用者明確要求的超小修改。
 - 任務範圍若擴大、出現新 blocker、或衍生新工作，必須先補開新卡或更新原卡 `related / depends / notes`，不可默默混在同一張卡內。
@@ -46,7 +47,8 @@
 2. 讀自己的 `agentX-instructions.md`。
 3. 查 [ui-quality-todo.json](C:\Users\User\3KLife\docs\ui-quality-todo.json) 與 [CheckList.md](C:\Users\User\3KLife\docs\agent-briefs\CheckList.md)，確認目前卡片狀態、依賴與 owner。
 4. 若要做的是新範圍，先開卡再開始。
-5. 若只是 bug 修復，可先做最小修補，但 commit 仍要遵守 bug 格式並記錄方法。
+5. 若決定開始做，先鎖卡：`status=in-progress`、補 `started_at` / `started_by_agent`、更新 `notes`。
+6. 若只是 bug 修復，可先做最小修補，但 commit 仍要遵守 bug 格式並記錄方法。
 
 ## 開新任務卡流程
 
@@ -55,8 +57,24 @@
 3. 在卡片寫清楚：開單原因、完整描述、驗證方式、是否需要測試。
 4. 同步更新 [ui-quality-todo.json](C:\Users\User\3KLife\docs\ui-quality-todo.json)。
 5. 同步更新 [tasks_index.md](C:\Users\User\3KLife\docs\agent-briefs\tasks_index.md) 與 [CheckList.md](C:\Users\User\3KLife\docs\agent-briefs\CheckList.md)。
-6. 後續正式 commit 應引用這張卡，或明確標示單一主題批次。
-7. bug 修復若沒有新卡，也必須在 commit message 寫清楚系統代碼、問題、修法與 Agent 標籤。
+6. 一旦開始做，立刻鎖卡：任務卡與 manifest 都更新為 `in-progress`，並記錄 `started_at` / `started_by_agent`。
+7. 後續正式 commit 應引用這張卡，或明確標示單一主題批次。
+8. bug 修復若沒有新卡，也必須在 commit message 寫清楚系統代碼、問題、修法與 Agent 標籤。
+
+## 鎖卡流程
+
+1. 確認這張卡目前沒有被其他 Agent 鎖定。
+2. 任務卡 frontmatter 更新：
+   - `status: in-progress`
+   - `started_at: <RFC3339>`
+   - `started_by_agent: AgentX`
+3. manifest 對應 task 同步更新相同欄位。
+4. `notes` 立即寫第一筆：
+   - `YYYY-MM-DD | 狀態: in-progress | 驗證: pending | 變更: AgentX 開始處理 <summary> | 阻塞: none`
+5. 若中途停下：
+   - 繼續做：維持鎖定
+   - 被 blocker 卡住：保留 `in-progress` 或改 `blocked`，但必須在 `notes` 寫清楚
+   - 要交接：在 `notes` 寫交接對象與原因，再由下一位 Agent 接手更新
 
 ## 分工原則
 

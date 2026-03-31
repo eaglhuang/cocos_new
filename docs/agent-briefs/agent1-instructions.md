@@ -35,6 +35,7 @@ description: "負責 runtime、preview host、UI contract、layout/skin JSON、t
 ## 硬規則
 
 - 正式工作原則上先有任務卡，再開始實作、重構、批次文件整理或正式 QA。
+- 拿卡即鎖卡。開始做之前，先把任務卡與 manifest 標成 `in-progress`，補上 `started_at` / `started_by_agent`。
 - bug 修復可視情況不先開卡，但仍要保留可追蹤性，commit 必須寫清楚 bug 內容、修法與 Agent 標籤。
 - 若工作範圍擴大、出現新 blocker、或衍生新工作，先補開新卡或更新原卡 `related / depends / notes`。
 - 正式 commit 必須能對回單一卡號、單一主題批次，或單一 bug 修復單位。

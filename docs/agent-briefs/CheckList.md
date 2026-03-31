@@ -11,9 +11,10 @@
 
 1. 這次工作是否已有任務卡。
 2. 若沒有，而且不是小錯字或一次性查詢，先開卡。
-3. 若是 bug 修復，可以先做最小修補，但仍要保留可追蹤性與單一問題範圍。
-4. 若範圍擴大，先更新 `related / depends / notes`，必要時補開新卡。
-5. 準備 commit 前，確認這批變更能對回單一卡號、單一主題或單一 bug。
+3. 若決定開始做，先鎖卡：`status=in-progress`、補 `started_at` / `started_by_agent`、更新 `notes`。
+4. 若是 bug 修復，可以先做最小修補，但仍要保留可追蹤性與單一問題範圍。
+5. 若範圍擴大，先更新 `related / depends / notes`，必要時補開新卡。
+6. 準備 commit 前，確認這批變更能對回單一卡號、單一主題或單一 bug。
 
 ## UI 視覺介面系統
 
@@ -74,3 +75,10 @@
 3. 更新本表狀態。
 4. 若要正式 commit，確認 commit message 已帶任務卡號與 Agent 標籤。
 5. 若是 bug commit，確認 message 也寫了系統代碼、問題描述與修改描述。
+
+## 鎖卡最小欄位
+
+- `status: in-progress`
+- `started_at: <RFC3339>`
+- `started_by_agent: AgentX`
+- `notes` 第一筆寫開始時間、目前處理範圍與是否有 blocker

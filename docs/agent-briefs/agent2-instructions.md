@@ -24,6 +24,7 @@ description: "負責 QA artifact、比對紀錄、視覺驗收、追蹤收斂與
 ## 硬規則
 
 - 正式工作原則上先有任務卡，再開始正式 QA、artifact 整理或大批次比對。
+- 拿卡即鎖卡。開始做之前，先把任務卡與 manifest 標成 `in-progress`，補上 `started_at` / `started_by_agent`。
 - bug 修復若只是為了修 QA 阻塞，可先做最小修補，但 commit 仍要寫清楚 bug 內容、修法與 Agent 標籤。
 - 若工作範圍擴大、出現新 blocker、或需要回頭改 runtime，先補卡或更新 `related / depends / notes`。
 - 正式 commit 必須能對回單一卡號、單一主題批次，或單一 bug 修復單位。
