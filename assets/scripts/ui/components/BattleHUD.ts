@@ -191,6 +191,41 @@ export class BattleHUD extends UIPreviewBuilder {
         } catch (e) {
             // 防禦性容錯：不影響正常流程
         }
+
+        // 進一步：隱藏場景中非 _rootNode 的 Label，如果文字看起來像 HP/生命格式（例如 "123 / 500" 或包含「生命」字樣），
+        // 以避免不同工具/Builder 生成的重複顯示。只隱藏非新建子樹的節點。
+        try {
+            const hpRegex = /\d+\s*\/\s*\d+/;
+            const canvas = this.node.scene?.getChildByName('Canvas');
+            if (canvas) {
+                const isInNewRoot = (n: Node): boolean => {
+                    let cur: Node | null = n;
+                    while (cur) {
+                        if (cur === _rootNode) return true;
+                        cur = cur.parent;
+                    }
+                    return false;
+                };
+
+                const traverse = (n: Node) => {
+                    if (!n) return;
+                    if (!isInNewRoot(n)) {
+                        const lbl = n.getComponent(Label);
+                        if (lbl) {
+                            const s = (lbl.string || '').toString();
+                            if (hpRegex.test(s) || s.indexOf('生命') >= 0 || s.indexOf('我方') >= 0 || s.indexOf('敵方') >= 0) {
+                                n.active = false;
+                            }
+                        }
+                    }
+                    for (const c of n.children) traverse(c);
+                };
+
+                for (const child of canvas.children) traverse(child);
+            }
+        } catch (e) {
+            // 忽略錯誤
+        }
     }
 
     /** 確保節點上有 ProgressBar 組件，回傳組件引用 */
