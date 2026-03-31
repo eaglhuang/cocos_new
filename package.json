@@ -5,17 +5,36 @@
     "version": "3.8.8"
   },
   "scripts": {
-    "test": "node tools/run-tests.js",
-    "test:watch": "node tools/watch-tests.js"
+    "test": "node tools_node/run-tests.js",
+    "test:watch": "node tools_node/watch-tests.js",
+    "check:encoding": "node tools_node/check-encoding-integrity.js",
+    "check:ts-syntax": "node tools_node/check-ts-syntax.js",
+    "check:ui-spec": "node tools_node/validate-ui-specs.js",
+    "check:general-detail": "node tools_node/validate-general-detail-ui.js",
+    "check:layered-frames": "node tools_node/validate-layered-frame-assets.js",
+    "check:acceptance": "node tools_node/run-acceptance.js",
+    "prepare:high-risk-edit": "node tools_node/prepare-high-risk-edit.js",
+    "install:hooks": "node tools_node/install-git-hooks.js",
+    "capture:ui": "node tools_node/capture-ui-screens.js"
   },
   "devDependencies": {
     "@types/chai": "^5.2.3",
+    "@types/cors": "^2.8.19",
+    "@types/crypto-js": "^4.2.2",
+    "@types/express": "^5.0.6",
     "@types/mocha": "^10.0.10",
     "@types/node": "^25.5.0",
     "chai": "^6.2.2",
     "mocha": "^11.7.5",
+    "puppeteer-core": "^24.40.0",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "yaml": "^2.8.3"
+  },
+  "dependencies": {
+    "cors": "^2.8.6",
+    "crypto-js": "^4.2.0",
+    "express": "^5.2.1"
   }
 }

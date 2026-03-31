@@ -1,0 +1,11 @@
+#!/bin/sh
+
+node tools_node/check-encoding-integrity.js --staged
+RESULT=$?
+
+if [ $RESULT -ne 0 ]; then
+  echo "pre-commit blocked: encoding integrity check failed."
+  exit $RESULT
+fi
+
+exit 0

@@ -1,0 +1,6 @@
+# Text files use LF and are guarded by tools_node/check-encoding-integrity.js.
+*.ts text eol=lf working-tree-encoding=UTF-8
+*.js text eol=lf working-tree-encoding=UTF-8
+*.json text eol=lf working-tree-encoding=UTF-8
+*.md text eol=lf working-tree-encoding=UTF-8
+*.ps1 text eol=lf working-tree-encoding=UTF-8

@@ -1,0 +1,51 @@
+{
+  "allowedExtensions": [
+    ".ts",
+    ".js",
+    ".json",
+    ".md",
+    ".ps1"
+  ],
+  "latinMojibakeFragments": [
+    "Ã",
+    "Â",
+    "ðŸ",
+    "ï»¿"
+  ],
+  "weirdCjkFragments": [],
+  "latinMojibakeMinCount": 3,
+  "latinMojibakeMinRatio": 0.003,
+  "weirdCjkMinCount": 999999,
+  "highRiskFiles": {
+    "assets/scripts/ui/core/UIPreviewBuilder.ts": {
+      "label": "UI Preview Builder",
+      "baselineNonAscii": 796,
+      "maxNonAsciiDelta": 240,
+      "allowBom": true
+    },
+    "assets/scripts/ui/core/UISkinResolver.ts": {
+      "label": "UI Skin Resolver",
+      "baselineNonAscii": 277,
+      "maxNonAsciiDelta": 80
+    },
+    "assets/scripts/ui/scenes/LoadingScene.ts": {
+      "label": "Loading Scene",
+      "baselineNonAscii": 254,
+      "maxNonAsciiDelta": 80
+    },
+    "assets/scripts/core/systems/ResourceManager.ts": {
+      "label": "Resource Manager",
+      "baselineNonAscii": 126,
+      "maxNonAsciiDelta": 60
+    }
+  },
+  "legacyAllowlist": {
+    "replacementChar": [],
+    "mojibake": [
+      "tools_node/encoding-integrity.config.json"
+    ],
+    "bom": [
+      "assets/scripts/ui/core/UIPreviewBuilder.ts"
+    ]
+  }
+}

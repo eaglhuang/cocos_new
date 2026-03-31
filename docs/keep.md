@@ -620,3 +620,35 @@
    - 遵循本文件記錄的所有準則與約定
 4. **專案文檔**: 重要的技術決策、架構設計和開發規範需記錄於 `demo_技術架構.md`，並定期更新以反映最新共識。
 5. **Demo 規格維護**: 詳細的玩法規格統一維護於 `demo_playbook.md`，確保所有開發人員對核心玩法有一致理解。
+
+### [2026-03-31] 中文編碼防災規範補強（repo-wide）
+- 專案文字檔正式以 `.editorconfig`、`.gitattributes`、`.vscode/settings.json` 統一規範為 UTF-8 + LF；適用副檔名至少包含 `.ts`、`.js`、`.json`、`.md`、`.ps1`。
+- `tools_node/check-encoding-integrity.js` 的預設掃描範圍已提升為「git 追蹤中的專案文字檔」，不再只掃少數高風險檔；因此 `docs/*.md`、JSON 契約與一般 TypeScript 檔案都必須納入編碼驗收。
+- repo-wide 掃描會排除 vendored / 第三方型別來源（例如 `@cocos/creator-types/`），也不應把工作樹中已不存在的舊追蹤路徑視為專案錯誤。
+- `npm run check:acceptance` 與 git `pre-commit` 的編碼檢查，至少要能攔截：`U+FFFD` replacement character、非預期 BOM、可疑 mojibake 特徵、高風險檔非 ASCII 基線異常漂移。
+
+### [2026-03-31] 中文檔回救與寫檔流程
+- 中文檔案的「UTF-8 格式正確」不等於「中文字內容正確」；若先經過錯誤碼頁解碼再寫回，就算最後仍是 UTF-8 檔案，內容也可能已經變成亂碼。
+- 回救中文檔時，禁止使用會經過主控台碼頁或 PowerShell 字串轉碼的流程，例如：
+  - `Set-Content`
+  - `Out-File`
+  - `git show ... | Out-String | WriteAllText(...)`
+- 回救 / 覆寫中文檔時，必須使用二進位安全或明確指定 UTF-8 的流程，例如：
+  - `apply_patch`
+  - `cmd /c "git show HEAD:path\\to\\file > path\\to\\file"`
+  - 明確指定 UTF-8（無 BOM）的檔案 API
+- 本次 `docs/keep.md` 的事故已證明：若用 PowerShell / 主控台字串流程搬運 git blob，即使來源內容正確，也可能在工作樹再次被 `cp950` 類碼頁污染。
+
+### [2026-03-31] 高風險中文檔協作規範
+- 高風險中文檔（例如大量中文 template string、中文 log、長段註解檔）必須採單寫者規則；同一時間只允許一位 Agent / 開發者修改。
+- 編輯高風險中文檔前，必須先執行 `npm run prepare:high-risk-edit -- <file>`，建立 SHA256 與 `local/encoding-backups/` 備份。
+- commit message 正式採用 `[bug|feat|chore] 任務卡號 功能描述 [AgentX]`；git commit 是災難回救保底，但不能取代 pre-commit 編碼檢查。
+
+### [2026-03-31] 代碼檔 400 行硬規則
+- 任一代碼檔只要超過 400 行，就必須列為強制重構與拆分對象。
+- 這不是「有空再整理」的軟建議，而是正式工程規則；後續新功能不得持續堆疊在已超標的大檔中。
+- 若當輪任務無法完成拆分，至少必須同時做到：
+  - 開正式任務卡或在既有任務卡明確記錄拆分責任
+  - 在 notes / 規格文件中留下拆分計畫
+  - 避免再把額外責任塞進同一檔案
+- 對照 Unity，這條規則等同於禁止長期維護超肥大的 `MonoBehaviour`；節點建立、版面、樣式、診斷、文案、資料轉換應逐步拆成獨立模組。

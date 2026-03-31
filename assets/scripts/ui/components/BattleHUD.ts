@@ -1,237 +1,289 @@
-import { _decorator, Component, Label, Node, ProgressBar, UITransform, Vec3 } from "cc";
-import { EVENT_NAMES, Faction } from "../../core/config/Constants";
-import { ServiceLoader, services } from "../../core/managers/ServiceLoader";
-
-const { ccclass, property } = _decorator;
-
+// @spec-source → 見 docs/cross-reference-index.md
 /**
- * BattleHUD — 戰鬥介面抬頭顯示器。
- * 顯示：回合數、DP（部署點數）、SP（武將能量條）、雙方主將血量。
- * 
- * 使用方式：掛載至 Canvas 下的 HUD 節點，在 Inspector 中綁定各個子節點。
+ * BattleHUD — 戰鬥介面抬頭顯示器（新架構版）
+ *
+ * ⭐ 已遷移至 UIPreviewBuilder 架構
+ *
+ * 佈局由 battle-hud-main.json 定義，皮膚由 battle-hud-default.json 提供。
+ * 業務邏輯（事件訂閱、HP/SP/DP 更新）完整保留。
+ *
+ * 節點查找策略：
+ *   - 透過 id 欄位建立的節點，使用 this.node.getChildByName(id) 查找
+ *   - ProgressBar 節點用 image type 佔位，由 BattleHUD 在 onBuildComplete 中
+ *     動態加上 ProgressBar 組件（因為 UIPreviewBuilder 不處理 ProgressBar）
+ *
+ * Unity 對照：GameHUDController，監聽事件更新各個 Binding
  */
-@ccclass("BattleHUD")
-export class BattleHUD extends Component {
-  // ─── 回合 & DP ───────────────────────────────────────────────────────────
-  @property(Label)
-  turnLabel: Label = null!;
+import { _decorator, Button, Label, Node, ProgressBar, UITransform } from 'cc';
+import { EVENT_NAMES, Faction, GAME_CONFIG } from '../../core/config/Constants';
+import { services } from '../../core/managers/ServiceLoader';
+import { UIPreviewBuilder } from '../core/UIPreviewBuilder';
+import { UISpecLoader } from '../core/UISpecLoader';
 
-  @property(Label)
-  dpLabel: Label = null!;
+const { ccclass } = _decorator;
 
-  // ─── 武將 SP 能量條 ───────────────────────────────────────────────────────
-  @property(ProgressBar)
-  playerSpBar: ProgressBar = null!;
+@ccclass('BattleHUD')
+export class BattleHUD extends UIPreviewBuilder {
 
-  @property(Label)
-  playerSpLabel: Label = null!;
+    // ── 私有狀態 ─────────────────────────────────────────────
+    private _specLoader = new UISpecLoader();
+    private _initialized = false;
+    private _playerGeneralMaxHp = 1;
+    private _enemyGeneralMaxHp  = 1;
+    private readonly _unsubs: Array<() => void> = [];
 
-  // 右側顯示敵方 SP
-  @property(ProgressBar)
-  enemySpBar: ProgressBar = null!;
+    // ── 節點引用（由 onBuildComplete 填入）──────────────────
+    private _turnLabel:           Label       | null = null;
+    private _foodLabel:           Label       | null = null;
+    private _statusLabel:         Label       | null = null;
+    private _playerNameLabel:     Label       | null = null;
+    private _enemyNameLabel:      Label       | null = null;
+    private _playerFortressLabel: Label       | null = null;
+    private _enemyFortressLabel:  Label       | null = null;
+    private _playerFortressBar:   ProgressBar | null = null;
+    private _enemyFortressBar:    ProgressBar | null = null;
 
-  @property(Label)
-  enemySpLabel: Label = null!;
+    // ── 生命週期 ─────────────────────────────────────────────
 
-  // ─── 主將血量（沿用既有 UI 節點） ─────────────────────────────────────────
-  @property(ProgressBar)
-  playerFortressBar: ProgressBar = null!;
+    async onLoad(): Promise<void> {
+        await this._initialize();
 
-  @property(Label)
-  playerFortressLabel: Label = null!;
-
-  @property(ProgressBar)
-  enemyFortressBar: ProgressBar = null!;
-
-  @property(Label)
-  enemyFortressLabel: Label = null!;
-
-  // ─── 狀態訊息（顯示技能提示、暈眩等） ─────────────────────────────────────
-  @property(Label)
-  statusLabel: Label = null!;
-
-  private playerGeneralMaxHp = 1;
-  private enemyGeneralMaxHp  = 1;
-  private readonly unsubs: Array<() => void> = [];
-
-  onLoad(): void {
-    this.ensureBindings();
-    this.applyReferenceLayout();
-    // 確保 ServiceLoader 已初始化（避免 onLoad 早於 BattleScene.start 但需要事件系統）
-    // 傳入 this.node 作為 AudioSystem 的 hostNode
-    ServiceLoader.getInstance().initialize(this.node);
-    const svc = services();
-    this.unsubs.push(
-      svc.event.on(EVENT_NAMES.TurnPhaseChanged,   this.onTurnPhaseChanged.bind(this)),
-      svc.event.on(EVENT_NAMES.GeneralSpChanged,   this.onGeneralSpChanged.bind(this)),
-      svc.event.on(EVENT_NAMES.GeneralDamaged,     this.onGeneralDamaged.bind(this)),
-      svc.event.on(EVENT_NAMES.GeneralSkillUsed,   this.onGeneralSkillUsed.bind(this)),
-      svc.event.on(EVENT_NAMES.GeneralSkillEffect, this.onSkillEffect.bind(this)),
-    );
-    console.log("[BattleHUD] onLoad 完成，事件已訂閱");
-  }
-
-  private applyReferenceLayout(): void {
-    // ── HUD node 設為全畫面容器，使子節點可用 Canvas 座標定位 ────────────────
-    // 對照 Unity：把 HUD Panel RectTransform 拉滿全畫面的透明容器層
-    const DESIGN_W = 1920, DESIGN_H = 1024;
-    const hudTf = this.node.getComponent(UITransform) ?? this.node.addComponent(UITransform);
-    hudTf.setContentSize(DESIGN_W, DESIGN_H);
-    this.node.setPosition(new Vec3(0, 0, 0));
-
-    // ── 頂部狀態列（y ≈ +440 ~ +480）────────────────────────────────────────
-    // 左側：回合 / DP / SP 條
-    this.layoutNode(this.turnLabel?.node ?? null,          -860, +475, 140, 30);
-    this.layoutNode(this.dpLabel?.node ?? null,            -700, +475, 120, 30);
-    this.layoutNode(this.playerSpBar?.node ?? null,        -520, +477, 160, 18);
-    // 我方 SP 數字移到技能按鈕上方，強化可見性
-    this.layoutNode(this.playerSpLabel?.node ?? null,      +810, -320, 120, 30);
-    // 右側：敵方 SP 條（靠近血量欄）
-    this.layoutNode(this.enemySpBar?.node ?? null,         +520, +477, 160, 18);
-    this.layoutNode(this.enemySpLabel?.node ?? null,       +860, +475, 120, 30);
-    // 左側：我方 HP 條（第二層）
-    this.layoutNode(this.playerFortressLabel?.node ?? null, -800, +447, 150, 26);
-    this.layoutNode(this.playerFortressBar?.node ?? null,   -630, +443, 180, 18);
-    // 右側：敵方 HP 條
-    this.layoutNode(this.enemyFortressLabel?.node ?? null,  +715, +475, 145, 26);
-    this.layoutNode(this.enemyFortressBar?.node ?? null,    +545, +443, 180, 18);
-    // 畫面中上：狀態訊息（技能提示、暈眩等）
-    this.layoutNode(this.statusLabel?.node ?? null,          +50, +475, 400, 30);
-  }
-
-  private layoutNode(node: Node | null, x: number, y: number, width: number, height: number): void {
-    if (!node) return;
-    const tf = node.getComponent(UITransform) ?? node.addComponent(UITransform);
-    tf.setContentSize(width, height);
-    node.setPosition(new Vec3(x, y, 0));
-  }
-
-  /**
-   * 自動從子節點名稱補綁 Inspector 可能遺漏的引用。
-   */
-  private ensureBindings(): void {
-    const findLabel = (name: string): Label | null => {
-      const n = this.node.getChildByName(name);
-      return n?.getComponent(Label) ?? null;
-    };
-    const findBar = (name: string): ProgressBar | null => {
-      const n = this.node.getChildByName(name);
-      return n?.getComponent(ProgressBar) ?? null;
-    };
-    
-    if (!this.enemySpBar)   this.enemySpBar   = findBar("EnemySpBar")!;
-    if (!this.enemySpLabel) this.enemySpLabel = findLabel("EnemySpLabel")!;
-
-    if (!this.turnLabel)          this.turnLabel          = findLabel("TurnLabel")!;
-    if (!this.dpLabel)            this.dpLabel            = findLabel("DpLabel")!;
-    if (!this.playerSpBar)        this.playerSpBar        = findBar("PlayerSpBar")!;
-    if (!this.playerSpLabel)      this.playerSpLabel      = findLabel("PlayerSpLabel")!;
-    if (!this.playerFortressBar)  this.playerFortressBar  = findBar("PlayerFortressBar")!;
-    if (!this.playerFortressLabel) this.playerFortressLabel = findLabel("PlayerFortressLabel")!;
-    if (!this.enemyFortressBar)   this.enemyFortressBar   = findBar("EnemyFortressBar")!;
-    if (!this.enemyFortressLabel) this.enemyFortressLabel = findLabel("EnemyFortressLabel")!;
-    if (!this.statusLabel)        this.statusLabel        = findLabel("StatusLabel")!;
-
-    console.log(`[BattleHUD] 綁定狀態 — turn:${!!this.turnLabel} dp:${!!this.dpLabel} sp:${!!this.playerSpBar} status:${!!this.statusLabel}`);
-  }
-
-  onDestroy(): void {
-    this.unsubs.forEach(fn => fn());
-    this.unsubs.length = 0;
-  }
-
-  /** 初始化顯示（由 BattleScene 在開戰後呼叫） */
-  public refresh(
-    turn: number,
-    dp: number,
-    playerSp: number,
-    playerMaxSp: number,
-    enemySp: number,
-    enemyMaxSp: number,
-    playerGeneralHp: number,
-    playerGeneralMaxHp: number,
-    enemyGeneralHp: number,
-    enemyGeneralMaxHp: number,
-  ): void {
-    this.setTurn(turn);
-    this.setDp(dp);
-    this.setPlayerSp(playerSp, playerMaxSp);
-    this.setEnemySp(enemySp, enemyMaxSp);
-    this.playerGeneralMaxHp = Math.max(1, playerGeneralMaxHp);
-    this.enemyGeneralMaxHp  = Math.max(1, enemyGeneralMaxHp);
-    this.setGeneralHealth(Faction.Player, playerGeneralHp);
-    this.setGeneralHealth(Faction.Enemy, enemyGeneralHp);
-    this.clearStatus();
-  }
-
-  private onTurnPhaseChanged(snap: { turn: number; playerDp: number }): void {
-    this.setTurn(snap.turn);
-    this.setDp(snap.playerDp);
-    this.clearStatus();
-  }
-
-  private onGeneralSpChanged(data: { faction: Faction; sp: number; maxSp: number }): void {
-    if (data.faction === Faction.Player) {
-      this.setPlayerSp(data.sp, data.maxSp);
-    } else {
-      this.setEnemySp(data.sp, data.maxSp);
+        // 確保 ServiceLoader 已初始化
+        services().initialize(this.node);
+        this._subscribeEvents();
     }
-  }
 
-  private onGeneralDamaged(data: { faction: Faction; hp: number }): void {
-    this.setGeneralHealth(data.faction, data.hp);
-  }
+    private async _initialize(): Promise<void> {
+        if (this._initialized) return;
 
-  private onGeneralSkillUsed(data: { faction: Faction }): void {
-    if (data.faction === Faction.Player) {
-      this.showStatus("張飛發動技能！");
+        console.log('[BattleHUD] _initialize: 開始載入 battle-hud-screen 規格');
+        try {
+            const t0 = Date.now();
+            const [fullScreen, i18n] = await Promise.all([
+                this._specLoader.loadFullScreen('battle-hud-screen'),
+                this._specLoader.loadI18n('zh-TW'),
+            ]);
+            console.log(`[BattleHUD] _initialize: 規格載入完成 (${Date.now() - t0}ms)，開始 buildScreen`);
+            await this.buildScreen(fullScreen.layout, fullScreen.skin, i18n);
+            console.log('[BattleHUD] _initialize: buildScreen 完成');
+            this._initialized = true;
+        } catch (e) {
+            console.error('[BattleHUD] _initialize: 規格載入或建構失敗，退回白模', e);
+            this._initialized = true;
+        }
     }
-  }
 
-  private onSkillEffect(data: { skillId: string; faction: Faction }): void {
-    if (data.skillId === "zhang-fei-roar") {
-      this.showStatus("⚡ 震吼！敵方全體暈眩 1 回合！盾牆瓦解！");
+    onDestroy(): void {
+        this._unsubs.forEach(fn => fn());
+        this._unsubs.length = 0;
     }
-  }
 
-  // ─── 內部更新方法 ──────────────────────────────────────────────────────────
+    // ── 覆寫建構點：綁定節點引用 ─────────────────────────────
 
-  private setTurn(turn: number): void {
-    if (this.turnLabel) this.turnLabel.string = `第 ${turn} 回合`;
-  }
+    protected onBuildComplete(_rootNode: Node): void {
+        // 綁定所有已由 UIPreviewBuilder 建立的節點（透過節點名稱搜尋）
+        // Unity 對照：GetComponentInChildren<Text>("TurnLabel") 類型的深度查找
+        const find = (name: string) => this.node.getChildByName(name)
+            ?? this._deepFind(name);
 
-  public setDp(dp: number): void {
-    if (this.dpLabel) this.dpLabel.string = `DP: ${dp}`;
-  }
+        // 逐項綁定並 log，方便追蹤哪個節點找不到
+        const bindLabel = (name: string): Label | null => {
+            const n = find(name);
+            if (!n) {
+                console.warn(`[BattleHUD] onBuildComplete: 找不到節點 "${name}" — 請確認 battle-hud-main.json 中有對應的 name 欄位`);
+                return null;
+            }
+            const lbl = n.getComponent(Label);
+            if (!lbl) {
+                console.warn(`[BattleHUD] onBuildComplete: 節點 "${name}" 找到但無 Label 組件`);
+            }
+            return lbl;
+        };
 
-  private setPlayerSp(sp: number, maxSp: number): void {
-    if (this.playerSpBar)   this.playerSpBar.progress   = maxSp > 0 ? sp / maxSp : 0;
-    if (this.playerSpLabel) this.playerSpLabel.string    = `${sp}/${maxSp}`;
-  }
+        this._turnLabel           = bindLabel('TurnLabel');
+        this._foodLabel           = bindLabel('FoodLabel');
+        this._statusLabel         = bindLabel('StatusLabel');
+        this._playerNameLabel     = bindLabel('PlayerName');
+        this._enemyNameLabel      = bindLabel('EnemyName');
+        this._playerFortressLabel = bindLabel('PlayerFortressLabel');
+        this._enemyFortressLabel  = bindLabel('EnemyFortressLabel');
 
-  private setEnemySp(sp: number, maxSp: number): void {
-    if (this.enemySpBar)   this.enemySpBar.progress   = maxSp > 0 ? sp / maxSp : 0;
-    if (this.enemySpLabel) this.enemySpLabel.string    = `${sp}/${maxSp}`;
-  }
+        // ProgressBar 組件：UIPreviewBuilder 建立了 image 節點，
+        // 這裡在節點上加掛 ProgressBar 組件實現進度條功能
+        this._playerFortressBar = this._ensureProgressBar(find('PlayerFortressBar'));
+        this._enemyFortressBar  = this._ensureProgressBar(find('EnemyFortressBar'));
 
-  private setGeneralHealth(faction: Faction, hp: number): void {
-    const max = faction === Faction.Player ? this.playerGeneralMaxHp : this.enemyGeneralMaxHp;
-    const ratio = max > 0 ? hp / max : 0;
+        if (!this._playerFortressBar) {
+            console.warn('[BattleHUD] onBuildComplete: 找不到 PlayerFortressBar 節點，血條將無法顯示');
+        }
 
-    if (faction === Faction.Player) {
-      if (this.playerFortressBar)   this.playerFortressBar.progress   = ratio;
-      if (this.playerFortressLabel) this.playerFortressLabel.string    = `我將 ${hp}`;
-    } else {
-      if (this.enemyFortressBar)    this.enemyFortressBar.progress     = ratio;
-      if (this.enemyFortressLabel)  this.enemyFortressLabel.string     = `敵將 ${hp}`;
+        // 頭像點擊 → 開啟武將快覽彈窗（v3-5）
+        // Unity 對照：portrait.onClick → UIManager.ShowPanel<GeneralInfoPopup>(data)
+        const playerPortrait = find('PlayerPortrait');
+        const enemyPortrait  = find('EnemyPortrait');
+        playerPortrait?.on(Button.EventType.CLICK, () => this._onPortraitClick('player'), this);
+        enemyPortrait?.on(Button.EventType.CLICK,  () => this._onPortraitClick('enemy'),  this);
+        if (!playerPortrait) console.warn('[BattleHUD] onBuildComplete: 找不到 PlayerPortrait 節點');
+
+        // 初始清除 label 以防止顯示 placeholder 字串（UIPreviewBuilder 預設用 spec.name 填值）
+        if (this._playerNameLabel) this._playerNameLabel.string = '玩家';
+        if (this._enemyNameLabel)  this._enemyNameLabel.string  = '敵方';
+        if (this._statusLabel)     this._statusLabel.string     = '';
+
+        console.log(
+            '[BattleHUD] onBuildComplete 完成 —',
+            `turnLabel:${!!this._turnLabel}`,
+            `foodLabel:${!!this._foodLabel}`,
+            `statusLabel:${!!this._statusLabel}`,
+            `playerName:${!!this._playerNameLabel}`,
+            `enemyName:${!!this._enemyNameLabel}`,
+            `playerFortressLabel:${!!this._playerFortressLabel}`,
+            `playerFortressBar:${!!this._playerFortressBar}`,
+            `enemyFortressBar:${!!this._enemyFortressBar}`,
+        );
     }
-  }
 
-  private showStatus(msg: string): void {
-    if (this.statusLabel) this.statusLabel.string = msg;
-  }
+    /** 確保節點上有 ProgressBar 組件，回傳組件引用 */
+    private _ensureProgressBar(node: Node | null): ProgressBar | null {
+        if (!node) return null;
+        return node.getComponent(ProgressBar) ?? node.addComponent(ProgressBar);
+    }
 
-  private clearStatus(): void {
-    if (this.statusLabel) this.statusLabel.string = "";
-  }
+    /** 深度查找子節點（跨多層 BFS） */
+    private _deepFind(name: string): Node | null {
+        const queue: Node[] = [this.node];
+        while (queue.length > 0) {
+            const cur = queue.shift()!;
+            if (cur.name === name) return cur;
+            queue.push(...cur.children);
+        }
+        return null;
+    }
+
+    // ── 事件訂閱 ─────────────────────────────────────────────
+
+    private _subscribeEvents(): void {
+        const svc = services();
+        this._unsubs.push(
+            svc.event.on(EVENT_NAMES.TurnPhaseChanged,   this._onTurnPhaseChanged.bind(this)),
+            svc.event.on(EVENT_NAMES.GeneralDamaged,     this._onGeneralDamaged.bind(this)),
+            svc.event.on(EVENT_NAMES.GeneralSkillUsed,   this._onGeneralSkillUsed.bind(this)),
+            svc.event.on(EVENT_NAMES.GeneralSkillEffect, this._onSkillEffect.bind(this)),
+        );
+    }
+
+    private _onTurnPhaseChanged(snap: { turn: number; playerDp: number }): void {
+        this._setTurn(snap.turn);
+        this._setFood(snap.playerDp, GAME_CONFIG.MAX_DP);
+        this._clearStatus();
+    }
+
+    private _onGeneralDamaged(data: { faction: Faction; hp: number }): void {
+        this._setGeneralHealth(data.faction, data.hp);
+    }
+
+    private _onGeneralSkillUsed(data: { faction: Faction }): void {
+        if (data.faction === Faction.Player) {
+            this._showStatus('武將發動技能！');
+        }
+    }
+
+    private _onSkillEffect(data: { skillId: string; faction: Faction }): void {
+        if (data.skillId === 'zhang-fei-roar') {
+            this._showStatus('⚡ 震吼！敵方全體暈眩 1 回合！盾牆瓦解！');
+        }
+    }
+
+    // ── 公開 API（由 BattleScene 呼叫） ─────────────────────
+
+    /**
+     * 初始化並顯示 HUD 數值
+     */
+    public refresh(
+        turn: number,
+        food: number,
+        maxFood: number,
+        playerGeneralHp: number,
+        playerGeneralMaxHp: number,
+        enemyGeneralHp: number,
+        enemyGeneralMaxHp: number,
+    ): void {
+        if (!this._initialized) {
+            console.warn('[BattleHUD] refresh() 在初始化完成前被呼叫 — 數值可能無法顯示，請確認 BattleScene 的呼叫時序');
+        }
+        this._setTurn(turn);
+        this._setFood(food, maxFood);
+        this._playerGeneralMaxHp = Math.max(1, playerGeneralMaxHp);
+        this._enemyGeneralMaxHp  = Math.max(1, enemyGeneralMaxHp);
+        this._setGeneralHealth(Faction.Player, playerGeneralHp);
+        this._setGeneralHealth(Faction.Enemy,  enemyGeneralHp);
+        this._clearStatus();
+        console.log(
+            `[BattleHUD] refresh — 第${turn}回合 food:${food}/${maxFood}`,
+            `playerHP:${playerGeneralHp}/${playerGeneralMaxHp}`,
+            `enemyHP:${enemyGeneralHp}/${enemyGeneralMaxHp}`,
+            `initialized:${this._initialized}`,
+        );
+    }
+
+    public setFood(food: number, maxFood: number): void { this._setFood(food, maxFood); }
+
+    public get playerSpBarNode(): Node | null { return null; }
+    public get enemySpBarNode():  Node | null { return null; }
+
+    /**
+     * 玩家/敵方武將顯示名稱（由 BattleScene 在 start() 填入）
+     * Unity 對照：HeroInfoDisplay.SetGeneralName(name)
+     */
+    public setPlayerName(name: string): void {
+        if (this._playerNameLabel) this._playerNameLabel.string = name;
+    }
+
+    public setEnemyName(name: string): void {
+        if (this._enemyNameLabel) this._enemyNameLabel.string = name;
+    }
+
+    /**
+     * 頭像點擊：廣播 ShowGeneralQuickView 事件。
+     * 由外部（BattleScene / GeneralQuickViewPanel）監聽並填入實際資料。
+     *
+     * Unity 對照：HeroPortraitButton.OnClick() → EventBus.Publish<ShowGeneralInfoEvent>(faction)
+     */
+    private _onPortraitClick(side: 'player' | 'enemy'): void {
+        const isEnemy = side === 'enemy';
+        // 僅廣播意圖，實際武將資料由 BattleScene 監聽後注入
+        services().event.emit(EVENT_NAMES.ShowGeneralQuickView, { side, isEnemy });
+        console.log(`[BattleHUD] 頭像點擊 → ${side}`);
+    }
+
+    // ── 內部更新方法 ─────────────────────────────────────────
+
+    private _setTurn(turn: number): void {
+        if (this._turnLabel) this._turnLabel.string = `第 ${turn} 回合`;
+    }
+
+    private _setFood(food: number, maxFood: number): void {
+        if (this._foodLabel) this._foodLabel.string = `DP ${food} / ${maxFood}`;
+    }
+
+    private _setGeneralHealth(faction: Faction, hp: number): void {
+        const max   = faction === Faction.Player ? this._playerGeneralMaxHp : this._enemyGeneralMaxHp;
+        const ratio = max > 0 ? hp / max : 0;
+
+        if (faction === Faction.Player) {
+            if (this._playerFortressBar)   this._playerFortressBar.progress   = ratio;
+            if (this._playerFortressLabel) this._playerFortressLabel.string   = `${hp} / ${max}`;
+        } else {
+            if (this._enemyFortressBar)    this._enemyFortressBar.progress    = ratio;
+            if (this._enemyFortressLabel)  this._enemyFortressLabel.string    = `${hp} / ${max}`;
+        }
+    }
+
+    private _showStatus(msg: string): void {
+        if (this._statusLabel) this._statusLabel.string = msg;
+    }
+
+    private _clearStatus(): void {
+        if (this._statusLabel) this._statusLabel.string = '';
+    }
 }

@@ -1,4 +1,5 @@
-﻿import {
+// @spec-source → 見 docs/cross-reference-index.md
+import {
     _decorator, Component, Node, Material, Mesh, Color,
     MeshRenderer, ImageAsset, Texture2D, Layers, EffectAsset,
     JsonAsset, ParticleSystem, Prefab, instantiate,
