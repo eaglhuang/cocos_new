@@ -786,3 +786,4 @@ Agent2                              Agent1
 
 - `UI-2-0028` 保持 `in-progress`，代表第一張候選稿與參考圖比對已完成。
 - 新開 `UI-2-0032`，專門處理 BattleScene icon v2 的品質修正。
+- `UI-2-0032` 已建立 `artifacts/ui-qa/UI-2-0032/` baseline QA 目錄，內含 `baseline-compare-board.png` 與 notes，後續 v2 候選稿會在同目錄續寫，方便追蹤每一輪 refine 的判斷依據。

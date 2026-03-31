@@ -26,6 +26,8 @@
 [bug][系統代碼] Bug描述 : 修改描述 [AgentX]
 ```
 
+- 編碼快指令：改完高風險文字檔先跑 `npm run check:encoding:touched -- --files <file...>`；收工前再跑一次；要看 staged 就用 `npm run check:encoding:staged`。
+
 - 若某批變更沒有任務卡，原則上不應形成正式功能 commit。
 
 ## 目錄與檔案

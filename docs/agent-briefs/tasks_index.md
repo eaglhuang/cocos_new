@@ -43,10 +43,12 @@ manifest: ../ui-quality-todo.json
 | UI-2-0025 | Agent1 | done | [UI-2-0025](tasks/UI-2-0025.md) | `Gacha` preview 撌脣?朣 `gacha-main-screen` + `gacha-preview-main`嚗??頛詨 `Gacha.png` |
 | UI-2-0027 | Agent2 | in-progress | [UI-2-0027](tasks/UI-2-0027.md) | 戰場 UI 圖像資產需求總表 | 0% | Agent2 |
 | UI-2-0028 | Agent2 | in-progress | [UI-2-0028](tasks/UI-2-0028.md) | 戰場 UI Icon 資產清單 | 50% | Agent2 |
-| UI-2-0029 | Agent2 | open | [UI-2-0029](tasks/UI-2-0029.md) | 戰場 UI Portrait 資產清單 | 0% | Agent2 |
-| UI-2-0030 | Agent2 | open | [UI-2-0030](tasks/UI-2-0030.md) | 戰場 UI Card Art / Badge 資產清單 | 0% | Agent2 |
-| UI-2-0031 | Agent2 | open | [UI-2-0031](tasks/UI-2-0031.md) | 戰場 UI Fallback 規範 | 0% | Agent2 |
-| UI-2-0032 | Agent2 | open | [UI-2-0032](tasks/UI-2-0032.md) | 修正 BattleScene Icon 品質差異（v2） | 0% | Agent2 |
+| UI-2-0029 | Agent2 | in-progress | [UI-2-0029](tasks/UI-2-0029.md) | ???? UI Portrait ??????? roster 5/5 ?????? HUD ?????? | 70% | Agent2 |
+| UI-2-0030 | Agent2 | in-progress | [UI-2-0030](tasks/UI-2-0030.md) | ?? BattleScene card art / rarity / type badge ??????? TigerTally ?????? | 70% | Agent2 |
+| UI-2-0031 | Agent2 | in-progress | [UI-2-0031](tasks/UI-2-0031.md) | ?? BattleScene portrait / icon / card art / badge ??? fallback ?? | 60% | Agent2 |
+| UI-2-0032 | Agent2 | in-progress | [UI-2-0032](tasks/UI-2-0032.md) | 修正 BattleScene Icon 品質差異（v2） | 10% | Agent2 |
+| UI-2-0033 | Agent1 | open | [UI-2-0033](tasks/UI-2-0033.md) | BattleHUD portrait ?????? generals ????? placeholder fallback | 0% | Agent1 |
+| UI-2-0034 | Agent1 | open | [UI-2-0034](tasks/UI-2-0034.md) | TigerTallyPanel ?? card art / rarity / type badge???? battle fallback ?? | 0% | Agent1 |
 
 鋆?隤芣?
 - 閰喟敦??wner ??鞈港?敺誑 `docs/ui-quality-todo.json` ?箔蜓??- 隞餃???frontmatter ?亥?蝝Ｗ?銝?嚗??郊靽格迤隞餃??∟? manifest嚗??Agent ?????啗????

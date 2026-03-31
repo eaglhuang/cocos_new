@@ -29,7 +29,7 @@ description: "負責 QA artifact、比對紀錄、視覺驗收、追蹤收斂與
 - 若工作範圍擴大、出現新 blocker、或需要回頭改 runtime，先補卡或更新 `related / depends / notes`。
 - 正式 commit 必須能對回單一卡號、單一主題批次，或單一 bug 修復單位。
 - `notes` 建議固定用：`日期 | 狀態 | 驗證 | 變更 | 阻塞`。
-- 只要改到 `.md` / `.json` / `.ts` / `.js` / `.ps1` 這類高風險文字檔，編輯後立刻跑 `npm run check:encoding:touched -- --files <file...>`；收工前再跑一次對應本輪輸出的 touched 檢查。
+- 編碼快指令見 [Readme.md](./Readme.md)；原則就是改後跑 touched、收工前再跑、commit 前看 staged。
 - bug commit 形式：
 
 ```text

@@ -916,7 +916,9 @@
         "UI-2-0029",
         "UI-2-0030",
         "UI-2-0031",
-        "UI-2-0032"
+        "UI-2-0032",
+        "UI-2-0033",
+        "UI-2-0034"
       ],
       "depends": [],
       "notes": "2026-04-01 | 狀態: in-progress | 驗證: 已鎖卡，開始建立需求總表 | 變更: Agent2 盤點 BattleScene 圖像資產需求與命名規範 | 阻塞: 待確認美術交付批次與命名規範"
@@ -925,52 +927,63 @@
       "phase": "D",
       "priority": "P1",
       "owner": "Agent2",
-      "status": "open",
+      "status": "in-progress",
       "created": "2026-04-01",
       "created_by_agent": "Copilot",
       "type": "policy",
       "related": [
-        "UI-2-0027"
+        "UI-2-0027",
+        "UI-2-0029",
+        "UI-2-0033"
       ],
       "depends": [],
       "id": "UI-2-0031",
       "title": "建立戰場 UI Fallback 規範",
       "description": "定義 BattleScene 缺圖時的 fallback key、預設顯示與 bundle 對應規則，避免資產缺件時出現不一致行為。",
-      "notes": "2026-04-01 | 狀態: open | 驗證: 待定義 fallback policy | 變更: 建立 BattleScene 缺圖處理規範 | 阻塞: 等待 fallback key 與 bundle 對應規則確認"
+      "notes": "2026-04-01 | ??: in-progress | ??: ??? battle_ui skin ??? placeholder?_fallback ????? battle sprite | ??: ?? BattleScene portrait / icon / card art / badge ???? fallback ?? | ??: ? Agent1 ?? runtime ???????? fallback ??",
+      "started_at": "2026-04-01T12:35:00+08:00",
+      "started_by_agent": "Agent2"
     },
     {
       "phase": "D",
       "priority": "P1",
       "owner": "Agent2",
-      "status": "open",
+      "status": "in-progress",
       "created": "2026-04-01",
       "created_by_agent": "Copilot",
       "type": "asset-requirement",
       "related": [
-        "UI-2-0027"
+        "UI-2-0027",
+        "UI-2-0031",
+        "UI-2-0034"
       ],
       "depends": [],
       "id": "UI-2-0030",
       "title": "建立戰場 UI Card Art / Badge 資產清單",
       "description": "盤點 BattleScene 需要的武將卡圖、虎符部隊卡圖、稀有度 badge 與狀態 badge，建立可交付的資產需求表。",
-      "notes": "2026-04-01 | 狀態: open | 驗證: 待盤點 card art / badge 資產 | 變更: 建立 BattleScene card art 清單 | 阻塞: 等待卡圖、徽章與邊框命名規範確認"
+      "notes": "2026-04-01 | ??: in-progress | ??: ??? TigerTally layout / skin / panel ??????? tally battle sprites | ??: ?? BattleScene card art / rarity / type badge ???????????? placeholder ??? rarity ??TigerTallyPanel ?????? art / badge / rarity | ??: ? Agent1 ?? UI-2-0034??? TigerTally runtime ?????? fallback ??",
+      "started_at": "2026-04-01T12:55:00+08:00",
+      "started_by_agent": "Agent2"
     },
     {
       "phase": "D",
       "priority": "P1",
       "owner": "Agent2",
-      "status": "open",
+      "status": "in-progress",
       "created": "2026-04-01",
       "created_by_agent": "Copilot",
       "type": "asset-requirement",
       "related": [
-        "UI-2-0027"
+        "UI-2-0027",
+        "UI-2-0033"
       ],
       "depends": [],
       "id": "UI-2-0029",
       "title": "建立戰場 UI Portrait 資產清單",
       "description": "盤點 BattleScene 需要的武將頭像、兵種頭像與敵我雙方 portrait 展示需求，建立可交付的資產需求表。",
-      "notes": "2026-04-01 | 狀態: open | 驗證: 待盤點 portrait 資產 | 變更: 建立 BattleScene portrait 清單 | 阻塞: 等待武將頭像與兵種頭像命名規則確認"
+      "notes": "2026-04-01 | ??: in-progress | ??: ??? BattleHUD portrait slot?generals.json roster ??? sprites/generals ?? | ??: ?? BattleScene portrait ????????? 5/5 ?????????? HUD ???? placeholder ?? | ??: ? Agent1 ?? UI-2-0033?? BattleHUD ?????? generals portrait ? fallback ??",
+      "started_at": "2026-04-01T12:10:00+08:00",
+      "started_by_agent": "Agent2"
     },
     {
       "phase": "D",
@@ -988,7 +1001,7 @@
       "id": "UI-2-0028",
       "title": "建立戰場 UI Icon 資產清單",
       "description": "盤點 BattleScene 需要的功能 icon、屬性 icon、狀態 icon 與按鈕 icon，建立可交付的資產需求表。",
-      "notes": "2026-04-01 | 狀態: in-progress | 驗證: 已完成 unitinfo.type.icon 候選稿與參考圖比對 | 變更: 產出 unitinfo_type_icon_spear_v1.png 並確認品質差異集中在材質、飽和度、carrier 語言與縮圖辨識度 | 阻塞: 待做 v2 refinement 並確認正式 runtime 採用版本",
+      "notes": "2026-04-01 | ??: in-progress | ??: ??? unitinfo.type.icon ????????????? artifacts/ui-qa/UI-2-0028/ QA ?? | ??: ?? unitinfo_type_icon_spear_v1.png?compare-board.png??????? QA notes?????????????????carrier ???????? | ??: ?? v2 refinement ????? runtime ????",
       "started_at": "2026-04-01T10:30:00+08:00",
       "started_by_agent": "Agent2"
     },
@@ -1017,9 +1030,11 @@
       "phase": "D",
       "priority": "P1",
       "owner": "Agent2",
-      "status": "open",
+      "status": "in-progress",
       "created": "2026-04-01",
       "created_by_agent": "Copilot",
+      "started_at": "2026-04-01T07:49:54+08:00",
+      "started_by_agent": "Agent2",
       "type": "quality-pass",
       "title": "修正 BattleScene icon 品質差異（v2）",
       "description": "根據 UI-2-0028 的第一張候選稿與 docs/UI品質參考圖 的比對結果，修正 BattleScene icon 的材質層次、配色、carrier 語言與 32x32 可讀性。",
@@ -1030,7 +1045,44 @@
       "depends": [
         "UI-2-0028"
       ],
-      "notes": "2026-04-01 | 狀態: open | 驗證: 待完成 v2 icon 並再次對照參考圖 | 變更: 根據參考圖比對結果建立 BattleScene icon 品質修正卡 | 阻塞: 待確認 v2 要採用圓章、六角徽章還是盾牌 carrier"
+      "notes": "2026-04-01 | 狀態: in-progress | 驗證: 已建立 artifacts/ui-qa/UI-2-0032 baseline QA 目錄 | 變更: 鎖定 BattleScene icon v2 refinement，沿用 UI-2-0028 compare board 作為基線 | 阻塞: 待產出 v2 icon 候選稿"
+    },
+    {
+      "phase": "D",
+      "priority": "P1",
+      "owner": "Agent1",
+      "status": "open",
+      "created": "2026-04-01",
+      "created_by_agent": "Agent2",
+      "type": "runtime-support",
+      "related": [
+        "UI-2-0027",
+        "UI-2-0029"
+      ],
+      "depends": [],
+      "id": "UI-2-0033",
+      "title": "BattleHUD portrait ?????? generals ??",
+      "description": "? BattleHUD ? player / enemy general id ???? sprites/generals/{snake_case_id}_portrait???????? placeholder????? portrait ????????",
+      "notes": "2026-04-01 | ??: open | ??: Agent2 ??? BattleHUD portrait slot?generals roster ??? sprites/generals ?? | ??: ?? BattleHUD ???? portrait ?????????????? runtime ???? | ??: ? Agent1 ????????? fallback ??"
+    },
+    {
+      "phase": "D",
+      "priority": "P1",
+      "owner": "Agent1",
+      "status": "open",
+      "created": "2026-04-01",
+      "created_by_agent": "Agent2",
+      "type": "runtime-support",
+      "related": [
+        "UI-2-0027",
+        "UI-2-0030",
+        "UI-2-0031"
+      ],
+      "depends": [],
+      "id": "UI-2-0034",
+      "title": "TigerTallyPanel ?? card art / rarity / type badge",
+      "description": "? TigerTallyPanel ??????? card art?rarity border ? type badge???????? UI-2-0031 ? fallback ???",
+      "notes": "2026-04-01 | ??: open | ??: Agent2 ??? TigerTally layout / skin / panel ??????? battle sprites | ??: ?? TigerTally ?????????????????? runtime ???? | ??: ? Agent1 ???? card art / rarity / type badge ?????? fallback ??"
     }
   ]
 }
