@@ -1,12 +1,27 @@
 {
-  "createdAt": "2026-03-31T12:25:15.896Z",
+  "createdAt": "2026-03-31T16:36:29.543Z",
   "host": "http://localhost:7456",
   "machine": "DESKTOP-NREHEQ8",
   "captures": [
     {
+      "target": "LobbyMain",
+      "screenId": "lobby-main-screen",
+      "file": "artifacts\\ui-qa\\UI-2-0023\\LobbyMain.png"
+    },
+    {
+      "target": "ShopMain",
+      "screenId": "shop-main-screen",
+      "file": "artifacts\\ui-qa\\UI-2-0023\\ShopMain.png"
+    },
+    {
       "target": "Gacha",
       "screenId": "gacha-main-screen",
       "file": "artifacts\\ui-qa\\UI-2-0023\\Gacha.png"
+    },
+    {
+      "target": "DuelChallenge",
+      "screenId": "duel-challenge-screen",
+      "file": "artifacts\\ui-qa\\UI-2-0023\\DuelChallenge.png"
     }
   ]
 }
