@@ -835,14 +835,43 @@
       "description": "目前 5 個 layout JSON（battle-hud-main、battle-log-main、unit-info-panel-main、action-command-main、tiger-tally-main）中，所有動態 label 使用 bind:\"dynamic\" 作為暫時抑制 warn 的佔位符。這只解決了 warn，但沒有定義資料來源。正確的資料驅動架構應為：(1) 定義 BattleStateData / UnitData / PlayerData 等 Data Schema（TypeScript interface）；(2) 將 bind:\"dynamic\" 替換為明確的 bind path（如 battleState.playerName、unit[n].atk）；(3) UIPreviewNodeFactory 依 bind path 自動查表或顯示占位文字；(4) 同步補充 Client State 欄位定義（是否會有 Server Payload 來源也需確認）。對照 Unity：等同為 MonoBehaviour 的每個 SerializedField 補齊 ViewModel 合約，說明資料來自 GameManager、NetworkPayload 或本地快取。",
       "開單原因": "35 個 warn label 全因缺少資料來源定義而用 bind:dynamic 暫代。bind:dynamic 是技術負債標記，未定義欄位從哪個 DataModel 取值，違反資料驅動原則。",
       "affected_labels": {
-        "battle-hud-main": ["PlayerName", "PlayerFortressLabel", "TurnLabel", "FoodLabel", "StatusLabel", "EnemyFortressLabel", "EnemyName"],
-        "battle-log-main": ["LogLabel"],
-        "unit-info-panel-main": ["UnitName", "UnitSub", "AtkRow", "DefRow", "HpRow", "SpdRow", "CostRow", "DescText"],
-        "action-command-main": ["UltLabel", "SpPctLabel"],
-        "tiger-tally-main": ["AtkLabel1~4", "HpLabel1~4", "UnitName1~4", "CostBadge1~4"]
+        "battle-hud-main": [
+          "PlayerName",
+          "PlayerFortressLabel",
+          "TurnLabel",
+          "FoodLabel",
+          "StatusLabel",
+          "EnemyFortressLabel",
+          "EnemyName"
+        ],
+        "battle-log-main": [
+          "LogLabel"
+        ],
+        "unit-info-panel-main": [
+          "UnitName",
+          "UnitSub",
+          "AtkRow",
+          "DefRow",
+          "HpRow",
+          "SpdRow",
+          "CostRow",
+          "DescText"
+        ],
+        "action-command-main": [
+          "UltLabel",
+          "SpPctLabel"
+        ],
+        "tiger-tally-main": [
+          "AtkLabel1~4",
+          "HpLabel1~4",
+          "UnitName1~4",
+          "CostBadge1~4"
+        ]
       },
       "如何驗證": "1. 確認 BattleStateData / UnitData TypeScript interface 已定義且有文件；2. layout JSON 的 bind 欄位全部替換為具體 path（無任何 bind:dynamic 殘留）；3. UIPreviewNodeFactory 能根據 bind path 顯示對應佔位名稱（如 {battleState.turnCount}）；4. project.log 無任何 label has no textKey/text/bind warn。",
-      "related": ["UI-2-0024"],
+      "related": [
+        "UI-2-0024"
+      ],
       "depends": [],
       "notes": "2026-04-01 | 狀態: open | 驗證: 待實作後跑 log scan | 變更: 開單紀錄 35 個 bind:dynamic 的技術負債，需補 Data Schema，待後續 sprint 排程 | 阻塞: 需確認 Server Payload 欄位是否已有對應規格書"
     },
@@ -859,7 +888,9 @@
       "description": "目前 BattleScene 預覽畫面仍有多處 UI 對位錯亂（含左側卡片清單、中央按鈕群、右側操作區、頂部 HUD 與中場浮層），證明前一輪僅解決 label warn，尚未修復版位。需逐一檢查 layouts + screens 契約，補齊 widget 錨點、父節點對齊、safeArea 與 z-order，並在 1920x1080 與常見橫向比例驗證。",
       "開單原因": "warn 修復不等於版面修復。畫面截圖仍可見明顯對位偏移與遮擋，屬於可視化 blocker。",
       "如何驗證": "1. 執行 Cocos refresh 後重截圖；2. HUD、左側部隊卡、中央技能區、右側功能區在 1920x1080 下對齊規格；3. 以 16:9、19.5:9 檢查 safeArea 無重疊；4. temp/logs/project.log 無新增 layout 相關 warn/error。",
-      "related": ["DATA-1-0001"],
+      "related": [
+        "DATA-1-0001"
+      ],
       "depends": [],
       "notes": "2026-04-01 | 狀態: open | 驗證: 已有最新 cocos-screenshot 顯示錯位 | 變更: 新增版位修正任務，與資料欄位 schema 任務分離追蹤 | 阻塞: 需確認主戰場 UI 規格文件的最終版位基準"
     },
@@ -878,9 +909,84 @@
       "description": "建立單一資產需求清單，完整盤點 BattleScene 所需圖像資產：功能 icon、屬性 icon、武將頭像、兵種頭像、虎符部隊卡圖、狀態圖示、按鈕狀態圖（normal/pressed/disabled）與可能的缺圖 fallback。每一項需記錄用途、尺寸、來源（現有/待美術）、命名規範、bundle 位置與交付狀態，避免後續漏件。",
       "開單原因": "目前畫面存在 placeholder 與混搭圖像，缺乏可追蹤需求清單，容易在量產階段漏 icon 或漏頭像。",
       "如何驗證": "1. 產出資產需求 manifest（可用 docs 或 json）；2. 每個 UI 節點對應到唯一資產 key；3. 缺件項目有 owner 與 ETA；4. 最終畫面不再出現臨時 placeholder 或錯誤資產引用。",
-      "related": ["UI-2-0026", "DATA-1-0001"],
+      "related": [
+        "UI-2-0026",
+        "DATA-1-0001",
+        "UI-2-0028",
+        "UI-2-0029",
+        "UI-2-0030",
+        "UI-2-0031"
+      ],
       "depends": [],
       "notes": "2026-04-01 | 狀態: in-progress | 驗證: 已鎖卡，開始建立需求總表 | 變更: Agent2 盤點 BattleScene 圖像資產需求與命名規範 | 阻塞: 待確認美術交付批次與命名規範"
+    },
+    {
+      "phase": "D",
+      "priority": "P1",
+      "owner": "Agent2",
+      "status": "open",
+      "created": "2026-04-01",
+      "created_by_agent": "Copilot",
+      "type": "policy",
+      "related": [
+        "UI-2-0027"
+      ],
+      "depends": [],
+      "id": "UI-2-0031",
+      "title": "建立戰場 UI Fallback 規範",
+      "description": "定義 BattleScene 缺圖時的 fallback key、預設顯示與 bundle 對應規則，避免資產缺件時出現不一致行為。",
+      "notes": "2026-04-01 | 狀態: open | 驗證: 待定義 fallback policy | 變更: 建立 BattleScene 缺圖處理規範 | 阻塞: 等待 fallback key 與 bundle 對應規則確認"
+    },
+    {
+      "phase": "D",
+      "priority": "P1",
+      "owner": "Agent2",
+      "status": "open",
+      "created": "2026-04-01",
+      "created_by_agent": "Copilot",
+      "type": "asset-requirement",
+      "related": [
+        "UI-2-0027"
+      ],
+      "depends": [],
+      "id": "UI-2-0030",
+      "title": "建立戰場 UI Card Art / Badge 資產清單",
+      "description": "盤點 BattleScene 需要的武將卡圖、虎符部隊卡圖、稀有度 badge 與狀態 badge，建立可交付的資產需求表。",
+      "notes": "2026-04-01 | 狀態: open | 驗證: 待盤點 card art / badge 資產 | 變更: 建立 BattleScene card art 清單 | 阻塞: 等待卡圖、徽章與邊框命名規範確認"
+    },
+    {
+      "phase": "D",
+      "priority": "P1",
+      "owner": "Agent2",
+      "status": "open",
+      "created": "2026-04-01",
+      "created_by_agent": "Copilot",
+      "type": "asset-requirement",
+      "related": [
+        "UI-2-0027"
+      ],
+      "depends": [],
+      "id": "UI-2-0029",
+      "title": "建立戰場 UI Portrait 資產清單",
+      "description": "盤點 BattleScene 需要的武將頭像、兵種頭像與敵我雙方 portrait 展示需求，建立可交付的資產需求表。",
+      "notes": "2026-04-01 | 狀態: open | 驗證: 待盤點 portrait 資產 | 變更: 建立 BattleScene portrait 清單 | 阻塞: 等待武將頭像與兵種頭像命名規則確認"
+    },
+    {
+      "phase": "D",
+      "priority": "P1",
+      "owner": "Agent2",
+      "status": "open",
+      "created": "2026-04-01",
+      "created_by_agent": "Copilot",
+      "type": "asset-requirement",
+      "related": [
+        "UI-2-0027"
+      ],
+      "depends": [],
+      "id": "UI-2-0028",
+      "title": "建立戰場 UI Icon 資產清單",
+      "description": "盤點 BattleScene 需要的功能 icon、屬性 icon、狀態 icon 與按鈕 icon，建立可交付的資產需求表。",
+      "notes": "2026-04-01 | 狀態: open | 驗證: 待盤點 icon 資產 | 變更: 建立 BattleScene icon 清單 | 阻塞: 等待 icon 命名與交付批次確認"
     },
     {
       "id": "UI-2-0024",
