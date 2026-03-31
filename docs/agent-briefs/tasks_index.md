@@ -42,10 +42,11 @@ manifest: ../ui-quality-todo.json
 | UI-2-0024 | Agent1 | completed | [UI-2-0024](tasks/UI-2-0024.md) | `UIPreviewBuilder.ts` 撌脣??洵銝?挾??嚗那?瑁????桅?撌脫??|
 | UI-2-0025 | Agent1 | done | [UI-2-0025](tasks/UI-2-0025.md) | `Gacha` preview 撌脣?朣 `gacha-main-screen` + `gacha-preview-main`嚗??頛詨 `Gacha.png` |
 | UI-2-0027 | Agent2 | in-progress | [UI-2-0027](tasks/UI-2-0027.md) | 戰場 UI 圖像資產需求總表 | 0% | Agent2 |
-| UI-2-0028 | Agent2 | in-progress | [UI-2-0028](tasks/UI-2-0028.md) | 戰場 UI Icon 資產清單 | 35% | Agent2 |
+| UI-2-0028 | Agent2 | in-progress | [UI-2-0028](tasks/UI-2-0028.md) | 戰場 UI Icon 資產清單 | 50% | Agent2 |
 | UI-2-0029 | Agent2 | open | [UI-2-0029](tasks/UI-2-0029.md) | 戰場 UI Portrait 資產清單 | 0% | Agent2 |
 | UI-2-0030 | Agent2 | open | [UI-2-0030](tasks/UI-2-0030.md) | 戰場 UI Card Art / Badge 資產清單 | 0% | Agent2 |
 | UI-2-0031 | Agent2 | open | [UI-2-0031](tasks/UI-2-0031.md) | 戰場 UI Fallback 規範 | 0% | Agent2 |
+| UI-2-0032 | Agent2 | open | [UI-2-0032](tasks/UI-2-0032.md) | 修正 BattleScene Icon 品質差異（v2） | 0% | Agent2 |
 
 鋆?隤芣?
 - 閰喟敦??wner ??鞈港?敺誑 `docs/ui-quality-todo.json` ?箔蜓??- 隞餃???frontmatter ?亥?蝝Ｗ?銝?嚗??郊靽格迤隞餃??∟? manifest嚗??Agent ?????啗????

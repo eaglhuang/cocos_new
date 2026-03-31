@@ -915,7 +915,8 @@
         "UI-2-0028",
         "UI-2-0029",
         "UI-2-0030",
-        "UI-2-0031"
+        "UI-2-0031",
+        "UI-2-0032"
       ],
       "depends": [],
       "notes": "2026-04-01 | 狀態: in-progress | 驗證: 已鎖卡，開始建立需求總表 | 變更: Agent2 盤點 BattleScene 圖像資產需求與命名規範 | 阻塞: 待確認美術交付批次與命名規範"
@@ -980,13 +981,14 @@
       "created_by_agent": "Copilot",
       "type": "asset-requirement",
       "related": [
-        "UI-2-0027"
+        "UI-2-0027",
+        "UI-2-0032"
       ],
       "depends": [],
       "id": "UI-2-0028",
       "title": "建立戰場 UI Icon 資產清單",
       "description": "盤點 BattleScene 需要的功能 icon、屬性 icon、狀態 icon 與按鈕 icon，建立可交付的資產需求表。",
-      "notes": "2026-04-01 | ??: in-progress | ??: ??? unitinfo.type.icon ?? PNG ??????? | ??: Agent2 ?????????? unitinfo_type_icon_spear_v1.png | ??: ?????????? runtime ???????????? icon",
+      "notes": "2026-04-01 | 狀態: in-progress | 驗證: 已完成 unitinfo.type.icon 候選稿與參考圖比對 | 變更: 產出 unitinfo_type_icon_spear_v1.png 並確認品質差異集中在材質、飽和度、carrier 語言與縮圖辨識度 | 阻塞: 待做 v2 refinement 並確認正式 runtime 採用版本",
       "started_at": "2026-04-01T10:30:00+08:00",
       "started_by_agent": "Agent2"
     },
@@ -1009,6 +1011,26 @@
       ],
       "depends": [],
       "notes": "2026-03-31 Phase 1 completed: (1) Created UIPreviewDiagnostics.ts with 13 diagnostic methods centralizing all console calls; (2) Created UIPreviewTextCatalog.ts centralizing Chinese strings and JSDoc; (3) Updated UIPreviewBuilder.ts to route all console.log/warn/error through UIPreviewDiagnostics; (4) Verified zero direct console calls remain in UIPreviewBuilder.ts; (5) All changes are pure refactoring, runtime behavior unchanged. Next phase: Layout & Style helper extraction."
+    },
+    {
+      "id": "UI-2-0032",
+      "phase": "D",
+      "priority": "P1",
+      "owner": "Agent2",
+      "status": "open",
+      "created": "2026-04-01",
+      "created_by_agent": "Copilot",
+      "type": "quality-pass",
+      "title": "修正 BattleScene icon 品質差異（v2）",
+      "description": "根據 UI-2-0028 的第一張候選稿與 docs/UI品質參考圖 的比對結果，修正 BattleScene icon 的材質層次、配色、carrier 語言與 32x32 可讀性。",
+      "related": [
+        "UI-2-0027",
+        "UI-2-0028"
+      ],
+      "depends": [
+        "UI-2-0028"
+      ],
+      "notes": "2026-04-01 | 狀態: open | 驗證: 待完成 v2 icon 並再次對照參考圖 | 變更: 根據參考圖比對結果建立 BattleScene icon 品質修正卡 | 阻塞: 待確認 v2 要採用圓章、六角徽章還是盾牌 carrier"
     }
   ]
 }

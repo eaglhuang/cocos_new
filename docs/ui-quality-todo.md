@@ -176,3 +176,6 @@ UI-2-0014 ──→ UI-2-0019 ──→ UI-2-0020 ──→ D-2
 | 2026-03-31 | Agent2 | 重新盤點 `UI-2-0020` / `UI-2-0022` 的實際 skin 狀態後，確認 manifest 的 `not-started` 才是正確狀態；同步把 D-1 / D-3 artifact README 與 notes 改為 ready，並將 D-2 的 blocker 收斂為只剩 `UI-2-0020` |
 | 2026-03-31 | Agent1 | 完成 `UI-2-0022`；`general-list-default.json` v5：`general.header.bg` 改 `dark_metal/frame` 九宮格、`general.list.bg` 改 `parchment/bg` 九宮格（opacity=0.6）、`general.row.bg` 改 `dark_metal/bg` 九宮格、表頭字色升級為金色 #D4AF37；acceptance 全綠 |
 | 2026-03-31 | Agent1 | 完成 `UI-2-0020`；shop-main-default.json v5 新增 `shop.content.carrier` QA anchor slot；gacha-default.json v3 新增 `gacha.pity.carrier.bg/frame` slot；gacha-main.json v2 於 `PityInfoBar` 掛入 carrier skinSlot；D-2 解除 blocked 改為 not-started，可由 Agent2 進行截圖 QA |
+
+
+| 2026-04-01 | Agent2 | 完成 `UI-2-0028` 第一張自動化 icon 候選稿 `unitinfo_type_icon_spear_v1.png` 與 `docs/UI品質參考圖/` 的比對，確認主要品質差異在材質層次、飽和度、carrier 語言、縮圖辨識度與做舊感，並新開 `UI-2-0032` 作為 v2 refinement 任務。 |
