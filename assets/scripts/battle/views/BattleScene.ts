@@ -128,6 +128,19 @@ export class BattleScene extends Component {
 
   async start(): Promise<void> {
     console.log("[BattleScene] start() 開始執行");
+    // [UI-2-0026] 預設隱藏 gridDebugLabel，避免場景預設 active=true 時顯示 "label" 佔位符
+    if (this.gridDebugLabel && !this.showGridDebug) {
+      this.gridDebugLabel.node.active = false;
+    } else if (!this.gridDebugLabel) {
+      // fallback: 如果在 Inspector 未綁定，嘗試在 Canvas 下尋找並隱藏該節點，避免 designer 留下測試節點顯示
+      const canvas = this.getCanvasNode();
+      try {
+        const maybe = canvas?.getChildByName('gridDebugLabel') ?? canvas?.getChildByName('GridDebugLabel');
+        if (maybe) maybe.active = false;
+      } catch (e) {
+        // 忽略任何尋找錯誤
+      }
+    }
     try {
       // 1. 初始化服務容器（必須在所有 services() 呼叫之前）
       // 傳入 this.node 作為 hostNode，讓 AudioSystem 得以掛載 AudioSource

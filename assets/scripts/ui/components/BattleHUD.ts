@@ -89,14 +89,23 @@ export class BattleHUD extends UIPreviewBuilder {
     // ── 覆寫建構點：綁定節點引用 ─────────────────────────────
 
     protected onBuildComplete(_rootNode: Node): void {
-        // 綁定所有已由 UIPreviewBuilder 建立的節點（透過節點名稱搜尋）
-        // Unity 對照：GetComponentInChildren<Text>("TurnLabel") 類型的深度查找
-        const find = (name: string) => this.node.getChildByName(name)
-            ?? this._deepFind(name);
+        // ── [UI-2-0026] 修復：搜尋範圍限定在 UIPreviewBuilder 建構的節點樹 ──
+        // 舊方式 getChildByName() 會優先命中場景中遺留的同名 legacy 節點，
+        // 改用只在 _rootNode 內做 BFS，確保綁定到正確的新節點。
+        // Unity 對照：GetComponentInChildren<Text>() 但限制在特定子樹搜尋
+        const findInBuilt = (name: string): Node | null => {
+            const queue: Node[] = [_rootNode];
+            while (queue.length > 0) {
+                const cur = queue.shift()!;
+                if (cur.name === name) return cur;
+                queue.push(...cur.children);
+            }
+            return null;
+        };
 
         // 逐項綁定並 log，方便追蹤哪個節點找不到
         const bindLabel = (name: string): Label | null => {
-            const n = find(name);
+            const n = findInBuilt(name);
             if (!n) {
                 console.warn(`[BattleHUD] onBuildComplete: 找不到節點 "${name}" — 請確認 battle-hud-main.json 中有對應的 name 欄位`);
                 return null;
@@ -118,8 +127,8 @@ export class BattleHUD extends UIPreviewBuilder {
 
         // ProgressBar 組件：UIPreviewBuilder 建立了 image 節點，
         // 這裡在節點上加掛 ProgressBar 組件實現進度條功能
-        this._playerFortressBar = this._ensureProgressBar(find('PlayerFortressBar'));
-        this._enemyFortressBar  = this._ensureProgressBar(find('EnemyFortressBar'));
+        this._playerFortressBar = this._ensureProgressBar(findInBuilt('PlayerFortressBar'));
+        this._enemyFortressBar  = this._ensureProgressBar(findInBuilt('EnemyFortressBar'));
 
         if (!this._playerFortressBar) {
             console.warn('[BattleHUD] onBuildComplete: 找不到 PlayerFortressBar 節點，血條將無法顯示');
@@ -127,16 +136,28 @@ export class BattleHUD extends UIPreviewBuilder {
 
         // 頭像點擊 → 開啟武將快覽彈窗（v3-5）
         // Unity 對照：portrait.onClick → UIManager.ShowPanel<GeneralInfoPopup>(data)
-        const playerPortrait = find('PlayerPortrait');
-        const enemyPortrait  = find('EnemyPortrait');
+        const playerPortrait = findInBuilt('PlayerPortrait');
+        const enemyPortrait  = findInBuilt('EnemyPortrait');
         playerPortrait?.on(Button.EventType.CLICK, () => this._onPortraitClick('player'), this);
         enemyPortrait?.on(Button.EventType.CLICK,  () => this._onPortraitClick('enemy'),  this);
         if (!playerPortrait) console.warn('[BattleHUD] onBuildComplete: 找不到 PlayerPortrait 節點');
 
-        // 初始清除 label 以防止顯示 placeholder 字串（UIPreviewBuilder 預設用 spec.name 填值）
-        if (this._playerNameLabel) this._playerNameLabel.string = '玩家';
-        if (this._enemyNameLabel)  this._enemyNameLabel.string  = '敵方';
-        if (this._statusLabel)     this._statusLabel.string     = '';
+        // ── [UI-2-0026] 隱藏場景舊版 HUD 直接子節點，避免與新節點樹重疊顯示 ──
+        // Unity 對照：舊 GameObject 被新版 Prefab 取代時，把舊物件 SetActive(false)
+        for (const child of this.node.children) {
+            if (child !== _rootNode) {
+                child.active = false;
+            }
+        }
+
+        // ── 初始化所有 bind:"dynamic" 標籤，清除 {dynamic} 佔位符 ──
+        if (this._turnLabel)           this._turnLabel.string           = '第 1 回合';
+        if (this._foodLabel)           this._foodLabel.string           = 'DP -';
+        if (this._playerFortressLabel) this._playerFortressLabel.string = '- / -';
+        if (this._enemyFortressLabel)  this._enemyFortressLabel.string  = '- / -';
+        if (this._playerNameLabel)     this._playerNameLabel.string     = '玩家';
+        if (this._enemyNameLabel)      this._enemyNameLabel.string      = '敵方';
+        if (this._statusLabel)         this._statusLabel.string         = '';
 
         console.log(
             '[BattleHUD] onBuildComplete 完成 —',
@@ -149,6 +170,27 @@ export class BattleHUD extends UIPreviewBuilder {
             `playerFortressBar:${!!this._playerFortressBar}`,
             `enemyFortressBar:${!!this._enemyFortressBar}`,
         );
+
+        // 額外處理：若場景中有殘留的同名節點（不在 _rootNode 下），將其隱藏，避免與新 HUD 重複顯示
+        try {
+            const canvas = this.node.scene?.getChildByName('Canvas');
+            if (canvas) {
+                const namesToHide = [
+                    'PlayerFortressLabel', 'EnemyFortressLabel', 'PlayerFortressBar', 'EnemyFortressBar',
+                    'TurnLabel', 'FoodLabel', 'StatusLabel', 'PlayerPortrait', 'EnemyPortrait'
+                ];
+
+                const walk = (n: Node) => {
+                    if (n === _rootNode) return; // skip new-built subtree
+                    if (namesToHide.indexOf(n.name) >= 0) n.active = false;
+                    for (const c of n.children) walk(c);
+                };
+
+                for (const child of canvas.children) walk(child);
+            }
+        } catch (e) {
+            // 防禦性容錯：不影響正常流程
+        }
     }
 
     /** 確保節點上有 ProgressBar 組件，回傳組件引用 */
