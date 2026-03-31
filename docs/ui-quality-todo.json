@@ -1,7 +1,16 @@
 {
   "audit_source": "artifacts/ui-source/button-family-screen-audit-2026-03-31.csv",
   "generated": "2026-03-31",
-  "id_schema": "{??蝯???}-{?殉????{?撮????選? ?? UI-1-0001",
+  "id_schema": "{系統代號}-{子系統}-{流水號4位}",
+  "task_template": {
+    "開單原因": "說明為什麼要開這張卡，包含 blocker、需求、風險或修復動機。",
+    "完整描述": "用可執行、可驗證的方式描述要做什麼，不寫空泛目標。",
+    "來源依據文件索引": "列出對應的 keep、brief、參考文件或 audit 來源。",
+    "如何驗證": "寫清楚可重跑的驗證步驟、檢查命令與預期結果。",
+    "notes_template": "YYYY-MM-DD | 狀態: <done|in-progress|blocked> | 驗證: <command/result> | 變更: <summary> | 阻塞: <none or reason>",
+    "commit_rule": "正式 commit 需對回單一卡號、單一主題或單一 bug；bug 可不先開卡，但要寫清楚問題與修法。",
+    "bug_commit_format": "[bug][系統代碼] Bug描述 : 修改描述 [AgentX]"
+  },
   "tasks": [
     {
       "id": "UI-1-0001",

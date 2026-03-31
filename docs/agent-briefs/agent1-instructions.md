@@ -32,6 +32,19 @@ description: "負責 runtime、preview host、UI contract、layout/skin JSON、t
 
 通用規則全部以 [../keep.md](../keep.md) 為準，本檔只保留 Agent1 專屬責任。
 
+## 硬規則
+
+- 正式工作原則上先有任務卡，再開始實作、重構、批次文件整理或正式 QA。
+- bug 修復可視情況不先開卡，但仍要保留可追蹤性，commit 必須寫清楚 bug 內容、修法與 Agent 標籤。
+- 若工作範圍擴大、出現新 blocker、或衍生新工作，先補開新卡或更新原卡 `related / depends / notes`。
+- 正式 commit 必須能對回單一卡號、單一主題批次，或單一 bug 修復單位。
+- `notes` 建議固定用：`日期 | 狀態 | 驗證 | 變更 | 阻塞`。
+- bug commit 形式：
+
+```text
+[bug][系統代碼] Bug描述 : 修改描述 [AgentX]
+```
+
 ## 1. 主要責任
 
 - UI runtime
@@ -68,6 +81,7 @@ description: "負責 runtime、preview host、UI contract、layout/skin JSON、t
 - 對應 task / notes / checklist / index 已同步
 - 必要驗證已重跑
 - blocker 已明確記錄
+- 若是 bug 修復，commit message 已寫清楚問題與修法，且能對回系統代碼與 Agent。
 
 ## 6. 交接格式
 

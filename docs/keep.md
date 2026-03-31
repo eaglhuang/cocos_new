@@ -46,6 +46,10 @@ Unity 對照：`screen/layout/skin` 可以理解為 Prefab 組裝規則、版面
 ## 5. 任務與 Agent 協作規則
 
 - 任務卡與追蹤文件必須同步維護。
+- 正式工作原則上先有任務卡，再開始實作、重構、批次文件整理或正式 QA。
+- 若工作範圍擴大、出現新 blocker、或衍生新的子問題，必須先補開新卡或更新原卡 `related / depends / notes`，不可默默混在同一張卡內。
+- bug 修復可視情況不先開卡，但仍應以最小可追蹤單位處理，commit 必須寫清楚 bug 內容、修法與 Agent 標籤。
+- `notes` 內容應使用固定結構，至少包含：日期、狀態、驗證、變更、阻塞。
 - Agent1 主要負責 runtime、preview host、UI contract、tooling、重構。
 - Agent2 主要負責 QA、artifact、比對紀錄、阻塞盤點與追蹤收斂。
 - 若發現 blocker 屬於他人責任範圍，需開卡或更新狀態，不可假裝完成。
@@ -61,6 +65,20 @@ Unity 對照：`screen/layout/skin` 可以理解為 Prefab 組裝規則、版面
 ```
 
 - 提交前必須通過 pre-commit 檢查。
+- 正式 commit 必須能對回單一卡號、單一主題批次，或單一 bug 修復單位；若沒有任務卡，原則上不做正式功能 commit，但 bug 修復可以例外。
+- 建議主題批次：
+  - `infra / repo hygiene`
+  - `tooling`
+  - `runtime / contract`
+  - `docs / tracking`
+  - `qa artifact`
+- bug commit 建議格式：
+
+```text
+[bug][系統代碼] Bug描述 : 修改描述 [AgentX]
+```
+
+- `Bug描述` 要說明發生了什麼問題，`修改描述` 要說明大概用了什麼方法。
 - 發生災難時，優先從 git 歷史與乾淨 blob 回救，不靠人工猜測補字。
 
 ## 7. UTF-8 與編碼防災規則
