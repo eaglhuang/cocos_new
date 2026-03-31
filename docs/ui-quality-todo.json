@@ -975,7 +975,7 @@
       "phase": "D",
       "priority": "P1",
       "owner": "Agent2",
-      "status": "open",
+      "status": "in-progress",
       "created": "2026-04-01",
       "created_by_agent": "Copilot",
       "type": "asset-requirement",
@@ -986,7 +986,9 @@
       "id": "UI-2-0028",
       "title": "建立戰場 UI Icon 資產清單",
       "description": "盤點 BattleScene 需要的功能 icon、屬性 icon、狀態 icon 與按鈕 icon，建立可交付的資產需求表。",
-      "notes": "2026-04-01 | 狀態: open | 驗證: 待盤點 icon 資產 | 變更: 建立 BattleScene icon 清單 | 阻塞: 等待 icon 命名與交付批次確認"
+      "notes": "2026-04-01 | ??: in-progress | ??: ??? unitinfo.type.icon ?? PNG ??????? | ??: Agent2 ?????????? unitinfo_type_icon_spear_v1.png | ??: ?????????? runtime ???????????? icon",
+      "started_at": "2026-04-01T10:30:00+08:00",
+      "started_by_agent": "Agent2"
     },
     {
       "id": "UI-2-0024",
