@@ -868,9 +868,11 @@
       "phase": "D",
       "priority": "P1",
       "owner": "Agent2",
-      "status": "open",
+      "status": "in-progress",
       "created": "2026-04-01",
       "created_by_agent": "Copilot",
+      "started_at": "2026-04-01T00:47:55+08:00",
+      "started_by_agent": "Agent2",
       "type": "asset-requirement",
       "title": "建立戰場 UI 圖像資產需求總表（Icon/武將頭像/虎符部隊圖）",
       "description": "建立單一資產需求清單，完整盤點 BattleScene 所需圖像資產：功能 icon、屬性 icon、武將頭像、兵種頭像、虎符部隊卡圖、狀態圖示、按鈕狀態圖（normal/pressed/disabled）與可能的缺圖 fallback。每一項需記錄用途、尺寸、來源（現有/待美術）、命名規範、bundle 位置與交付狀態，避免後續漏件。",
@@ -878,7 +880,7 @@
       "如何驗證": "1. 產出資產需求 manifest（可用 docs 或 json）；2. 每個 UI 節點對應到唯一資產 key；3. 缺件項目有 owner 與 ETA；4. 最終畫面不再出現臨時 placeholder 或錯誤資產引用。",
       "related": ["UI-2-0026", "DATA-1-0001"],
       "depends": [],
-      "notes": "2026-04-01 | 狀態: open | 驗證: 待建立需求總表後進行對照掃描 | 變更: 新增 icon/頭像/虎符圖片盤點任務，避免資產需求遺漏 | 阻塞: 待確認美術交付批次與命名規範"
+      "notes": "2026-04-01 | 狀態: in-progress | 驗證: 已鎖卡，開始建立需求總表 | 變更: Agent2 盤點 BattleScene 圖像資產需求與命名規範 | 阻塞: 待確認美術交付批次與命名規範"
     },
     {
       "id": "UI-2-0024",
