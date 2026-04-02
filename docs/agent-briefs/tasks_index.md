@@ -41,14 +41,36 @@ manifest: ../ui-quality-todo.json
 | UI-2-0023 | Agent1 | done | [UI-2-0023](tasks/UI-2-0023.md) | headless capture CLI 撌脣蝛拙?頛詨 `LobbyMain` / `ShopMain` / `DuelChallenge` |
 | UI-2-0024 | Agent1 | completed | [UI-2-0024](tasks/UI-2-0024.md) | `UIPreviewBuilder.ts` 撌脣??洵銝?挾??嚗那?瑁????桅?撌脫??|
 | UI-2-0025 | Agent1 | done | [UI-2-0025](tasks/UI-2-0025.md) | `Gacha` preview 撌脣?朣 `gacha-main-screen` + `gacha-preview-main`嚗??頛詨 `Gacha.png` |
-| UI-2-0027 | Agent2 | in-progress | [UI-2-0027](tasks/UI-2-0027.md) | 戰場 UI 圖像資產需求總表 | 0% | Agent2 |
-| UI-2-0028 | Agent2 | in-progress | [UI-2-0028](tasks/UI-2-0028.md) | 戰場 UI Icon 資產清單 | 50% | Agent2 |
-| UI-2-0029 | Agent2 | in-progress | [UI-2-0029](tasks/UI-2-0029.md) | ???? UI Portrait ??????? roster 5/5 ?????? HUD ?????? | 70% | Agent2 |
-| UI-2-0030 | Agent2 | in-progress | [UI-2-0030](tasks/UI-2-0030.md) | ?? BattleScene card art / rarity / type badge ??????? TigerTally ?????? | 70% | Agent2 |
-| UI-2-0031 | Agent2 | in-progress | [UI-2-0031](tasks/UI-2-0031.md) | ?? BattleScene portrait / icon / card art / badge ??? fallback ?? | 60% | Agent2 |
-| UI-2-0032 | Agent2 | in-progress | [UI-2-0032](tasks/UI-2-0032.md) | 修正 BattleScene Icon 品質差異（v2） | 10% | Agent2 |
+| UI-2-0027 | Agent2 | in-progress | [UI-2-0027](tasks/UI-2-0027.md) | 戰場 UI 圖像資產需求總表（已建立 family 分流方向） | 35% | Agent2 |
+| UI-2-0028 | Agent2 | in-progress | [UI-2-0028](tasks/UI-2-0028.md) | 戰場 UI Icon 資產清單（已完成 F7/F8 指派） | 65% | Agent2 |
+| UI-2-0029 | Agent2 | in-progress | [UI-2-0029](tasks/UI-2-0029.md) | 戰場 UI Portrait 資產清單（roster 5/5，待 runtime 接線） | 70% | Agent2 |
+| UI-2-0030 | Agent2 | in-progress | [UI-2-0030](tasks/UI-2-0030.md) | 戰場 UI Card Art / Badge 清單（F6/F7 指派完成） | 75% | Agent2 |
+| UI-2-0031 | Agent2 | in-progress | [UI-2-0031](tasks/UI-2-0031.md) | 戰場 UI Fallback 規範（已定義 family-preserving fallback） | 70% | Agent2 |
+| UI-2-0032 | Agent2 | in-progress | [UI-2-0032](tasks/UI-2-0032.md) | 修正 BattleScene Icon 品質差異（v2，Agent1 brief 已就緒） | 55% | Agent2 |
+| UI-2-0035 | Agent2 | in-progress | [UI-2-0035](tasks/UI-2-0035.md) | 擴充 UI 參考圖 icon family 規則庫（20-icon baseline + family assignment） | 50% | Agent2 |
+| UI-2-0037 | Agent2 | in-progress | [UI-2-0037](tasks/UI-2-0037.md) | 擴充 UI 參考圖可量產圖片 family 規則庫（portrait / card / props） | 35% | Agent2 |
+| UI-2-0038 | Agent2 | in-progress | [UI-2-0038](tasks/UI-2-0038.md) | 建立 BattleHUD portrait 裁片量產規格，已補 family spec 與 Agent1 brief | 60% | Agent2 |
+| UI-2-0039 | Agent2 | in-progress | [UI-2-0039](tasks/UI-2-0039.md) | ?? TigerTally card art ???? | 45% | Agent2 |
+| UI-2-0040 | Agent2 | in-progress | [UI-2-0040](tasks/UI-2-0040.md) | 建立 reward container / bundle props 量產規格與 Agent1 生圖 brief | 55% | Agent2 |
+| UI-2-0041 | Agent2 | open | [UI-2-0041](tasks/UI-2-0041.md) | 建立主城 building node / interaction 量產規格 | 0% | Agent2 |
+| UI-2-0042 | Agent2 | open | [UI-2-0042](tasks/UI-2-0042.md) | 建立 outfit torso / paperdoll 量產規格 | 0% | Agent2 |
+| UI-2-0043 | Agent1 | open | [UI-2-0043](tasks/UI-2-0043.md) | 依 UI-2-0038 產出 BattleHUD portrait crop proof | 0% | Agent1 |
+| UI-2-0044 | Agent1 | in-progress | [UI-2-0044](tasks/UI-2-0044.md) | ?? Lobby icon ????? | 35% | Agent1 |
+| UI-2-0045 | Agent1 | in-progress | [UI-2-0045](tasks/UI-2-0045.md) | ?????? / QuickView icon ????? | 35% | Agent1 |
+| UI-2-0047 | Agent2 | done | [UI-2-0047](tasks/UI-2-0047.md) | ?????????????????? / ?? / family / QA? | 100% | Agent2 |
+| UI-2-0048 | Agent2 | done | [UI-2-0048](tasks/UI-2-0048.md) | ?????????? | 100% | Agent2 |
+| UI-2-0049 | Agent2 | done | [UI-2-0049](tasks/UI-2-0049.md) | ?? family ?????? | 100% | Agent2 |
+| UI-2-0050 | Agent2 | done | [UI-2-0050](tasks/UI-2-0050.md) | ??????????? | 100% | Agent2 |
+| UI-2-0051 | Agent2 | done | [UI-2-0051](tasks/UI-2-0051.md) | ?? screen-context QA ?????? | 100% | Agent2 |
+| UI-2-0052 | Agent2 | done | [UI-2-0052](tasks/UI-2-0052.md) | ???????? Schema | 100% | Agent2 |
+| UI-2-0053 | Agent2 | in-progress | [UI-2-0053](tasks/UI-2-0053.md) | 重審 BattleScene 主 UI 視覺風格、分布與各主畫面 style profile | 70% | Agent2 |
+| UI-2-0054 | Agent2 | in-progress | [UI-2-0054](tasks/UI-2-0054.md) | 建立全專案角色視覺總綱，定案立繪風格與戰場 3D / 2D 政策 | 65% | Agent2 |
+| UI-2-0046 | Agent1 | in-progress | [UI-2-0046](tasks/UI-2-0046.md) | 建立 BattleScene 真場景 headless capture 驗證鏈 | 35% | Agent1 |
+| UI-2-0036 | Agent1 | open | [UI-2-0036](tasks/UI-2-0036.md) | 依 UI-2-0032 生出 BattleScene icon v2 候選稿 | 0% | Agent1 |
 | UI-2-0033 | Agent1 | open | [UI-2-0033](tasks/UI-2-0033.md) | BattleHUD portrait ?????? generals ????? placeholder fallback | 0% | Agent1 |
 | UI-2-0034 | Agent1 | open | [UI-2-0034](tasks/UI-2-0034.md) | TigerTallyPanel ?? card art / rarity / type badge???? battle fallback ?? | 0% | Agent1 |
+| UI-2-0055 | Agent2 | open | [UI-2-0055](tasks/UI-2-0055.md) | 補開血脈命鏡 Loading tips 文案池規格追蹤單 | 0% | Agent2 |
+| UI-2-0056 | Agent2 | open | [UI-2-0056](tasks/UI-2-0056.md) | 補開未持有武將標記規則與 Loading 顯示策略追蹤單 | 0% | Agent2 |
 
 鋆?隤芣?
 - 閰喟敦??wner ??鞈港?敺誑 `docs/ui-quality-todo.json` ?箔蜓??- 隞餃???frontmatter ?亥?蝝Ｗ?銝?嚗??郊靽格迤隞餃??∟? manifest嚗??Agent ?????啗????

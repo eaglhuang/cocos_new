@@ -5,7 +5,7 @@
 > **品質目標文件**：`docs/UI參考圖品質分析.md`
 > **共識準則**：`docs/keep.md`
 >
-> **最後更新**：2026-03-31（Agent1 完成 `UI-2-0022` + `UI-2-0020`：general-list 升級為九宮格框體皮膚；shop-main / gacha 補入 parchment light-surface carrier，D-2 解除 blocked；Phase B 全部 9/9 done；剩餘 D 階段視覺 QA 由 Agent2+human 負責）
+> **最後更新**：2026-04-02（Agent2 已將 `日常人物頁 v2` 與 `血脈命鏡過場 v2` 正式同步回系統規格與 UI 規格書；同步補開 `UI-2-0055` Loading tips 文案池與 `UI-2-0056` 未持有武將標記規則追蹤單，等待 v3 視覺 proof 後續收斂）
 
 ---
 
@@ -117,8 +117,8 @@
 | A | 14 | 14 | 0 | 0 | 0 |
 | Phase B | 9 | 9 | 0 | 0 | 0 |
 | Phase C | 7 | 6 | 0 | 1 | 0 |
-| Phase D | 4 | 0 | 1 | 3 | 0 |
-| **Total** | **40** | **35** | **1** | **4** | **0** |
+| Phase D | 29 | 6 | 15 | 8 | 0 |
+| **Total** | **70** | **44** | **18** | **8** | **0** |
 
 ### 推薦的平行執行路線
 
@@ -176,6 +176,70 @@ UI-2-0014 ──→ UI-2-0019 ──→ UI-2-0020 ──→ D-2
 | 2026-03-31 | Agent2 | 重新盤點 `UI-2-0020` / `UI-2-0022` 的實際 skin 狀態後，確認 manifest 的 `not-started` 才是正確狀態；同步把 D-1 / D-3 artifact README 與 notes 改為 ready，並將 D-2 的 blocker 收斂為只剩 `UI-2-0020` |
 | 2026-03-31 | Agent1 | 完成 `UI-2-0022`；`general-list-default.json` v5：`general.header.bg` 改 `dark_metal/frame` 九宮格、`general.list.bg` 改 `parchment/bg` 九宮格（opacity=0.6）、`general.row.bg` 改 `dark_metal/bg` 九宮格、表頭字色升級為金色 #D4AF37；acceptance 全綠 |
 | 2026-03-31 | Agent1 | 完成 `UI-2-0020`；shop-main-default.json v5 新增 `shop.content.carrier` QA anchor slot；gacha-default.json v3 新增 `gacha.pity.carrier.bg/frame` slot；gacha-main.json v2 於 `PityInfoBar` 掛入 carrier skinSlot；D-2 解除 blocked 改為 not-started，可由 Agent2 進行截圖 QA |
+| 2026-04-01 | Agent2 | 補開 `UI-2-0047`，把 29 張 `UI品質參考圖` 進一步提煉成跨功能規則：同功能同色票、深淺成對、字級階層、carrier/glyph 分層、family 批次生產、狀態組 / 尺寸組同步產出，並回寫到主分析文件與 QA 規則文檔。 |
+| 2026-04-01 | Agent2 | 由 `UI-2-0047` 再拆出 `UI-2-0048 ~ UI-2-0052`，把「固定功能語意色票、family 批次生產、狀態組與尺寸組、screen-context QA、規格欄位化」五個缺口全部轉成正式子任務，並新增 `asset-production-field-template.md` 供後續任務直接套用。 |
+| 2026-04-01 | Agent2 | 正式完成 `UI-2-0047 ~ UI-2-0052`，將五張規格卡與 `macro-style-rules / field template` 收斂為可交接版本，並把 `UI-2-0044`、`UI-2-0045` 對齊為等待 Agent1 生圖的 `in-progress` 狀態。 |
+| 2026-04-01 | Agent2 | 延續 `UI-2-0053`，完成 BattleScene 主 UI 的 style zone audit、BattleScene style profile v1 與各主畫面 screen style profile schema / 補件順序；目前結論是可進行畫面級規則收斂，但仍待 `UI-2-0046` 完成真場景 capture 後再做 placement QA。 |
+| 2026-04-01 | Agent2 | 新開 `UI-2-0054`，完成全專案角色視覺總綱與美術品質優先序 v1，正式定案人物立繪採半寫實國風英雄化，並收斂為戰場 `3D 模型為主`、`2D 立繪為 HUD / Detail / Card / 商業化畫面主語言`。 |
 
+### 推薦的平行執行路線
 
+```
+             ┌─ P0-1 (Agent2) ──→ P0-2 (Agent1) ──┐
+             │
+開始 ────────┼─ P0-3 (Agent2) ──→ P0-4 (Agent1) ──┼─→ UI-2-0018 (Agent1) + UI-2-0021 (Agent1) ──→ D-1 / D-3
+             │
+             ├─ P0-5 (Agent2) ──→ P0-6 (Agent1)
+             │
+             ├─ A-1 (Agent2) ──┐
+             │             ├──→ B-5 (Agent1)
+             ├─ B-1 (Agent1) ──┘
+             │
+             ├─ A-3 (Agent2) ──→ B-2 (Agent1) ──→ C-1 (Agent1)
+             │
+             └─ A-5 (Agent2) ──→ C-2 (Agent1)
+
+UI-2-0014 ──→ UI-2-0019 ──→ UI-2-0020 ──→ D-2
+```
+
+> **最短路徑**：如果只有一個 Agent，現在可先直接跑 `D-1` 或 `D-3`；若要關閉 D-2，最短路徑是 `UI-2-0019 → UI-2-0020 → D-2`。
+
+---
+
+## 變更紀錄
+
+| 日期 | 變更人 | 說明 |
+|---|---|---|
+| 2026-03-31 | Agent1 | 初始建立；23 個 task 全部 not-started |
+| 2026-03-31 | Agent2 | 完成 P0-1/P0-3/P0-5（sprite 搬遷）、A-1（parchment）、A-2（item-cell）、A-3（shadow）、A-5（noise）；共 23 個檔案，全部 SHA256 驗收通過 |
+| 2026-03-31 | Agent1 | 完成 B-1 / B-3 / C-3；P0-2 / P0-4 仍待 Agent2 將 nav.ink / paper.utility runtime sprite 搬入正式路徑後接線 |
+| 2026-03-31 | Agent1 | 補開 UI-2-0006 ~ UI-2-0011 任務卡，並同步 `ui-quality-todo.json` / `CheckList.md` / `tasks_index.md`，修正 P0-6 與 legacy card 的對應 |
+| 2026-03-31 | Agent1 | 完成 UI-2-0001 / UI-2-0002；`lobby-main-default` 接上 `nav_ink`，`duel-challenge-default` 的 reject 按鈕接上 `paper_utility`，並同步所有追蹤文件 |
+| 2026-03-31 | Agent1 | 完成 UI-2-0006；新增 shared button family border 驗證腳本並接入 acceptance，P0 系列目前僅剩視覺驗收項 |
+| 2026-03-31 | Agent1 | 依 `D-3` 混搭驗收缺口補開 `UI-2-0012`，追蹤 `duel.btn.accept -> ui-common-metal.equipment.primary` 的後續接線 |
+| 2026-03-31 | Agent1 | 完成 UI-2-0012；`duel.btn.accept` 已接上 `ui-common-metal.equipment.primary`，`D-3` 所需的 mixed-family 接線前置已齊備 |
+| 2026-03-31 | Agent2 | Session 5：完成 UI-1-0013（§3.3 frame sprite gold-edge 掃描腳本，10/10 PASS）；補開 UI-2-0017（general-detail 5 個 bleed slot 修補，Agent1 任務）；更新 §7.3 評分至 v3 中期估算（5.3/10） |
+| 2026-03-31 | Agent1 | 為 `UIPreviewBuilder` 新增 layout-safe detached shadow host，讓 parent 含 `Layout` 的節點可正確渲染 shadow，並以 `node tools_node/run-acceptance.js` 驗證全綠；同步確認 `general-detail-default` 的 5 個 bleed slot 已存在，關閉 `UI-2-0017` |
+| 2026-03-31 | Agent1 | 完成 `UI-2-0011`；`UIPreviewBuilder` 新增 `*.noise` slot runtime，先支援 standalone fill panel 的 alpha 疊圖 noise overlay，並在 `general-detail-default.json` 接入 `detail.header/summary/tabbar.rail/content/footer.noise`；`run-acceptance` 與 `validate-skin-contracts` 全綠 |
+| 2026-03-31 | Agent2 | 盤點 D-1~D-3 實際預覽入口後，確認 `lobby-main-screen` / `shop-main-screen` / `gacha-screen` / `duel-challenge-screen` 目前都缺少 `loadFullScreen(...)` 掛載點；將 `UI-1-0014 ~ UI-1-0016` 轉為 blocked，並補開 `UI-2-0018` 給 Agent1 收斂 preview harness |
+| 2026-03-31 | Agent1 | 完成 B-4（UI-2-0008）與 B-5（UI-2-0009）：item-cell-default.json v2 修正路徑（bg/frame/bleed/shadow) 並新增 7 階 rarity.*.border + rarity.default.bg；common-parchment-default.json v2 修正路徑（parchment/frame, bleed/bleed_parchment, noise/paper_noise_256) 並新增 text.primary/secondary/accent, parchment.divider；R2/R4/R5 全合規，run-acceptance 全綠；關閉 C-1（UI-2-0010）與 C-1A（UI-2-0016） |
+| 2026-03-31 | Agent2 | 進一步盤點 D-2 時發現任務文字仍寫 `paper.utility`，但 `shop-main-default` / `gacha-default` 實作已與此脫節；新增 `UI-2-0019` 讓 Agent1 先收斂 D-2 的 target family，並補齊 `UI-1-0015` / `UI-1-0016` 的 artifact QA 骨架 |
+| 2026-03-31 | Agent1 | 完成 `UI-2-0018`；新增 `assets/scripts/ui/components/UIScreenPreviewHost.ts`，並將 `assets/scripts/ui/scenes/LoadingScene.ts` 擴成 preview hub，提供 `LobbyMain / ShopMain / Gacha / DuelChallenge` 四個 screen-driven 預覽入口 |
+| 2026-03-31 | Agent1 | 完成 `UI-2-0019`，正式將 D-2 目標從 `paper.utility` 收斂為 `common-parchment / light-surface carrier consistency`，並補開 `UI-2-0020` 追蹤 shop-main / gacha 的 shared light-surface 接線 |
+| 2026-03-31 | Agent2 | 收到 PreviewInEditor log 後，盤點 `shadow_01`、`metal_noise_256`、`equipment/btn_primary_normal` 與多個 `general_detail` sprite 的實體檔，確認 PNG 與 `.meta` 已存在於 `assets/resources/sprites/ui_families/...`；補開 `UI-2-0021` 交由 Agent1 收斂 PreviewInEditor 的 resources 索引 / 路徑解析斷鏈 |
+| 2026-03-31 | Agent2 | 依 `general-list` 實機截圖補開 `UI-2-0022`；確認 `general-list-default.json` 雖已掛 `bg_ink_main`，但 header/list/row 仍是 `color-rect`，因此畫面仍呈現 placeholder / 白模表格感，先交由 Agent1 做 skin 與九宮格框體升級 |
+| 2026-03-31 | Agent1 | 完成 `UI-2-0021`；`ResourceManager.ts` 補齊 SpriteFrame 路徑正規化、候選 fallback 與快取釋放，新增 `tools_node/validate-representative-spriteframe-assets.js` 並接入 acceptance，代表性路徑 4/4 PASS，`run-acceptance` 全綠，asset-db refresh 成功 |
+| 2026-03-31 | Agent2 | 重新盤點 `UI-2-0020` / `UI-2-0022` 的實際 skin 狀態後，確認 manifest 的 `not-started` 才是正確狀態；同步把 D-1 / D-3 artifact README 與 notes 改為 ready，並將 D-2 的 blocker 收斂為只剩 `UI-2-0020` |
+| 2026-03-31 | Agent1 | 完成 `UI-2-0022`；`general-list-default.json` v5：`general.header.bg` 改 `dark_metal/frame` 九宮格、`general.list.bg` 改 `parchment/bg` 九宮格（opacity=0.6）、`general.row.bg` 改 `dark_metal/bg` 九宮格、表頭字色升級為金色 #D4AF37；acceptance 全綠 |
+| 2026-03-31 | Agent1 | 完成 `UI-2-0020`；shop-main-default.json v5 新增 `shop.content.carrier` QA anchor slot；gacha-default.json v3 新增 `gacha.pity.carrier.bg/frame` slot；gacha-main.json v2 於 `PityInfoBar` 掛入 carrier skinSlot；D-2 解除 blocked 改為 not-started，可由 Agent2 進行截圖 QA |
 | 2026-04-01 | Agent2 | 完成 `UI-2-0028` 第一張自動化 icon 候選稿 `unitinfo_type_icon_spear_v1.png` 與 `docs/UI品質參考圖/` 的比對，確認主要品質差異在材質層次、飽和度、carrier 語言、縮圖辨識度與做舊感，並新開 `UI-2-0032` 作為 v2 refinement 任務。 |
+| 2026-04-01 | Agent2 | 重新盤點 `docs/UI品質參考圖/` 全量截圖，補開 `UI-2-0035` 建立 20-icon baseline 與 icon family 條件規則庫，作為後續 BattleScene icon 自動生成與選型策略依據。 |
+| 2026-04-01 | Agent2 | 延續 `UI-2-0035`，把 F1~F8 icon family 正式對應到 `UI-2-0027 ~ UI-2-0032` 的量產需求單，以及現行 `battle-hud`、`battle-log`、`tiger-tally`、`gacha`、`support-card` 等 ui-spec 契約，補出 `artifacts/ui-qa/UI-2-0035/icon-family-assignment.md` 作為後續量產與 QA 的依據。 |
+| 2026-04-01 | Agent2 | 延續 `UI-2-0032`，完成 `artifacts/ui-qa/UI-2-0032/agent1-generation-brief.md`，將 v2 refinement 收斂為可直接交給 Agent1 的生圖規格；同步新開 `UI-2-0036` 作為 BattleScene icon v2 候選稿執行卡。 |
+| 2026-04-01 | Agent2 | 盤點新增參考圖 `S13 ~ S28` 後，補開 `UI-2-0037`，將研究擴充到非 icon 的量產圖 family，新增 portrait、diorama card、建築節點、任務插畫卡、獎勵容器、道具包與服裝 torso 等規則，並回寫到 `docs/UI參考圖品質分析.md` 與 `artifacts/ui-qa/UI-2-0037/`。 |
+| 2026-04-01 | Agent2 | 完成 `UI-2-0038` 的 A2 HUD 頭像裁片規格，建立 `artifacts/ui-qa/UI-2-0038/` 參考素材、`portrait-family-spec.md`、`agent1-generation-brief.md`，並補開 `UI-2-0043` 交給 Agent1 產出 BattleHUD portrait crop proof。 |
+| 2026-04-01 | Agent2 | 依 `LobbyMain` 與 `general-detail / general-quickview / general-portrait` 的 ui-spec slot 盤點結果，補開 `UI-2-0044`（Lobby icon 生圖卡）與 `UI-2-0045`（武將介紹 / QuickView icon 生圖卡），讓 Lobby 與武將介紹 icon 正式脫離 BattleScene icon 任務單獨追蹤。 |
+
+| 2026-04-01 | Agent2 | ?? `UI-2-0039`???? TigerTally card art ?????? `A4 tactical diorama card`???? `A5 hero-panel` ?? proof brief?? Agent1 ????? QA ??? |
+
+| 2026-04-01 | Agent2 | 將 UI-2-0040 轉入 in-progress，補齊 A8 reward / bundle props family 的量產規格、QA 說明與 Agent1 generation brief，供商城 bundle、獎勵揭示、任務獎勵後續共用。 |
