@@ -1,0 +1,24 @@
+{
+  "id": "jade-rarity-badge-final-r1",
+  "version": 1,
+  "family": "jade-rarity-badge-final",
+  "screenId": "general-detail-bloodline-v3-screen",
+  "targetSlot": "gdv3.rarity.badge.legendary",
+  "outputAssetPath": "assets/resources/sprites/ui_families/general_detail/final/jade_rarity_badge/",
+  "tool": "Agent1 final art production",
+  "assetDirectionRef": "artifacts/ui-source/asset-direction/general-detail-jade-final-pilot-v1.md",
+  "prompt": "Create a reusable rarity badge set for a Chinese fantasy jade-parchment UI system. Produce four coordinated badge styles for common, rare, epic, legendary. Each badge should feel integrated with pale parchment panels and jade ornaments, with subtle premium gold accents, no sticker look, no thick purple fantasy style, high-end commercial game UI quality.",
+  "negativePrompt": "independent sticker badge, purple plastic gem badge, neon glow, sci-fi emblem, logo, text, watermark, shop sale sticker, cartoon look",
+  "seed": null,
+  "postProcess": [
+    "export badge_common/badge_rare/badge_epic/badge_legendary",
+    "export proof to artifacts first",
+    "approve before moving to final runtime path"
+  ],
+  "approvalStatus": "pending",
+  "approvedBy": null,
+  "approvedAt": null,
+  "basedOn": null,
+  "lineage": [],
+  "notes": "The badge set should replace the current transitional rarity badge and align with jade/parchment family language."
+}

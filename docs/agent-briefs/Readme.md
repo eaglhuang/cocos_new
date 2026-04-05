@@ -1,5 +1,12 @@
 # Agent 協作手冊
 
+## UI 任務 Shard 新規則
+
+- `docs/ui-quality-tasks/*.json` 是可編輯 shard 來源。
+- `docs/ui-quality-todo.json` 與 [tasks_index.md](C:\Users\User\3KLife\docs\agent-briefs\tasks_index.md) 由 `node tools_node/build-ui-task-manifest.js` 生成。
+- 開新 UI 任務時，除了任務卡 Markdown，也要同步補 shard，再重建 aggregate manifest 與索引。
+- 過渡期舊任務仍可能只存在於 `docs/ui-quality-todo.json`；新任務優先走 shard。
+
 目的
 - 定義 Agent 任務卡、分工、交接與 commit 的最小必守規則。
 - 共通硬規則以 [keep.md](C:\Users\User\3KLife\docs\keep.md) 為準，本檔只保留 `agent-briefs/` 專屬流程。

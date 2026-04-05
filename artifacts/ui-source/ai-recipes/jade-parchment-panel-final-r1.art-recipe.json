@@ -1,0 +1,24 @@
+{
+  "id": "jade-parchment-panel-final-r1",
+  "version": 1,
+  "family": "jade-parchment-panel-final",
+  "screenId": "general-detail-bloodline-v3-screen",
+  "targetSlot": "gdv3.info.frame",
+  "outputAssetPath": "assets/resources/sprites/ui_families/general_detail/final/jade_parchment_panel/",
+  "tool": "Agent1 final art production",
+  "assetDirectionRef": "artifacts/ui-source/asset-direction/general-detail-jade-final-pilot-v1.md",
+  "prompt": "Create a reusable high-end Chinese fantasy game UI panel kit in a jade-parchment style: pale parchment body, muted warm paper texture, elegant jade-green header band, low-saturation gold trims, natural integrated frame edges, subtle inner shadow, no black heavy metal look, no purple fantasy glow, commercial mobile game UI quality, modular panel kit for 9-slice production.",
+  "negativePrompt": "dark black metal frame, neon purple, sci-fi, exaggerated bevel, thick drop shadow, logo, text, watermark, character illustration, weapon, battle scene, poster composition",
+  "seed": null,
+  "postProcess": [
+    "slice into header_band/header_cap_left/header_cap_right/body_frame_9slice/body_fill_tile/paper_noise_overlay/inner_shadow_overlay",
+    "export proof to artifacts first",
+    "approve before moving to final runtime path"
+  ],
+  "approvalStatus": "pending",
+  "approvedBy": null,
+  "approvedAt": null,
+  "basedOn": null,
+  "lineage": [],
+  "notes": "First formal recipe for the GeneralDetail jade-parchment panel family. Output should be reusable by multiple detail-split screens, not bound to one single page screenshot."
+}

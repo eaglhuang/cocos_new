@@ -1,5 +1,17 @@
 # Keep Consensus
 
+## 0. UI 任務 Shard 入口（2026-04-05）
+
+- `docs/ui-quality-tasks/*.json` 是 UI 任務機器可讀資料的可編輯 shard 來源。
+- `docs/ui-quality-todo.json` 改為 aggregate manifest，由 `node tools_node/build-ui-task-manifest.js` 生成。
+- `docs/agent-briefs/tasks_index.md` 也由同一支生成器重建，不再建議手工維護。
+- 新任務的建議順序：
+  1. 建立任務卡 Markdown
+  2. 新增或更新對應 shard
+  3. 執行 `node tools_node/build-ui-task-manifest.js`
+  4. 執行 encoding touched check
+- 過渡期允許舊任務仍保留在 `docs/ui-quality-todo.json`；新任務優先走 shard，不要求一次搬完整份歷史資料。
+
 更新日期: `2026-04-05`
 
 本文件是目前專案的最高共識摘要。每次新會話開始時，先讀本檔，再開始任何分析、改碼、測試或文件工作。
@@ -754,3 +766,69 @@ node tools_node/scaffold-ui-component.js --screen my-screen --no-uiconfig
 - `validate-ui-specs.js --strict` — 17條 layout 品質規則（節點深度、間距、skinSlot 交叉核對等）
 - `assets/resources/ui-spec/validation-rules.json` — 閾值設定檔
 - `docs/ui/layout-quality-rules.md` — 規則說明文件
+---
+
+## 23. UI 美術資產治理與量產切換（2026-04-05）
+
+### 23.1 目錄分層原則
+
+- `artifacts/ui-source/`
+  - 放 AI 原圖、裁切稿、compare input、recipe、prompt、審核紀錄。
+  - 不可作為正式 runtime 載入路徑。
+- `assets/resources/.../proof/`
+  - 只允許短期 preview / smoke / compare 驗證使用。
+  - 可暫時被 screen 或 skin 引用，但結案前必須替換或標記 blocker。
+- `assets/resources/.../final/` 或正式 family 路徑
+  - 只放已核准、可重用、允許正式打包的商業資產。
+  - 正式版本優先引用這一層。
+
+Unity 對照：
+- `artifacts/ui-source/` 比較像 DCC 原始稿 / PSD 輸出站，不進 Player。
+- `assets/resources/.../proof/` 像暫時掛在 Addressables/Resources 內的灰盒驗證圖。
+- `final/` 才是可長期 shipping 的 Prefab / Sprite family 正式依賴。
+
+### 23.2 Proof 與 Final 的切換規則
+
+- Proof 資產的任務是驗證：
+  - family 結構
+  - slot 對位
+  - 裁切策略
+  - runtime 載入鏈
+- Final 資產的任務是承擔：
+  - 正式商業質感
+  - 長期重用
+  - 包體輸出
+- 一個 family 只要下列條件成立，就應開始切正式貼圖，不必等整頁全部完成：
+  - layout / screen 結構已穩定
+  - slot-map 已穩定
+  - 該 family 會被多頁共用
+
+### 23.3 正式切圖優先順序
+
+現階段優先做高重用 family，不要整頁一次重畫：
+1. `jade-parchment-panel-final`
+2. `crest-medallion-final`
+3. `jade-rarity-badge-final`
+4. `portrait-stage-final`
+5. `story-strip-final`
+
+原則：
+- 先做 family，再做單頁特化。
+- 先做可重用 panel kit，再做一次性插畫。
+
+### 23.4 打包與污染防線
+
+- 不允許把 `artifacts/ui-source/` 當成 runtime 資源目錄。
+- `proof/` 目錄下的資產必須可被工具列出，方便之後清理或替換。
+- 後續驗證工具應新增一條規則：
+  - 正式 `screen / skin` 若仍引用 `proof/` 路徑，需輸出 warning；release 前升級為 error。
+- `type: texture` 的 proof 圖若短期需要進 runtime 驗證，允許透過 `ResourceManager` fallback 載入，但這是過渡措施，不代表該資產已成為 final。
+
+### 23.5 GeneralDetailBloodlineV3 當前狀態
+
+- 目前可視為：
+  - `layout / contract / runtime preview`：已打通
+  - `story strip`：proof 可用
+  - `crest medallion`：proof 可用，final 未完成
+  - `jade header / panel`：過渡版可用，final family 未完成
+- 因此下一步應是切入正式 family 資產，而不是再大幅重改 layout。
