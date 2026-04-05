@@ -10,7 +10,7 @@
  *
  * Unity 對照：HandCardManager（卡片對應 Prefab 池，資料綁定到 UGUI Image/Text）
  */
-import { _decorator, Button, Color, Label, Node, Sprite } from 'cc';
+import { _decorator, Button, Color, Label, Node, Sprite, SpriteFrame } from 'cc';
 import { services } from '../../core/managers/ServiceLoader';
 import { UIPreviewBuilder } from '../core/UIPreviewBuilder';
 import { UISpecLoader } from '../core/UISpecLoader';
@@ -33,6 +33,16 @@ const RARITY_BORDER_COLORS: Record<TallyCardData['rarity'], Color> = {
     normal: new Color(110, 122, 138, 255),
     rare:   new Color(212, 175, 55, 255),
     epic:   new Color(168, 85, 247, 255),
+};
+
+const DEFAULT_BADGE_DEF = { icon: '？', color: new Color(220, 220, 220, 255) };
+const TALLY_CARD_ART_FALLBACK_PATH = 'sprites/battle/tally_card_art_placeholder';
+const TALLY_TYPE_BADGE_FALLBACK_PATH = 'sprites/battle/tally_badge_type';
+const WHITE = new Color(255, 255, 255, 255);
+const TALLY_RARITY_PATHS: Record<TallyCardData['rarity'], string> = {
+    normal: 'sprites/battle/tally_rarity_normal',
+    rare: 'sprites/battle/tally_rarity_rare',
+    epic: 'sprites/battle/tally_rarity_epic',
 };
 
 /** 虎符卡片資料結構（打通 TigerTallyPanel ↔ UnitInfoPanel 的資料契約） */
@@ -58,6 +68,12 @@ export interface TallyCardData {
     desc: string;
     /** 是否冷卻中（顯示灰色遮罩） */
     isDisabled?: boolean;
+    /** 可選：指定正式 card art 資源路徑，未填時依 unitType/rarity 命名規則推導。 */
+    artResource?: string;
+    /** 可選：指定 rarity 框資源路徑，未填時依 rarity 推導。 */
+    rarityResource?: string;
+    /** 可選：指定兵種 badge 資源路徑，未填時依 unitType 推導。 */
+    typeBadgeResource?: string;
 }
 
 @ccclass('TigerTallyPanel')
@@ -71,6 +87,8 @@ export class TigerTallyPanel extends UIPreviewBuilder {
     private _cards:     TallyCardData[] = [];
     private _cardNodes: Node[]          = [];
     private _binder:    UITemplateBinder | null = null;
+    private readonly _cardLoadSeq = [0, 0, 0, 0];
+    private readonly _warnedFallbacks = new Set<string>();
 
     /**
      * 卡片選中回呼，由 BattleScenePanel 注入。
@@ -224,13 +242,10 @@ export class TigerTallyPanel extends UIPreviewBuilder {
             costLabelNode!.active = true;
         } else { console.warn(`[TigerTallyPanel] 找不到 CostBadge${slot}`); }
 
-        const b = this._binder;
-        const rarityBorder = b?.getSprite(`rarityBorder${slot}`) ?? b?.getSprite(`RarityBorder${slot}`);
-        if (rarityBorder) {
-            rarityBorder.color = RARITY_BORDER_COLORS[data.rarity] ?? RARITY_BORDER_COLORS.normal;
-        }
-
-        this._applyUnitTypeBadge(slot, data.unitType);
+        const loadSeq = ++this._cardLoadSeq[slot - 1];
+        void this._applyCardArt(slot, data, loadSeq);
+        void this._applyRarityBorder(slot, data, loadSeq);
+        this._applyUnitTypeBadge(slot, data, loadSeq);
 
         const mask = b?.getNode(`DisabledMask${slot}`);
         if (mask) mask.active = !!data.isDisabled;
@@ -256,13 +271,11 @@ export class TigerTallyPanel extends UIPreviewBuilder {
      * BadgeText 節點已定義於 tiger-tally-main.json layout，此處只填資料。
      * Unity 對照：只更新已存在的 Text component，不建立新物件。
      */
-    private _applyUnitTypeBadge(slot: number, unitType: string): void {
+    private _applyUnitTypeBadge(slot: number, data: TallyCardData, loadSeq: number): void {
         const badgeNode = this._binder?.getNode(`UnitTypeBadge${slot}`);
         if (!badgeNode) return;
 
-        // 套用徽章底色（Sprite tint）
         const sprite = badgeNode.getComponent(Sprite);
-        if (sprite) sprite.color = new Color(0, 0, 0, 180);
 
         // BadgeText 節點由 Layout JSON 建立，此處直接取用並填入資料
         const textNode = badgeNode.getChildByName(`BadgeText${slot}`);
@@ -275,7 +288,7 @@ export class TigerTallyPanel extends UIPreviewBuilder {
         textNode.setSiblingIndex(badgeNode.children.length - 1);
         textNode.active = true;
 
-        const badgeDef = UNIT_TYPE_BADGES[unitType] ?? { icon: '？', color: new Color(220, 220, 220, 255) };
+        const badgeDef = UNIT_TYPE_BADGES[data.unitType] ?? DEFAULT_BADGE_DEF;
         const label = textNode.getComponent(Label);
         if (label) {
             label.string = badgeDef.icon;
@@ -289,6 +302,141 @@ export class TigerTallyPanel extends UIPreviewBuilder {
             label.isBold = true;
         }
         textNode.setPosition(0, 0, 0);
+
+        if (sprite) {
+            sprite.color = WHITE;
+            void this._applyTypeBadgeSprite(sprite, slot, data, loadSeq);
+        }
+    }
+
+    private async _applyCardArt(slot: number, data: TallyCardData, loadSeq: number): Promise<void> {
+        const artSprite = this._binder?.getSprite(`ArtBg${slot}`) ?? this._binder?.getSprite(`artBg${slot}`);
+        if (!artSprite) return;
+
+        const spriteFrame = await this._loadSpriteFrameWithFallback(
+            `tally.card.art[${slot}]`,
+            this._buildArtCandidates(data),
+            TALLY_CARD_ART_FALLBACK_PATH,
+        );
+        if (!spriteFrame || !this._isLoadSeqCurrent(slot, loadSeq)) return;
+
+        artSprite.spriteFrame = spriteFrame;
+        artSprite.color = WHITE;
+        artSprite.node.active = true;
+    }
+
+    private async _applyRarityBorder(slot: number, data: TallyCardData, loadSeq: number): Promise<void> {
+        const rarityBorder = this._binder?.getSprite(`rarityBorder${slot}`) ?? this._binder?.getSprite(`RarityBorder${slot}`);
+        if (!rarityBorder) return;
+
+        const rarityPath = TALLY_RARITY_PATHS[data.rarity] ?? TALLY_RARITY_PATHS.normal;
+        const spriteFrame = await this._loadSpriteFrameWithFallback(
+            `tally.card.rarity[${slot}]`,
+            this._uniquePaths([data.rarityResource, rarityPath]),
+            TALLY_RARITY_PATHS.normal,
+        );
+        if (!spriteFrame || !this._isLoadSeqCurrent(slot, loadSeq)) return;
+
+        rarityBorder.spriteFrame = spriteFrame;
+        rarityBorder.color = RARITY_BORDER_COLORS[data.rarity] ?? RARITY_BORDER_COLORS.normal;
+        rarityBorder.node.active = true;
+    }
+
+    private async _applyTypeBadgeSprite(
+        sprite: Sprite,
+        slot: number,
+        data: TallyCardData,
+        loadSeq: number,
+    ): Promise<void> {
+        const normalizedType = this._normalizeKey(data.unitType);
+        const spriteFrame = await this._loadSpriteFrameWithFallback(
+            `tally.badge.type[${slot}]`,
+            this._uniquePaths([
+                data.typeBadgeResource,
+                normalizedType ? `sprites/battle/tally_badge_type_${normalizedType}` : null,
+            ]),
+            TALLY_TYPE_BADGE_FALLBACK_PATH,
+        );
+        if (!spriteFrame || !this._isLoadSeqCurrent(slot, loadSeq)) return;
+
+        sprite.spriteFrame = spriteFrame;
+        sprite.color = WHITE;
+        sprite.node.active = true;
+    }
+
+    private _buildArtCandidates(data: TallyCardData): string[] {
+        const normalizedType = this._normalizeKey(data.unitType);
+        return this._uniquePaths([
+            data.artResource,
+            normalizedType ? `sprites/battle/tally_card_art_${normalizedType}_${data.rarity}` : null,
+            normalizedType ? `sprites/battle/tally_card_art_${normalizedType}` : null,
+        ]);
+    }
+
+    private async _loadSpriteFrameWithFallback(
+        slotKey: string,
+        preferredPaths: string[],
+        fallbackPath: string,
+    ): Promise<SpriteFrame | null> {
+        for (const path of preferredPaths) {
+            const spriteFrame = await services().resource.loadSpriteFrame(path).catch(() => null);
+            if (spriteFrame) {
+                return spriteFrame;
+            }
+        }
+
+        const fallbackFrame = await services().resource.loadSpriteFrame(fallbackPath).catch(() => null);
+        if (fallbackFrame) {
+            if (preferredPaths.length > 0) {
+                this._warnFallback(slotKey, preferredPaths, fallbackPath);
+            }
+            return fallbackFrame;
+        }
+
+        this._warnMissing(slotKey, preferredPaths, fallbackPath);
+        return null;
+    }
+
+    private _warnFallback(slotKey: string, preferredPaths: string[], fallbackPath: string): void {
+        const key = `${slotKey}|${preferredPaths.join(',')}|${fallbackPath}`;
+        if (this._warnedFallbacks.has(key)) return;
+        this._warnedFallbacks.add(key);
+        console.warn(
+            `[TigerTallyPanel] ${slotKey} 缺少正式資源，改用 fallback: ${fallbackPath} | tried=${preferredPaths.join(', ')}`,
+        );
+    }
+
+    private _warnMissing(slotKey: string, preferredPaths: string[], fallbackPath: string): void {
+        const key = `${slotKey}|missing|${preferredPaths.join(',')}|${fallbackPath}`;
+        if (this._warnedFallbacks.has(key)) return;
+        this._warnedFallbacks.add(key);
+        console.warn(
+            `[TigerTallyPanel] ${slotKey} 載入失敗，正式資源與 fallback 皆不存在 | tried=${preferredPaths.join(', ')} | fallback=${fallbackPath}`,
+        );
+    }
+
+    private _uniquePaths(paths: Array<string | null | undefined>): string[] {
+        const seen = new Set<string>();
+        const result: string[] = [];
+        for (const path of paths) {
+            const normalized = path?.trim();
+            if (!normalized || seen.has(normalized)) continue;
+            seen.add(normalized);
+            result.push(normalized);
+        }
+        return result;
+    }
+
+    private _normalizeKey(value: string): string {
+        return value
+            .trim()
+            .toLowerCase()
+            .replace(/[^a-z0-9]+/g, '_')
+            .replace(/^_+|_+$/g, '');
+    }
+
+    private _isLoadSeqCurrent(slot: number, loadSeq: number): boolean {
+        return this._cardLoadSeq[slot - 1] === loadSeq;
     }
 
     private _flushReadyWaiters(ready: boolean): void {
