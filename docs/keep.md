@@ -365,7 +365,7 @@ node tools_node/run-acceptance.js
 | UI-2-0076 | Binder 遷移：11 個元件仍用手動節點操作 | P1 | open |
 | UI-2-0077 | 14 個元件 `loadI18n('zh-TW')` 硬編碼 | P1 | ✅ done |
 | UI-2-0078 | MemoryManager 為空殼（無 LRU / releaseByScope） | P2 | open |
-| UI-2-0079 | `UILayerName` deprecated enum 殘留 Constants.ts | P3 | open |
+| UI-2-0079 | `UILayerName` deprecated enum 殘留 Constants.ts | P3 | ✅ done |
 
 Phase E（新增）= 架構補強優先序列，最終目標是讓 UIManager 覆蓋全部 22+ 個畫面。
 

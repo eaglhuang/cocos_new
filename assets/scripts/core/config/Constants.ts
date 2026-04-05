@@ -50,17 +50,6 @@ export enum TerrainType {
   Forest = "forest",
 }
 
-/**
- * @deprecated M-1 重構後改用 `LayerType`（UIConfig.ts）。
- * 保留以避免影響尚未遷移的程式碼，未來版本將移除。
- */
-export enum UILayerName {
-  Scene = "scene",
-  Panel = "panel",
-  Popup = "popup",
-  Toast = "toast",
-}
-
 export const TROOP_COUNTER_MAP: Partial<Record<TroopType, TroopType>> = {
   [TroopType.Cavalry]: TroopType.Infantry,
   [TroopType.Infantry]: TroopType.Shield,
@@ -136,11 +125,18 @@ export const EVENT_NAMES = {
   GeneralDuelRejected:  "general-duel-rejected",
   DuelPenaltyApplied:   "duel-penalty-applied",
   // 武將快覽彈窗
+  /** BattleHUD 頭像點擊 → 廣播意圖（攜帶 side / isEnemy），BattleScene 負責轉換為完整資料後回灌 */
+  RequestGeneralQuickView: "request-general-quickview",
+  /** BattleScene 填入完整 GeneralQuickViewData 後廣播，GeneralQuickViewPanel 監聽 */
   ShowGeneralQuickView: "show-general-quickview",
+  /** 奧義選擇：ActionCommandPanel 觸發，payload: { skillId: string } */
+  UltimateSkillSelected: "ultimate-skill-selected",
   // 戰鬥控制列
   AutoBattleToggled:    "auto-battle-toggled",   // payload: boolean (isEnabled)
   BattleSpeedToggled:   "battle-speed-toggled",  // payload: number  (1 | 2)
   ShowSettingsRequested:"show-settings-requested",
+  /** 彈出系統通知 (Toast)：{ text: string } */
+  ShowToast:            "show-toast",
 };
 
 export enum SceneName {

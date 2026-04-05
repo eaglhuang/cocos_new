@@ -1819,7 +1819,7 @@
       "priority": "P3",
       "phase": "E",
       "owner": "Agent1",
-      "status": "open",
+      "status": "done",
       "created": "2026-04-05",
       "created_by_agent": "Agent1",
       "type": "chore",
@@ -1829,7 +1829,7 @@
         "UI-2-0074"
       ],
       "depends": [],
-      "notes": "2026-04-05 | A7 UILayerName @deprecated 殘留 Constants.ts | open"
+      "notes": "2026-04-05 | A7 UILayerName @deprecated 殘留 Constants.ts | open | 2026-04-06 | Agent1 確認零呼叫端，移除完成，零 TS 錯誤 | done"
     }
   ]
 }
