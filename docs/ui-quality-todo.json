@@ -1745,7 +1745,7 @@
       "priority": "P1",
       "phase": "E",
       "owner": "Agent1",
-      "status": "open",
+      "status": "done",
       "created": "2026-04-05",
       "created_by_agent": "Agent1",
       "type": "refactor",
@@ -1755,7 +1755,7 @@
         "UI-2-0074"
       ],
       "depends": [],
-      "notes": "2026-04-05 | A3 grep 確認 15 個獨立 new UISpecLoader() | open"
+      "notes": "2026-04-05 | done | UISpecLoader 建構子注入 ResourceManager；services().specLoader 共享；16 元件 new UISpecLoader() → getter"
     },
     {
       "id": "UI-2-0076",

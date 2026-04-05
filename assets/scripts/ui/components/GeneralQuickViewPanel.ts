@@ -24,6 +24,7 @@ import { EVENT_NAMES, Faction } from '../../core/config/Constants';
 import { services } from '../../core/managers/ServiceLoader';
 import { UIPreviewBuilder } from '../core/UIPreviewBuilder';
 import { UISpecLoader } from '../core/UISpecLoader';
+import { UITemplateBinder } from '../core/UITemplateBinder';
 
 const { ccclass } = _decorator;
 
@@ -56,7 +57,7 @@ export interface GeneralQuickViewData {
 @ccclass('GeneralQuickViewPanel')
 export class GeneralQuickViewPanel extends UIPreviewBuilder {
 
-    private readonly _specLoader = new UISpecLoader();
+    private get _specLoader() { return services().specLoader; }
     private _initialized = false;
 
     // ── 節點 / 組件引用 ────────────────────────────────────────
@@ -105,29 +106,24 @@ export class GeneralQuickViewPanel extends UIPreviewBuilder {
 
     // ── 覆寫建構點：綁定節點引用與事件 ─────────────────────────
 
-    protected onBuildComplete(rootNode: Node): void {
-        this._root = rootNode;
+    protected onReady(binder: UITemplateBinder): void {
+        this._root = binder.getNode('QuickViewRoot') ?? binder.getNode('Root') ?? this.node;
 
-        const find = (name: string) => this._deepFind(name);
+        this._gqName    = binder.getLabel('GQName');
+        this._gqTitle   = binder.getLabel('GQTitle');
+        this._gqFaction = binder.getLabel('GQFaction');
+        this._gqHpRow   = binder.getLabel('GQHpRow');
+        this._gqAtk     = binder.getLabel('GQAtk');
+        this._gqDef     = binder.getLabel('GQDef');
+        this._gqSpd     = binder.getLabel('GQSpd');
+        this._gqInt     = binder.getLabel('GQInt');
+        this._gqSkill1  = binder.getLabel('GQSkill1');
+        this._gqSkill2  = binder.getLabel('GQSkill2');
+        this._gqSkill3  = binder.getLabel('GQSkill3');
 
-        // 標籤引用
-        this._gqName    = find('GQName')?.getComponent(Label)    ?? null;
-        this._gqTitle   = find('GQTitle')?.getComponent(Label)   ?? null;
-        this._gqFaction = find('GQFaction')?.getComponent(Label) ?? null;
-        this._gqHpRow   = find('GQHpRow')?.getComponent(Label)   ?? null;
-        this._gqAtk     = find('GQAtk')?.getComponent(Label)     ?? null;
-        this._gqDef     = find('GQDef')?.getComponent(Label)     ?? null;
-        this._gqSpd     = find('GQSpd')?.getComponent(Label)     ?? null;
-        this._gqInt     = find('GQInt')?.getComponent(Label)     ?? null;
-        this._gqSkill1  = find('GQSkill1')?.getComponent(Label)  ?? null;
-        this._gqSkill2  = find('GQSkill2')?.getComponent(Label)  ?? null;
-        this._gqSkill3  = find('GQSkill3')?.getComponent(Label)  ?? null;
+        binder.getNode('GQCloseBtn')?.on(Button.EventType.CLICK, this.hide, this);
+        binder.getNode('BgOverlay')?.on(Button.EventType.CLICK,  this.hide, this);
 
-        // 關閉按鈕：GQCloseBtn 與 BgOverlay 都觸發關閉
-        find('GQCloseBtn')?.on(Button.EventType.CLICK, this.hide, this);
-        find('BgOverlay')?.on(Button.EventType.CLICK,  this.hide, this);
-
-        // 預設隱藏
         if (this._root) this._root.active = false;
 
         console.log(
@@ -203,15 +199,4 @@ export class GeneralQuickViewPanel extends UIPreviewBuilder {
         if (this._root) this._root.active = false;
     }
 
-    // ── 工具：BFS 深度搜尋節點 ───────────────────────────────
-
-    private _deepFind(name: string): Node | null {
-        const queue: Node[] = [this.node];
-        while (queue.length > 0) {
-            const cur = queue.shift()!;
-            if (cur.name === name) return cur;
-            queue.push(...cur.children);
-        }
-        return null;
-    }
 }

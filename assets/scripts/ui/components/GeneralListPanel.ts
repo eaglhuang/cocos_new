@@ -3,13 +3,14 @@ import { _decorator, Component, Node, Label, Button } from 'cc';
 import type { GeneralConfig } from '../../core/models/GeneralUnit';
 import { UIPreviewBuilder } from '../core/UIPreviewBuilder';
 import { UISpecLoader } from '../core/UISpecLoader';
+import { services } from '../../core/managers/ServiceLoader';
 
 const { ccclass } = _decorator;
 
 @ccclass('GeneralListPanel')
 export class GeneralListPanel extends UIPreviewBuilder {
 
-    private _specLoader = new UISpecLoader();
+    private get _specLoader() { return services().specLoader; }
     public onSelectGeneral: ((config: GeneralConfig) => void) | null = null;
     private _isBuilt = false;
 

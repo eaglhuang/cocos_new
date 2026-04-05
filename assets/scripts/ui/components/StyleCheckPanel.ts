@@ -2,6 +2,7 @@
 import { _decorator, Node } from 'cc';
 import { UIPreviewBuilder } from '../core/UIPreviewBuilder';
 import { UISpecLoader } from '../core/UISpecLoader';
+import { services } from '../../core/managers/ServiceLoader';
 
 const { ccclass } = _decorator;
 
@@ -11,7 +12,7 @@ const { ccclass } = _decorator;
  */
 @ccclass('StyleCheckPanel')
 export class StyleCheckPanel extends UIPreviewBuilder {
-    private _specLoader = new UISpecLoader();
+    private get _specLoader() { return services().specLoader; }
 
     async onLoad(): Promise<void> {
         // 1. 載入規格

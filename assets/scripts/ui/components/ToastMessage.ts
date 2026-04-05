@@ -14,7 +14,7 @@ export interface ToastOptions {
 @ccclass("ToastMessage")
 export class ToastMessage extends UIPreviewBuilder {
   
-  private _specLoader = new UISpecLoader();
+  private get _specLoader() { return services().specLoader; }
   private hideTween: Tween<UIOpacity> | null = null;
   private _isBuilt = false;
 

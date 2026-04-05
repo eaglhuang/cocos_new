@@ -1,24 +1,22 @@
 // @spec-source → 見 docs/cross-reference-index.md
 /**
- * BattleHUD — 戰鬥介面抬頭顯示器（新架構版）
+ * BattleHUD — 戰鬥介面抬頭顯示器
  *
- * ⭐ 已遷移至 UIPreviewBuilder 架構
+ * ⭐ 已遷移至 Template + Binder 架構
  *
- * 佈局由 battle-hud-main.json 定義，皮膚由 battle-hud-default.json 提供。
- * 業務邏輯（事件訂閱、HP/SP/DP 更新）完整保留。
- *
- * 節點查找策略：
- *   - 透過 id 欄位建立的節點，使用 this.node.getChildByName(id) 查找
- *   - ProgressBar 節點用 image type 佔位，由 BattleHUD 在 onBuildComplete 中
- *     動態加上 ProgressBar 組件（因為 UIPreviewBuilder 不處理 ProgressBar）
+ * 佈局由 battle-hud-main.json，皮膚由 battle-hud-default.json。
+ * 節點綁定由 UITemplateBinder 自動完成，元件只負責業務邏輯。
+ * HP bar 因需 SolidBackground 仍在 onBuildComplete 中處理。
  *
  * Unity 對照：GameHUDController，監聽事件更新各個 Binding
  */
-import { _decorator, Button, Label, Node, ProgressBar, UITransform } from 'cc';
+import { _decorator, Button, Color, Label, Node, UITransform, Vec3 } from 'cc';
 import { EVENT_NAMES, Faction, GAME_CONFIG } from '../../core/config/Constants';
 import { services } from '../../core/managers/ServiceLoader';
 import { UIPreviewBuilder } from '../core/UIPreviewBuilder';
 import { UISpecLoader } from '../core/UISpecLoader';
+import { UITemplateBinder } from '../core/UITemplateBinder';
+import { SolidBackground } from './SolidBackground';
 
 const { ccclass } = _decorator;
 
@@ -26,22 +24,33 @@ const { ccclass } = _decorator;
 export class BattleHUD extends UIPreviewBuilder {
 
     // ── 私有狀態 ─────────────────────────────────────────────
-    private _specLoader = new UISpecLoader();
+    private get _specLoader() { return services().specLoader; }
     private _initialized = false;
+    private _buildCompleted = false;
     private _playerGeneralMaxHp = 1;
     private _enemyGeneralMaxHp  = 1;
     private readonly _unsubs: Array<() => void> = [];
+    private readonly _readyWaiters: Array<(ready: boolean) => void> = [];
+    /** 暫存 refresh() 在初始化完成前的呼叫參數，onBuildComplete 後自動重播 */
+    private _pendingRefreshArgs: [number, number, number, number, number, number, number] | null = null;
+    private _pendingPlayerName: string | null = null;
+    private _pendingEnemyName: string | null = null;
 
     // ── 節點引用（由 onBuildComplete 填入）──────────────────
-    private _turnLabel:           Label       | null = null;
-    private _foodLabel:           Label       | null = null;
-    private _statusLabel:         Label       | null = null;
-    private _playerNameLabel:     Label       | null = null;
-    private _enemyNameLabel:      Label       | null = null;
-    private _playerFortressLabel: Label       | null = null;
-    private _enemyFortressLabel:  Label       | null = null;
-    private _playerFortressBar:   ProgressBar | null = null;
-    private _enemyFortressBar:    ProgressBar | null = null;
+    private _turnLabel:           Label  | null = null;
+    private _foodLabel:           Label  | null = null;
+    private _statusLabel:         Label  | null = null;
+    private _playerNameLabel:     Label  | null = null;
+    private _enemyNameLabel:      Label  | null = null;
+    private _playerFortressLabel: Label  | null = null;
+    private _enemyFortressLabel:  Label  | null = null;
+    // HP bar：以 SolidBackground 子節點 + 直接設 contentSize.width 取代 ProgressBar
+    private _playerFortressFill:  Node   | null = null;
+    private _enemyFortressFill:   Node   | null = null;
+    private _playerFortressTotalW = 691;  // 36% x 1920（onBuildComplete 後更新）
+    private _enemyFortressTotalW  = 691;
+    private _playerPortraitNode:  Node | null = null;
+    private _enemyPortraitNode:   Node | null = null;
 
     // ── 生命週期 ─────────────────────────────────────────────
 
@@ -74,10 +83,13 @@ export class BattleHUD extends UIPreviewBuilder {
             await this.buildScreen(fullScreen.layout, fullScreen.skin, i18n);
             console.log('[BattleHUD] _initialize: buildScreen 完成');
             this._initialized = true;
+            this._replayPendingRefresh();
+            this._flushReadyWaiters(true);
         } catch (e) {
             console.error('[BattleHUD] _initialize: 規格載入或建構失敗，退回白模', e);
             console.error('[BattleHUD] _initialize: 錯誤堆疊 →', (e as Error)?.stack ?? e);
             this._initialized = true;
+            this._flushReadyWaiters(false);
         }
     }
 
@@ -86,13 +98,38 @@ export class BattleHUD extends UIPreviewBuilder {
         this._unsubs.length = 0;
     }
 
-    // ── 覆寫建構點：綁定節點引用 ─────────────────────────────
+    // ── 覆寫建構點 ─────────────────────────────
+
+    protected onReady(binder: UITemplateBinder): void {
+        // 自動綁定所有標籤 — 不再需要手寫 BFS
+        this._turnLabel           = binder.getLabel('TurnLabel');
+        this._foodLabel           = binder.getLabel('FoodLabel');
+        this._statusLabel         = binder.getLabel('StatusLabel');
+        this._playerNameLabel     = binder.getLabel('PlayerName');
+        this._enemyNameLabel      = binder.getLabel('EnemyName');
+        this._playerFortressLabel = binder.getLabel('PlayerFortressLabel');
+        this._enemyFortressLabel  = binder.getLabel('EnemyFortressLabel');
+
+        // 初始文字（必須在 onReady 設定，onBuildComplete 時 binder 尚未綁定）
+        this._turnLabel           && (this._turnLabel.string           = '第 1 回合');
+        this._foodLabel           && (this._foodLabel.string           = '🌾 糧草 - / -');
+        this._playerFortressLabel && (this._playerFortressLabel.string = '- / -');
+        this._enemyFortressLabel  && (this._enemyFortressLabel.string  = '- / -');
+        this._playerNameLabel     && (this._playerNameLabel.string     = this._pendingPlayerName ?? '玩家');
+        this._enemyNameLabel      && (this._enemyNameLabel.string      = this._pendingEnemyName  ?? '敵方');
+        this._statusLabel         && (this._statusLabel.string         = '');
+
+        // 頭像點擊 → 開啟武將快覽彈窗（v3-5）
+        this._playerPortraitNode = binder.getNode('PlayerPortrait');
+        this._enemyPortraitNode  = binder.getNode('EnemyPortrait');
+        this._bindPortraitInteraction(this._playerPortraitNode, 'player');
+        this._bindPortraitInteraction(this._enemyPortraitNode, 'enemy');
+    }
 
     protected onBuildComplete(_rootNode: Node): void {
-        // ── [UI-2-0026] 修復：搜尋範圍限定在 UIPreviewBuilder 建構的節點樹 ──
-        // 舊方式 getChildByName() 會優先命中場景中遺留的同名 legacy 節點，
-        // 改用只在 _rootNode 內做 BFS，確保綁定到正確的新節點。
-        // Unity 對照：GetComponentInChildren<Text>() 但限制在特定子樹搜尋
+        this._buildCompleted = true;
+
+        // HP bar：SolidBackground 填充（UITemplateBinder 不處理此類特殊元件）
         const findInBuilt = (name: string): Node | null => {
             const queue: Node[] = [_rootNode];
             while (queue.length > 0) {
@@ -103,146 +140,64 @@ export class BattleHUD extends UIPreviewBuilder {
             return null;
         };
 
-        // 逐項綁定並 log，方便追蹤哪個節點找不到
-        const bindLabel = (name: string): Label | null => {
-            const n = findInBuilt(name);
-            if (!n) {
-                console.warn(`[BattleHUD] onBuildComplete: 找不到節點 "${name}" — 請確認 battle-hud-main.json 中有對應的 name 欄位`);
-                return null;
-            }
-            const lbl = n.getComponent(Label);
-            if (!lbl) {
-                console.warn(`[BattleHUD] onBuildComplete: 節點 "${name}" 找到但無 Label 組件`);
-            }
-            return lbl;
-        };
-
-        this._turnLabel           = bindLabel('TurnLabel');
-        this._foodLabel           = bindLabel('FoodLabel');
-        this._statusLabel         = bindLabel('StatusLabel');
-        this._playerNameLabel     = bindLabel('PlayerName');
-        this._enemyNameLabel      = bindLabel('EnemyName');
-        this._playerFortressLabel = bindLabel('PlayerFortressLabel');
-        this._enemyFortressLabel  = bindLabel('EnemyFortressLabel');
-
-        // ProgressBar 組件：UIPreviewBuilder 建立了 image 節點，
-        // 這裡在節點上加掛 ProgressBar 組件實現進度條功能
-        this._playerFortressBar = this._ensureProgressBar(findInBuilt('PlayerFortressBar'));
-        this._enemyFortressBar  = this._ensureProgressBar(findInBuilt('EnemyFortressBar'));
-
-        if (!this._playerFortressBar) {
-            console.warn('[BattleHUD] onBuildComplete: 找不到 PlayerFortressBar 節點，血條將無法顯示');
+        try {
+            [this._playerFortressFill, this._playerFortressTotalW] = this._ensureBarFill(findInBuilt('PlayerFortressBar'), true);
+            [this._enemyFortressFill,  this._enemyFortressTotalW]  = this._ensureBarFill(findInBuilt('EnemyFortressBar'),  false);
+        } catch (e) {
+            console.warn('[BattleHUD] _ensureBarFill 失敗', e);
         }
 
-        // 頭像點擊 → 開啟武將快覽彈窗（v3-5）
-        // Unity 對照：portrait.onClick → UIManager.ShowPanel<GeneralInfoPopup>(data)
-        const playerPortrait = findInBuilt('PlayerPortrait');
-        const enemyPortrait  = findInBuilt('EnemyPortrait');
-        playerPortrait?.on(Button.EventType.CLICK, () => this._onPortraitClick('player'), this);
-        enemyPortrait?.on(Button.EventType.CLICK,  () => this._onPortraitClick('enemy'),  this);
-        if (!playerPortrait) console.warn('[BattleHUD] onBuildComplete: 找不到 PlayerPortrait 節點');
-
-        // ── [UI-2-0026] 隱藏場景舊版 HUD 直接子節點，避免與新節點樹重疊顯示 ──
-        // Unity 對照：舊 GameObject 被新版 Prefab 取代時，把舊物件 SetActive(false)
+        // 隱藏非新建子樹（避免與 legacy 節點重疊）
         for (const child of this.node.children) {
-            if (child !== _rootNode) {
-                child.active = false;
-            }
+            if (child !== _rootNode) child.active = false;
         }
 
-        // ── 初始化所有 bind:"dynamic" 標籤，清除 {dynamic} 佔位符 ──
-        if (this._turnLabel)           this._turnLabel.string           = '第 1 回合';
-        if (this._foodLabel)           this._foodLabel.string           = 'DP -';
-        if (this._playerFortressLabel) this._playerFortressLabel.string = '- / -';
-        if (this._enemyFortressLabel)  this._enemyFortressLabel.string  = '- / -';
-        if (this._playerNameLabel)     this._playerNameLabel.string     = '玩家';
-        if (this._enemyNameLabel)      this._enemyNameLabel.string      = '敵方';
-        if (this._statusLabel)         this._statusLabel.string         = '';
-
-        console.log(
-            '[BattleHUD] onBuildComplete 完成 —',
-            `turnLabel:${!!this._turnLabel}`,
-            `foodLabel:${!!this._foodLabel}`,
-            `statusLabel:${!!this._statusLabel}`,
-            `playerName:${!!this._playerNameLabel}`,
-            `enemyName:${!!this._enemyNameLabel}`,
-            `playerFortressLabel:${!!this._playerFortressLabel}`,
-            `playerFortressBar:${!!this._playerFortressBar}`,
-            `enemyFortressBar:${!!this._enemyFortressBar}`,
-        );
-
-        // 額外處理：若場景中有殘留的同名節點（不在 _rootNode 下），將其隱藏，避免與新 HUD 重複顯示
-        try {
-            const canvas = this.node.scene?.getChildByName('Canvas');
-            if (canvas) {
-                const namesToHide = [
-                    'PlayerFortressLabel', 'EnemyFortressLabel', 'PlayerFortressBar', 'EnemyFortressBar',
-                    'TurnLabel', 'FoodLabel', 'StatusLabel', 'PlayerPortrait', 'EnemyPortrait'
-                ];
-
-                const walk = (n: Node) => {
-                    if (n === _rootNode) return; // skip new-built subtree
-                    if (namesToHide.indexOf(n.name) >= 0) n.active = false;
-                    for (const c of n.children) walk(c);
-                };
-
-                for (const child of canvas.children) walk(child);
-            }
-        } catch (e) {
-            // 防禦性容錯：不影響正常流程
-        }
-
-        // 進一步：隱藏場景中非 _rootNode 的 Label，如果文字看起來像 HP/生命格式（例如 "123 / 500" 或包含「生命」字樣），
-        // 以避免不同工具/Builder 生成的重複顯示。只隱藏非新建子樹的節點。
-        try {
-            const hpRegex = /\d+\s*\/\s*\d+/;
-            const canvas = this.node.scene?.getChildByName('Canvas');
-            if (canvas) {
-                const isInNewRoot = (n: Node): boolean => {
-                    let cur: Node | null = n;
-                    while (cur) {
-                        if (cur === _rootNode) return true;
-                        cur = cur.parent;
-                    }
-                    return false;
-                };
-
-                const traverse = (n: Node) => {
-                    if (!n) return;
-                    if (!isInNewRoot(n)) {
-                        const lbl = n.getComponent(Label);
-                        if (lbl) {
-                            const s = (lbl.string || '').toString();
-                            if (hpRegex.test(s) || s.indexOf('生命') >= 0 || s.indexOf('我方') >= 0 || s.indexOf('敵方') >= 0) {
-                                n.active = false;
-                            }
-                        }
-                    }
-                    for (const c of n.children) traverse(c);
-                };
-
-                for (const child of canvas.children) traverse(child);
-            }
-        } catch (e) {
-            // 忽略錯誤
-        }
+        console.log('[BattleHUD] onBuildComplete 完成');
     }
 
-    /** 確保節點上有 ProgressBar 組件，回傳組件引用 */
-    private _ensureProgressBar(node: Node | null): ProgressBar | null {
-        if (!node) return null;
-        return node.getComponent(ProgressBar) ?? node.addComponent(ProgressBar);
+    /**
+     * 在血條外框節點上建立 SolidBackground 填充子節點，回傳 [fillNode, totalWidth]。
+     * Unity 對照：建立 Image Fill 子物件並以 RectTransform.sizeDelta.x 控制寬度
+     */
+    private _ensureBarFill(node: Node | null, isPlayer: boolean): [Node | null, number] {
+        if (!node) return [null, 691];
+
+        const tf = node.getComponent(UITransform);
+        const totalW = (tf?.contentSize.width ?? 0) > 0 ? tf!.contentSize.width : 691;
+        const totalH = (tf?.contentSize.height ?? 0) > 0 ? tf!.contentSize.height : 20;
+
+        // 外框：深色半透明底板
+        const bgSolid = node.getComponent(SolidBackground) ?? node.addComponent(SolidBackground);
+        bgSolid.color = new Color(0, 0, 0, 160);
+
+        // 填充子節點（從左往右縮放）
+        let fillNode = node.getChildByName('HpBarFill');
+        if (!fillNode) {
+            fillNode = new Node('HpBarFill');
+            fillNode.layer = node.layer;
+            const fillTf = fillNode.addComponent(UITransform);
+            fillTf.setContentSize(totalW, totalH);
+            // anchor (0, 0.5)：左邊對齊，垂直置中
+            fillTf.anchorX = 0;
+            fillTf.anchorY = 0.5;
+            // 將填充左緣對齊外框左緣：外框 anchor 預設 (0.5, 0.5)，左緣在 -totalW/2
+            fillNode.setPosition(-totalW / 2, 0, 0);
+            node.addChild(fillNode);
+            // SolidBackground 在 addComponent 後即在 active 的節點上觸發 onLoad
+            const fillSolid = fillNode.addComponent(SolidBackground);
+            fillSolid.color = isPlayer
+                ? new Color(50, 160, 255, 255)   // 藍色 — 我軍
+                : new Color(220, 60,  60,  255);  // 紅色 — 敵軍
+        }
+
+        return [fillNode, totalW];
     }
 
-    /** 深度查找子節點（跨多層 BFS） */
-    private _deepFind(name: string): Node | null {
-        const queue: Node[] = [this.node];
-        while (queue.length > 0) {
-            const cur = queue.shift()!;
-            if (cur.name === name) return cur;
-            queue.push(...cur.children);
+    private _flushReadyWaiters(ready: boolean): void {
+        while (this._readyWaiters.length > 0) {
+            const resolve = this._readyWaiters.shift();
+            resolve?.(ready);
         }
-        return null;
     }
 
     // ── 事件訂閱 ─────────────────────────────────────────────
@@ -294,7 +249,12 @@ export class BattleHUD extends UIPreviewBuilder {
         enemyGeneralMaxHp: number,
     ): void {
         if (!this._initialized) {
-            console.warn('[BattleHUD] refresh() 在初始化完成前被呼叫 — 數值可能無法顯示，請確認 BattleScene 的呼叫時序');
+            // [UI-2-0027] 初始化尚未完成（buildScreen 仍在非同步執行中），
+            // 暫存參數，等 onBuildComplete 完成後由 _replayPendingRefresh() 自動重播。
+            // Unity 對照：在 Awake 呼叫 Start() 期業務邏輯的 Deferred 處理
+            console.warn('[BattleHUD] refresh() 在初始化完成前被呼叫 — 已暫存，初始化完成後將自動重播');
+            this._pendingRefreshArgs = [turn, food, maxFood, playerGeneralHp, playerGeneralMaxHp, enemyGeneralHp, enemyGeneralMaxHp];
+            return;
         }
         this._setTurn(turn);
         this._setFood(food, maxFood);
@@ -311,6 +271,25 @@ export class BattleHUD extends UIPreviewBuilder {
         );
     }
 
+    /**
+     * 重播在 buildScreen 完成前暫存的 refresh() 呼叫。
+     * 由 onBuildComplete 末尾觸發，確保首幀數值正確顯示。
+     */
+    private _replayPendingRefresh(): void {
+        if (!this._pendingRefreshArgs) return;
+        const [turn, food, maxFood, phpHp, phpMax, ehp, eMax] = this._pendingRefreshArgs;
+        this._pendingRefreshArgs = null;
+        // 直接呼叫內部方法，繞過 _initialized 檢查（此時節點樹已建立完成）
+        this._setTurn(turn);
+        this._setFood(food, maxFood);
+        this._playerGeneralMaxHp = Math.max(1, phpMax);
+        this._enemyGeneralMaxHp  = Math.max(1, eMax);
+        this._setGeneralHealth(Faction.Player, phpHp);
+        this._setGeneralHealth(Faction.Enemy,  ehp);
+        this._clearStatus();
+        console.log(`[BattleHUD] _replayPendingRefresh 完成 — 第${turn}回合 food:${food}/${maxFood}`);
+    }
+
     public setFood(food: number, maxFood: number): void { this._setFood(food, maxFood); }
 
     public get playerSpBarNode(): Node | null { return null; }
@@ -321,24 +300,59 @@ export class BattleHUD extends UIPreviewBuilder {
      * Unity 對照：HeroInfoDisplay.SetGeneralName(name)
      */
     public setPlayerName(name: string): void {
+        this._pendingPlayerName = name;
         if (this._playerNameLabel) this._playerNameLabel.string = name;
     }
 
     public setEnemyName(name: string): void {
+        this._pendingEnemyName = name;
         if (this._enemyNameLabel) this._enemyNameLabel.string = name;
     }
 
+    public waitUntilReady(timeoutMs = 5000): Promise<boolean> {
+        if (this._buildCompleted) {
+            return Promise.resolve(true);
+        }
+
+        return new Promise<boolean>((resolve) => {
+            let settled = false;
+            const finish = (ready: boolean) => {
+                if (settled) return;
+                settled = true;
+                resolve(ready);
+            };
+
+            this._readyWaiters.push(finish);
+            this.scheduleOnce(() => finish(this._buildCompleted), Math.max(0, timeoutMs) / 1000);
+        });
+    }
+
     /**
-     * 頭像點擊：廣播 ShowGeneralQuickView 事件。
-     * 由外部（BattleScene / GeneralQuickViewPanel）監聽並填入實際資料。
+     * 頭像點擊：廣播 RequestGeneralQuickView 意圖事件（僅攜帶 side / isEnemy）。
+     * BattleScene 訂閱此事件後，注入完整的武將資料，再廣播 ShowGeneralQuickView。
      *
-     * Unity 對照：HeroPortraitButton.OnClick() → EventBus.Publish<ShowGeneralInfoEvent>(faction)
+     * Unity 對照：HeroPortraitButton.OnClick() → EventBus.Publish<RequestGeneralInfoEvent>(faction)
      */
     private _onPortraitClick(side: 'player' | 'enemy'): void {
         const isEnemy = side === 'enemy';
-        // 僅廣播意圖，實際武將資料由 BattleScene 監聽後注入
-        services().event.emit(EVENT_NAMES.ShowGeneralQuickView, { side, isEnemy });
+        services().event.emit(EVENT_NAMES.RequestGeneralQuickView, { side, isEnemy });
         console.log(`[BattleHUD] 頭像點擊 → ${side}`);
+    }
+
+    private _bindPortraitInteraction(node: Node | null, side: 'player' | 'enemy'): void {
+        if (!node) return;
+
+        const defaultScale = node.scale.clone();
+        const pressedScale = new Vec3(defaultScale.x * 1.05, defaultScale.y * 1.05, defaultScale.z);
+
+        node.on(Button.EventType.CLICK, () => this._onPortraitClick(side), this);
+        node.on(Node.EventType.TOUCH_START, () => {
+            node.setScale(pressedScale);
+        }, this);
+
+        const resetScale = () => node.setScale(defaultScale);
+        node.on(Node.EventType.TOUCH_END, resetScale, this);
+        node.on(Node.EventType.TOUCH_CANCEL, resetScale, this);
     }
 
     // ── 內部更新方法 ─────────────────────────────────────────
@@ -348,7 +362,7 @@ export class BattleHUD extends UIPreviewBuilder {
     }
 
     private _setFood(food: number, maxFood: number): void {
-        if (this._foodLabel) this._foodLabel.string = `DP ${food} / ${maxFood}`;
+        if (this._foodLabel) this._foodLabel.string = `🌾 糧草 ${food} / ${maxFood}`;
     }
 
     private _setGeneralHealth(faction: Faction, hp: number): void {
@@ -356,12 +370,21 @@ export class BattleHUD extends UIPreviewBuilder {
         const ratio = max > 0 ? hp / max : 0;
 
         if (faction === Faction.Player) {
-            if (this._playerFortressBar)   this._playerFortressBar.progress   = ratio;
-            if (this._playerFortressLabel) this._playerFortressLabel.string   = `${hp} / ${max}`;
+            this._setBarFillRatio(this._playerFortressFill, this._playerFortressTotalW, ratio);
+            if (this._playerFortressLabel) this._playerFortressLabel.string = `${hp} / ${max}`;
         } else {
-            if (this._enemyFortressBar)    this._enemyFortressBar.progress    = ratio;
-            if (this._enemyFortressLabel)  this._enemyFortressLabel.string    = `${hp} / ${max}`;
+            this._setBarFillRatio(this._enemyFortressFill, this._enemyFortressTotalW, ratio);
+            if (this._enemyFortressLabel) this._enemyFortressLabel.string = `${hp} / ${max}`;
         }
+    }
+
+    /** 依 ratio (0~1) 直接設定填充子節點的寬度（從左往右）*/
+    private _setBarFillRatio(fillNode: Node | null, totalW: number, ratio: number): void {
+        if (!fillNode) return;
+        const tf = fillNode.getComponent(UITransform);
+        if (!tf) return;
+        const w = Math.max(0, Math.min(totalW, totalW * ratio));
+        tf.setContentSize(w, tf.contentSize.height);
     }
 
     private _showStatus(msg: string): void {

@@ -17,20 +17,32 @@ import { EVENT_NAMES, Faction } from '../../core/config/Constants';
 import { services } from '../../core/managers/ServiceLoader';
 import { UIPreviewBuilder } from '../core/UIPreviewBuilder';
 import { UISpecLoader } from '../core/UISpecLoader';
+import { UITemplateBinder } from '../core/UITemplateBinder';
+import { UltimateSelectPopup, UltimateSkillItem } from './UltimateSelectPopup';
 
-const { ccclass } = _decorator;
+const { ccclass, property } = _decorator;
 
 @ccclass('ActionCommandPanel')
 export class ActionCommandPanel extends UIPreviewBuilder {
 
-    private readonly _specLoader = new UISpecLoader();
+    private get _specLoader() { return services().specLoader; }
     private _initialized = false;
+    private _buildCompleted = false;
+    private readonly _readyWaiters: Array<(ready: boolean) => void> = [];
+    /**
+     * 奧義選擇小窗（Inspector 可選綁定；未綁定時在首次點擊時懶初始化）
+     * Unity 對照：[SerializeField] UltimateSkillSelectPopup ultimateSelectPopup;
+     */
+    @property({ type: UltimateSelectPopup, tooltip: '可選綁定；不綁定也能使用（懶初始化）' })
+    ultimateSelectPopup: UltimateSelectPopup | null = null;
 
-    // ── 節點引用（由 onBuildComplete 填入）──────────────────
-    private _spRingSprite:   Sprite | null = null;
-    private _ultLabel:       Label  | null = null;
-    private _spPctLabel:     Label  | null = null;
-    private _ultimatePopup:  Node   | null = null;
+    // ── 節點引用（由 onReady 填入）──────────────────
+    private _spRingSprite: Sprite | null = null;
+    private _ultLabel:     Label  | null = null;
+    private _spPctLabel:   Label  | null = null;
+    private _ultimateBtnNode: Node | null = null;
+    private _ultimatePopupHost: Node | null = null;
+    private _ultimateSkills: UltimateSkillItem[] = [];
 
     // ── 目前 SP 狀態 ──────────────────────────────────────────
     private _maxSp = 100;
@@ -49,15 +61,32 @@ export class ActionCommandPanel extends UIPreviewBuilder {
     private async _initialize(): Promise<void> {
         if (this._initialized) return;
         try {
-            const [fullScreen, i18n] = await Promise.all([
-                this._specLoader.loadFullScreen('action-command-screen'),
-                this._specLoader.loadI18n('zh-TW'),
-            ]);
-            await this.buildScreen(fullScreen.layout, fullScreen.skin, i18n);
+            // [Vibe-QA] 增加對 ServiceLoader 狀態的確認
+            const loader = this._specLoader;
+            if (!loader) {
+                console.warn('[ActionCommandPanel] specLoader 尚未就緒，延遲初始化');
+                return;
+            }
+
+            // 1. 載入 UI 規格
+            const fullScreen = await loader.loadFullScreen('action-command-screen');
+            
+            // 2. 載入 I18n 字串（優先使用系統已載入的，否則才手動載入）
+            let i18nData: Record<string, string> = {};
+            try {
+                i18nData = await loader.loadI18n('zh-TW');
+            } catch (err) {
+                console.warn('[ActionCommandPanel] I18n 載入失敗，使用 fallback', err);
+            }
+            
+            // 3. 構建畫面
+            await this.buildScreen(fullScreen.layout, fullScreen.skin, i18nData);
             this._initialized = true;
         } catch (e) {
             console.warn('[ActionCommandPanel] 規格載入失敗，退回白模', e);
+            // 即便失敗也標記為已初始化，防止無限循環報錯
             this._initialized = true;
+            this._flushReadyWaiters(false);
         }
     }
 
@@ -66,34 +95,32 @@ export class ActionCommandPanel extends UIPreviewBuilder {
         this._unsubs.length = 0;
     }
 
-    // ── 覆寫建構點：綁定節點引用 ─────────────────────────────
+    // ── 覆寫建構點：透過 binder 自動綁定節點引用 ─────────────────────────────
 
-    protected onBuildComplete(_rootNode: Node): void {
-        const find = (name: string) => this._deepFind(name);
-
+    protected onReady(binder: UITemplateBinder): void {
         // SP 環 Sprite（fillRange 由事件驅動）
-        const spRingNode = find('SpRing');
+        const spRingNode = binder.getNode('SpRing');
         this._spRingSprite = spRingNode?.getComponent(Sprite) ?? null;
 
-        this._ultLabel      = find('UltLabel')?.getComponent(Label) ?? null;
-        this._spPctLabel    = find('SpPctLabel')?.getComponent(Label) ?? null;
-        this._ultimatePopup = find('UltimatePopup');
-
+        this._ultLabel      = binder.getLabel('UltLabel');
+        this._spPctLabel    = binder.getLabel('SpPctLabel');
         // 奧義大圓點擊
-        find('UltimateBtn')?.on(Button.EventType.CLICK, this._onUltimateClick, this);
+        this._ultimateBtnNode = binder.getNode('UltimateBtn');
+        this._ultimatePopupHost = binder.getNode('UltimatePopup');
+        this._ultimateBtnNode?.on(Button.EventType.CLICK, this._onUltimateClick, this);
 
         // 結束回合、計謀、單挑
-        find('EndTurnBtn')?.on(Button.EventType.CLICK, this._onEndTurnClick, this);
-        find('TacticsBtn')?.on(Button.EventType.CLICK, this._onTacticsClick, this);
-        find('DuelBtn')?.on(Button.EventType.CLICK, this._onDuelClick, this);
-
-        // 奧義選擇彈窗預設隱藏
-        if (this._ultimatePopup) this._ultimatePopup.active = false;
+        binder.getNode('EndTurnBtn')?.on(Button.EventType.CLICK, this._onEndTurnClick, this);
+        binder.getNode('TacticsBtn')?.on(Button.EventType.CLICK, this._onTacticsClick, this);
+        binder.getNode('DuelBtn')?.on(Button.EventType.CLICK, this._onDuelClick, this);
 
         console.log(
             `[ActionCommandPanel] 綁定完成 — ring:${!!this._spRingSprite}` +
-            ` ultLabel:${!!this._ultLabel} popup:${!!this._ultimatePopup}`
+            ` ultLabel:${!!this._ultLabel}`
         );
+
+        this._buildCompleted = true;
+        this._flushReadyWaiters(true);
     }
 
     // ── 事件訂閱 ─────────────────────────────────────────────
@@ -132,11 +159,33 @@ export class ActionCommandPanel extends UIPreviewBuilder {
         }
     }
 
+    public setUltimateSkills(skills: UltimateSkillItem[]): void {
+        this._ultimateSkills = [...skills];
+    }
+
+    public waitUntilReady(timeoutMs = 5000): Promise<boolean> {
+        if (this._buildCompleted) {
+            return Promise.resolve(true);
+        }
+
+        return new Promise<boolean>((resolve) => {
+            let settled = false;
+            const finish = (ready: boolean) => {
+                if (settled) return;
+                settled = true;
+                resolve(ready);
+            };
+
+            this._readyWaiters.push(finish);
+            this.scheduleOnce(() => finish(this._buildCompleted), Math.max(0, timeoutMs) / 1000);
+        });
+    }
+
     // ── 按鈕事件 ─────────────────────────────────────────────
 
     /**
      * 奧義大圓點擊：
-     *   SP >= 100% → 開啟奧義選擇彈窗
+     *   SP >= 100% → 開啟 UltimateSelectPopup（起中展開小窗）
      *   SP < 100%  → toast 提示「奧義蓄力中」
      *
      * Unity 對照：UltimateButton.OnClick() → 檢查 sp >= maxSp → ShowSkillSelectPopup()
@@ -144,13 +193,23 @@ export class ActionCommandPanel extends UIPreviewBuilder {
     private _onUltimateClick(): void {
         const isReady = this._maxSp > 0 && this._currentSp >= this._maxSp;
         if (!isReady) {
-            console.log('[ActionCommandPanel] 奧義蓄力中，SP 不足無法發動');
+            services().event.emit(EVENT_NAMES.ShowToast, { text: '奧義蓄力中，SP 不足' });
             return;
         }
-        // 切換彈窗顯示
-        if (this._ultimatePopup) {
-            this._ultimatePopup.active = !this._ultimatePopup.active;
+
+        if (!this.ultimateSelectPopup) {
+            const popupNode = this._ultimatePopupHost ?? new Node('UltimateSelectPopup');
+            if (!popupNode.parent) {
+                this.node.addChild(popupNode);
+            }
+            this.ultimateSelectPopup = popupNode.getComponent(UltimateSelectPopup) ?? popupNode.addComponent(UltimateSelectPopup);
         }
+
+        const skills = this._ultimateSkills.length > 0
+            ? this._ultimateSkills
+            : [{ skillId: 'unassigned-ultimate', label: '未配置奧義', costSp: this._maxSp }];
+
+        this.ultimateSelectPopup.show(skills, this._ultimateBtnNode ?? undefined);
     }
 
     /** 結束回合：通知父節點（BattleScene 監聽 this.node 的 'endTurn' 事件） */
@@ -171,14 +230,12 @@ export class ActionCommandPanel extends UIPreviewBuilder {
         services().event.emit(EVENT_NAMES.GeneralDuelChallenge, { faction: Faction.Player });
     }
 
-    // ── 工具：BFS 深度搜尋節點 ───────────────────────────────
-    private _deepFind(name: string): Node | null {
-        const queue: Node[] = [this.node];
-        while (queue.length > 0) {
-            const cur = queue.shift()!;
-            if (cur.name === name) return cur;
-            queue.push(...cur.children);
+    private _flushReadyWaiters(ready: boolean): void {
+        while (this._readyWaiters.length > 0) {
+            const resolve = this._readyWaiters.shift();
+            resolve?.(ready);
         }
-        return null;
     }
+
+
 }

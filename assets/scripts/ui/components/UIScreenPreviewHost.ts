@@ -2,6 +2,7 @@
 import { _decorator } from 'cc';
 import { UIPreviewBuilder } from '../core/UIPreviewBuilder';
 import { UISpecLoader } from '../core/UISpecLoader';
+import { services } from '../../core/managers/ServiceLoader';
 
 const { ccclass, property } = _decorator;
 
@@ -16,7 +17,7 @@ export class UIScreenPreviewHost extends UIPreviewBuilder {
     @property({ tooltip: '預覽時使用的語系檔，預設 zh-TW。' })
     public locale = 'zh-TW';
 
-    private readonly _specLoader = new UISpecLoader();
+    private get _specLoader() { return services().specLoader; }
     private _currentScreenId = '';
     private _isLoading = false;
 

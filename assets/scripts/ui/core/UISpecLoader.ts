@@ -8,18 +8,22 @@
  * Unity 對照：AssetDatabase.LoadAssetAtPath + 物件快取
  */
 import { _decorator } from 'cc';
-import { services } from '../../core/managers/ServiceLoader';
-import type { UILayoutSpec, UISkinManifest, UIScreenSpec, UISkinFragment, UILayoutNodeSpec } from './UISpecTypes';
+import { ResourceManager } from '../../core/systems/ResourceManager';
+import type { UILayoutSpec, UISkinManifest, UIScreenSpec, UISkinFragment, UILayoutNodeSpec, UITemplateSpec, UIWidgetFragmentSpec } from './UISpecTypes';
 
 const { ccclass } = _decorator;
 
 @ccclass('UISpecLoader')
 export class UISpecLoader {
 
+    constructor(private _rm: ResourceManager) {}
+
     // ── 快取層 ──────────────────────────────────────────────────
     private _layoutCache = new Map<string, UILayoutSpec>();
     private _skinCache = new Map<string, UISkinManifest>();
     private _screenCache = new Map<string, UIScreenSpec>();
+    private _templateCache = new Map<string, UITemplateSpec>();
+    private _widgetCache = new Map<string, UIWidgetFragmentSpec>();
     private _designTokens: any = null;
 
     // ── 載入方法 ────────────────────────────────────────────────
@@ -33,7 +37,7 @@ export class UISpecLoader {
             return this._layoutCache.get(layoutId)!;
         }
         console.log(`[UISpecLoader] loadLayout: 開始載入 "${layoutId}"`);
-        const spec = await services().resource.loadJson<UILayoutSpec>(
+        const spec = await this._rm.loadJson<UILayoutSpec>(
             `ui-spec/layouts/${layoutId}`, { tags: ['UISpec'] }
         );
 
@@ -64,7 +68,7 @@ export class UISpecLoader {
         if (node.$ref) {
             try {
                 // 載入碎片片段
-                const fragment = await services().resource.loadJson<UILayoutNodeSpec>(
+                const fragment = await this._rm.loadJson<UILayoutNodeSpec>(
                     `ui-spec/${node.$ref}`, { tags: ['UISpec'] }
                 );
                 // 合併屬性：保留當前節點 overrides，碎片作為基礎。
@@ -105,15 +109,18 @@ export class UISpecLoader {
         if (this._skinCache.has(skinId)) {
             return this._skinCache.get(skinId)!;
         }
-        const manifest = await services().resource.loadJson<UISkinManifest>(
+        const manifest = await this._rm.loadJson<UISkinManifest>(
             `ui-spec/skins/${skinId}`, { tags: ['UISpec'] }
         );
+        if (!manifest) {
+            throw new Error(`[UISpecLoader] loadSkin: 找不到 skin "${skinId}"，請確認 assets/resources/ui-spec/skins/${skinId}.json 是否存在`);
+        }
 
         // 如果 skin 引用了碎片，載入並合併
         if (manifest.$fragments && manifest.$fragments.length > 0) {
             for (const fragId of manifest.$fragments) {
                 try {
-                    const fragment = await services().resource.loadJson<UISkinFragment>(
+                    const fragment = await this._rm.loadJson<UISkinFragment>(
                         `ui-spec/fragments/skins/${fragId}`, { tags: ['UISpec'] }
                     );
                     Object.assign(manifest.slots, fragment.slots);
@@ -135,9 +142,12 @@ export class UISpecLoader {
         if (this._screenCache.has(screenId)) {
             return this._screenCache.get(screenId)!;
         }
-        const spec = await services().resource.loadJson<UIScreenSpec>(
+        const spec = await this._rm.loadJson<UIScreenSpec>(
             `ui-spec/screens/${screenId}`, { tags: ['UISpec'] }
         );
+        if (!spec) {
+            throw new Error(`[UISpecLoader] loadScreen: 找不到 screen "${screenId}"，請確認 assets/resources/ui-spec/screens/${screenId}.json 是否存在`);
+        }
         this._screenCache.set(screenId, spec);
         return spec;
     }
@@ -147,7 +157,7 @@ export class UISpecLoader {
      */
     async loadDesignTokens(): Promise<any> {
         if (this._designTokens) return this._designTokens;
-        this._designTokens = await services().resource.loadJson<any>(
+        this._designTokens = await this._rm.loadJson<any>(
             'ui-spec/ui-design-tokens', { tags: ['UISpec'] }
         );
         return this._designTokens;
@@ -175,18 +185,56 @@ export class UISpecLoader {
      * @param locale 語系碼（如 'zh-TW'、'en-US'）
      */
     async loadI18n(locale: string): Promise<Record<string, string>> {
-        return services().resource.loadJson<Record<string, string>>(
+        return this._rm.loadJson<Record<string, string>>(
             `i18n/${locale}`, { tags: ['i18n'] }
         );
     }
 
     // ── 快取管理 ────────────────────────────────────────────────
 
+    /**
+     * 載入 Template Spec
+     * @param templateId template JSON 的 id
+     */
+    async loadTemplate(templateId: string): Promise<UITemplateSpec> {
+        if (this._templateCache.has(templateId)) {
+            return this._templateCache.get(templateId)!;
+        }
+        const spec = await this._rm.loadJson<UITemplateSpec>(
+            `ui-spec/templates/${templateId}`, { tags: ['UISpec'] }
+        );
+        if (!spec) {
+            throw new Error(`[UISpecLoader] template "${templateId}" 不存在`);
+        }
+        this._templateCache.set(templateId, spec);
+        return spec;
+    }
+
+    /**
+     * 載入 Widget Fragment Spec
+     * @param widgetId widget JSON 的 id
+     */
+    async loadWidget(widgetId: string): Promise<UIWidgetFragmentSpec> {
+        if (this._widgetCache.has(widgetId)) {
+            return this._widgetCache.get(widgetId)!;
+        }
+        const spec = await this._rm.loadJson<UIWidgetFragmentSpec>(
+            `ui-spec/fragments/widgets/${widgetId}`, { tags: ['UISpec'] }
+        );
+        if (!spec) {
+            throw new Error(`[UISpecLoader] widget "${widgetId}" 不存在`);
+        }
+        this._widgetCache.set(widgetId, spec);
+        return spec;
+    }
+
     /** 清除所有快取（場景切換時呼叫） */
     clearCache(): void {
         this._layoutCache.clear();
         this._skinCache.clear();
         this._screenCache.clear();
+        this._templateCache.clear();
+        this._widgetCache.clear();
         this._designTokens = null;
     }
 }

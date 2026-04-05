@@ -1,27 +1,19 @@
 // @spec-source → 見 docs/cross-reference-index.md
 /**
- * ResultPopup — 戰鬥結果彈出層（新架構版）
+ * ResultPopup — 戰鬥結果彈出層
  *
- * ⭐ 已遷移至 UIPreviewBuilder 架構
+ * ⭐ 已遷移至 Template + Binder 架構
  *
- * 繼承 UIPreviewBuilder，佈局由 result-popup-main.json 定義，
- * 皮膚由 result-popup-default.json 提供（三種卡片背景：預設/勝利/失敗）。
- *
- * 業務職責（保留於此）：
- *   - 依據戰果切換卡片背景（skinSlot）
- *   - 更新標題與描述文字
- *   - 發出 "replay" 事件
- *
- * 呼叫方式：
- *   const popup = services().ui.show<ResultPopup>(UIID.ResultPopup);
- *   await popup.showResult('player-win');
+ * 佈局由 result-popup-main.json，皮膚由 result-popup-default.json。
+ * 節點綁定由 UITemplateBinder 自動完成，元件只負責業務邏輯。
  *
  * Unity 對照：PopupController + Animator（狀態機:win/lose/draw）
  */
-import { _decorator, Label, Node, Color } from 'cc';
+import { _decorator, Label, Node } from 'cc';
 import { UIPreviewBuilder } from '../core/UIPreviewBuilder';
 import { UISpecLoader } from '../core/UISpecLoader';
-import { UISkinResolver } from '../core/UISkinResolver';
+import { UITemplateBinder } from '../core/UITemplateBinder';
+import { services } from '../../core/managers/ServiceLoader';
 
 const { ccclass } = _decorator;
 
@@ -54,8 +46,9 @@ const RESULT_CONFIG: Record<BattleResult, {
 @ccclass('ResultPopup')
 export class ResultPopup extends UIPreviewBuilder {
 
-    private _specLoader = new UISpecLoader();
+    private get _specLoader() { return services().specLoader; }
     private _initialized = false;
+    private _binder: UITemplateBinder | null = null;
 
     // ── 生命週期 ─────────────────────────────────────────────
 
@@ -86,18 +79,14 @@ export class ResultPopup extends UIPreviewBuilder {
 
     // ── 覆寫建構點 ───────────────────────────────────────────
 
-    protected onBuildComplete(_rootNode: Node): void {
-        // 按鈕事件
-        this.node.on('onClickBack',   this.onClickBack,   this);
-        this.node.on('onClickReplay', this.onClickReplay, this);
+    protected onReady(binder: UITemplateBinder): void {
+        this._binder = binder;
+        binder.getButton('btnBack')?.node.on('click', this._onClickBack, this);
+        binder.getButton('btnReplay')?.node.on('click', this._onClickReplay, this);
     }
 
     // ── 公開 API ─────────────────────────────────────────────
 
-    /**
-     * 顯示戰鬥結果彈窗
-     * @param result 戰鬥結果
-     */
     public async showResult(result: BattleResult): Promise<void> {
         if (!this._initialized) {
             await this._initialize();
@@ -105,22 +94,15 @@ export class ResultPopup extends UIPreviewBuilder {
 
         const config = RESULT_CONFIG[result];
 
-        // 更新標題
-        const titleLabel = this.node.getChildByPath('Card/TitleLabel')?.getComponent(Label);
-        if (titleLabel) {
-            titleLabel.string = this.t(config.titleI18nKey);
+        if (this._binder) {
+            this._binder.setTexts({
+                TitleLabel: this.t(config.titleI18nKey),
+                DescLabel:  config.descText,
+            });
         }
 
-        // 更新描述（目前寫死，未來可加入 i18n key）
-        const descLabel = this.node.getChildByPath('Card/DescLabel')?.getComponent(Label);
-        if (descLabel) {
-            descLabel.string = config.descText;
-        }
-
-        // 切換卡片背景 skin（依勝負結果）
         await this._switchCardSkin(config.cardSkinSlot);
 
-        // 推到最頂層
         if (this.node.parent) {
             this.node.setSiblingIndex(this.node.parent.children.length - 1);
         }
@@ -131,12 +113,8 @@ export class ResultPopup extends UIPreviewBuilder {
 
     // ── 私有方法 ─────────────────────────────────────────────
 
-    /**
-     * 切換卡片背景到對應的 skin slot
-     * 失敗時靜默（仍顯示文字）
-     */
     private async _switchCardSkin(skinSlot: string): Promise<void> {
-        const cardNode = this.node.getChildByName('Card');
+        const cardNode = this._binder?.getNode('Card') ?? this.node.getChildByName('Card');
         if (!cardNode) return;
 
         try {
@@ -155,27 +133,21 @@ export class ResultPopup extends UIPreviewBuilder {
 
     // ── 按鈕回呼 ─────────────────────────────────────────────
 
-    private onClickBack(): void {
+    private _onClickBack(): void {
         this.playExitTransition(this.node, undefined, () => {
             this.node.active = false;
             this.node.emit('back');
         });
     }
 
-    private onClickReplay(): void {
+    private _onClickReplay(): void {
         this.playExitTransition(this.node, undefined, () => {
             this.node.active = false;
             this.node.emit('replay');
         });
     }
 
-    // ── resetState (UILayer 協定) ─────────────────────────────
-
-    /** 從快取取出前重置：清除文字殘留 */
     public resetState(): void {
-        const titleLabel = this.node.getChildByPath('Card/TitleLabel')?.getComponent(Label);
-        const descLabel  = this.node.getChildByPath('Card/DescLabel')?.getComponent(Label);
-        if (titleLabel) titleLabel.string = '';
-        if (descLabel)  descLabel.string  = '';
+        this._binder?.setTexts({ TitleLabel: '', DescLabel: '' });
     }
 }

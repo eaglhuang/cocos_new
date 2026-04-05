@@ -25,7 +25,7 @@ export interface GeneralPortraitConfig {
 export class GeneralPortraitPanel extends UIPreviewBuilder {
 
     public onClose: (() => void) | null = null;
-    private _specLoader = new UISpecLoader();
+    private get _specLoader() { return services().specLoader; }
     private _isBuilt = false;
 
     public async show(config: GeneralPortraitConfig): Promise<void> {

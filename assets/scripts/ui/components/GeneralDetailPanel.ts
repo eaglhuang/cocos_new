@@ -1,9 +1,11 @@
 // @spec-source → 見 docs/cross-reference-index.md
-import { _decorator, Label, Button, Color, Node, Sprite, SpriteFrame, Texture2D, resources, UITransform, BlockInputEvents } from 'cc';
+import { _decorator, Label, Button, Color, Node, Sprite, SpriteFrame, Texture2D, resources, UITransform, BlockInputEvents, Widget } from 'cc';
 import type { GeneralConfig, GeneralGeneConfig, GeneralStatsConfig } from '../../core/models/GeneralUnit';
 import { UIPreviewBuilder } from '../core/UIPreviewBuilder';
 import { UISpecLoader } from '../core/UISpecLoader';
 import { SolidBackground } from './SolidBackground';
+import { buildGeneralDetailOverview } from './GeneralDetailOverviewMapper';
+import { GeneralDetailOverviewShell } from './GeneralDetailOverviewShell';
 import { services } from '../../core/managers/ServiceLoader';
 
 const { ccclass } = _decorator;
@@ -61,10 +63,11 @@ export class GeneralDetailPanel extends UIPreviewBuilder {
 
     public onClose: (() => void) | null = null;
 
-    private readonly _specLoader = new UISpecLoader();
+    private get _specLoader() { return services().specLoader; }
     private _isBuilt = false;
     private _activeTab: TabKey = 'Basics';
     private _currentConfig: GeneralConfig | null = null;
+    private _overviewShell: GeneralDetailOverviewShell | null = null;
 
     public async show(config: GeneralConfig): Promise<void> {
         this.node.active = true;
@@ -84,15 +87,20 @@ export class GeneralDetailPanel extends UIPreviewBuilder {
             await this.buildScreen(layout, skin, i18n, tokens);
             this._bindStaticEvents();
             this._setupClickBlocker();
+            this._ensureOverviewShell();
             this._isBuilt = true;
         }
 
         this._populateUI(this._currentConfig);
+        if (this._overviewShell) {
+            await this._overviewShell.show(this._currentConfig);
+        }
         this._activateTab('Basics');
         this.playEnterTransition(this.node.getChildByName('GeneralDetailRoot')!);
     }
 
     public hide(): void {
+        this._overviewShell?.hide();
         this.playExitTransition(this.node.getChildByName('GeneralDetailRoot')!, undefined, () => {
             this.node.active = false;
             this.onClose?.();
@@ -122,17 +130,20 @@ export class GeneralDetailPanel extends UIPreviewBuilder {
 
     private _activateTab(tab: TabKey): void {
         this._activeTab = tab;
+        const isOverviewTab = tab === 'Basics';
+
+        this._setOverviewMode(isOverviewTab);
 
         for (const entry of TAB_ORDER) {
             const panel = this._getNode(`RightContentArea/Tab${entry}`);
             if (panel) {
-            panel.active = entry === tab;
+                panel.active = !isOverviewTab && entry === tab;
             }
 
             // 【特殊處理】血統分頁時，隱藏左側大立繪
             const portrait = this._getNode('PortraitImage');
             if (portrait) {
-                portrait.active = this._activeTab !== 'Bloodline';
+                portrait.active = !isOverviewTab && this._activeTab !== 'Bloodline';
             }
 
             const buttonNode = this._getNode(`RightTabBar/BtnTab${entry}`);
@@ -158,13 +169,71 @@ export class GeneralDetailPanel extends UIPreviewBuilder {
         }
     }
 
+    private _ensureOverviewShell(): void {
+        if (this._overviewShell) {
+            return;
+        }
+
+        const root = this.node.getChildByName('GeneralDetailRoot');
+        if (!root) {
+            return;
+        }
+
+        let host = root.getChildByName('GeneralDetailOverviewShellHost');
+        if (!host) {
+            host = new Node('GeneralDetailOverviewShellHost');
+            host.layer = root.layer;
+            host.parent = root;
+        }
+
+        const transform = host.getComponent(UITransform) || host.addComponent(UITransform);
+        transform.setContentSize(1920, 1080);
+
+        const widget = host.getComponent(Widget) || host.addComponent(Widget);
+        widget.isAlignTop = widget.isAlignBottom = widget.isAlignLeft = widget.isAlignRight = true;
+        widget.top = widget.bottom = widget.left = widget.right = 0;
+
+        const tabBarFill = root.getChildByName('RightTabBarFill');
+        if (tabBarFill) {
+            host.setSiblingIndex(tabBarFill.getSiblingIndex());
+        }
+
+        this._overviewShell = host.getComponent(GeneralDetailOverviewShell) || host.addComponent(GeneralDetailOverviewShell);
+        host.active = false;
+    }
+
+    private _setOverviewMode(enabled: boolean): void {
+        const classicNodes = [
+            'BackgroundFull',
+            'PortraitImage',
+            'TopLeftInfo',
+            'BottomLeftInfo',
+            'RightContentAreaFill',
+            'RightContentAreaBleed',
+            'RightContentAreaFrame',
+            'RightContentArea',
+        ];
+
+        for (const nodeName of classicNodes) {
+            const node = this._getNode(nodeName);
+            if (node) {
+                node.active = !enabled;
+            }
+        }
+
+        if (this._overviewShell) {
+            this._overviewShell.node.active = enabled;
+        }
+    }
+
     private _populateUI(config: GeneralConfig): void {
+        const overview = buildGeneralDetailOverview(config);
         // 設定左上角標題與基本資料 (TopLeftInfo)
-        this._setLabel('TopLeftInfo/Content/TitleLabel', config.title ?? '🔒 未揭露');
-        this._setLabel('TopLeftInfo/Content/NameLabel', config.name);
+        this._setLabel('TopLeftInfo/Content/TitleLabel', overview.header.title);
+        this._setLabel('TopLeftInfo/Content/NameLabel', overview.header.name);
         this._setLabel(
             'TopLeftInfo/Content/MetaLabel',
-            `${this._formatFaction(config.faction)} | ${this._formatRole(config.role)} | ${this._formatStatus(config.status)}`
+            overview.header.meta
         );
 
         // 設定左下角戰鬥評級與精力 (BottomLeftInfo)
@@ -176,9 +245,9 @@ export class GeneralDetailPanel extends UIPreviewBuilder {
             : '🔒 未知';
 
         this._setLabel('BottomLeftInfo/Content/EpCard/EpLabel', "戰場潛力評估");
-        this._setLabel('BottomLeftInfo/Content/EpCard/EpValue', epSummary);
+        this._setLabel('BottomLeftInfo/Content/EpCard/EpValue', overview.summary.epValue);
         this._setLabel('BottomLeftInfo/Content/VitCard/VitLabel', "目前精力狀態");
-        this._setLabel('BottomLeftInfo/Content/VitCard/VitValue', vitalityText);
+        this._setLabel('BottomLeftInfo/Content/VitCard/VitValue', overview.summary.vitalityValue);
 
         // 分頁填值
         this._populateBasics(config);
@@ -533,4 +602,3 @@ export class GeneralDetailPanel extends UIPreviewBuilder {
         }
     }
 }
-

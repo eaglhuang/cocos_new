@@ -18,6 +18,7 @@ import { SyncManager } from "../systems/SyncManager";
 import { SceneManager } from "./SceneManager";
 import { GameManager } from "./GameManager";
 import { UIManager } from "./UIManager";
+import { UISpecLoader } from "../../ui/core/UISpecLoader";
 import { normalizeVfxEffectTable } from "../config/VfxEffectConfig";
 
 export class ServiceLoader {
@@ -27,6 +28,13 @@ export class ServiceLoader {
     public readonly formula = new FormulaSystem();
     public readonly pool = new PoolSystem();
     public readonly resource = new ResourceManager();
+    /**
+     * UI 三層規格載入器（Layout / Skin / Screen / Template / Widget / i18n）的共享單例。
+     * 元件直接取用 services().specLoader，無需自行 new UISpecLoader()。
+     * 所有快取共享：同一份 JSON 在整個 session 內只載入一次。
+     * Unity 對照：AssetDatabase 共享快取層。
+     */
+    public readonly specLoader = new UISpecLoader(this.resource);
     public readonly effect = new EffectSystem();
     public readonly buff = new BuffSystem();
     public readonly battle = new BattleSystem();

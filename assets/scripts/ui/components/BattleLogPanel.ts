@@ -10,13 +10,14 @@
  * 注意（v3）：結束回合 / 計謀 / 單挑 已移至 ActionCommandPanel (Zone 7)，
  * 不再由 BattleLogPanel 處理。
  *
- * 架構模式：繼承 UIPreviewBuilder，在 onBuildComplete() 用 _deepFind 取得節點引用
+ * 架構模式：繼承 UIPreviewBuilder，在 onReady(binder) 透過自動綁定取得節點引用
  * Unity 對照：BattleRightPanel（含 BattleLog + CollapseArrow）
  * 規格書：見 battle-log-{main/default/screen}.json (battle_ui bundle)
  */
 import { _decorator, Button, Label, Node, ScrollView, tween, UITransform } from "cc";
 import { UIPreviewBuilder } from '../core/UIPreviewBuilder';
 import { UISpecLoader } from '../core/UISpecLoader';
+import { UITemplateBinder } from '../core/UITemplateBinder';
 import { EVENT_NAMES, Faction } from '../../core/config/Constants';
 import { services } from '../../core/managers/ServiceLoader';
 
@@ -25,7 +26,7 @@ const { ccclass, property } = _decorator;
 @ccclass("BattleLogPanel")
 export class BattleLogPanel extends UIPreviewBuilder {
 
-    // ── Inspector 備用綁定（@property 優先；未綁定時由 onBuildComplete 自動填入）──
+    // ── Inspector 備用綁定（@property 優先；未綁定時由 onReady 自動填入）──
     @property(Label)
     logLabel: Label = null!;
 
@@ -43,6 +44,8 @@ export class BattleLogPanel extends UIPreviewBuilder {
     private _collapsedHeight = 0;
     private _expandedHeight = 410;
     private _initialized = false;
+    private _buildCompleted = false;
+    private readonly _readyWaiters: Array<(ready: boolean) => void> = [];
     // 控制列狀態
     private _isAuto   = false;  // 自動戰鬥開關
     private _speed    = 1;      // 遊戲速度（1 | 2）
@@ -50,7 +53,7 @@ export class BattleLogPanel extends UIPreviewBuilder {
     private _btnAuto:    Node | null = null;
     private _btnSpeed:   Node | null = null;
 
-    private readonly _specLoader = new UISpecLoader();
+    private get _specLoader() { return services().specLoader; }
 
     // ── 生命週期 ─────────────────────────────────────────────────────────────
 
@@ -72,46 +75,48 @@ export class BattleLogPanel extends UIPreviewBuilder {
         } catch (e) {
             console.warn('[BattleLogPanel] 規格載入失敗，退回白模', e);
             this._initialized = true;
+            this._flushReadyWaiters(false);
         }
     }
 
-    // ── 覆寫建構點：綁定節點引用 ─────────────────────────────────────────────
+    // ── 覆寫建構點：透過 binder 自動綁定節點引用 ─────────────────────────────
 
-    protected onBuildComplete(_rootNode: Node): void {
-        const find = (name: string) => this._deepFind(name);
-
+    protected onReady(binder: UITemplateBinder): void {
         // 日誌捲動區
         if (!this.scrollView) {
-            this.scrollView = find('ScrollView')?.getComponent(ScrollView) ?? null!;
+            this.scrollView = binder.getScrollView('ScrollView') ?? null!;
         }
 
         // 日誌 Label（ContentNode → LogLabel）
         if (!this.logLabel) {
-            this.logLabel = find('LogLabel')?.getComponent(Label) ?? null!;
+            this.logLabel = binder.getLabel('LogLabel') ?? null!;
         }
-        this._contentNode = find('ContentNode');
+        this._contentNode = binder.getNode('ContentNode');
 
         // 可折疊的日誌面板節點
-        this._logPanelNode = find('BattleLogPanel');
+        this._logPanelNode = binder.getNode('BattleLogPanel');
         const tf = this._logPanelNode?.getComponent(UITransform);
         if (tf) {
             this._expandedHeight = tf.height;
         }
 
         // ── 控制列按鈕（BtnAuto / BtnSpeed / BtnSetting）────────────────────
-        this._btnAuto  = find('BtnAuto')  ?? null;
-        this._btnSpeed = find('BtnSpeed') ?? null;
+        this._btnAuto  = binder.getNode('BtnAuto');
+        this._btnSpeed = binder.getNode('BtnSpeed');
         this._btnAuto?.on(Button.EventType.CLICK,    this._onAutoClick,    this);
         this._btnSpeed?.on(Button.EventType.CLICK,   this._onSpeedClick,   this);
-        find('BtnSetting')?.on(Button.EventType.CLICK, this._onSettingClick, this);
+        binder.getNode('BtnSetting')?.on(Button.EventType.CLICK, this._onSettingClick, this);
 
         // BtnCollapse：折疊 / 展開日誌
-        find('BtnCollapse')?.on(Button.EventType.CLICK, this._onCollapseClick, this);
+        binder.getNode('BtnCollapse')?.on(Button.EventType.CLICK, this._onCollapseClick, this);
 
         console.log(
             `[BattleLogPanel] 綁定完成 — ` +
             `scrollView:${!!this.scrollView} label:${!!this.logLabel} contentNode:${!!this._contentNode}`
         );
+
+        this._buildCompleted = true;
+        this._flushReadyWaiters(true);
     }
 
     // ── 公開 API ──────────────────────────────────────────────────────────────
@@ -134,6 +139,24 @@ export class BattleLogPanel extends UIPreviewBuilder {
             this._lines.shift();
         }
         this._flush();
+    }
+
+    public waitUntilReady(timeoutMs = 5000): Promise<boolean> {
+        if (this._buildCompleted) {
+            return Promise.resolve(true);
+        }
+
+        return new Promise<boolean>((resolve) => {
+            let settled = false;
+            const finish = (ready: boolean) => {
+                if (settled) return;
+                settled = true;
+                resolve(ready);
+            };
+
+            this._readyWaiters.push(finish);
+            this.scheduleOnce(() => finish(this._buildCompleted), Math.max(0, timeoutMs) / 1000);
+        });
     }
 
     // ── 私有：日誌刷新 ───────────────────────────────────────────────────────
@@ -206,16 +229,12 @@ export class BattleLogPanel extends UIPreviewBuilder {
             .start();
     }
 
-    // ── 私有工具：BFS 尋找子孫節點 ──────────────────────────────────────────
-
-    private _deepFind(name: string): Node | null {
-        const queue: Node[] = [this.node];
-        while (queue.length > 0) {
-            const cur = queue.shift()!;
-            if (cur.name === name) return cur;
-            queue.push(...cur.children);
+    private _flushReadyWaiters(ready: boolean): void {
+        while (this._readyWaiters.length > 0) {
+            const resolve = this._readyWaiters.shift();
+            resolve?.(ready);
         }
-        return null;
     }
+
 }
 

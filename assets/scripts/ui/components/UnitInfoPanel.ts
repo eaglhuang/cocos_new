@@ -18,6 +18,7 @@ import { _decorator, Button, Label, Node } from 'cc';
 import { services } from '../../core/managers/ServiceLoader';
 import { UIPreviewBuilder } from '../core/UIPreviewBuilder';
 import { UISpecLoader } from '../core/UISpecLoader';
+import { UITemplateBinder } from '../core/UITemplateBinder';
 import { TallyCardData } from './TigerTallyPanel';
 
 const { ccclass } = _decorator;
@@ -25,11 +26,11 @@ const { ccclass } = _decorator;
 @ccclass('UnitInfoPanel')
 export class UnitInfoPanel extends UIPreviewBuilder {
 
-    private readonly _specLoader = new UISpecLoader();
+    private get _specLoader() { return services().specLoader; }
     private _initialized = false;
     private _visible = false;
 
-    // ── 內容節點引用（由 onBuildComplete 填入） ──────────────
+    // ── 內容節點引用（由 onReady 填入） ────────────────
     private _unitName:  Label | null = null;
     private _unitSub:   Label | null = null;
     private _atkRow:    Label | null = null;
@@ -65,24 +66,21 @@ export class UnitInfoPanel extends UIPreviewBuilder {
         }
     }
 
-    // ── 覆寫建構點：綁定節點引用 ─────────────────────────────
+    // ── 覆寫建構點：透過 binder 自動綁定節點引用 ─────────────────────────────
 
-    protected onBuildComplete(_rootNode: Node): void {
-        const find = (name: string) => this._deepFind(name);
+    protected onReady(binder: UITemplateBinder): void {
+        this._unitName    = binder.getLabel('UnitName');
+        this._unitSub     = binder.getLabel('UnitSub');
+        this._atkRow      = binder.getLabel('AtkRow');
+        this._defRow      = binder.getLabel('DefRow');
+        this._hpRow       = binder.getLabel('HpRow');
+        this._spdRow      = binder.getLabel('SpdRow');
+        this._costRow     = binder.getLabel('CostRow');
+        this._traitTags   = binder.getNode('TraitTags');
+        this._abilityList = binder.getNode('AbilityList');
+        this._descText    = binder.getLabel('DescText');
 
-        this._unitName    = find('UnitName')?.getComponent(Label) ?? null;
-        this._unitSub     = find('UnitSub')?.getComponent(Label)  ?? null;
-        this._atkRow      = find('AtkRow')?.getComponent(Label)   ?? null;
-        this._defRow      = find('DefRow')?.getComponent(Label)   ?? null;
-        this._hpRow       = find('HpRow')?.getComponent(Label)    ?? null;
-        this._spdRow      = find('SpdRow')?.getComponent(Label)   ?? null;
-        this._costRow     = find('CostRow')?.getComponent(Label)  ?? null;
-        this._traitTags   = find('TraitTags')                     ?? null;
-        this._abilityList = find('AbilityList')                   ?? null;
-        this._descText    = find('DescText')?.getComponent(Label) ?? null;
-
-        // BtnClose 點擊關閉面板
-        find('BtnClose')?.on(Button.EventType.CLICK, this.hide, this);
+        binder.getNode('BtnClose')?.on(Button.EventType.CLICK, this.hide, this);
 
         console.log(`[UnitInfoPanel] 綁定完成 — name:${!!this._unitName} desc:${!!this._descText}`);
     }
@@ -171,15 +169,4 @@ export class UnitInfoPanel extends UIPreviewBuilder {
         }
     }
 
-    // ── 工具：BFS 深度搜尋 ────────────────────────────────────
-
-    private _deepFind(name: string): Node | null {
-        const queue: Node[] = [this.node];
-        while (queue.length > 0) {
-            const cur = queue.shift()!;
-            if (cur.name === name) return cur;
-            queue.push(...cur.children);
-        }
-        return null;
-    }
 }
