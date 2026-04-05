@@ -443,3 +443,5 @@
 | P2 | `layouts/bloodline-mirror-loading-main.json` | 血脈命鏡過場載入規格書.md、UI 規格書.md |
 | P2 | `skins/bloodline-mirror-loading-default.json` | 血脈命鏡過場載入規格書.md、UI 規格書.md |
 | P2 | `screens/bloodline-mirror-loading-screen.json` | 血脈命鏡過場載入規格書.md、UI 規格書.md |
+> **第二十批整合（2026-04-05）**：正式將 UI 量產方法論沉到 `keep.md §19` 與 `UI 規格書.md §8.2`。本批明確定義 `選 template family -> 填 content contract -> 套 skin fragment` 為 UI 量產主工作流，並補上 UI Agent 進場必讀順序與文件回寫原則，作為後續多 Agent 協作的共同入口。
+> **第二十一批整合（2026-04-05）**：將 UI 量產方法正式落到 Agent brief 執行入口。新增 `docs/agent-briefs/UI-task-card-template.md`，並同步更新 `CheckList.md`、`tasks_index.md`、`agent1-instructions.md`、`agent2-instructions.md` 與 `ui-quality-todo.json` 的 task template，要求新 UI 任務至少寫出 `template_family / content_contract / skin_fragments / smoke_route / docs_backwritten`。

@@ -489,3 +489,70 @@ services().ui.open(UIID.BattleHUD);
 - 收斂 slot-map 匯出格式，讓它能直接轉成 scaffolder config JSON
 - 繼續校正 `cocos-log-bridge` 的 scene context
 - 持續擴充 template family，但遵守 template-first，而不是為單一畫面濫開新模板
+
+---
+
+## 19. UI 量產主工作流（2026-04-05）
+
+這一段是之後所有 UI Agent 都必須遵守的正式生產規則。若未來流程再演化，優先回寫本節與 `docs/UI 規格書.md`，不要把新共識只留在任務卡或補遺。
+
+### 19.1 核心原則
+
+- UI 量產的正式順序固定為：`先選 template family -> 再填 content contract -> 最後套 skin fragment`。
+- `layout / template` 只描述穩定結構，`content contract` 只描述角色或畫面內容差異，`skin / fragment` 只描述視覺風格與素材映射。
+- 若只是文案、故事條、血脈、徽記、狀態切換不同，優先修改 `content contract`，不要回頭重切 `layout JSON`。
+- 若只是紙材、框體、紋樣、配色、按鈕 family 不同，優先修改 `skin fragment`，不要複製一份新 `layout`。
+- 只有當畫面結構、導覽模型、slot 數量或互動骨架改變時，才允許新增 template family 或修改 template skeleton。
+
+### 19.2 標準落地步驟
+
+1. 先判定這張畫面屬於哪個 template family，例如 `detail-split`、`dialog-card`、`rail-list`。
+2. 在 Figma `09_Proof Mapping` 或對應 config 內補齊 `familyId / template / tabs / railItems / titleKey / bodyKey / notes` 等正式欄位。
+3. 以 scaffolder 生成三層骨架：`layouts / skins / screens`。
+4. 將角色差異、系統差異、故事差異收斂到 `content contract`，例如 `storyStripCells / crestState / bloodlineRumor`。
+5. 將視覺差異收斂到 `skin fragment`、token、atlas policy 與既有 widget family。
+6. 只在最後一步做 screen-specific 收尾；若收尾超過 20% 結構修改，代表 template family 判定可能錯了，應回頭重評估。
+7. 完成後必跑 `validate-ui-specs`、encoding touched check，以及最小 smoke / preview 驗證。
+
+### 19.3 什麼情況代表流程真的在加速
+
+- 新 UI 主要是在「選 family + 填 config + 補內容」，而不是重新手改大量節點。
+- 同一 family 的第二張、第三張畫面，主要變更集中在 `content contract` 與 `skin fragment`。
+- runtime 程式主要做 binder / mapper / host 組裝，而不是為每張新畫面重寫 panel 邏輯。
+- Figma proof mapping 欄位可以直接對應 repo 內 config，而不是每次重新口頭翻譯。
+
+若一張新 UI 還是需要大幅手改 `layout JSON`、臨時塞 runtime 節點、或為單畫面複製一整套新 family，表示量產鏈還沒打通，應優先補模板、fragment 或 contract，而不是繼續個案硬做。
+
+### 19.4 後續加速器
+
+- 維護 `template family catalogue`：清楚列出每個 family 的適用場景、限制與現成 fragment。
+- 維護 `content contract schema`：讓新 family 可直接用 config / JSON schema 建欄位，而不是人工猜欄位名。
+- 維護 `skin fragment library`：把常用框體、卡片、故事帶、徽記、進度條沉成可複用 fragment。
+- 維護 `preview / smoke routes`：每個高頻 family 至少有一條可快速驗證的 route。
+- 維護 `proof mapping -> scaffolder` 對映：讓 Figma 欄位可直接生成 config，而不是再人工轉譯一次。
+
+### 19.5 UI Agent 進場必讀順序
+
+所有新加入的 UI Agent，在開始實作前必須依序閱讀：
+
+1. `docs/keep.md`
+2. `docs/UI 規格書.md` 的「UI 量產工作流與 Agent 協作入口」
+3. 對應系統的正式規格書，例如 `武將人物介面規格書.md`
+4. 目前任務卡與 `docs/ui-quality-todo.json`
+5. `docs/cross-reference-index.md`，確認正式文件、程式檔與 ui-spec 的對應關係
+
+UI 任務卡建立或重寫時，優先使用 `docs/agent-briefs/UI-task-card-template.md`。
+
+若 Agent 沒有完成這個順序，就不應直接開始做新的 UI JSON、Panel 或 skin。
+
+### 19.6 Agent 協作的強制原則
+
+- Agent1/Agent2/其他 Agent 對 UI 的分工，必須建立在同一個 family、同一個 contract、同一套正式規格上。
+- 任一 Agent 發現可以抽成共用 template、fragment、schema 的重複模式時，優先補基礎設施，不要只解當前畫面。
+- 任一 Agent 若新增了 screen-specific workaround，必須在任務卡或正式規格寫明原因與退場條件。
+- 任一 Agent 完成 UI 任務後，至少同步更新：正式規格書、`cross-reference-index.md`、必要時更新 `keep.md`。
+
+### 19.7 正式參照
+
+- 執行準則以本節為主。
+- UI 正式方法論與結構定義，以 `docs/UI 規格書.md` 的「UI 量產工作流與 Agent 協作入口」為主。

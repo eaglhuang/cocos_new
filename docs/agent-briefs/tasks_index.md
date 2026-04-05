@@ -8,6 +8,8 @@ manifest: ../ui-quality-todo.json
 
 > `docs/ui-quality-todo.json` is the source of truth.
 > Keep task frontmatter, manifest, and this index in sync.
+> New UI tasks must also follow `template family -> content contract -> skin fragment -> smoke route -> docs backwrite`.
+> See [UI-task-card-template.md](./UI-task-card-template.md).
 
 ## Summary
 

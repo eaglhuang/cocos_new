@@ -10,7 +10,17 @@
     "lock_rule": "???????? task ??? in-progress??? started_at / started_by_agent????????",
     "notes_template": "YYYY-MM-DD | ??: <done|in-progress|blocked> | ??: <command/result> | ??: <summary> | ??: <none or reason>",
     "commit_rule": "?? commit ??????????????? bug?bug ?????????????????",
-    "bug_commit_format": "[bug][????] Bug?? : ???? [AgentX]"
+    "bug_commit_format": "[bug][????] Bug?? : ???? [AgentX]",
+    "ui_workflow_rule": "For new UI work, default to: choose template family -> fill content contract -> apply skin fragment -> run smoke/preview -> backwrite formal docs.",
+    "ui_task_card_template_path": "docs/agent-briefs/UI-task-card-template.md",
+    "ui_checklist_fields": [
+      "template_family",
+      "content_contract",
+      "skin_fragments",
+      "smoke_route",
+      "docs_backwritten"
+    ],
+    "ui_notes_rule": "UI task notes should mention template family, content contract, skin fragment, smoke route, and formal docs backwrite status."
   },
   "tasks": [
     {

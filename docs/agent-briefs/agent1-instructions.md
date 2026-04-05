@@ -30,6 +30,12 @@ description: "負責 runtime、preview host、UI contract、layout/skin JSON、t
 
 # Agent1 Instructions
 
+## UI Mass-Production Gate
+
+- Default workflow: `choose template family -> fill content contract -> apply skin fragment -> run smoke route -> backwrite formal docs`
+- Before starting a new UI card, check [UI-task-card-template.md](C:\Users\User\3KLife\docs\agent-briefs\UI-task-card-template.md)
+- Do not treat layout churn as the default path. If a card cannot name `template_family / content_contract / skin_fragments / smoke_route`, pause and fix the card first.
+
 通用規則全部以 [../keep.md](../keep.md) 為準，本檔只保留 Agent1 專屬責任。
 
 ## 硬規則

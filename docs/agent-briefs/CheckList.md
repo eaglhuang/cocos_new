@@ -1,5 +1,11 @@
 # Agent Briefs CheckList
 
+## UI 量產新增檢查
+
+- 新 UI 任務預設必須走：`template family -> content contract -> skin fragment -> smoke route -> docs backwrite`
+- 開卡或接卡時，先對照 [UI-task-card-template.md](C:\Users\User\3KLife\docs\agent-briefs\UI-task-card-template.md)
+- 若任務卡沒有 `template_family / content_contract / skin_fragments / smoke_route / docs_backwritten`，視為尚未收斂完成，不應直接進入大量實作
+
 本表是任務卡總覽。狀態更新時，必須同步修改：
 - 任務卡本身
 - [ui-quality-todo.json](C:\Users\User\3KLife\docs\ui-quality-todo.json)

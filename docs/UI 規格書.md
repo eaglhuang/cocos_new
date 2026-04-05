@@ -149,3 +149,74 @@
 | 血脈命鏡過場 | 「Loading / 覺醒 / 升星」命格展示頁 | `bloodline-mirror-loading-main.json` | 血脈命鏡過場載入規格書.md |
 
 > 各系統正式建立 ui-spec JSON 時，須遵循三層契約規範（layouts / skins / screens），並同步更新 `UI技術規格書.md` 與 `cross-reference-index.md`。
+### 8.2 UI 量產工作流與 Agent 協作入口
+
+> 執行總綱請同步參照 `docs/keep.md` §19。
+> 本節是 UI 正式規格中的方法論說明，用來確保美術、技術、Figma、ui-spec 與 Agent 協作都遵守同一套量產邏輯。
+
+#### 8.2.1 正式量產順序
+
+所有新 UI 需求，預設都走以下順序：
+
+1. 選 `template family`
+2. 填 `content contract`
+3. 套 `skin fragment`
+4. 補少量 screen-specific 收尾
+5. 做 preview / smoke / acceptance 驗證
+
+這裡的責任分層必須固定：
+
+- `template / layout`：定義穩定結構、導覽骨架、slot 邊界
+- `content contract`：定義故事、數值、角色差異、狀態差異
+- `skin / fragment`：定義框體、材質、紋樣、色彩、圖像 slot 與 token
+- `screen`：定義 route、bundle、atlas policy、family 組裝
+
+#### 8.2.2 何時重用、何時新增 template family
+
+優先重用既有 family。只有在以下情況同時成立時，才考慮新增 template family：
+
+- 畫面導覽模型不同，例如 `dialog`、`detail split`、`rail + detail`
+- 穩定 slot 結構不同，無法用既有 family 的 fragment 組裝
+- 同類畫面預估會重複出現，不是一次性的單張特例
+
+若只是角色內容不同、文案排列不同、視覺語氣不同、或 tab 內容不同，通常不應新增 template family，而應落回既有 family 的 `content contract`、`skin fragment` 或 module 組裝。
+
+#### 8.2.3 量產加速判準
+
+下列現象代表量產流程正在加速：
+
+- 第二張同 family 畫面的開發時間明顯低於第一張
+- 主要修改集中在 config、contract、skin，而不是大量改 `layout JSON`
+- runtime 面板程式偏向 binder / mapper / host，沒有為單畫面重寫整支 panel
+- Figma `09_Proof Mapping` 欄位可直接轉成 scaffolder config
+
+若開發仍反覆出現大量手改節點、臨時建立 runtime 字框、或為單畫面複製新 family，代表應優先補 template、fragment、schema，而不是繼續堆個案。
+
+#### 8.2.4 建議的加速器
+
+- 建立 `template family catalogue`
+- 建立 `content contract schema` 與範例資料
+- 建立 `skin fragment library`
+- 建立 `proof mapping -> scaffolder` 對映
+- 建立每個高頻 family 的 smoke route
+
+這些加速器的目的，是把 UI 生產從「每張畫面重新拼裝」轉成「選母型、填資料、換皮膚、快速驗證」。
+
+#### 8.2.5 Agent 協作入口
+
+所有參與 UI 的 Agent，在開始修改前都必須依序確認：
+
+1. `docs/keep.md`
+2. 本文件 §8.2
+3. 對應系統正式規格書
+4. 對應任務卡與 `docs/ui-quality-todo.json`
+5. `docs/cross-reference-index.md`
+
+未完成這個閱讀順序前，不應直接新增 UI family、修改大量 layout、或自行發明新的欄位命名。
+
+#### 8.2.6 文件回寫原則
+
+- 量產方法的新增共識，先回寫 `docs/keep.md` 與本文件。
+- 系統專屬規格，回寫到對應正式規格書，例如 `武將人物介面規格書.md`。
+- 程式 / 文件 / ui-spec 的對應關係，回寫 `docs/cross-reference-index.md`。
+- 補遺只可作暫時整理，不可長期取代正式母規格。
