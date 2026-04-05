@@ -70,7 +70,7 @@ export class UltimateSelectPopup extends UIPreviewBuilder {
             const [template, skin, i18n] = await Promise.all([
                 this._specLoader.loadTemplate('dialog-select'),
                 this._specLoader.loadSkin('dialog-select-default'),
-                this._specLoader.loadI18n('zh-TW'),
+                this._specLoader.loadI18n(services().i18n.currentLocale),
             ]);
             const layout = await this._resolver.resolve(template, {
                 title: 'UI_ULTIMATE_TITLE',

@@ -71,7 +71,7 @@ export class BattleHUD extends UIPreviewBuilder {
             const t0 = Date.now();
             const [fullScreen, i18n] = await Promise.all([
                 this._specLoader.loadFullScreen('battle-hud-screen'),
-                this._specLoader.loadI18n('zh-TW'),
+                this._specLoader.loadI18n(services().i18n.currentLocale),
             ]);
             console.log(`[BattleHUD] _initialize: 規格載入完成 (${Date.now() - t0}ms) layout="${fullScreen?.layout?.id ?? '?'}" skin="${fullScreen?.skin?.id ?? '?'}"`);
             if (!fullScreen?.layout) {

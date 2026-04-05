@@ -42,11 +42,14 @@ interface LocaleAssets {
  *   字型：resources/fonts/locale/{locale}/{role}.ttf
  */
 export class I18nSystem {
-    private currentLocale: LocaleCode = 'zh-TW';
+    private _locale: LocaleCode = 'zh-TW';
     private cache = new Map<LocaleCode, LocaleAssets>();
     private changeHandlers: Array<(locale: LocaleCode) => void> = [];
 
-    get locale(): LocaleCode { return this.currentLocale; }
+    get locale(): LocaleCode { return this._locale; }
+
+    /** `locale` 的別名，供各 UI 元件統一使用 `services().i18n.currentLocale` */
+    get currentLocale(): LocaleCode { return this._locale; }
 
     // ─────────────────────────────────────────
     //  公開 API
@@ -59,10 +62,10 @@ export class I18nSystem {
      * Unity 對照：Addressables LoadAssetAsync + 卸載前一個 AssetBundle
      */
     async setLocale(locale: LocaleCode): Promise<void> {
-        if (locale === this.currentLocale && this.cache.has(locale)) return;
+        if (locale === this._locale && this.cache.has(locale)) return;
 
-        const prev = this.currentLocale;
-        this.currentLocale = locale;
+        const prev = this._locale;
+        this._locale = locale;
 
         if (!this.cache.has(locale)) {
             const assets = await this.loadLocaleAssets(locale);
@@ -86,7 +89,7 @@ export class I18nSystem {
      *   t("ui.damage.receive", "100")    → "受到 100 點傷害"
      */
     t(key: string, ...args: string[]): string {
-        const assets = this.cache.get(this.currentLocale);
+        const assets = this.cache.get(this._locale);
         let str = assets?.strings[key] ?? key;
         args.forEach((arg, i) => {
             str = str.replace(`{${i}}`, arg);
@@ -102,7 +105,7 @@ export class I18nSystem {
      *   label.font = services().i18n.getFont('body') ?? label.font;
      */
     getFont(role: FontRole): Font | null {
-        return this.cache.get(this.currentLocale)?.fonts[role] ?? null;
+        return this.cache.get(this._locale)?.fonts[role] ?? null;
     }
 
     /**

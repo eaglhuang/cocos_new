@@ -77,7 +77,7 @@ export class GeneralDetailPanel extends UIPreviewBuilder {
 
         if (!this._isBuilt) {
             const { screen, layout, skin } = await this._specLoader.loadFullScreen('general-detail-screen');
-            const i18n = await this._specLoader.loadI18n('zh-TW');
+            const i18n = await this._specLoader.loadI18n(services().i18n.currentLocale);
             const tokens = await this._specLoader.loadDesignTokens();
 
             if (screen.uiId !== 'GeneralDetail') {

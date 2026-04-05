@@ -363,7 +363,7 @@ node tools_node/run-acceptance.js
 | UI-2-0074 | UIConfig UIID 只有 6 個入口；22 個畫面繞過 UIManager | **P0** | ✅ done |
 | UI-2-0075 | UISpecLoader 15 個獨立 new 實例，無共享快取 | P1 | ✅ done |
 | UI-2-0076 | Binder 遷移：11 個元件仍用手動節點操作 | P1 | open |
-| UI-2-0077 | 14 個元件 `loadI18n('zh-TW')` 硬編碼 | P1 | open |
+| UI-2-0077 | 14 個元件 `loadI18n('zh-TW')` 硬編碼 | P1 | ✅ done |
 | UI-2-0078 | MemoryManager 為空殼（無 LRU / releaseByScope） | P2 | open |
 | UI-2-0079 | `UILayerName` deprecated enum 殘留 Constants.ts | P3 | open |
 
@@ -403,7 +403,7 @@ services().ui.open(UIID.BattleHUD);
 
 ## 18. 目前下一步
 
-- **P1 排入**：UI-2-0077（i18n 脫硬編碼 — 現在 services().specLoader 已就位）
+- ✅ **P1 完成**：UI-2-0077（i18n 脫硬編碼 — 15 元件全改用 `services().i18n.currentLocale`）
 - **P1 排入**：UI-2-0076（Binder 遷移，等 DATA-1-0001 確認 bind path 合約）
 - 為 LobbyMain / ShopMain / Gacha 建立真正的 Prefab，讓 openAsync 完整走通
 - 解除 UI-2-0046 blockers → 繼續 UI-2-0026（BattleScene 對位修正）

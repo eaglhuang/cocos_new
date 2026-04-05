@@ -64,7 +64,7 @@ export class ResultPopup extends UIPreviewBuilder {
             // 載入三層規格 + i18n
             const [fullScreen, i18n] = await Promise.all([
                 this._specLoader.loadFullScreen('result-popup-screen'),
-                this._specLoader.loadI18n('zh-TW'),
+                this._specLoader.loadI18n(services().i18n.currentLocale),
             ]);
 
             // 建構節點樹

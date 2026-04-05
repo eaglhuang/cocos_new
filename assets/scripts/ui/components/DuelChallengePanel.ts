@@ -39,7 +39,7 @@ export class DuelChallengePanel extends UIPreviewBuilder {
             const [template, skin, i18n] = await Promise.all([
                 this._specLoader.loadTemplate('dialog-confirm'),
                 this._specLoader.loadSkin('duel-challenge-default'),
-                this._specLoader.loadI18n('zh-TW'),
+                this._specLoader.loadI18n(services().i18n.currentLocale),
             ]);
             const layout = await this._resolver.resolve(template, {
                 title:        'UI_DUEL_TITLE',

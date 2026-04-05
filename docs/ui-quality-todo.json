@@ -1782,7 +1782,7 @@
       "priority": "P1",
       "phase": "E",
       "owner": "Agent1",
-      "status": "open",
+      "status": "done",
       "created": "2026-04-05",
       "created_by_agent": "Agent1",
       "type": "refactor",
@@ -1792,7 +1792,7 @@
         "UI-2-0075"
       ],
       "depends": [],
-      "notes": "2026-04-05 | A5 grep 確認 14 個 loadI18n(zh-TW) 硬編碼 | open"
+      "notes": "2026-04-05 | A5 grep 確認 14 個 loadI18n(zh-TW) 硬編碼 | open | 2026-04-06 | Agent1 完成：I18nSystem currentLocale getter + 15 元件全替換，零 TS 錯誤 | done"
     },
     {
       "id": "UI-2-0078",

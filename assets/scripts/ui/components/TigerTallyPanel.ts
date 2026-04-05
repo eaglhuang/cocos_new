@@ -96,7 +96,7 @@ export class TigerTallyPanel extends UIPreviewBuilder {
             console.log('[TigerTallyPanel] _initialize 開始載入規格...');
             const [fullScreen, i18n] = await Promise.all([
                 this._specLoader.loadFullScreen('tiger-tally-screen'),
-                this._specLoader.loadI18n('zh-TW'),
+                this._specLoader.loadI18n(services().i18n.currentLocale),
             ]);
             console.log('[TigerTallyPanel] 規格載入完成，開始 buildScreen...');
             await this.buildScreen(fullScreen.layout, fullScreen.skin, i18n);

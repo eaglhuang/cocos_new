@@ -34,7 +34,7 @@ export class GeneralPortraitPanel extends UIPreviewBuilder {
         if (!this._isBuilt) {
             const layout = await this._specLoader.loadLayout('general-portrait-main');
             const skin = await this._specLoader.loadSkin('general-portrait-default');
-            const i18n = await this._specLoader.loadI18n('zh-TW');
+            const i18n = await this._specLoader.loadI18n(services().i18n.currentLocale);
             const tokens = await this._specLoader.loadDesignTokens();
             
             await this.buildScreen(layout, skin, i18n, tokens);

@@ -68,7 +68,7 @@ export class BattleLogPanel extends UIPreviewBuilder {
         try {
             const [fullScreen, i18n] = await Promise.all([
                 this._specLoader.loadFullScreen('battle-log-screen'),
-                this._specLoader.loadI18n('zh-TW'),
+                this._specLoader.loadI18n(services().i18n.currentLocale),
             ]);
             await this.buildScreen(fullScreen.layout, fullScreen.skin, i18n);
             this._initialized = true;

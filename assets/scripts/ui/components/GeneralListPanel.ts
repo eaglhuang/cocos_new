@@ -21,7 +21,7 @@ export class GeneralListPanel extends UIPreviewBuilder {
             // 1. 動態載入三層結構契約與 Design Tokens v2.2
             const layout = await this._specLoader.loadLayout('general-list-main');
             const skin = await this._specLoader.loadSkin('general-list-default');
-            const i18n = await this._specLoader.loadI18n('zh-TW');
+            const i18n = await this._specLoader.loadI18n(services().i18n.currentLocale);
             const tokens = await this._specLoader.loadDesignTokens();
             
             // 2. 透過 UI 建構引擎產生節點樹

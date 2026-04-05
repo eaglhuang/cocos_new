@@ -74,7 +74,7 @@ export class ActionCommandPanel extends UIPreviewBuilder {
             // 2. 載入 I18n 字串（優先使用系統已載入的，否則才手動載入）
             let i18nData: Record<string, string> = {};
             try {
-                i18nData = await loader.loadI18n('zh-TW');
+                i18nData = await loader.loadI18n(services().i18n.currentLocale);
             } catch (err) {
                 console.warn('[ActionCommandPanel] I18n 載入失敗，使用 fallback', err);
             }

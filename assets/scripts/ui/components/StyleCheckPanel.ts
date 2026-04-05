@@ -18,7 +18,7 @@ export class StyleCheckPanel extends UIPreviewBuilder {
         // 1. 載入規格
         const layout = await this._specLoader.loadLayout('style-check-main');
         const skin   = await this._specLoader.loadSkin('style-check-default');
-        const i18n   = await this._specLoader.loadI18n('zh-TW');
+        const i18n   = await this._specLoader.loadI18n(services().i18n.currentLocale);
         const tokens = await this._specLoader.loadDesignTokens();
 
         // 2. 建構畫面
