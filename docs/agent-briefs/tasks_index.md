@@ -15,8 +15,8 @@ manifest: ../ui-quality-todo.json
 
 - Total: 87
 - completed: 1
-- done: 52
-- in-progress: 20
+- done: 53
+- in-progress: 19
 - open: 14
 
 ## Tasks
@@ -97,7 +97,7 @@ manifest: ../ui-quality-todo.json
 | UI-2-0055 | Agent2 | open | P2 | D | ui-content-spec | [UI-2-0055](./tasks/UI-2-0055.md) |
 | UI-2-0056 | Agent2 | open | P2 | D | ui-display-rule | [UI-2-0056](./tasks/UI-2-0056.md) |
 | UI-2-0057 | Agent2 | open | P1 | D | art-contract | [UI-2-0057](./tasks/UI-2-0057.md) |
-| UI-2-0058 | Agent2 | in-progress | P1 | D | ui-slot-contract | [UI-2-0058](./tasks/UI-2-0058.md) |
+| UI-2-0058 | Agent2 | done | P1 | D | ui-slot-contract | [UI-2-0058](./tasks/UI-2-0058.md) |
 | UI-2-0059 | Agent2 | done | P1 | D | ui-spec-skeleton | [UI-2-0059](./tasks/UI-2-0059.md) |
 | UI-2-0060 | Agent2 | open | P1 | D | ui-spec-skeleton | [UI-2-0060](./tasks/UI-2-0060.md) |
 | UI-2-0061 | Agent2 | done | P1 | D | data-contract | [UI-2-0061](./tasks/UI-2-0061.md) |
