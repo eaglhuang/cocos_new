@@ -1,5 +1,5 @@
 // @spec-source → 見 docs/cross-reference-index.md
-import { Asset, Font, ImageAsset, JsonAsset, Prefab, resources, SpriteFrame, Texture2D } from "cc";
+import { Asset, assetManager, AssetManager, Font, ImageAsset, JsonAsset, Prefab, resources, SpriteFrame, Texture2D } from "cc";
 import { MemoryManager } from "./MemoryManager";
 
 export interface LoadOptions {
@@ -118,6 +118,47 @@ export class ResourceManager {
     });
   }
 
+  /**
+   * 從指定 bundle 載入 Prefab（非 resources bundle）。
+   * Unity 對照：Addressables.LoadAssetAsync<GameObject>(key) 從指定 Group 載入。
+   */
+  public loadBundlePrefab(bundleName: string, path: string, options?: LoadOptions): Promise<Prefab> {
+    const cacheKey = `${bundleName}:${path}`;
+    this.tagAsset(cacheKey, options?.tags);
+    const cached = this.prefabCache.get(cacheKey);
+    if (cached) {
+      return Promise.resolve(cached);
+    }
+
+    return new Promise((resolve, reject) => {
+      const doLoad = (bundle: AssetManager.Bundle) => {
+        bundle.load(path, Prefab, (error, asset) => {
+          if (error || !asset) {
+            reject(error || new Error(`load bundle prefab failed: ${bundleName}:${path}`));
+            return;
+          }
+          asset.addRef();
+          this.prefabCache.set(cacheKey, asset);
+          this.memoryManager?.notifyLoaded(cacheKey, bundleName, 'Prefab');
+          resolve(asset);
+        });
+      };
+
+      const existing = assetManager.getBundle(bundleName);
+      if (existing) {
+        doLoad(existing);
+      } else {
+        assetManager.loadBundle(bundleName, (err, bundle) => {
+          if (err || !bundle) {
+            reject(err || new Error(`loadBundle failed: ${bundleName}`));
+            return;
+          }
+          doLoad(bundle);
+        });
+      }
+    });
+  }
+
   public loadSpriteFrames(path: string, options?: LoadOptions): Promise<SpriteFrame[]> {
     this.tagAsset(path, options?.tags);
     const cached = this.spriteFrameCache.get(path);
@@ -171,7 +212,12 @@ export class ResourceManager {
 
           const frame = new SpriteFrame();
           frame.texture = textureAsset;
-          frame.name = candidate.split('/').pop() ?? 'generated-sprite-frame';
+          // 防禦性檢查：確保 textureAsset 存在且有內容，避免 _applySpriteSize 報錯
+          if (textureAsset && (textureAsset as any).width !== undefined) {
+             frame.name = candidate.split('/').pop() ?? 'generated-sprite-frame';
+          } else {
+             frame.name = 'invalid-frame';
+          }
           frame.addRef();
           this.singleSpriteFrameCache.set(cacheKey, frame);
           this.memoryManager?.notifyLoaded(cacheKey, 'resources', 'SpriteFrame(Texture2D fallback)');

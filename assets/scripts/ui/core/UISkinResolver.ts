@@ -77,6 +77,13 @@ export class UISkinResolver {
 
         try {
             const frame = await services().resource.loadSpriteFrame(path);
+            // 防禦：瀏覽器模式下 SpriteFrame 可能載入成功但內部 texture 為 null，
+            // 直接賦給 Sprite 會導致 _applySpriteSize 存取 texture.width 崩潰
+            if (!frame || !frame.texture) {
+                console.warn(`[UISkinResolver] SpriteFrame texture 無效: ${slotId} → ${path}`);
+                this._spriteCache.set(slotId, null);
+                return null;
+            }
             this._spriteCache.set(slotId, frame);
             return frame;
         } catch (e) {
@@ -131,7 +138,8 @@ export class UISkinResolver {
         const loadFrame = async (path: string | undefined): Promise<SpriteFrame | null> => {
             if (!path) return null;
             try {
-                return await services().resource.loadSpriteFrame(path);
+                const frame = await services().resource.loadSpriteFrame(path);
+                return (frame && frame.texture) ? frame : null;
             } catch {
                 return null;
             }
