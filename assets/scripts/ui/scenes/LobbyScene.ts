@@ -73,29 +73,6 @@ export class LobbyScene extends Component {
             services().event.emit('SHOW_TOAST', { message: '系統：水墨金屬 UI 已啟動 (v2.2)' });
         }, 1);
 
-        // 自動展開武將列表（或張飛的全幅立繪介面供驗證）
-        this.scheduleOnce(() => {
-            this._showTestPortrait();
-        }, 2);
-    }
-
-    private _showTestPortrait() {
-        if (!this._portraitPanel) return;
-        const config: GeneralPortraitConfig = {
-            id: 'G001',
-            templateId: 'ZY_01',
-            title: '【燕人】',
-            name: '張飛',
-            gender: 'Male',
-            age: 28,
-            vitality: 100,
-            maxVitality: 100,
-            role: 'Combat',
-            stats: { str: 98, int: 55, lea: 85, pol: 33, cha: 60, luk: 80 },
-            coreTags: ['長矛', '豪膽', '騎兵', '突破'],
-            portraitPath: 'sprites/generals/zhang_fei_portrait/spriteFrame'
-        };
-        this._portraitPanel.show(config);
     }
 
     private _ensureWidget(node: Node | null | undefined) {

@@ -11,7 +11,7 @@
     },
     "general.header.bg": {
       "kind": "color-rect",
-      "color": "parchment.divider"
+      "color": "dividerOnParchment"
     },
     "parchment.bg.shadow": {
       "kind": "sprite-frame",
@@ -55,7 +55,7 @@
     },
     "general.row.bg": {
       "kind": "color-rect",
-      "color": "parchment.divider",
+      "color": "dividerOnParchment",
       "alpha": 40
     },
     "general.label.title": {
@@ -70,7 +70,7 @@
       "kind": "label-style",
       "fontSize": 20,
       "lineHeight": 28,
-      "color": "parchment.text.primary",
+      "color": "textOnParchment",
       "horizontalAlign": "LEFT",
       "overflow": "SHRINK",
       "outlineWidth": 0
@@ -79,7 +79,7 @@
       "kind": "label-style",
       "fontSize": 20,
       "lineHeight": 26,
-      "color": "parchment.text.primary",
+      "color": "textOnParchment",
       "horizontalAlign": "LEFT",
       "overflow": "SHRINK",
       "outlineWidth": 0
@@ -88,7 +88,7 @@
       "kind": "label-style",
       "fontSize": 20,
       "lineHeight": 26,
-      "color": "parchment.text.secondary",
+      "color": "textMuted",
       "horizontalAlign": "LEFT",
       "outlineWidth": 0
     },
@@ -96,7 +96,7 @@
       "kind": "label-style",
       "fontSize": 20,
       "lineHeight": 26,
-      "color": "parchment.text.secondary",
+      "color": "textMuted",
       "horizontalAlign": "LEFT",
       "outlineWidth": 0
     },
@@ -104,7 +104,7 @@
       "kind": "label-style",
       "fontSize": 20,
       "lineHeight": 26,
-      "color": "parchment.text.accent",
+      "color": "textAccent",
       "horizontalAlign": "LEFT",
       "outlineWidth": 0
     },
