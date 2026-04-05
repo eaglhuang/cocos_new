@@ -1721,6 +1721,115 @@
         "UI-2-0062"
       ],
       "notes": "2026-04-02 | 狀態: open | 工作: 定義命紋靈獸與虎符特種軍隊的連動規則 | 結論: 使用者已明確要求虎符軍隊也要呼應血脈靈獸與故事，這是核心賣點之一 | 風險: 若不及早定義，軍隊視覺、卡面與角色血脈將失聯"
+    },
+    {
+      "id": "UI-2-0074",
+      "priority": "P0",
+      "phase": "E",
+      "owner": "Agent1",
+      "status": "done",
+      "created": "2026-04-05",
+      "created_by_agent": "Agent1",
+      "type": "architecture",
+      "title": "UIConfig UIID 補全 + UIManager 動態載入架構設計",
+      "description": "UIConfig.ts 的 UIID enum 只有6個入口（全為戰鬥 UI），22 個畫面繞過 UIManager。需補全 UIID enum 並在 UIManager.open() 加入動態 Prefab 載入路徑。",
+      "related": [
+        "UI-2-0018",
+        "DATA-1-0001"
+      ],
+      "depends": [],
+      "notes": "2026-04-05 | done | UIID enum 由 6 → 25 入口；UIManager 新增 setupLayers + openAsync；TypeScript 無報錯"
+    },
+    {
+      "id": "UI-2-0075",
+      "priority": "P1",
+      "phase": "E",
+      "owner": "Agent1",
+      "status": "open",
+      "created": "2026-04-05",
+      "created_by_agent": "Agent1",
+      "type": "refactor",
+      "title": "UISpecLoader 升級為 ServiceLoader 共享單例",
+      "description": "15 個元件各自 new UISpecLoader()，快取無法跨元件共享。改由 ServiceLoader 提供共享實例。",
+      "related": [
+        "UI-2-0074"
+      ],
+      "depends": [],
+      "notes": "2026-04-05 | A3 grep 確認 15 個獨立 new UISpecLoader() | open"
+    },
+    {
+      "id": "UI-2-0076",
+      "priority": "P1",
+      "phase": "E",
+      "owner": "Agent1",
+      "status": "open",
+      "created": "2026-04-05",
+      "created_by_agent": "Agent1",
+      "type": "refactor",
+      "title": "Component Binder Migration - 11 個元件批量遷移",
+      "description": "BattleHUD/GeneralDetailPanel 等 11 個元件仍用 getChildByName/getChildByPath 手動節點操作。以 DuelChallengePanel 為範本批量遷移至 UITemplateBinder.onReady(binder) 模式。",
+      "related": [
+        "DATA-1-0001",
+        "UI-2-0075"
+      ],
+      "depends": [
+        "DATA-1-0001"
+      ],
+      "notes": "2026-04-05 | A4 11 個元件待遷移，DuelChallengePanel 為最佳實踐範本 | open"
+    },
+    {
+      "id": "UI-2-0077",
+      "priority": "P1",
+      "phase": "E",
+      "owner": "Agent1",
+      "status": "open",
+      "created": "2026-04-05",
+      "created_by_agent": "Agent1",
+      "type": "refactor",
+      "title": "i18n 語系 hardcoding 移除",
+      "description": "14 個元件硬編碼 loadI18n(zh-TW)。I18nSystem 已在 ServiceLoader 中，需加入 currentLocale 屬性並讓各元件動態取得語系。",
+      "related": [
+        "UI-2-0075"
+      ],
+      "depends": [],
+      "notes": "2026-04-05 | A5 grep 確認 14 個 loadI18n(zh-TW) 硬編碼 | open"
+    },
+    {
+      "id": "UI-2-0078",
+      "priority": "P2",
+      "phase": "E",
+      "owner": "Agent1",
+      "status": "open",
+      "created": "2026-04-05",
+      "created_by_agent": "Agent1",
+      "type": "runtime-support",
+      "title": "MemoryManager 基礎實作（LRU + releaseByScope）",
+      "description": "MemoryManager 為明確空殼。需實作 LRU 淡汰快取與 releaseByScope(scopeId) 以支援場景切換資產釋放。",
+      "related": [
+        "UI-2-0074",
+        "UI-2-0075"
+      ],
+      "depends": [
+        "UI-2-0075"
+      ],
+      "notes": "2026-04-05 | A6 MemoryManager 空殼，無 LRU 無 releaseByScope | open"
+    },
+    {
+      "id": "UI-2-0079",
+      "priority": "P3",
+      "phase": "E",
+      "owner": "Agent1",
+      "status": "open",
+      "created": "2026-04-05",
+      "created_by_agent": "Agent1",
+      "type": "chore",
+      "title": "Constants.ts UILayerName deprecated 清理",
+      "description": "Constants.ts 仍有 @deprecated UILayerName enum 與 UIConfig.ts 的 LayerType 並存。確認無呼叫端後移除。",
+      "related": [
+        "UI-2-0074"
+      ],
+      "depends": [],
+      "notes": "2026-04-05 | A7 UILayerName @deprecated 殘留 Constants.ts | open"
     }
   ]
 }

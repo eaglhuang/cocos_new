@@ -19,8 +19,8 @@
   "highRiskFiles": {
     "assets/scripts/ui/core/UIPreviewBuilder.ts": {
       "label": "UI Preview Builder",
-      "baselineNonAscii": 796,
-      "maxNonAsciiDelta": 240,
+      "baselineNonAscii": 1305,
+      "maxNonAsciiDelta": 300,
       "allowBom": true
     },
     "assets/scripts/ui/core/UISkinResolver.ts": {

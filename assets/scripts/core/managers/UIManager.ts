@@ -30,8 +30,10 @@
  * 參考來源：dgflash/oops-framework LayerManager
  */
 
+import { instantiate, Node } from "cc";
 import { UILayer } from "../../ui/layers/UILayer";
 import { UIID, UIConfig, LayerType } from "../config/UIConfig";
+import { services } from "./ServiceLoader";
 
 // ─── 內部紀錄結構 ─────────────────────────────────────────────────────────────
 interface UIEntry {
@@ -56,6 +58,13 @@ export class UIManager {
     private readonly dialogQueue: UIID[] = [];
     private activeDialog: UIID | null = null;
 
+    /**
+     * 各層級的父節點容器（供 openAsync 動態實例化時掛載子節點）。
+     * 透過 setupLayers() 注入，由場景初始化時設定。
+     * 對照 Unity：類似 Canvas 下各 Sort Order 分組的 GameObject。
+     */
+    private readonly layerContainers = new Map<LayerType, Node>();
+
     // ─── 公開 API ──────────────────────────────────────────────────────────────
 
     /**
@@ -64,6 +73,79 @@ export class UIManager {
      */
     public register(uiId: UIID, layer: UILayer): void {
         this.registry.set(uiId, { uiId, layer, isOpen: false, wasCached: false });
+    }
+
+    /**
+     * 設定各層級的父節點容器，供 openAsync 動態實例化 Prefab 時掛載子節點。
+     * 通常在 LobbyScene / BattleScene 的 onLoad 中呼叫一次。
+     *
+     * 對照 Unity：類似在 Canvas 下為每個 Sort Order 分層建立一個 GameObject 作為容器。
+     *
+     * @param containers 層級類型 → 對應 Node 的鍵值對，不需要設定所有層級
+     */
+    public setupLayers(containers: Partial<Record<LayerType, Node>>): void {
+        for (const key of Object.keys(containers) as LayerType[]) {
+            const node = containers[key];
+            if (node) {
+                this.layerContainers.set(key, node);
+            }
+        }
+    }
+
+    /**
+     * 非同步開啟指定 UI。
+     *
+     * - 若 UIID 已透過 register() 登錄，直接呼叫 open()（同步路徑，無載入延遲）。
+     * - 若尚未登錄但 UIConfig[uiId].prefab 存在，自動:
+     *   1. 從 ResourceManager 載入 Prefab
+     *   2. instantiate 節點
+     *   3. 掛到對應層級的容器節點（若 setupLayers 已設定）
+     *   4. 取得 UILayer 元件並 register
+     *   5. 呼叫 open()
+     *
+     * 對照 Unity：類似 Addressables.InstantiateAsync + 取得 UI Component 後顯示的流程。
+     *
+     * @returns 成功開啟回傳 true；prefab 路徑不存在或載入失敗回傳 false
+     */
+    public async openAsync(uiId: UIID): Promise<boolean> {
+        // 已登錄 → 直接走同步路徑
+        if (this.registry.has(uiId)) {
+            return this.open(uiId);
+        }
+
+        const cfg = UIConfig[uiId];
+        if (!cfg.prefab) {
+            console.warn(`[UIManager] openAsync: "${uiId}" 未 register 且無 prefab 路徑，無法開啟`);
+            return false;
+        }
+
+        let prefab;
+        try {
+            prefab = await services().resource.loadPrefab(cfg.prefab);
+        } catch (e) {
+            console.error(`[UIManager] openAsync: "${uiId}" prefab 載入失敗 (${cfg.prefab}):`, e);
+            return false;
+        }
+
+        const node = instantiate(prefab);
+
+        // 掛到層級容器（若場景已透過 setupLayers 提供）
+        const container = this.layerContainers.get(cfg.layer);
+        if (container) {
+            container.addChild(node);
+        } else {
+            console.warn(`[UIManager] openAsync: "${uiId}" 無層級容器 (${cfg.layer})，節點未掛載場景，請確認 setupLayers() 已呼叫`);
+        }
+
+        const layer = node.getComponent(UILayer);
+        if (!layer) {
+            console.error(`[UIManager] openAsync: "${uiId}" 的 Prefab 缺少 UILayer 元件，請確認根節點掛有 UILayer（或其子類）`);
+            node.destroy();
+            return false;
+        }
+
+        this.register(uiId, layer);
+        return this.open(uiId);
     }
 
     /**
