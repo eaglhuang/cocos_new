@@ -417,12 +417,29 @@ services().ui.open(UIID.BattleHUD);
 
 ## 18. 目前下一步
 
+### 已完成（第十六批，commit `8d3eebf`，2026-04-05）
+
 - ✅ **P1 完成**：UI-2-0077（i18n 脫硬編碼 — 15 元件全改用 `services().i18n.currentLocale`）
 - ✅ **P1 完成**：DATA-1-0001（BattleBindData.ts — 5 介面 + 38 bind path 替換，commit `4204172`）
 - ✅ **Bug 修復**：VFX prewarm 改用 vfx_core bundle；UISkinResolver null-texture 防禦（commit `41f2dab`）
-- 🔄 **P1 進行中**：UI-2-0076（Binder 遷移：11 個元件從 getChildByName/getChildByPath 遷移至 `UITemplateBinder.onReady(binder)`，參考 `DuelChallengePanel` 最佳實踐）
+- ✅ **框架落地**：`UIPreviewBuilder.buildScreen()` 完成 `onReady(binder)` 框架（Widget realignment pass + `UITemplateBinder` 綁定 + `clearDynamic` 佔位清除）
+- ✅ **契約擴充**：`UISpecTypes.ts` 新增 `WidgetDef.hCenter/vCenter`、`scroll-view` nodeType、`UIWidgetFragmentSpec` / `UITemplateParamDef` / `UITemplateComposeItem`
+- ✅ **BattleScene 修正**：`BattleScenePanel.ensureCanvasHost()` 統一設定 layer / 1920×1080 / `Widget.AlignMode.ALWAYS`，解決子面板不渲染與 Widget 錯位
+- ✅ **SceneManager 橋接**：新增 `boardRenderer` 橋接（`registerBoardRenderer` / `getBoardRenderer`）
+- ✅ **文件**：`cross-reference-index.md` 更新至第十六批（UI Core 子節 + 10 個核心 TS 首次建立索引）
+
+### 立即下一步（Agent1 最優先）
+
+- 🔄 **P1 進行中 → 立即執行**：**UI-2-0076**（Binder 遷移：11 個元件從 `getChildByName/getChildByPath` 遷移至 `onReady(binder: UITemplateBinder)` 模式）
+  - 框架已就位（`buildScreen()` 會呼叫 `onReady(binder)`）
+  - 參考最佳實踐：`DuelChallengePanel.ts`（已完成遷移）
+  - `GeneralDetailOverviewShell.ts` 已移除 `_mountCardCopy`，是下一個優先遷移目標
+  - 完成後即可讓所有面板資料驅動、可單元測試
+
+### 後續排程
+
 - **P2 待排**：UI-2-0078（MemoryManager 實作：LRU + releaseByScope）
-- 為 LobbyMain / ShopMain / Gacha 建立真正的 Prefab，讓 openAsync 完整走通
+- 為 LobbyMain / ShopMain / Gacha 建立真正的 Prefab，讓 `openAsync` 完整走通
 - 解除 UI-2-0046 blockers → 繼續 UI-2-0026（BattleScene 對位修正）
 - 收斂 slot-map 匯出格式，讓它能直接轉成 scaffolder config JSON
 - 繼續校正 `cocos-log-bridge` 的 scene context
