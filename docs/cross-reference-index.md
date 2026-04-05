@@ -2,11 +2,24 @@
 
 > **唯一索引來源**：本檔案是所有規格書與代碼之間關聯的唯一真實來源。
 > 維護規則見 `docs/keep.md` → 🔗 文件與代碼交叉索引規範。
+> 正式規格優先回寫母規格；補遺只作過渡整理。若非全新功能規格，結案前必須併回正式規格書並同步更新本索引。
 > `docs/討論來源/` 目錄下的文件不參與索引。
 
 > 代碼索引/掃描範圍：僅包含 `assets/` 與 `extensions/` 目錄下的程式碼檔案；其他資料夾不參與代碼索引或自動掃描。
 
-**最後更新**: 2026-03-31 (第七批：UI 參考圖品質分析 v2 升級 + Agent 協作策略 + To-Do 追蹤計畫)
+**最後更新**: 2026-04-05 (第十五批：BattleBindData schema contract + Bug fix commits)
+
+> **第十四批整合（2026-04-05）**：`tasks_index.md` 已重建為乾淨 UTF-8 索引，改由 `ui-quality-todo.json` 生成；同時 `GeneralDetailOverviewShell` 已把 `TopSummaryRow / BloodlineRow / StoryStrip` 的文字節點正式落回 `layout JSON`，runtime 不再臨時建立最終字框。
+> **第十三批整合（2026-04-05）**：`GeneralDetailBloodlineV3` 已正式以 `UI-2-0058 -> UI-2-0059 -> UI-2-0061` 的順序收斂；第一批優先固定 slot family / skin contract，並明確要求先重用既有 `general_detail` family 資產，避免 overview shell 繼續停留在 `color-rect` placeholder。
+> **第十二批整合（2026-04-05）**：`GeneralDetailPanel` 已開始採用 `overview shell host + tab content host` 的過渡整合方式；目前 `Basics` 可路由到 `GeneralDetailOverviewShell`，而其他 tab 維持既有內容宿主，作為不破壞分頁主體的第一步 runtime 收斂。
+
+> **第十一批整合（2026-04-05）**：補上 `GeneralDetailPanel` 現行 tab 結構與 `GeneralDetailBloodlineV3` overview slot 的一對一對映，正式定義 v3 不應被塞回舊 `RightContentArea/TabBasics`，而是升級為 `GeneralDetail` 的外層首頁殼層；其餘 tab 預設沿用同一個人物頁母型，以模組延展為主，不預設各自獨立成新正式畫面。
+
+> **第十批整合（2026-04-05）**：正式把「補遺僅作過渡、重要內容必須併回母規格」回寫到 `keep.md`，並同步回寫 `武將人物介面規格書.md`、`UI 規格書.md` 與本索引；同時明確定義 `GeneralDetailBloodlineV3` 屬於 `GeneralDetail` 的預設首頁 / 總覽殼層，而不是第二套平行正式人物系統。
+
+> **第九批整合（2026-04-02）**：新增 `血脈命鏡過場載入規格書.md`，正式定義品牌級 Loading / 覺醒 / 升星畫面的 `雙面命格 + 命鏡裂隙 + 定心者 + 命運故事帶` 骨架；同步回寫 `UI 規格書.md` 的世界觀過場序列與 ui-spec 待建入口。
+
+> **第八批整合（2026-04-01）**：依據基因傳承世界觀重定位，正式回寫 `新手開場規格書.md`、`血統理論系統.md`、`武將人物介面規格書.md`、`同名武將系統.md`、`兵種（虎符）系統.md`、`名詞定義文件.md`、`血統樹14人UI規格書.md`、`UI 規格書.md`。本批新增的核心主軸包含：`祖紋命篆`、`命紋靈獸`、`歷史趣聞 / 血脈傳聞`、`血脈卡 / 英靈虎符`、重複卡分流（`復生重練 / 血脈灌注`），以及「UI 只做微調、不整套翻新」原則。
 
 > **本次批次更新（2026-03-30）**：依據 `docs/討論來源/比較舊的/` 11 份舊討論檔整合，更新以下 12 份規格書（新增 K/L 章節或公式補充）：武將壽命系統、遊戲時間系統、培育系統、運氣系統、結緣系統（配種）、血統理論系統、戰場適性系統、教官系統（支援卡）、轉蛋系統、留存系統、領地治理系統、名將挑戰賽系統。衝突以現行規格書為準。
 
@@ -45,10 +58,10 @@
 
 | 規格書 | 被依賴 | 依賴 |
 |---|---|---|
-| 血統理論系統.md | 因子爆發系統、培育系統、結緣系統（配種）、同名武將系統、家族關係（史實相性）系統 | — |
+| 血統理論系統.md | 因子爆發系統、培育系統、結緣系統（配種）、同名武將系統、家族關係（史實相性）系統、兵種（虎符）系統、武將人物介面規格書.md、新手開場規格書.md、UI 規格書.md | — |
 | 因子爆發系統.md | 戰法系統、戰場適性系統、因子解鎖系統、運氣系統、家族關係（史實相性）系統 | 血統理論系統 |
 | 因子解鎖系統.md | 名士預言系統 | 因子爆發系統、培育系統 |
-| 同名武將系統.md | — | 血統理論系統、轉蛋系統 |
+| 同名武將系統.md | 兵種（虎符）系統 | 血統理論系統、轉蛋系統 |
 | 家族關係（史實相性）系統.md | — | 血統理論系統、因子爆發系統 |
 | 運氣系統.md | — | 因子爆發系統 |
 
@@ -69,7 +82,7 @@
 | 規格書 | 被依賴 | 依賴 |
 |---|---|---|
 | 戰場部署系統.md | 名將挑戰賽系統 | 經濟系統、兵種（虎符）系統、數值系統、武將戰績系統 |
-| 兵種（虎符）系統.md | 戰場部署系統、名將挑戰賽系統 | 轉職與宿命系統、戰法系統、血統理論系統 |
+| 兵種（虎符）系統.md | 戰場部署系統、名將挑戰賽系統、武將人物介面規格書.md | 轉職與宿命系統、戰法系統、血統理論系統、同名武將系統 |
 | 戰場適性系統.md | — | 因子爆發系統、戰法系統、數值系統 |
 | 戰法系統.md | 戰場適性系統、戰法場景規格書（格子戰法定義） | 因子爆發系統、培育系統、教官系統（支援卡） |
 | 武將戰績系統.md | 戰場部署系統 | 轉蛋系統 |
@@ -105,8 +118,9 @@
 |---|---|---|
 | MVP遊戲驗證規格書.md | — | 武將系統、結緣系統、培育系統、血統理論系統、因子爆發系統、戰場部署系統 |
 | Data Schema文件（本機端與Server端）.md | — | 全系統（匯總所有 I 區 Schema） |
-| 新手開場規格書.md | 正式版劇本文案 | 轉蛋系統、血統理論系統、因子解鎖系統、道具系統 |
+| 新手開場規格書.md | 正式版劇本文案、UI 規格書.md | 轉蛋系統、血統理論系統、因子解鎖系統、道具系統 |
 | 正式版劇本文案.md | — | 新手開場規格書、UI 規格書 |
+| 血脈命鏡過場載入規格書.md | UI 規格書.md | 血統理論系統.md、武將人物介面規格書.md |
 
 ### Docs 層級文件
 
@@ -119,8 +133,8 @@
 | 討論來源整併狀態.md | keep.md | cross-reference-index.md |
 | 正式規格矛盾審查.md | keep.md | 討論來源整併狀態.md、cross-reference-index.md |
 | 程式規格書.md | — | 新手開場規格書、血統理論系統、轉蛋系統 |
-| UI 規格書.md | 正式版劇本文案、UI技術規格書、武將人物介面規格書.md | 新手開場規格書、程式規格書 |
-| 武將人物介面規格書.md | UI技術規格書、武將系統.md、血統理論系統.md、戰法系統.md、戰場適性系統.md | GeneralDetailPanel.ts、GeneralUnit.ts、GeneralListPanel.ts、LobbyScene.ts |
+| UI 規格書.md | 正式版劇本文案、UI技術規格書、武將人物介面規格書.md、血統樹14人UI規格書.md | 新手開場規格書、程式規格書、血統理論系統.md、兵種（虎符）系統.md |
+| 武將人物介面規格書.md | UI技術規格書、武將系統.md、血統理論系統.md、戰法系統.md、戰場適性系統.md、兵種（虎符）系統.md | GeneralDetailPanel.ts、GeneralUnit.ts、GeneralListPanel.ts、LobbyScene.ts |
 | 武將人物介面美術接線清單.md | 武將人物介面規格書.md、UI技術規格書.md | — |
 | 主戰場UI規格書.md | UI技術規格書 | demo_playbook、戰場部署系統、兵種（虎符）系統、戰法場景規格書（§ 6 場景視覺主題） |
 | 美術素材規劃與使用說明.md | UI技術規格書、demo_技術架構.md | keep.md |
@@ -166,6 +180,12 @@
 |---|---|---|
 | TroopUnit.ts | 兵種（虎符）系統.md, 數值系統.md | D: TroopStats, TroopUnit class; C: TroopType enum |
 | GeneralUnit.ts | 武將系統.md, 武將人物介面規格書.md, 數值系統.md | D: GeneralConfig, GeneralUnit class; C: maxSp, skillId, preferredTerrain, str, int, lea, luk |
+
+#### Core Data (`assets/scripts/core/data/`)
+
+| 代碼檔 | 對應規格書 | 引用類型 |
+|---|---|---|
+| BattleBindData.ts | 主戰場UI規格書.md, BattleScene layouts | D: BattleStateData, UnitDisplayData, TallyUnitData, BattleActionData, BattleLogData; 概: BattleScene 動態 label 的 ViewModel 契約（DATA-1-0001，2026-04-05）|
 
 #### Core Config (`assets/scripts/core/config/`)
 
@@ -231,7 +251,9 @@
 | BattleLogPanel.ts         | UI 規格書.md, 主戰場UI規格補充_v3.md                                          | 概: Zone5 滾動式戰鬥日誌+可折疊(v3 移除 EndTurn/Tactics/Duel 至 Zone7) ✅ UIPreviewBuilder → battle-log-{main/default/screen}.json |
 | DeployPanel.ts            | 戰場部署系統.md, UI 規格書.md, 美術素材規劃與使用說明.md                       | 概: 兵種選擇 4 卡池 + 選路即部署 ✅ UIPreviewBuilder 已遷移 → deploy-panel-{main/default/screen}.json |
 | DuelChallengePanel.ts     | 名將挑戰賽系統.md                                                              | 概: 單挑挑戰/接受 UI ✅ UIPreviewBuilder 已遷移 → duel-challenge-{main/default/screen}.json |
-| GeneralDetailPanel.ts     | 武將系統.md, 武將人物介面規格書.md                                             | 概: 武將詳細面板 ✅ UIPreviewBuilder 已遷移 |
+| GeneralDetailPanel.ts     | 武將系統.md, 武將人物介面規格書.md                                             | 概: 武將詳細面板；正式為多分頁容器，過渡期由 `Basics` 路由到 overview shell，其餘 tab 維持既有 content host ✅ UIPreviewBuilder 已遷移 |
+| GeneralDetailOverviewMapper.ts | 武將人物介面規格書.md, UI 規格書.md                                      | 概: 將 `GeneralConfig` 收斂成 overview shell 可直接使用的 header / summary / bloodline slot 映射，作為 `GeneralDetail` 首頁殼整合的 runtime seam |
+| GeneralDetailOverviewShell.ts | 武將人物介面規格書.md, UI 規格書.md                                       | 概: `general-detail-bloodline-v3` 的 runtime shell；先承接 overview 殼層渲染與 slot 填值，供後續併入 `GeneralDetailPanel` 外層 host |
 | GeneralListPanel.ts       | 武將系統.md, 武將人物介面規格書.md                                             | 概: 武將列表 ✅ UIPreviewBuilder 已遷移 |
 | GeneralPortraitPanel.ts   | 武將系統.md                                                                    | 概: 武將立繪面板 ✅ UIPreviewBuilder 已遷移 |
 | ResultPopup.ts            | 戰場部署系統.md                                                                | 概: 戰鬥結算面板 ✅ UIPreviewBuilder 已遷移 |
@@ -253,7 +275,7 @@
 |---|---|---|
 | UILayer.ts | UI 規格書.md | 概: UI 面板基類（show/hide） |
 | LoadingScene.ts | 新手開場規格書.md, UI參考圖品質分析.md | 概: 過場載入場景，同時也是 D-1~D-3 的 screen-driven preview hub（`previewMode` + `previewTarget`） |
-| LobbyScene.ts | 新手開場規格書.md, 武將系統.md, 武將人物介面規格書.md | 概: 大廳（武將列表+詳情） |
+| LobbyScene.ts | 新手開場規格書.md, 武將系統.md, 武將人物介面規格書.md | 概: 大廳（武將列表+詳情）；含 `onClickGeneralDetailOverviewSmoke()` 最小 smoke route，可直接驗證 `GeneralListPanel -> GeneralDetailPanel(Basics -> overview shell)` |
 | LoginScene.ts | 新手開場規格書.md | 概: 登入畫面 |
 
 #### UI Spec JSON（三層 JSON 系統，截至 2026-03-30）
@@ -270,6 +292,7 @@
 | style-check    | style-check-main.json    | style-check-default.json    | — (預覽工具)               | —         | StyleCheckPanel.ts |
 | general-list   | general-list-main.json   | general-list-default.json   | general-list-screen.json   | lobby_ui  | GeneralListPanel.ts |
 | general-detail | general-detail-main.json | general-detail-default.json | general-detail-screen.json | lobby_ui  | GeneralDetailPanel.ts |
+| general-detail-bloodline-v3 | general-detail-bloodline-v3-main.json | general-detail-bloodline-v3-default.json | general-detail-bloodline-v3-screen.json | lobby_ui | GeneralDetailPanel.ts（v3 預設總覽殼層，待整合為正式入口） |
 | general-portrait | general-portrait-main.json | general-portrait-default.json | general-portrait-screen.json | lobby_ui | GeneralPortraitPanel.ts |
 | gacha          | gacha-main.json          | gacha-default.json          | gacha-screen.json          | lobby_ui  | (待建 GachaPanel.ts) |
 | support-card   | support-card-main.json   | support-card-default.json   | support-card-screen.json   | lobby_ui  | (待建 SupportCardPanel.ts) |
@@ -392,3 +415,12 @@
 | P1 | `skins/training-default.json` | 培育系統.md |
 | P1 | `screens/training-screen.json` | 培育系統.md、教官系統（支援卡）.md |
 | P2 | `layouts/general-detail.json` | 武將人物介面規格書.md |
+| P2 | `layouts/general-bloodline-vignette-main.json` | 武將人物介面規格書.md、血統理論系統.md |
+| P2 | `skins/general-bloodline-vignette-default.json` | 武將人物介面規格書.md、UI 規格書.md |
+| P2 | `screens/general-bloodline-vignette-screen.json` | 武將人物介面規格書.md、UI 規格書.md |
+| P2 | `layouts/spirit-tally-detail-main.json` | 兵種（虎符）系統.md、武將人物介面規格書.md |
+| P2 | `skins/spirit-tally-detail-default.json` | 兵種（虎符）系統.md、UI 規格書.md |
+| P2 | `screens/spirit-tally-detail-screen.json` | 兵種（虎符）系統.md、UI 規格書.md |
+| P2 | `layouts/bloodline-mirror-loading-main.json` | 血脈命鏡過場載入規格書.md、UI 規格書.md |
+| P2 | `skins/bloodline-mirror-loading-default.json` | 血脈命鏡過場載入規格書.md、UI 規格書.md |
+| P2 | `screens/bloodline-mirror-loading-screen.json` | 血脈命鏡過場載入規格書.md、UI 規格書.md |

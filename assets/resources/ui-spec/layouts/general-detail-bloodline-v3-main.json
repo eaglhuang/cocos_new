@@ -1,0 +1,277 @@
+{
+  "id": "general-detail-bloodline-v3-main",
+  "version": 1,
+  "canvas": {
+    "fitWidth": true,
+    "fitHeight": true,
+    "safeArea": true,
+    "designWidth": 1920,
+    "designHeight": 1080
+  },
+  "root": {
+    "type": "container",
+    "name": "GeneralDetailBloodlineRoot",
+    "widget": { "top": 0, "bottom": 0, "left": 0, "right": 0 },
+    "children": [
+      {
+        "type": "image",
+        "name": "BackgroundFull",
+        "widget": { "top": 0, "bottom": 0, "left": 0, "right": 0 },
+        "skinSlot": "gdv3.bg.full"
+      },
+      {
+        "type": "image",
+        "name": "PortraitCarrier",
+        "widget": { "top": 84, "bottom": 168, "left": 42 },
+        "width": "37%",
+        "skinSlot": "gdv3.portrait.carrier"
+      },
+      {
+        "type": "image",
+        "name": "PortraitImage",
+        "widget": { "top": 72, "bottom": 120, "left": 54 },
+        "width": "34%",
+        "skinSlot": "gdv3.portrait.image"
+      },
+      {
+        "type": "image",
+        "name": "UnownedPortraitRibbon",
+        "widget": { "top": 70, "left": 56 },
+        "width": 184,
+        "height": 60,
+        "skinSlot": "gdv3.unowned.ribbon"
+      },
+      {
+        "type": "label",
+        "name": "UnownedPortraitHint",
+        "widget": { "top": 134, "left": 64 },
+        "width": 210,
+        "height": 28,
+        "styleSlot": "gdv3.label.unowned"
+      },
+      {
+        "type": "panel",
+        "name": "InfoCard",
+        "widget": { "top": 48, "right": 48 },
+        "width": "53%",
+        "height": "67%",
+        "skinSlot": "gdv3.info.card"
+      },
+      {
+        "type": "container",
+        "name": "InfoContent",
+        "widget": { "top": 64, "right": 64 },
+        "width": "50%",
+        "height": "63%",
+        "children": [
+          {
+            "type": "container",
+            "name": "HeaderRow",
+            "widget": { "top": 0, "left": 0, "right": 0 },
+            "height": 112,
+            "layout": { "type": "horizontal", "spacing": 16 },
+            "children": [
+              { "type": "label", "name": "NameLabel", "width": "34%", "height": 96, "styleSlot": "gdv3.label.name" },
+              { "type": "label", "name": "TitleLabel", "width": "34%", "height": 96, "styleSlot": "gdv3.label.title" },
+              {
+                "type": "container",
+                "name": "MetaColumn",
+                "width": "30%",
+                "height": 96,
+                "layout": { "type": "vertical", "spacing": 6 },
+                "children": [
+                  { "type": "label", "name": "RarityLabel", "width": "100%", "height": 46, "styleSlot": "gdv3.label.meta" },
+                  { "type": "image", "name": "UnownedInfoBadge", "width": 146, "height": 34, "skinSlot": "gdv3.unowned.badge" }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "container",
+            "name": "TopSummaryRow",
+            "widget": { "top": 132, "left": 0, "right": 0 },
+            "height": 152,
+            "layout": { "type": "horizontal", "spacing": 14 },
+            "children": [
+              {
+                "type": "panel",
+                "name": "CoreStatsCard",
+                "width": "42%",
+                "height": 152,
+                "skinSlot": "gdv3.module.card",
+                "layout": { "type": "vertical", "spacing": 8, "paddingTop": 18, "paddingBottom": 16, "paddingLeft": 18, "paddingRight": 18 },
+                "children": [
+                  { "type": "label", "name": "CoreStatsTitle", "width": "100%", "height": 30, "styleSlot": "gdv3.label.section" },
+                  { "type": "label", "name": "CoreStatsValue", "width": "100%", "height": 88, "styleSlot": "gdv3.label.cardBody" }
+                ]
+              },
+              {
+                "type": "panel",
+                "name": "RoleCard",
+                "width": "24%",
+                "height": 152,
+                "skinSlot": "gdv3.module.card",
+                "layout": { "type": "vertical", "spacing": 8, "paddingTop": 18, "paddingBottom": 16, "paddingLeft": 18, "paddingRight": 18 },
+                "children": [
+                  { "type": "label", "name": "RoleTitle", "width": "100%", "height": 30, "styleSlot": "gdv3.label.section" },
+                  { "type": "label", "name": "RoleValue", "width": "100%", "height": 88, "styleSlot": "gdv3.label.cardBody" }
+                ]
+              },
+              {
+                "type": "panel",
+                "name": "TraitCard",
+                "width": "34%",
+                "height": 152,
+                "skinSlot": "gdv3.module.card",
+                "layout": { "type": "vertical", "spacing": 8, "paddingTop": 18, "paddingBottom": 16, "paddingLeft": 18, "paddingRight": 18 },
+                "children": [
+                  { "type": "label", "name": "TraitTitle", "width": "100%", "height": 30, "styleSlot": "gdv3.label.section" },
+                  { "type": "label", "name": "TraitValue", "width": "100%", "height": 88, "styleSlot": "gdv3.label.cardBody" }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "container",
+            "name": "BloodlineRow",
+            "widget": { "top": 308, "left": 0, "right": 0 },
+            "height": 280,
+            "layout": { "type": "horizontal", "spacing": 14 },
+            "children": [
+              {
+                "type": "panel",
+                "name": "BloodlineSummaryCard",
+                "width": "62%",
+                "height": 280,
+                "skinSlot": "gdv3.bloodline.card",
+                "layout": { "type": "vertical", "spacing": 10, "paddingTop": 22, "paddingBottom": 22, "paddingLeft": 22, "paddingRight": 22 },
+                "children": [
+                  { "type": "label", "name": "BloodlineCardTitle", "width": "100%", "height": 30, "styleSlot": "gdv3.label.section" },
+                  { "type": "label", "name": "BloodlineBody", "width": "100%", "height": 196, "styleSlot": "gdv3.label.cardBody" }
+                ]
+              },
+              {
+                "type": "panel",
+                "name": "BloodlineCrestCard",
+                "width": "38%",
+                "height": 280,
+                "skinSlot": "gdv3.bloodline.crest.card",
+                "layout": { "type": "vertical", "spacing": 10, "paddingTop": 22, "paddingBottom": 22, "paddingLeft": 22, "paddingRight": 22 },
+                "children": [
+                  { "type": "label", "name": "CrestTitle", "width": "100%", "height": 30, "styleSlot": "gdv3.label.section" },
+                  { "type": "label", "name": "CrestHint", "width": "100%", "height": 72, "styleSlot": "gdv3.label.note" }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "container",
+            "name": "BloodlineSummaryFields",
+            "widget": { "top": 336, "left": 20 },
+            "width": "36%",
+            "height": 212,
+            "layout": { "type": "vertical", "spacing": 10 },
+            "children": [
+              { "type": "label", "name": "BloodlineTitle", "width": "100%", "height": 36, "styleSlot": "gdv3.label.section" },
+              { "type": "label", "name": "BloodlineName", "width": "100%", "height": 36, "styleSlot": "gdv3.label.value" },
+              { "type": "label", "name": "AwakeningLabel", "width": "100%", "height": 30, "styleSlot": "gdv3.label.meta" },
+              { "type": "progress", "name": "AwakeningBar", "width": "92%", "height": 18, "skinSlot": "gdv3.progress.awakening" },
+              { "type": "label", "name": "PersonalityLabel", "width": "100%", "height": 30, "styleSlot": "gdv3.label.meta" },
+              { "type": "label", "name": "PersonalityValue", "width": "100%", "height": 42, "styleSlot": "gdv3.label.note" }
+            ]
+          },
+          {
+            "type": "image",
+            "name": "BloodlineCrest",
+            "widget": { "top": 350, "right": 68 },
+            "width": 220,
+            "height": 220,
+            "skinSlot": "gdv3.bloodline.crest"
+          }
+        ]
+      },
+      {
+        "type": "panel",
+        "name": "StoryStripRail",
+        "widget": { "left": 0, "right": 0, "bottom": 0 },
+        "height": 166,
+        "skinSlot": "gdv3.story.rail"
+      },
+      {
+        "type": "container",
+        "name": "StoryStrip",
+        "widget": { "left": 18, "right": 18, "bottom": 14 },
+        "height": 138,
+        "layout": { "type": "horizontal", "spacing": 8 },
+        "children": [
+          {
+            "type": "panel",
+            "name": "StoryCell01",
+            "width": "16.2%",
+            "height": 138,
+            "skinSlot": "gdv3.story.cell",
+            "layout": { "type": "vertical", "paddingTop": 14, "paddingBottom": 12, "paddingLeft": 12, "paddingRight": 12 },
+            "children": [
+              { "type": "label", "name": "StoryText", "width": "100%", "height": 112, "styleSlot": "gdv3.label.story" }
+            ]
+          },
+          {
+            "type": "panel",
+            "name": "StoryCell02",
+            "width": "16.2%",
+            "height": 138,
+            "skinSlot": "gdv3.story.cell",
+            "layout": { "type": "vertical", "paddingTop": 14, "paddingBottom": 12, "paddingLeft": 12, "paddingRight": 12 },
+            "children": [
+              { "type": "label", "name": "StoryText", "width": "100%", "height": 112, "styleSlot": "gdv3.label.story" }
+            ]
+          },
+          {
+            "type": "panel",
+            "name": "StoryCell03",
+            "width": "16.2%",
+            "height": 138,
+            "skinSlot": "gdv3.story.cell",
+            "layout": { "type": "vertical", "paddingTop": 14, "paddingBottom": 12, "paddingLeft": 12, "paddingRight": 12 },
+            "children": [
+              { "type": "label", "name": "StoryText", "width": "100%", "height": 112, "styleSlot": "gdv3.label.story" }
+            ]
+          },
+          {
+            "type": "panel",
+            "name": "StoryCell04",
+            "width": "16.2%",
+            "height": 138,
+            "skinSlot": "gdv3.story.cell.turn",
+            "layout": { "type": "vertical", "paddingTop": 14, "paddingBottom": 12, "paddingLeft": 12, "paddingRight": 12 },
+            "children": [
+              { "type": "label", "name": "StoryText", "width": "100%", "height": 112, "styleSlot": "gdv3.label.story" }
+            ]
+          },
+          {
+            "type": "panel",
+            "name": "StoryCell05",
+            "width": "16.2%",
+            "height": 138,
+            "skinSlot": "gdv3.story.cell.bloodline",
+            "layout": { "type": "vertical", "paddingTop": 14, "paddingBottom": 12, "paddingLeft": 12, "paddingRight": 12 },
+            "children": [
+              { "type": "label", "name": "StoryText", "width": "100%", "height": 112, "styleSlot": "gdv3.label.story" }
+            ]
+          },
+          {
+            "type": "panel",
+            "name": "StoryCell06",
+            "width": "16.2%",
+            "height": 138,
+            "skinSlot": "gdv3.story.cell.future",
+            "layout": { "type": "vertical", "paddingTop": 14, "paddingBottom": 12, "paddingLeft": 12, "paddingRight": 12 },
+            "children": [
+              { "type": "label", "name": "StoryText", "width": "100%", "height": 112, "styleSlot": "gdv3.label.story" }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

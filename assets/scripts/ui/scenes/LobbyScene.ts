@@ -127,6 +127,25 @@ export class LobbyScene extends Component {
     }
 
     /** 「進入戰鬥」按鈕 */
+    /** 最小 smoke route：走既有武將列表 callback 鏈，驗證 Basics -> overview shell */
+    public async onClickGeneralDetailOverviewSmoke() {
+        if (!this._listPanel || !this._detailPanel) {
+            console.warn('[LobbyScene] GeneralDetailOverview smoke 失敗：list/detail panel 未就緒');
+            return;
+        }
+        if (this._generals.length === 0) {
+            console.warn('[LobbyScene] GeneralDetailOverview smoke 失敗：尚未載入武將資料');
+            return;
+        }
+
+        this._listPanel.onSelectGeneral = async (config: GeneralConfig) => {
+            await this._detailPanel!.show(config);
+        };
+
+        await this._listPanel.show(this._generals);
+        await this._listPanel.onSelectGeneral(this._generals[0]);
+    }
+
     public onClickEnterBattle() {
         services().scene.switchScene(SceneName.Battle);
     }

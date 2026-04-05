@@ -1,0 +1,195 @@
+{
+  "id": "general-detail-bloodline-v3-default",
+  "version": 1,
+  "bundle": "lobby_ui",
+  "atlasPolicy": "lobby",
+  "slots": {
+    "gdv3.bg.full": {
+      "kind": "sprite-frame",
+      "path": "ui-spec/placeholders/bg_ink_main",
+      "spriteType": "sliced",
+      "border": [96, 360, 96, 420],
+      "allowAutoAtlas": false
+    },
+    "gdv3.portrait.carrier": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/detail_summary_card_bg",
+      "spriteType": "sliced",
+      "border": [40, 40, 40, 40],
+      "allowAutoAtlas": true
+    },
+    "gdv3.portrait.image": {
+      "kind": "color-rect",
+      "color": "#00000000"
+    },
+    "gdv3.unowned.ribbon": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/detail_field_meta_bg",
+      "spriteType": "sliced",
+      "border": [20, 20, 20, 20],
+      "allowAutoAtlas": true
+    },
+    "gdv3.unowned.badge": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/detail_field_name_bg",
+      "spriteType": "sliced",
+      "border": [20, 20, 20, 20],
+      "allowAutoAtlas": true
+    },
+    "gdv3.info.card": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/detail_content_bg",
+      "spriteType": "sliced",
+      "border": [96, 96, 96, 96],
+      "allowAutoAtlas": false
+    },
+    "gdv3.module.card": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/detail_summary_card_bg",
+      "spriteType": "sliced",
+      "border": [40, 40, 40, 40],
+      "allowAutoAtlas": true
+    },
+    "gdv3.bloodline.card": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/detail_section_bg",
+      "spriteType": "sliced",
+      "border": [40, 40, 40, 40],
+      "allowAutoAtlas": true
+    },
+    "gdv3.bloodline.crest.card": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/detail_section_bg",
+      "spriteType": "sliced",
+      "border": [40, 40, 40, 40],
+      "allowAutoAtlas": true
+    },
+    "gdv3.bloodline.crest": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/detail_tree_node_fill",
+      "spriteType": "sliced",
+      "border": [18, 18, 18, 18],
+      "allowAutoAtlas": true
+    },
+    "gdv3.story.rail": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/detail_footer_bg",
+      "spriteType": "sliced",
+      "border": [40, 40, 40, 40],
+      "allowAutoAtlas": true
+    },
+    "gdv3.story.cell": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/detail_summary_card_bg",
+      "spriteType": "sliced",
+      "border": [40, 40, 40, 40],
+      "allowAutoAtlas": true
+    },
+    "gdv3.story.cell.turn": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/detail_summary_card_bg",
+      "spriteType": "sliced",
+      "border": [40, 40, 40, 40],
+      "allowAutoAtlas": true
+    },
+    "gdv3.story.cell.bloodline": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/detail_summary_card_bg",
+      "spriteType": "sliced",
+      "border": [40, 40, 40, 40],
+      "allowAutoAtlas": true
+    },
+    "gdv3.story.cell.future": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/detail_summary_card_bg",
+      "spriteType": "sliced",
+      "border": [40, 40, 40, 40],
+      "allowAutoAtlas": true
+    },
+    "gdv3.progress.awakening": {
+      "kind": "color-rect",
+      "color": "#87C8B3"
+    },
+    "gdv3.label.name": {
+      "kind": "label-style",
+      "fontSize": 42,
+      "lineHeight": 48,
+      "color": "#E8D8B2",
+      "outlineColor": "#000000CC",
+      "outlineWidth": 2,
+      "horizontalAlign": "LEFT"
+    },
+    "gdv3.label.title": {
+      "kind": "label-style",
+      "fontSize": 28,
+      "lineHeight": 34,
+      "color": "#D7C7A2",
+      "outlineColor": "#000000AA",
+      "outlineWidth": 1,
+      "horizontalAlign": "LEFT"
+    },
+    "gdv3.label.meta": {
+      "kind": "label-style",
+      "fontSize": 20,
+      "lineHeight": 26,
+      "color": "#D3C39D",
+      "outlineColor": "#00000099",
+      "outlineWidth": 1,
+      "horizontalAlign": "LEFT"
+    },
+    "gdv3.label.section": {
+      "kind": "label-style",
+      "fontSize": 24,
+      "lineHeight": 30,
+      "color": "#E6D7B4",
+      "outlineColor": "#000000AA",
+      "outlineWidth": 1,
+      "horizontalAlign": "LEFT"
+    },
+    "gdv3.label.value": {
+      "kind": "label-style",
+      "fontSize": 24,
+      "lineHeight": 30,
+      "color": "#F4EBD4",
+      "outlineColor": "#000000AA",
+      "outlineWidth": 1,
+      "horizontalAlign": "LEFT"
+    },
+    "gdv3.label.note": {
+      "kind": "label-style",
+      "fontSize": 18,
+      "lineHeight": 24,
+      "color": "#E6D9C0",
+      "outlineColor": "#00000099",
+      "outlineWidth": 1,
+      "horizontalAlign": "LEFT"
+    },
+    "gdv3.label.cardBody": {
+      "kind": "label-style",
+      "fontSize": 20,
+      "lineHeight": 26,
+      "color": "#EDE2C8",
+      "outlineColor": "#00000099",
+      "outlineWidth": 1,
+      "horizontalAlign": "LEFT"
+    },
+    "gdv3.label.story": {
+      "kind": "label-style",
+      "fontSize": 17,
+      "lineHeight": 22,
+      "color": "#F0E6D1",
+      "outlineColor": "#00000099",
+      "outlineWidth": 1,
+      "horizontalAlign": "LEFT"
+    },
+    "gdv3.label.unowned": {
+      "kind": "label-style",
+      "fontSize": 16,
+      "lineHeight": 20,
+      "color": "#F4E5C1",
+      "outlineColor": "#00000099",
+      "outlineWidth": 1,
+      "horizontalAlign": "LEFT"
+    }
+  }
+}
