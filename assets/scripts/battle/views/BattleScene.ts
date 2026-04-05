@@ -41,8 +41,6 @@ interface EncounterConfig {
 }
 
 /**
-
-  private ensureBoardRenderer(): void {
  * BattleScene — 戰鬥場景的入口元件。
  *
  * 職責：
@@ -471,7 +469,7 @@ export class BattleScene extends Component {
 
     const promises = registry.map(async (block) => {
       try {
-        const prefab = await res.loadBundlePrefab('vfx_core', block.prefabPath!);
+        const prefab = await res.loadPrefab(block.prefabPath!);
         if (prefab) {
           // 註冊至物件池，預熱 1 個實例
           pool.register(block.id, prefab, 1);

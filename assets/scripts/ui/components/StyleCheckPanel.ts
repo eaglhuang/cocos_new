@@ -1,7 +1,7 @@
 // @spec-source → 見 docs/cross-reference-index.md
-import { _decorator, Node } from 'cc';
+import { _decorator } from 'cc';
 import { UIPreviewBuilder } from '../core/UIPreviewBuilder';
-import { UISpecLoader } from '../core/UISpecLoader';
+import { UITemplateBinder } from '../core/UITemplateBinder';
 import { services } from '../../core/managers/ServiceLoader';
 
 const { ccclass } = _decorator;
@@ -26,7 +26,7 @@ export class StyleCheckPanel extends UIPreviewBuilder {
 
     }
 
-    protected onBuildComplete(rootNode: Node): void {
+    protected onReady(_binder: UITemplateBinder): void {
         console.log('[StyleCheck] 驗證畫面建構完成');
     }
 }

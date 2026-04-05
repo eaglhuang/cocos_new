@@ -2,7 +2,7 @@
 import { _decorator, Label, Button, Color, Node, Sprite, SpriteFrame, Texture2D, resources, UITransform, BlockInputEvents, Widget } from 'cc';
 import type { GeneralConfig, GeneralGeneConfig, GeneralStatsConfig } from '../../core/models/GeneralUnit';
 import { UIPreviewBuilder } from '../core/UIPreviewBuilder';
-import { UISpecLoader } from '../core/UISpecLoader';
+import { UITemplateBinder } from '../core/UITemplateBinder';
 import { SolidBackground } from './SolidBackground';
 import { buildGeneralDetailOverview } from './GeneralDetailOverviewMapper';
 import { GeneralDetailOverviewShell } from './GeneralDetailOverviewShell';
@@ -69,6 +69,15 @@ export class GeneralDetailPanel extends UIPreviewBuilder {
     private _currentConfig: GeneralConfig | null = null;
     private _overviewShell: GeneralDetailOverviewShell | null = null;
 
+    /** 由 buildScreen 完成後自動呼叫，收集 binder 並設定静態事件 */
+    protected onReady(_binder: UITemplateBinder): void {
+        // 靜態按鈕事件綁定（只需執行一次）
+        // Unity 對照：Start() 中的 button.onClick.AddListener()
+        this._bindStaticEvents();
+        this._setupClickBlocker();
+        this._ensureOverviewShell();
+    }
+
     public async show(config: GeneralConfig): Promise<void> {
         this.node.active = true;
 
@@ -85,9 +94,6 @@ export class GeneralDetailPanel extends UIPreviewBuilder {
             }
 
             await this.buildScreen(layout, skin, i18n, tokens);
-            this._bindStaticEvents();
-            this._setupClickBlocker();
-            this._ensureOverviewShell();
             this._isBuilt = true;
         }
 

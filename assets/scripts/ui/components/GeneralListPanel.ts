@@ -2,7 +2,7 @@
 import { _decorator, Component, Node, Label, Button } from 'cc';
 import type { GeneralConfig } from '../../core/models/GeneralUnit';
 import { UIPreviewBuilder } from '../core/UIPreviewBuilder';
-import { UISpecLoader } from '../core/UISpecLoader';
+import { UITemplateBinder } from '../core/UITemplateBinder';
 import { services } from '../../core/managers/ServiceLoader';
 
 const { ccclass } = _decorator;
@@ -13,6 +13,12 @@ export class GeneralListPanel extends UIPreviewBuilder {
     private get _specLoader() { return services().specLoader; }
     public onSelectGeneral: ((config: GeneralConfig) => void) | null = null;
     private _isBuilt = false;
+
+    /** 由 buildScreen 完成後自動呼叫，負責靜態事件綁定 */
+    protected onReady(binder: UITemplateBinder): void {
+        // Unity 對照：button.onClick.AddListener(OnBack) in Start()
+        binder.getButton('BtnBack')?.node.on(Button.EventType.CLICK, this.hide, this);
+    }
 
     public async show(generals: GeneralConfig[]): Promise<void> {
         this.node.active = true;
@@ -33,13 +39,6 @@ export class GeneralListPanel extends UIPreviewBuilder {
                 return;
             }
             this._isBuilt = true;
-
-            // 3. 綁定按紐事件 (BtnBack)
-            const btnBack = this.node.getChildByPath('GeneralListRoot/BtnBack');
-            if (btnBack) {
-                let btn = btnBack.getComponent(Button) || btnBack.addComponent(Button);
-                btn.node.on(Button.EventType.CLICK, this.hide, this);
-            }
         }
 
         // 4. 清空舊資料並填入新資料 (populateList)

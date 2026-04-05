@@ -1,7 +1,7 @@
 // @spec-source → 見 docs/cross-reference-index.md
 import { _decorator, Label, Button, Sprite, SpriteFrame, Color, Texture2D, resources } from 'cc';
 import { UIPreviewBuilder } from '../core/UIPreviewBuilder';
-import { UISpecLoader } from '../core/UISpecLoader';
+import { UITemplateBinder } from '../core/UITemplateBinder';
 import { services } from '../../core/managers/ServiceLoader';
 
 const { ccclass } = _decorator;
@@ -27,6 +27,19 @@ export class GeneralPortraitPanel extends UIPreviewBuilder {
     public onClose: (() => void) | null = null;
     private get _specLoader() { return services().specLoader; }
     private _isBuilt = false;
+    private _binder: UITemplateBinder | null = null;
+
+    /** 由 buildScreen 完成後自動呼叫，負責靜態事件綁定 */
+    protected onReady(binder: UITemplateBinder): void {
+        this._binder = binder;
+        // Unity 對照：button.onClick.AddListener(OnClose) in Start()
+        binder.getButton('BtnClose')?.node.on(Button.EventType.CLICK, this.hide, this);
+        const overlayNode = binder.getNode('Overlay');
+        if (overlayNode) {
+            const btn = overlayNode.getComponent(Button) || overlayNode.addComponent(Button);
+            btn.node.on(Button.EventType.CLICK, this.hide, this);
+        }
+    }
 
     public async show(config: GeneralPortraitConfig): Promise<void> {
         this.node.active = true;
@@ -39,18 +52,6 @@ export class GeneralPortraitPanel extends UIPreviewBuilder {
             
             await this.buildScreen(layout, skin, i18n, tokens);
             this._isBuilt = true;
-
-            const btnClose = this.node.getChildByPath('GeneralPortraitRoot/InfoPanel/BtnClose');
-            if (btnClose) {
-                const btn = btnClose.getComponent(Button) || btnClose.addComponent(Button);
-                btn.node.on(Button.EventType.CLICK, this.hide, this);
-            }
-
-            const overlay = this.node.getChildByPath('GeneralPortraitRoot/Overlay');
-            if (overlay) {
-                const btn = overlay.getComponent(Button) || overlay.addComponent(Button);
-                btn.node.on(Button.EventType.CLICK, this.hide, this);
-            }
         }
 
         this._populateUI(config);
