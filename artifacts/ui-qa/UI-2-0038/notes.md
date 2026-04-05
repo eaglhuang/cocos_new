@@ -29,4 +29,16 @@
 
 ## 阻塞
 
-- 待 Agent1 依 `UI-2-0043` 產出首批 crop proof
+~~待 Agent1 依 `UI-2-0043` 產出首批 crop proof~~
+
+## Agent1 完成紀錄（UI-2-0043）
+
+- 產出工具：`tools_node/gen-hud-portrait-crop.js`（puppeteer CSS background-crop）
+- 技術方案：base64 母圖 + background-size/position 裁頭頂 + dark gradient overlay 轉暗底 HUD 風
+- 產出清單（16 檔案）：
+  - `zhang_fei_v1a` / `zhang_fei_v1b` × 512/64/32px
+  - `zhao_yun_v1a` / `zhao_yun_v1b` × 512/64/32px  
+- 64px 可讀性驗收：✅ 通過
+  - 張飛：紅頭巾 + 鬍鬚輪廓可辨
+  - 趙雲：黑髮髻 + 獅甲肩線可辨
+- 下一步：Agent2 從 4 個裁切方向選定最終 HUD portrait 規格併入 `portrait-family-spec.md`
