@@ -1,0 +1,103 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "schemaId": "bloodline-mirror-state-content",
+  "familyId": "fullscreen-result",
+  "version": 1,
+  "description": "血脈命鏡 fullscreen-result 共用內容契約，對應 loading / awakening / ascension / unowned-preview 四種 state。",
+  "fields": {
+    "stateBadgeLabel": {
+      "type": "string",
+      "required": true,
+      "description": "頂部狀態徽章文字。",
+      "bindPath": "MirrorChrome/StateBadgeRow/StateBadgeLabel"
+    },
+    "headerTitle": {
+      "type": "string",
+      "required": true,
+      "description": "主標題文字。",
+      "bindPath": "MirrorChrome/MirrorHeader/HeaderTitle"
+    },
+    "headerSubtitle": {
+      "type": "string",
+      "required": true,
+      "description": "副標題文字。",
+      "bindPath": "MirrorChrome/MirrorHeader/HeaderSubtitle"
+    },
+    "phaseLabel": {
+      "type": "string",
+      "required": true,
+      "description": "階段資訊。",
+      "bindPath": "MirrorChrome/MirrorMetaRow/PhaseLabel"
+    },
+    "rarityLabel": {
+      "type": "string",
+      "required": true,
+      "description": "稀有度或星階資訊。",
+      "bindPath": "MirrorChrome/MirrorMetaRow/RarityLabel"
+    },
+    "mirrorLabel": {
+      "type": "string",
+      "required": true,
+      "description": "命鏡狀態資訊。",
+      "bindPath": "MirrorChrome/MirrorMetaRow/MirrorLabel"
+    },
+    "crestLabel": {
+      "type": "string",
+      "required": true,
+      "description": "命紋狀態資訊。",
+      "bindPath": "MirrorChrome/MirrorMetaRow/CrestLabel"
+    },
+    "tipTitle": {
+      "type": "string",
+      "required": true,
+      "description": "提示面板標題。",
+      "bindPath": "MirrorStatePanels/TipPanelContent/TipTitle"
+    },
+    "tipBody": {
+      "type": "string",
+      "required": true,
+      "description": "提示面板內文。",
+      "bindPath": "MirrorStatePanels/TipPanelContent/TipBody"
+    },
+    "progressLabel": {
+      "type": "string",
+      "required": true,
+      "description": "底部進度文字。",
+      "bindPath": "MirrorStatePanels/ActionRow/ProgressLabel"
+    },
+    "primaryActionLabel": {
+      "type": "string",
+      "required": true,
+      "description": "主操作按鈕文字。",
+      "bindPath": "MirrorStatePanels/ActionRow/PrimaryActionButton"
+    },
+    "crestState": {
+      "type": "string",
+      "required": true,
+      "description": "命紋內容狀態。",
+      "enum": ["placeholder", "rumored", "revealed", "awakened"],
+      "bindPath": "CenterStage/CrestBadge"
+    },
+    "storyCells": {
+      "type": "object",
+      "required": true,
+      "description": "五格故事帶內容。",
+      "bindPath": "StoryStrip"
+    }
+  },
+  "requiredFields": [
+    "stateBadgeLabel",
+    "headerTitle",
+    "headerSubtitle",
+    "phaseLabel",
+    "rarityLabel",
+    "mirrorLabel",
+    "crestLabel",
+    "tipTitle",
+    "tipBody",
+    "progressLabel",
+    "primaryActionLabel",
+    "crestState",
+    "storyCells"
+  ]
+}

@@ -1,0 +1,176 @@
+{
+  "id": "bloodline-mirror-states-v1",
+  "version": 1,
+  "templateFamily": "fullscreen-result",
+  "layout": "bloodline-mirror-loading-main",
+  "states": {
+    "loading": {
+      "screenIds": ["BloodlineMirrorLoading"],
+      "stateBadgeLabel": "命鏡載入",
+      "headerTitle": "血脈命鏡正在校準",
+      "headerSubtitle": "現世血緣與英靈命格開始對讀",
+      "phaseLabel": "階段: 校準",
+      "rarityLabel": "稀有度: 命紋未定",
+      "mirrorLabel": "命鏡: 裂隙開啟",
+      "crestLabel": "命紋: 掃描中",
+      "tipTitle": "載入提示",
+      "tipBody": "優先顯示命格輪廓與命紋線索，故事帶只揭露最初五段。",
+      "progressLabel": "同步進度 42%",
+      "primaryActionLabel": "繼續觀測",
+      "tipProfile": "owned",
+      "tipSource": "bloodline-mirror-loading-tips-v1#owned",
+      "heroPresentation": "duality",
+      "publicMarker": "現世武將",
+      "spiritMarker": "英靈命相",
+      "crestState": "placeholder",
+      "storyCells": {
+        "origin": {
+          "title": "起源",
+          "body": "先以凡世身分與現世功名落點，建立武將與命鏡的第一層對照。"
+        },
+        "bloodline": {
+          "title": "血脈",
+          "body": "只顯示可公開的祖紋輪廓與流派線索，不直接揭露完整命紋。"
+        },
+        "trial": {
+          "title": "試煉",
+          "body": "命鏡以一次關鍵抉擇作為試煉門檻，提示即將被驗證的命格方向。"
+        },
+        "awakening": {
+          "title": "覺醒",
+          "body": "保留覺醒位，讓玩家知道後續將在此看到命格翻面的那一刻。"
+        },
+        "future": {
+          "title": "未來",
+          "body": "先給願景與懸念，不提前洩漏完整升星或英靈終局的畫面。"
+        }
+      }
+    },
+    "awakening": {
+      "screenIds": ["BloodlineMirrorAwakening"],
+      "stateBadgeLabel": "命鏡覺醒",
+      "headerTitle": "命紋已對焦",
+      "headerSubtitle": "英靈命相與現世武將完成重疊",
+      "phaseLabel": "階段: 覺醒",
+      "rarityLabel": "稀有度: 命格顯現",
+      "mirrorLabel": "命鏡: 對焦完成",
+      "crestLabel": "命紋: 已揭露",
+      "tipTitle": "覺醒提示",
+      "tipBody": "此刻應突出命紋揭露、主動技升階與角色定位重塑。",
+      "progressLabel": "覺醒完成 100%",
+      "primaryActionLabel": "確認覺醒",
+      "tipProfile": "owned",
+      "tipSource": "bloodline-mirror-loading-tips-v1#owned",
+      "heroPresentation": "duality",
+      "publicMarker": "現世武將",
+      "spiritMarker": "英靈已現",
+      "crestState": "awakened",
+      "storyCells": {
+        "origin": {
+          "title": "起源",
+          "body": "回收武將出身與初始志向，作為覺醒前後差異的對照基線。"
+        },
+        "bloodline": {
+          "title": "血脈",
+          "body": "正式揭露祖紋名稱與血脈支系，讓命格來源可以被閱讀。"
+        },
+        "trial": {
+          "title": "試煉",
+          "body": "交代突破命鏡所付出的代價，避免覺醒只像純數值提升。"
+        },
+        "awakening": {
+          "title": "覺醒",
+          "body": "將關鍵瞬間寫成一句可被記住的命運翻面敘事。"
+        },
+        "future": {
+          "title": "未來",
+          "body": "點出覺醒後的新命途、新兵種聯動或後續戰場定位。"
+        }
+      }
+    },
+    "ascension": {
+      "screenIds": [],
+      "stateBadgeLabel": "命鏡升星",
+      "headerTitle": "星階正在重鑄",
+      "headerSubtitle": "命鏡將既有命紋推向更高層級的穩定結構",
+      "phaseLabel": "階段: 升星",
+      "rarityLabel": "稀有度: 星階提升",
+      "mirrorLabel": "命鏡: 星階重鑄",
+      "crestLabel": "命紋: 強化中",
+      "tipTitle": "升星提示",
+      "tipBody": "重點不在第一次揭露，而在既有命格如何被放大與精煉。",
+      "progressLabel": "重鑄進度 76%",
+      "primaryActionLabel": "確認升星",
+      "tipProfile": "owned",
+      "tipSource": "bloodline-mirror-loading-tips-v1#owned",
+      "heroPresentation": "duality",
+      "publicMarker": "現世武將",
+      "spiritMarker": "命鏡重鑄",
+      "crestState": "revealed",
+      "storyCells": {
+        "origin": {
+          "title": "根基",
+          "body": "保留原始出身與性格基調，強調升星不是改寫人設。"
+        },
+        "bloodline": {
+          "title": "祖紋",
+          "body": "將已知命紋擴寫為更完整的祖紋體系與戰場傳承。"
+        },
+        "trial": {
+          "title": "淬鍊",
+          "body": "把升星成本與戰功試煉寫成合理的命格進階門檻。"
+        },
+        "awakening": {
+          "title": "共鳴",
+          "body": "說明既有覺醒能力如何被放大，而不是再演一次首次覺醒。"
+        },
+        "future": {
+          "title": "星途",
+          "body": "保留下一階命鏡或更高星階的預告，形成長線追求。"
+        }
+      }
+    },
+    "unowned-preview": {
+      "screenIds": [],
+      "stateBadgeLabel": "未持有預覽",
+      "headerTitle": "命鏡只開一隙",
+      "headerSubtitle": "尚未持有時，只能看到殘片級的英靈命相",
+      "phaseLabel": "階段: 預覽",
+      "rarityLabel": "稀有度: 未判定",
+      "mirrorLabel": "命鏡: 局部顯影",
+      "crestLabel": "命紋: 流言階段",
+      "tipTitle": "預覽提示",
+      "tipBody": "保留購買動機與想像空間，不應在未持有時揭露完整命格答案。",
+      "progressLabel": "解鎖條件未達成",
+      "primaryActionLabel": "前往獲取",
+      "tipProfile": "unowned",
+      "tipSource": "bloodline-mirror-loading-tips-v1#unowned",
+      "heroPresentation": "veiled",
+      "publicMarker": "現世剪影",
+      "spiritMarker": "英靈傳聞",
+      "crestState": "rumored",
+      "storyCells": {
+        "origin": {
+          "title": "傳聞",
+          "body": "起源只保留足夠辨識的輪廓，避免把完整背景一次講完。"
+        },
+        "bloodline": {
+          "title": "血脈",
+          "body": "以祖紋流言與旁證暗示方向，仍保留命紋核心未揭露。"
+        },
+        "trial": {
+          "title": "門檻",
+          "body": "顯示需要通過的招募、命鏡或戰績條件，形成明確目標。"
+        },
+        "awakening": {
+          "title": "覺醒",
+          "body": "用懸念文案預告翻面感，但不給完整覺醒效果。"
+        },
+        "future": {
+          "title": "伏筆",
+          "body": "保留未來命途與陣營聯動的伏筆，讓預覽仍有吸引力。"
+        }
+      }
+    }
+  }
+}

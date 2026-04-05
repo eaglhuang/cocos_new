@@ -6,6 +6,29 @@
   "bundle": "lobby_ui",
   "layout": "bloodline-mirror-loading-main",
   "skin": "bloodline-mirror-loading-default",
+  "contentRequirements": {
+    "schemaId": "bloodline-mirror-state-content",
+    "familyId": "fullscreen-result",
+    "requiredFields": [
+      "stateBadgeLabel",
+      "headerTitle",
+      "headerSubtitle",
+      "phaseLabel",
+      "rarityLabel",
+      "mirrorLabel",
+      "crestLabel",
+      "tipTitle",
+      "tipBody",
+      "progressLabel",
+      "primaryActionLabel",
+      "crestState",
+      "storyCells"
+    ]
+  },
+  "content": {
+    "source": "bloodline-mirror-states-v1",
+    "state": "loading"
+  },
   "validation": {
     "devices": ["phone-16-9", "phone-19_5-9", "tablet-4-3"],
     "allowMissingSkin": false

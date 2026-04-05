@@ -146,7 +146,7 @@
 | 奧義演出 | 全屏演出層（覆蓋戰場） | `ultimate-cutscene-main.json` | 奧義系統.md F 節 |
 | 血脈逸聞 | 「歷史趣聞 / 血脈傳聞」抽屜 | `general-bloodline-vignette-main.json` | 武將人物介面規格書.md § 8.4 |
 | 英靈虎符詳情 | 「英靈虎符 / 血脈卡」詳情頁 | `spirit-tally-detail-main.json` | 兵種（虎符）系統.md |
-| 血脈命鏡過場 | 「Loading / 覺醒 / 升星」命格展示頁 | `bloodline-mirror-loading-main.json` | 血脈命鏡過場載入規格書.md |
+| 血脈命鏡過場 | 「Loading / 覺醒 / 升星 / 未持有預覽」命格展示頁，優先共用 `bloodline-mirror-states-v1` content contract，並透過 `bloodline-mirror-state-content` schema 驗證 | `bloodline-mirror-loading-main.json` | 血脈命鏡過場載入規格書.md |
 
 > 各系統正式建立 ui-spec JSON 時，須遵循三層契約規範（layouts / skins / screens），並同步更新 `UI技術規格書.md` 與 `cross-reference-index.md`。
 ### 8.2 UI 量產工作流與 Agent 協作入口

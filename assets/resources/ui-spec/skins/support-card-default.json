@@ -162,7 +162,7 @@
     "detail.event.label.locked": {
       "kind": "label-style",
       "fontSize": 18,
-      "color": "outline",
+      "color": "outline"
     },
     "detail.event.label.skill": {
       "kind": "label-style",

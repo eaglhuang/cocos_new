@@ -1524,7 +1524,26 @@
         "UI-2-0053"
       ],
       "depends": [],
-      "notes": "2026-04-01 | ??: in-progress | ??: ??? BattleScene / UnitRenderer / generals.json / sprites/generals / hero prefab ?????????? | ??: ????? 3D ?????2D ????????????????????????? v1 | ??: BattleScene ??? placement QA ?? UI-2-0046????????????? proof ??"
+      "template_family": "fullscreen-result",
+      "content_contract": [
+        "loading-state",
+        "awakening-state",
+        "ascension-state",
+        "unowned-preview-state"
+      ],
+      "skin_fragments": [
+        "bloodline_mirror/frame",
+        "bloodline_mirror/aura",
+        "bloodline_mirror/cta"
+      ],
+      "smoke_route": "UIID.BloodlineMirrorLoading -> bloodline-mirror-loading-screen",
+      "docs_backwritten": [
+        "docs/keep.md",
+        "docs/UI 規格書.md",
+        "docs/系統規格書/血脈命鏡過場載入規格書.md",
+        "docs/cross-reference-index.md"
+      ],
+      "notes": "2026-04-05 | 狀態: in-progress | 驗證: 已完成命鏡 shared skeleton，並補上 bloodline-mirror-states-v1 四種 state content contract；loading / awakening screen 已指向對應 content.state | 變更: 將 Loading / 覺醒 / 升星 / 未持有預覽 收斂到同一份 fullscreen-result 內容契約，避免每個 state 再各自發明文案結構與節點命名 | 阻塞: 無"
     },
     {
       "id": "UI-2-0055",
@@ -1933,7 +1952,161 @@
         "UI-2-0074"
       ],
       "depends": [],
-      "notes": "2026-04-05 | A7 UILayerName @deprecated ?? Constants.ts | open | 2026-04-06 | Agent1 ????????????? TS ?? | done"
+      "notes": "2026-04-05 | A7 UILayerName @deprecated 已清除 Constants.ts | open | 2026-04-06 | Agent1 移除後確認無調用端，TypeScript 無錯誤 | done"
+    },
+    {
+      "id": "UI-2-0080",
+      "priority": "P0",
+      "phase": "F",
+      "owner": "Agent1",
+      "status": "in-progress",
+      "created": "2026-04-05",
+      "created_by_agent": "TechDirector",
+      "type": "architecture",
+      "title": "Content Contract Framework 實作",
+      "description": "為每個 template family 定義 ContentContractSpec JSON Schema，擴充 UIScreenSpec.contentRequirements，並建立 UIContentBinder.ts 提供型別安全的欄位綁定入口。這是 AI Agent 能交付完整 UI 而非半成品骨架的關鍵補強。",
+      "related": [
+        "UI-2-0074",
+        "UI-2-0075",
+        "DATA-1-0001"
+      ],
+      "depends": [
+        "UI-2-0074",
+        "UI-2-0075"
+      ],
+      "template_family": "all",
+      "content_contract": [
+        "detail-split-content",
+        "dialog-card-content",
+        "rail-list-content",
+        "fullscreen-result-content"
+      ],
+      "skin_fragments": [],
+      "smoke_route": "node tools_node/validate-ui-specs.js --check-content-contract",
+      "docs_backwritten": [
+        "docs/keep.md §20",
+        "docs/ui/content-contract-framework.md",
+        "docs/cross-reference-index.md"
+      ],
+      "acceptance": [
+        "UIContentBinder.ts 建立，可接收 ContentContractRef + data 物件並映射至 binder",
+        "UISpecTypes.ts 新增 ContentContractRef 介面與 UIScreenSpec.contentRequirements",
+        "assets/resources/ui-spec/contracts/ 含 4 個 family schema",
+        "docs/ui/content-contract-framework.md 已補",
+        "validate-ui-specs.js --check-content-contract 能跑通已有 screen spec"
+      ],
+      "notes": "2026-04-05 | 狀態: open | 理由: Phase F 架構補強 | 阻塞: 無 | 參見 docs/keep.md §20 與 docs/ui/content-contract-framework.md\n2026-04-05 | 狀態: in-progress | 處理: validate-ui-specs --check-content-contract 實作 | 驗證: 無 | 阻塞: 無",
+      "started_at": "2026-04-05",
+      "started_by_agent": "Agent1"
+    },
+    {
+      "id": "UI-2-0081",
+      "priority": "P0",
+      "phase": "F",
+      "owner": "Agent1",
+      "status": "in-progress",
+      "created": "2026-04-05",
+      "created_by_agent": "TechDirector",
+      "type": "tooling",
+      "title": "Screen → Component Auto-Scaffolder 實作",
+      "description": "實作 tools_node/scaffold-ui-component.js，從 screen.json 自動產出繼承 UIPreviewBuilder 的 Panel TypeScript 骨架，含 onReady(binder) 樣板與 UIConfig UIID 自動新增，解掉量產最後一哩的人工接線。",
+      "related": [
+        "UI-2-0080",
+        "UI-2-0074"
+      ],
+      "depends": [
+        "UI-2-0080"
+      ],
+      "template_family": "all",
+      "content_contract": [],
+      "skin_fragments": [],
+      "smoke_route": "node tools_node/scaffold-ui-component.js --screen lobby-main-screen --dry-run",
+      "docs_backwritten": [
+        "docs/keep.md §21",
+        "docs/cross-reference-index.md"
+      ],
+      "acceptance": [
+        "tools_node/scaffold-ui-component.js 完成",
+        "可從 screen.json 產出 Panel .ts（含 onReady、content contract 綁定骨架）",
+        "UIConfig.ts UIID entry 自動新增（含 TODO 標記）",
+        "4 個 family-specific .template.ts 樣板存在於 tools_node/templates/",
+        "產出後 tsc --noEmit 無型別錯誤",
+        "encoding check 通過"
+      ],
+      "notes": "2026-04-05 | 狀態: open | 理由: Phase F 量產最後一哩 | 阻塞: 依賴 UI-2-0080 | 參見 docs/keep.md §21\n2026-04-05 | 狀態: in-progress | 處理: scaffold-ui-component.js + 4 模板 | 驗證: 無 | 阻塞: 依賴 UI-2-0080（已完成）",
+      "started_at": "2026-04-05",
+      "started_by_agent": "Agent1"
+    },
+    {
+      "id": "UI-2-0082",
+      "priority": "P1",
+      "phase": "F",
+      "owner": "Agent1",
+      "status": "open",
+      "created": "2026-04-05",
+      "created_by_agent": "TechDirector",
+      "type": "tooling",
+      "title": "Figma Proof Mapping Sync Pipeline",
+      "description": "實作 tools_node/sync-figma-proof-mapping.js，透過 MCP Figma 工具讀取 09_Proof Mapping frame，解析 familyId/template/slot-map 等欄位，輸出 proof-mapping-{date}.json，並讓 scaffold-ui-spec-family.js 支援 --figma-frame-id 輸入，減少人工搬運。",
+      "related": [
+        "UI-2-0080",
+        "UI-2-0073"
+      ],
+      "depends": [
+        "UI-2-0080"
+      ],
+      "template_family": "all",
+      "content_contract": [],
+      "skin_fragments": [],
+      "smoke_route": "node tools_node/sync-figma-proof-mapping.js --dry-run",
+      "docs_backwritten": [
+        "docs/keep.md §10",
+        "docs/cross-reference-index.md"
+      ],
+      "acceptance": [
+        "tools_node/sync-figma-proof-mapping.js 完成",
+        "可讀取 Figma 09_Proof Mapping frame 並輸出 proof-mapping-{date}.json",
+        "輸出欄位含 familyId/template/tabs/railItems/titleKey/bodyKey/notes",
+        "scaffold-ui-spec-family.js 支援 --figma-frame-id 選項",
+        "自動驗證 Figma 欄位與 JSON 欄位一致性"
+      ],
+      "notes": "2026-04-05 | 狀態: open | 理由: 加速 Figma proof → repo config 轉換 | 阻塞: 依賴 MCP Figma 可用性與 UI-2-0080"
+    },
+    {
+      "id": "UI-2-0083",
+      "priority": "P1",
+      "phase": "F",
+      "owner": "Agent1",
+      "status": "open",
+      "created": "2026-04-05",
+      "created_by_agent": "TechDirector",
+      "type": "qa-tooling",
+      "title": "Agent Strict Layout Validator 擴充",
+      "description": "擴充 validate-ui-specs.js，加入 --strict 模式，檢查 spacing/padding 合理性、family-specific slot 數量限制、content contract 必填欄位完整性，以及 bind path 是否已在 requiredFields 宣告。預防 AI 產出結構合法但視覺失控的 JSON。",
+      "related": [
+        "UI-2-0080",
+        "UI-2-0075"
+      ],
+      "depends": [
+        "UI-2-0075",
+        "UI-2-0080"
+      ],
+      "template_family": "all",
+      "content_contract": [],
+      "skin_fragments": [],
+      "smoke_route": "node tools_node/validate-ui-specs.js --strict",
+      "docs_backwritten": [
+        "docs/ui/layout-quality-rules.md",
+        "docs/cross-reference-index.md"
+      ],
+      "acceptance": [
+        "validate-ui-specs.js 新增 --strict 選項",
+        "至少 15 條 layout quality rules 實作",
+        "--check-content-contract 選項可驗證 requiredFields 完整性",
+        "所有現有 screen spec 在 --strict 模式下通過（或已記錄可接受的例外）",
+        "docs/ui/layout-quality-rules.md 補齊 rules 說明"
+      ],
+      "notes": "2026-04-05 | 狀態: open | 理由: 提高 AI 產出品質一致性 | 阻塞: 依賴 UI-2-0080 content contract 體系完成後才能驗 requiredFields"
     }
   ]
 }
