@@ -18,6 +18,7 @@
 import { Node, Sprite, UITransform, UIOpacity, Layout, Vec3 } from 'cc';
 import { UISkinResolver } from './UISkinResolver';
 import { UIPreviewStyleBuilder } from './UIPreviewStyleBuilder';
+import { UIPreviewLayoutBuilder } from './UIPreviewLayoutBuilder';
 import type { UILayoutNodeSpec } from './UISpecTypes';
 import { UIPreviewDiagnostics } from './UIPreviewDiagnostics';
 
@@ -45,6 +46,7 @@ export class UIPreviewShadowManager {
     constructor(
         private readonly skinResolver: UISkinResolver,
         private readonly styleBuilder: UIPreviewStyleBuilder,
+        private readonly layoutBuilder: UIPreviewLayoutBuilder,
         private readonly getRootNode: () => Node,
     ) {}
 
@@ -118,7 +120,7 @@ export class UIPreviewShadowManager {
         transform.setContentSize(width, height);
 
         if (spec.widget && !usesDetachedHost) {
-            this.styleBuilder.applyWidget(shadowNode, spec.widget);
+            this.layoutBuilder.applyWidget(shadowNode, spec.widget);
         }
 
         const sprite = shadowNode.addComponent(Sprite);
@@ -187,7 +189,7 @@ export class UIPreviewShadowManager {
         transform.setContentSize(width, height);
 
         if (spec.widget) {
-            this.styleBuilder.applyWidget(noiseNode, spec.widget);
+            this.layoutBuilder.applyWidget(noiseNode, spec.widget);
         } else {
             noiseNode.setPosition(node.position);
         }

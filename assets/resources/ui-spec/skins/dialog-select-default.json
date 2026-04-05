@@ -1,0 +1,28 @@
+{
+  "$schema": "UISSkinManifest/1.0",
+  "id": "dialog-select-default",
+  "version": 1,
+  "description": "dialog-select Template 的預設樣式 — 半透明深色卡片 + 金色標題",
+  "slots": {
+    "widget.overlay.mask":    { "kind": "color-rect", "color": "#00000099" },
+    "widget.dialog.card.bg":  { "kind": "color-rect", "color": "#1A1A2E", "radius": 12 },
+    "widget.header.bg":       { "kind": "color-rect", "color": "#12122299" },
+    "widget.header.title":    { "kind": "label-style", "fontSize": 24, "isBold": true, "color": "#D4AF37" },
+    "widget.header.close.btn": { "kind": "button-skin",
+      "normal": "ui-spec/placeholders/btn_close_normal",
+      "pressed": "ui-spec/placeholders/btn_close_pressed",
+      "disabled": "ui-spec/placeholders/btn_close_normal",
+      "spriteType": "simple" },
+    "widget.btn.primary":     { "kind": "button-skin",
+      "normal": "ui-spec/placeholders/btn_gold_normal",
+      "pressed": "ui-spec/placeholders/btn_gold_pressed",
+      "disabled": "ui-spec/placeholders/btn_gold_disabled",
+      "spriteType": "sliced", "border": [12,12,12,12] },
+    "widget.btn.secondary":   { "kind": "button-skin",
+      "normal": "ui-spec/placeholders/btn_parchment_normal",
+      "pressed": "ui-spec/placeholders/btn_parchment_pressed",
+      "disabled": "ui-spec/placeholders/btn_parchment_disabled",
+      "spriteType": "sliced", "border": [12,12,12,12] },
+    "widget.label.body":      { "kind": "label-style", "fontSize": 18, "color": "#E0E0E0" }
+  }
+}

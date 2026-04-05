@@ -599,7 +599,7 @@
       "__id__": 13
     },
     "_children": [],
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 15
@@ -731,7 +731,7 @@
       "__id__": 13
     },
     "_children": [],
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 18
@@ -870,7 +870,7 @@
         "__id__": 24
       }
     ],
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 27
@@ -1171,7 +1171,7 @@
       "__id__": 13
     },
     "_children": [],
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 30
@@ -1310,7 +1310,7 @@
         "__id__": 36
       }
     ],
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 39
@@ -1611,7 +1611,7 @@
       "__id__": 13
     },
     "_children": [],
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 42
@@ -1750,7 +1750,7 @@
         "__id__": 48
       }
     ],
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 51
@@ -2051,7 +2051,7 @@
       "__id__": 13
     },
     "_children": [],
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 54
@@ -2183,7 +2183,7 @@
       "__id__": 13
     },
     "_children": [],
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 57
@@ -2464,7 +2464,7 @@
         "__id__": 63
       }
     ],
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 66
@@ -2759,7 +2759,7 @@
         "__id__": 70
       }
     ],
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 73
@@ -3054,7 +3054,7 @@
         "__id__": 77
       }
     ],
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 80
@@ -3349,7 +3349,7 @@
         "__id__": 84
       }
     ],
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 87
@@ -3644,7 +3644,7 @@
         "__id__": 91
       }
     ],
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 94
@@ -3939,7 +3939,7 @@
         "__id__": 98
       }
     ],
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 101
@@ -4234,7 +4234,7 @@
         "__id__": 105
       }
     ],
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 108
@@ -4529,7 +4529,7 @@
         "__id__": 112
       }
     ],
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 115
@@ -4824,7 +4824,7 @@
         "__id__": 119
       }
     ],
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 122
@@ -5119,7 +5119,7 @@
         "__id__": 126
       }
     ],
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 129
@@ -5414,7 +5414,7 @@
         "__id__": 133
       }
     ],
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 136
@@ -5705,7 +5705,7 @@
       "__id__": 61
     },
     "_children": [],
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 140
@@ -6125,7 +6125,7 @@
       "b": 0,
       "a": 255
     },
-    "_string": "🎉 勝利！",
+    "_string": "勝利！",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
     "_actualFontSize": 0,
@@ -6730,7 +6730,7 @@
       "__id__": 7
     },
     "_children": [],
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 166

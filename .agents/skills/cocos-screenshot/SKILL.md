@@ -1,10 +1,25 @@
 ---
 name: cocos-screenshot
-description: 'SCREENSHOT SKILL — Capture the current Cocos Creator Editor screen to a PNG file, then view it. USE FOR: seeing what the user currently sees in Cocos Editor without needing them to screenshot manually. Always call this when user says "畫面" / "看看" / "一團亂" / "怎麼了" or any visual symptom. DO NOT USE FOR: compile errors (use get_errors instead), log analysis (use cocos-log-reader instead).'
-argument-hint: 'No arguments needed. Just invoke this skill and the screenshot will be taken and shown automatically.'
+description: 'EDITOR PREVIEW SCREENSHOT SKILL — Capture the current Cocos Creator Editor window to a PNG file and inspect exactly what is already visible inside the Editor. USE FOR: visual symptoms when the user already has the target screen open in Cocos Editor / Editor Preview. DO NOT USE FOR: browser-driven QA, automatic browser target switching, reference-image comparison pipelines, compile errors, or pure log analysis. If the user wants browser screenshots, remind them to prepare the Browser Review environment and use cocos-preview-qa instead.'
+argument-hint: 'No arguments needed. Use only after confirming the user has already opened the target content inside the Cocos Editor window.'
 ---
 
-# Cocos Screenshot（Cocos Editor 自動截圖）
+# Cocos Screenshot（Editor Preview / Editor 視窗截圖）
+
+## 先判斷是不是該用這個 skill
+
+只有在下列條件成立時，才使用 `cocos-screenshot`：
+- 使用者要看的是 **Cocos Editor 視窗目前畫面**
+- 使用者已經把目標畫面開在 Editor / Editor Preview 裡
+- Agent 不需要自動切瀏覽器 target，也不需要走參考圖比對 pipeline
+
+如果使用者要的是 Browser Review 連續截圖、切換 target、與參考圖比對，應改用 `cocos-preview-qa`，並先提醒使用者準備 Browser Review 環境。
+
+## 與 `cocos-preview-qa` 的最大差別
+
+- `cocos-screenshot`: 截的是 **Cocos Editor 視窗**，只能反映 Editor 目前看到的內容
+- `cocos-preview-qa`: 截的是 **瀏覽器 / Browser Review**，可以自動開頁、切 target、批次截圖、做 QA 比對
+- 就算 Cocos Editor 開著，若使用者沒準備可跑瀏覽器的 Browser Review 環境，也不能拿 `cocos-screenshot` 代替 `cocos-preview-qa`
 
 ## When to Use
 
@@ -12,9 +27,11 @@ argument-hint: 'No arguments needed. Just invoke this skill and the screenshot w
 - 使用者說「看看目前畫面」、「一團亂」、「怎麼了」、「UI 跑掉了」
 - 使用者傳圖前先自動截圖確認最新狀態
 - Debug 工作流程的第一步（配合 `cocos-log-reader` 使用）
+- 使用者已經把要看的畫面打開在 Cocos Editor 裡
 
 **不適用：**
 - 純 log 分析 → 用 `cocos-log-reader`
+- Browser Review QA / 參考圖自動比對 → 用 `cocos-preview-qa`
 - 編譯錯誤 → 用 `get_errors`
 
 ---

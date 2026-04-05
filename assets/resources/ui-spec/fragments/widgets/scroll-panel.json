@@ -1,0 +1,48 @@
+{
+  "id": "scroll-panel",
+  "description": "可收合 ScrollView 面板",
+  "category": "container",
+  "params": {
+    "collapsible": { "type": "boolean", "default": false },
+    "maxHeight":   { "type": "number", "default": 400 }
+  },
+  "layout": {
+    "type": "container",
+    "name": "ScrollPanel",
+    "id": "scrollPanel",
+    "width": "100%",
+    "height": "${maxHeight}",
+    "children": [
+      {
+        "type": "scroll-list",
+        "name": "ScrollView",
+        "id": "scrollView",
+        "widget": { "top": 0, "bottom": 0, "left": 0, "right": 0 },
+        "skinSlot": "widget.scroll.bg"
+      },
+      {
+        "type": "button",
+        "name": "CollapseBtn",
+        "id": "collapseBtn",
+        "width": "100%",
+        "height": 28,
+        "widget": { "bottom": 0, "left": 0, "right": 0 },
+        "skinSlot": "widget.scroll.collapse.btn",
+        "text": "▼",
+        "active": false
+      }
+    ]
+  },
+  "defaultSkinSlots": {
+    "widget.scroll.bg": {
+      "kind": "color-rect",
+      "color": "#0000004D"
+    },
+    "widget.scroll.collapse.btn": {
+      "kind": "button-skin",
+      "normal": "ui-spec/placeholders/btn_default_normal",
+      "spriteType": "sliced",
+      "border": [4, 4, 4, 4]
+    }
+  }
+}

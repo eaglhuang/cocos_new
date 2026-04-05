@@ -1,0 +1,49 @@
+{
+  "id": "elite-troop-codex-main",
+  "version": 1,
+  "canvas": {
+    "fitWidth": true,
+    "fitHeight": true,
+    "safeArea": true,
+    "designWidth": 1920,
+    "designHeight": 1080
+  },
+  "root": {
+    "type": "container",
+    "name": "EliteTroopCodexRoot",
+    "widget": { "top": 0, "bottom": 0, "left": 0, "right": 0 },
+    "children": [
+      { "type": "image", "name": "BackgroundFull", "widget": { "top": 0, "bottom": 0, "left": 0, "right": 0 }, "skinSlot": "etc.bg.full" },
+      { "type": "panel", "name": "LeftFilterRail", "widget": { "top": 64, "bottom": 64, "left": 40 }, "width": 260, "skinSlot": "etc.panel.side" },
+      { "type": "panel", "name": "CenterGridPanel", "widget": { "top": 64, "bottom": 64, "left": 324, "right": 524 }, "skinSlot": "etc.panel.main" },
+      { "type": "panel", "name": "RightDetailPanel", "widget": { "top": 64, "bottom": 64, "right": 40 }, "width": 460, "skinSlot": "etc.panel.detail" },
+      {
+        "type": "container",
+        "name": "TroopGrid",
+        "widget": { "top": 92, "bottom": 92, "left": 352, "right": 552 },
+        "layout": { "type": "grid", "columns": 3, "spacingX": 14, "spacingY": 14 },
+        "children": [
+          { "type": "panel", "name": "TroopCard01", "width": 250, "height": 250, "skinSlot": "etc.card.troop" },
+          { "type": "panel", "name": "TroopCard02", "width": 250, "height": 250, "skinSlot": "etc.card.troop" },
+          { "type": "panel", "name": "TroopCard03", "width": 250, "height": 250, "skinSlot": "etc.card.troop" },
+          { "type": "panel", "name": "TroopCard04", "width": 250, "height": 250, "skinSlot": "etc.card.troop" },
+          { "type": "panel", "name": "TroopCard05", "width": 250, "height": 250, "skinSlot": "etc.card.troop" },
+          { "type": "panel", "name": "TroopCard06", "width": 250, "height": 250, "skinSlot": "etc.card.troop" }
+        ]
+      },
+      {
+        "type": "container",
+        "name": "DetailContent",
+        "widget": { "top": 92, "bottom": 92, "right": 64 },
+        "width": 412,
+        "children": [
+          { "type": "image", "name": "SelectedTroopBanner", "widget": { "top": 0, "left": 0, "right": 0 }, "height": 138, "skinSlot": "etc.art.banner" },
+          { "type": "image", "name": "SelectedTroopCrest", "widget": { "top": 156, "hCenter": 0 }, "width": 148, "height": 148, "skinSlot": "etc.art.crest" },
+          { "type": "panel", "name": "SelectedTroopStats", "widget": { "top": 324, "left": 0, "right": 0 }, "height": 180, "skinSlot": "etc.panel.module" },
+          { "type": "panel", "name": "SelectedTroopLore", "widget": { "top": 522, "left": 0, "right": 0 }, "height": 178, "skinSlot": "etc.panel.module" },
+          { "type": "panel", "name": "LinkedHeroPanel", "widget": { "bottom": 0, "left": 0, "right": 0 }, "height": 168, "skinSlot": "etc.panel.module" }
+        ]
+      }
+    ]
+  }
+}

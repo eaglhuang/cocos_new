@@ -1,0 +1,1 @@
+2026-04-01 | 狀態: in-progress | 驗證: 已回看新增 UI 參考圖中的 chest / scroll pack / gift box / material crate 樣本 | 變更: 正式建立 A8 reward / bundle props family 規格與生圖 brief | 阻塞: 待後續 proof 回流後做 review-round1 與 placement QA

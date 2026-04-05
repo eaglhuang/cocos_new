@@ -1088,6 +1088,7 @@ export class UnitRenderer extends Component {
     const nameTf = nameLabelNode.addComponent(UITransform);
     nameTf.setContentSize(width, segmentHeight);
     const nameStrLabel = nameLabelNode.addComponent(Label);
+    nameStrLabel.string = "";   // 顯式清空：Cocos Label 預設值為 "label"，避免未賦值時顯示佔位文字
     nameStrLabel.fontSize = 20;
     nameStrLabel.lineHeight = segmentHeight;
     nameStrLabel.horizontalAlign = HorizontalTextAlignment.CENTER;

@@ -31,6 +31,7 @@ const targets = [
     { id: 'ShopMain', screenId: 'shop-main-screen', targetIndex: 2 },
     { id: 'Gacha', screenId: 'gacha-main-screen', targetIndex: 3 },
     { id: 'DuelChallenge', screenId: 'duel-challenge-screen', targetIndex: 4 },
+    { id: 'BattleScene', screenId: 'battle-scene', targetIndex: 5 },
 ];
 
 function resolveLoadingSceneUuid() {
@@ -247,7 +248,97 @@ async function captureOne(browser, baseUrl, outputDir, target, timeoutMs, sceneU
         ]);
 
         const filePath = path.join(outputDir, `${target.id}.png`);
-        await page.screenshot({ path: filePath, fullPage: false });
+
+        if (target.id === 'BattleScene') {
+            const dump = await page.evaluate(() => {
+                let scene = undefined;
+                try {
+                    const gameWin = document.querySelector('iframe')?.contentWindow || window;
+                    const cc = gameWin.cc;
+                    if (cc && cc.director) {
+                        scene = cc.director.getScene();
+                    }
+                } catch(e) {}
+
+                if (!scene) return "No scene";
+
+                // Find BattleLogPanel canvas node
+                const findNode = (root, name) => {
+                    if (root.name === name) return root;
+                    for (const c of (root.children || [])) {
+                        const found = findNode(c, name);
+                        if (found) return found;
+                    }
+                    return null;
+                };
+
+                const getInfo = (n) => {
+                    if (!n) return null;
+                    const tf = n.getComponent && n.getComponent('cc.UITransform');
+                    const wp = n.worldPosition;
+                    return {
+                        name: n.name,
+                        active: n.active,
+                        actH: n.activeInHierarchy,
+                        wx: wp ? Math.round(wp.x) : null,
+                        wy: wp ? Math.round(wp.y) : null,
+                        w: tf ? Math.round(tf.width) : null,
+                        h: tf ? Math.round(tf.height) : null,
+                        children: n.children ? n.children.length : 0
+                    };
+                };
+
+                const logPanelCanvasNode = findNode(scene, 'BattleLogPanel');
+                const sidePanelRoot = logPanelCanvasNode ? findNode(logPanelCanvasNode, 'SidePanelRoot') : null;
+
+                const result = {
+                    BattleLogPanelNode: getInfo(logPanelCanvasNode),
+                    SidePanelRoot: getInfo(sidePanelRoot),
+                };
+
+                if (sidePanelRoot) {
+                    for (const child of (sidePanelRoot.children || [])) {
+                        result[child.name] = getInfo(child);
+                        // Also check grandchildren of BattleLogPanel sub-node
+                        if (child.name === 'BattleLogPanel') {
+                            for (const gc of (child.children || [])) {
+                                result['BLP.' + gc.name] = getInfo(gc);
+                            }
+                        }
+                    }
+                }
+
+                // Canvas info
+                const canvas = findNode(scene, 'Canvas');
+                if (canvas) {
+                    const tf = canvas.getComponent && canvas.getComponent('cc.UITransform');
+                    result.Canvas = {
+                        wx: Math.round(canvas.worldPosition.x),
+                        wy: Math.round(canvas.worldPosition.y),
+                        w: tf ? Math.round(tf.width) : null,
+                        h: tf ? Math.round(tf.height) : null,
+                    };
+                }
+
+                return result;
+            });
+            require('fs').writeFileSync('artifacts/dump.json', JSON.stringify(dump, null, 2));
+        }
+
+        // 量測 Cocos Editor 工具列高度，裁切後僅保留遊戲畫布區域
+        const toolbarHeight = await page.evaluate(() => {
+            const canvasEl = document.querySelector('canvas') || document.querySelector('#GameDiv');
+            if (canvasEl) {
+                const rect = canvasEl.getBoundingClientRect();
+                return Math.max(0, Math.round(rect.top));
+            }
+            return 30;
+        });
+        const vp = { width: 1920, height: 1080 };
+        const clip = toolbarHeight > 0
+            ? { x: 0, y: toolbarHeight, width: vp.width, height: vp.height - toolbarHeight }
+            : undefined;
+        await page.screenshot({ path: filePath, fullPage: false, ...(clip ? { clip } : {}) });
         return { filePath, page, diagnostics };
     } catch (error) {
         error.diagnostics = diagnostics;

@@ -1,29 +1,37 @@
 ---
 title: Worldbuilding Follow-up Task Index
-generated: 2026-04-02
-source_manifest: ../ui-quality-todo.json
+generated: 2026-04-04
+source: agent-managed
 ---
 
-# 世界觀補足任務索引 2026-04-02
+# 世界觀後續任務索引
 
-這份補充索引集中列出 `UI-2-0055 ~ UI-2-0064`，避免在既有大型索引中遺漏新世界觀後續工作。
+這份索引集中追蹤 `UI-2-0055 ~ UI-2-0073`，方便後續延續血脈世界觀、美術量產、UI 骨架與工具鏈推進。
 
 | ID | Owner | Status | Link | 說明 |
 |---|---|---|---|---|
-| UI-2-0055 | Agent2 | open | [UI-2-0055](tasks/UI-2-0055.md) | `血脈命鏡 Loading tips` 文案池 |
-| UI-2-0056 | Agent2 | open | [UI-2-0056](tasks/UI-2-0056.md) | `未持有武將` 標記規則 |
-| UI-2-0057 | Agent2 | open | [UI-2-0057](tasks/UI-2-0057.md) | 祖紋命篆 / 命紋靈獸 / 六色因子視覺契約 |
-| UI-2-0058 | Agent2 | open | [UI-2-0058](tasks/UI-2-0058.md) | 角色血脈符號 slot 規格 |
-| UI-2-0059 | Agent2 | open | [UI-2-0059](tasks/UI-2-0059.md) | 日常人物頁 v3 ui-spec skeleton |
-| UI-2-0060 | Agent2 | open | [UI-2-0060](tasks/UI-2-0060.md) | 血脈命鏡 v3 ui-spec skeleton |
-| UI-2-0061 | Agent2 | open | [UI-2-0061](tasks/UI-2-0061.md) | 歷史趣聞 / 血脈傳聞 / 故事帶資料契約 |
-| UI-2-0062 | Agent2 | open | [UI-2-0062](tasks/UI-2-0062.md) | 血脈卡 / 英靈虎符 / 重複卡分流規格 |
-| UI-2-0063 | Agent2 | open | [UI-2-0063](tasks/UI-2-0063.md) | UI 圖像索引轉 wireframe / slot-map / codegen-ready 管線 |
-| UI-2-0064 | Agent2 | open | [UI-2-0064](tasks/UI-2-0064.md) | 命紋靈獸與虎符特種軍隊連動規格 |
+| UI-2-0055 | Agent2 | completed | [UI-2-0055](tasks/UI-2-0055.md) | Loading tips 文案池 |
+| UI-2-0056 | Agent2 | completed | [UI-2-0056](tasks/UI-2-0056.md) | 未持有武將標記規則 |
+| UI-2-0057 | Agent2 | in-progress | [UI-2-0057](tasks/UI-2-0057.md) | 命紋靈獸 / 六色因子 / 祖紋命篆 contract |
+| UI-2-0058 | Agent2 | in-progress | [UI-2-0058](tasks/UI-2-0058.md) | 角色血脈符號 slot contract |
+| UI-2-0059 | Agent2 | completed | [UI-2-0059](tasks/UI-2-0059.md) | 日常人物頁 ui-spec skeleton |
+| UI-2-0060 | Agent2 | completed | [UI-2-0060](tasks/UI-2-0060.md) | 血脈命鏡 ui-spec skeleton |
+| UI-2-0061 | Agent2 | completed | [UI-2-0061](tasks/UI-2-0061.md) | 歷史趣聞 / 血脈傳聞 / 雙故事層 |
+| UI-2-0062 | Agent2 | completed | [UI-2-0062](tasks/UI-2-0062.md) | 血脈卡 / 英靈虎符 / 重複卡分流 |
+| UI-2-0063 | Agent2 | completed | [UI-2-0063](tasks/UI-2-0063.md) | UI proof -> wireframe -> slot-map -> codegen-ready |
+| UI-2-0064 | Agent2 | completed | [UI-2-0064](tasks/UI-2-0064.md) | 虎符 / 英靈卡 / 特種軍隊視覺對應 contract |
+| UI-2-0065 | Agent2 | completed | [UI-2-0065](tasks/UI-2-0065.md) | 美術 production roadmap |
+| UI-2-0066 | Agent2 | open | [UI-2-0066](tasks/UI-2-0066.md) | 命紋徽記 family final proof |
+| UI-2-0067 | Agent2 | open | [UI-2-0067](tasks/UI-2-0067.md) | 角色血脈 retrofit proof |
+| UI-2-0068 | Agent2 | open | [UI-2-0068](tasks/UI-2-0068.md) | 六格故事條 production pack |
+| UI-2-0069 | Agent2 | open | [UI-2-0069](tasks/UI-2-0069.md) | 血脈命鏡量產 production |
+| UI-2-0070 | Agent2 | open | [UI-2-0070](tasks/UI-2-0070.md) | 英靈虎符 / 特種軍隊 proof |
+| UI-2-0071 | Agent2 | open | [UI-2-0071](tasks/UI-2-0071.md) | BattleScene 靜態質感 benchmark |
+| UI-2-0072 | Agent2 | open | [UI-2-0072](tasks/UI-2-0072.md) | 家園 / 治理地圖 3D family |
+| UI-2-0073 | Agent2 | completed | [UI-2-0073](tasks/UI-2-0073.md) | Figma + Cocos MCP + Playwright 量產流程藍圖 |
 
-## 建議順序
+## 推薦下一步
 
-1. 先做 `UI-2-0057` 與 `UI-2-0058`
-2. 再做 `UI-2-0059` 與 `UI-2-0060`
-3. 接著做 `UI-2-0061` 與 `UI-2-0062`
-4. 最後推 `UI-2-0063` 與 `UI-2-0064`
+1. 先完成 `UI-2-0057` 與 `UI-2-0058`
+2. 再把 `UI-2-0066`、`UI-2-0067`、`UI-2-0068` 做成第一批量產 proof
+3. 工具鏈部分則以 `UI-2-0073` 為母板，開始在 Figma 建 component library，並在 Cocos Editor 內做 MCP smoke test

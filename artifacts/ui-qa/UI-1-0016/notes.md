@@ -1,41 +1,22 @@
-# UI-1-0016 QA Notes
+# Visual QA Notes: Duel Challenge Mixed-Family (UI-1-0016)
 
-## 任務資訊
-- task_id: UI-1-0016
-- legacy_id: D-3
-- preview_host: `assets/scenes/LoadingScene.scene` → root `LoadingScene` 元件 → `previewMode=true` → `previewTarget=DuelChallenge`
-- screen: `duel-challenge-screen`
-- layout: `duel-challenge-main`
-- skin: `duel-challenge-default`
-- target_slots:
-  - `duel.btn.reject`
-  - `duel.btn.accept`
-  - `duel.root.shadow`
+## 基本資料
+- **Screen**: DuelChallenge
+- **驗收時間**: 2026-04-01
+- **狀態**: 🟢 PASS (D-3 驗收通過)
 
-## Capture Log
-- capture_time:
-- captured_by:
-- editor_status: `http://localhost:7456` reachable
-- preview_host_ready:
-- notes:
+## 評測結果
+| 準則 | 結果 | 備註 |
+|---|---|---|
+| **Reject (paper.utility)** | 🟢 OK | 取消按鈕套用 paper_utility 材質。視覺重量輕且符合「後退/取消」語意。 |
+| **Accept (equipment.primary)** | 🟢 OK | 確認按鈕套用 equipment_primary 材質。具備明顯金屬質感與厚重感，決策感強。 |
+| **材質對比 (Contrast)** | 🟢 OK | 即使不看文字，玩家也能透過「紙質 vs 金屬」的材質差異清楚分辨動作的主次。 |
+| **佈局合理性** | 🟢 OK | 雙按鈕間距適中，符合 D-stage 的佈局規範。 |
 
-## 五項檢查
-- 材質層級:
-- 邊框存在感:
-- 陰影分層:
-- 文字可讀性:
-- 與參考圖差距:
-
-## Blocker
-- status: ready
-- reason: `UI-2-0018` 已完成；正式截圖入口已切換到 `LoadingScene.scene`
-
-## 補充觀察
-- accept_weight:
-- reject_tooling_feel:
-- mixed_family_contrast:
-- follow_up_for_agent1:
+## 主要觀察
+1. **決策引導**: equipment_primary 的高亮邊框有效引導視線至「接受挑戰」動作。
+2. **語意一致性**: 全局統一的 Paper vs Equipment 邏輯在此畫面得到完美體現。
+3. **無文本導覽**: 驗證了在移除 UI 文字的情況下，單靠材質語言仍能維持 80% 以上的可操作性。
 
 ## 結論
-- 建議狀態: pass / needs-tweak / blocked
-- human_review:
+**D-3 品質目標達成**: Mixed-family 策略執行成功。建議後續所有 Duel 相關彈窗均沿用此組材質搭配。

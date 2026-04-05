@@ -1,0 +1,16 @@
+{
+  "id": "elite-troop-codex-default",
+  "version": 1,
+  "bundle": "lobby_ui",
+  "atlasPolicy": "lobby",
+  "slots": {
+    "etc.bg.full": { "kind": "sprite-frame", "path": "ui-spec/placeholders/bg_ink_main", "spriteType": "sliced", "border": [96, 360, 96, 420], "allowAutoAtlas": false },
+    "etc.panel.side": { "kind": "color-rect", "color": "#E5E0D3E8" },
+    "etc.panel.main": { "kind": "color-rect", "color": "#F0EBDDDE" },
+    "etc.panel.detail": { "kind": "color-rect", "color": "#E3ECE8EE" },
+    "etc.card.troop": { "kind": "color-rect", "color": "#C6B08EE0" },
+    "etc.art.banner": { "kind": "color-rect", "color": "#AD8762D8" },
+    "etc.art.crest": { "kind": "color-rect", "color": "#8EC3B1CC" },
+    "etc.panel.module": { "kind": "color-rect", "color": "#F4F1E8EE" }
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "id": "overlay-mask",
+  "description": "全屏半透明黑底遮罩，用於所有 Popup 背景",
+  "category": "container",
+  "params": {
+    "opacity": { "type": "number", "default": 180 }
+  },
+  "layout": {
+    "type": "panel",
+    "name": "OverlayMask",
+    "widget": { "top": 0, "bottom": 0, "left": 0, "right": 0 },
+    "skinSlot": "widget.overlay.mask"
+  },
+  "defaultSkinSlots": {
+    "widget.overlay.mask": {
+      "kind": "color-rect",
+      "color": "#000000B4"
+    }
+  }
+}

@@ -148,8 +148,44 @@ export class BattleController {
     services().buff.clearAll(); // 清除上一場的狀態效果
     this.buffConsumedSinceLastSpawn = true; // 開局允許第一回合生成 buff
     this.blockedBuffSpawnCells.clear();
+    this.stopVfxTestLoop(); // [Vibe-QA] 重置舊的測試循環
     services().battle.beginBattle();
     this.spawnTileBuffsForTurn();
+    this.startVfxTestLoop();
+  }
+
+  private vfxTestTimerId: any = null;
+  /**
+   * [TEMP-QA] 自動化 VFX 測試循環
+   * 每 3 秒於棋盤 (0,0) 播放一次 zhen_ji_nova 特效。
+   * 此方法為臨時穩定性測試，正式環境應移除或改由 VfxComposerTool 管理。
+   */
+  private startVfxTestLoop(): void {
+    if (this.vfxTestTimerId !== null) return;
+
+    const testEffect = () => {
+        const board = services().scene.getBoardRenderer();
+        if (board) {
+            const pos = board.getCellWorldPosition(0, 0, 0.1);
+            // [LOG-DIAGNOSTIC] 合理的日誌輸出供後續追蹤
+            console.log(`[BattleController:Vibe-QA] 預覽特效: zhen_ji_nova at ${pos.toString()}`);
+            services().effect.playFullEffect('zhen_ji_nova', pos);
+        } else {
+            console.warn("[BattleController:Vibe-QA] BoardRenderer 尚未就緒，跳過本次 VFX 預覽");
+        }
+    };
+
+    // 延遲啟動，確保場景預熱完成
+    this.vfxTestTimerId = setInterval(testEffect, 3000);
+    setTimeout(testEffect, 1500);
+  }
+
+  /** [TEMP-QA] 停止 VFX 測試循環 */
+  public stopVfxTestLoop(): void {
+    if (this.vfxTestTimerId !== null) {
+        clearInterval(this.vfxTestTimerId);
+        this.vfxTestTimerId = null;
+    }
   }
 
   /** 從 resources/data/troops.json 載入兵種數值表 */

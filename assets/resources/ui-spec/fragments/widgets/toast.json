@@ -1,0 +1,40 @@
+{
+  "id": "toast",
+  "description": "輕量通知：黑色半透明圓角矩形 + 白色文字，2 秒後自動消失",
+  "category": "feedback",
+  "params": {
+    "text":     { "type": "i18n-key", "required": true },
+    "duration": { "type": "number", "default": 2 }
+  },
+  "layout": {
+    "type": "panel",
+    "name": "Toast",
+    "id": "toast",
+    "width": 400,
+    "height": 52,
+    "skinSlot": "widget.toast.bg",
+    "children": [
+      {
+        "type": "label",
+        "name": "ToastText",
+        "id": "toastText",
+        "widget": { "top": 0, "bottom": 0, "left": 16, "right": 16 },
+        "textKey": "${text}",
+        "styleSlot": "widget.toast.text"
+      }
+    ]
+  },
+  "defaultSkinSlots": {
+    "widget.toast.bg": {
+      "kind": "color-rect",
+      "color": "#000000CC"
+    },
+    "widget.toast.text": {
+      "kind": "label-style",
+      "fontSize": 22,
+      "color": "#FFFFFF",
+      "horizontalAlign": "CENTER",
+      "verticalAlign": "CENTER"
+    }
+  }
+}

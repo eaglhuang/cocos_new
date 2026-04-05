@@ -65,8 +65,9 @@
 2. **共識優先原則**: `docs/keep.md` 內的紀錄為當前會話的最高執行準則。
 3. **主動維護義務**: 達成新技術決策時，AI 須提醒用戶更新 `docs/keep.md`，並在每次新對話開始時摘要其內容。
 4. **Runtime Debug 優先讀 Log**: 凡是使用者回報 crash / TypeError / 畫面異常，**必須先執行 `cocos-log-reader` skill 讀取 `temp/logs/project.log`**，再分析程式碼。絕對不可以在沒看 log 的情況下直接猜測原因。
-5. **視覺症狀先截圖**: 使用者說「看看畫面」、「一團亂」、「UI 跑掉」、「怎麼了」等，**必須先執行 `cocos-screenshot` skill 截取 Cocos Editor 視窗**（不可用全螢幕截圖，Cocos Editor 可能被 VS Code 遮擋）。
+5. **視覺症狀先截圖**: 使用者說「看看畫面」、「一團亂」、「UI 跑掉」、「怎麼了」等，**必須先執行 `cocos-screenshot` skill 截取 Cocos Editor 視窗**（不可用全螢幕截圖，Cocos Editor 可能被 VS Code 遮擋）。此 skill 只適用於 **Editor Preview / Editor 視窗裡目前已經顯示出來的畫面**；前提是使用者已把目標畫面開在 Cocos Editor。它**不會**啟動或切換 Browser Review，也**不會**幫你在瀏覽器裡切 target。
 6. **綜合 Bug 用 cocos-bug-triage**: 同時有視覺症狀 + 運行時錯誤時，使用 `cocos-bug-triage` skill 執行統一流程（截圖 → log → 根源 → 修復）。
+7. **UI 畫面截圖 QA 用 cocos-preview-qa**: 需要用 **內建瀏覽器 / headless browser** 截取遊戲 Browser Review 畫面（LobbyMain、ShopMain、Gacha、DuelChallenge 等）並與參考圖比對時，使用 `cocos-preview-qa` skill，走 `tools_node/capture-ui-screens.js` pipeline。**前提是使用者已準備好可在瀏覽器執行的 Cocos Browser Review 環境**：`http://localhost:7456` 可開、LoadingScene / preview host / preview target 切換鏈已接好。若這些前提未完成，Agent 必須先提醒使用者準備環境，**不可誤用 `cocos-screenshot` 取代 Browser QA**。
 
 ## 語言與推理規範 (Thinking & Language)
 

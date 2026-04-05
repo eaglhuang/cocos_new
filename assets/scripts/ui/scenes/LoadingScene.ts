@@ -23,6 +23,7 @@ enum LoadingPreviewTarget {
     ShopMain = 2,
     Gacha = 3,
     DuelChallenge = 4,
+    BattleScene = 5,
 }
 
 /**
@@ -100,6 +101,8 @@ export class LoadingScene extends Component {
             return 'gacha-main-screen';
         case LoadingPreviewTarget.DuelChallenge:
             return 'duel-challenge-screen';
+        case LoadingPreviewTarget.BattleScene:
+            return 'battle-scene';
         case LoadingPreviewTarget.Disabled:
         default:
             return 'lobby-main-screen';
@@ -240,6 +243,9 @@ export class LoadingScene extends Component {
                 await this._previewDuelChallenge();
                 this._setCaptureState('ready', 'duel-challenge-screen');
                 return;
+            case LoadingPreviewTarget.BattleScene:
+                await this._previewBattleScene();
+                return;
             case LoadingPreviewTarget.Disabled:
             default:
                 console.warn('[LoadingScene] previewMode=true 但 previewTarget 未指定，預設載入 lobby-main-screen');
@@ -271,6 +277,19 @@ export class LoadingScene extends Component {
     private async _previewDuelChallenge(): Promise<void> {
         console.log('[LoadingScene] Preview target -> duel-challenge-screen');
         await this._previewHost?.showScreen('duel-challenge-screen');
+    }
+
+    private async _previewBattleScene(): Promise<void> {
+        console.log('[LoadingScene] Preview target -> BattleScene.scene');
+        await new Promise<void>((resolve, reject) => {
+            director.loadScene('BattleScene', (error) => {
+                if (error) {
+                    reject(error);
+                    return;
+                }
+                resolve();
+            });
+        });
     }
 
     private async _startTransition() {

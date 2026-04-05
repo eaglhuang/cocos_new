@@ -1,0 +1,54 @@
+{
+  "id": "resource-display",
+  "description": "資源顯示（icon + 數字 + 可選動畫）",
+  "category": "display",
+  "params": {
+    "icon":     { "type": "string", "default": "🌾" },
+    "format":   { "type": "string", "default": "{value} / {max}" },
+    "animated": { "type": "boolean", "default": true }
+  },
+  "layout": {
+    "type": "container",
+    "name": "ResourceDisplay",
+    "id": "resourceDisplay",
+    "width": 220,
+    "height": 32,
+    "layout": { "type": "horizontal", "spacing": 6 },
+    "children": [
+      {
+        "type": "label",
+        "name": "ResourceIcon",
+        "id": "resourceIcon",
+        "width": 32,
+        "height": 32,
+        "text": "${icon}",
+        "styleSlot": "widget.resource.icon"
+      },
+      {
+        "type": "label",
+        "name": "ResourceValue",
+        "id": "resourceValue",
+        "width": 180,
+        "height": 32,
+        "text": "",
+        "styleSlot": "widget.resource.value"
+      }
+    ]
+  },
+  "defaultSkinSlots": {
+    "widget.resource.icon": {
+      "kind": "label-style",
+      "fontSize": 24,
+      "color": "#FFD700",
+      "horizontalAlign": "CENTER",
+      "verticalAlign": "CENTER"
+    },
+    "widget.resource.value": {
+      "kind": "label-style",
+      "fontSize": 20,
+      "color": "#FFFFFF",
+      "horizontalAlign": "LEFT",
+      "verticalAlign": "CENTER"
+    }
+  }
+}

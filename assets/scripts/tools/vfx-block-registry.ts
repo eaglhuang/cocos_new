@@ -252,6 +252,7 @@ export const VFX_BLOCK_REGISTRY: VfxBlockDef[] = [
     { id: 'mep_ring_magic_circle2',label: 'MEP魔法陣B',category: 'rings',      texPath: 'textures/rings/mep_ring_magic_circle2',     blendMode: 'additive',    audio: 'skill0',   scale: 2.5, renderMode: 'auto', space: '3d' },
     { id: 'mep_ring_tech_circle',  label: 'MEP科技環A',category: 'rings',      texPath: 'textures/rings/mep_ring_tech_circle',       blendMode: 'additive',    audio: undefined,  scale: 2.5, renderMode: 'auto', space: '3d' },
     { id: 'mep_ring_tech_circle2', label: 'MEP科技環B',category: 'rings',      texPath: 'textures/rings/mep_ring_tech_circle2',      blendMode: 'additive',    audio: undefined,  scale: 2.5, renderMode: 'auto', space: '3d' },
+    { id: 'zhen_ji_ice_nova',      label: '甄姬冰晶漩渦', category: 'rings',      texPath: 'textures/Frost_Nova_Atlas',                blendMode: 'additive',    audio: 'heal',     scale: 3.0, renderMode: 'auto', space: '3d', prefabPath: 'prefabs/fx/zhen_ji_ice_nova' },
 ];
 
 /** 全部音效 clip 名稱與積木的對應說明 (文檔用) */

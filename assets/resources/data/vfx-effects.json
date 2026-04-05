@@ -72,6 +72,12 @@
       "audio": "buff",
       "notify": { "type": "floatText", "textKey": "奇謀佈陣！", "color": "#FFDD00" },
       "lifetime": 3.0
+    },
+    "zhen_ji_nova": {
+      "blockId": "zhen_ji_ice_nova",
+      "audio": "heal",
+      "notify": { "type": "floatText", "textKey": "霜月凝華！", "color": "#AADDFF" },
+      "lifetime": 2.5
     }
   }
 }

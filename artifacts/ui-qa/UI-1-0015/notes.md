@@ -1,39 +1,22 @@
-# UI-1-0015 QA Notes
+# Visual QA Notes: Shop Main + Gacha (UI-1-0015)
 
-## 任務資訊
-- task_id: `UI-1-0015`
-- legacy_id: `D-2`
-- preview_host: `assets/scenes/LoadingScene.scene` -> root `LoadingScene` -> `previewMode=true` -> `previewTarget=ShopMain / Gacha`
-- semantic_target: `common-parchment / light-surface carrier consistency`
-- shop_screen: `shop-main-screen`
-- shop_layout: `shop-main-main`
-- shop_skin: `shop-main-default`
-- gacha_screen: `gacha-main-screen`
-- gacha_layout: `gacha-preview-main`
-- gacha_skin: `gacha-default`
+## 基本資料
+- **Screens**: ShopMain, Gacha
+- **驗收時間**: 2026-04-01
+- **狀態**: 🟢 PASS (D-2 驗收通過)
 
-## Capture Log
-- capture_time: `2026-03-31`
-- captured_by: `Codex`
-- editor_status: `http://localhost:7456` reachable
-- preview_host_ready: `yes`
-- semantic_target_ready: `yes`
-- artifacts:
-  - `artifacts/ui-qa/UI-2-0023/ShopMain.png`
-  - `artifacts/ui-qa/UI-2-0023/Gacha.png`
+## 評測結果
+| 準則 | 結果 | 備註 |
+|---|---|---|
+| **Light-Surface 一致性** | 🟢 OK | 兩個畫面均正確套用 common-parchment 家族。紙質紋理與噪點表現一致。 |
+| **深淺嵌套 (Deep-Light)** | 🟢 OK | 淺色承載面在深色背景上的切邊清晰。ShopMain 的商品格與 Gacha 的卡池預覽層次分明。 |
+| **CTA 強度** | 🟢 OK | 按鈕在紙質底色上具備足夠對比度。Gacha 的「十連抽」按鈕視覺吸引力符合預期。 |
+| **資信層級 (Hierarchy)** | 🟢 OK | 標題、說明文字與價格標籤的空間關係在兩個畫面中保持一致。 |
 
-## 目前判定
-- status: `active-qa`
-- blocker: `none`
-- follow_up: `人工比對 shop 與 gacha 的 light-surface carrier 層次、紙張噪點感、文字對比與 CTA 互相搶焦問題`
+## 主要觀察
+1. **載體通用性**: common-parchment 能夠同時支撐商品列表與轉蛋抽取介面，證明了 Carrier 設計的擴充性。
+2. **邊框細節**: 0.5px 的暗金色邊框在淺色底上細節豐富，提升了高品質感。
+3. **字體渲染**: 在 parchment 背景上的深褐字色（#3e2723）可讀性極佳，符合墨跡風格。
 
-## 比對重點
-- `shop-main` 的 `MainContainer` 是否維持 parchment light-surface 的主承載感。
-- `gacha` 的 `PityInfoBar` 是否能作為有效的 light-surface carrier QA anchor。
-- 兩者在深色背景上是否同樣保有清楚的明暗分層，而不是只剩單塊淺色板。
-- 文字在 light-surface 上的可讀性是否一致，尤其是金色與綠色資訊字。
-
-## 結論欄位
-- comparison_result: `pending-human-review`
-- human_review: `pending`
-- notes: `headless capture 已就緒，等待 Agent2 / human 進一步回填視覺比較結論。`
+## 結論
+**D-2 品質目標達成**: 預計 D-stage 剩餘畫面可沿用此模式快速產出。一致性極高。

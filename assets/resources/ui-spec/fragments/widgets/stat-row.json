@@ -1,0 +1,71 @@
+{
+  "id": "stat-row",
+  "description": "單行屬性顯示（icon + label + value）",
+  "category": "display",
+  "params": {
+    "icon":  { "type": "string", "default": "" },
+    "label": { "type": "i18n-key", "required": true },
+    "value": { "type": "string", "default": "" }
+  },
+  "layout": {
+    "type": "container",
+    "name": "StatRow",
+    "id": "statRow",
+    "width": "100%",
+    "height": 36,
+    "layout": { "type": "horizontal", "spacing": 8, "paddingLeft": 12, "paddingRight": 12 },
+    "children": [
+      {
+        "type": "label",
+        "name": "StatIcon",
+        "id": "statIcon",
+        "width": 28,
+        "height": 28,
+        "text": "${icon}",
+        "styleSlot": "widget.stat.icon"
+      },
+      {
+        "type": "label",
+        "name": "StatLabel",
+        "id": "statLabel",
+        "width": "50%",
+        "height": 36,
+        "textKey": "${label}",
+        "styleSlot": "widget.stat.label"
+      },
+      {
+        "type": "label",
+        "name": "StatValue",
+        "id": "statValue",
+        "width": "30%",
+        "height": 36,
+        "text": "${value}",
+        "styleSlot": "widget.stat.value"
+      }
+    ]
+  },
+  "defaultSkinSlots": {
+    "widget.stat.icon": {
+      "kind": "label-style",
+      "fontSize": 20,
+      "color": "#FFD700",
+      "horizontalAlign": "CENTER",
+      "verticalAlign": "CENTER"
+    },
+    "widget.stat.label": {
+      "kind": "label-style",
+      "fontSize": 20,
+      "color": "#AAAAAA",
+      "horizontalAlign": "LEFT",
+      "verticalAlign": "CENTER"
+    },
+    "widget.stat.value": {
+      "kind": "label-style",
+      "fontSize": 20,
+      "color": "#FFFFFF",
+      "isBold": true,
+      "horizontalAlign": "RIGHT",
+      "verticalAlign": "CENTER"
+    }
+  }
+}

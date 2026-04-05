@@ -1,0 +1,1 @@
+2026-04-01 | 狀態: in-progress | 驗證: 已對照 UI 參考圖中的 A4 diorama card 與 A5 hero-panel 樣本，並回看 TigerTally 既有 slot | 變更: TigerTally card art 主語言先定為 A4 城樓 / 地圖式 diorama，A5 僅作角色主題卡備選 | 阻塞: 待 Agent1 產出 A4 / A5 對照 proof

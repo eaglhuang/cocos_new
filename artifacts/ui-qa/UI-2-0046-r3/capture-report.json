@@ -1,0 +1,12 @@
+{
+  "createdAt": "2026-04-01T03:15:35.148Z",
+  "host": "http://localhost:7456",
+  "machine": "DESKTOP-NREHEQ8",
+  "captures": [
+    {
+      "target": "BattleScene",
+      "screenId": "battle-scene",
+      "file": "c:\\Users\\User\\3KLife\\artifacts\\ui-qa\\UI-2-0046-r3\\BattleScene.png"
+    }
+  ]
+}

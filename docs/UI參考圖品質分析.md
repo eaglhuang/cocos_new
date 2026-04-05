@@ -787,3 +787,534 @@ Agent2                              Agent1
 - `UI-2-0028` 保持 `in-progress`，代表第一張候選稿與參考圖比對已完成。
 - 新開 `UI-2-0032`，專門處理 BattleScene icon v2 的品質修正。
 - `UI-2-0032` 已建立 `artifacts/ui-qa/UI-2-0032/` baseline QA 目錄，內含 `baseline-compare-board.png` 與 notes，後續 v2 候選稿會在同目錄續寫，方便追蹤每一輪 refine 的判斷依據。
+
+---
+
+## 2026-04-01 擴充版 Icon Family 研究（20-icon baseline）
+
+### 研究目的
+
+上一輪只聚焦在單張 `unitinfo_type_icon_spear_v1.png` 與少量 icon crop 的質感差距，還不足以支撐 BattleScene 後續大量自動生成。這一輪改為從 `docs/UI品質參考圖/` 全量截圖反推：
+
+- 至少 20 個不同 icon 樣本
+- 每個 icon 所屬的 family
+- 這個 family 在什麼畫面條件下會被使用
+- 高品質形成規則
+- 可直接回寫到自動生成 prompt 的描述策略
+
+### 參考圖樣本池代號
+
+| 代號 | 檔案 |
+|---|---|
+| S1 | `螢幕擷取畫面 2026-03-29 143202.png` |
+| S2 | `螢幕擷取畫面 2026-03-29 143303.png` |
+| S3 | `螢幕擷取畫面 2026-03-29 143330.png` |
+| S4 | `螢幕擷取畫面 2026-03-29 143354.png` |
+| S5 | `螢幕擷取畫面 2026-03-29 143432.png` |
+| S6 | `螢幕擷取畫面 2026-03-31 075728.png` |
+| S7 | `螢幕擷取畫面 2026-03-31 091522.png` |
+| S8 | `螢幕擷取畫面 2026-03-31 091717.png` |
+| S9 | `螢幕擷取畫面 2026-03-31 091738.png` |
+| S10 | `螢幕擷取畫面 2026-04-01 011025.png` |
+| S11 | `螢幕擷取畫面 2026-04-01 011040.png` |
+| S12 | `螢幕擷取畫面 2026-04-01 011101.png` |
+
+### 20 個 icon 樣本清單
+
+| # | 樣本 | 來源 | Family | 畫面條件 | 關鍵視覺特徵 |
+|---|---|---|---|---|---|
+| 1 | 返回箭頭 | S1 | 墨刷導覽 glyph | 深色標題列、單一步驟返回 | 大尺寸、單色、高發現性 |
+| 2 | 資訊驚嘆號 | S1 | 輔助導覽 glyph | 標題旁的次主資訊 | 小圓牌、白色邊緣、次操作 |
+| 3 | 普通模式綠印章 | S1 | 印章狀態 family | 模式切換、低資訊量 | 大色塊、圓形印泥感 |
+| 4 | 困難模式紅印章 | S1 | 印章狀態 family | 模式切換、風險提示 | 與普通同載體、靠色彩切換語意 |
+| 5 | 產量加成六角章 | S1 | 六角資源 badge | 列表加成摘要 | 厚邊章體、短 glyph、可與數字併排 |
+| 6 | 地圖節點卷軸圖示 | S1 | 地圖節點 family | 路線圖、可點節點 | 低彩描線、印記感強 |
+| 7 | 木材 icon | S1/S7 | 資源掉落 cell family | 羊皮紙格子、附數量 | 立體小物件、低彩、輪廓清楚 |
+| 8 | 布料 icon | S1/S7 | 資源掉落 cell family | 羊皮紙格子、附數量 | 材質明確、細節克制 |
+| 9 | 金屬錠 icon | S1/S7 | 資源掉落 cell family | 羊皮紙格子、附數量 | 高反光金屬面、但不發光 |
+| 10 | 甲冑裝備 icon | S1/S7 | 裝備 cell family | 收藏 / 掉落格 | 物件與稀有度框一起讀到 |
+| 11 | 卷軸/書冊 icon | S1/S7 | 裝備 cell family | 收藏 / 掉落格 | 斜放物件、束帶、紙材質 |
+| 12 | 綠屬性 orb | S2/S4/S10/S11 | 戰場微型屬性 badge | 頭像旁、卡角、即時辨識 | 高彩、高對比、厚外框 |
+| 13 | 火屬性 orb | S2/S6/S11 | 戰場微型屬性 badge | 頭像旁、裝備角標 | 暖亮核心、深外圈、防止漂浮 |
+| 14 | 雷屬性 orb | S2/S6/S11 | 戰場微型屬性 badge | 頭像旁、卡角 | 黃色核心 + 粗邊，縮小仍可讀 |
+| 15 | 紫屬性 orb | S2/S11 | 戰場微型屬性 badge | 技能卡 / 武將卡 | 高飽和紫核心、黑邊防失焦 |
+| 16 | AUTO 圓形按鈕 | S2 | 戰鬥功能圓按鈕 family | 即時戰鬥 HUD | 金環、深底、字與 glyph 同讀 |
+| 17 | 1x 速度按鈕 | S2 | 戰鬥功能圓按鈕 family | 即時戰鬥 HUD | 單色圖形、粗輪廓、快速掃視 |
+| 18 | 計時器 icon | S2 | HUD 工具 glyph | 深色背景上的次主資訊 | 線稿單色、白邊、低存在高可讀 |
+| 19 | 交叉武器攻擊按鈕 | S2 | 戰鬥主行動按鈕 family | 高即時性點擊操作 | 粗 glyph、厚 carrier、可點擊感強 |
+| 20 | 軍團側欄 icon | S5/S8 | 側欄單色 pictogram family | 深色直式導覽欄 | 單色金墨、負空間大、適合垂直排列 |
+
+> 補充：完整樣本對照表放在 `artifacts/ui-qa/UI-2-0035/reference-matrix.md`。
+
+### 歸納出的 8 種 icon family
+
+#### F1. 墨刷導覽 Glyph
+
+- 典型樣本：返回箭頭、資訊驚嘆號
+- 使用環境：深色標題列、空間寬鬆、操作數量少
+- 規則：只承擔單一操作，不需要厚 carrier，但要有刷痕或金屬亮邊，避免像通用 app icon
+
+#### F2. 印章狀態 Family
+
+- 典型樣本：普通 / 困難模式圓章
+- 使用環境：模式切換、難度、短標籤、低資訊密度
+- 規則：大色塊先讀到，glyph 可以簡單；家族一致性來自相同外形與相同邊緣髒污
+
+#### F3. 六角資源 Badge
+
+- 典型樣本：產量加成六角章、列表內的短資源加成圖示
+- 使用環境：資訊表格、文字旁、非主獎勵但需要快速辨識
+- 規則：章體要厚、中心 glyph 簡潔、色彩略退，避免搶走主數值
+
+#### F4. 地圖節點 / 印記 Family
+
+- 典型樣本：地圖節點卷軸、地圖上的小建築或路標
+- 使用環境：羊皮紙地圖、路線圖、互動節點
+- 規則：低彩、描線、像地圖印記而不是 3D 實物；否則會破壞地圖整體的紙面語言
+
+#### F5. 資源掉落 Cell Family
+
+- 典型樣本：木材、布料、金屬錠
+- 使用環境：戰令獎勵格、地圖獎勵格、商城兌換格
+- 規則：icon 是「小實物縮圖」，不是 flat pictogram；但色彩要退到讓數量文字優先讀到
+
+#### F6. 裝備 / 收藏 Cell Family
+
+- 典型樣本：甲冑、卷軸、武器
+- 使用環境：可收藏、可穿戴、可抽取的物件格
+- 規則：必須同時讀到主物件、稀有度、等級或角標；因此 carrier 與 icon 要設計成一組，而不是各自獨立
+
+#### F7. 戰場微型屬性 Badge
+
+- 典型樣本：綠、火、雷、紫 orb
+- 使用環境：頭像旁、卡牌角落、24px 左右的高密度即時資訊
+- 規則：這類 family 需要最高對比和最厚外框，因為它常貼在角色頭像或技能卡邊緣，背景雜訊最大
+
+#### F8. 戰鬥功能按鈕 / 側欄 Pictogram
+
+- 典型樣本：AUTO、1x、計時器、交叉武器、軍團側欄圖示
+- 使用環境：即時戰鬥 HUD 或深色側欄導覽
+- 規則：
+  - 若是可點擊主功能：用厚 carrier + 粗 glyph
+  - 若是次主資訊：用單色 glyph + 小 carrier
+  - 若是側欄模式切換：用單色 pictogram，避免做成資源格那種立體縮圖
+
+### icon family 選擇規則
+
+以下規則是這輪最有價值的輸出，因為它們能直接反推我們自己的 icon 生產策略：
+
+1. 背景越雜、icon 越小，就越不能用低對比材質；要改用高彩核心 + 厚外框 family。
+2. icon 若貼在頭像、卡牌或立繪邊緣，優先用 F7 微型屬性 badge，而不是一般資源 icon。
+3. icon 若在羊皮紙格子內與數量併排，優先用 F5 資源掉落 cell family，讓數量而不是 icon 本體成為第一閱讀點。
+4. icon 若要表現收藏價值或稀有度，必須讓 carrier 與 icon 同時被設計，不能只生一顆孤立 glyph。
+5. 導覽 icon 不應用資源縮圖語言，否則畫面會顯得「每個按鈕都像獎勵格」。
+6. 即時操作按鈕必須比即時狀態 icon 更厚重，因為它們承擔的是點擊，不是辨識。
+7. 低資訊量模式切換最適合印章 family，因為大色塊比複雜圖形更快建立情緒區分。
+8. 地圖、羊皮紙、信件這種紙面情境，icon 要偏印記 / stamp / 手繪描線，而不是玻璃、琺瑯或高光塑膠。
+9. 戰鬥 HUD 的 icon 若需要在 24~32px 內讀到，glyph 必須比平常粗至少一級，負空間也要更大。
+10. 抽卡 / 收藏 UI 的高價值 icon，可以接受 glow、亮邊、稀有度框；地圖或列表型畫面則要克制 glow。
+11. 同一個 family 內可以換色相，但不應同時換 carrier 幾何；保持「同形換色」比「同色換形」更能被快速辨識。
+12. icon 的質感不只是物件本體，而是 carrier、邊框、陰影、髒污與亮部一起構成。
+
+### 高品質 icon 的形成條件
+
+歸納參考圖後，高品質 icon 其實不是「畫得很細」而已，而是同時滿足下列條件：
+
+| 條件 | 說明 |
+|---|---|
+| 對的 family | 先選對畫面語言，而不是先畫單一物件 |
+| 對的 carrier | 同一個 glyph 放在不同載體上，語氣會完全不同 |
+| 對的明度對比 | 深底用高對比、淺底用中低對比，不能一套跑到底 |
+| 對的材質粗細 | 小 icon 看輪廓，大 icon 才能看材質細節 |
+| 對的價值訊號 | 收藏型要有 glow / rarity，工具型反而要收斂 |
+| 對的背景適配 | 戰鬥、列表、商城、地圖，各自需要不同噪點與邊緣策略 |
+
+### 回寫到自動生成流程的描述欄位
+
+之後我們若要讓每顆 icon 都帶著更具體的生成描述，至少應固定帶這些欄位：
+
+| 欄位 | 用途 |
+|---|---|
+| `scene_role` | 這顆 icon 在畫面是導覽、掉落、狀態、操作，還是收藏 |
+| `family` | 對應哪一種 icon family |
+| `carrier` | 圓章、六角章、紙面印記、方形物品格、無 carrier |
+| `size_class` | 24px / 32px / 64px / 80px 等不同尺寸級別 |
+| `contrast_mode` | 高對比即時辨識 or 中對比列表閱讀 |
+| `material_stack` | 金屬、紙張、木質、琺瑯、墨刷等材質組合 |
+| `wear_level` | 乾淨、輕微做舊、明顯磨耗 |
+| `value_tier` | 一般資源、可收藏、稀有、主 CTA |
+| `attachment_mode` | 貼在頭像上、放在格子內、獨立按鈕、側欄導覽 |
+
+### 建議的 icon family prompt DNA
+
+| Family | 生成描述方向 |
+|---|---|
+| 墨刷導覽 glyph | `ink-brush navigation glyph, parchment gold edge, bold silhouette, no toy-like shading` |
+| 印章狀態 family | `wax-seal / stamped token, large color field, short glyph, worn rim, fast mode readability` |
+| 六角資源 badge | `thick hex resource badge, muted metallic rim, compact center glyph, table-friendly` |
+| 地圖節點 family | `hand-drawn map stamp, parchment-compatible, low saturation, outline-first` |
+| 資源掉落 cell family | `painted commodity miniature, low-saturation material object, dark cell readability, count-first` |
+| 裝備 / 收藏 cell family | `collectible item cell icon, rarity-aware frame, hero game inventory look, readable at 64px` |
+| 戰場微型屬性 badge | `high-contrast elemental micro-badge, saturated core, thick rim, readable at 24px` |
+| 戰鬥功能按鈕 | `battle action icon button, heavy carrier, bold glyph, tactile gold ring, immediate input readability` |
+
+### 對 BattleScene 的直接啟示
+
+- BattleScene 的 `unitinfo.type.icon` 不應直接套用資源掉落格語言，而應優先靠近「戰場微型 badge + 戰鬥按鈕」的中間帶。
+- 若某 icon 是貼在單位頭像旁，應以 F7 為主；若是放在技能或操作欄，則改用 F8。
+- BattleScene 若未來有掉落或獎勵面板，才適合引用 F5 / F6 的語言。
+- 所以我們後續不該追求一套「萬用 icon」，而是至少做出 3 套 BattleScene 內部 family：
+  - `micro-status`
+  - `action-button`
+  - `reward-cell`
+
+### 任務對應
+
+- `UI-2-0028`：建立 icon 資產清單
+- `UI-2-0032`：單張候選稿 v2 品質修正
+- `UI-2-0035`：擴充參考圖 icon family 規則庫與 20-icon baseline
+
+### 目前已開立 icon 量產需求單 × family 指派
+
+這一步很重要，因為它把「研究」變成「可執行的需求分流」。如果沒有這層，後續量產很容易又回到「先生成一顆看起來不錯的 icon，再硬塞到任何畫面」。
+
+| 任務卡 | 主要 key / 範圍 | 建議 family | 指派結論 |
+|---|---|---|---|
+| `UI-2-0027` | 戰場整體 icon / portrait / card art / fallback manifest | `F7`、`F8`、`F6`、`F5` | 這張總表不應只有一套 icon 語言，至少要拆成戰場微型 badge、戰鬥按鈕、收藏卡圖、掉落資源四條支線。 |
+| `UI-2-0028` | `unitinfo.type.icon`、`log.btn.*`、戰鬥功能 icon | `unitinfo.type.icon -> F7`；`log.btn.* -> F8` | 這張卡目前最容易犯的錯，就是把附掛 badge 跟可點擊按鈕畫成同一種語言。 |
+| `UI-2-0029` | BattleHUD portraits | 頭像本體不套 family；附掛 badge 預留 `F7` | 這張卡的核心不是 icon 造型，而是要明確把「頭像資產」和「貼頭像的小 badge」分開。 |
+| `UI-2-0030` | `tally.card.art`、`tally.card.rarity.*`、`tally.badge.type` | `F6` + `F7` | TigerTally 的卡面主體和稀有度是收藏/卡牌語言，角落兵種 badge 才是戰場 micro badge。 |
+| `UI-2-0031` | 戰場 fallback 規範 | 保留原 family 的 fallback | fallback 不可用單一萬用 placeholder 取代全部 family，否則畫面語言會斷裂。 |
+| `UI-2-0032` | `unitinfo_type_icon` v2 refinement | `F7` 主導，少量借 `F8` 觸感 | v2 的方向應是更像戰場小 badge，而不是更像獎勵格小實物。 |
+
+### 現行 ui-spec 契約 × family 使用表
+
+這裡不是只看需求單，而是把現有 screen/layout/skin 契約一起拉進來，讓後續不管是 Agent1 接 runtime、Agent2 做 QA、還是自動生成工具補圖，都有一致的 family 指派依據。
+
+| Screen / Layout | 相關 slot | 建議 family | 使用條件 |
+|---|---|---|---|
+| `battle-hud-screen` / `battle-hud-main` | `hud.portrait.*` | 頭像本體不套 family；角標預留 `F7` | 深色戰場、背景雜訊高、頭像旁 24~32px 的即時辨識資訊。 |
+| `battle-log-screen` / `battle-log-main` | `log.btn.auto`、`log.btn.speed`、`log.btn.setting`、`log.btn.collapse` | `F8` | 即時控制列、可點擊、厚 carrier、粗 glyph。 |
+| `action-command-screen` / `action-command-main` | `action.util.*`、`action.ultimate.*`、`action.sp.ring` | `F8` | 主操作區、大圓/小圓按鈕、觸控優先。 |
+| `tiger-tally-screen` / `tiger-tally-main` | `tally.card.art`、`tally.card.rarity.*`、`tally.badge.type` | `F6` + `F7` | 卡片主體與稀有度走收藏 cell，角落兵種 badge 走戰場 micro badge。 |
+| `unit-info-panel-screen` / `unit-info-panel-main` | `unitinfo.type.icon`、`unitinfo.btn.close` | `F7` + `F1` | 類型 icon 是貼面板的小 badge，close 則是低負載導覽 glyph。 |
+| `general-quickview-screen` / `general-quickview-main` | `quickview.btn.close` | `F1` | 戰場 popover 裡的關閉操作，不應做成厚重功能按鈕。 |
+| `lobby-main-screen` / `lobby-main-main` | `lobby.icon.network`、`lobby.nav.btn` | `F8` 次主工具 glyph；低負載時退 `F1` | 系統狀態或導覽 icon，不應誤畫成戰場 badge 或資源縮圖。 |
+| `network-status-screen` / `network-status-main` | `netstat.icon.sprite` | `F8` 次主工具 glyph | 這是系統狀態 icon，重點是快讀，不是收藏或稀有感。 |
+| `gacha-main-screen` / `gacha-main` | `currency.icon.*`、`gacha.badge.rateup`、`gacha.btn.*` | `currency -> F3/F5`、`rateup -> F2`、`btn -> F1/F8` | inline 貨幣顯示優先緊湊 badge；放進獎勵格或 bundle 才升為實物 cell。 |
+| `shop-main-screen` / `shop-main-main` | `shop.btn.close`、`shop.tab.btn` | `F1` / `F2` / 低裝飾 `F8` | 商城是羊皮紙與 light-surface 情境，不應直接套用戰場高彩厚邊語言。 |
+| `support-card-screen` / `support-card-main` | `card.portrait`、`card.star*`、`topbar.btn.back`、`filterbar.btn.filter`、`bottombar.btn.*` | `F6`、`F1`、`F8` | 收藏卡與星級屬於 collectible family；工具列與導覽按鈕另走 F1/F8。 |
+
+### UI 規格書層級的 family 使用條件
+
+若把 `UI 規格書.md`、`主戰場UI規格書.md`、`主戰場UI規格補充_v3.md` 一起看，就能更明確地知道 family 不是憑感覺挑，而是被畫面情境決定：
+
+| 規格書情境 | 建議 family | 條件判讀 |
+|---|---|---|
+| 開場 / 信件 / Win95 導覽 | `F1` | back、close、info、next 這類低資訊量導覽。 |
+| 因子六角圖、祖先矩陣、短加成摘要 | `F3` | 六角章、表格旁、要和數字並排的 compact badge。 |
+| 限定、rate-up、倒數、難度狀態 | `F2` | 大色塊、情緒切換、短標籤、促銷或風險提示。 |
+| 地圖節點、棋盤地形標示、紙面印記 | `F4` | 低彩、描線、像地圖印記，不要太 3D 或太亮。 |
+| 掉落資源、材料格、商城 bundle 素材 | `F5` | 與數量並排時，icon 必須退後，讓數字優先讀到。 |
+| 收藏卡圖、裝備格、支援卡星級與 meta | `F6` | 有稀有度、有收藏感、需要 carrier 與主物件一起被讀到。 |
+| 頭像旁屬性 / 兵種 / 戰場角標 | `F7` | 24~32px、小而密、背景雜訊高、要高對比厚外框。 |
+| 奧義 / 計謀 / 單挑 / Auto / x2 / ⚙ 等功能按鈕 | `F8` | 需要可點擊感、觸控友善、主操作優先。 |
+
+### 對我們自己的生產策略的直接約束
+
+這輪比前一版更重要的地方，在於它已經能直接約束後續 icon 量產流程：
+
+1. 不能再以「戰場 icon」當成單一 prompt 類別，必須至少拆成 `F7 micro-status`、`F8 action-button`、`F6 collectible-card`、`F5 reward-cell`。
+2. 每張 icon 需求卡在進入自動生成前，都應先標記：
+   - `family`
+   - `carrier`
+   - `size_class`
+   - `attachment_mode`
+   - `background_noise_level`
+3. 若 icon 會貼在頭像旁或卡面角落，就先排除 F5 / F6，直接以 `F7` 起稿。
+4. 若 icon 是可點擊的主功能，先排除 F1 / F3，直接以 `F8` 起稿。
+5. 若 icon 要和數字或稀有度共存，先確認它是在做 `資源 cell` 還是 `收藏 cell`，避免把 F5 與 F6 混成一種。
+
+## 2026-04-01 第二波擴充：非 icon 量產圖 family
+
+這批新加入的參考圖，已經不是單純在補更多 icon，而是把整個「可量產圖片需求」往前推了一大步。它們證明後續量產不能只靠 icon family，還必須把頭像、關卡牌、城建節點、寶箱容器、武器卷冊、服裝 torso 都納入同一套規則庫。
+
+### 新增樣本池（S13 ~ S28）
+
+- `S13`：黑底數值圓章與菱形兵器章
+- `S14`：HUD 頭像裁片 + 等級條 + 屬性珠
+- `S15`：懸掛式關卡牌（古錢 / 令牌 / 甲胄 / 玉牌）
+- `S16`：城樓 diorama 卡
+- `S17`：武將半身 + 關卡詳情面板
+- `S18`：章節劇情 + 陣營頭像列
+- `S19`：城建地圖上的設施節點
+- `S20`：區域列表橫幅卡
+- `S21`：官員派駐產出面板
+- `S22`：任務彈窗 + 左側建築大圖
+- `S23`：建築操作筆刷選單
+- `S24`：新手教學覆蓋 + 建築高亮
+- `S25`：武器實物包
+- `S26`：卷冊 / 書籍 / 文書包
+- `S27`：箱匣 / 罐 / 禮盒容器
+- `S28`：服裝 / 甲冑 torso 素材
+
+### 歸納出的 8 種非 icon 量產圖 family
+
+#### A1. 黑金數值章 family
+
+- 典型樣本：`S13`
+- 使用環境：技能數值、速率、兵器標記、小型戰鬥面板
+- 規則：比一般 icon 更偏 token / medallion；黑底、金邊、白字與數字共讀，適合做「系統數值章」而不是導航 icon。
+
+#### A2. HUD 頭像裁片 family
+
+- 典型樣本：`S14`
+- 使用環境：戰場 HUD、角色資訊條、頭像旁附掛屬性珠
+- 規則：頭像要能被乾淨裁切成圓形或半圓弧邊框，輪廓清楚、五官集中、旁邊 badge 不會被頭髮或裝飾吃掉。
+
+#### A3. 懸掛式關卡牌 family
+
+- 典型樣本：`S15`
+- 使用環境：活動入口、關卡選擇、挑戰列表
+- 規則：上方主 emblem + 中央白底資訊 + 下方黑底難度/副標三段結構；重點是遠看先辨識入口種類，再看文字。
+
+#### A4. 城樓 / 建築 Diorama Card family
+
+- 典型樣本：`S16`
+- 使用環境：塔樓、城池、據點、部隊據點卡面
+- 規則：俯視建築小模型不是背景插圖，而是卡面主角；建築底座、色帶與樓層 / 陣營資訊要一起被讀到。
+
+#### A5. 主將半身 Panel family
+
+- 典型樣本：`S17`
+- 使用環境：關卡詳情、首領面板、主將介紹、派駐面板
+- 規則：半身立繪與右側資訊面板是同一組件；人物服裝、武器、姿勢必須能承接數值面板，而不是獨立立繪。
+
+#### A6. 章節 / 陣營敘事 Banner family
+
+- 典型樣本：`S18`
+- 使用環境：劇情選章、勢力輪播、世界觀導覽
+- 規則：大立繪、章節大標、陣營條與下方進度列一起運作；這類畫面靠「敘事氣氛」而不是單一卡片收藏感。
+
+#### A7. 城建節點與操作選單 family
+
+- 典型樣本：`S19`、`S23`、`S24`
+- 使用環境：主城總覽、建築點擊互動、教學引導
+- 規則：節點章、建築浮標、弧形或直列操作選單、教學高亮要視為同一條互動語言；它們不是獨立 icon，而是建築交互套件。
+
+#### A8. 掉落容器 / 道具包 / 紙娃素材 family
+
+- 典型樣本：`S25`、`S26`、`S27`、`S28`
+- 使用環境：獎勵揭示、商城 bundle、圖鑑、裝備/服裝系統
+- 規則：
+  - 武器與道具包要做成高辨識實物縮圖
+  - 寶箱與禮盒本身就是價值訊號，不能只畫普通盒子
+  - 服裝 / 甲冑 torso 要保留材質與剪裁層次，方便後續紙娃或裝備系統量產
+
+### 目前已開立需求單 × 非 icon family 指派
+
+| 任務卡 | 建議 family | 指派結論 |
+|---|---|---|
+| `UI-2-0029` 戰場 Portrait | `A2 HUD 頭像裁片 family` 為主，必要時參考 `A5` | BattleHUD 目前最需要的是可裁成小尺寸、可掛 badge 的頭像語言，而不是完整立繪。 |
+| `UI-2-0030` TigerTally Card Art / Badge | `A4`、`A5`、`A8` 作為後續 art direction 候選 | 若卡面主體是據點 / 部隊設施，優先 A4；若是主將 / 部隊代表人物，偏 A5；若是抽取外包裝與 reward reveal，參考 A8。 |
+| `UI-2-0027` 圖像資產總表 | `A2`、`A4`、`A5`、`A8` 全部納入 | 總表之後不能只追 icon、portrait、tally card 三類，還要把容器、道具包與服裝素材納進量產思維。 |
+
+### 對目前 UI 規格書的直接啟示
+
+1. `主戰場UI規格書` 的主將資訊、快覽窗與 TigerTally，不能只看 icon；至少還要同步定義 `頭像裁片 family` 與 `卡面主視覺 family`。
+2. `UI 規格書` 的劇情章節、勢力切換與活動入口，應優先走 `A3 / A5 / A6`，不要誤用 BattleScene 那套高對比小 badge。
+3. 未來若真的做主城 / 城建系統，應直接複用 `A7` 的建築節點與操作選單語言，而不是重新發明一套現代化 dashboard。
+4. 商城 bundle、獎勵揭示、活動禮包，應及早規劃 `A8` 的容器與道具包策略，因為這些圖本身就是價值感來源。
+
+### 對生產流程的新增要求
+
+之後只要是「非 icon 的量產圖」，至少也應補以下描述欄位：
+
+| 欄位 | 用途 |
+|---|---|
+| `asset_family` | A1~A8 中的哪一種 family |
+| `presentation_role` | 頭像 / 卡面主圖 / 建築節點 / 容器 / 道具包 / 服裝素材 |
+| `crop_mode` | 圓裁 / 半身裁片 / 俯視 diorama / 單件實物 / torso |
+| `value_signal` | 是否承擔稀有、關卡等級、勢力、產出價值感 |
+| `overlay_need` | 是否需要額外掛 badge、倒數、數值條、難度條 |
+| `reuse_scope` | HUD only / card only / reward only / system-wide |
+
+### 由新 family 反推的新增量產需求單
+
+這輪最實際的下一步，不是再多寫研究，而是把研究轉成可追蹤的任務卡。依照目前專案最可能先用到的方向，我已反推出以下需求單：
+
+| 新卡號 | 對應 family | 目的 | 優先度 |
+|---|---|---|---|
+| `UI-2-0038` | `A2 HUD 頭像裁片 family` | 為 BattleHUD / QuickView 建立 portrait 裁片量產規格 | 高 |
+| `UI-2-0039` | `A4` / `A5` | 為 TigerTally card art 決定主視覺母型（據點卡 vs 主將半身） | 高 |
+| `UI-2-0040` | `A8` | 為商城 bundle、獎勵揭示、道具包、容器建立共同價值語言 | 高 |
+| `UI-2-0041` | `A7` | 為主城 building node / interaction 預留統一交互語言 | 中 |
+| `UI-2-0042` | `A16` | 為未來換裝 / 裝備 / 角色養成預留 torso 素材規格 | 中 |
+
+其中最值得先往前推的是 `UI-2-0038`，因為它直接連到目前已存在的 `UI-2-0029` 與 `UI-2-0033`，而且會最早影響戰場畫面的實際品質。
+
+## 2026-04-01 A2 深化：BattleHUD Portrait 裁片規則
+
+這一輪把 A2 HUD 頭像裁片 family 從研究分類推到可量產規格，目標不是再證明「戰場頭像要有頭像」，而是回答：
+
+- 為什麼目前完整 portrait 不能直接進 64x64 HUD slot
+- 什麼條件下頭像會在戰場上看起來像正式產品
+- 後續自動生成 portrait crop 時，哪些規則必須固定
+
+### 1. 參考圖與現況差異
+
+BattleHUD 參考圖的頭像有三個特徵：
+
+1. 以臉部為主，而不是以全身姿態為主。
+2. 肩線與盔甲只保留到足夠識別，不會搶主視覺。
+3. 左下或右下預留一個小 badge 位，頭像本體不與 badge 搶空間。
+
+而我們目前的 sprites/generals/*_portrait.png 是完整角色立繪，更像卡圖原料，不是 HUD 成品。直接縮成 64x64 時，最容易發生：
+
+- 臉太小
+- 武器與底座佔畫面
+- 左下角一掛 badge 就把輪廓吃掉
+
+### 2. A2 family 的量產規則
+
+#### 構圖
+
+- 頭部加肩線，不可保留全身
+- 臉部寬度需佔畫面 40%~52%
+- 頭頂到下巴需佔畫面高度 48%~62%
+- 玩家側、敵方側要能做鏡像配置
+
+#### 背景
+
+- 優先透明或近黑壓暗背景
+- 不保留完整場景與地面
+- 不讓背景亮度搶過 topbar 文字
+
+#### 輪廓
+
+- 縮到 32x32 仍看得出臉型、頭盔或頭巾
+- 輪廓依賴大配件，不依賴細碎花紋
+- 五官不可被陰影、瀏海、武器遮住
+
+#### Badge 相容
+
+- badge 不屬於頭像本體，而是獨立疊層
+- 左下或右下需保留 18x18 安全區
+- 眼鼻口不得落在 badge 安全區
+
+### 3. 生圖策略上的意義
+
+這代表 BattleHUD portrait 的自動生成，不該走「先畫完整立繪，再賭裁切」的流程，而是從 prompt 階段就直接聲明：
+
+- attle hud portrait
+- head-and-shoulders crop
+- adge-safe lower corner
+- eadable at 64x64
+
+也就是把它當成 Unity 裡專門做給 HUD 的 atlas 子資產，而不是把大張角色圖硬塞進 RawImage。
+
+### 4. 回寫到任務卡
+
+- UI-2-0038
+  - 已完成 portrait family 規格、QA 素材、Agent1 generation brief
+- UI-2-0043
+  - 新增 Agent1 生圖 proof 卡，承接首批 attlehud portrait crop 產出
+## 2026-04-01 A3：跨功能一致性與量產製程規範
+
+這一輪把研究從單一 icon / 單一 family 往上拉到跨功能規則。重新盤點 `docs/UI品質參考圖/` 的 29 張畫面後，可以更明確地看到：高品質 UI 的關鍵不是單張圖畫得多細，而是同一個功能群在不同畫面裡仍維持相同色彩語意、相同 carrier 語言、相同字級階層，以及相同的狀態組與縮圖 QA。
+
+### 1. 同功能同色票
+
+- 金色：高價值、主 CTA、里程碑、SSR / 高級獎勵
+- 紅色：危險、敵方、警告、不可逆操作
+- 綠色：守護、補益、成功、可佔領
+- 藍 / 青色：冷卻、資訊、次級稀有、可互動節點
+- 紫色：稀有、法術、SR 檔位、神祕感
+- 灰黑：鎖定、禁用、背景功能、次級入口
+
+適用條件
+- icon、badge、tab、CTA、progress、pin、rarity
+
+### 2. 深淺成對，不做單調灰面
+
+- 深色戰場 / 主城背景，一定搭配淺色資訊 plate 或高亮焦點
+- 淺色主面板，一定搭配深色側欄 / 深色分隔 / 深色操作節點
+- 一頁最多 1 個主高亮焦點，其餘區塊退到次層
+
+參數帶
+- 深底：`#1A1A1A ~ #2A2520`
+- 淺面：`#E8DFD0 ~ #F0E8D8`
+- 金焦點：`#D4AF37 ~ #FFE088`
+
+### 3. 同功能要批次出圖，不接受逐張補洞
+
+- icon 必須以 `功能群組 × family × 狀態組 × 尺寸組` 一次出完
+- 至少同時產出 `normal / selected / pressed / disabled`
+- 至少同時驗 `128 / 64 / 32`
+
+### 4. Carrier / Glyph / Badge 三層拆開
+
+- `carrier` 負責材質、邊框、體積感、可點擊性
+- `glyph` 負責功能語意
+- `badge` 負責狀態 / 稀有度，不可搶主語意
+
+### 5. 文字階層要固定，不要每個畫面重設
+
+- 主標：`28~42 px`
+- 區塊標題：`22~30 px`
+- 按鈕字：`20~28 px`
+- 數值字：`18~30 px`
+- 輔助字：`14~18 px`
+
+### 6. 非 icon 資產也要 family 化
+
+- `A2` 頭像裁片 family：BattleHUD / QuickView / 小型戰場資訊頭像
+- `A4` diorama card family：城樓、建築、據點卡片
+- `A5` 半身 panel family：人物資訊條、角色展示面板
+- `A7` 建築節點 / 互動 family：主城、據點、地圖 pin、區域條
+- `A8` 容器 / bundle props family：寶箱、卷軸箱、道具包、禮盒
+- `A16` torso paperdoll family：服裝 / 胸肩裝備 / 甲冑 silhouette
+
+### 7. 真正缺的是製程欄位
+
+目前專案還缺：
+
+- `asset_family`
+- `presentation_role`
+- `color_role`
+- `state_set`
+- `size_set`
+- `crop_mode`
+- `value_signal`
+- `background_tone`
+- `qa_board_path`
+
+### 8. 製程突破點
+
+1. 同功能素材改成 family 批次生產
+2. 生圖 brief 強制攜帶功能語意、色票、狀態組、尺寸組
+3. 所有量產圖都要有 reference board / compare board
+4. 所有小尺寸素材都要前移做縮圖 QA
+5. icon、portrait、card、container、torso 都要正式 family 指派
+
+對應任務
+- `UI-2-0044`：Lobby icon
+- `UI-2-0045`：武將介紹 / QuickView icon
+- `UI-2-0047`：跨功能一致性與量產製程規範
+
+細部操作規則另見：
+- `artifacts/ui-qa/UI-2-0047/macro-style-rules.md`
+
+## 2026-04-01 美術總監判準與版本門檻
+
+- 核心判準：語意正確、slot 化充分、小尺寸可讀、family 一致、state/size 完整、screen-context 成立。
+- 版本門檻：v1 探索方向、v2 修正語意、v3 對齊 slot/state、v4 ready-for-split-export、v5 通過 screen-context QA。
+- 結論用語：blocked、partial-pass、near-pass、ready-for-split-export、ready-for-placement-QA、approved-for-import。
+- 同功能必須批次製作：Lobby network/avatar/nav entry、武將介紹 close/tab/portrait、戰場 micro-status/action/reward-cell、TigerTally card/badge、reward bundle chest/gift/scroll/material crate。
+- A8 reward / bundle props 需再拆成高價值寶箱、文書卷冊包、資源材料容器、禮盒節慶包四種 presentation role。
+
+### 9. 接續任務：BattleScene 主 UI 與各主畫面 style profile
+
+- UI-2-0053：以美術總監標準重審 BattleScene 主 UI 的視覺風格、畫面分布與資訊層級。
+- 後續不只 BattleScene，Lobby、GeneralDetail、QuickView、Shop、Gacha、TigerTally 都應補自己的 style profile，把 tone pair、family、CTA、字級階層、icon family、container family 與 QA board 正式欄位化。
+- 這代表未來每張畫面不只是『有一份 task card』，而是要有自己的風格說明書，這才符合 AAA 團隊的長線維護方式。

@@ -1,0 +1,32 @@
+{
+  "id": "dialog-select",
+  "version": 1,
+  "description": "選擇彈窗：遮罩 + 卡片 + 標題 + 可捲動選項列表 + 按鈕組",
+  "category": "popup",
+  "params": {
+    "title":   { "type": "i18n-key", "required": true },
+    "width":   { "type": "number", "default": 400 },
+    "height":  { "type": "number", "default": 420 }
+  },
+  "compose": [
+    { "widget": "overlay-mask" },
+    {
+      "widget": "dialog-card",
+      "params": { "width": "${width}", "height": "${height}" },
+      "children": [
+        {
+          "widget": "panel-header",
+          "params": { "title": "${title}", "closable": true }
+        },
+        {
+          "widget": "scroll-panel",
+          "params": { "maxHeight": 280 }
+        },
+        {
+          "widget": "button-bar",
+          "params": { "variant": "ok", "labelOk": "UI_CANCEL" }
+        }
+      ]
+    }
+  ]
+}

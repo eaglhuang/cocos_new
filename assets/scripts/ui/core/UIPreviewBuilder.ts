@@ -1,4 +1,4 @@
-﻿// @spec-source → 見 docs/cross-reference-index.md
+// @spec-source → 見 docs/cross-reference-index.md
 /**
  * UIPreviewBuilder
  *
@@ -10,8 +10,8 @@
  *
  * Unity 對照：Prefab Variant Builder + EditorWindow 動態生成 UI 的組合
  */
-import { _decorator, Component, Node, Sprite, UITransform,
-         UIOpacity, Color, tween, Font } from 'cc';
+import { _decorator, Component, Label, Node, Sprite, UITransform,
+         UIOpacity, Color, tween, Font, Widget } from 'cc';
 import { UISkinResolver, ResolvedButtonSkin } from './UISkinResolver';
 import { services } from '../../core/managers/ServiceLoader';
 import { resolveSize, DEFAULT_TRANSITION } from './UISpecTypes';
@@ -20,6 +20,8 @@ import { UIPreviewDiagnostics } from './UIPreviewDiagnostics';
 import { UIPreviewStyleBuilder, ButtonVisualState } from './UIPreviewStyleBuilder';
 import { UIPreviewShadowManager } from './UIPreviewShadowManager';
 import { UIPreviewNodeFactory } from './UIPreviewNodeFactory';
+import { UIPreviewLayoutBuilder } from './UIPreviewLayoutBuilder';
+import { UITemplateBinder } from './UITemplateBinder';
 
 const { ccclass } = _decorator;
 
@@ -39,10 +41,11 @@ export class UIPreviewBuilder extends Component {
     private _fontCache = new Map<string, Font | null>();
 
     // 協作模組（Unity 對照：各 Manager / Helper component）
+    private readonly layoutBuilder = new UIPreviewLayoutBuilder();
     private readonly styleBuilder  = new UIPreviewStyleBuilder(this.skinResolver, this._fontCache);
-    private readonly nodeFactory   = new UIPreviewNodeFactory(this.skinResolver, this.styleBuilder);
+    private readonly nodeFactory   = new UIPreviewNodeFactory(this.skinResolver, this.styleBuilder, this.layoutBuilder);
     private readonly shadowManager = new UIPreviewShadowManager(
-        this.skinResolver, this.styleBuilder, () => this.node,
+        this.skinResolver, this.styleBuilder, this.layoutBuilder, () => this.node,
     );
 
     // ─── 公開 API ─────────────────────────────────────────────────────────────
@@ -97,7 +100,37 @@ export class UIPreviewBuilder extends Component {
             throw e;
         }
 
+        // ─── Post-build Widget realignment pass ──────────────────────────────
+        // 整棵節點樹建完後，統一重算所有 Widget 的對齊位置。
+        //
+        // 原因：_buildNode 遞迴時，Widget.updateAlignment() 是在各節點建立瞬間呼叫的，
+        // 但此時父節點的 Layout 分組（VerticalLayout / HorizontalLayout 等）尚未執行，
+        // 父節點的實際世界座標尚未穩定。整棵樹建完後再重算，才能拿到正確的父尺寸與位置。
+        //
+        // Unity 對照：Canvas.ForceUpdateCanvases() — 強制更新所有 RectTransform
+        // ─────────────────────────────────────────────────────────────────────
+        this._realignAllWidgets(rootNode);
+
+        // 通用佔位符清除：所有 UIPreviewBuilder 子類在 onBuildComplete 鉤子前
+        // 清除任何 {xxx} 格式的 bind 暫存佔位文字（包含 {dynamic}、{name}、{title} …）。
+        // Unity 對照：初始化前的 Text.text = "" 預設清空
+        try {
+            const _BIND_RE = /^\{[^}]+\}$/;
+            const clearDynamic = (n: Node) => {
+                const lbl = n.getComponent(Label);
+                if (lbl && _BIND_RE.test(lbl.string)) lbl.string = '';
+                for (const c of n.children) clearDynamic(c);
+            };
+            clearDynamic(rootNode);
+        } catch (_e) { /* silent: 不阻擋後續綁定流程 */ }
+
         this.onBuildComplete(rootNode);
+
+        // Template 自動綁定機制：掃描節點樹中帶 id 的節點，建立映射後呼叫 onReady
+        const binder = new UITemplateBinder();
+        binder.bind(rootNode, layout.root);
+        this.onReady(binder);
+
         UIPreviewDiagnostics.buildScreenSuccess(layout.id ?? '?', rootNode.children.length);
         return rootNode;
     }
@@ -110,8 +143,18 @@ export class UIPreviewBuilder extends Component {
      * 供子類覆寫的鉤子，在 buildScreen 完成後執行。
      * 典型用途：綁定資料、啟動動畫。
      * Unity 對照：Start() 或 Awake() 中的初始化邏輯
+     *
+     * @deprecated 新畫面請改用 onReady(binder)，可直接透過 binder 查找節點
      */
     protected onBuildComplete(_rootNode: Node): void { /* 子類覆寫 */ }
+
+    /**
+     * Template 時代的新鉤子：buildScreen 完成 + 自動綁定完成後呼叫。
+     * 子類只需覆寫此方法，透過 binder 直接取用節點，不再需要手寫 BFS。
+     *
+     * Unity 對照：MonoBehaviour.Start() 搭配已自動連結好的 SerializeField
+     */
+    protected onReady(_binder: UITemplateBinder): void { /* 子類覆寫 */ }
 
     /**
      * 手動切換按鈕視覺狀態（補充 Cocos Button 原生不支援 selected 態）。
@@ -228,10 +271,10 @@ export class UIPreviewBuilder extends Component {
         transform.setContentSize(w, h);
 
         // Widget 對齊（Unity 對照：RectTransform anchor / stretch）
-        if (spec.widget) this.styleBuilder.applyWidget(node, spec.widget);
+        if (spec.widget) this.layoutBuilder.applyWidget(node, spec.widget);
 
         // Layout（Unity 對照：LayoutGroup 系列元件）
-        this.nodeFactory.setupLayout(node, spec);
+        this.layoutBuilder.setupLayout(node, spec);
 
         // 依類型建立元件（委派給 UIPreviewNodeFactory）
         switch (spec.type) {
@@ -241,7 +284,8 @@ export class UIPreviewBuilder extends Component {
             case 'panel':           await this.nodeFactory.buildPanel(node, spec);        break;
             case 'label':           await this.nodeFactory.buildLabel(node, spec);        break;
             case 'button':          await this.nodeFactory.buildButton(node, spec);       break;
-            case 'scroll-list':     await this.nodeFactory.buildScrollList(node, spec, w, h); break;
+            case 'scroll-list':
+            case 'scroll-view':     await this.nodeFactory.buildScrollList(node, spec, w, h); break;
             case 'image':           await this.nodeFactory.buildImage(node, spec);        break;
             case 'resource-counter': await this.nodeFactory.buildLabel(node, spec);       break;
             case 'spacer': break;  // 空白佔位，無需掛載元件
@@ -262,6 +306,28 @@ export class UIPreviewBuilder extends Component {
     }
 
     // ─── 私有工具 ─────────────────────────────────────────────────────────────
+
+    /**
+     * Post-build Widget realignment pass：遞迴遍歷整棵節點樹，
+     * 對每個掛有 Widget 元件的節點呼叫 updateAlignment()。
+     *
+     * 必須在 _buildNode 完成（整棵樹建立後）才呼叫，確保：
+     *   1. 所有父節點的 UITransform 已設定正確尺寸
+     *   2. Layout 分組（VerticalLayout 等）已有完整子節點可計算
+     *   3. Widget 的 top/bottom/left/right/hCenter/vCenter 計算以正確尺寸為基準
+     *
+     * Unity 對照：Canvas.ForceUpdateCanvases()
+     */
+    private _realignAllWidgets(node: Node): void {
+        const widget = node.getComponent(Widget);
+        if (widget) {
+            widget.alignMode = Widget.AlignMode.ALWAYS;
+            widget.updateAlignment();
+        }
+        for (const child of node.children) {
+            this._realignAllWidgets(child);
+        }
+    }
 
     /**
      * 預載 skin 裡所有 label-style slot 使用的字型到 _fontCache。

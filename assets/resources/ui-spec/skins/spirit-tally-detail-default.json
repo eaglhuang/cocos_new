@@ -1,0 +1,27 @@
+{
+  "id": "spirit-tally-detail-default",
+  "version": 1,
+  "bundle": "lobby_ui",
+  "atlasPolicy": "lobby",
+  "slots": {
+    "std.bg.full": { "kind": "sprite-frame", "path": "ui-spec/placeholders/bg_ink_main", "spriteType": "sliced", "border": [96, 360, 96, 420], "allowAutoAtlas": false },
+    "std.card.main": { "kind": "sprite-frame", "path": "ui-spec/placeholders/bg_ink_detail", "spriteType": "sliced", "border": [96, 96, 96, 96], "allowAutoAtlas": false },
+    "std.panel.spirit-card": { "kind": "color-rect", "color": "#10202BEA" },
+    "std.panel.summary": { "kind": "color-rect", "color": "#E7E0D0E6" },
+    "std.panel.module": { "kind": "color-rect", "color": "#EFE9DBEE" },
+    "std.panel.elite-troop": { "kind": "color-rect", "color": "#DCE8E4EE" },
+    "std.art.spirit-card": { "kind": "color-rect", "color": "#2E475ECC" },
+    "std.art.hero-ghost": { "kind": "color-rect", "color": "#7F93E9AA" },
+    "std.crest": { "kind": "color-rect", "color": "#8CCFC4D0" },
+    "std.art.troop-banner": { "kind": "color-rect", "color": "#B88D5FD8" },
+    "std.art.troop-unit": { "kind": "color-rect", "color": "#A9B8B4D2" },
+    "std.art.troop-crest": { "kind": "color-rect", "color": "#B5D4C4D0" },
+    "std.button.primary": { "kind": "color-rect", "color": "#3F6A62" },
+    "std.button.secondary": { "kind": "color-rect", "color": "#6E827E" },
+    "std.badge.lock": { "kind": "color-rect", "color": "#A49677CC" },
+    "std.label.name": { "kind": "label-style", "fontSize": 38, "lineHeight": 44, "color": "#1F302B", "horizontalAlign": "LEFT" },
+    "std.label.title": { "kind": "label-style", "fontSize": 28, "lineHeight": 34, "color": "#304D47", "horizontalAlign": "LEFT" },
+    "std.label.rank": { "kind": "label-style", "fontSize": 26, "lineHeight": 32, "color": "#866A39", "horizontalAlign": "RIGHT" },
+    "std.label.button": { "kind": "label-style", "fontSize": 20, "lineHeight": 24, "color": "#F5F1E8", "horizontalAlign": "CENTER", "verticalAlign": "CENTER" }
+  }
+}

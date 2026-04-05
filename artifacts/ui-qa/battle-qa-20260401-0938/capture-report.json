@@ -1,0 +1,12 @@
+{
+  "createdAt": "2026-04-01T01:38:25.466Z",
+  "host": "http://localhost:7456",
+  "machine": "DESKTOP-NREHEQ8",
+  "captures": [
+    {
+      "target": "DuelChallenge",
+      "screenId": "duel-challenge-screen",
+      "file": "artifacts\\ui-qa\\battle-qa-20260401-0938\\DuelChallenge.png"
+    }
+  ]
+}

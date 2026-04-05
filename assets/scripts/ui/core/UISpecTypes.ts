@@ -37,6 +37,10 @@ export interface WidgetDef {
     bottom?: number;
     left?: number;
     right?: number;
+    /** 水平置中。true = 偏移 0；number = 帶偏移（正值向右） */
+    hCenter?: boolean | number;
+    /** 垂直置中。true = 偏移 0；number = 帶偏移（正值向上） */
+    vCenter?: boolean | number;
 }
 
 /** Layout 佈局定義 */
@@ -69,6 +73,7 @@ export type UINodeType =
     | 'button'          // 按鈕
     | 'button-group'    // 按鈕群組
     | 'scroll-list'     // 可捲動列表
+    | 'scroll-view'     // scroll-list 舊別名（向後相容 battle-log-main 等既有 JSON）
     | 'image'           // 靜態圖片
     | 'resource-counter' // 資源計數器（圖示+數字）
     | 'spacer';         // 佔位空間
@@ -319,4 +324,80 @@ export function resolveSize(value: number | string | undefined, parentSize: numb
         return Math.floor(parentSize * pct);
     }
     return parentSize;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// 5. Template 型別（UI Template + Composable Widget 架構）
+// ═══════════════════════════════════════════════════════════════
+
+/**
+ * Widget Fragment 組件定義
+ *
+ * 最小可重用的 UI 視覺組件（如：關閉鈕、按鈕組、血量條）。
+ * 存放於 assets/resources/ui-spec/fragments/widgets/{widgetId}.json
+ *
+ * Unity 對照：可重用的 Prefab 碎片
+ */
+export interface UIWidgetFragmentSpec {
+    /** Widget 唯一 ID */
+    id: string;
+    /** 描述 */
+    description?: string;
+    /** Widget 分類 */
+    category?: 'control' | 'display' | 'container' | 'feedback';
+    /** 參數定義 — 可在 Template compose 時覆蓋 */
+    params?: Record<string, UITemplateParamDef>;
+    /** Widget 的佈局結構（與 UILayoutNodeSpec 相同格式） */
+    layout: UILayoutNodeSpec;
+    /** 預設 skin slots（可選，合併至 Template 的 skin） */
+    defaultSkinSlots?: Record<string, SkinSlot>;
+}
+
+/** Template 參數定義 */
+export interface UITemplateParamDef {
+    type: 'string' | 'number' | 'boolean' | 'i18n-key' | 'button-group' | 'enum';
+    required?: boolean;
+    default?: string | number | boolean;
+    /** enum type 時的可選值 */
+    variants?: string[];
+}
+
+/** Template compose 項目：引用一個 Widget 並傳入參數 */
+export interface UITemplateComposeItem {
+    /** 引用的 Widget ID */
+    widget: string;
+    /** 傳入的參數值（可引用 Template param 如 "${title}"） */
+    params?: Record<string, string | number | boolean>;
+    /** 條件顯示（引用 Template param，值為 falsy 時不渲染此 widget） */
+    condition?: string;
+    /** 子 Widget 組合（遞迴結構，用於容器類 Widget） */
+    children?: UITemplateComposeItem[];
+}
+
+/**
+ * UI Template 定義
+ *
+ * 定義一個可重用的畫面骨架，由多個 Widget 組合而成。
+ * 開發者選擇 Template + 傳入參數，即可產生完整的 Layout JSON。
+ *
+ * 存放於 assets/resources/ui-spec/templates/{templateId}.json
+ *
+ * Unity 對照：Prefab Variant 的結構定義
+ */
+export interface UITemplateSpec {
+    /** Template 唯一 ID */
+    id: string;
+    version: number;
+    /** 描述 */
+    description?: string;
+    /** 分類 */
+    category?: 'popup' | 'hud' | 'sidebar' | 'page' | 'toast';
+    /** 參數 Schema */
+    params?: Record<string, UITemplateParamDef>;
+    /** 骨架：引用 Widget Fragments 組合 */
+    compose: UITemplateComposeItem[];
+    /** 預設 canvas 設定（可選，預設使用 DEFAULT_CANVAS） */
+    canvas?: CanvasDef;
+    /** 預設 skin ID（可選） */
+    defaultSkin?: string;
 }

@@ -20,6 +20,7 @@ import { BattleHUD } from './BattleHUD';
 import { BattleLogPanel } from './BattleLogPanel';
 import { TallyCardData, TigerTallyPanel } from './TigerTallyPanel';
 import { UnitInfoPanel } from './UnitInfoPanel';
+import { UltimateSkillItem } from './UltimateSelectPopup';
 
 const { ccclass, property } = _decorator;
 
@@ -72,9 +73,28 @@ export class BattleScenePanel extends Component {
         const canvas = this.node.parent;
         if (!canvas) return;
 
-        if (!this.tigerTallyPanel) {
-            let n = canvas.getChildByName('TigerTallyPanel');
-            if (!n) { n = new Node('TigerTallyPanel'); n.addComponent(UITransform); canvas.addChild(n); }
+        // [UI-2-0023] 建立子面板 host 節點的 helper：
+        // 必須在 addComponent 前設定正確的 UITransform 尺寸（1920×1080）。
+        // 若先 addComponent(UITransform) 但不設尺寸，UITransform 預設 (100,40)，
+        // buildScreen 在 onLoad 內執行 widget.updateAlignment() 時會用錯誤父尺寸計算，
+        // 導致 height = 40-88 = -48px → 節點跑出螢幕外（TigerTallyPanel 不可見的根因）。
+        const ensureCanvasHost = (name: string): Node => {
+            let n = canvas.getChildByName(name);
+            if (!n) {
+                n = new Node(name);
+                canvas.addChild(n);
+                // [UI-2-0023] 繼承 Canvas 的 UI_2D layer，確保被 2D UI Camera 渲染
+                n.layer = canvas.layer;
+                const uiT = n.addComponent(UITransform);
+                uiT.setContentSize(1920, 1080);
+                console.log(`[BattleScenePanel] 建立 ${name}: layer=${n.layer} size=1920×1080`);
+            } else if (!n.getComponent(UITransform)) {
+                const uiT = n.addComponent(UITransform);
+                uiT.setContentSize(1920, 1080);
+                console.log(`[BattleScenePanel] 補 UITransform ${name}: layer=${n.layer}`);
+            } else {
+                console.log(`[BattleScenePanel] 已存在 ${name}: layer=${n.layer} active=${n.active}`);
+            }
             const widget = n.getComponent(Widget) ?? n.addComponent(Widget);
             widget.isAlignTop = true;
             widget.isAlignBottom = true;
@@ -85,38 +105,22 @@ export class BattleScenePanel extends Component {
             widget.left = 0;
             widget.right = 0;
             widget.alignMode = Widget.AlignMode.ALWAYS;
+            widget.updateAlignment();
+            return n;
+        };
+
+        if (!this.tigerTallyPanel) {
+            const n = ensureCanvasHost('TigerTallyPanel');
             this.tigerTallyPanel = n.getComponent(TigerTallyPanel) ?? n.addComponent(TigerTallyPanel);
         }
 
         if (!this.unitInfoPanel) {
-            let n = canvas.getChildByName('UnitInfoPanel');
-            if (!n) { n = new Node('UnitInfoPanel'); n.addComponent(UITransform); canvas.addChild(n); }
-            const widget = n.getComponent(Widget) ?? n.addComponent(Widget);
-            widget.isAlignTop = true;
-            widget.isAlignBottom = true;
-            widget.isAlignLeft = true;
-            widget.isAlignRight = true;
-            widget.top = 0;
-            widget.bottom = 0;
-            widget.left = 0;
-            widget.right = 0;
-            widget.alignMode = Widget.AlignMode.ALWAYS;
+            const n = ensureCanvasHost('UnitInfoPanel');
             this.unitInfoPanel = n.getComponent(UnitInfoPanel) ?? n.addComponent(UnitInfoPanel);
         }
 
         if (!this.actionCommandPanel) {
-            let n = canvas.getChildByName('ActionCommandPanel');
-            if (!n) { n = new Node('ActionCommandPanel'); n.addComponent(UITransform); canvas.addChild(n); }
-            const widget = n.getComponent(Widget) ?? n.addComponent(Widget);
-            widget.isAlignTop = true;
-            widget.isAlignBottom = true;
-            widget.isAlignLeft = true;
-            widget.isAlignRight = true;
-            widget.top = 0;
-            widget.bottom = 0;
-            widget.left = 0;
-            widget.right = 0;
-            widget.alignMode = Widget.AlignMode.ALWAYS;
+            const n = ensureCanvasHost('ActionCommandPanel');
             this.actionCommandPanel = n.getComponent(ActionCommandPanel) ?? n.addComponent(ActionCommandPanel);
         }
     }
@@ -183,6 +187,10 @@ export class BattleScenePanel extends Component {
      */
     public setActiveUltimateCount(count: number): void {
         this.actionCommandPanel?.setActiveUltimateCount(count);
+    }
+
+    public setUltimateSkills(skills: UltimateSkillItem[]): void {
+        this.actionCommandPanel?.setUltimateSkills(skills);
     }
 
     // ── 私有事件處理 ─────────────────────────────────────────

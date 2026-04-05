@@ -14,12 +14,17 @@ function getSharedWhiteSpriteFrame(): SpriteFrame {
     const data = new Uint8Array(16);
     data.fill(255);
     tex.uploadData(data);
-    
+    // 修正：Browser Preview 模式下 uploadData 不設 loaded=true，
+    // 導致 SpriteFrame._refreshTexture() 跳過 _calculateUVs()，_uv 維持 null，
+    // 每幀 Simple.updateUVs 讀 uv[0] → TypeError: Cannot read properties of null (reading '0').
+    // Editor Preview 正常是因為 Editor 環境的渲染初始化路徑會補設此旗標。
+    // Unity 對照：類似 Texture2D.Apply() 觸發 GPU 上傳 + 狀態旗標同步。
+    (tex as any).loaded = true;
+
     const sf = new SpriteFrame();
-    sf.texture = tex;
-    // 重點：需賦予 packable = false，且必定定義 rect
     sf.packable = false;
-    sf.rect = new Rect(0, 0, 2, 2); 
+    sf.rect = new Rect(0, 0, 2, 2); // rect 先於 texture，確保 _calculateUVs 用正確的 rect
+    sf.texture = tex;                // tex.loaded=true → _calculateUVs() 正常執行
     
     sharedWhiteSpriteFrame = sf;
     return sharedWhiteSpriteFrame;

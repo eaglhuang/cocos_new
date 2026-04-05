@@ -1,0 +1,12 @@
+{
+  "createdAt": "2026-04-01T06:21:44.846Z",
+  "host": "http://localhost:7456",
+  "machine": "DESKTOP-NREHEQ8",
+  "captures": [
+    {
+      "target": "BattleScene",
+      "screenId": "battle-scene",
+      "file": "artifacts\\ui-qa\\phase-c-timing-fix\\BattleScene.png"
+    }
+  ]
+}

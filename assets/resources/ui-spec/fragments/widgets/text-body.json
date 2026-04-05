@@ -1,0 +1,28 @@
+{
+  "id": "text-body",
+  "description": "內容文字區塊，用於對話框/資訊面板的主體文字",
+  "category": "display",
+  "params": {
+    "text": { "type": "i18n-key", "required": false, "default": "" }
+  },
+  "layout": {
+    "type": "label",
+    "name": "TextBody",
+    "id": "textBody",
+    "width": "90%",
+    "height": 120,
+    "textKey": "${text}",
+    "styleSlot": "widget.text.body"
+  },
+  "defaultSkinSlots": {
+    "widget.text.body": {
+      "kind": "label-style",
+      "fontSize": 22,
+      "color": "#E0E0E0",
+      "horizontalAlign": "LEFT",
+      "verticalAlign": "TOP",
+      "overflow": "RESIZE_HEIGHT",
+      "lineHeight": 32
+    }
+  }
+}

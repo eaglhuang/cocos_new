@@ -1,0 +1,78 @@
+{
+  "BattleLogPanelNode": {
+    "name": "BattleLogPanel",
+    "active": true,
+    "actH": true,
+    "wx": 45,
+    "wy": 28,
+    "w": 2009,
+    "h": 1080,
+    "children": 2
+  },
+  "SidePanelRoot": {
+    "name": "SidePanelRoot",
+    "active": true,
+    "actH": true,
+    "wx": 953,
+    "wy": -60,
+    "w": 192,
+    "h": 1080,
+    "children": 3
+  },
+  "ControlBar": {
+    "name": "ControlBar",
+    "active": true,
+    "actH": true,
+    "wx": 953,
+    "wy": 460,
+    "w": 192,
+    "h": 40,
+    "children": 3
+  },
+  "BattleLogPanel": {
+    "name": "BattleLogPanel",
+    "active": true,
+    "actH": true,
+    "wx": 953,
+    "wy": 235,
+    "w": 192,
+    "h": 410,
+    "children": 2
+  },
+  "BLP.Header": {
+    "name": "Header",
+    "active": true,
+    "actH": true,
+    "wx": 953,
+    "wy": 423,
+    "w": 192,
+    "h": 34,
+    "children": 1
+  },
+  "BLP.ScrollView": {
+    "name": "ScrollView",
+    "active": true,
+    "actH": true,
+    "wx": 953,
+    "wy": 232,
+    "w": 192,
+    "h": 348,
+    "children": 2
+  },
+  "BtnCollapse": {
+    "name": "BtnCollapse",
+    "active": true,
+    "actH": true,
+    "wx": 953,
+    "wy": 16,
+    "w": 192,
+    "h": 28,
+    "children": 1
+  },
+  "Canvas": {
+    "wx": 45,
+    "wy": 28,
+    "w": 2009,
+    "h": 1080
+  }
+}

@@ -14,7 +14,7 @@
  *
  * Unity 對照：相當於 UIStyleApplier + UILayoutHelper 的組合
  */
-import { Node, Sprite, UITransform, Widget, UIOpacity, Label, Button, Font } from 'cc';
+import { Node, Sprite, UITransform, UIOpacity, Label, Button, Font } from 'cc';
 import { SolidBackground } from '../components/SolidBackground';
 import { UISkinResolver, ResolvedButtonSkin, ResolvedLabelStyle } from './UISkinResolver';
 import type { UILayoutNodeSpec } from './UISpecTypes';
@@ -29,21 +29,6 @@ export class UIPreviewStyleBuilder {
         private readonly skinResolver: UISkinResolver,
         private readonly fontCache: Map<string, Font | null>,
     ) {}
-
-    // ─── Widget 對齊 ──────────────────────────────────────────────────────────
-
-    /**
-     * 套用 Widget 對齊設定到節點。
-     * Unity 對照：RectTransform anchor + stretch 設定
-     */
-    applyWidget(node: Node, widgetDef?: UILayoutNodeSpec['widget']): void {
-        if (!widgetDef) return;
-        const widget = node.getComponent(Widget) || node.addComponent(Widget);
-        if (widgetDef.top    !== undefined) { widget.isAlignTop    = true; widget.top    = widgetDef.top;    }
-        if (widgetDef.bottom !== undefined) { widget.isAlignBottom = true; widget.bottom = widgetDef.bottom; }
-        if (widgetDef.left   !== undefined) { widget.isAlignLeft   = true; widget.left   = widgetDef.left;   }
-        if (widgetDef.right  !== undefined) { widget.isAlignRight  = true; widget.right  = widgetDef.right;  }
-    }
 
     // ─── 背景 Skin ────────────────────────────────────────────────────────────
 
@@ -72,8 +57,8 @@ export class UIPreviewStyleBuilder {
         if (!frame) return false;
 
         const sprite = node.getComponent(Sprite) || node.addComponent(Sprite);
-        sprite.spriteFrame = frame;
         sprite.sizeMode = Sprite.SizeMode.CUSTOM;
+        sprite.spriteFrame = frame;
         if (slot?.kind === 'sprite-frame') {
             this.applySpriteSkin(sprite, slot.spriteType, slot.border);
         } else if (slot?.kind === 'button-skin') {
@@ -105,8 +90,8 @@ export class UIPreviewStyleBuilder {
             selected: this.prepareButtonFrame(skin.selected ?? skin.normal,   slot.border),
         };
 
-        sprite.spriteFrame = stateMap.normal;
         sprite.sizeMode = Sprite.SizeMode.CUSTOM;
+        sprite.spriteFrame = stateMap.normal;
         this.applySpriteSkin(sprite, slot.spriteType, slot.border);
 
         button.transition    = Button.Transition.SPRITE;

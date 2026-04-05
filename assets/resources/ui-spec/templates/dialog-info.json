@@ -1,0 +1,34 @@
+{
+  "id": "dialog-info",
+  "version": 1,
+  "description": "資訊彈窗：遮罩 + 卡片 + 標題列 + 內容區 + 關閉鈕",
+  "category": "popup",
+  "params": {
+    "title":   { "type": "i18n-key", "required": true },
+    "body":    { "type": "i18n-key", "required": false, "default": "" },
+    "width":   { "type": "number", "default": 560 },
+    "height":  { "type": "number", "default": 480 }
+  },
+  "compose": [
+    { "widget": "overlay-mask" },
+    {
+      "widget": "dialog-card",
+      "params": { "width": "${width}", "height": "${height}" },
+      "children": [
+        {
+          "widget": "panel-header",
+          "params": { "title": "${title}", "closable": true }
+        },
+        {
+          "widget": "text-body",
+          "params": { "text": "${body}" },
+          "condition": "${body}"
+        },
+        {
+          "widget": "scroll-panel",
+          "params": { "maxHeight": 300 }
+        }
+      ]
+    }
+  ]
+}

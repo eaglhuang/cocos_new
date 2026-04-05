@@ -183,7 +183,7 @@ export class SceneAutoBuilder extends Component {
     bgSprite.color = new Color(0, 0, 0, 180);
 
     // 標題
-    this.createLabel(popup, "TitleLabel", "🎉 勝利！", 48, new Color(255, 255, 0), 0, 100);
+    this.createLabel(popup, "TitleLabel", "勝利！", 48, new Color(255, 255, 0), 0, 100);
 
     // 描述
     this.createLabel(popup, "DescLabel", "我方成功擊敗敵軍，取得大勝！", 24, new Color(255, 255, 255), 0, 0);

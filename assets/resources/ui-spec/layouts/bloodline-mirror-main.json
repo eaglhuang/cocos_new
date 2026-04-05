@@ -1,0 +1,86 @@
+{
+  "id": "bloodline-mirror-main",
+  "version": 1,
+  "canvas": {
+    "fitWidth": true,
+    "fitHeight": true,
+    "safeArea": true,
+    "designWidth": 1920,
+    "designHeight": 1080
+  },
+  "root": {
+    "type": "container",
+    "name": "BloodlineMirrorRoot",
+    "widget": { "top": 0, "bottom": 0, "left": 0, "right": 0 },
+    "children": [
+      { "type": "image", "name": "MirrorBackground", "widget": { "top": 0, "bottom": 0, "left": 0, "right": 0 }, "skinSlot": "mirror.bg.full" },
+      { "type": "image", "name": "LeftHero", "widget": { "top": 92, "bottom": 184, "left": 58 }, "width": "32%", "skinSlot": "mirror.hero.public" },
+      { "type": "image", "name": "RightSpiritHero", "widget": { "top": 94, "bottom": 182, "right": 58 }, "width": "31%", "skinSlot": "mirror.hero.spirit" },
+      { "type": "image", "name": "UnownedVeil", "widget": { "top": 92, "bottom": 184, "left": 58, "right": 58 }, "skinSlot": "mirror.unowned.veil" },
+      { "type": "image", "name": "UnownedBadge", "widget": { "top": 112, "right": 96 }, "width": 184, "height": 64, "skinSlot": "mirror.unowned.badge" },
+      { "type": "label", "name": "UnownedHint", "widget": { "right": 96, "top": 182 }, "width": 220, "height": 28, "styleSlot": "mirror.label.unowned" },
+      { "type": "image", "name": "MirrorGate", "widget": { "top": 174, "bottom": 278, "left": "43%" }, "width": "14%", "skinSlot": "mirror.gate" },
+      { "type": "image", "name": "MirrorSigilField", "widget": { "top": 146, "bottom": 250, "left": "39%" }, "width": "22%", "skinSlot": "mirror.sigil.field" },
+      { "type": "image", "name": "MeditationVessel", "widget": { "bottom": 200, "left": "45.5%" }, "width": 172, "height": 172, "skinSlot": "mirror.vessel.legendary" },
+      {
+        "type": "container",
+        "name": "MirrorHeader",
+        "widget": { "top": 18, "left": 0, "right": 0 },
+        "height": 72,
+        "layout": { "type": "vertical", "spacing": 6 },
+        "children": [
+          { "type": "label", "name": "HeaderTitle", "width": "100%", "height": 36, "styleSlot": "mirror.label.header" },
+          { "type": "label", "name": "HeroName", "width": "100%", "height": 28, "styleSlot": "mirror.label.name" }
+        ]
+      },
+      {
+        "type": "container",
+        "name": "MirrorMetaRow",
+        "widget": { "top": 98, "left": "39%", "right": "39%" },
+        "height": 36,
+        "layout": { "type": "horizontal", "spacing": 12 },
+        "children": [
+          { "type": "image", "name": "BadgeFaction", "width": 36, "height": 36, "skinSlot": "mirror.badge.small" },
+          { "type": "image", "name": "BadgeRarity", "width": 36, "height": 36, "skinSlot": "mirror.badge.small" },
+          { "type": "image", "name": "BadgeBloodline", "width": 36, "height": 36, "skinSlot": "mirror.badge.small" },
+          { "type": "image", "name": "BadgeAwakening", "width": 36, "height": 36, "skinSlot": "mirror.badge.small" }
+        ]
+      },
+      {
+        "type": "container",
+        "name": "ActionArea",
+        "widget": { "bottom": 188, "left": 0, "right": 0 },
+        "height": 72,
+        "children": [
+          { "type": "label", "name": "RarityAuraLabel", "widget": { "left": "44%", "right": "44%", "bottom": 0 }, "height": 32, "styleSlot": "mirror.label.rarity" },
+          { "type": "button", "name": "AwakenButton", "widget": { "right": 76, "bottom": 4 }, "width": 286, "height": 62, "skinSlot": "mirror.button.primary", "styleSlot": "mirror.label.button" }
+        ]
+      },
+      { "type": "panel", "name": "StoryRail", "widget": { "left": 0, "right": 0, "bottom": 0 }, "height": 172, "skinSlot": "mirror.story.rail" },
+      {
+        "type": "container",
+        "name": "StoryStrip",
+        "widget": { "left": 20, "right": 20, "bottom": 14 },
+        "height": 144,
+        "layout": { "type": "horizontal", "spacing": 10 },
+        "children": [
+          { "type": "panel", "name": "StoryCell01", "width": "19.2%", "height": 144, "skinSlot": "mirror.story.cell.mortal" },
+          { "type": "panel", "name": "StoryCell02", "width": "19.2%", "height": 144, "skinSlot": "mirror.story.cell.rise" },
+          { "type": "panel", "name": "StoryCell03", "width": "19.2%", "height": 144, "skinSlot": "mirror.story.cell.crisis" },
+          { "type": "panel", "name": "StoryCell04", "width": "19.2%", "height": 144, "skinSlot": "mirror.story.cell.awaken" },
+          { "type": "panel", "name": "StoryCell05", "width": "19.2%", "height": 144, "skinSlot": "mirror.story.cell.spirit" }
+        ]
+      },
+      {
+        "type": "container",
+        "name": "SideMarkers",
+        "widget": { "top": 180, "left": 18, "right": 18 },
+        "height": 520,
+        "children": [
+          { "type": "label", "name": "PublicMarker", "widget": { "left": 26, "top": 0 }, "width": 120, "height": 180, "styleSlot": "mirror.label.marker.public" },
+          { "type": "label", "name": "SpiritMarker", "widget": { "right": 26, "top": 0 }, "width": 120, "height": 180, "styleSlot": "mirror.label.marker.spirit" }
+        ]
+      }
+    ]
+  }
+}

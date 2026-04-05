@@ -1,0 +1,80 @@
+{
+  "id": "button-bar",
+  "description": "按鈕組列（支援 1~3 顆，水平自動佈局）。variant=ok → 單顆確認；yes-no → 兩顆；yes-no-cancel → 三顆",
+  "category": "control",
+  "params": {
+    "variant":     { "type": "enum", "variants": ["ok", "yes-no", "yes-no-cancel"], "default": "yes-no" },
+    "labelOk":     { "type": "i18n-key", "default": "UI_OK" },
+    "labelYes":    { "type": "i18n-key", "default": "UI_CONFIRM" },
+    "labelNo":     { "type": "i18n-key", "default": "UI_CANCEL" },
+    "labelCancel": { "type": "i18n-key", "default": "UI_CANCEL" },
+    "showSecondary": { "type": "boolean", "default": true },
+    "showTertiary":  { "type": "boolean", "default": false }
+  },
+  "layout": {
+    "type": "container",
+    "name": "ButtonBar",
+    "width": "100%",
+    "height": 72,
+    "layout": { "type": "horizontal", "spacing": 16, "paddingLeft": 24, "paddingRight": 24, "paddingBottom": 12 },
+    "children": [
+      {
+        "type": "button",
+        "name": "BtnPrimary",
+        "id": "btnPrimary",
+        "width": 200,
+        "height": 52,
+        "skinSlot": "widget.btn.primary",
+        "textKey": "${labelYes}",
+        "onClick": "onPrimaryClick"
+      },
+      {
+        "type": "button",
+        "name": "BtnSecondary",
+        "id": "btnSecondary",
+        "width": 200,
+        "height": 52,
+        "skinSlot": "widget.btn.secondary",
+        "textKey": "${labelNo}",
+        "onClick": "onSecondaryClick",
+        "active": "${showSecondary}"
+      },
+      {
+        "type": "button",
+        "name": "BtnTertiary",
+        "id": "btnTertiary",
+        "width": 200,
+        "height": 52,
+        "skinSlot": "widget.btn.tertiary",
+        "textKey": "${labelCancel}",
+        "onClick": "onTertiaryClick",
+        "active": "${showTertiary}"
+      }
+    ]
+  },
+  "defaultSkinSlots": {
+    "widget.btn.primary": {
+      "kind": "button-skin",
+      "normal": "ui-spec/placeholders/btn_gold_normal",
+      "pressed": "ui-spec/placeholders/btn_gold_pressed",
+      "disabled": "ui-spec/placeholders/btn_gold_disabled",
+      "spriteType": "sliced",
+      "border": [12, 12, 12, 12]
+    },
+    "widget.btn.secondary": {
+      "kind": "button-skin",
+      "normal": "ui-spec/placeholders/btn_parchment_normal",
+      "pressed": "ui-spec/placeholders/btn_parchment_pressed",
+      "disabled": "ui-spec/placeholders/btn_parchment_disabled",
+      "spriteType": "sliced",
+      "border": [12, 12, 12, 12]
+    },
+    "widget.btn.tertiary": {
+      "kind": "button-skin",
+      "normal": "ui-spec/placeholders/btn_default_normal",
+      "pressed": "ui-spec/placeholders/btn_default_pressed",
+      "spriteType": "sliced",
+      "border": [12, 12, 12, 12]
+    }
+  }
+}

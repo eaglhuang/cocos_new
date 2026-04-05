@@ -1,0 +1,24 @@
+{
+  "id": "dialog-card",
+  "description": "圓角卡片底板，用於彈窗中央主體",
+  "category": "container",
+  "params": {
+    "width":    { "type": "number", "default": 560 },
+    "height":   { "type": "number", "default": 400 },
+    "skinSlot": { "type": "string", "default": "widget.dialog.card.bg" }
+  },
+  "layout": {
+    "type": "panel",
+    "name": "DialogCard",
+    "width": "${width}",
+    "height": "${height}",
+    "skinSlot": "${skinSlot}",
+    "layout": { "type": "vertical", "spacing": 0, "paddingTop": 0, "paddingBottom": 0 }
+  },
+  "defaultSkinSlots": {
+    "widget.dialog.card.bg": {
+      "kind": "color-rect",
+      "color": "#1A1A2EEE"
+    }
+  }
+}

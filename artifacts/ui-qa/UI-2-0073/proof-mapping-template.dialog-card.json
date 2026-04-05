@@ -1,0 +1,17 @@
+{
+  "familyId": "bloodline-awakening-dialog",
+  "uiId": "BloodlineAwakeningDialog",
+  "template": "dialog-card",
+  "layer": "Popup",
+  "bundle": "lobby_ui",
+  "atlasPolicy": "lobby",
+  "titleKey": "ui.bloodline-awakening-dialog.title",
+  "bodyKey": "ui.bloodline-awakening-dialog.body",
+  "primaryKey": "ui.confirm",
+  "secondaryKey": "ui.cancel",
+  "proofVersion": "v1",
+  "figmaFrame": "Dialog/BloodlineAwakening/Confirm",
+  "wireframeRef": "Wireframe/BloodlineAwakening/Dialog",
+  "slotMapRef": "SlotMap/BloodlineAwakening/Dialog",
+  "notes": "命鏡覺醒確認彈窗，用來驗證 dialog-card 第二模板"
+}

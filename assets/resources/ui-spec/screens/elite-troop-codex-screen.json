@@ -1,0 +1,13 @@
+{
+  "id": "elite-troop-codex-screen",
+  "version": 1,
+  "uiId": "EliteTroopCodex",
+  "layer": "Popup",
+  "bundle": "lobby_ui",
+  "layout": "elite-troop-codex-main",
+  "skin": "elite-troop-codex-default",
+  "validation": {
+    "devices": ["phone-16-9", "phone-19_5-9", "tablet-4-3"],
+    "allowMissingSkin": true
+  }
+}

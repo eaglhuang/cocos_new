@@ -1,0 +1,180 @@
+{
+  "id": "elite-troop-codex-rail-default",
+  "version": 1,
+  "bundle": "lobby_ui",
+  "atlasPolicy": "lobby",
+  "slots": {
+    "elite.troop.codex.rail.bg.full": {
+      "kind": "sprite-frame",
+      "path": "ui-spec/placeholders/bg_ink_main",
+      "spriteType": "sliced",
+      "border": [
+        96,
+        360,
+        96,
+        420
+      ],
+      "allowAutoAtlas": false
+    },
+    "elite.troop.codex.rail.shell.fill": {
+      "kind": "color-rect",
+      "color": "#161310E6"
+    },
+    "elite.troop.codex.rail.shell.bleed": {
+      "kind": "color-rect",
+      "color": "#B8904A33"
+    },
+    "elite.troop.codex.rail.shell.frame": {
+      "kind": "sprite-frame",
+      "path": "ui-spec/placeholders/bg_ink_detail",
+      "spriteType": "sliced",
+      "border": [
+        96,
+        96,
+        96,
+        96
+      ],
+      "allowAutoAtlas": false
+    },
+    "elite.troop.codex.rail.rail.panel": {
+      "kind": "color-rect",
+      "color": "#211913E0"
+    },
+    "elite.troop.codex.rail.rail.item.idle": {
+      "kind": "button-skin",
+      "normal": "ui-spec/placeholders/btn_parchment_normal",
+      "pressed": "ui-spec/placeholders/btn_parchment_pressed",
+      "disabled": "ui-spec/placeholders/btn_parchment_disabled",
+      "spriteType": "sliced",
+      "border": [
+        12,
+        12,
+        12,
+        12
+      ]
+    },
+    "elite.troop.codex.rail.rail.item.active": {
+      "kind": "button-skin",
+      "normal": "ui-spec/placeholders/btn_gold_normal",
+      "pressed": "ui-spec/placeholders/btn_gold_pressed",
+      "disabled": "ui-spec/placeholders/btn_gold_disabled",
+      "spriteType": "sliced",
+      "border": [
+        12,
+        12,
+        12,
+        12
+      ]
+    },
+    "elite.troop.codex.rail.hero.card": {
+      "kind": "color-rect",
+      "color": "#201914D9"
+    },
+    "elite.troop.codex.rail.hero.portrait": {
+      "kind": "sprite-frame",
+      "path": "ui-spec/placeholders/bg_ink_detail",
+      "spriteType": "sliced",
+      "border": [
+        96,
+        96,
+        96,
+        96
+      ],
+      "allowAutoAtlas": false
+    },
+    "elite.troop.codex.rail.detail.card": {
+      "kind": "color-rect",
+      "color": "#241C16E5"
+    },
+    "elite.troop.codex.rail.action.bar": {
+      "kind": "color-rect",
+      "color": "#201914D9"
+    },
+    "elite.troop.codex.rail.field.bg": {
+      "kind": "color-rect",
+      "color": "#100D0ACC"
+    },
+    "elite.troop.codex.rail.button.primary": {
+      "kind": "button-skin",
+      "normal": "ui-spec/placeholders/btn_gold_normal",
+      "pressed": "ui-spec/placeholders/btn_gold_pressed",
+      "disabled": "ui-spec/placeholders/btn_gold_disabled",
+      "spriteType": "sliced",
+      "border": [
+        12,
+        12,
+        12,
+        12
+      ]
+    },
+    "elite.troop.codex.rail.button.secondary": {
+      "kind": "button-skin",
+      "normal": "ui-spec/placeholders/btn_parchment_normal",
+      "pressed": "ui-spec/placeholders/btn_parchment_pressed",
+      "disabled": "ui-spec/placeholders/btn_parchment_disabled",
+      "spriteType": "sliced",
+      "border": [
+        12,
+        12,
+        12,
+        12
+      ]
+    },
+    "elite.troop.codex.rail.button.close": {
+      "kind": "button-skin",
+      "normal": "ui-spec/placeholders/btn_close_normal",
+      "pressed": "ui-spec/placeholders/btn_close_pressed",
+      "disabled": "ui-spec/placeholders/btn_close_disabled",
+      "spriteType": "simple"
+    },
+    "elite.troop.codex.rail.label.title": {
+      "kind": "label-style",
+      "fontSize": 34,
+      "lineHeight": 38,
+      "color": "#F3E4C1",
+      "isBold": true,
+      "horizontalAlign": "LEFT",
+      "verticalAlign": "CENTER",
+      "overflow": "SHRINK"
+    },
+    "elite.troop.codex.rail.label.section": {
+      "kind": "label-style",
+      "fontSize": 24,
+      "lineHeight": 30,
+      "color": "#EAD3A1",
+      "isBold": true,
+      "horizontalAlign": "LEFT",
+      "verticalAlign": "CENTER",
+      "overflow": "SHRINK"
+    },
+    "elite.troop.codex.rail.label.railItem": {
+      "kind": "label-style",
+      "fontSize": 20,
+      "lineHeight": 24,
+      "color": "#F8EFD7",
+      "isBold": true,
+      "horizontalAlign": "CENTER",
+      "verticalAlign": "CENTER",
+      "overflow": "SHRINK"
+    },
+    "elite.troop.codex.rail.label.button": {
+      "kind": "label-style",
+      "fontSize": 24,
+      "lineHeight": 28,
+      "color": "#2B1A0E",
+      "isBold": true,
+      "horizontalAlign": "CENTER",
+      "verticalAlign": "CENTER",
+      "overflow": "SHRINK"
+    },
+    "elite.troop.codex.rail.label.body": {
+      "kind": "label-style",
+      "fontSize": 22,
+      "lineHeight": 34,
+      "color": "#E6DAC7",
+      "horizontalAlign": "LEFT",
+      "verticalAlign": "TOP",
+      "overflow": "RESIZE_HEIGHT"
+    }
+  }
+}

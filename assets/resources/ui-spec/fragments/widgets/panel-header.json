@@ -1,0 +1,80 @@
+{
+  "id": "panel-header",
+  "description": "標題列：標題文字 + 可選關閉鈕 + 可選 info 鈕",
+  "category": "container",
+  "params": {
+    "title":    { "type": "i18n-key", "required": true },
+    "closable": { "type": "boolean", "default": true },
+    "infoTip":  { "type": "i18n-key", "required": false, "default": "" }
+  },
+  "layout": {
+    "type": "container",
+    "name": "PanelHeader",
+    "width": "100%",
+    "height": 56,
+    "skinSlot": "widget.header.bg",
+    "layout": { "type": "horizontal", "spacing": 8, "paddingLeft": 16, "paddingRight": 16 },
+    "children": [
+      {
+        "type": "label",
+        "name": "HeaderTitle",
+        "id": "headerTitle",
+        "width": "70%",
+        "height": 56,
+        "textKey": "${title}",
+        "styleSlot": "widget.header.title"
+      },
+      {
+        "type": "container",
+        "name": "HeaderSpacer",
+        "width": "10%",
+        "height": 56
+      },
+      {
+        "type": "button",
+        "name": "InfoButton",
+        "id": "infoBtn",
+        "width": 40,
+        "height": 40,
+        "skinSlot": "widget.header.info.btn",
+        "text": "?",
+        "active": false
+      },
+      {
+        "type": "button",
+        "name": "CloseButton",
+        "id": "closeBtn",
+        "width": 40,
+        "height": 40,
+        "skinSlot": "widget.header.close.btn",
+        "text": "×",
+        "active": "${closable}"
+      }
+    ]
+  },
+  "defaultSkinSlots": {
+    "widget.header.bg": {
+      "kind": "color-rect",
+      "color": "#2A2A4A"
+    },
+    "widget.header.title": {
+      "kind": "label-style",
+      "fontSize": 28,
+      "color": "#FFFFFF",
+      "isBold": true,
+      "horizontalAlign": "LEFT",
+      "verticalAlign": "CENTER"
+    },
+    "widget.header.close.btn": {
+      "kind": "button-skin",
+      "normal": "ui-spec/placeholders/btn_close_normal",
+      "pressed": "ui-spec/placeholders/btn_close_pressed",
+      "spriteType": "simple"
+    },
+    "widget.header.info.btn": {
+      "kind": "button-skin",
+      "normal": "ui-spec/placeholders/btn_info_normal",
+      "spriteType": "simple"
+    }
+  }
+}

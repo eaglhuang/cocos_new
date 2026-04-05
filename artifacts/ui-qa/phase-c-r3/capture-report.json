@@ -1,0 +1,12 @@
+{
+  "createdAt": "2026-04-01T06:31:53.057Z",
+  "host": "http://localhost:7456",
+  "machine": "DESKTOP-NREHEQ8",
+  "captures": [
+    {
+      "target": "BattleScene",
+      "screenId": "battle-scene",
+      "file": "artifacts\\ui-qa\\phase-c-r3\\BattleScene.png"
+    }
+  ]
+}

@@ -22,4 +22,21 @@ export class SceneManager {
     public getTargetScene(): { name: string, data: any } {
         return { name: this.targetScene, data: this.sceneData };
     }
+
+    // ─── View Bridge ────────────────────────────────────────────────────────
+    private boardRenderer: any = null;
+
+    /**
+     * 註冊當前場景的 BoardRenderer（由 BattleScene.start 呼叫）
+     */
+    public registerBoardRenderer(renderer: any): void {
+        this.boardRenderer = renderer;
+    }
+
+    /**
+     * 取得當前場景的 BoardRenderer
+     */
+    public getBoardRenderer(): any {
+        return this.boardRenderer;
+    }
 }

@@ -21,6 +21,7 @@
 
 ## 下一步
 
-- 產出 v2 candidate
-- 重做 128 / 64 / 32 三尺寸比較
-- 若仍有明顯差距，再把 carrier 與 glyph 再拆成單獨 refinement 子卡
+- Agent2 已完成 `agent1-generation-brief.md`，可直接交給 Agent1 生圖。
+- Agent1 先產出至少 3 個 v2 方向（`v2a/v2b/v2c`）。
+- 每個方向至少回收 `128 / 64 / 32` 三尺寸預覽。
+- 若仍有明顯差距，再把 carrier 與 glyph 再拆成單獨 refinement 子卡。

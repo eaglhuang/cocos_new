@@ -1,0 +1,45 @@
+{
+  "id": "dialog-confirm",
+  "version": 1,
+  "description": "確認對話框：遮罩 + 卡片 + 標題列 + 可選內容 + 按鈕組",
+  "category": "popup",
+  "params": {
+    "title":          { "type": "i18n-key", "required": true },
+    "body":           { "type": "i18n-key", "required": false, "default": "" },
+    "confirmLabel":   { "type": "i18n-key", "default": "UI_CONFIRM" },
+    "cancelLabel":    { "type": "i18n-key", "default": "UI_CANCEL" },
+    "closable":       { "type": "boolean", "default": true },
+    "showSecondary":  { "type": "boolean", "default": true,  "description": "是否顯示第二顆按鈕（取消）" },
+    "showTertiary":   { "type": "boolean", "default": false, "description": "是否顯示第三顆按鈕（其他）" },
+    "width":          { "type": "number", "default": 560 },
+    "height":         { "type": "number", "default": 360 }
+  },
+  "compose": [
+    { "widget": "overlay-mask" },
+    {
+      "widget": "dialog-card",
+      "params": { "width": "${width}", "height": "${height}" },
+      "children": [
+        {
+          "widget": "panel-header",
+          "params": { "title": "${title}", "closable": "${closable}" }
+        },
+        {
+          "widget": "text-body",
+          "params": { "text": "${body}" },
+          "condition": "${body}"
+        },
+        {
+          "widget": "button-bar",
+          "params": {
+            "labelYes":      "${confirmLabel}",
+            "labelNo":       "${cancelLabel}",
+            "showSecondary": "${showSecondary}",
+            "showTertiary":  "${showTertiary}"
+          }
+        }
+      ]
+    }
+  ],
+  "defaultSkin": "dialog-confirm-default"
+}

@@ -1,0 +1,32 @@
+{
+  "id": "fullscreen-result",
+  "version": 1,
+  "description": "全屏結算面板：遮罩 + 大型卡片 + 標題 + 數據列 + 按鈕組",
+  "category": "popup",
+  "params": {
+    "title":   { "type": "i18n-key", "required": true },
+    "width":   { "type": "number", "default": 720 },
+    "height":  { "type": "number", "default": 560 }
+  },
+  "compose": [
+    { "widget": "overlay-mask", "params": { "opacity": 220 } },
+    {
+      "widget": "dialog-card",
+      "params": { "width": "${width}", "height": "${height}" },
+      "children": [
+        {
+          "widget": "panel-header",
+          "params": { "title": "${title}", "closable": false }
+        },
+        {
+          "widget": "scroll-panel",
+          "params": { "maxHeight": 360 }
+        },
+        {
+          "widget": "button-bar",
+          "params": { "variant": "yes-no", "labelYes": "UI_PLAY_AGAIN", "labelNo": "UI_BACK_HOME" }
+        }
+      ]
+    }
+  ]
+}

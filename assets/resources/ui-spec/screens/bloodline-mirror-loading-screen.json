@@ -1,0 +1,13 @@
+{
+  "id": "bloodline-mirror-loading-screen",
+  "version": 1,
+  "uiId": "BloodlineMirrorLoading",
+  "layer": "Fullscreen",
+  "bundle": "lobby_ui",
+  "layout": "bloodline-mirror-main",
+  "skin": "bloodline-mirror-default",
+  "validation": {
+    "devices": ["phone-16-9", "phone-19_5-9", "tablet-4-3"],
+    "allowMissingSkin": true
+  }
+}

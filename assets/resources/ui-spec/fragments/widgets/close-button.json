@@ -1,0 +1,26 @@
+{
+  "id": "close-button",
+  "description": "右上角 × 關閉鈕",
+  "category": "control",
+  "params": {
+    "size": { "type": "number", "default": 40 }
+  },
+  "layout": {
+    "type": "button",
+    "name": "CloseButton",
+    "id": "closeBtn",
+    "width": "${size}",
+    "height": "${size}",
+    "widget": { "top": 8, "right": 8 },
+    "skinSlot": "widget.close.btn",
+    "text": "×"
+  },
+  "defaultSkinSlots": {
+    "widget.close.btn": {
+      "kind": "button-skin",
+      "normal": "ui-spec/placeholders/btn_close_normal",
+      "pressed": "ui-spec/placeholders/btn_close_pressed",
+      "spriteType": "simple"
+    }
+  }
+}

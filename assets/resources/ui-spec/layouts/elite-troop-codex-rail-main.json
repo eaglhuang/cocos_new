@@ -1,0 +1,341 @@
+{
+  "id": "elite-troop-codex-rail-main",
+  "version": 1,
+  "canvas": {
+    "fitWidth": true,
+    "fitHeight": true,
+    "safeArea": true,
+    "designWidth": 1920,
+    "designHeight": 1080
+  },
+  "root": {
+    "type": "container",
+    "name": "EliteTroopCodexRailRoot",
+    "widget": {
+      "top": 0,
+      "bottom": 0,
+      "left": 0,
+      "right": 0
+    },
+    "children": [
+      {
+        "type": "image",
+        "name": "BackgroundFull",
+        "widget": {
+          "top": 0,
+          "bottom": 0,
+          "left": 0,
+          "right": 0
+        },
+        "skinSlot": "elite.troop.codex.rail.bg.full"
+      },
+      {
+        "type": "panel",
+        "name": "ShellFill",
+        "widget": {
+          "top": 48,
+          "bottom": 48,
+          "left": 56,
+          "right": 56
+        },
+        "skinSlot": "elite.troop.codex.rail.shell.fill"
+      },
+      {
+        "type": "panel",
+        "name": "ShellBleed",
+        "widget": {
+          "top": 48,
+          "bottom": 48,
+          "left": 56,
+          "right": 56
+        },
+        "skinSlot": "elite.troop.codex.rail.shell.bleed"
+      },
+      {
+        "type": "panel",
+        "name": "ShellFrame",
+        "widget": {
+          "top": 48,
+          "bottom": 48,
+          "left": 56,
+          "right": 56
+        },
+        "skinSlot": "elite.troop.codex.rail.shell.frame"
+      },
+      {
+        "type": "container",
+        "name": "ShellContent",
+        "widget": {
+          "top": 72,
+          "bottom": 72,
+          "left": 80,
+          "right": 80
+        },
+        "children": [
+          {
+            "type": "container",
+            "name": "HeaderRow",
+            "widget": {
+              "top": 0,
+              "left": 0,
+              "right": 0
+            },
+            "height": 88,
+            "layout": {
+              "type": "horizontal",
+              "spacing": 16,
+              "paddingLeft": 0,
+              "paddingRight": 0,
+              "paddingTop": 0,
+              "paddingBottom": 0
+            },
+            "children": [
+              {
+                "type": "label",
+                "name": "TitleLabel",
+                "width": "82%",
+                "height": 88,
+                "styleSlot": "elite.troop.codex.rail.label.title",
+                "textKey": "ui.elite-troop-codex-rail.title"
+              },
+              {
+                "type": "button",
+                "name": "BtnClose",
+                "width": 88,
+                "height": 88,
+                "skinSlot": "elite.troop.codex.rail.button.close",
+                "textKey": "ui.close"
+              }
+            ]
+          },
+          {
+            "type": "container",
+            "name": "MainRow",
+            "widget": {
+              "top": 120,
+              "bottom": 104,
+              "left": 0,
+              "right": 0
+            },
+            "layout": {
+              "type": "horizontal",
+              "spacing": 24,
+              "paddingLeft": 0,
+              "paddingRight": 0,
+              "paddingTop": 0,
+              "paddingBottom": 0
+            },
+            "children": [
+              {
+                "type": "panel",
+                "name": "RailPanel",
+                "width": "31%",
+                "height": "100%",
+                "skinSlot": "elite.troop.codex.rail.rail.panel",
+                "children": [
+                  {
+                    "type": "container",
+                    "name": "Content",
+                    "widget": {
+                      "top": 18,
+                      "bottom": 18,
+                      "left": 18,
+                      "right": 18
+                    },
+                    "layout": {
+                      "type": "vertical",
+                      "spacing": 12,
+                      "paddingLeft": 0,
+                      "paddingRight": 0,
+                      "paddingTop": 0,
+                      "paddingBottom": 0
+                    },
+                    "children": [
+                      {
+                        "type": "label",
+                        "name": "RailTitle",
+                        "width": "100%",
+                        "height": 40,
+                        "styleSlot": "elite.troop.codex.rail.label.section",
+                        "textKey": "ui.elite-troop-codex-rail.title.rail"
+                      },
+                      {
+                        "type": "button",
+                        "name": "RailItemSpear",
+                        "width": "100%",
+                        "height": 78,
+                        "skinSlot": "elite.troop.codex.rail.rail.item.active",
+                        "styleSlot": "elite.troop.codex.rail.label.railItem",
+                        "textKey": "ui.elite-troop-codex-rail.title.spear",
+                        "active": true
+                      },
+                      {
+                        "type": "button",
+                        "name": "RailItemCavalry",
+                        "width": "100%",
+                        "height": 78,
+                        "skinSlot": "elite.troop.codex.rail.rail.item.idle",
+                        "styleSlot": "elite.troop.codex.rail.label.railItem",
+                        "textKey": "ui.elite-troop-codex-rail.title.cavalry",
+                        "active": true
+                      },
+                      {
+                        "type": "button",
+                        "name": "RailItemArcher",
+                        "width": "100%",
+                        "height": 78,
+                        "skinSlot": "elite.troop.codex.rail.rail.item.idle",
+                        "styleSlot": "elite.troop.codex.rail.label.railItem",
+                        "textKey": "ui.elite-troop-codex-rail.title.archer",
+                        "active": true
+                      },
+                      {
+                        "type": "button",
+                        "name": "RailItemGuardian",
+                        "width": "100%",
+                        "height": 78,
+                        "skinSlot": "elite.troop.codex.rail.rail.item.idle",
+                        "styleSlot": "elite.troop.codex.rail.label.railItem",
+                        "textKey": "ui.elite-troop-codex-rail.title.guardian",
+                        "active": true
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "container",
+                "name": "DetailColumn",
+                "width": "69%",
+                "height": "100%",
+                "layout": {
+                  "type": "vertical",
+                  "spacing": 20,
+                  "paddingLeft": 0,
+                  "paddingRight": 0,
+                  "paddingTop": 0,
+                  "paddingBottom": 0
+                },
+                "children": [
+                  {
+                    "type": "panel",
+                    "name": "HeroCard",
+                    "width": "100%",
+                    "height": 260,
+                    "skinSlot": "elite.troop.codex.rail.hero.card",
+                    "children": [
+                      {
+                        "type": "image",
+                        "name": "HeroPortrait",
+                        "widget": {
+                          "top": 18,
+                          "bottom": 18,
+                          "left": 18,
+                          "right": 18
+                        },
+                        "skinSlot": "elite.troop.codex.rail.hero.portrait"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "panel",
+                    "name": "DetailCard",
+                    "width": "100%",
+                    "height": 280,
+                    "skinSlot": "elite.troop.codex.rail.detail.card",
+                    "children": [
+                      {
+                        "type": "container",
+                        "name": "Content",
+                        "widget": {
+                          "top": 20,
+                          "bottom": 20,
+                          "left": 24,
+                          "right": 24
+                        },
+                        "layout": {
+                          "type": "vertical",
+                          "spacing": 10,
+                          "paddingLeft": 0,
+                          "paddingRight": 0,
+                          "paddingTop": 0,
+                          "paddingBottom": 0
+                        },
+                        "children": [
+                          {
+                            "type": "label",
+                            "name": "DetailTitle",
+                            "width": "100%",
+                            "height": 38,
+                            "styleSlot": "elite.troop.codex.rail.label.section",
+                            "textKey": "ui.elite-troop-codex-rail.title.detail"
+                          },
+                          {
+                            "type": "label",
+                            "name": "DetailBody",
+                            "width": "100%",
+                            "height": 160,
+                            "skinSlot": "elite.troop.codex.rail.field.bg",
+                            "styleSlot": "elite.troop.codex.rail.label.body",
+                            "textKey": "ui.elite-troop-codex-rail.body"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "panel",
+                    "name": "ActionBar",
+                    "width": "100%",
+                    "height": 96,
+                    "skinSlot": "elite.troop.codex.rail.action.bar",
+                    "children": [
+                      {
+                        "type": "container",
+                        "name": "Content",
+                        "widget": {
+                          "top": 12,
+                          "bottom": 12,
+                          "left": 16,
+                          "right": 16
+                        },
+                        "layout": {
+                          "type": "horizontal",
+                          "spacing": 16,
+                          "paddingLeft": 0,
+                          "paddingRight": 0,
+                          "paddingTop": 0,
+                          "paddingBottom": 0
+                        },
+                        "children": [
+                          {
+                            "type": "button",
+                            "name": "BtnPrimary",
+                            "width": 220,
+                            "height": 72,
+                            "skinSlot": "elite.troop.codex.rail.button.primary",
+                            "styleSlot": "elite.troop.codex.rail.label.button",
+                            "textKey": "ui.confirm"
+                          },
+                          {
+                            "type": "button",
+                            "name": "BtnSecondary",
+                            "width": 220,
+                            "height": 72,
+                            "skinSlot": "elite.troop.codex.rail.button.secondary",
+                            "styleSlot": "elite.troop.codex.rail.label.button",
+                            "textKey": "ui.cancel"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

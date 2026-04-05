@@ -1,0 +1,17 @@
+{
+  "familyId": "spirit-tally-proto",
+  "uiId": "SpiritTallyProto",
+  "template": "detail-split",
+  "layer": "Popup",
+  "bundle": "lobby_ui",
+  "atlasPolicy": "lobby",
+  "titleKey": "ui.spirit-tally-proto.title",
+  "primaryKey": "ui.confirm",
+  "secondaryKey": "ui.cancel",
+  "tabs": ["overview", "lineage", "ritual"],
+  "proofVersion": "v1",
+  "figmaFrame": "Screen/SpiritTally/Proto",
+  "wireframeRef": "Wireframe/SpiritTally/Proto",
+  "slotMapRef": "SlotMap/SpiritTally/Proto",
+  "notes": "Spirit Tally 第一版 detail family proof mapping"
+}

@@ -1,0 +1,92 @@
+{
+  "id": "spirit-tally-detail-main",
+  "version": 1,
+  "canvas": {
+    "fitWidth": true,
+    "fitHeight": true,
+    "safeArea": true,
+    "designWidth": 1920,
+    "designHeight": 1080
+  },
+  "root": {
+    "type": "container",
+    "name": "SpiritTallyDetailRoot",
+    "widget": { "top": 0, "bottom": 0, "left": 0, "right": 0 },
+    "children": [
+      { "type": "image", "name": "BackgroundFull", "widget": { "top": 0, "bottom": 0, "left": 0, "right": 0 }, "skinSlot": "std.bg.full" },
+      { "type": "panel", "name": "MainCard", "widget": { "top": 54, "bottom": 64, "left": 54, "right": 54 }, "skinSlot": "std.card.main" },
+      {
+        "type": "container",
+        "name": "HeaderRow",
+        "widget": { "top": 76, "left": 82, "right": 82 },
+        "height": 92,
+        "layout": { "type": "horizontal", "spacing": 18 },
+        "children": [
+          { "type": "label", "name": "HeroName", "width": "28%", "height": 80, "styleSlot": "std.label.name" },
+          { "type": "label", "name": "TallyTitle", "width": "40%", "height": 80, "styleSlot": "std.label.title" },
+          { "type": "label", "name": "SpiritRank", "width": "30%", "height": 80, "styleSlot": "std.label.rank" }
+        ]
+      },
+      {
+        "type": "container",
+        "name": "MainSplit",
+        "widget": { "top": 192, "bottom": 214, "left": 82, "right": 82 },
+        "layout": { "type": "horizontal", "spacing": 18 },
+        "children": [
+          {
+            "type": "container",
+            "name": "LeftVisualColumn",
+            "width": "34%",
+            "height": "100%",
+            "children": [
+              { "type": "panel", "name": "SpiritCardPanel", "widget": { "top": 0, "left": 0, "right": 0 }, "height": "58%", "skinSlot": "std.panel.spirit-card" },
+              { "type": "image", "name": "SpiritCardArt", "widget": { "top": 18, "left": 18, "right": 18 }, "height": "48%", "skinSlot": "std.art.spirit-card" },
+              { "type": "image", "name": "HeroGhostPortrait", "widget": { "top": 36, "left": 42, "right": 42 }, "height": "42%", "skinSlot": "std.art.hero-ghost" },
+              { "type": "image", "name": "BloodlineCrest", "widget": { "bottom": 20, "hCenter": 0 }, "width": 176, "height": 176, "skinSlot": "std.crest" },
+              { "type": "panel", "name": "SoulSummaryPanel", "widget": { "left": 0, "right": 0, "bottom": 0 }, "height": "34%", "skinSlot": "std.panel.summary" }
+            ]
+          },
+          {
+            "type": "container",
+            "name": "CenterInfoColumn",
+            "width": "38%",
+            "height": "100%",
+            "layout": { "type": "vertical", "spacing": 16 },
+            "children": [
+              { "type": "panel", "name": "SpiritTraitsPanel", "width": "100%", "height": 170, "skinSlot": "std.panel.module" },
+              { "type": "panel", "name": "BloodlineBoostPanel", "width": "100%", "height": 170, "skinSlot": "std.panel.module" },
+              { "type": "panel", "name": "ResonancePanel", "width": "100%", "height": 156, "skinSlot": "std.panel.module" },
+              { "type": "panel", "name": "UpgradeTrackPanel", "width": "100%", "height": 156, "skinSlot": "std.panel.module" }
+            ]
+          },
+          {
+            "type": "container",
+            "name": "RightTroopColumn",
+            "width": "28%",
+            "height": "100%",
+            "children": [
+              { "type": "panel", "name": "EliteTroopPanel", "widget": { "top": 0, "left": 0, "right": 0 }, "height": "62%", "skinSlot": "std.panel.elite-troop" },
+              { "type": "image", "name": "TroopBanner", "widget": { "top": 18, "left": 18, "right": 18 }, "height": 144, "skinSlot": "std.art.troop-banner" },
+              { "type": "image", "name": "TroopUnitArt", "widget": { "top": 182, "left": 24, "right": 24 }, "height": 230, "skinSlot": "std.art.troop-unit" },
+              { "type": "image", "name": "TroopCrest", "widget": { "bottom": 26, "hCenter": 0 }, "width": 148, "height": 148, "skinSlot": "std.art.troop-crest" },
+              { "type": "panel", "name": "TroopSummaryPanel", "widget": { "left": 0, "right": 0, "bottom": 0 }, "height": "28%", "skinSlot": "std.panel.summary" }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "container",
+        "name": "ActionRow",
+        "widget": { "left": 82, "right": 82, "bottom": 80 },
+        "height": 94,
+        "layout": { "type": "horizontal", "spacing": 16 },
+        "children": [
+          { "type": "button", "name": "EquipButton", "width": 260, "height": 72, "skinSlot": "std.button.primary", "styleSlot": "std.label.button" },
+          { "type": "button", "name": "UpgradeButton", "width": 260, "height": 72, "skinSlot": "std.button.secondary", "styleSlot": "std.label.button" },
+          { "type": "button", "name": "TroopDetailButton", "width": 260, "height": 72, "skinSlot": "std.button.secondary", "styleSlot": "std.label.button" },
+          { "type": "image", "name": "LockStateBadge", "width": 148, "height": 72, "skinSlot": "std.badge.lock" }
+        ]
+      }
+    ]
+  }
+}

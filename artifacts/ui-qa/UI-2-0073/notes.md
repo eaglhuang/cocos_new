@@ -1,0 +1,1 @@
+2026-04-04 | Codex | status: done | summary: 完成 Figma + Cocos MCP + Playwright 量產流程藍圖、Figma 母板結構清單與 MCP smoke test 報告；確認 cocos-creator HTTP MCP initialize 已通，figma / playwright 待會話刷新後實測，cocos-log-bridge 待 Editor 端 TCP bridge 驗證

@@ -85,6 +85,73 @@
       "color": "#0F0F0F",
       "isBold": true,
       "horizontalAlign": "CENTER"
+    },
+    "duel.label.hint": {
+      "kind": "label-style",
+      "font": "fonts/notosans_tc/font",
+      "fontSize": 14,
+      "lineHeight": 18,
+      "color": "#A0A0B4",
+      "overflow": "CLAMP"
+    },
+    "widget.overlay.mask": {
+      "kind": "color",
+      "color": "#000000",
+      "alpha": 180
+    },
+    "widget.dialog.card.bg": {
+      "kind": "color",
+      "color": "#0F0F0F",
+      "alpha": 235,
+      "spriteType": "sliced",
+      "border": [8, 8, 8, 8]
+    },
+    "widget.header.bg": {
+      "kind": "color",
+      "color": "#1A1A1A",
+      "alpha": 255
+    },
+    "widget.header.title": {
+      "kind": "label-style",
+      "fontSize": 20,
+      "color": "#FFE088",
+      "isBold": true,
+      "horizontalAlign": "LEFT",
+      "verticalAlign": "CENTER"
+    },
+    "widget.header.close.btn": {
+      "kind": "button-skin",
+      "normal": "ui-spec/placeholders/btn_close_normal",
+      "pressed": "ui-spec/placeholders/btn_close_pressed",
+      "disabled": "ui-spec/placeholders/btn_close_disabled",
+      "spriteType": "sliced",
+      "border": [8, 8, 8, 8]
+    },
+    "widget.text.body": {
+      "kind": "label-style",
+      "fontSize": 16,
+      "lineHeight": 20,
+      "color": "#E5E2E1",
+      "horizontalAlign": "LEFT",
+      "verticalAlign": "TOP"
+    },
+    "widget.btn.primary": {
+      "kind": "button-skin",
+      "normal": "sprites/ui_families/common/equipment/btn_primary_normal",
+      "pressed": "sprites/ui_families/common/equipment/btn_primary_pressed",
+      "disabled": "sprites/ui_families/common/equipment/btn_primary_disabled",
+      "spriteType": "sliced",
+      "border": [20, 20, 20, 20],
+      "allowAutoAtlas": true
+    },
+    "widget.btn.secondary": {
+      "kind": "button-skin",
+      "normal": "sprites/ui_families/common/paper_utility/btn_primary_normal",
+      "pressed": "sprites/ui_families/common/paper_utility/btn_primary_pressed",
+      "disabled": "sprites/ui_families/common/paper_utility/btn_primary_disabled",
+      "spriteType": "sliced",
+      "border": [20, 20, 20, 20],
+      "allowAutoAtlas": true
     }
   }
 }

@@ -26,14 +26,15 @@
         "layout": { "type": "vertical", "spacing": 16, "paddingTop": 16, "paddingBottom": 16, "paddingLeft": 24, "paddingRight": 24 },
         "children": [
           { "type": "label", "name": "ScoreLabel", "id": "scoreLabel", "width": 512, "height": 32, "styleSlot": "duel.label.score" },
+          { "type": "label", "name": "HintLabel", "id": "hintLabel", "width": 512, "height": 28, "styleSlot": "duel.label.hint" },
           {
             "type": "panel",
             "name": "Buttons",
             "layout": { "type": "horizontal", "spacing": 24 },
             "height": 56,
             "children": [
-              { "type": "button", "name": "BtnAccept", "id": "btnAccept", "width": 200, "height": 52, "skinSlot": "duel.btn.accept", "children": [ { "type": "label", "name": "Label", "textKey": "UI_DUEL_ACCEPT", "styleSlot": "duel.label.btn" } ] },
-              { "type": "button", "name": "BtnReject", "id": "btnReject", "width": 200, "height": 52, "skinSlot": "duel.btn.reject", "children": [ { "type": "label", "name": "Label", "textKey": "UI_DUEL_REJECT", "styleSlot": "duel.label.btn" } ] }
+              { "type": "button", "name": "BtnAccept", "id": "btnAccept", "width": 200, "height": 52, "skinSlot": "duel.btn.accept", "children": [ { "type": "label", "name": "Label", "textKey": "duel.accept", "styleSlot": "duel.label.btn" } ] },
+              { "type": "button", "name": "BtnReject", "id": "btnReject", "width": 200, "height": 52, "skinSlot": "duel.btn.reject", "children": [ { "type": "label", "name": "Label", "textKey": "duel.reject", "styleSlot": "duel.label.btn" } ] }
             ]
           }
         ]

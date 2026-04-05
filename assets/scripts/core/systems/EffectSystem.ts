@@ -1,5 +1,5 @@
 // @spec-source → 見 docs/cross-reference-index.md
-import { Animation, Node, ParticleSystem, Vec3 } from "cc";
+import { Animation, MeshRenderer, Node, ParticleSystem, Sprite, Vec3 } from "cc";
 import { VfxEffectDef } from "../config/VfxEffectConfig";
 import { PoolSystem } from "./PoolSystem";
 import { services } from "../managers/ServiceLoader";
@@ -134,10 +134,69 @@ export class EffectSystem {
      * @param loop  若填入值，強制覆寫每個 ParticleSystem 的 loop 屬性後再播放
      */
     public playGroup(node: Node, loop?: boolean): void {
-        const systems = node.getComponentsInChildren(ParticleSystem);
-        if (loop !== undefined) systems.forEach(ps => ps.loop = loop);
-        systems.forEach(ps => ps.play());
-        node.getComponentsInChildren(Animation).forEach(a => a.play());
+        try {
+            this.sanitizeVfxNode(node);
+
+            const systems = node.getComponentsInChildren(ParticleSystem);
+            if (loop !== undefined) systems.forEach(ps => ps.loop = loop);
+            systems.forEach(ps => {
+                try {
+                    ps.play();
+                } catch (e) {
+                    console.error(`[EffectSystem] ParticleSystem播放失敗 (${node.name}):`, e);
+                }
+            });
+
+            node.getComponentsInChildren(Animation).forEach(a => {
+                try {
+                    a.play();
+                } catch (e) {
+                    console.error(`[EffectSystem] Animation播放失敗 (${node.name}):`, e);
+                }
+            });
+        } catch (e) {
+            // [QA/Vibe] 捕捉頂層崩潰，確保不中斷遊戲循環
+            console.error(`[EffectSystem] playGroup 發生嚴重錯誤 (${node.name}):`, e);
+        }
+    }
+
+    /**
+     * [DEFENSIVE] 清理/校正 VFX 節點狀態。
+     * 防止如 Simple.updateUVs 等底層渲染崩潰。
+     * 也確保 Layer 設定正確（非 UI 特效不應處於 UI Layer）。
+     */
+    private sanitizeVfxNode(node: Node): void {
+        // 1. 強制 Layer 校正：若父節點非 UI，則特效不應在 UI 層級
+        const UI_LAYER = 1 << 25; // 常見 UI Layer mask
+        if (node.layer >= UI_LAYER) {
+            // console.warn(`[EffectSystem] 特效節點 "${node.name}" Layer 異常 (${node.layer})，重設為 Default`);
+            node.layer = 1; // Default Layer
+            node.walk((child: Node) => { child.layer = 1; });
+        }
+
+        // 2. 深度檢查渲染組件：防止底層內核在 updateUVs 或 render 階段崩潰
+        node.walk((target: Node) => {
+            // 檢查 Sprite
+            const sprite = target.getComponent(Sprite);
+            if (sprite && sprite.enabled && !sprite.spriteFrame) {
+                console.error(`[EffectSystem:Sanitize] 節點 "${target.name}" 缺少 SpriteFrame，已強制停用以防止 Simple.updateUVs 崩潰`);
+                sprite.enabled = false;
+            }
+
+            // 檢查 MeshRenderer (防止 Mesh 為空或材質無效)
+            const mr = target.getComponent(MeshRenderer);
+            if (mr && mr.enabled) {
+                if (!mr.mesh) {
+                    console.error(`[EffectSystem:Sanitize] 節點 "${target.name}" 缺少 Mesh，已強制停用 MeshRenderer`);
+                    mr.enabled = false;
+                }
+                const mat = mr.getSharedMaterial(0);
+                if (!mat) {
+                    console.error(`[EffectSystem:Sanitize] 節點 "${target.name}" 缺少 Material，已強制停用 MeshRenderer`);
+                    mr.enabled = false;
+                }
+            }
+        });
     }
 
     /**

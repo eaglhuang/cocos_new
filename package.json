@@ -12,6 +12,7 @@
     "check:encoding:staged": "node tools_node/check-encoding-touched.js --staged",
     "check:ts-syntax": "node tools_node/check-ts-syntax.js",
     "check:ui-spec": "node tools_node/validate-ui-specs.js",
+    "scaffold:ui-spec-family": "node tools_node/scaffold-ui-spec-family.js",
     "check:general-detail": "node tools_node/validate-general-detail-ui.js",
     "check:layered-frames": "node tools_node/validate-layered-frame-assets.js",
     "check:acceptance": "node tools_node/run-acceptance.js",

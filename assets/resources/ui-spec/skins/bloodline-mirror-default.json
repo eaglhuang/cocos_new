@@ -1,0 +1,88 @@
+{
+  "id": "bloodline-mirror-default",
+  "version": 1,
+  "bundle": "lobby_ui",
+  "atlasPolicy": "lobby",
+  "slots": {
+    "mirror.bg.full": {
+      "kind": "sprite-frame",
+      "path": "ui-spec/placeholders/bg_ink_main",
+      "spriteType": "sliced",
+      "border": [96, 360, 96, 420],
+      "allowAutoAtlas": false
+    },
+    "mirror.hero.public": { "kind": "color-rect", "color": "#E4E6E2A0" },
+    "mirror.hero.spirit": { "kind": "color-rect", "color": "#7787E4A8" },
+    "mirror.unowned.veil": { "kind": "color-rect", "color": "#0F171A66" },
+    "mirror.unowned.badge": { "kind": "color-rect", "color": "#D3C29ACC" },
+    "mirror.gate": { "kind": "color-rect", "color": "#DDEEEAE0" },
+    "mirror.sigil.field": { "kind": "color-rect", "color": "#A4D2D088" },
+    "mirror.vessel.legendary": { "kind": "color-rect", "color": "#F5D67CCC" },
+    "mirror.badge.small": { "kind": "color-rect", "color": "#D8D3C0CC" },
+    "mirror.story.rail": { "kind": "color-rect", "color": "#A98A60E0" },
+    "mirror.story.cell.mortal": { "kind": "color-rect", "color": "#D8CFBEF0" },
+    "mirror.story.cell.rise": { "kind": "color-rect", "color": "#D7D9D4F0" },
+    "mirror.story.cell.crisis": { "kind": "color-rect", "color": "#D8C3B0F0" },
+    "mirror.story.cell.awaken": { "kind": "color-rect", "color": "#AFC8D8F0" },
+    "mirror.story.cell.spirit": { "kind": "color-rect", "color": "#B7C3EAF0" },
+    "mirror.button.primary": {
+      "kind": "button-skin",
+      "normal": "sprites/ui_families/common/equipment/btn_primary_normal",
+      "pressed": "sprites/ui_families/common/equipment/btn_primary_pressed",
+      "disabled": "sprites/ui_families/common/equipment/btn_primary_disabled",
+      "spriteType": "sliced",
+      "border": [20, 20, 20, 20],
+      "allowAutoAtlas": true
+    },
+    "mirror.label.header": {
+      "kind": "label-style",
+      "fontSize": 34,
+      "lineHeight": 40,
+      "color": "#E7D9B0",
+      "horizontalAlign": "CENTER"
+    },
+    "mirror.label.name": {
+      "kind": "label-style",
+      "fontSize": 28,
+      "lineHeight": 34,
+      "color": "#EFEAD6",
+      "horizontalAlign": "CENTER"
+    },
+    "mirror.label.rarity": {
+      "kind": "label-style",
+      "fontSize": 22,
+      "lineHeight": 28,
+      "color": "#EAC97A",
+      "horizontalAlign": "CENTER"
+    },
+    "mirror.label.button": {
+      "kind": "label-style",
+      "fontSize": 18,
+      "lineHeight": 22,
+      "color": "#F7F3E8",
+      "horizontalAlign": "CENTER",
+      "verticalAlign": "CENTER"
+    },
+    "mirror.label.marker.public": {
+      "kind": "label-style",
+      "fontSize": 18,
+      "lineHeight": 22,
+      "color": "#E4E1D3",
+      "horizontalAlign": "CENTER"
+    },
+    "mirror.label.marker.spirit": {
+      "kind": "label-style",
+      "fontSize": 18,
+      "lineHeight": 22,
+      "color": "#D7D9FF",
+      "horizontalAlign": "CENTER"
+    },
+    "mirror.label.unowned": {
+      "kind": "label-style",
+      "fontSize": 16,
+      "lineHeight": 20,
+      "color": "#E5D7B7",
+      "horizontalAlign": "RIGHT"
+    }
+  }
+}

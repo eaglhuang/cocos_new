@@ -49,3 +49,7 @@
 - `11_日常人物頁_slot-map.png`
 - `20_血脈命鏡_wireframe.png`
 - `21_血脈命鏡_slot-map.png`
+
+## 共用模板
+
+- [UI_PROOF_TEMPLATE/README.md](C:\Users\User\3KLife\docs\UI品質參考圖\UI_PROOF_TEMPLATE\README.md)

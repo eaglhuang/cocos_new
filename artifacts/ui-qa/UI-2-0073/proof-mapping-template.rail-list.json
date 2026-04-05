@@ -1,0 +1,18 @@
+{
+  "familyId": "elite-troop-codex-rail",
+  "uiId": "EliteTroopCodexRail",
+  "template": "rail-list",
+  "layer": "Popup",
+  "bundle": "lobby_ui",
+  "atlasPolicy": "lobby",
+  "titleKey": "ui.elite-troop-codex-rail.title",
+  "bodyKey": "ui.elite-troop-codex-rail.body",
+  "primaryKey": "ui.confirm",
+  "secondaryKey": "ui.cancel",
+  "railItems": ["spear", "cavalry", "archer", "guardian"],
+  "proofVersion": "v1",
+  "figmaFrame": "Screen/EliteTroop/CodexRail",
+  "wireframeRef": "Wireframe/EliteTroop/CodexRail",
+  "slotMapRef": "SlotMap/EliteTroop/CodexRail",
+  "notes": "左側 rail + 右側 detail 的 codex family proof mapping"
+}

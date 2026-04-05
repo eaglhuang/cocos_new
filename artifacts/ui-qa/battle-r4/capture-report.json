@@ -1,0 +1,32 @@
+{
+  "createdAt": "2026-04-01T03:29:05.831Z",
+  "host": "http://localhost:7456",
+  "machine": "DESKTOP-NREHEQ8",
+  "captures": [
+    {
+      "target": "LobbyMain",
+      "screenId": "lobby-main-screen",
+      "file": "artifacts\\ui-qa\\battle-r4\\LobbyMain.png"
+    },
+    {
+      "target": "ShopMain",
+      "screenId": "shop-main-screen",
+      "file": "artifacts\\ui-qa\\battle-r4\\ShopMain.png"
+    },
+    {
+      "target": "Gacha",
+      "screenId": "gacha-main-screen",
+      "file": "artifacts\\ui-qa\\battle-r4\\Gacha.png"
+    },
+    {
+      "target": "DuelChallenge",
+      "screenId": "duel-challenge-screen",
+      "file": "artifacts\\ui-qa\\battle-r4\\DuelChallenge.png"
+    },
+    {
+      "target": "BattleScene",
+      "screenId": "battle-scene",
+      "file": "artifacts\\ui-qa\\battle-r4\\BattleScene.png"
+    }
+  ]
+}
