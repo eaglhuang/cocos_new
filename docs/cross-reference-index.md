@@ -7,7 +7,11 @@
 
 > 代碼索引/掃描範圍：僅包含 `assets/` 與 `extensions/` 目錄下的程式碼檔案；其他資料夾不參與代碼索引或自動掃描。
 
-**最後更新**: 2026-04-05 (第十五批：BattleBindData schema contract + Bug fix commits)
+**最後更新**: 2026-04-05 (第十六批：UIPreviewBuilder onReady/Binder 框架整合 + BattleScenePanel ensureCanvasHost + UISpecTypes Widget Fragment)
+
+> **第十八批整合（2026-04-05）**：`UI-2-0059` 已完成收斂並可提交。`general-detail-bloodline-v3-main.json` 正式新增 `OverviewSummaryModules` 與 `BloodlineOverviewModules` 兩個群組邊界，`GeneralDetailOverviewShell.ts` 也改為欄位表批次填值；對應規格、manifest 與 tasks index 已同步回寫。
+> **第十七批整合（2026-04-05）**：`UI-2-0058` 已提交 commit `2071d92`。`GeneralDetailBloodlineV3` 進一步進入 `UI-2-0059` skeleton 收斂：overview shell 已將暫時的 `Unowned*` 節點名改為可重用的 `PortraitMode* / OverviewMode*` 語意；覺醒條正式改為 `AwakeningBarTrack + AwakeningBarFill` 的 node contract，對應 `track / fill` skin slot；故事帶也已改用 `Origin / Faction / Role / Awakening / Bloodline / Future` 語意節點，screen contract 收緊為 `allowMissingSkin: false`。
+> **第十六批整合（2026-04-05）**：`UIPreviewBuilder.buildScreen()` 正式在 post-build 末尾呼叫 `onReady(binder: UITemplateBinder)`，完成 UI-2-0076 基礎框架；同步加入 Widget realignment pass (`_realignAllWidgets`) 與 bind 佔位符清空邏輯（Unity 對照：`Canvas.ForceUpdateCanvases()`）。`UISpecTypes.ts` 新增 `hCenter/vCenter`、`scroll-view` nodeType、Widget Fragment/Template Param 介面群。`BattleScenePanel` 重構為 `ensureCanvasHost()` helper，統一設定 layer / size(1920×1080) / Widget.AlignMode.ALWAYS。`SceneManager` 新增 `boardRenderer` 視圖橋接。`GeneralDetailOverviewShell` 完全移除 `_mountCardCopy`，改用純 `_setLabel` 對應 layout JSON 節點。
 
 > **第十四批整合（2026-04-05）**：`tasks_index.md` 已重建為乾淨 UTF-8 索引，改由 `ui-quality-todo.json` 生成；同時 `GeneralDetailOverviewShell` 已把 `TopSummaryRow / BloodlineRow / StoryStrip` 的文字節點正式落回 `layout JSON`，runtime 不再臨時建立最終字框。
 > **第十三批整合（2026-04-05）**：`GeneralDetailBloodlineV3` 已正式以 `UI-2-0058 -> UI-2-0059 -> UI-2-0061` 的順序收斂；第一批優先固定 slot family / skin contract，並明確要求先重用既有 `general_detail` family 資產，避免 overview shell 繼續停留在 `color-rect` placeholder。
@@ -210,7 +214,7 @@
 | GameManager.ts | MVP遊戲驗證規格書.md | D: GameMode enum; 概: 遊戲模式切換 |
 | ServiceLoader.ts | demo_技術架構.md | 概: DI 容器（9+ 服務註冊） |
 | UIManager.ts | UI 規格書.md, 主戰場UI規格書.md | 概: 六層 UI 生命週期管理 |
-| SceneManager.ts | 新手開場規格書.md | 概: A→Loading→B 場景切換 |
+| SceneManager.ts | 新手開場規格書.md | 概: A→Loading→B 場景切換；新增 `boardRenderer` 視圖橋（registerBoardRenderer / getBoardRenderer），供 BattleScene ↔ UI 跨組件查詢 |
 
 #### Battle Controllers (`assets/scripts/battle/controllers/`)
 
@@ -253,7 +257,7 @@
 | DuelChallengePanel.ts     | 名將挑戰賽系統.md                                                              | 概: 單挑挑戰/接受 UI ✅ UIPreviewBuilder 已遷移 → duel-challenge-{main/default/screen}.json |
 | GeneralDetailPanel.ts     | 武將系統.md, 武將人物介面規格書.md                                             | 概: 武將詳細面板；正式為多分頁容器，過渡期由 `Basics` 路由到 overview shell，其餘 tab 維持既有 content host ✅ UIPreviewBuilder 已遷移 |
 | GeneralDetailOverviewMapper.ts | 武將人物介面規格書.md, UI 規格書.md                                      | 概: 將 `GeneralConfig` 收斂成 overview shell 可直接使用的 header / summary / bloodline slot 映射，作為 `GeneralDetail` 首頁殼整合的 runtime seam |
-| GeneralDetailOverviewShell.ts | 武將人物介面規格書.md, UI 規格書.md                                       | 概: `general-detail-bloodline-v3` 的 runtime shell；先承接 overview 殼層渲染與 slot 填值，供後續併入 `GeneralDetailPanel` 外層 host |
+| GeneralDetailOverviewShell.ts | 武將人物介面規格書.md, UI 規格書.md                                       | 概: `general-detail-bloodline-v3` 的 runtime shell；目前已改為欄位表批次 `_setLabel`，對應 `OverviewSummaryModules / BloodlineOverviewModules / StoryStrip` 等正式 layout 群組 |
 | GeneralListPanel.ts       | 武將系統.md, 武將人物介面規格書.md                                             | 概: 武將列表 ✅ UIPreviewBuilder 已遷移 |
 | GeneralPortraitPanel.ts   | 武將系統.md                                                                    | 概: 武將立繪面板 ✅ UIPreviewBuilder 已遷移 |
 | ResultPopup.ts            | 戰場部署系統.md                                                                | 概: 戰鬥結算面板 ✅ UIPreviewBuilder 已遷移 |
@@ -261,10 +265,25 @@
 | StyleCheckPanel.ts        | UI技術規格書.md                                                                | 概: 風格驗證面板 ✅ UIPreviewBuilder 已遷移 |
 | NetworkStatusIndicator.ts | UI技術規格書.md, Data Schema文件（本機端與Server端）.md                        | 概: 斷線警示與背景同步提示 UI ✅ UIPreviewBuilder 已遷移 → network-status-{main/default/screen}.json |
 | UIScreenPreviewHost.ts    | UI參考圖品質分析.md, UI技術規格書.md                                          | 概: 以 `UISpecLoader.loadFullScreen(...)` 建立 screen-driven preview host，供 D-1~D-3 與後續 QA 共用 |
+
+#### UI Core (`assets/scripts/ui/core/`)
+
+| 代碼檔 | 對應規格書 | 引用類型 |
+|---|---|---|
+| UIPreviewBuilder.ts | UI技術規格書.md, keep.md §8 | 概: 所有 UI 面板的基類（Unity 對照：Prefab Variant Builder + EditorWindow）；`buildScreen()` 末尾呼叫 `_realignAllWidgets()` + 清空 bind 佔位符 + `onReady(binder)`；子類覆寫 `onReady(binder)` 取代舊 `onBuildComplete()` |
+| UISpecTypes.ts | UI技術規格書.md | D: WidgetDef(hCenter/vCenter), UILayoutNodeSpec, UINodeType(scroll-view 新增), UIWidgetFragmentSpec, UITemplateParamDef, UITemplateComposeItem; F: resolveSize |
+| UITemplateBinder.ts | UI技術規格書.md, keep.md §8 | 概: 以 layout id/name 建立節點綁定表，供 `onReady(binder)` 查詢（Unity 對照：GetComponentInChildren 安全封裝）|
+| UIPreviewLayoutBuilder.ts | UI技術規格書.md | 概: UIPreviewBuilder 拆分出的佈局計算 helper，負責 Widget 對齊與尺寸套用 |
+| UIPreviewNodeFactory.ts | UI技術規格書.md | 概: 依 UILayoutNodeSpec 建立 Cocos 節點；bind path 節點顯示 {xxx.yyy} 佔位文字（buildScreen 後由 clearDynamic pass 清除）|
+| UIPreviewShadowManager.ts | UI技術規格書.md | 概: 陰影層（9-slice 偽陰影）管理 |
+| UIPreviewStyleBuilder.ts | UI技術規格書.md | 概: 字型/色彩/按鈕狀態渲染 helper |
+| UIPreviewDiagnostics.ts | UI技術規格書.md | 概: 建立耗時、節點數量日誌工具 |
+| UISkinResolver.ts | UI技術規格書.md | 概: 皮膚 slot 解析（SpriteFrame/ LabelStyle/ ButtonSkin）；已加入 frame.texture null 防禦 |
+| UISpecLoader.ts | UI技術規格書.md | 概: ServiceLoader 單例，統一載入 layout/skin/screen/i18n/designTokens JSON |
 | DraggableButton.ts        | —                                                                              | 概: 拖曳按鈕（無直接規格書對應）|
 | SolidBackground.ts        | UI技術規格書.md                                                                | 概: 純色白模背景生成與美術貼圖預防覆蓋機制 |
 | ActionCommandPanel.ts     | 主戰場UI規格書.md, 主戰場UI規格補充_v3.md                                     | 概: Zone7 奧義大圓(v3 120px)+EndTurn/Tactics/Duel 80px 軌道圓+奧義選擇彈窗 ✅ UIPreviewBuilder → action-command-{main/default/screen}.json |
-| BattleScenePanel.ts       | 主戰場UI規格書.md                                                              | 概: 戰場UI總調度器（串聯 HUD/TigerTally/ActionCommand/BattleLog/UnitInfo）|
+| BattleScenePanel.ts       | 主戰場UI規格書.md                                                              | 概: 戰場UI總調度器；`ensureCanvasHost()` 統一建立子面板節點並設定 layer/size(1920×1080)/Widget.ALWAYS，修正舊版 UITransform=100×40 導致 Widget 錯位的問題 |
 | TigerTallyPanel.ts        | 主戰場UI規格書.md, 兵種（虎符）系統.md, 主戰場UI規格補充_v3.md               | 概: Zone3 虎符卡片欄（v3 AtkLabel⚔/HpLabel❤ 頂角 + UnitTypeBadge 32px）✅ UIPreviewBuilder → tiger-tally-{main/default/screen}.json |
 | UnitInfoPanel.ts          | 主戰場UI規格書.md, 兵種（虎符）系統.md                                         | 概: 兵種詳情滑出面板（fadeIn/fadeOut 0.2s）✅ UIPreviewBuilder → unit-info-panel-{main/default/screen}.json |
 | GeneralQuickViewPanel.ts  | 主戰場UI規格補充_v3.md §v3-5                                                  | 概: Zone1 頭像點擊觸發武將快覽彈窗（名稱/HP/攻防/戰法，敵方遮蔽）✅ UIPreviewBuilder → general-quickview-{main/default/screen}.json |

@@ -1,6 +1,6 @@
 {
   "id": "general-detail-bloodline-v3-default",
-  "version": 1,
+  "version": 2,
   "bundle": "lobby_ui",
   "atlasPolicy": "lobby",
   "slots": {
@@ -22,14 +22,14 @@
       "kind": "color-rect",
       "color": "#00000000"
     },
-    "gdv3.unowned.ribbon": {
+    "gdv3.mode.ribbon": {
       "kind": "sprite-frame",
       "path": "sprites/ui_families/general_detail/detail_field_meta_bg",
       "spriteType": "sliced",
       "border": [20, 20, 20, 20],
       "allowAutoAtlas": true
     },
-    "gdv3.unowned.badge": {
+    "gdv3.mode.badge": {
       "kind": "sprite-frame",
       "path": "sprites/ui_families/general_detail/detail_field_name_bg",
       "spriteType": "sliced",
@@ -106,7 +106,14 @@
       "border": [40, 40, 40, 40],
       "allowAutoAtlas": true
     },
-    "gdv3.progress.awakening": {
+    "gdv3.progress.track": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/detail_field_meta_bg",
+      "spriteType": "sliced",
+      "border": [20, 20, 20, 20],
+      "allowAutoAtlas": true
+    },
+    "gdv3.progress.fill": {
       "kind": "color-rect",
       "color": "#87C8B3"
     },
@@ -182,7 +189,7 @@
       "outlineWidth": 1,
       "horizontalAlign": "LEFT"
     },
-    "gdv3.label.unowned": {
+    "gdv3.label.mode": {
       "kind": "label-style",
       "fontSize": 16,
       "lineHeight": 20,
@@ -190,6 +197,15 @@
       "outlineColor": "#00000099",
       "outlineWidth": 1,
       "horizontalAlign": "LEFT"
+    },
+    "gdv3.label.badge": {
+      "kind": "label-style",
+      "fontSize": 17,
+      "lineHeight": 20,
+      "color": "#F4EBD4",
+      "outlineColor": "#00000099",
+      "outlineWidth": 1,
+      "horizontalAlign": "CENTER"
     }
   }
 }

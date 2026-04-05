@@ -1,6 +1,6 @@
 {
   "id": "general-detail-bloodline-v3-screen",
-  "version": 1,
+  "version": 2,
   "uiId": "GeneralDetailBloodlineV3",
   "layer": "Popup",
   "bundle": "lobby_ui",
@@ -8,6 +8,6 @@
   "skin": "general-detail-bloodline-v3-default",
   "validation": {
     "devices": ["phone-16-9", "phone-19_5-9", "tablet-4-3"],
-    "allowMissingSkin": true
+    "allowMissingSkin": false
   }
 }
