@@ -15,7 +15,7 @@
     "maxVitality": 100,
     "role": "Combat",
     "status": "Active",
-    "attackBonus": 0.10,
+    "attackBonus": 0.1,
     "str": 98,
     "int": 52,
     "lea": 86,
@@ -33,21 +33,110 @@
     "ancestorsSummary": "已建立 14 人血統樹，前 3 代僅對內開放。",
     "awakeningTitle": "萬人辟易",
     "genes": [
-      { "id": "gene_bravery", "displayName": "豪膽", "type": "戰鬥", "level": 3, "description": "提升前排衝陣與威嚇能力。" },
-      { "id": "gene_cavalry", "displayName": "騎戰直覺", "type": "兵種", "level": 2, "description": "騎兵衝鋒時額外獲得穩定性。" },
-      { "id": "gene_shout", "displayName": "戰吼傳承", "type": "戰法", "level": 2, "description": "提升控制型戰法的命中與士氣壓迫。" },
-      { "id": "gene_hidden_01", "displayName": "隱藏因子 Alpha", "isLocked": true, "discoveryLevel": 18 },
-      { "id": "gene_hidden_02", "displayName": "隱藏因子 Beta", "isLocked": true, "discoveryLevel": 26 }
+      {
+        "id": "gene_bravery",
+        "displayName": "豪膽",
+        "type": "戰鬥",
+        "level": 3,
+        "description": "提升前排衝陣與威嚇能力。"
+      },
+      {
+        "id": "gene_cavalry",
+        "displayName": "騎戰直覺",
+        "type": "兵種",
+        "level": 2,
+        "description": "騎兵衝鋒時額外獲得穩定性。"
+      },
+      {
+        "id": "gene_shout",
+        "displayName": "戰吼傳承",
+        "type": "戰法",
+        "level": 2,
+        "description": "提升控制型戰法的命中與士氣壓迫。"
+      },
+      {
+        "id": "gene_hidden_01",
+        "displayName": "隱藏因子 Alpha",
+        "isLocked": true,
+        "discoveryLevel": 18
+      },
+      {
+        "id": "gene_hidden_02",
+        "displayName": "隱藏因子 Beta",
+        "isLocked": true,
+        "discoveryLevel": 26
+      }
     ],
-    "learnedTactics": ["震吼", "突軍破陣", "怒喝壓制"],
-    "inspiredTactics": ["連環震懾", "燕人追擊"],
-    "lockedTactics": ["🔒 血脈覺醒技"],
-    "troopAptitude": { "CAVALRY": "S", "INFANTRY": "A", "ARCHER": "C", "SIEGE": "D" },
-    "terrainAptitude": { "PLAIN": "S", "MOUNTAIN": "B", "WATER": "D", "FOREST": "C", "DESERT": "B" },
-    "weatherAptitude": { "SUNNY": "A", "RAINY": "B", "FOG": "C", "WINDY": "B", "NIGHT": "A", "THUNDER": "D" },
-    "hiddenFlags": ["完整父系譜", "第 4、5 因子細節", "覺醒前置條件"],
+    "learnedTactics": [
+      "震吼",
+      "突軍破陣",
+      "怒喝壓制"
+    ],
+    "inspiredTactics": [
+      "連環震懾",
+      "燕人追擊"
+    ],
+    "lockedTactics": [
+      "🔒 血脈覺醒技"
+    ],
+    "troopAptitude": {
+      "CAVALRY": "S",
+      "INFANTRY": "A",
+      "ARCHER": "C",
+      "SIEGE": "D"
+    },
+    "terrainAptitude": {
+      "PLAIN": "S",
+      "MOUNTAIN": "B",
+      "WATER": "D",
+      "FOREST": "C",
+      "DESERT": "B"
+    },
+    "weatherAptitude": {
+      "SUNNY": "A",
+      "RAINY": "B",
+      "FOG": "C",
+      "WINDY": "B",
+      "NIGHT": "A",
+      "THUNDER": "D"
+    },
+    "hiddenFlags": [
+      "完整父系譜",
+      "第 4、5 因子細節",
+      "覺醒前置條件"
+    ],
     "notes": "高爆發前排武將，適合在平原或夜戰中切入敵將。",
-    "devNote": "可接大圖立繪、血統矩陣 modal、戰法卡列。"
+    "devNote": "可接大圖立繪、血統矩陣 modal、戰法卡列。",
+    "historicalAnecdote": "????????????????????",
+    "bloodlineRumor": "?????????????????????????",
+    "crestHint": "?????????????????????",
+    "crestState": "revealed",
+    "storyStripCells": [
+      {
+        "slot": "origin",
+        "text": "???????????????????"
+      },
+      {
+        "slot": "faction",
+        "text": "?????????????????"
+      },
+      {
+        "slot": "role",
+        "text": "???????????????????"
+      },
+      {
+        "slot": "awakening",
+        "text": "????????????????????"
+      },
+      {
+        "slot": "bloodline",
+        "text": "???????????????????"
+      },
+      {
+        "slot": "future",
+        "text": "??????????????????"
+      }
+    ]
   },
   {
     "id": "guan-yu",
@@ -74,7 +163,7 @@
     "luk": 77,
     "skillId": "guan-yu-slash",
     "preferredTerrain": "plain",
-    "terrainDefenseBonus": 0.10,
+    "terrainDefenseBonus": 0.1,
     "source": "初期主力",
     "ep": 88,
     "epRating": "S-",
@@ -83,19 +172,102 @@
     "ancestorsSummary": "祖譜完整度 68%，第 4 代後以推測資料補全。",
     "awakeningTitle": "青龍武聖",
     "genes": [
-      { "id": "gene_halberd", "displayName": "刀鋒傳承", "type": "武裝", "level": 3, "description": "強化單點斬殺與穿甲表現。" },
-      { "id": "gene_discipline", "displayName": "軍紀", "type": "統率", "level": 3, "description": "強化部曲士氣穩定。" },
-      { "id": "gene_honor", "displayName": "義勇", "type": "人格", "level": 2, "description": "提升單挑與名望事件加成。" },
-      { "id": "gene_hidden_03", "displayName": "義絕覺醒因子", "isLocked": true, "discoveryLevel": 24 }
+      {
+        "id": "gene_halberd",
+        "displayName": "刀鋒傳承",
+        "type": "武裝",
+        "level": 3,
+        "description": "強化單點斬殺與穿甲表現。"
+      },
+      {
+        "id": "gene_discipline",
+        "displayName": "軍紀",
+        "type": "統率",
+        "level": 3,
+        "description": "強化部曲士氣穩定。"
+      },
+      {
+        "id": "gene_honor",
+        "displayName": "義勇",
+        "type": "人格",
+        "level": 2,
+        "description": "提升單挑與名望事件加成。"
+      },
+      {
+        "id": "gene_hidden_03",
+        "displayName": "義絕覺醒因子",
+        "isLocked": true,
+        "discoveryLevel": 24
+      }
     ],
-    "learnedTactics": ["月牙刀斬", "長驅破軍", "武聖威壓"],
-    "inspiredTactics": ["春秋刀勢"],
-    "lockedTactics": ["🔒 義絕", "🔒 千里單騎"],
-    "troopAptitude": { "CAVALRY": "A", "INFANTRY": "S", "ARCHER": "C", "SIEGE": "D" },
-    "terrainAptitude": { "PLAIN": "A", "MOUNTAIN": "A", "WATER": "C", "FOREST": "B", "DESERT": "C" },
-    "weatherAptitude": { "SUNNY": "A", "RAINY": "B", "FOG": "B", "WINDY": "B", "NIGHT": "A", "THUNDER": "C" },
-    "hiddenFlags": ["第 4 代後祖譜校驗", "覺醒稱號需求"],
-    "notes": "高統率的斬將型核心，兼具名望與前線壓制。"
+    "learnedTactics": [
+      "月牙刀斬",
+      "長驅破軍",
+      "武聖威壓"
+    ],
+    "inspiredTactics": [
+      "春秋刀勢"
+    ],
+    "lockedTactics": [
+      "🔒 義絕",
+      "🔒 千里單騎"
+    ],
+    "troopAptitude": {
+      "CAVALRY": "A",
+      "INFANTRY": "S",
+      "ARCHER": "C",
+      "SIEGE": "D"
+    },
+    "terrainAptitude": {
+      "PLAIN": "A",
+      "MOUNTAIN": "A",
+      "WATER": "C",
+      "FOREST": "B",
+      "DESERT": "C"
+    },
+    "weatherAptitude": {
+      "SUNNY": "A",
+      "RAINY": "B",
+      "FOG": "B",
+      "WINDY": "B",
+      "NIGHT": "A",
+      "THUNDER": "C"
+    },
+    "hiddenFlags": [
+      "第 4 代後祖譜校驗",
+      "覺醒稱號需求"
+    ],
+    "notes": "高統率的斬將型核心，兼具名望與前線壓制。",
+    "historicalAnecdote": "??????????????????????",
+    "bloodlineRumor": "????????????????????",
+    "crestHint": "????? revealed ??????????????",
+    "crestState": "revealed",
+    "storyStripCells": [
+      {
+        "slot": "origin",
+        "text": "???????????????????"
+      },
+      {
+        "slot": "faction",
+        "text": "??????????????"
+      },
+      {
+        "slot": "role",
+        "text": "???????????????????"
+      },
+      {
+        "slot": "awakening",
+        "text": "??????????????????"
+      },
+      {
+        "slot": "bloodline",
+        "text": "???????????????????"
+      },
+      {
+        "slot": "future",
+        "text": "?????????????????"
+      }
+    ]
   },
   {
     "id": "lu-bu",
@@ -113,7 +285,7 @@
     "maxVitality": 100,
     "role": "Combat",
     "status": "Active",
-    "attackBonus": 0.20,
+    "attackBonus": 0.2,
     "str": 110,
     "int": 38,
     "lea": 81,
@@ -131,19 +303,102 @@
     "ancestorsSummary": "血統樹多處缺漏，以戰場實績模型補足。",
     "awakeningTitle": "天下無雙",
     "genes": [
-      { "id": "gene_overpower", "displayName": "霸武", "type": "戰鬥", "level": 4, "description": "大幅強化爆擊與先手壓制。" },
-      { "id": "gene_charge", "displayName": "赤兔馭者", "type": "兵種", "level": 3, "description": "提升騎兵突擊與脫戰速度。" },
-      { "id": "gene_frenzy", "displayName": "狂烈", "type": "人格", "level": 3, "description": "血量越高時輸出越不穩定但峰值更高。" },
-      { "id": "gene_hidden_04", "displayName": "修羅核", "isLocked": true, "discoveryLevel": 30 }
+      {
+        "id": "gene_overpower",
+        "displayName": "霸武",
+        "type": "戰鬥",
+        "level": 4,
+        "description": "大幅強化爆擊與先手壓制。"
+      },
+      {
+        "id": "gene_charge",
+        "displayName": "赤兔馭者",
+        "type": "兵種",
+        "level": 3,
+        "description": "提升騎兵突擊與脫戰速度。"
+      },
+      {
+        "id": "gene_frenzy",
+        "displayName": "狂烈",
+        "type": "人格",
+        "level": 3,
+        "description": "血量越高時輸出越不穩定但峰值更高。"
+      },
+      {
+        "id": "gene_hidden_04",
+        "displayName": "修羅核",
+        "isLocked": true,
+        "discoveryLevel": 30
+      }
     ],
-    "learnedTactics": ["天下無雙", "暴風突襲", "飛將蹂躪"],
-    "inspiredTactics": ["赤兔追魂"],
-    "lockedTactics": ["🔒 修羅覺醒鏈"],
-    "troopAptitude": { "CAVALRY": "S", "INFANTRY": "B", "ARCHER": "D", "SIEGE": "D" },
-    "terrainAptitude": { "PLAIN": "S", "MOUNTAIN": "C", "WATER": "D", "FOREST": "C", "DESERT": "B" },
-    "weatherAptitude": { "SUNNY": "S", "RAINY": "C", "FOG": "B", "WINDY": "A", "NIGHT": "B", "THUNDER": "C" },
-    "hiddenFlags": ["完整祖譜缺漏", "修羅核條件", "敵方 AI 權重"],
-    "notes": "極端高輸出敵將，用於壓力測試與遭遇戰頭目驗證。"
+    "learnedTactics": [
+      "天下無雙",
+      "暴風突襲",
+      "飛將蹂躪"
+    ],
+    "inspiredTactics": [
+      "赤兔追魂"
+    ],
+    "lockedTactics": [
+      "🔒 修羅覺醒鏈"
+    ],
+    "troopAptitude": {
+      "CAVALRY": "S",
+      "INFANTRY": "B",
+      "ARCHER": "D",
+      "SIEGE": "D"
+    },
+    "terrainAptitude": {
+      "PLAIN": "S",
+      "MOUNTAIN": "C",
+      "WATER": "D",
+      "FOREST": "C",
+      "DESERT": "B"
+    },
+    "weatherAptitude": {
+      "SUNNY": "S",
+      "RAINY": "C",
+      "FOG": "B",
+      "WINDY": "A",
+      "NIGHT": "B",
+      "THUNDER": "C"
+    },
+    "hiddenFlags": [
+      "完整祖譜缺漏",
+      "修羅核條件",
+      "敵方 AI 權重"
+    ],
+    "notes": "極端高輸出敵將，用於壓力測試與遭遇戰頭目驗證。",
+    "historicalAnecdote": "????????????????????",
+    "bloodlineRumor": "??????????????????????",
+    "crestHint": "??????? awakened ???????????",
+    "crestState": "awakened",
+    "storyStripCells": [
+      {
+        "slot": "origin",
+        "text": "???????????????????"
+      },
+      {
+        "slot": "faction",
+        "text": "???????????????????"
+      },
+      {
+        "slot": "role",
+        "text": "????????????????????"
+      },
+      {
+        "slot": "awakening",
+        "text": "????????????????????"
+      },
+      {
+        "slot": "bloodline",
+        "text": "????????????????????"
+      },
+      {
+        "slot": "future",
+        "text": "??????????????????"
+      }
+    ]
   },
   {
     "id": "cao-cao",
@@ -179,19 +434,102 @@
     "ancestorsSummary": "祖譜完整度高，政治系與統率系因子明顯。",
     "awakeningTitle": "挾天子令諸侯",
     "genes": [
-      { "id": "gene_strategy", "displayName": "權謀", "type": "謀略", "level": 4, "description": "提升指揮型戰法與全軍節奏控制。" },
-      { "id": "gene_command", "displayName": "號令", "type": "統率", "level": 3, "description": "提升多路戰場協同能力。" },
-      { "id": "gene_politics", "displayName": "治世", "type": "內政", "level": 3, "description": "影響招募、事件與資源收益。" },
-      { "id": "gene_hidden_05", "displayName": "霸道因子", "isLocked": true, "discoveryLevel": 22 }
+      {
+        "id": "gene_strategy",
+        "displayName": "權謀",
+        "type": "謀略",
+        "level": 4,
+        "description": "提升指揮型戰法與全軍節奏控制。"
+      },
+      {
+        "id": "gene_command",
+        "displayName": "號令",
+        "type": "統率",
+        "level": 3,
+        "description": "提升多路戰場協同能力。"
+      },
+      {
+        "id": "gene_politics",
+        "displayName": "治世",
+        "type": "內政",
+        "level": 3,
+        "description": "影響招募、事件與資源收益。"
+      },
+      {
+        "id": "gene_hidden_05",
+        "displayName": "霸道因子",
+        "isLocked": true,
+        "discoveryLevel": 22
+      }
     ],
-    "learnedTactics": ["兵不厭詐", "號令調度", "疑兵惑陣"],
-    "inspiredTactics": ["挾令四方", "魏武軍律"],
-    "lockedTactics": ["🔒 霸道終局技"],
-    "troopAptitude": { "CAVALRY": "A", "INFANTRY": "A", "ARCHER": "B", "SIEGE": "B" },
-    "terrainAptitude": { "PLAIN": "A", "MOUNTAIN": "B", "WATER": "B", "FOREST": "B", "DESERT": "C" },
-    "weatherAptitude": { "SUNNY": "A", "RAINY": "A", "FOG": "A", "WINDY": "B", "NIGHT": "B", "THUNDER": "C" },
-    "hiddenFlags": ["內政事件權重", "政治分支覺醒條件"],
-    "notes": "偏全局掌控與節奏操作的敵方統帥型武將。"
+    "learnedTactics": [
+      "兵不厭詐",
+      "號令調度",
+      "疑兵惑陣"
+    ],
+    "inspiredTactics": [
+      "挾令四方",
+      "魏武軍律"
+    ],
+    "lockedTactics": [
+      "🔒 霸道終局技"
+    ],
+    "troopAptitude": {
+      "CAVALRY": "A",
+      "INFANTRY": "A",
+      "ARCHER": "B",
+      "SIEGE": "B"
+    },
+    "terrainAptitude": {
+      "PLAIN": "A",
+      "MOUNTAIN": "B",
+      "WATER": "B",
+      "FOREST": "B",
+      "DESERT": "C"
+    },
+    "weatherAptitude": {
+      "SUNNY": "A",
+      "RAINY": "A",
+      "FOG": "A",
+      "WINDY": "B",
+      "NIGHT": "B",
+      "THUNDER": "C"
+    },
+    "hiddenFlags": [
+      "內政事件權重",
+      "政治分支覺醒條件"
+    ],
+    "notes": "偏全局掌控與節奏操作的敵方統帥型武將。",
+    "historicalAnecdote": "??????????????????????",
+    "bloodlineRumor": "???????????????????????",
+    "crestHint": "???????????????????????",
+    "crestState": "rumored",
+    "storyStripCells": [
+      {
+        "slot": "origin",
+        "text": "?????????????????"
+      },
+      {
+        "slot": "faction",
+        "text": "?????????????????"
+      },
+      {
+        "slot": "role",
+        "text": "???????????????"
+      },
+      {
+        "slot": "awakening",
+        "text": "?????????????????"
+      },
+      {
+        "slot": "bloodline",
+        "text": "????????????????????"
+      },
+      {
+        "slot": "future",
+        "text": "?????????????????"
+      }
+    ]
   },
   {
     "id": "zhao-yun",
@@ -227,17 +565,94 @@
     "ancestorsSummary": "常山趙氏後裔，系譜記錄完整度 90%。",
     "awakeningTitle": "一身是膽",
     "genes": [
-      { "id": "gene_courage", "displayName": "膽量", "type": "戰鬥", "level": 4, "description": "無視統率差值帶來的士氣壓制。" },
-      { "id": "gene_dash", "displayName": "龍膽突破", "type": "兵種", "level": 3, "description": "提升騎兵穿透力與追擊機率。" },
-      { "id": "gene_guard", "displayName": "護主", "type": "特質", "level": 2, "description": "當主帥體力低於 30% 時，提升 50% 防禦力。" }
+      {
+        "id": "gene_courage",
+        "displayName": "膽量",
+        "type": "戰鬥",
+        "level": 4,
+        "description": "無視統率差值帶來的士氣壓制。"
+      },
+      {
+        "id": "gene_dash",
+        "displayName": "龍膽突破",
+        "type": "兵種",
+        "level": 3,
+        "description": "提升騎兵穿透力與追擊機率。"
+      },
+      {
+        "id": "gene_guard",
+        "displayName": "護主",
+        "type": "特質",
+        "level": 2,
+        "description": "當主帥體力低於 30% 時，提升 50% 防禦力。"
+      }
     ],
-    "learnedTactics": ["龍膽旋風", "孤軍救主", "百鳥朝鳳"],
-    "inspiredTactics": ["七進七出"],
-    "lockedTactics": ["🔒 龍魂覺醒"],
-    "troopAptitude": { "CAVALRY": "S", "INFANTRY": "A", "ARCHER": "B", "SIEGE": "C" },
-    "terrainAptitude": { "PLAIN": "S", "MOUNTAIN": "A", "WATER": "C", "FOREST": "B", "DESERT": "B" },
-    "weatherAptitude": { "SUNNY": "S", "RAINY": "A", "FOG": "A", "WINDY": "A", "NIGHT": "A", "THUNDER": "B" },
-    "hiddenFlags": ["常山系譜核心", "龍魂覺醒條件"],
-    "notes": "全能型前鋒，擁有極高的穩定性與絕境反擊能力。"
+    "learnedTactics": [
+      "龍膽旋風",
+      "孤軍救主",
+      "百鳥朝鳳"
+    ],
+    "inspiredTactics": [
+      "七進七出"
+    ],
+    "lockedTactics": [
+      "🔒 龍魂覺醒"
+    ],
+    "troopAptitude": {
+      "CAVALRY": "S",
+      "INFANTRY": "A",
+      "ARCHER": "B",
+      "SIEGE": "C"
+    },
+    "terrainAptitude": {
+      "PLAIN": "S",
+      "MOUNTAIN": "A",
+      "WATER": "C",
+      "FOREST": "B",
+      "DESERT": "B"
+    },
+    "weatherAptitude": {
+      "SUNNY": "S",
+      "RAINY": "A",
+      "FOG": "A",
+      "WINDY": "A",
+      "NIGHT": "A",
+      "THUNDER": "B"
+    },
+    "hiddenFlags": [
+      "常山系譜核心",
+      "龍魂覺醒條件"
+    ],
+    "notes": "全能型前鋒，擁有極高的穩定性與絕境反擊能力。",
+    "historicalAnecdote": "??????????????????????",
+    "bloodlineRumor": "??????????????????????",
+    "crestHint": "????? revealed ????????????????",
+    "crestState": "revealed",
+    "storyStripCells": [
+      {
+        "slot": "origin",
+        "text": "??????????????????"
+      },
+      {
+        "slot": "faction",
+        "text": "????????????????"
+      },
+      {
+        "slot": "role",
+        "text": "??????????????????"
+      },
+      {
+        "slot": "awakening",
+        "text": "????????????????"
+      },
+      {
+        "slot": "bloodline",
+        "text": "???????????????????"
+      },
+      {
+        "slot": "future",
+        "text": "??????????????????"
+      }
+    ]
   }
 ]

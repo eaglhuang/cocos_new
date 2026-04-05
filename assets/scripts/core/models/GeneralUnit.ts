@@ -94,6 +94,25 @@ export interface GeneralStatsConfig {
   luk?: number;
 }
 
+export type GeneralDetailStorySlot =
+  | 'origin'
+  | 'faction'
+  | 'role'
+  | 'awakening'
+  | 'bloodline'
+  | 'future';
+
+export interface GeneralDetailStoryCellConfig {
+  slot: GeneralDetailStorySlot;
+  text: string;
+}
+
+export type GeneralDetailCrestState =
+  | 'placeholder'
+  | 'rumored'
+  | 'revealed'
+  | 'awakened';
+
 export interface GeneralConfig {
   id: string;
   name: string;
@@ -135,6 +154,11 @@ export interface GeneralConfig {
   parentsSummary?: string;
   ancestorsSummary?: string;
   awakeningTitle?: string;
+  historicalAnecdote?: string;
+  bloodlineRumor?: string;
+  crestHint?: string;
+  crestState?: GeneralDetailCrestState;
+  storyStripCells?: GeneralDetailStoryCellConfig[];
   genes?: GeneralGeneConfig[];
 
   learnedTactics?: string[];

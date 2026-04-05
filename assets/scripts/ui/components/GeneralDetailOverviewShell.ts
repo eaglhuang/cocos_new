@@ -17,11 +17,8 @@ export class GeneralDetailOverviewShell extends UIPreviewBuilder {
     private get _specLoader() { return services().specLoader; }
     private _isBuilt = false;
 
-    /** 由 buildScreen 完成後自動呼叫，起始化錨點（目前無需綁定） */
     protected onReady(_binder: UITemplateBinder): void {
-        // 此元件當前無按鈕事件，_populateUI 透過路徑輔助方法設定 label。
-        // 將來可將 _setLabel / _getNode 逐步現代化為 binder.setTexts({...}) 批次設定。
-        console.log('[GeneralDetailOverviewShell] onReady 就緒');
+        // 目前仍沿用 _setLabel / _getNode；等 Binder 批次 API 穩定後可再轉為 binder.setTexts(...)
     }
 
     public async show(config: GeneralConfig): Promise<void> {
@@ -66,19 +63,12 @@ export class GeneralDetailOverviewShell extends UIPreviewBuilder {
             { path: 'InfoContent/BloodlineOverviewModules/BloodlineSummaryFields/PersonalityLabel', text: '血脈性格' },
             { path: 'InfoContent/BloodlineOverviewModules/BloodlineSummaryFields/PersonalityValue', text: overview.cards.personalityValue },
             { path: 'InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineSummaryCard/BloodlineCardTitle', text: '血脈摘要' },
-            {
-                path: 'InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineSummaryCard/BloodlineBody',
-                text: [
-                    `父脈：${config.parentsSummary ?? '待補父母摘要'}`,
-                    `祖譜：${config.ancestorsSummary ?? '待補祖譜摘要'}`,
-                    `EP：${overview.summary.epValue}`,
-                ].join('\n'),
-            },
-            { path: 'InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineCrestCard/CrestTitle', text: '命紋與因子' },
-            { path: 'InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineCrestCard/CrestHint', text: '命紋靈獸 / 祖紋命篆預留區' },
+            { path: 'InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineSummaryCard/BloodlineBody', text: overview.cards.bloodlineBody },
+            { path: 'InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineCrestCard/CrestTitle', text: overview.cards.crestTitle },
+            { path: 'InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineCrestCard/CrestHint', text: overview.cards.crestHint },
         ]);
 
-        this._applyStoryBeats(overview.cards.storyBeats);
+        this._applyStoryCells(overview.cards.storyCells);
         this._setAwakeningProgress(overview.cards.awakeningProgress);
 
         const resId = config.id.replace(/-/g, '_');
@@ -86,20 +76,22 @@ export class GeneralDetailOverviewShell extends UIPreviewBuilder {
         this._loadPortrait(portraitPath);
     }
 
-    private _applyStoryBeats(storyBeats: string[]): void {
-        const storyPaths = [
-            'StoryStrip/StoryCellOrigin/StoryText',
-            'StoryStrip/StoryCellFaction/StoryText',
-            'StoryStrip/StoryCellRole/StoryText',
-            'StoryStrip/StoryCellAwakening/StoryText',
-            'StoryStrip/StoryCellBloodline/StoryText',
-            'StoryStrip/StoryCellFuture/StoryText',
-        ];
+    private _applyStoryCells(storyCells: Array<{ slot: string; text: string }>): void {
+        const slotToPath: Record<string, string> = {
+            origin: 'StoryStrip/StoryCellOrigin/StoryText',
+            faction: 'StoryStrip/StoryCellFaction/StoryText',
+            role: 'StoryStrip/StoryCellRole/StoryText',
+            awakening: 'StoryStrip/StoryCellAwakening/StoryText',
+            bloodline: 'StoryStrip/StoryCellBloodline/StoryText',
+            future: 'StoryStrip/StoryCellFuture/StoryText',
+        };
 
-        const bindings = storyPaths.map((path, index) => ({
-            path,
-            text: storyBeats[index] ?? '',
-        }));
+        const bindings: LabelBinding[] = storyCells
+            .map((cell) => ({
+                path: slotToPath[cell.slot],
+                text: cell.text,
+            }))
+            .filter((binding) => Boolean(binding.path));
 
         this._applyLabels(bindings);
     }

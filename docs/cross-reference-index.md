@@ -183,7 +183,7 @@
 | 代碼檔 | 對應規格書 | 引用類型 |
 |---|---|---|
 | TroopUnit.ts | 兵種（虎符）系統.md, 數值系統.md | D: TroopStats, TroopUnit class; C: TroopType enum |
-| GeneralUnit.ts | 武將系統.md, 武將人物介面規格書.md, 數值系統.md | D: GeneralConfig, GeneralUnit class; C: maxSp, skillId, preferredTerrain, str, int, lea, luk |
+| GeneralUnit.ts | ????.md, ?????????.md, ????.md | D: `GeneralConfig`, `GeneralUnit` class???? `historicalAnecdote / bloodlineRumor / storyStripCells / crestHint / crestState` ?????? |
 
 #### Core Data (`assets/scripts/core/data/`)
 
@@ -256,7 +256,7 @@
 | DeployPanel.ts            | 戰場部署系統.md, UI 規格書.md, 美術素材規劃與使用說明.md                       | 概: 兵種選擇 4 卡池 + 選路即部署 ✅ UIPreviewBuilder 已遷移 → deploy-panel-{main/default/screen}.json |
 | DuelChallengePanel.ts     | 名將挑戰賽系統.md                                                              | 概: 單挑挑戰/接受 UI ✅ UIPreviewBuilder 已遷移 → duel-challenge-{main/default/screen}.json |
 | GeneralDetailPanel.ts     | 武將系統.md, 武將人物介面規格書.md                                             | 概: 武將詳細面板；正式為多分頁容器，過渡期由 `Basics` 路由到 overview shell，其餘 tab 維持既有 content host ✅ UIPreviewBuilder 已遷移 |
-| GeneralDetailOverviewMapper.ts | 武將人物介面規格書.md, UI 規格書.md                                      | 概: 將 `GeneralConfig` 收斂成 overview shell 可直接使用的 header / summary / bloodline slot 映射，作為 `GeneralDetail` 首頁殼整合的 runtime seam |
+| GeneralDetailOverviewMapper.ts | ?????????.md, UI ???.md | ?: ? `GeneralConfig` ??? overview shell ?????? header / summary / bloodline / crest / story content contract??? `GeneralDetail` ?????? runtime seam |
 | GeneralDetailOverviewShell.ts | 武將人物介面規格書.md, UI 規格書.md                                       | 概: `general-detail-bloodline-v3` 的 runtime shell；目前已改為欄位表批次 `_setLabel`，對應 `OverviewSummaryModules / BloodlineOverviewModules / StoryStrip` 等正式 layout 群組 |
 | GeneralListPanel.ts       | 武將系統.md, 武將人物介面規格書.md                                             | 概: 武將列表 ✅ UIPreviewBuilder 已遷移 |
 | GeneralPortraitPanel.ts   | 武將系統.md                                                                    | 概: 武將立繪面板 ✅ UIPreviewBuilder 已遷移 |

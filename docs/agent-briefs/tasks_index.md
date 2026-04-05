@@ -13,9 +13,9 @@ manifest: ../ui-quality-todo.json
 
 - Total: 87
 - completed: 1
-- done: 51
+- done: 52
 - in-progress: 20
-- open: 15
+- open: 14
 
 ## Tasks
 
@@ -98,7 +98,7 @@ manifest: ../ui-quality-todo.json
 | UI-2-0058 | Agent2 | in-progress | P1 | D | ui-slot-contract | [UI-2-0058](./tasks/UI-2-0058.md) |
 | UI-2-0059 | Agent2 | done | P1 | D | ui-spec-skeleton | [UI-2-0059](./tasks/UI-2-0059.md) |
 | UI-2-0060 | Agent2 | open | P1 | D | ui-spec-skeleton | [UI-2-0060](./tasks/UI-2-0060.md) |
-| UI-2-0061 | Agent2 | open | P1 | D | data-contract | [UI-2-0061](./tasks/UI-2-0061.md) |
+| UI-2-0061 | Agent2 | done | P1 | D | data-contract | [UI-2-0061](./tasks/UI-2-0061.md) |
 | UI-2-0062 | Agent2 | open | P1 | D | system-spec | [UI-2-0062](./tasks/UI-2-0062.md) |
 | UI-2-0063 | Agent2 | open | P2 | D | pipeline-spec | [UI-2-0063](./tasks/UI-2-0063.md) |
 | UI-2-0064 | Agent2 | open | P1 | D | worldbuilding-link-spec | [UI-2-0064](./tasks/UI-2-0064.md) |
