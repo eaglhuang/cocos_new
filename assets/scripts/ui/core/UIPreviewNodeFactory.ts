@@ -21,6 +21,7 @@ import { UISkinResolver } from './UISkinResolver';
 import { UIPreviewStyleBuilder } from './UIPreviewStyleBuilder';
 import type { UILayoutNodeSpec } from './UISpecTypes';
 import { UIPreviewDiagnostics } from './UIPreviewDiagnostics';
+import { UIPreviewLayoutBuilder } from './UIPreviewLayoutBuilder';
 
 export class UIPreviewNodeFactory {
 
@@ -30,30 +31,8 @@ export class UIPreviewNodeFactory {
     constructor(
         private readonly skinResolver: UISkinResolver,
         private readonly styleBuilder: UIPreviewStyleBuilder,
+        private readonly layoutBuilder: UIPreviewLayoutBuilder,
     ) {}
-
-    // ─── Layout 設定 ──────────────────────────────────────────────────────────
-
-    /**
-     * 掛載 Layout 元件並設定排列方向、間距與 padding。
-     * Unity 對照：HorizontalLayoutGroup / VerticalLayoutGroup / GridLayoutGroup
-     */
-    setupLayout(node: Node, spec: UILayoutNodeSpec): void {
-        if (!spec.layout) return;
-        const layout = node.addComponent(Layout);
-        switch (spec.layout.type) {
-            case 'horizontal': layout.type = Layout.Type.HORIZONTAL; break;
-            case 'vertical':   layout.type = Layout.Type.VERTICAL;   break;
-            case 'grid':       layout.type = Layout.Type.GRID;       break;
-        }
-        layout.spacingX      = spec.layout.spacing      ?? 0;
-        layout.spacingY      = spec.layout.spacing      ?? 0;
-        layout.paddingLeft   = spec.layout.paddingLeft   ?? 0;
-        layout.paddingRight  = spec.layout.paddingRight  ?? 0;
-        layout.paddingTop    = spec.layout.paddingTop    ?? 0;
-        layout.paddingBottom = spec.layout.paddingBottom ?? 0;
-        layout.resizeMode    = Layout.ResizeMode.NONE;
-    }
 
     // ─── 元件類型建構 ─────────────────────────────────────────────────────────
 
@@ -65,8 +44,13 @@ export class UIPreviewNodeFactory {
         if (spec.skinSlot && await this.styleBuilder.applyBackgroundSkin(node, spec.skinSlot)) {
             return;
         }
+        // 讀取 skin slot 的 _fallback 顏色（資源尚未匯入時，顯示可識別的佔位色）
+        const slot = spec.skinSlot ? this.skinResolver.getSlot(spec.skinSlot) : null;
+        const fallbackHex: string   = (slot as any)?._fallback ?? '#1E2328';
+        const fallbackAlpha: number = (slot as any)?._fallbackOpacity ?? 200;
         const bg = node.addComponent(SolidBackground);
-        bg.color = new Color(30, 35, 40, 200);
+        const c  = this.skinResolver.resolveColor(fallbackHex);
+        bg.color = new Color(c.r, c.g, c.b, fallbackAlpha);
     }
 
     /**
@@ -104,7 +88,9 @@ export class UIPreviewNodeFactory {
         } else if ((spec as any).text !== undefined) {
             label.string = (spec as any).text as string;
         } else if (spec.bind) {
-            label.string = `{${spec.bind}}`;  // 暫存佔位，等 onBuildComplete 綁定實際資料
+            // DATA-1-0001: bind path 顯示為 {xxx.yyy} 佔位文字，方便 Preview 辨識資料來源
+            // Unity 對照：Inspector 顯示 ViewModel 欄位名稱作為預覽提示
+            label.string = `{${spec.bind}}`;
         } else {
             // [UI-2-0023] fallback to empty string to avoid showing node name as UI text.
             // Business logic (onBuildComplete) must explicitly bind this label.
@@ -138,7 +124,7 @@ export class UIPreviewNodeFactory {
         }
 
         // 若有文字，建立子 Label 節點
-        if (spec.textKey || spec.bind) {
+        if (spec.textKey || spec.bind || (spec as any).text !== undefined) {
             const labelNode = new Node('Label');
             labelNode.layer  = node.layer;
             labelNode.parent = node;
@@ -175,9 +161,8 @@ export class UIPreviewNodeFactory {
         contentT.setAnchorPoint(0.5, 1);  // 對齊頂部，往下擴展
 
         if (spec.layout) {
-            const layout      = content.addComponent(Layout);
-            layout.type       = Layout.Type.VERTICAL;
-            layout.spacingY   = spec.layout.spacing ?? 4;
+            this.layoutBuilder.setupLayout(content, spec);
+            const layout = content.getComponent(Layout)!;
             layout.resizeMode = Layout.ResizeMode.CONTAINER;
         }
 
@@ -188,18 +173,45 @@ export class UIPreviewNodeFactory {
 
     /**
      * 建構圖片節點。
-     * Unity 對照：Image（Source Image 直接指向 Sprite）
+     * 若 spriteFrame 尚未匯入（開發期常見），讀取 skin slot 的 _fallback 顏色作為佔位背景，
+     * 確保節點在截圖與 Editor Preview 中永遠可見。
+     *
+     * Unity 對照：Image（Source Image 直接指向 Sprite）+ Inspector 預設色塊
      */
     async buildImage(node: Node, spec: UILayoutNodeSpec): Promise<void> {
         if (!spec.skinSlot) return;
+
         const slot  = this.skinResolver.getSlot(spec.skinSlot);
         const frame = await this.skinResolver.getSpriteFrame(spec.skinSlot);
-        if (!frame) return;
+
+        if (!frame) {
+            // sprite 資源尚未匯入 → 用 _fallback 顏色做可見佔位，避免節點完全透明
+            const fallbackHex: string = (slot as any)?._fallback ?? '#2A2A2A';
+            const fallbackOpacity: number = (slot as any)?._fallbackOpacity ?? 180;
+            const bg = node.addComponent(SolidBackground);
+            bg.color = this.skinResolver.resolveColor(fallbackHex);
+            bg.color = new Color(bg.color.r, bg.color.g, bg.color.b, fallbackOpacity);
+            // 若有 interactable 設定仍要掛 Button
+            if (spec.interactable) {
+                const button = node.getComponent(Button) || node.addComponent(Button);
+                button.target = node;
+                button.interactable = true;
+            }
+            return;
+        }
+
         const sprite       = node.addComponent(Sprite);
-        sprite.spriteFrame = frame;
         sprite.sizeMode    = Sprite.SizeMode.CUSTOM;
+        sprite.spriteFrame = frame;
         if (slot?.kind === 'sprite-frame') {
             this.styleBuilder.applySpriteSkin(sprite, slot.spriteType, slot.border);
+        }
+
+        // 讓 image 節點也能作為可點擊控制項使用，供 portrait / icon button 類規格共用。
+        if (spec.interactable) {
+            const button = node.getComponent(Button) || node.addComponent(Button);
+            button.target = node;
+            button.interactable = true;
         }
     }
 }

@@ -1,13 +1,25 @@
 {
   "id": "battle-log-main",
   "version": 3,
-  "canvas": { "fitWidth": true, "fitHeight": true, "safeArea": true, "designWidth": 1920, "designHeight": 1080 },
+  "canvas": {
+    "fitWidth": true,
+    "fitHeight": true,
+    "safeArea": true,
+    "designWidth": 1920,
+    "designHeight": 1080
+  },
   "root": {
     "type": "container",
     "name": "SidePanelRoot",
     "width": "10%",
-    "widget": { "right": 0, "top": 88 },
-    "layout": { "type": "vertical", "spacing": 0 },
+    "widget": {
+      "right": 0,
+      "top": 88
+    },
+    "layout": {
+      "type": "vertical",
+      "spacing": 0
+    },
     "children": [
       {
         "type": "panel",
@@ -15,11 +27,37 @@
         "width": "100%",
         "height": 40,
         "skinSlot": "log.header.bg",
-        "layout": { "type": "horizontal", "spacing": 8, "paddingLeft": 12, "paddingRight": 12 },
+        "layout": {
+          "type": "horizontal",
+          "spacing": 8,
+          "paddingLeft": 12,
+          "paddingRight": 12
+        },
         "children": [
-          { "type": "button", "name": "BtnAuto",    "id": "btnAuto",    "width": 32, "height": 32, "skinSlot": "log.btn.auto" },
-          { "type": "button", "name": "BtnSpeed",   "id": "btnSpeed",   "width": 32, "height": 32, "skinSlot": "log.btn.speed" },
-          { "type": "button", "name": "BtnSetting", "id": "btnSetting", "width": 32, "height": 32, "skinSlot": "log.btn.setting" }
+          {
+            "type": "button",
+            "name": "BtnAuto",
+            "id": "btnAuto",
+            "width": 32,
+            "height": 32,
+            "skinSlot": "log.btn.auto"
+          },
+          {
+            "type": "button",
+            "name": "BtnSpeed",
+            "id": "btnSpeed",
+            "width": 32,
+            "height": 32,
+            "skinSlot": "log.btn.speed"
+          },
+          {
+            "type": "button",
+            "name": "BtnSetting",
+            "id": "btnSetting",
+            "width": 32,
+            "height": 32,
+            "skinSlot": "log.btn.setting"
+          }
         ]
       },
       {
@@ -29,6 +67,10 @@
         "width": "100%",
         "height": 410,
         "skinSlot": "log.root.bg",
+        "layout": {
+          "type": "vertical",
+          "spacing": 0
+        },
         "children": [
           {
             "type": "panel",
@@ -36,9 +78,22 @@
             "width": "100%",
             "height": 34,
             "skinSlot": "log.header.bg",
-            "layout": { "type": "horizontal", "spacing": 8, "paddingLeft": 12, "paddingRight": 12 },
+            "layout": {
+              "type": "horizontal",
+              "spacing": 8,
+              "paddingLeft": 12,
+              "paddingRight": 12
+            },
             "children": [
-              { "type": "label", "name": "Title", "id": "logTitle", "width": 140, "height": 28, "text": "戰鬥日誌", "styleSlot": "log.label.title" }
+              {
+                "type": "label",
+                "name": "Title",
+                "id": "logTitle",
+                "width": 140,
+                "height": 28,
+                "text": "戰鬥日誌",
+                "styleSlot": "log.label.title"
+              }
             ]
           },
           {
@@ -55,7 +110,15 @@
                 "width": "100%",
                 "height": 340,
                 "children": [
-                  { "type": "label", "name": "LogLabel", "id": "logLabel", "width": "100%", "height": 340, "styleSlot": "log.label.content", "bind": "dynamic" }
+                  {
+                    "type": "label",
+                    "name": "LogLabel",
+                    "id": "logLabel",
+                    "width": "100%",
+                    "height": 340,
+                    "styleSlot": "log.label.content",
+                    "bind": "battleLog.message"
+                  }
                 ]
               }
             ]
@@ -68,7 +131,7 @@
         "id": "btnCollapse",
         "width": "100%",
         "height": 28,
-        "text": "📋 收合",
+        "text": "收合",
         "skinSlot": "log.btn.collapse",
         "styleSlot": "log.label.toggle",
         "_comment": "Toggle: collapse hides BattleLogPanel (h→0), button changes to 32x32 icon; expand restores to ~410px with Tween 0.3s"

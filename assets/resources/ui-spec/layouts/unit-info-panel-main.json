@@ -2,15 +2,29 @@
   "id": "unit-info-panel-main",
   "version": 1,
   "_doc": "虎符卡片點擊後從左側拉出的兵種資訊小窗。位置：left:16%, top:88px, width:216px, height:填滿。入場動畫：translateX(-100%)→translateX(0), 0.28s cubic-bezier。",
-  "canvas": { "fitWidth": true, "fitHeight": true, "safeArea": true, "designWidth": 1920, "designHeight": 1080 },
+  "canvas": {
+    "fitWidth": true,
+    "fitHeight": true,
+    "safeArea": true,
+    "designWidth": 1920,
+    "designHeight": 1080
+  },
   "root": {
     "type": "container",
     "name": "UnitInfoPanelRoot",
     "id": "unitInfoPanelRoot",
-    "widget": { "top": 88, "left": "16%", "bottom": 0 },
+    "widget": {
+      "top": 88,
+      "left": "16%",
+      "bottom": 0
+    },
     "width": 216,
     "skinSlot": "unitinfo.root.bg",
-    "transition": { "enter": "slideRight", "exit": "slideLeft", "duration": 0.28 },
+    "transition": {
+      "enter": "slideRight",
+      "exit": "slideLeft",
+      "duration": 0.28
+    },
     "children": [
       {
         "type": "panel",
@@ -18,13 +32,21 @@
         "width": "100%",
         "height": 58,
         "skinSlot": "unitinfo.header.bg",
-        "layout": { "type": "horizontal", "spacing": 8, "paddingLeft": 12, "paddingRight": 10, "paddingTop": 0, "paddingBottom": 0 },
+        "layout": {
+          "type": "horizontal",
+          "spacing": 8,
+          "paddingLeft": 12,
+          "paddingRight": 10,
+          "paddingTop": 0,
+          "paddingBottom": 0
+        },
         "children": [
           {
             "type": "image",
             "name": "TypeIcon",
             "id": "typeIcon",
-            "width": 38, "height": 38,
+            "width": 38,
+            "height": 38,
             "skinSlot": "unitinfo.type.icon",
             "_doc": "兵種符號圓形icon，border-color由TS根據兵種設定"
           },
@@ -33,17 +55,37 @@
             "name": "TitleGroup",
             "flex": 1,
             "height": 38,
-            "layout": { "type": "vertical", "spacing": 2 },
+            "layout": {
+              "type": "vertical",
+              "spacing": 2
+            },
             "children": [
-              { "type": "label", "name": "UnitName", "id": "unitName", "width": "100%", "height": 20, "styleSlot": "unitinfo.label.name", "bind": "dynamic" },
-              { "type": "label", "name": "UnitSub",  "id": "unitSub",  "width": "100%", "height": 14, "styleSlot": "unitinfo.label.sub", "bind": "dynamic" }
+              {
+                "type": "label",
+                "name": "UnitName",
+                "id": "unitName",
+                "width": "100%",
+                "height": 20,
+                "styleSlot": "unitinfo.label.name",
+                "bind": "unit.name"
+              },
+              {
+                "type": "label",
+                "name": "UnitSub",
+                "id": "unitSub",
+                "width": "100%",
+                "height": 14,
+                "styleSlot": "unitinfo.label.sub",
+                "bind": "unit.unitSub"
+              }
             ]
           },
           {
             "type": "button",
             "name": "BtnClose",
             "id": "btnClose",
-            "width": 24, "height": 24,
+            "width": 24,
+            "height": 24,
             "skinSlot": "unitinfo.btn.close",
             "_doc": "點擊關閉面板"
           }
@@ -61,21 +103,82 @@
             "name": "ContentRoot",
             "id": "contentRoot",
             "width": "100%",
-            "layout": { "type": "vertical", "spacing": 10, "paddingLeft": 12, "paddingRight": 12, "paddingTop": 10, "paddingBottom": 16 },
+            "layout": {
+              "type": "vertical",
+              "spacing": 10,
+              "paddingLeft": 12,
+              "paddingRight": 12,
+              "paddingTop": 10,
+              "paddingBottom": 16
+            },
             "children": [
               {
                 "type": "panel",
                 "name": "StatsSection",
                 "width": "100%",
                 "skinSlot": "unitinfo.section.bg",
-                "layout": { "type": "vertical", "spacing": 4, "paddingLeft": 8, "paddingRight": 8, "paddingTop": 8, "paddingBottom": 8 },
+                "layout": {
+                  "type": "vertical",
+                  "spacing": 4,
+                  "paddingLeft": 8,
+                  "paddingRight": 8,
+                  "paddingTop": 8,
+                  "paddingBottom": 8
+                },
                 "children": [
-                  { "type": "label", "name": "SectionTitle1", "width": "100%", "height": 14, "text": "基礎數值", "styleSlot": "unitinfo.label.section" },
-                  { "type": "label", "name": "AtkRow",   "id": "atkRow",   "width": "100%", "height": 16, "styleSlot": "unitinfo.label.stat", "bind": "dynamic" },
-                  { "type": "label", "name": "DefRow",   "id": "defRow",   "width": "100%", "height": 16, "styleSlot": "unitinfo.label.stat", "bind": "dynamic" },
-                  { "type": "label", "name": "HpRow",    "id": "hpRow",    "width": "100%", "height": 16, "styleSlot": "unitinfo.label.stat", "bind": "dynamic" },
-                  { "type": "label", "name": "SpdRow",   "id": "spdRow",   "width": "100%", "height": 16, "styleSlot": "unitinfo.label.stat", "bind": "dynamic" },
-                  { "type": "label", "name": "CostRow",  "id": "costRow",  "width": "100%", "height": 16, "styleSlot": "unitinfo.label.stat", "bind": "dynamic" }
+                  {
+                    "type": "label",
+                    "name": "SectionTitle1",
+                    "width": "100%",
+                    "height": 14,
+                    "text": "基礎數值",
+                    "styleSlot": "unitinfo.label.section"
+                  },
+                  {
+                    "type": "label",
+                    "name": "AtkRow",
+                    "id": "atkRow",
+                    "width": "100%",
+                    "height": 16,
+                    "styleSlot": "unitinfo.label.stat",
+                    "bind": "unit.atk"
+                  },
+                  {
+                    "type": "label",
+                    "name": "DefRow",
+                    "id": "defRow",
+                    "width": "100%",
+                    "height": 16,
+                    "styleSlot": "unitinfo.label.stat",
+                    "bind": "unit.def"
+                  },
+                  {
+                    "type": "label",
+                    "name": "HpRow",
+                    "id": "hpRow",
+                    "width": "100%",
+                    "height": 16,
+                    "styleSlot": "unitinfo.label.stat",
+                    "bind": "unit.hp"
+                  },
+                  {
+                    "type": "label",
+                    "name": "SpdRow",
+                    "id": "spdRow",
+                    "width": "100%",
+                    "height": 16,
+                    "styleSlot": "unitinfo.label.stat",
+                    "bind": "unit.spd"
+                  },
+                  {
+                    "type": "label",
+                    "name": "CostRow",
+                    "id": "costRow",
+                    "width": "100%",
+                    "height": 16,
+                    "styleSlot": "unitinfo.label.stat",
+                    "bind": "unit.cost"
+                  }
                 ]
               },
               {
@@ -83,10 +186,34 @@
                 "name": "TraitSection",
                 "width": "100%",
                 "skinSlot": "unitinfo.section.bg",
-                "layout": { "type": "vertical", "spacing": 6, "paddingLeft": 8, "paddingRight": 8, "paddingTop": 8, "paddingBottom": 8 },
+                "layout": {
+                  "type": "vertical",
+                  "spacing": 6,
+                  "paddingLeft": 8,
+                  "paddingRight": 8,
+                  "paddingTop": 8,
+                  "paddingBottom": 8
+                },
                 "children": [
-                  { "type": "label", "name": "SectionTitle2", "width": "100%", "height": 14, "text": "兵種特性", "styleSlot": "unitinfo.label.section" },
-                  { "type": "container", "name": "TraitTags", "id": "traitTags", "width": "100%", "layout": { "type": "flow", "spacing": 4 }, "_doc": "TS動態填入特性標籤" }
+                  {
+                    "type": "label",
+                    "name": "SectionTitle2",
+                    "width": "100%",
+                    "height": 14,
+                    "text": "兵種特性",
+                    "styleSlot": "unitinfo.label.section"
+                  },
+                  {
+                    "type": "container",
+                    "name": "TraitTags",
+                    "id": "traitTags",
+                    "width": "100%",
+                    "layout": {
+                      "type": "flow",
+                      "spacing": 4
+                    },
+                    "_doc": "TS動態填入特性標籤"
+                  }
                 ]
               },
               {
@@ -94,10 +221,34 @@
                 "name": "AbilitySection",
                 "width": "100%",
                 "skinSlot": "unitinfo.section.bg",
-                "layout": { "type": "vertical", "spacing": 6, "paddingLeft": 8, "paddingRight": 8, "paddingTop": 8, "paddingBottom": 8 },
+                "layout": {
+                  "type": "vertical",
+                  "spacing": 6,
+                  "paddingLeft": 8,
+                  "paddingRight": 8,
+                  "paddingTop": 8,
+                  "paddingBottom": 8
+                },
                 "children": [
-                  { "type": "label", "name": "SectionTitle3", "width": "100%", "height": 14, "text": "特殊能力", "styleSlot": "unitinfo.label.section" },
-                  { "type": "container", "name": "AbilityList", "id": "abilityList", "width": "100%", "layout": { "type": "vertical", "spacing": 4 }, "_doc": "TS動態填入能力項目" }
+                  {
+                    "type": "label",
+                    "name": "SectionTitle3",
+                    "width": "100%",
+                    "height": 14,
+                    "text": "特殊能力",
+                    "styleSlot": "unitinfo.label.section"
+                  },
+                  {
+                    "type": "container",
+                    "name": "AbilityList",
+                    "id": "abilityList",
+                    "width": "100%",
+                    "layout": {
+                      "type": "vertical",
+                      "spacing": 4
+                    },
+                    "_doc": "TS動態填入能力項目"
+                  }
                 ]
               },
               {
@@ -105,10 +256,32 @@
                 "name": "DescSection",
                 "width": "100%",
                 "skinSlot": "unitinfo.section.bg",
-                "layout": { "type": "vertical", "spacing": 4, "paddingLeft": 8, "paddingRight": 8, "paddingTop": 8, "paddingBottom": 8 },
+                "layout": {
+                  "type": "vertical",
+                  "spacing": 4,
+                  "paddingLeft": 8,
+                  "paddingRight": 8,
+                  "paddingTop": 8,
+                  "paddingBottom": 8
+                },
                 "children": [
-                  { "type": "label", "name": "SectionTitle4", "width": "100%", "height": 14, "text": "兵種描述", "styleSlot": "unitinfo.label.section" },
-                  { "type": "label", "name": "DescText", "id": "descText", "width": "100%", "height": 80, "styleSlot": "unitinfo.label.desc", "bind": "dynamic" }
+                  {
+                    "type": "label",
+                    "name": "SectionTitle4",
+                    "width": "100%",
+                    "height": 14,
+                    "text": "兵種描述",
+                    "styleSlot": "unitinfo.label.section"
+                  },
+                  {
+                    "type": "label",
+                    "name": "DescText",
+                    "id": "descText",
+                    "width": "100%",
+                    "height": 80,
+                    "styleSlot": "unitinfo.label.desc",
+                    "bind": "unit.desc"
+                  }
                 ]
               }
             ]
