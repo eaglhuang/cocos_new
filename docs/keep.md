@@ -176,6 +176,49 @@ Unity 對照:
 - `skin` 類似 Theme / Sprite mapping
 - `screen` 類似 route / 開啟設定
 
+### 7.2 Design Token 使用規則（2026-04-05）
+
+**核心原則：skin / fragment JSON 中的所有顏色欄位，一律引用 `ui-design-tokens.json` 中的 token key，禁止直接寫 hex 硬編碼。**
+
+#### ✅ 正確寫法
+
+```json
+{ "kind": "color-rect",  "color": "surfaceParchmentFill", "alpha": 230 }
+{ "kind": "label-style", "color": "textOnParchment" }
+{ "kind": "color-rect",  "color": "dividerOnParchment" }
+```
+
+#### ❌ 禁止寫法
+
+```json
+{ "kind": "color-rect",  "color": "#F0E8D8E6" }
+{ "kind": "label-style", "color": "#2D2926" }
+{ "kind": "color-rect",  "color": "#8C7A66" }
+```
+
+#### 完整解釋
+
+- `UISkinResolver.resolveColor()` 是唯一的顏色解析出口：收到 token key → 查 `tokens.colors[key]` → 取 hex；若查不到則 fallback `Color.WHITE`。
+- 直接寫 hex 雖然短期能用，但繞過了 token 系統，主題切換或 token 更新時無法統一同步。
+- 未在 `ui-design-tokens.json` 中存在的顏色語意，**必須先補 token**，再在 skin 裡引用；不得把新顏色直接寫入 skin 或 fragment。
+
+#### 透明度表示方式
+
+- `color-rect`：透明度用 `"alpha": 0–255`（整數），不要把 alpha 寫進 8位 hex。
+- `sprite-frame`：透明度用 `"opacity": 0.0–1.0`（浮點）。
+- label 顏色固定不透明，不需要 alpha 欄位。
+
+#### 現有 Token 對照速查（羊皮紙系列）
+
+| 語意 | Token key | hex |
+|------|-----------|-----|
+| 羊皮紙填色背景 | `surfaceParchmentFill` | `#F0E8D8` |
+| 羊皮紙底色 | `surfaceParchment` | `#E8DFD0` |
+| 主要文字（深褐） | `textOnParchment` | `#2D2926` |
+| 次要文字（中褐） | `textOnParchmentMuted` | `#6B5E4E` |
+| 強調文字（金） | `secondary` | `#D4AF37` |
+| 分隔線 | `dividerOnParchment` | `#8C7A66` |
+
 ---
 
 ## 8. UI Template 新架構

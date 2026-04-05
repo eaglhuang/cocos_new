@@ -1,11 +1,12 @@
 {
   "id": "common-parchment-default",
-  "version": 2,
+  "version": 3,
   "description": "羊皮紙淺色底共用 skin fragment：frame/bleed/fill/shadow/noise + 深褐文字配色",
   "slots": {
     "parchment.bg.fill": {
       "kind": "color-rect",
-      "color": "#F0E8D8E6"
+      "color": "surfaceParchmentFill",
+      "alpha": 230
     },
     "parchment.bg.frame": {
       "kind": "sprite-frame",
@@ -40,24 +41,24 @@
     "parchment.text.primary": {
       "kind": "label-style",
       "fontSize": 18,
-      "color": "#2D2926",
+      "color": "textOnParchment",
       "outlineWidth": 0
     },
     "parchment.text.secondary": {
       "kind": "label-style",
       "fontSize": 14,
-      "color": "#6B5E4E",
+      "color": "textOnParchmentMuted",
       "outlineWidth": 0
     },
     "parchment.text.accent": {
       "kind": "label-style",
       "fontSize": 14,
-      "color": "#D4AF37",
+      "color": "secondary",
       "outlineWidth": 0
     },
     "parchment.divider": {
       "kind": "color-rect",
-      "color": "#8C7A66"
+      "color": "dividerOnParchment"
     }
   }
 }

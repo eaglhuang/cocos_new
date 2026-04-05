@@ -26,9 +26,10 @@
     "textSecondary":     "#D0C5AF",
     "textMuted":         "#99907C",
     "textAccent":        "#FFE088",
-    "textInk":           "#2D2926",
-    "textOnParchment":   "#2D2926",
-    "textPositive":      "#86E1A5",
+    "textInk":              "#2D2926",
+    "textOnParchment":      "#2D2926",
+    "textOnParchmentMuted": "#6B5E4E",
+    "textPositive":         "#86E1A5",
     "textNegative":      "#FF6B6B",
 
     "outline":           "#4D4635",
