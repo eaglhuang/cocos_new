@@ -6,18 +6,18 @@ manifest: ../ui-quality-todo.json
 
 # Tasks Index / UI Quality
 
-> `docs/ui-quality-todo.json` is the source of truth.
-> Keep task frontmatter, manifest, and this index in sync.
+> `docs/ui-quality-tasks/*.json` 是可編輯 shard 來源。
+> `docs/ui-quality-todo.json` 與本檔由 `node tools_node/build-ui-task-manifest.js` 生成。
 > New UI tasks must also follow `template family -> content contract -> skin fragment -> smoke route -> docs backwrite`.
 > See [UI-task-card-template.md](./UI-task-card-template.md).
 
 ## Summary
 
-- Total: 87
+- Total: 100
 - completed: 1
-- done: 54
-- in-progress: 19
-- open: 13
+- done: 67
+- in-progress: 22
+- open: 10
 
 ## Tasks
 
@@ -53,7 +53,7 @@ manifest: ../ui-quality-todo.json
 | UI-1-0012 | Agent2 | done | P1 | A |  | [UI-1-0012](./tasks/UI-1-0012.md) |
 | UI-1-0013 | Agent2 | done | P1 | A |  | [UI-1-0013](./tasks/UI-1-0013.md) |
 | UI-1-0014 | Agent2 | done |  |  | visual-qa | [UI-1-0014](./tasks/UI-1-0014.md) |
-| UI-1-0015 | Agent2 | in-progress |  |  | visual-qa | [UI-1-0015](./tasks/UI-1-0015.md) |
+| UI-1-0015 | Agent2 | done |  |  | visual-qa | [UI-1-0015](./tasks/UI-1-0015.md) |
 | UI-1-0016 | Agent2 | in-progress |  |  | visual-qa | [UI-1-0016](./tasks/UI-1-0016.md) |
 | UI-2-0017 | Agent1 | done | P1 | B |  | [UI-2-0017](./tasks/UI-2-0017.md) |
 | UI-2-0018 | Agent1 | done | P1 | C | preview-harness | [UI-2-0018](./tasks/UI-2-0018.md) |
@@ -77,12 +77,12 @@ manifest: ../ui-quality-todo.json
 | UI-2-0038 | Agent2 | in-progress | P1 | D | asset-direction | [UI-2-0038](./tasks/UI-2-0038.md) |
 | UI-2-0039 | Agent2 | in-progress | P1 | D | asset-direction | [UI-2-0039](./tasks/UI-2-0039.md) |
 | UI-2-0040 | Agent2 | in-progress | P1 | D | asset-direction | [UI-2-0040](./tasks/UI-2-0040.md) |
-| UI-2-0041 | Agent2 | open | P2 | D | asset-direction | [UI-2-0041](./tasks/UI-2-0041.md) |
+| UI-2-0041 | Agent2 | done | P2 | D | asset-direction | [UI-2-0041](./tasks/UI-2-0041.md) |
 | UI-2-0042 | Agent2 | open | P2 | D | asset-direction | [UI-2-0042](./tasks/UI-2-0042.md) |
-| UI-2-0036 | Agent1 | open | P1 | D | asset-generation | [UI-2-0036](./tasks/UI-2-0036.md) |
-| UI-2-0033 | Agent1 | open | P1 | D | runtime-support | [UI-2-0033](./tasks/UI-2-0033.md) |
+| UI-2-0036 | Agent1 | in-progress | P1 | D | asset-generation | [UI-2-0036](./tasks/UI-2-0036.md) |
+| UI-2-0033 | Agent1 | done | P1 | D | runtime-support | [UI-2-0033](./tasks/UI-2-0033.md) |
 | UI-2-0034 | Agent1 | open | P1 | D | runtime-support | [UI-2-0034](./tasks/UI-2-0034.md) |
-| UI-2-0043 | Agent1 | open | P1 | D | asset-generation | [UI-2-0043](./tasks/UI-2-0043.md) |
+| UI-2-0043 | Agent1 | in-progress | P1 | D | asset-generation | [UI-2-0043](./tasks/UI-2-0043.md) |
 | UI-2-0044 | Agent1 | in-progress | P1 | D | asset-generation | [UI-2-0044](./tasks/UI-2-0044.md) |
 | UI-2-0045 | Agent1 | in-progress | P1 | D | asset-generation | [UI-2-0045](./tasks/UI-2-0045.md) |
 | UI-2-0047 | Agent2 | done | P1 | D | asset-direction | [UI-2-0047](./tasks/UI-2-0047.md) |
@@ -108,5 +108,18 @@ manifest: ../ui-quality-todo.json
 | UI-2-0075 | Agent1 | done | P1 | E | refactor | [UI-2-0075](./tasks/UI-2-0075.md) |
 | UI-2-0076 | Agent1 | done | P1 | E | refactor | [UI-2-0076](./tasks/UI-2-0076.md) |
 | UI-2-0077 | Agent1 | done | P1 | E | refactor | [UI-2-0077](./tasks/UI-2-0077.md) |
-| UI-2-0078 | Agent1 | open | P2 | E | runtime-support | [UI-2-0078](./tasks/UI-2-0078.md) |
+| UI-2-0078 | Agent1 | done | P2 | E | runtime-support | [UI-2-0078](./tasks/UI-2-0078.md) |
 | UI-2-0079 | Agent1 | done | P3 | E | chore | [UI-2-0079](./tasks/UI-2-0079.md) |
+| UI-2-0080 | Agent1 | done | P0 | F | architecture | [UI-2-0080](./tasks/UI-2-0080.md) |
+| UI-2-0081 | Agent1 | done | P0 | F | tooling | [UI-2-0081](./tasks/UI-2-0081.md) |
+| UI-2-0082 | Agent1 | done | P1 | F | tooling | [UI-2-0082](./tasks/UI-2-0082.md) |
+| UI-2-0083 | Agent1 | done | P1 | F | qa-tooling | [UI-2-0083](./tasks/UI-2-0083.md) |
+| UI-2-0084 | Agent1 | done | P0 | G | architecture | [UI-2-0084](./tasks/UI-2-0084.md) |
+| UI-2-0085 | Agent1 | done | P0 | G | runtime-support | [UI-2-0085](./tasks/UI-2-0085.md) |
+| UI-2-0086 | Agent1 | done | P1 | G | qa-tooling | [UI-2-0086](./tasks/UI-2-0086.md) |
+| UI-2-0087 | Agent2 | in-progress | P1 | G | qa-pipeline | [UI-2-0087](./tasks/UI-2-0087.md) |
+| UI-2-0088 | Agent1 | done | P1 | G | pipeline-spec | [UI-2-0088](./tasks/UI-2-0088.md) |
+| UI-2-0089 | Agent2 | in-progress | P1 | G | art-contract | [UI-2-0089](./tasks/UI-2-0089.md) |
+| UI-2-0090 | Agent1 | done | P1 | G | tooling | [UI-2-0090](./tasks/UI-2-0090.md) |
+| UI-2-0091 | Agent2 | open | P1 | G | asset-direction | [UI-2-0091](./tasks/UI-2-0091.md) |
+| UI-2-0092 | Agent1 | open | P1 | G | asset-generation | [UI-2-0092](./tasks/UI-2-0092.md) |

@@ -1,0 +1,53 @@
+{
+  "kind": "ui-quality-task-shard",
+  "version": 1,
+  "tasks": [
+    {
+      "id": "UI-2-0092",
+      "priority": "P1",
+      "phase": "G",
+      "owner": "Agent1",
+      "status": "open",
+      "created": "2026-04-05",
+      "created_by_agent": "Agent2",
+      "type": "asset-generation",
+      "title": "Jade / Crest / Rarity 第一批正式切圖",
+      "description": "由 Agent1 產出 GeneralDetailBloodlineV3 第一批可重用正式 family 資產，範圍限於 jade-parchment-panel-final、crest-medallion-final、jade-rarity-badge-final，不直接擴張到整頁所有素材。Agent2 保持 recipe、asset direction、compare board 與 runtime 驗證責任。",
+      "related": [
+        "UI-2-0054",
+        "UI-2-0087",
+        "UI-2-0089",
+        "UI-2-0091"
+      ],
+      "depends": [
+        "UI-2-0089",
+        "UI-2-0091"
+      ],
+      "template_family": "detail-split",
+      "content_contract": [
+        "rarityTier",
+        "crestState",
+        "crestFaceAsset"
+      ],
+      "skin_fragments": [
+        "general_detail/jade-parchment-panel-final",
+        "general_detail/crest-medallion-final",
+        "general_detail/jade-rarity-badge-final"
+      ],
+      "smoke_route": "node tools_node/capture-ui-screens.js --target GeneralDetailOverview --outDir artifacts/ui-qa/UI-2-0092",
+      "docs_backwritten": [
+        "docs/keep.md",
+        "docs/UI 規格書.md",
+        "docs/cross-reference-index.md"
+      ],
+      "acceptance": [
+        "第一批正式 family 只包含 jade panel / crest medallion / rarity badge 三項",
+        "正式輸出不可再直接引用 proof/ 目錄素材",
+        "jade header 與 crest medallion 需為同一套 family 語言",
+        "rarity badge 必須與 jade/parchment family 協調，不可回到獨立紫色風格",
+        "capture-ui-screens.js --target GeneralDetailOverview 可產出 compare 用截圖"
+      ],
+      "notes": "2026-04-05 | 狀態: open | 驗證: pending | 變更: 開立 Agent1 正式切圖子卡，第一批只做 jade panel / crest medallion / rarity badge 三個高重用 family | 阻塞: 等 UI-2-0089 / UI-2-0091 收斂 art recipe 與 asset direction"
+    }
+  ]
+}
