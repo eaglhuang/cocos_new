@@ -29,7 +29,7 @@
     },
     "parchment.bg.accent": {
       "kind": "color-rect",
-      "color": "#00000000"
+      "color": "transparent"
     },
     "detail.bg.fullscreen": {
       "kind": "sprite-frame",

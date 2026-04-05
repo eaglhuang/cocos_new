@@ -20,7 +20,7 @@
     },
     "gdv3.portrait.image": {
       "kind": "color-rect",
-      "color": "#00000000"
+      "color": "transparent"
     },
     "gdv3.mode.ribbon": {
       "kind": "sprite-frame",
@@ -115,14 +115,14 @@
     },
     "gdv3.progress.fill": {
       "kind": "color-rect",
-      "color": "#87C8B3"
+      "color": "gdv3ProgressFill"
     },
     "gdv3.label.name": {
       "kind": "label-style",
       "fontSize": 42,
       "lineHeight": 48,
-      "color": "#E8D8B2",
-      "outlineColor": "#000000CC",
+      "color": "gdv3LabelName",
+      "outlineColor": "outlineHeavy",
       "outlineWidth": 2,
       "horizontalAlign": "LEFT"
     },
@@ -130,8 +130,8 @@
       "kind": "label-style",
       "fontSize": 28,
       "lineHeight": 34,
-      "color": "#D7C7A2",
-      "outlineColor": "#000000AA",
+      "color": "gdv3LabelTitle",
+      "outlineColor": "outlineStandard",
       "outlineWidth": 1,
       "horizontalAlign": "LEFT"
     },
@@ -139,8 +139,8 @@
       "kind": "label-style",
       "fontSize": 20,
       "lineHeight": 26,
-      "color": "#D3C39D",
-      "outlineColor": "#00000099",
+      "color": "gdv3LabelMeta",
+      "outlineColor": "outlineLight",
       "outlineWidth": 1,
       "horizontalAlign": "LEFT"
     },
@@ -148,8 +148,8 @@
       "kind": "label-style",
       "fontSize": 24,
       "lineHeight": 30,
-      "color": "#E6D7B4",
-      "outlineColor": "#000000AA",
+      "color": "gdv3LabelSection",
+      "outlineColor": "outlineStandard",
       "outlineWidth": 1,
       "horizontalAlign": "LEFT"
     },
@@ -157,8 +157,8 @@
       "kind": "label-style",
       "fontSize": 24,
       "lineHeight": 30,
-      "color": "#F4EBD4",
-      "outlineColor": "#000000AA",
+      "color": "gdv3LabelValue",
+      "outlineColor": "outlineStandard",
       "outlineWidth": 1,
       "horizontalAlign": "LEFT"
     },
@@ -166,8 +166,8 @@
       "kind": "label-style",
       "fontSize": 18,
       "lineHeight": 24,
-      "color": "#E6D9C0",
-      "outlineColor": "#00000099",
+      "color": "gdv3LabelNote",
+      "outlineColor": "outlineLight",
       "outlineWidth": 1,
       "horizontalAlign": "LEFT"
     },
@@ -175,8 +175,8 @@
       "kind": "label-style",
       "fontSize": 20,
       "lineHeight": 26,
-      "color": "#EDE2C8",
-      "outlineColor": "#00000099",
+      "color": "gdv3LabelCardBody",
+      "outlineColor": "outlineLight",
       "outlineWidth": 1,
       "horizontalAlign": "LEFT"
     },
@@ -184,8 +184,8 @@
       "kind": "label-style",
       "fontSize": 17,
       "lineHeight": 22,
-      "color": "#F0E6D1",
-      "outlineColor": "#00000099",
+      "color": "gdv3LabelStory",
+      "outlineColor": "outlineLight",
       "outlineWidth": 1,
       "horizontalAlign": "LEFT"
     },
@@ -193,8 +193,8 @@
       "kind": "label-style",
       "fontSize": 16,
       "lineHeight": 20,
-      "color": "#F4E5C1",
-      "outlineColor": "#00000099",
+      "color": "gdv3LabelMode",
+      "outlineColor": "outlineLight",
       "outlineWidth": 1,
       "horizontalAlign": "LEFT"
     },
@@ -202,8 +202,8 @@
       "kind": "label-style",
       "fontSize": 17,
       "lineHeight": 20,
-      "color": "#F4EBD4",
-      "outlineColor": "#00000099",
+      "color": "gdv3LabelValue",
+      "outlineColor": "outlineLight",
       "outlineWidth": 1,
       "horizontalAlign": "CENTER"
     }

@@ -18,11 +18,13 @@
     },
     "elite.troop.codex.rail.shell.fill": {
       "kind": "color-rect",
-      "color": "#161310E6"
+      "color": "etcrPanelBg",
+      "alpha": 230
     },
     "elite.troop.codex.rail.shell.bleed": {
       "kind": "color-rect",
-      "color": "#B8904A33"
+      "color": "etcrAccent",
+      "alpha": 51
     },
     "elite.troop.codex.rail.shell.frame": {
       "kind": "sprite-frame",
@@ -38,7 +40,8 @@
     },
     "elite.troop.codex.rail.rail.panel": {
       "kind": "color-rect",
-      "color": "#211913E0"
+      "color": "etcrCardBg",
+      "alpha": 224
     },
     "elite.troop.codex.rail.rail.item.idle": {
       "kind": "button-skin",
@@ -68,7 +71,8 @@
     },
     "elite.troop.codex.rail.hero.card": {
       "kind": "color-rect",
-      "color": "#201914D9"
+      "color": "etcrCardBg2",
+      "alpha": 217
     },
     "elite.troop.codex.rail.hero.portrait": {
       "kind": "sprite-frame",
@@ -84,15 +88,18 @@
     },
     "elite.troop.codex.rail.detail.card": {
       "kind": "color-rect",
-      "color": "#241C16E5"
+      "color": "etcrSection",
+      "alpha": 229
     },
     "elite.troop.codex.rail.action.bar": {
       "kind": "color-rect",
-      "color": "#201914D9"
+      "color": "etcrCardBg2",
+      "alpha": 217
     },
     "elite.troop.codex.rail.field.bg": {
       "kind": "color-rect",
-      "color": "#100D0ACC"
+      "color": "etcrDeepBg",
+      "alpha": 204
     },
     "elite.troop.codex.rail.button.primary": {
       "kind": "button-skin",
@@ -131,7 +138,7 @@
       "kind": "label-style",
       "fontSize": 34,
       "lineHeight": 38,
-      "color": "#F3E4C1",
+      "color": "etcrLabelPrimary",
       "isBold": true,
       "horizontalAlign": "LEFT",
       "verticalAlign": "CENTER",
@@ -141,7 +148,7 @@
       "kind": "label-style",
       "fontSize": 24,
       "lineHeight": 30,
-      "color": "#EAD3A1",
+      "color": "etcrLabelSecondary",
       "isBold": true,
       "horizontalAlign": "LEFT",
       "verticalAlign": "CENTER",
@@ -151,7 +158,7 @@
       "kind": "label-style",
       "fontSize": 20,
       "lineHeight": 24,
-      "color": "#F8EFD7",
+      "color": "etcrLabelLight",
       "isBold": true,
       "horizontalAlign": "CENTER",
       "verticalAlign": "CENTER",
@@ -161,7 +168,7 @@
       "kind": "label-style",
       "fontSize": 24,
       "lineHeight": 28,
-      "color": "#2B1A0E",
+      "color": "etcrLabelDark",
       "isBold": true,
       "horizontalAlign": "CENTER",
       "verticalAlign": "CENTER",
@@ -171,7 +178,7 @@
       "kind": "label-style",
       "fontSize": 22,
       "lineHeight": 34,
-      "color": "#E6DAC7",
+      "color": "etcrLabelMuted",
       "horizontalAlign": "LEFT",
       "verticalAlign": "TOP",
       "overflow": "RESIZE_HEIGHT"

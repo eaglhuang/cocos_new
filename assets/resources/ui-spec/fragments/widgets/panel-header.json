@@ -55,12 +55,12 @@
   "defaultSkinSlots": {
     "widget.header.bg": {
       "kind": "color-rect",
-      "color": "#2A2A4A"
+      "color": "surfaceNavyHigh"
     },
     "widget.header.title": {
       "kind": "label-style",
       "fontSize": 28,
-      "color": "#FFFFFF",
+      "color": "colorWhite",
       "isBold": true,
       "horizontalAlign": "LEFT",
       "verticalAlign": "CENTER"

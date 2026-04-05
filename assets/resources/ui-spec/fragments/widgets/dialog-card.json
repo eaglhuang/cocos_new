@@ -18,7 +18,8 @@
   "defaultSkinSlots": {
     "widget.dialog.card.bg": {
       "kind": "color-rect",
-      "color": "#1A1A2EEE"
+      "color": "surfaceNavy",
+      "alpha": 238
     }
   }
 }

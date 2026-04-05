@@ -41,20 +41,20 @@
   "defaultSkinSlots": {
     "widget.hpbar.track": {
       "kind": "color-rect",
-      "color": "#333333"
+      "color": "surfaceGray"
     },
     "widget.hpbar.fill.player": {
       "kind": "color-rect",
-      "color": "#4488CC"
+      "color": "hpBarAlly"
     },
     "widget.hpbar.fill.enemy": {
       "kind": "color-rect",
-      "color": "#CC4444"
+      "color": "hpBarEnemy"
     },
     "widget.hpbar.label": {
       "kind": "label-style",
       "fontSize": 16,
-      "color": "#FFFFFF",
+      "color": "colorWhite",
       "horizontalAlign": "CENTER",
       "verticalAlign": "CENTER",
       "isBold": true

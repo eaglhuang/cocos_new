@@ -18,7 +18,7 @@
       "kind": "label-style",
       "font": "fonts/newsreader/font",
       "fontSize": 34,
-      "color": "#FFE088",
+      "color": "secondaryLight",
       "horizontalAlign": "CENTER",
       "overflow": "SHRINK"
     },
@@ -36,7 +36,7 @@
       "normal_text_color":   "#99907C",
       "selected_text_color": "#FFE088",
       "fontSize": 22,
-      "border_bottom_selected": { "color": "#D4AF37", "thickness": 3 }
+      "border_bottom_selected": { "color": "secondary", "thickness": 3 }
     },
 
     "filterbar.btn.filter": {
@@ -48,7 +48,7 @@
     "filterbar.label.sort": {
       "kind": "label-style",
       "fontSize": 20,
-      "color": "#D0C5AF"
+      "color": "textSecondary"
     },
 
     "card.bg.rarity": {
@@ -83,19 +83,19 @@
     "card.label.name": {
       "kind": "label-style",
       "fontSize": 22,
-      "color": "#E5E2E1",
+      "color": "textPrimary",
       "horizontalAlign": "CENTER",
       "overflow": "SHRINK"
     },
     "card.overlay.lock": {
       "kind": "color-rect",
-      "color": "#000000",
+      "color": "colorBlack",
       "opacity": 0.5
     },
     "card.label.lock": {
       "kind": "label-style",
       "fontSize": 20,
-      "color": "#99907C",
+      "color": "textMuted",
       "horizontalAlign": "CENTER"
     },
 
@@ -120,7 +120,7 @@
     "bottombar.label.gacha": {
       "kind": "label-style",
       "fontSize": 24,
-      "color": "#2D2926"
+      "color": "textOnParchment"
     },
     "bottombar.btn.team": {
       "kind": "sprite-button",
@@ -153,21 +153,21 @@
 
     "detail.event.row.unlocked": {
       "kind": "color-rect",
-      "color": "#20201F"
+      "color": "surfaceContainer"
     },
     "detail.event.row.locked": {
       "kind": "color-rect",
-      "color": "#151513"
+      "color": "backgroundOlive"
     },
     "detail.event.label.locked": {
       "kind": "label-style",
       "fontSize": 18,
-      "color": "#4D4635"
+      "color": "outline",
     },
     "detail.event.label.skill": {
       "kind": "label-style",
       "fontSize": 20,
-      "color": "#E5E2E1",
+      "color": "textPrimary",
       "overflow": "SHRINK"
     },
     "detail.event.icon.lock": {
@@ -177,7 +177,7 @@
     "detail.event.label.starReq": {
       "kind": "label-style",
       "fontSize": 16,
-      "color": "#D4AF37"
+      "color": "secondary"
     },
 
     "breakthrough.btn.confirm": {
@@ -205,7 +205,7 @@
     "borrow.label.owner": {
       "kind": "label-style",
       "fontSize": 18,
-      "color": "#D0C5AF"
+      "color": "textSecondary"
     },
 
     "synergy.badge": {
@@ -215,7 +215,7 @@
     "synergy.label": {
       "kind": "label-style",
       "fontSize": 18,
-      "color": "#86E1A5"
+      "color": "tertiaryLight"
     }
   },
 

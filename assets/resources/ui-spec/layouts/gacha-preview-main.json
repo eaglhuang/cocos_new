@@ -11,7 +11,7 @@
         "type": "panel",
         "name": "Backdrop",
         "widget": { "top": 0, "left": 0, "right": 0, "bottom": 0 },
-        "color": "#0F0F0F"
+        "color": "background"
       },
       {
         "type": "panel",
@@ -20,7 +20,7 @@
         "y": 80,
         "width": 1240,
         "height": 620,
-        "color": "#241A0D",
+        "color": "surfaceSepiaWarm",
         "opacity": 0.92
       },
       {
@@ -88,7 +88,7 @@
             "type": "panel",
             "name": "BannerPlate",
             "widget": { "top": 0, "left": 0, "right": 0, "bottom": 0 },
-            "color": "#2A2010",
+            "color": "surfaceOliveDark",
             "opacity": 0.95
           },
           {

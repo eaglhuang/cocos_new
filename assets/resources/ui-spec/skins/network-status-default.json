@@ -6,7 +6,7 @@
   "slots": {
     "netstat.icon.bg": {
       "kind": "color",
-      "color": "#000000",
+      "color": "colorBlack",
       "alpha": 0
     },
     "netstat.icon.shadow": {

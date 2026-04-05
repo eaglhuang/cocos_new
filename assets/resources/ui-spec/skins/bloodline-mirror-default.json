@@ -11,20 +11,20 @@
       "border": [96, 360, 96, 420],
       "allowAutoAtlas": false
     },
-    "mirror.hero.public": { "kind": "color-rect", "color": "#E4E6E2A0" },
-    "mirror.hero.spirit": { "kind": "color-rect", "color": "#7787E4A8" },
-    "mirror.unowned.veil": { "kind": "color-rect", "color": "#0F171A66" },
-    "mirror.unowned.badge": { "kind": "color-rect", "color": "#D3C29ACC" },
-    "mirror.gate": { "kind": "color-rect", "color": "#DDEEEAE0" },
-    "mirror.sigil.field": { "kind": "color-rect", "color": "#A4D2D088" },
-    "mirror.vessel.legendary": { "kind": "color-rect", "color": "#F5D67CCC" },
-    "mirror.badge.small": { "kind": "color-rect", "color": "#D8D3C0CC" },
-    "mirror.story.rail": { "kind": "color-rect", "color": "#A98A60E0" },
-    "mirror.story.cell.mortal": { "kind": "color-rect", "color": "#D8CFBEF0" },
-    "mirror.story.cell.rise": { "kind": "color-rect", "color": "#D7D9D4F0" },
-    "mirror.story.cell.crisis": { "kind": "color-rect", "color": "#D8C3B0F0" },
-    "mirror.story.cell.awaken": { "kind": "color-rect", "color": "#AFC8D8F0" },
-    "mirror.story.cell.spirit": { "kind": "color-rect", "color": "#B7C3EAF0" },
+    "mirror.hero.public": { "kind": "color-rect", "color": "mirrorHeroPublic", "alpha": 160 },
+    "mirror.hero.spirit": { "kind": "color-rect", "color": "mirrorHeroSpirit", "alpha": 168 },
+    "mirror.unowned.veil": { "kind": "color-rect", "color": "mirrorUnownedBase", "alpha": 102 },
+    "mirror.unowned.badge": { "kind": "color-rect", "color": "mirrorUnownedBadge", "alpha": 204 },
+    "mirror.gate": { "kind": "color-rect", "color": "mirrorGate", "alpha": 224 },
+    "mirror.sigil.field": { "kind": "color-rect", "color": "mirrorSigilField", "alpha": 136 },
+    "mirror.vessel.legendary": { "kind": "color-rect", "color": "mirrorVesselLegendary", "alpha": 204 },
+    "mirror.badge.small": { "kind": "color-rect", "color": "mirrorBadge", "alpha": 204 },
+    "mirror.story.rail": { "kind": "color-rect", "color": "mirrorStoryRail", "alpha": 224 },
+    "mirror.story.cell.mortal": { "kind": "color-rect", "color": "mirrorStoryCellMortal", "alpha": 240 },
+    "mirror.story.cell.rise": { "kind": "color-rect", "color": "mirrorStoryCellRise", "alpha": 240 },
+    "mirror.story.cell.crisis": { "kind": "color-rect", "color": "mirrorStoryCellCrisis", "alpha": 240 },
+    "mirror.story.cell.awaken": { "kind": "color-rect", "color": "mirrorStoryCellAwaken", "alpha": 240 },
+    "mirror.story.cell.spirit": { "kind": "color-rect", "color": "mirrorStoryCellSpirit", "alpha": 240 },
     "mirror.button.primary": {
       "kind": "button-skin",
       "normal": "sprites/ui_families/common/equipment/btn_primary_normal",
@@ -38,28 +38,28 @@
       "kind": "label-style",
       "fontSize": 34,
       "lineHeight": 40,
-      "color": "#E7D9B0",
+      "color": "mirrorLabelHeader",
       "horizontalAlign": "CENTER"
     },
     "mirror.label.name": {
       "kind": "label-style",
       "fontSize": 28,
       "lineHeight": 34,
-      "color": "#EFEAD6",
+      "color": "mirrorLabelName",
       "horizontalAlign": "CENTER"
     },
     "mirror.label.rarity": {
       "kind": "label-style",
       "fontSize": 22,
       "lineHeight": 28,
-      "color": "#EAC97A",
+      "color": "mirrorLabelRarity",
       "horizontalAlign": "CENTER"
     },
     "mirror.label.button": {
       "kind": "label-style",
       "fontSize": 18,
       "lineHeight": 22,
-      "color": "#F7F3E8",
+      "color": "mirrorLabelButton",
       "horizontalAlign": "CENTER",
       "verticalAlign": "CENTER"
     },
@@ -67,21 +67,21 @@
       "kind": "label-style",
       "fontSize": 18,
       "lineHeight": 22,
-      "color": "#E4E1D3",
+      "color": "mirrorLabelPublic",
       "horizontalAlign": "CENTER"
     },
     "mirror.label.marker.spirit": {
       "kind": "label-style",
       "fontSize": 18,
       "lineHeight": 22,
-      "color": "#D7D9FF",
+      "color": "mirrorLabelSpirit",
       "horizontalAlign": "CENTER"
     },
     "mirror.label.unowned": {
       "kind": "label-style",
       "fontSize": 16,
       "lineHeight": 20,
-      "color": "#E5D7B7",
+      "color": "mirrorLabelUnowned",
       "horizontalAlign": "RIGHT"
     }
   }

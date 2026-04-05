@@ -18,7 +18,7 @@
     "widget.text.body": {
       "kind": "label-style",
       "fontSize": 22,
-      "color": "#E0E0E0",
+      "color": "rarityWhite",
       "horizontalAlign": "LEFT",
       "verticalAlign": "TOP",
       "overflow": "RESIZE_HEIGHT",

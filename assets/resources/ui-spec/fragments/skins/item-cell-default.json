@@ -36,15 +36,15 @@
     "item.label.count": {
       "kind": "label-style",
       "fontSize": 18,
-      "color": "#D0C5AF",
-      "outlineColor": "#000000CC",
+      "color": "textSecondary",
+      "outlineColor": "outlineHeavy",
       "outlineWidth": 1,
       "horizontalAlign": "RIGHT",
       "verticalAlign": "BOTTOM"
     },
     "rarity.default.bg": {
       "kind": "color-rect",
-      "color": "#2A2520"
+      "color": "surfaceSepia"
     },
     "rarity.common.border": {
       "kind": "sprite-frame",

@@ -27,12 +27,13 @@
   "defaultSkinSlots": {
     "widget.toast.bg": {
       "kind": "color-rect",
-      "color": "#000000CC"
+      "color": "colorBlack",
+      "alpha": 204
     },
     "widget.toast.text": {
       "kind": "label-style",
       "fontSize": 22,
-      "color": "#FFFFFF",
+      "color": "colorWhite",
       "horizontalAlign": "CENTER",
       "verticalAlign": "CENTER"
     }

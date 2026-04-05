@@ -6,7 +6,7 @@
   "slots": {
     "duel.root.bg": {
       "kind": "color",
-      "color": "#0F0F0F",
+      "color": "background",
       "alpha": 235,
       "spriteType": "sliced",
       "border": [8, 8, 8, 8]
@@ -20,7 +20,7 @@
     },
     "duel.header.bg": {
       "kind": "color",
-      "color": "#1A1A1A",
+      "color": "surface",
       "alpha": 255
     },
     "ui-common-metal.equipment.primary": {
@@ -64,7 +64,7 @@
       "font": "fonts/newsreader/font",
       "fontSize": 20,
       "lineHeight": 26,
-      "color": "#FFE088",
+      "color": "secondaryLight",
       "isBold": true,
       "overflow": "CLAMP",
       "horizontalAlign": "CENTER"
@@ -74,7 +74,7 @@
       "font": "fonts/notosans_tc/font",
       "fontSize": 16,
       "lineHeight": 20,
-      "color": "#E5E2E1",
+      "color": "textPrimary",
       "overflow": "CLAMP"
     },
     "duel.label.btn": {
@@ -82,7 +82,7 @@
       "font": "fonts/notosans_tc/font",
       "fontSize": 18,
       "lineHeight": 22,
-      "color": "#0F0F0F",
+      "color": "background",
       "isBold": true,
       "horizontalAlign": "CENTER"
     },
@@ -91,30 +91,30 @@
       "font": "fonts/notosans_tc/font",
       "fontSize": 14,
       "lineHeight": 18,
-      "color": "#A0A0B4",
+      "color": "textHintBlue",
       "overflow": "CLAMP"
     },
     "widget.overlay.mask": {
       "kind": "color",
-      "color": "#000000",
+      "color": "colorBlack",
       "alpha": 180
     },
     "widget.dialog.card.bg": {
       "kind": "color",
-      "color": "#0F0F0F",
+      "color": "background",
       "alpha": 235,
       "spriteType": "sliced",
       "border": [8, 8, 8, 8]
     },
     "widget.header.bg": {
       "kind": "color",
-      "color": "#1A1A1A",
+      "color": "surface",
       "alpha": 255
     },
     "widget.header.title": {
       "kind": "label-style",
       "fontSize": 20,
-      "color": "#FFE088",
+      "color": "secondaryLight",
       "isBold": true,
       "horizontalAlign": "LEFT",
       "verticalAlign": "CENTER"
@@ -131,7 +131,7 @@
       "kind": "label-style",
       "fontSize": 16,
       "lineHeight": 20,
-      "color": "#E5E2E1",
+      "color": "textPrimary",
       "horizontalAlign": "LEFT",
       "verticalAlign": "TOP"
     },

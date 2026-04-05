@@ -118,17 +118,17 @@
       "trigger": "explicit",
       "description": "機率公告彈窗：兩池機率表、保底說明",
       "nodes": [
-        { "name": "PopupBg",      "widget": "color-rect",  "color": "#1A1A1A", "size": [840, 1200] },
+        { "name": "PopupBg",      "widget": "color-rect",  "color": "surface", "size": [840, 1200] },
         { "name": "TitleLabel",   "widget": "label", "slot": "gacha.label.title", "text": "卡池機率公告" },
         { "name": "HeroTable",    "widget": "rich-text",
           "content": "### 英靈名將池\n| 稀有度 | 基礎機率 | 保底 |\n|--------|---------|------|\n| SSR | 3% | 大保底 200 抽，小保底無 |\n| SR+ | 10% | — |\n| R | 87% | — |" },
-        { "name": "HeroNote",     "widget": "label", "fontSize": 18, "color": "#99907C",
+        { "name": "HeroNote",     "widget": "label", "fontSize": 18, "color": "textMuted",
           "text": "銅錢符可用此池。保底天命值累積至200可至天命商店兌換。" },
         { "name": "SupportTable", "widget": "rich-text",
           "content": "### 策謀紅類池\n| 穀有度 | 基礎機率 | 保底 |\n|--------|---------|------|\n| SSR | 5% | 大保底 200 抗 |\n| SR+ | 25% | — |\n| R | 70% | — |" },
-        { "name": "SupportNote",  "widget": "label", "fontSize": 18, "color": "#99907C",
+        { "name": "SupportNote",  "widget": "label", "fontSize": 18, "color": "textMuted",
           "text": "限靈玉使用。SR 機率高於英靈池，適合培育用教官穩定產出。" },
-        { "name": "PityNote",     "widget": "label", "fontSize": 18, "color": "#86E1A5",
+        { "name": "PityNote",     "widget": "label", "fontSize": 18, "color": "tertiaryLight",
           "text": "兩池保底計數器獨立，切換池子不重置。" },
         { "name": "CloseBtn",     "widget": "button", "slot": "gacha.btn.back", "action": "close-popup" }
       ]
@@ -144,10 +144,10 @@
           "note": "候選為當池 Rate-Up SSR 列表" }
       ],
       "nodes": [
-        { "name": "PopupBg",      "widget": "color-rect", "color": "#1A1A1A", "size": [840, 1300] },
+        { "name": "PopupBg",      "widget": "color-rect", "color": "surface", "size": [840, 1300] },
         { "name": "TitleLabel",   "widget": "label", "slot": "gacha.label.title", "text": "求籤定向保底" },
         { "name": "TokenCount",   "widget": "label", "slot": "gacha.label.token_count" },
-        { "name": "Desc",         "widget": "label", "fontSize": 20, "color": "#99907C",
+        { "name": "Desc",         "widget": "label", "fontSize": 20, "color": "textMuted",
           "text": "消耗 1 枚求籤令，下次大保底必得所選教官。每次求籤僅可指定一位，重複求籤可覆蓋。" },
         { "name": "CandidateList","widget": "list-scroll", "direction": "vertical",
           "template": "DivinationItem" },

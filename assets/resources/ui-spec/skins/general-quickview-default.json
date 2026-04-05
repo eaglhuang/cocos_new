@@ -7,7 +7,7 @@
   "slots": {
     "quickview.bg": {
       "kind": "color",
-      "color": "#0A0C14",
+      "color": "backgroundNavy",
       "alpha": 245,
       "_doc": "彈窗主背景，圓角12px，金色邊框1px",
       "spriteType": "sliced",
@@ -22,18 +22,18 @@
     },
     "quickview.overlay": {
       "kind": "color",
-      "color": "#000000",
+      "color": "colorBlack",
       "alpha": 80,
       "_doc": "全螢幕半透明遮罩，點擊關閉"
     },
     "quickview.header.bg": {
       "kind": "color",
-      "color": "#141830",
+      "color": "surfaceNavyDark",
       "alpha": 220
     },
     "quickview.section.bg": {
       "kind": "color",
-      "color": "#0F1220",
+      "color": "surfaceNavyDeepest",
       "alpha": 200
     },
     "quickview.portrait": {
@@ -46,7 +46,7 @@
     },
     "quickview.btn.close": {
       "kind": "color",
-      "color": "#333344",
+      "color": "surfaceNavyMid",
       "alpha": 200
     },
     "quickview.label.name": {
@@ -54,7 +54,7 @@
       "font": "fonts/newsreader/font",
       "fontSize": 22,
       "lineHeight": 28,
-      "color": "#FFE088",
+      "color": "secondaryLight",
       "horizontalAlign": "LEFT",
       "isBold": true
     },
@@ -63,7 +63,7 @@
       "font": "fonts/notosans_tc/font",
       "fontSize": 14,
       "lineHeight": 18,
-      "color": "#B0A880",
+      "color": "textKhaki",
       "horizontalAlign": "LEFT"
     },
     "quickview.label.faction": {
@@ -71,7 +71,7 @@
       "font": "fonts/notosans_tc/font",
       "fontSize": 13,
       "lineHeight": 16,
-      "color": "#88AACC",
+      "color": "textSteelMid",
       "horizontalAlign": "LEFT"
     },
     "quickview.label.stat": {
@@ -79,7 +79,7 @@
       "font": "fonts/notosans_tc/font",
       "fontSize": 14,
       "lineHeight": 18,
-      "color": "#C8D4E8",
+      "color": "textSteelLight",
       "horizontalAlign": "LEFT"
     },
     "quickview.label.section": {
@@ -87,7 +87,7 @@
       "font": "fonts/notosans_tc/font",
       "fontSize": 13,
       "lineHeight": 16,
-      "color": "#D4AF37",
+      "color": "secondary",
       "horizontalAlign": "LEFT",
       "isBold": true
     },
@@ -96,7 +96,7 @@
       "font": "fonts/notosans_tc/font",
       "fontSize": 13,
       "lineHeight": 17,
-      "color": "#C8D4E8",
+      "color": "textSteelLight",
       "horizontalAlign": "LEFT",
       "overflow": "shrink"
     },
@@ -105,7 +105,7 @@
       "font": "fonts/manrope/font",
       "fontSize": 18,
       "lineHeight": 22,
-      "color": "#AAAAAA",
+      "color": "textHintGray",
       "horizontalAlign": "CENTER",
       "isBold": true
     }

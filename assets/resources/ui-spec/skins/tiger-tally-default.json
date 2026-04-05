@@ -7,7 +7,7 @@
   "slots": {
     "tally.card.bg": {
       "kind": "color-rect",
-      "color": "#24384F",
+      "color": "surfaceTeal",
       "alpha": 236,
       "_doc": "白模驗證期直接使用純色卡片底板，先確認四張虎符的固定位置、尺寸與文字資料。"
     },
@@ -81,7 +81,7 @@
       "font": "fonts/manrope/font",
       "fontSize": 22,
       "lineHeight": 26,
-      "color": "#FF6B6B",
+      "color": "error",
       "horizontalAlign": "LEFT",
       "isBold": true,
       "_doc": "攻擊值；格式 ⚔N（白模驗證期放大至 22px）"
@@ -91,7 +91,7 @@
       "font": "fonts/manrope/font",
       "fontSize": 22,
       "lineHeight": 26,
-      "color": "#6BCB77",
+      "color": "textHpPositive",
       "horizontalAlign": "RIGHT",
       "isBold": true,
       "_doc": "生命值；格式 ❤N（白模驗證期放大至 22px）"
@@ -101,7 +101,7 @@
       "font": "fonts/notosans_tc/font",
       "fontSize": 24,
       "lineHeight": 28,
-      "color": "#E8E4DC",
+      "color": "textOffWhite",
       "horizontalAlign": "CENTER",
       "isBold": true,
       "overflow": "truncate",
@@ -112,7 +112,7 @@
       "font": "fonts/notosans_tc/font",
       "fontSize": 14,
       "lineHeight": 17,
-      "color": "#A8B4C4",
+      "color": "textCoolGray",
       "horizontalAlign": "LEFT"
     },
     "tally.label.cost": {
@@ -120,7 +120,7 @@
       "font": "fonts/manrope/font",
       "fontSize": 22,
       "lineHeight": 26,
-      "color": "#D4AF37",
+      "color": "secondary",
       "horizontalAlign": "CENTER",
       "isBold": true,
       "_doc": "糧草費用數字，金色顯示（白模驗證期放大至 22px）"
@@ -130,7 +130,7 @@
       "font": "fonts/manrope/font",
       "fontSize": 22,
       "lineHeight": 28,
-      "color": "#FFFFFF",
+      "color": "colorWhite",
       "horizontalAlign": "CENTER",
       "isBold": true,
       "_doc": "兵種徽章縮寫文字（CV/IN/AR/SH...），白色置中，由 Layout JSON 定義，TigerTallyPanel 只負責填入文字。lineHeight 必須 >= fontSize 避免 Cocos 裁切。"

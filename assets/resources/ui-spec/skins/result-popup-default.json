@@ -47,7 +47,7 @@
       "kind": "label-style",
       "fontSize": 42,
       "lineHeight": 52,
-      "color": "#D4AF37",
+      "color": "secondary",
       "horizontalAlign": "CENTER",
       "overflow": "SHRINK"
     },
@@ -55,7 +55,7 @@
       "kind": "label-style",
       "fontSize": 22,
       "lineHeight": 30,
-      "color": "#D0C5AF",
+      "color": "textSecondary",
       "horizontalAlign": "CENTER",
       "overflow": "SHRINK"
     },

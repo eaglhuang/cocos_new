@@ -35,7 +35,7 @@
       "kind": "label-style",
       "font": "fonts/newsreader/font",
       "fontSize": 34,
-      "color": "#FFE088",
+      "color": "secondaryLight",
       "horizontalAlign": "CENTER",
       "overflow": "SHRINK"
     },
@@ -50,11 +50,11 @@
 
     "gacha.tab.toggle": {
       "kind": "toggle-style",
-      "normal_bg":            { "color": "#151513", "opacity": 0.85 },
-      "selected_bg":          { "color": "#2A2010", "opacity": 1.0 },
+      "normal_bg":            { "color": "backgroundOlive", "opacity": 0.85 },
+      "selected_bg":          { "color": "surfaceOliveDark", "opacity": 1.0 },
       "normal_text_color":    "#99907C",
       "selected_text_color":  "#FFE088",
-      "border_bottom_selected": { "color": "#D4AF37", "thickness": 3 },
+      "border_bottom_selected": { "color": "secondary", "thickness": 3 },
       "fontSize": 22
     },
 
@@ -65,8 +65,8 @@
     "gacha.label.featured": {
       "kind": "label-style",
       "fontSize": 22,
-      "color": "#FFE088",
-      "outlineColor": "#2D2926",
+      "color": "secondaryLight",
+      "outlineColor": "textOnParchment",
       "outlineWidth": 2
     },
     "gacha.badge.rateup": {
@@ -77,20 +77,20 @@
     "gacha.label.timer": {
       "kind": "label-style",
       "fontSize": 18,
-      "color": "#E9C349",
+      "color": "warning",
       "overflow": "SHRINK"
     },
 
     "gacha.label.pity_small": {
       "kind": "label-style",
       "fontSize": 20,
-      "color": "#86E1A5",
+      "color": "tertiaryLight",
       "overflow": "SHRINK"
     },
     "gacha.label.pity_big": {
       "kind": "label-style",
       "fontSize": 20,
-      "color": "#D4AF37",
+      "color": "secondary",
       "overflow": "SHRINK"
     },
 
@@ -114,7 +114,7 @@
     "currency.label.count": {
       "kind": "label-style",
       "fontSize": 22,
-      "color": "#E5E2E1",
+      "color": "textPrimary",
       "overflow": "SHRINK"
     },
     "gacha.btn.add_currency": {
@@ -142,13 +142,13 @@
     "gacha.label.pull_btn": {
       "kind": "label-style",
       "fontSize": 28,
-      "color": "#E5E2E1",
+      "color": "textPrimary",
       "fontWeight": "bold"
     },
     "gacha.label.pull_cost": {
       "kind": "label-style",
       "fontSize": 18,
-      "color": "#D0C5AF"
+      "color": "textSecondary"
     },
 
     "gacha.btn.divination": {
@@ -162,16 +162,16 @@
     "gacha.label.token_count": {
       "kind": "label-style",
       "fontSize": 20,
-      "color": "#E9C349"
+      "color": "warning"
     },
 
     "result.screen.bg": {
       "kind": "color-rect",
-      "color": "#0F0F0F"
+      "color": "background"
     },
     "item.cell.bg": {
       "kind": "color-rect",
-      "color": "#00000000"
+      "color": "transparent"
     },
     "item.cell.shadow": {
       "kind": "sprite-frame",
@@ -209,7 +209,7 @@
     },
     "parchment.bg.accent": {
       "kind": "color-rect",
-      "color": "#00000000"
+      "color": "transparent"
     },
     "destiny_shop.item.bg": {
       "kind": "sprite-9slice",

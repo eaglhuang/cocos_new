@@ -14,12 +14,12 @@
     },
     "shop.titlebar.bg": {
       "kind": "color",
-      "color": "#0A0A0A",
+      "color": "backgroundDeep",
       "alpha": 220
     },
     "shop.tabs.bg": {
       "kind": "color",
-      "color": "#111111",
+      "color": "backgroundMid",
       "alpha": 200
     },
     "parchment.bg.shadow": {
@@ -38,11 +38,12 @@
     },
     "parchment.bg.accent": {
       "kind": "color-rect",
-      "color": "#00000000"
+      "color": "transparent"
     },
     "shop.content.carrier": {
       "kind": "color-rect",
-      "color": "#F0E8D8E6",
+      "color": "surfaceParchmentFill",
+      "alpha": 230,
       "comment": "D-2 QA anchor: MainContainer parchment light-surface carrier，對應 parchment-panel fragment 的 parchment.bg.fill"
     },
     "shop.tabs.shadow": {
@@ -54,14 +55,14 @@
     },
     "shop.tab.btn": {
       "kind": "color",
-      "color": "#1A1A2E",
+      "color": "surfaceNavy",
       "alpha": 0,
       "spriteType": "sliced",
       "border": [4, 4, 4, 4]
     },
     "shop.btn.close": {
       "kind": "color",
-      "color": "#444444",
+      "color": "surfaceControl",
       "alpha": 180,
       "spriteType": "sliced",
       "border": [6, 6, 6, 6]
@@ -71,7 +72,7 @@
       "font": "fonts/newsreader/font",
       "fontSize": 28,
       "lineHeight": 34,
-      "color": "#D4AF37",
+      "color": "secondary",
       "isBold": true,
       "overflow": "CLAMP",
       "horizontalAlign": "LEFT"
@@ -81,7 +82,7 @@
       "font": "fonts/manrope/font",
       "fontSize": 18,
       "lineHeight": 22,
-      "color": "#FFE088",
+      "color": "secondaryLight",
       "overflow": "CLAMP"
     },
     "shop.label.tab": {
@@ -89,7 +90,7 @@
       "font": "fonts/notosans_tc/font",
       "fontSize": 16,
       "lineHeight": 20,
-      "color": "#E5E2E1",
+      "color": "textPrimary",
       "overflow": "CLAMP",
       "horizontalAlign": "CENTER"
     },

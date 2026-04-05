@@ -39,14 +39,14 @@
     "widget.resource.icon": {
       "kind": "label-style",
       "fontSize": 24,
-      "color": "#FFD700",
+      "color": "resourceGold",
       "horizontalAlign": "CENTER",
       "verticalAlign": "CENTER"
     },
     "widget.resource.value": {
       "kind": "label-style",
       "fontSize": 20,
-      "color": "#FFFFFF",
+      "color": "colorWhite",
       "horizontalAlign": "LEFT",
       "verticalAlign": "CENTER"
     }

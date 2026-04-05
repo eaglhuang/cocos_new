@@ -13,12 +13,12 @@
     },
     "lobby.topbar.bg": {
       "kind": "color",
-      "color": "#0A0A0A",
+      "color": "backgroundDeep",
       "alpha": 220
     },
     "lobby.navbar.bg": {
       "kind": "color",
-      "color": "#0F0F0F",
+      "color": "background",
       "alpha": 240
     },
     "lobby.navbar.shadow": {
@@ -63,7 +63,7 @@
       "font": "fonts/notosans_tc/font",
       "fontSize": 20,
       "lineHeight": 26,
-      "color": "#FFE088",
+      "color": "secondaryLight",
       "isBold": true,
       "overflow": "CLAMP"
     },
@@ -72,7 +72,7 @@
       "font": "fonts/manrope/font",
       "fontSize": 16,
       "lineHeight": 20,
-      "color": "#E5E2E1",
+      "color": "textPrimary",
       "overflow": "CLAMP"
     },
     "lobby.label.nav": {
@@ -80,7 +80,7 @@
       "font": "fonts/notosans_tc/font",
       "fontSize": 15,
       "lineHeight": 19,
-      "color": "#D4AF37",
+      "color": "secondary",
       "overflow": "CLAMP",
       "horizontalAlign": "CENTER"
     }

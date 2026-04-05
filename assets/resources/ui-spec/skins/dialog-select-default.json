@@ -4,10 +4,10 @@
   "version": 1,
   "description": "dialog-select Template 的預設樣式 — 半透明深色卡片 + 金色標題",
   "slots": {
-    "widget.overlay.mask":    { "kind": "color-rect", "color": "#00000099" },
-    "widget.dialog.card.bg":  { "kind": "color-rect", "color": "#1A1A2E", "radius": 12 },
-    "widget.header.bg":       { "kind": "color-rect", "color": "#12122299" },
-    "widget.header.title":    { "kind": "label-style", "fontSize": 24, "isBold": true, "color": "#D4AF37" },
+    "widget.overlay.mask":    { "kind": "color-rect", "color": "colorBlack", "alpha": 153 },
+    "widget.dialog.card.bg":  { "kind": "color-rect", "color": "surfaceNavy", "radius": 12 },
+    "widget.header.bg":       { "kind": "color-rect", "color": "surfaceNavyDeepHeader", "alpha": 153 },
+    "widget.header.title":    { "kind": "label-style", "fontSize": 24, "isBold": true, "color": "secondary" },
     "widget.header.close.btn": { "kind": "button-skin",
       "normal": "ui-spec/placeholders/btn_close_normal",
       "pressed": "ui-spec/placeholders/btn_close_pressed",
@@ -23,6 +23,6 @@
       "pressed": "ui-spec/placeholders/btn_parchment_pressed",
       "disabled": "ui-spec/placeholders/btn_parchment_disabled",
       "spriteType": "sliced", "border": [12,12,12,12] },
-    "widget.label.body":      { "kind": "label-style", "fontSize": 18, "color": "#E0E0E0" }
+    "widget.label.body":      { "kind": "label-style", "fontSize": 18, "color": "rarityWhite" }
   }
 }

@@ -6,25 +6,25 @@
   "slots": {
     "widget.overlay.mask": {
       "kind": "color",
-      "color": "#000000",
+      "color": "colorBlack",
       "alpha": 180
     },
     "widget.dialog.card.bg": {
       "kind": "color",
-      "color": "#1A1A2E",
+      "color": "surfaceNavy",
       "alpha": 238,
       "spriteType": "sliced",
       "border": [12, 12, 12, 12]
     },
     "widget.header.bg": {
       "kind": "color",
-      "color": "#2A2A4A",
+      "color": "surfaceNavyHigh",
       "alpha": 255
     },
     "widget.header.title": {
       "kind": "label-style",
       "fontSize": 28,
-      "color": "#D4AF37",
+      "color": "secondary",
       "isBold": true,
       "horizontalAlign": "LEFT",
       "verticalAlign": "CENTER"
@@ -40,7 +40,7 @@
     "widget.text.body": {
       "kind": "label-style",
       "fontSize": 22,
-      "color": "#CCCCCC",
+      "color": "textMidGray",
       "horizontalAlign": "LEFT",
       "verticalAlign": "TOP"
     },

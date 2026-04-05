@@ -5,11 +5,12 @@
   "slots": {
     "common.overlay": {
       "kind": "color-rect",
-      "color": "#0F0F0FE6"
+      "color": "background",
+      "alpha": 230
     },
     "general.portrait.placeholder": {
       "kind": "color-rect",
-      "color": "#33333300"
+      "color": "transparent"
     },
     "general.info.bg": {
       "kind": "color-rect",

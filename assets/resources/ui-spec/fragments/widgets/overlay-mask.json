@@ -14,7 +14,8 @@
   "defaultSkinSlots": {
     "widget.overlay.mask": {
       "kind": "color-rect",
-      "color": "#000000B4"
+      "color": "colorBlack",
+      "alpha": 180
     }
   }
 }

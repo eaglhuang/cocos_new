@@ -48,21 +48,21 @@
     "widget.stat.icon": {
       "kind": "label-style",
       "fontSize": 20,
-      "color": "#FFD700",
+      "color": "resourceGold",
       "horizontalAlign": "CENTER",
       "verticalAlign": "CENTER"
     },
     "widget.stat.label": {
       "kind": "label-style",
       "fontSize": 20,
-      "color": "#AAAAAA",
+      "color": "textHintGray",
       "horizontalAlign": "LEFT",
       "verticalAlign": "CENTER"
     },
     "widget.stat.value": {
       "kind": "label-style",
       "fontSize": 20,
-      "color": "#FFFFFF",
+      "color": "colorWhite",
       "isBold": true,
       "horizontalAlign": "RIGHT",
       "verticalAlign": "CENTER"

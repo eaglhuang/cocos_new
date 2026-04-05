@@ -56,7 +56,7 @@
       "kind": "label-style",
       "fontSize": 15,
       "lineHeight": 20,
-      "color": "#E8E4DC",
+      "color": "textOffWhite",
       "horizontalAlign": "LEFT",
       "isBold": true
     },
@@ -64,14 +64,14 @@
       "kind": "label-style",
       "fontSize": 11,
       "lineHeight": 14,
-      "color": "#7A8899",
+      "color": "textSteelDark",
       "horizontalAlign": "LEFT"
     },
     "unitinfo.label.section": {
       "kind": "label-style",
       "fontSize": 11,
       "lineHeight": 14,
-      "color": "#D4AF37",
+      "color": "secondary",
       "horizontalAlign": "LEFT",
       "isBold": true
     },
@@ -79,14 +79,14 @@
       "kind": "label-style",
       "fontSize": 13,
       "lineHeight": 16,
-      "color": "#C8D0DC",
+      "color": "textSteelLighter",
       "horizontalAlign": "LEFT"
     },
     "unitinfo.label.trait.tag": {
       "kind": "label-style",
       "fontSize": 11,
       "lineHeight": 14,
-      "color": "#88CCEE",
+      "color": "textCyanLight",
       "horizontalAlign": "CENTER",
       "_doc": "特性標籤文字，TS 動態建立背景底板"
     },
@@ -94,7 +94,7 @@
       "kind": "label-style",
       "fontSize": 12,
       "lineHeight": 18,
-      "color": "#9AA8B8",
+      "color": "textSteelGray",
       "horizontalAlign": "LEFT",
       "overflow": "clampByHeight"
     }

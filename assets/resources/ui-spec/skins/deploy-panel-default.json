@@ -6,7 +6,7 @@
   "slots": {
     "deploy.root.bg": {
       "kind": "color",
-      "color": "#0F0F0F",
+      "color": "background",
       "alpha": 220
     },
     "deploy.root.shadow": {
@@ -18,7 +18,7 @@
     },
     "deploy.slot.card": {
       "kind": "color",
-      "color": "#1A2030",
+      "color": "surfaceDeepBlue",
       "alpha": 230,
       "spriteType": "sliced",
       "border": [8, 8, 8, 8]
@@ -28,7 +28,7 @@
       "font": "fonts/notosans_tc/font",
       "fontSize": 16,
       "lineHeight": 20,
-      "color": "#D4AF37",
+      "color": "secondary",
       "isBold": true,
       "overflow": "CLAMP"
     },
@@ -37,7 +37,7 @@
       "font": "fonts/manrope/font",
       "fontSize": 15,
       "lineHeight": 19,
-      "color": "#FFE088",
+      "color": "secondaryLight",
       "overflow": "CLAMP"
     },
     "deploy.label.hint": {
@@ -45,7 +45,7 @@
       "font": "fonts/notosans_tc/font",
       "fontSize": 13,
       "lineHeight": 17,
-      "color": "#888888",
+      "color": "textDarkGray",
       "overflow": "CLAMP"
     }
   }

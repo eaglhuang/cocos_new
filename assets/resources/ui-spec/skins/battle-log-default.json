@@ -6,7 +6,7 @@
   "slots": {
     "log.root.bg": {
       "kind": "color",
-      "color": "#181C22",
+      "color": "surfaceCharcoal",
       "alpha": 205
     },
     "log.root.shadow": {
@@ -18,37 +18,37 @@
     },
     "log.header.bg": {
       "kind": "color",
-      "color": "#303A4A",
+      "color": "surfaceCharcoalBlue",
       "alpha": 235
     },
     "log.btn.toggle": {
       "kind": "color",
-      "color": "#D4AF37",
+      "color": "secondary",
       "alpha": 200,
       "spriteType": "sliced",
       "border": [4, 4, 4, 4]
     },
     "log.btn.auto": {
       "kind": "color",
-      "color": "#2A5A3A",
+      "color": "surfaceGreenDeep",
       "alpha": 220,
       "_doc": "Auto 自動戰鬥按鈕，32×32"
     },
     "log.btn.speed": {
       "kind": "color",
-      "color": "#2A3A5A",
+      "color": "surfaceBlueDeep",
       "alpha": 220,
       "_doc": "x2 加速按鈕，32×32"
     },
     "log.btn.setting": {
       "kind": "color",
-      "color": "#3A3A3A",
+      "color": "surfaceMidGray",
       "alpha": 220,
       "_doc": "⚙ 設定按鈕，32×32"
     },
     "log.btn.collapse": {
       "kind": "color",
-      "color": "#202830",
+      "color": "surfaceInkBlue",
       "alpha": 200,
       "_doc": "📋 收合/展開日誌按鈕，全寬 28px"
     },
@@ -57,7 +57,7 @@
       "font": "fonts/newsreader/font",
       "fontSize": 16,
       "lineHeight": 20,
-      "color": "#E5E2E1",
+      "color": "textPrimary",
       "isBold": true,
       "overflow": "CLAMP",
       "horizontalAlign": "LEFT"
@@ -67,7 +67,7 @@
       "font": "fonts/notosans_tc/font",
       "fontSize": 14,
       "lineHeight": 18,
-      "color": "#B0A880",
+      "color": "textKhaki",
       "horizontalAlign": "CENTER"
     },
     "log.label.content": {
@@ -75,7 +75,7 @@
       "font": "fonts/notosans_tc/font",
       "fontSize": 13,
       "lineHeight": 18,
-      "color": "#C8C8C8",
+      "color": "textLightGray",
       "overflow": "RESIZE_HEIGHT"
     },
     "log.label.btn": {
@@ -83,7 +83,7 @@
       "font": "fonts/notosans_tc/font",
       "fontSize": 12,
       "lineHeight": 16,
-      "color": "#E0E0E0",
+      "color": "rarityWhite",
       "horizontalAlign": "CENTER"
     }
   }

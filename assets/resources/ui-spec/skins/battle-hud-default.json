@@ -52,9 +52,9 @@
       "font": "fonts/notosans_tc/font",
       "fontSize": 20,
       "lineHeight": 26,
-      "color": "#FFE088",
+      "color": "secondaryLight",
       "horizontalAlign": "LEFT",
-      "outlineColor": "#000000CC",
+      "outlineColor": "outlineHeavy",
       "outlineWidth": 2
     },
     "hud.label.name.enemy": {
@@ -62,9 +62,9 @@
       "font": "fonts/notosans_tc/font",
       "fontSize": 20,
       "lineHeight": 26,
-      "color": "#f09090",
+      "color": "textEnemyName",
       "horizontalAlign": "RIGHT",
-      "outlineColor": "#000000CC",
+      "outlineColor": "outlineHeavy",
       "outlineWidth": 2
     },
     "hud.label.round": {
@@ -72,9 +72,9 @@
       "font": "fonts/notosans_tc/font",
       "fontSize": 24,
       "lineHeight": 30,
-      "color": "#D4AF37",
+      "color": "secondary",
       "horizontalAlign": "CENTER",
-      "outlineColor": "#000000D9",
+      "outlineColor": "outlineDark",
       "outlineWidth": 2
     },
     "hud.label.food": {
@@ -82,9 +82,9 @@
       "font": "fonts/notosans_tc/font",
       "fontSize": 14,
       "lineHeight": 18,
-      "color": "#F0E68C",
+      "color": "textWarmGold",
       "horizontalAlign": "CENTER",
-      "outlineColor": "#000000CC",
+      "outlineColor": "outlineHeavy",
       "outlineWidth": 2
     },
     "hud.label.hp": {
@@ -92,9 +92,9 @@
       "font": "fonts/notosans_tc/font",
       "fontSize": 20,
       "lineHeight": 26,
-      "color": "#E5E2E1",
+      "color": "textPrimary",
       "horizontalAlign": "LEFT",
-      "outlineColor": "#000000CC",
+      "outlineColor": "outlineHeavy",
       "outlineWidth": 2
     },
     "hud.label.hp.enemy": {
@@ -102,9 +102,9 @@
       "font": "fonts/notosans_tc/font",
       "fontSize": 20,
       "lineHeight": 26,
-      "color": "#FF8888",
+      "color": "textHpEnemy",
       "horizontalAlign": "RIGHT",
-      "outlineColor": "#000000CC",
+      "outlineColor": "outlineHeavy",
       "outlineWidth": 2
     },
     "hud.label.status": {
@@ -112,10 +112,10 @@
       "font": "fonts/notosans_tc/font",
       "fontSize": 20,
       "lineHeight": 26,
-      "color": "#FFE088",
+      "color": "secondaryLight",
       "horizontalAlign": "CENTER",
       "overflow": "SHRINK",
-      "outlineColor": "#000000CC",
+      "outlineColor": "outlineHeavy",
       "outlineWidth": 2
     },
     "hud.label.fortress.player": {
@@ -123,9 +123,9 @@
       "font": "fonts/notosans_tc/font",
       "fontSize": 13,
       "lineHeight": 18,
-      "color": "#7ec8f7",
+      "color": "textCyan",
       "horizontalAlign": "CENTER",
-      "outlineColor": "#000000CC",
+      "outlineColor": "outlineHeavy",
       "outlineWidth": 2
     },
     "hud.label.vs": {
@@ -133,9 +133,9 @@
       "font": "fonts/notosans_tc/font",
       "fontSize": 16,
       "lineHeight": 22,
-      "color": "#D4AF37",
+      "color": "secondary",
       "horizontalAlign": "CENTER",
-      "outlineColor": "#000000D9",
+      "outlineColor": "outlineDark",
       "outlineWidth": 2
     },
     "hud.label.fortress.enemy": {
@@ -143,9 +143,9 @@
       "font": "fonts/notosans_tc/font",
       "fontSize": 13,
       "lineHeight": 18,
-      "color": "#FF8888",
+      "color": "textHpEnemy",
       "horizontalAlign": "CENTER",
-      "outlineColor": "#000000CC",
+      "outlineColor": "outlineHeavy",
       "outlineWidth": 2
     }
   }

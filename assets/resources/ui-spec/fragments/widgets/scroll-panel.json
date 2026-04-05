@@ -36,7 +36,8 @@
   "defaultSkinSlots": {
     "widget.scroll.bg": {
       "kind": "color-rect",
-      "color": "#0000004D"
+      "color": "colorBlack",
+      "alpha": 77
     },
     "widget.scroll.collapse.btn": {
       "kind": "button-skin",
