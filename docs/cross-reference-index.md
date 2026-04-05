@@ -7,8 +7,10 @@
 
 > 代碼索引/掃描範圍：僅包含 `assets/` 與 `extensions/` 目錄下的程式碼檔案；其他資料夾不參與代碼索引或自動掃描。
 
-**最後更新**: 2026-04-05 (第二十七批：GeneralDetailBloodlineV3 contentRequirements + preview capture)
+**最後更新**: 2026-04-05 (第二十九批：GeneralDetailBloodlineV3 crest family layering)
 
+> **第二十九批整合（2026-04-05）**：`GeneralDetailBloodlineV3` 已將 `PortraitCarrier` 與 `BloodlineCrest` 區收斂為多層 node contract，並讓 `crestState` 正式驅動 `CrestStateLabel + Glow/Fill/Crest` 視覺狀態；最新可重現截圖位於 `artifacts/ui-qa/UI-2-0059/preview-compare-2026-04-05-v6/GeneralDetailOverview.png`。目前已可確認 crest 承載區成立，但若沒有專屬 `glyph / 命紋圖騰` 資產，畫面仍只能逼近參考圖而無法完全達標。
+> **第二十八批整合（2026-04-05）**：`GeneralDetailBloodlineV3` 已完成第一輪 `parchment pass` skin 收斂，將 `InfoCard / OverviewSummaryModules / BloodlineOverviewModules / StoryStrip` 主承載面切回淺色 parchment 系；最新可重現截圖位於 `artifacts/ui-qa/UI-2-0059/preview-compare-2026-04-05-v4/GeneralDetailOverview.png`。目前確認主落差已收斂到 `portrait heroization` 與 `crest family`，不再是 screen 結構或 content contract 缺失。
 > **第二十七批整合（2026-04-05）**：`GeneralDetailBloodlineV3` 已正式補上 `contentRequirements`（`general-detail-overview-content.schema.json`）與 preview sample state（`general-detail-overview-states-v1.json`）；`LoadingScene.previewTarget` 和 `capture-ui-screens.js` 也新增 `GeneralDetailOverview`，並已成功輸出 sample-state 對齊後的可重現截圖 `artifacts/ui-qa/UI-2-0059/preview-compare-2026-04-05-v2/GeneralDetailOverview.png`。
 > **第十八批整合（2026-04-05）**：`UI-2-0059` 已完成收斂並可提交。`general-detail-bloodline-v3-main.json` 正式新增 `OverviewSummaryModules` 與 `BloodlineOverviewModules` 兩個群組邊界，`GeneralDetailOverviewShell.ts` 也改為欄位表批次填值；對應規格、manifest 與 tasks index 已同步回寫。
 > **第十七批整合（2026-04-05）**：`UI-2-0058` 已提交 commit `2071d92`。`GeneralDetailBloodlineV3` 進一步進入 `UI-2-0059` skeleton 收斂：overview shell 已將暫時的 `Unowned*` 節點名改為可重用的 `PortraitMode* / OverviewMode*` 語意；覺醒條正式改為 `AwakeningBarTrack + AwakeningBarFill` 的 node contract，對應 `track / fill` skin slot；故事帶也已改用 `Origin / Faction / Role / Awakening / Bloodline / Future` 語意節點，screen contract 收緊為 `allowMissingSkin: false`。
@@ -455,3 +457,7 @@
 > **第二十六批整合（2026-04-05）**：為了對齊 Agent1 的 `ServiceLoader + onReady(binder) + content contract` 新架構，命鏡畫面已新增 `contracts/bloodline-mirror-state-content.schema.json`，並在 loading / awakening screen 補上 `contentRequirements`。`validate-ui-specs.js` 也已支援 `--check-content-contract`，可直接驗證 schema、screen 契約與內容檔 state 對應。
 
 > **第二十七批整合（2026-04-06，Phase F 收尾）**：完成 UI-2-0082（Figma Proof Mapping Sync）與 UI-2-0083（Agent Strict Layout Validator）。新增 `tools_node/sync-figma-proof-mapping.js`（讀取 Figma 或本地 config 輸出 `proof-mapping-{date}.json`，支援 `--config/--frame-id/--dry-run/--list`）；`tools_node/scaffold-ui-spec-family.js` 新增 `--figma-frame-id` 選項，可自動載入對應家族最新快照。`validate-ui-specs.js` 新增 `--strict` 模式，實作 17 條 layout 品質規則（節點深度、children 數量、empty-container、scroll-list itemTemplate、spacing/fontSize/alpha/opacity 範圍、widget 整數、family 專屬規則 dialog-max-cta/rail-list-min-items/detail-split-tab-count、bind-path-declared、no-dynamic-bind、nine-slice-border、skinSlot 交叉核對）。5 個佈局新增 `validation.exceptions` 登記豁免。新增 `assets/resources/ui-spec/validation-rules.json`（閾值設定檔）與 `docs/ui/layout-quality-rules.md`（規則說明）。Phase F 全部 P1 任務完成。
+
+> **第二十八批整合（2026-04-05，UI-2-0078 MemoryManager LRU）**：完成 UI-2-0078（MemoryManager LRU 弱引用快取 + Scope 批次釋放）。MemoryManager.ts 改為兩層式帳目架構：ecords（active，refCount > 0）+ lruBuffer（軟釋放緩衝，refCount = 0）；
+otifyReleased 不再立即刪除，而是移入 lruBuffer，超過 lruMaxSize（預設 50）時觸發 onAssetEvicted。新增 eleaseByScope(scope) 支援場景批次清理；新增 evictLRU(count?) 手動觸發硬逐出；新增 getLruReport() / getByScope() / lruBufferCount；
+otifyLoaded 第 4 參數新增可選 scope 標籤（向後相容）。AssetRecord 新增 lastUsedAt 與 scopes 欄位。所有現有呼叫端（ResourceManager、VfxComposerTool）無需修改。

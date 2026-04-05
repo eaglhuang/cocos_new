@@ -483,7 +483,7 @@ services().ui.open(UIID.BattleHUD);
 
 ### 後續排程
 
-- **P2 待排**：UI-2-0078（MemoryManager 實作：LRU + releaseByScope）
+- ~~P2：UI-2-0078（MemoryManager LRU + releaseByScope）~~ ✅ done（2026-04-05）
 - 為 LobbyMain / ShopMain / Gacha 建立真正的 Prefab，讓 `openAsync` 完整走通
 - 解除 UI-2-0046 blockers → 繼續 UI-2-0026（BattleScene 對位修正）
 - 收斂 slot-map 匯出格式，讓它能直接轉成 scaffolder config JSON
@@ -529,6 +529,57 @@ services().ui.open(UIID.BattleHUD);
 - 維護 `content contract schema`：讓新 family 可直接用 config / JSON schema 建欄位，而不是人工猜欄位名。
 - 維護 `skin fragment library`：把常用框體、卡片、故事帶、徽記、進度條沉成可複用 fragment。
 - 維護 `preview / smoke routes`：每個高頻 family 至少有一條可快速驗證的 route。
+
+---
+
+## 23. MemoryManager LRU + Scope 批次釋放（UI-2-0078，2026-04-05）
+
+### 23.1 概念設計
+
+兩層式帳目架構（Unity Addressables 對照）：
+
+| 層 | 說明 | Unity 對照 |
+|----|------|------------|
+| `records` | active 資源（refCount > 0） | Addressables tracked handles |
+| `lruBuffer` | 軟釋放緩衝（refCount == 0，等待硬逐出） | soft-unload / 待 Release 的 handle |
+
+### 23.2 主要新增 API
+
+| 方法 / 屬性 | 說明 |
+|-------------|------|
+| `notifyLoaded(key, bundle, type, scope?)` | 第 4 參數 `scope` 為可選；同 key 若在 lruBuffer → 移回 active |
+| `notifyReleased(key)` | refCount 歸零 → 移入 lruBuffer（不立即刪除，支援再使用重拾） |
+| `releaseByScope(scope)` | 批次強制逐出指定 scope 下所有資源（active + lruBuffer），直接觸發 `onAssetEvicted` |
+| `evictLRU(count?)` | 手動逐出 lruBuffer 最舊條目；不帶參數時清空全部 |
+| `getLruReport()` | 取得 lruBuffer 快照陣列 |
+| `getByScope(scope)` | 取得 scope 內所有資源 key 清單 |
+| `lruMaxSize` | LRU buffer 上限（預設 50）；超過時自動觸發 `onAssetEvicted` |
+| `lruBufferCount` | 目前 lruBuffer 大小 |
+| `onAssetEvicted` | [Hook C] 硬逐出時觸發，供 ResourceManager 真正釋放 Cocos 資源 |
+
+### 23.3 使用範例
+
+```typescript
+// 場景切換前批次釋放
+services().memory.releaseByScope('battle');
+
+// 接 ResourceManager 的真正釋放（在 ServiceLoader 初始化後設置一次）
+services().memory.onAssetEvicted = (key, bundle) => {
+    services().resource.forceRelease(key, bundle);
+};
+
+// 記憶體壓力時手動清空 LRU buffer
+services().memory.evictLRU();
+
+// 載入時標記 scope
+services().memory.notifyLoaded('ui/battle-hud', 'resources', 'Prefab', 'battle');
+```
+
+### 23.4 向後相容
+
+- `notifyLoaded` 第 4 參數為可選，所有現有呼叫端（ResourceManager、VfxComposerTool）**無需修改**。
+- `AssetRecord` 新增 `lastUsedAt` 與 `scopes` 欄位；現有使用 `getReport()` 的程式碼仍正常工作。
+- 既有 `onThresholdExceeded` / `onAssetFullyReleased` Hook 語義不變。
 - 維護 `proof mapping -> scaffolder` 對映：讓 Figma 欄位可直接生成 config，而不是再人工轉譯一次。
 
 ### 19.5 UI Agent 進場必讀順序
