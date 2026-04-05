@@ -1676,9 +1676,13 @@
       "phase": "D",
       "priority": "P1",
       "owner": "Agent2",
-      "status": "open",
+      "status": "done",
       "created": "2026-04-02",
       "created_by_agent": "Agent2",
+      "started_at": "2026-04-05T11:29:05+08:00",
+      "started_by_agent": "Agent2",
+      "completed_at": "2026-04-05T11:29:05+08:00",
+      "completed_by_agent": "Agent2",
       "type": "ui-spec-skeleton",
       "title": "???? v3 ui-spec skeleton",
       "description": "????? v3 ?? Loading / Awakening / Ascension / Unowned Preview ?? skeleton ? state ???",
@@ -1709,7 +1713,7 @@
         "docs/系統規格書/血脈命鏡過場載入規格書.md",
         "docs/cross-reference-index.md"
       ],
-      "notes": "2026-04-02 | ??: open | ??: ????? v3 ?? loading / awakening ?? skeleton | ??: ??? v3 ??? proof??????????? state ?? | ??: ????? Loading ? ???????????? UI"
+      "notes": "2026-04-05 | done | 驗證: 新增 bloodline-mirror-loading-main/default，並將 loading / awakening 兩個 screen 一起切到 shared skeleton；allowMissingSkin=false | 變更: 完成 fullscreen-result family 的 loading / awakening 共用骨架，補齊 StateBadge / MirrorHeader / CenterStage / TipPanel / ActionRow / StoryStrip 五大模組 | 阻塞: 無"
     },
     {
       "id": "UI-2-0061",

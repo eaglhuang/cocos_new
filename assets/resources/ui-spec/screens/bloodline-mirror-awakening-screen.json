@@ -4,10 +4,10 @@
   "uiId": "BloodlineMirrorAwakening",
   "layer": "Fullscreen",
   "bundle": "lobby_ui",
-  "layout": "bloodline-mirror-main",
-  "skin": "bloodline-mirror-default",
+  "layout": "bloodline-mirror-loading-main",
+  "skin": "bloodline-mirror-loading-default",
   "validation": {
     "devices": ["phone-16-9", "phone-19_5-9", "tablet-4-3"],
-    "allowMissingSkin": true
+    "allowMissingSkin": false
   }
 }

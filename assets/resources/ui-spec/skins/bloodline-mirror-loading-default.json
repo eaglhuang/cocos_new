@@ -1,0 +1,127 @@
+{
+  "id": "bloodline-mirror-loading-default",
+  "version": 1,
+  "bundle": "lobby_ui",
+  "atlasPolicy": "lobby",
+  "slots": {
+    "bml.bg.full": {
+      "kind": "sprite-frame",
+      "path": "ui-spec/placeholders/bg_ink_main",
+      "spriteType": "sliced",
+      "border": [96, 360, 96, 420],
+      "allowAutoAtlas": false
+    },
+    "bml.hero.public": { "kind": "color-rect", "color": "mirrorHeroPublic", "alpha": 168 },
+    "bml.hero.spirit": { "kind": "color-rect", "color": "mirrorHeroSpirit", "alpha": 168 },
+    "bml.unowned.veil": { "kind": "color-rect", "color": "mirrorUnownedBase", "alpha": 92 },
+    "bml.panel.state": { "kind": "color-rect", "color": "surfaceSepiaDeep", "alpha": 210 },
+    "bml.badge.state": { "kind": "color-rect", "color": "mirrorBadge", "alpha": 214 },
+    "bml.sigil.field": { "kind": "color-rect", "color": "mirrorSigilField", "alpha": 132 },
+    "bml.gate": { "kind": "color-rect", "color": "mirrorGate", "alpha": 224 },
+    "bml.vessel.core": { "kind": "color-rect", "color": "mirrorVesselLegendary", "alpha": 206 },
+    "bml.crest.badge": { "kind": "color-rect", "color": "secondary", "alpha": 220 },
+    "bml.panel.tip": { "kind": "color-rect", "color": "surfaceSepia", "alpha": 228 },
+    "bml.story.rail": { "kind": "color-rect", "color": "mirrorStoryRail", "alpha": 226 },
+    "bml.story.cell.origin": { "kind": "color-rect", "color": "mirrorStoryCellMortal", "alpha": 242 },
+    "bml.story.cell.bloodline": { "kind": "color-rect", "color": "mirrorStoryCellRise", "alpha": 242 },
+    "bml.story.cell.trial": { "kind": "color-rect", "color": "mirrorStoryCellCrisis", "alpha": 242 },
+    "bml.story.cell.awakening": { "kind": "color-rect", "color": "mirrorStoryCellAwaken", "alpha": 242 },
+    "bml.story.cell.future": { "kind": "color-rect", "color": "mirrorStoryCellSpirit", "alpha": 242 },
+    "bml.button.primary": {
+      "kind": "button-skin",
+      "normal": "sprites/ui_families/common/equipment/btn_primary_normal",
+      "pressed": "sprites/ui_families/common/equipment/btn_primary_pressed",
+      "disabled": "sprites/ui_families/common/equipment/btn_primary_disabled",
+      "spriteType": "sliced",
+      "border": [20, 20, 20, 20],
+      "allowAutoAtlas": true
+    },
+    "bml.label.header": {
+      "kind": "label-style",
+      "fontSize": 34,
+      "lineHeight": 40,
+      "color": "mirrorLabelHeader",
+      "horizontalAlign": "CENTER"
+    },
+    "bml.label.subtitle": {
+      "kind": "label-style",
+      "fontSize": 24,
+      "lineHeight": 30,
+      "color": "mirrorLabelName",
+      "horizontalAlign": "CENTER"
+    },
+    "bml.label.state": {
+      "kind": "label-style",
+      "fontSize": 16,
+      "lineHeight": 20,
+      "color": "mirrorLabelRarity",
+      "horizontalAlign": "CENTER",
+      "verticalAlign": "CENTER"
+    },
+    "bml.label.meta": {
+      "kind": "label-style",
+      "fontSize": 16,
+      "lineHeight": 20,
+      "color": "mirrorLabelUnowned",
+      "horizontalAlign": "CENTER"
+    },
+    "bml.label.tipTitle": {
+      "kind": "label-style",
+      "fontSize": 18,
+      "lineHeight": 22,
+      "color": "mirrorLabelHeader",
+      "horizontalAlign": "LEFT"
+    },
+    "bml.label.tipBody": {
+      "kind": "label-style",
+      "fontSize": 15,
+      "lineHeight": 19,
+      "color": "mirrorLabelName",
+      "horizontalAlign": "LEFT"
+    },
+    "bml.label.progress": {
+      "kind": "label-style",
+      "fontSize": 18,
+      "lineHeight": 22,
+      "color": "mirrorLabelRarity",
+      "horizontalAlign": "LEFT",
+      "verticalAlign": "CENTER"
+    },
+    "bml.label.button": {
+      "kind": "label-style",
+      "fontSize": 18,
+      "lineHeight": 22,
+      "color": "mirrorLabelButton",
+      "horizontalAlign": "CENTER",
+      "verticalAlign": "CENTER"
+    },
+    "bml.label.storyTitle": {
+      "kind": "label-style",
+      "fontSize": 16,
+      "lineHeight": 20,
+      "color": "textOnParchment",
+      "horizontalAlign": "LEFT"
+    },
+    "bml.label.storyBody": {
+      "kind": "label-style",
+      "fontSize": 14,
+      "lineHeight": 18,
+      "color": "textOnParchmentMuted",
+      "horizontalAlign": "LEFT"
+    },
+    "bml.label.marker.public": {
+      "kind": "label-style",
+      "fontSize": 18,
+      "lineHeight": 22,
+      "color": "mirrorLabelPublic",
+      "horizontalAlign": "CENTER"
+    },
+    "bml.label.marker.spirit": {
+      "kind": "label-style",
+      "fontSize": 18,
+      "lineHeight": 22,
+      "color": "mirrorLabelSpirit",
+      "horizontalAlign": "CENTER"
+    }
+  }
+}
