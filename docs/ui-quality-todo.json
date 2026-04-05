@@ -1620,7 +1620,7 @@
         "UI-2-0054",
         "UI-2-0058"
       ],
-      "notes": "2026-04-05 | in-progress | 指令: 承接 UI-2-0058，將日常人物頁 v3 從已接線的 overview shell 再往正式 skeleton 收斂，優先補齊 layout / screen / node contract 缺口 | 結果: 已接手下一輪，將先處理 v3 外層 chrome、overview summary 結構與 screen contract 的正式化 | 阻塞: 無"
+      "notes": "2026-04-05 | in-progress | 指令: 承接 UI-2-0058，將日常人物頁 v3 從已接線的 overview shell 再往正式 skeleton 收斂，優先補齊 layout / screen / node contract 缺口 | 結果: 已完成第三批 skeleton 正式化，補上 OverviewStateChrome 與 AwakeningProgressGroup 可複用群組，並將 layout/skin version 升為 v2；先前的 PortraitMode / OverviewMode 語意、AwakeningBarTrack + AwakeningBarFill、故事帶語意節點也已保留 | 阻塞: 無"
     },
     {
       "id": "UI-2-0060",
@@ -1766,7 +1766,7 @@
       "priority": "P1",
       "phase": "E",
       "owner": "Agent1",
-      "status": "in-progress",
+      "status": "done",
       "created": "2026-04-05",
       "created_by_agent": "Agent1",
       "type": "refactor",
@@ -1779,9 +1779,11 @@
       "depends": [
         "DATA-1-0001"
       ],
-      "notes": "2026-04-05 | A4 11 ???????DuelChallengePanel ??????? | open\n2026-04-05 | 狀態: in-progress | 處理: DATA-1-0001 完成解除阻塞，開始遷移 11 個元件至 UITemplateBinder.onReady(binder) 模式 | 驗證: 待完成 | 阻塞: 無 | Agent1",
+      "notes": "2026-04-05 | A4 11 ???????DuelChallengePanel ??????? | open\n2026-04-05 | 狀態: in-progress | 處理: DATA-1-0001 完成解除阻塞，開始遷移 11 個元件至 UITemplateBinder.onReady(binder) 模式 | 驗證: 待完成 | 阻塞: 無 | Agent1\n2026-04-05 | 狀態: done | 處理: 5 個元件遷移至 onReady(binder) — StyleCheckPanel/GeneralPortraitPanel/GeneralListPanel/GeneralDetailPanel/GeneralDetailOverviewShell + BattleScene JSDoc 修復，commit 845cae1 | 驗證: tsc 無錯誤、encoding check 通過 | 阻塞: 無",
       "started_at": "2026-04-05",
-      "started_by_agent": "Agent1"
+      "started_by_agent": "Agent1",
+      "completed_at": "2026-04-05",
+      "completed_by_agent": "Agent1"
     },
     {
       "id": "UI-2-0077",
