@@ -11,8 +11,8 @@
       "created": "2026-04-05",
       "created_by_agent": "Agent2",
       "type": "asset-generation",
-      "title": "Jade / Crest / Rarity 第一批正式切圖",
-      "description": "由 Agent1 產出 GeneralDetailBloodlineV3 第一批可重用正式 family 資產，範圍限於 jade-parchment-panel-final、crest-medallion-final、jade-rarity-badge-final，不直接擴張到整頁所有素材。Agent2 保持 recipe、asset direction、compare board 與 runtime 驗證責任。",
+      "title": "Jade / Crest / Rarity 正式資產切圖",
+      "description": "為 GeneralDetailBloodlineV3 交付第一批正式 final family 資產，包含 jade-parchment-panel-final、crest-medallion-final、jade-rarity-badge-final。此卡已於驗收複核後退回重做，因為目前 runtime 仍混用 proof 與 v3_parts，且視覺方向與九宮格完成度都未達標。",
       "related": [
         "UI-2-0054",
         "UI-2-0087",
@@ -34,20 +34,22 @@
         "general_detail/crest-medallion-final",
         "general_detail/jade-rarity-badge-final"
       ],
-      "smoke_route": "node tools_node/capture-ui-screens.js --target GeneralDetailOverview --outDir artifacts/ui-qa/UI-2-0092",
+      "smoke_route": "node tools_node/capture-ui-screens.js --target GeneralDetailOverview --outDir artifacts/ui-qa/UI-2-0092/final-verification-retry",
       "docs_backwritten": [
         "docs/keep.md",
         "docs/UI 規格書.md",
         "docs/cross-reference-index.md"
       ],
       "acceptance": [
-        "第一批正式 family 只包含 jade panel / crest medallion / rarity badge 三項",
-        "正式輸出不可再直接引用 proof/ 目錄素材",
-        "jade header 與 crest medallion 需為同一套 family 語言",
-        "rarity badge 必須與 jade/parchment family 協調，不可回到獨立紫色風格",
-        "capture-ui-screens.js --target GeneralDetailOverview 可產出 compare 用截圖"
+        "GeneralDetailBloodlineV3 skin 不再引用任何 proof 路徑",
+        "jade-parchment-panel-final 的 header/body/frame/fill 完整且可延展",
+        "crest-medallion-final 的 ring/face 與 jade family 同語系",
+        "jade-rarity-badge-final 四階版本完成且 tone 不跳",
+        "整體視覺符合扁平 jade-parchment + 水墨渲染感 + 細金線點綴",
+        "不得出現寫實玉石高光、厚 bevel、黑金重金屬、厚 medal 感",
+        "capture-ui-screens.js --target GeneralDetailOverview 得到可接受結果"
       ],
-      "notes": "2026-04-05 | 狀態: open | 驗證: pending | 變更: 開立 Agent1 正式切圖子卡，第一批只做 jade panel / crest medallion / rarity badge 三個高重用 family | 阻塞: 等 UI-2-0089 / UI-2-0091 收斂 art recipe 與 asset direction"
+      "notes": "2026-04-05 | 狀態: open | 驗證: final-verification-retry 顯示 jade/crest 仍與參考圖差距明顯 | 處理: 驗收複核後退回重做，並補上扁平 jade-parchment + 水墨渲染感 + 細金線點綴的明確方向 | 阻塞: 需補正 jade panel 正式資產、crest face 正式資產、badge 家族一致性與 9-slice 安全區"
     }
   ]
 }

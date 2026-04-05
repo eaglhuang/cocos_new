@@ -15,8 +15,8 @@ manifest: ../ui-quality-todo.json
 
 - Total: 100
 - completed: 1
-- done: 67
-- in-progress: 22
+- done: 69
+- in-progress: 20
 - open: 10
 
 ## Tasks
@@ -79,10 +79,10 @@ manifest: ../ui-quality-todo.json
 | UI-2-0040 | Agent2 | in-progress | P1 | D | asset-direction | [UI-2-0040](./tasks/UI-2-0040.md) |
 | UI-2-0041 | Agent2 | done | P2 | D | asset-direction | [UI-2-0041](./tasks/UI-2-0041.md) |
 | UI-2-0042 | Agent2 | open | P2 | D | asset-direction | [UI-2-0042](./tasks/UI-2-0042.md) |
-| UI-2-0036 | Agent1 | in-progress | P1 | D | asset-generation | [UI-2-0036](./tasks/UI-2-0036.md) |
+| UI-2-0036 | Agent1 | done | P1 | D | asset-generation | [UI-2-0036](./tasks/UI-2-0036.md) |
 | UI-2-0033 | Agent1 | done | P1 | D | runtime-support | [UI-2-0033](./tasks/UI-2-0033.md) |
 | UI-2-0034 | Agent1 | open | P1 | D | runtime-support | [UI-2-0034](./tasks/UI-2-0034.md) |
-| UI-2-0043 | Agent1 | in-progress | P1 | D | asset-generation | [UI-2-0043](./tasks/UI-2-0043.md) |
+| UI-2-0043 | Agent1 | done | P1 | D | asset-generation | [UI-2-0043](./tasks/UI-2-0043.md) |
 | UI-2-0044 | Agent1 | in-progress | P1 | D | asset-generation | [UI-2-0044](./tasks/UI-2-0044.md) |
 | UI-2-0045 | Agent1 | in-progress | P1 | D | asset-generation | [UI-2-0045](./tasks/UI-2-0045.md) |
 | UI-2-0047 | Agent2 | done | P1 | D | asset-direction | [UI-2-0047](./tasks/UI-2-0047.md) |

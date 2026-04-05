@@ -7,26 +7,31 @@
 
 ## 目標
 
-為 `GeneralDetailBloodlineV3` 建立第一批正式可重用 family 資產方向，避免 proof 感殘留在正式頁面。
+為 `GeneralDetailBloodlineV3` 建立第一批可正式量產的 `jade-parchment` family 資產，讓右側資訊框、header、crest、rarity badge 都進入同一套視覺語言。
 
-這一批只做三個 family：
+## 美術方向
 
-1. `jade-parchment-panel-final`
-2. `crest-medallion-final`
-3. `jade-rarity-badge-final`
+### 正確方向
 
-## 整體美術方向
+- 扁平化 jade-parchment，不走寫實玉石材質。
+- 主體是 `羊皮紙底 + 水墨渲染感 + 細金線點綴 + 玉飾端件`。
+- 邊框要自然融入整體 UI，像卷軸或冊頁，不像貼上的裝甲框。
+- 立體感只能非常輕，重點是裝飾性與整體協調，不是材質炫技。
 
-- 主氣質：青綠玉飾 + 淺羊皮紙 + 低彩金屬邊飾
-- 不要：厚重黑金、紫色獨立 badge、過深陰影黑塊
-- 參考用途：人物日常介紹 v3 的正式框體，而不是戰鬥 HUD 或黑金奇幻框
+### 禁止方向
+
+- 禁止高亮反射、厚 bevel、寫實玉石紋理。
+- 禁止黑金重金屬、厚重勳章感。
+- 禁止明顯貼片感、浮在 UI 上的外掛框。
+- 禁止只對單一尺寸成立的非 9-slice 切法。
 
 Unity 對照：
-- 這一批相當於把 `GeneralDetail` 的共用 Prefab kit，從暫時拼裝的 placeholder theme，升級成正式可重用的 Theme / Sprite family。
+- 這比較像在做一套 `Prefab UI kit + Theme Sprite family`
+- 不是做一張高解析 concept 圖再硬拆進 UI
 
 ## Family 1: jade-parchment-panel-final
 
-### 必要輸出
+### 必要產物
 
 - `header_band`
 - `header_cap_left`
@@ -36,14 +41,14 @@ Unity 對照：
 - `paper_noise_overlay`
 - `inner_shadow_overlay`
 
-### 視覺要求
+### 規則
 
-- header 玉件要與 body frame 屬於同一套視覺語言
-- 玉色偏青綠，不偏藍紫
-- 羊皮紙底不可過白，要有自然暖灰與紙纖維感
-- 9-slice 只拉中段，不可破壞角飾與 header cap
+- header 與 body 必須同源
+- 角件、端件不可被 9-slice 拉壞
+- 紙感與墨感必須低調，不可髒亂
+- 細金線只能點綴，不可搶主體
 
-### slot 對照
+### 目標 slot
 
 - `gdv3.header.band`
 - `gdv3.header.capLeft`
@@ -55,7 +60,7 @@ Unity 對照：
 
 ## Family 2: crest-medallion-final
 
-### 必要輸出
+### 必要產物
 
 - `medallion_ring`
 - `medallion_face`
@@ -63,14 +68,14 @@ Unity 對照：
 - `soft_shadow`
 - `jade_inner_ring`
 
-### 視覺要求
+### 規則
 
-- 不可再出現黑色方塊陰影
-- ring / face / inner ring 必須能與 jade header 同族
-- face 可容納命紋圖騰或 glyph，但不應綁死單一角色
-- 稀有度 tint 只能作加成，不可蓋掉原本紋理
+- 應偏印章、符紋、紋章，不偏金屬獎章
+- `ring / face / inner ring` 要與 jade header 同語系
+- `face` 需要安全區，讓 glyph 可替換
+- 陰影要柔和，不要黑方塊感
 
-### slot 對照
+### 目標 slot
 
 - `gdv3.crest.shadow`
 - `gdv3.crest.ring`
@@ -80,31 +85,25 @@ Unity 對照：
 
 ## Family 3: jade-rarity-badge-final
 
-### 必要輸出
+### 必要產物
 
 - `badge_common`
 - `badge_rare`
 - `badge_epic`
 - `badge_legendary`
 
-### 視覺要求
+### 規則
 
-- 與 jade/parchment family 同語言
-- 不可回到獨立紫色膠感 badge
-- 要像 UI 系統的一部分，不像外掛商店貼紙
+- 與 jade/parchment family 同語系
+- 用扁平 ornament 表現稀有度，不用商業貼紙感
+- 可讀性高，但不可跳 tone
 
-### slot 對照
+### 目標 slot
 
 - `gdv3.rarity.badge.common`
 - `gdv3.rarity.badge.rare`
 - `gdv3.rarity.badge.epic`
 - `gdv3.rarity.badge.legendary`
-
-## 交付規則
-
-- 原始生成圖與工作檔放 `artifacts/ui-source/`
-- proof 不可直接進 final 路徑
-- runtime 正式引用應以 `final` family 為主
 
 ## 驗證
 
@@ -112,7 +111,8 @@ Unity 對照：
 node tools_node/capture-ui-screens.js --target GeneralDetailOverview --outDir artifacts/ui-qa/UI-2-0092
 ```
 
-通過條件：
-- 右側主框不再有 proof 拼裝感
-- 右下 crest 不再像黑塊或暫時裁圖
-- rarity badge 與 jade/parchment 不打架
+驗收重點：
+- 不再引用 `proof/`
+- jade / crest / badge 三者為同一套 family
+- 9-slice 延展自然
+- 視覺不再偏寫實玉石或黑金厚重金屬
