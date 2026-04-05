@@ -289,5 +289,10 @@
         ]
       }
     ]
+  },
+  "validation": {
+    "exceptions": {
+      "no-empty-container": "TraitTags/AbilityList 為執行期動態填充容器"
+    }
   }
 }

@@ -1,23 +1,46 @@
 {
   "id": "general-list-main",
   "version": 1,
-  "canvas": { "fitWidth": true, "fitHeight": true, "safeArea": true, "designWidth": 1920, "designHeight": 1080 },
+  "canvas": {
+    "fitWidth": true,
+    "fitHeight": true,
+    "safeArea": true,
+    "designWidth": 1920,
+    "designHeight": 1080
+  },
   "root": {
     "type": "container",
     "name": "GeneralListRoot",
-    "widget": { "top": 0, "left": 0, "right": 0, "bottom": 0 },
-    "transition": { "enter": "fadeIn", "exit": "fadeOut", "duration": 0.2 },
+    "widget": {
+      "top": 0,
+      "left": 0,
+      "right": 0,
+      "bottom": 0
+    },
+    "transition": {
+      "enter": "fadeIn",
+      "exit": "fadeOut",
+      "duration": 0.2
+    },
     "children": [
       {
         "type": "image",
         "name": "Background",
-        "widget": { "top": 0, "left": 0, "right": 0, "bottom": 0 },
+        "widget": {
+          "top": 0,
+          "left": 0,
+          "right": 0,
+          "bottom": 0
+        },
         "skinSlot": "detail.bg.fullscreen"
       },
       {
         "type": "label",
         "name": "Title",
-        "widget": { "top": 24, "left": 32 },
+        "widget": {
+          "top": 24,
+          "left": 32
+        },
         "width": 400,
         "height": 48,
         "textKey": "ui.general.title",
@@ -26,54 +49,143 @@
       {
         "type": "panel",
         "name": "MainContainer",
-        "widget": { "top": 88, "left": 32, "right": 32, "bottom": 88 },
+        "widget": {
+          "top": 88,
+          "left": 32,
+          "right": 32,
+          "bottom": 88
+        },
         "$ref": "fragments/layouts/parchment-panel",
         "children": [
           {
             "type": "panel",
             "name": "HeaderBar",
-            "widget": { "top": 12, "left": 12, "right": 12 },
+            "widget": {
+              "top": 12,
+              "left": 12,
+              "right": 12
+            },
             "height": 48,
             "skinSlot": "general.header.bg",
-            "layout": { "type": "horizontal", "spacing": 0, "paddingLeft": 24, "paddingRight": 24 },
+            "layout": {
+              "type": "horizontal",
+              "spacing": 0,
+              "paddingLeft": 24,
+              "paddingRight": 24
+            },
             "children": [
-              { "type": "label", "name": "ColName",   "width": "30%", "textKey": "ui.general.name",    "styleSlot": "general.label.header" },
-              { "type": "label", "name": "ColFaction", "width": "18%", "textKey": "ui.general.faction", "styleSlot": "general.label.header" },
-              { "type": "label", "name": "ColHp",      "width": "17%", "textKey": "ui.general.hp",      "styleSlot": "general.label.header" },
-              { "type": "label", "name": "ColSp",      "width": "17%", "textKey": "ui.general.sp",      "styleSlot": "general.label.header" },
-              { "type": "label", "name": "ColAtk",     "width": "18%", "textKey": "ui.general.atk",     "styleSlot": "general.label.header" }
+              {
+                "type": "label",
+                "name": "ColName",
+                "width": "30%",
+                "textKey": "ui.general.name",
+                "styleSlot": "general.label.header"
+              },
+              {
+                "type": "label",
+                "name": "ColFaction",
+                "width": "18%",
+                "textKey": "ui.general.faction",
+                "styleSlot": "general.label.header"
+              },
+              {
+                "type": "label",
+                "name": "ColHp",
+                "width": "17%",
+                "textKey": "ui.general.hp",
+                "styleSlot": "general.label.header"
+              },
+              {
+                "type": "label",
+                "name": "ColSp",
+                "width": "17%",
+                "textKey": "ui.general.sp",
+                "styleSlot": "general.label.header"
+              },
+              {
+                "type": "label",
+                "name": "ColAtk",
+                "width": "18%",
+                "textKey": "ui.general.atk",
+                "styleSlot": "general.label.header"
+              }
             ],
             "zIndex": 25
           },
           {
             "type": "scroll-list",
             "name": "DataList",
-            "widget": { "top": 60, "left": 12, "right": 12, "bottom": 12 },
+            "widget": {
+              "top": 60,
+              "left": 12,
+              "right": 12,
+              "bottom": 12
+            },
             "skinSlot": "general.list.bg",
-            "layout": { "type": "vertical", "spacing": 4 },
+            "layout": {
+              "type": "vertical",
+              "spacing": 4
+            },
             "itemTemplate": {
               "type": "panel",
               "name": "Row",
               "height": 60,
               "skinSlot": "general.row.bg",
-              "layout": { "type": "horizontal", "spacing": 0, "paddingLeft": 24, "paddingRight": 24 },
+              "layout": {
+                "type": "horizontal",
+                "spacing": 0,
+                "paddingLeft": 24,
+                "paddingRight": 24
+              },
               "children": [
-                { "type": "label", "name": "Name",    "width": "30%", "bind": "name",           "styleSlot": "general.label.name" },
-                { "type": "label", "name": "Faction", "width": "18%", "bind": "faction",        "styleSlot": "general.label.value" },
-                { "type": "label", "name": "Hp",      "width": "17%", "bind": "hp",             "styleSlot": "general.label.value" },
-                { "type": "label", "name": "Sp",      "width": "17%", "bind": "maxSp",          "styleSlot": "general.label.value" },
-                { "type": "label", "name": "Atk",     "width": "18%", "bind": "attackBonus",     "styleSlot": "general.label.positive" }
+                {
+                  "type": "label",
+                  "name": "Name",
+                  "width": "30%",
+                  "bind": "name",
+                  "styleSlot": "general.label.name"
+                },
+                {
+                  "type": "label",
+                  "name": "Faction",
+                  "width": "18%",
+                  "bind": "faction",
+                  "styleSlot": "general.label.value"
+                },
+                {
+                  "type": "label",
+                  "name": "Hp",
+                  "width": "17%",
+                  "bind": "hp",
+                  "styleSlot": "general.label.value"
+                },
+                {
+                  "type": "label",
+                  "name": "Sp",
+                  "width": "17%",
+                  "bind": "maxSp",
+                  "styleSlot": "general.label.value"
+                },
+                {
+                  "type": "label",
+                  "name": "Atk",
+                  "width": "18%",
+                  "bind": "attackBonus",
+                  "styleSlot": "general.label.positive"
+                }
               ]
             },
             "zIndex": 25
           }
         ]
-      }
-,
+      },
       {
         "type": "button",
         "name": "BtnBack",
-        "widget": { "bottom": 20, "right": 32 },
+        "widget": {
+          "bottom": 20,
+          "right": 32
+        },
         "width": 200,
         "height": 56,
         "skinSlot": "common.button.primary",
@@ -81,5 +193,10 @@
         "onClick": "onClickBack"
       }
     ]
+  },
+  "validation": {
+    "exceptions": {
+      "scroll-list-needs-itemTemplate": "DataList 於執行期由腳本動態設定 itemTemplate"
+    }
   }
 }

@@ -1,16 +1,32 @@
 {
   "id": "gacha-preview-main",
   "version": 1,
-  "canvas": { "fitWidth": true, "fitHeight": true, "safeArea": true, "designWidth": 1920, "designHeight": 1080 },
+  "canvas": {
+    "fitWidth": true,
+    "fitHeight": true,
+    "safeArea": true,
+    "designWidth": 1920,
+    "designHeight": 1080
+  },
   "root": {
     "type": "container",
     "name": "GachaPreviewRoot",
-    "widget": { "top": 0, "left": 0, "right": 0, "bottom": 0 },
+    "widget": {
+      "top": 0,
+      "left": 0,
+      "right": 0,
+      "bottom": 0
+    },
     "children": [
       {
         "type": "panel",
         "name": "Backdrop",
-        "widget": { "top": 0, "left": 0, "right": 0, "bottom": 0 },
+        "widget": {
+          "top": 0,
+          "left": 0,
+          "right": 0,
+          "bottom": 0
+        },
         "color": "background"
       },
       {
@@ -26,9 +42,19 @@
       {
         "type": "container",
         "name": "TopBar",
-        "widget": { "top": 24, "left": 32, "right": 32 },
+        "widget": {
+          "top": 24,
+          "left": 32,
+          "right": 32
+        },
         "height": 88,
-        "layout": { "type": "horizontal", "spacing": 24, "paddingLeft": 0, "paddingRight": 0, "verticalDirection": "top-to-bottom" },
+        "layout": {
+          "type": "horizontal",
+          "spacing": 24,
+          "paddingLeft": 0,
+          "paddingRight": 0,
+          "verticalDirection": "top-to-bottom"
+        },
         "children": [
           {
             "type": "button",
@@ -49,7 +75,9 @@
             "type": "container",
             "name": "TopSpacer",
             "height": 8,
-            "layout": { "type": "horizontal" }
+            "layout": {
+              "type": "horizontal"
+            }
           },
           {
             "type": "button",
@@ -81,13 +109,23 @@
           {
             "type": "shadow",
             "name": "BannerShadow",
-            "widget": { "top": -8, "left": -8, "right": -8, "bottom": -8 },
+            "widget": {
+              "top": -8,
+              "left": -8,
+              "right": -8,
+              "bottom": -8
+            },
             "skinSlot": "gacha.banner.shadow"
           },
           {
             "type": "panel",
             "name": "BannerPlate",
-            "widget": { "top": 0, "left": 0, "right": 0, "bottom": 0 },
+            "widget": {
+              "top": 0,
+              "left": 0,
+              "right": 0,
+              "bottom": 0
+            },
             "color": "surfaceOliveDark",
             "opacity": 0.95
           },
@@ -124,13 +162,23 @@
           {
             "type": "panel",
             "name": "CarrierBg",
-            "widget": { "top": 0, "left": 0, "right": 0, "bottom": 0 },
+            "widget": {
+              "top": 0,
+              "left": 0,
+              "right": 0,
+              "bottom": 0
+            },
             "skinSlot": "gacha.pity.carrier.bg"
           },
           {
             "type": "panel",
             "name": "CarrierFrame",
-            "widget": { "top": 0, "left": 0, "right": 0, "bottom": 0 },
+            "widget": {
+              "top": 0,
+              "left": 0,
+              "right": 0,
+              "bottom": 0
+            },
             "skinSlot": "gacha.pity.carrier.frame"
           },
           {
@@ -162,7 +210,12 @@
         "y": -356,
         "width": 860,
         "height": 136,
-        "layout": { "type": "horizontal", "spacing": 24, "paddingLeft": 0, "paddingRight": 0 },
+        "layout": {
+          "type": "horizontal",
+          "spacing": 24,
+          "paddingLeft": 0,
+          "paddingRight": 0
+        },
         "children": [
           {
             "type": "button",
@@ -221,5 +274,10 @@
         ]
       }
     ]
+  },
+  "validation": {
+    "exceptions": {
+      "no-empty-container": "TopSpacer 為純間距容器，意圖為空"
+    }
   }
 }

@@ -556,3 +556,150 @@ UI 任務卡建立或重寫時，優先使用 `docs/agent-briefs/UI-task-card-te
 
 - 執行準則以本節為主。
 - UI 正式方法論與結構定義，以 `docs/UI 規格書.md` 的「UI 量產工作流與 Agent 協作入口」為主。
+
+---
+
+## 20. Content Contract Framework（Phase F，2026-04-05）
+
+Content Contract Framework 是讓 AI Agent 能從「只會產 JSON 骨架」推進到「能交付可執行 UI」的關鍵補強層。
+
+Unity 對照：相當於把 Prefab 的 `SerializedField` 強制宣告出來，讓 Instantiate 時能靜態驗證該元件所需的所有欄位是否齊備。
+
+### 20.1 核心概念
+
+每個 template family 都必須有對應的 `ContentContractSpec`，描述：
+- 這個 family 的 screen 最少需要哪些欄位
+- 各欄位的型別、是否必填、有無預設值
+- 欄位對應的 bind path（供 `UIContentBinder` 使用）
+
+### 20.2 檔案位置
+
+| 層 | 路徑 |
+|----|------|
+| JSON Schema | `assets/resources/ui-spec/contracts/{family-id}-content.schema.json` |
+| TS 核心 | `assets/scripts/ui/core/UIContentBinder.ts` |
+| Screen 擴充欄位 | `UIScreenSpec.contentRequirements` |
+| 架構草案 | `docs/ui/content-contract-framework.md` |
+
+### 20.3 UIScreenSpec 擴充
+
+`UIScreenSpec` 新增選填欄位 `contentRequirements?: ContentContractRef`：
+- `schemaId`：對應 `contracts/{schemaId}.schema.json`
+- `familyId`：所屬 template family
+- `requiredFields`：最少必填欄位清單
+
+### 20.4 UIContentBinder（新增，2026-04-05）
+
+`UIContentBinder` 負責：
+1. 接收 `ContentContractRef` + runtime data object
+2. 以型別安全方式把欄位映射到 `UITemplateBinder` path
+3. 呼叫前驗證必填欄位是否存在，缺失時 warn 而非 silent fail
+
+位置：`assets/scripts/ui/core/UIContentBinder.ts`
+
+### 20.5 已落地 Content Schema（2026-04-05）
+
+| Family | Schema ID | 必填欄位 |
+|--------|-----------|----------|
+| `detail-split` | `detail-split-content` | `titleKey, bodyKey, tabs` |
+| `dialog-card` | `dialog-card-content` | `titleKey, bodyKey, primaryKey` |
+| `rail-list` | `rail-list-content` | `titleKey, railItems` |
+| `fullscreen-result` | `fullscreen-result-content` | `resultType, titleKey, descKey` |
+
+BattleScene 的 bind path 契約沿用 `BattleBindData.ts`，不另開 schema。
+
+### 20.6 強制規則
+
+- 任何新 screen spec 建立後，若 family 已有對應 schema，`contentRequirements` 欄位**必須填寫**。
+- `validate-ui-specs.js --check-content-contract` 必須通過才算完成 UI 任務。
+- Screen spec 中不得再出現未在 `requiredFields` 宣告的魔法字串 bind path。
+
+---
+
+## 21. Screen → Component 自動落地（Scaffold Pipeline，Phase F，2026-04-05）
+
+### 21.1 問題
+
+`scaffold-ui-spec-family.js` 只解決 JSON 骨架生成；從 `screen.json` 到可執行的 TypeScript Panel 仍是人工步驟，是目前量產最後一哩的主要瓶頸。
+
+Unity 對照：等同於只有 ScriptableObject 定義，但還沒有對應的 `MonoBehaviour` 骨架。
+
+### 21.2 工具入口（待實作 UI-2-0081）
+
+```bash
+node tools_node/scaffold-ui-component.js --screen <screenId> [--family <familyId>] [--out <dir>]
+```
+
+位置：`tools_node/scaffold-ui-component.js`
+
+### 21.3 產出物
+
+| 產出 | 說明 |
+|------|------|
+| `assets/scripts/ui/components/<PanelName>.ts` | 繼承 `UIPreviewBuilder` 的面板類別，含 `onReady(binder)` 骨架與 `content contract` 綁定範例 |
+| `UIConfig.ts` UIID entry | 自動新增 enum 成員（標記 `// TODO: 補 prefab 路徑`，不可留空字串） |
+
+### 21.4 Panel 樣板家族
+
+| Template Family | 樣板檔 |
+|-----------------|--------|
+| `detail-split` | `tools_node/templates/detail-split-panel.template.ts` |
+| `dialog-card` | `tools_node/templates/dialog-card-panel.template.ts` |
+| `rail-list` | `tools_node/templates/rail-list-panel.template.ts` |
+| `fullscreen-result` | `tools_node/templates/fullscreen-result-panel.template.ts` |
+
+### 21.5 規則
+
+- 產出的 Panel TS 只包含骨架，業務邏輯由後續 Agent 或開發者填充。
+- 每次 scaffold 後，自動跑 encoding check（BOM / U+FFFD 防禦）。
+- UIConfig 新增 entry 必須標記 `// TODO: 補 prefab 路徑`，不可留無效佔位字串。
+- scaffold 產出後，必須能通過 `tsc --noEmit` 靜態型別檢查。
+
+---
+
+## 22. Phase F 完成記錄（Agent1，2026-04-05）
+
+### 22.1 本批次完成的工作
+
+| 任務 | 產出 | 狀態 |
+|------|------|------|
+| UI-2-0080 Content Contract Framework | UISpecTypes.ts / UIContentBinder.ts / 4 schema JSON / content-contract-framework.md / validate-ui-specs `--check-content-contract` | ✅ done |
+| UI-2-0081 Screen→Component Scaffolder | `tools_node/scaffold-ui-component.js` + 4 Family Panel template | ✅ done |
+
+### 22.2 新增工具索引
+
+| 工具 | 路徑 | 說明 |
+|------|------|------|
+| scaffold-ui-component | `tools_node/scaffold-ui-component.js` | 從 screen spec 一鍵生成 Panel TypeScript骨架 |
+| Panel 模板 | `tools_node/templates/*.template.ts` | 4 家族各一份（detail-split / dialog-card / rail-list / fullscreen-result） |
+| Content Schema | `assets/resources/ui-spec/contracts/*.schema.json` | 4 家族內容契約 JSON |
+| UIContentBinder | `assets/scripts/ui/core/UIContentBinder.ts` | Content Contract 驗證與 binder 注入 |
+| validate-ui-specs `--check-content-contract` | `tools_node/validate-ui-specs.js` | 驗證 screen spec 的 contentRequirements 是否符合 schema |
+
+### 22.3 scaffold-ui-component.js 使用說明
+
+```bash
+# 基本用法
+node tools_node/scaffold-ui-component.js --screen <screenId>
+
+# 指定 family（省略時從 layout id 自動推斷）
+node tools_node/scaffold-ui-component.js --screen general-detail-screen --family detail-split
+
+# 先 dry-run 確認輸出
+node tools_node/scaffold-ui-component.js --screen lobby-main-screen --dry-run
+
+# 不自動修改 UIConfig
+node tools_node/scaffold-ui-component.js --screen my-screen --no-uiconfig
+```
+
+### 22.4 Phase F 完成（2026-04-06）
+
+- UI-2-0082（Figma Proof Mapping Sync）：✅ done — `tools_node/sync-figma-proof-mapping.js`
+- UI-2-0083（Agent Strict Layout Validator）：✅ done — `validate-ui-specs.js --strict`（17條規則）
+- UI-2-0078（MemoryManager LRU）：open，P2（Phase E 遺留）
+
+**Phase F 新增工具一覽**：
+- `tools_node/sync-figma-proof-mapping.js` — 從 Figma / 本地 config 輸出標準化 proof-mapping-{date}.json
+- `validate-ui-specs.js --strict` — 17條 layout 品質規則（節點深度、間距、skinSlot 交叉核對等）
+- `assets/resources/ui-spec/validation-rules.json` — 閾值設定檔
+- `docs/ui/layout-quality-rules.md` — 規則說明文件

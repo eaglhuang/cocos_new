@@ -25,6 +25,13 @@ const contractDir = path.join(uiSpecRoot, 'contracts');
 const contentDir = path.join(uiSpecRoot, 'content');
 
 const checkContentContract = process.argv.includes('--check-content-contract');
+const strictMode = process.argv.includes('--strict');
+const skipRules = new Set();
+for (let i = 0; i < process.argv.length; i++) {
+    if (process.argv[i] === '--skip-rule' && process.argv[i + 1]) {
+        skipRules.add(process.argv[++i]);
+    }
+}
 
 function listJsonFiles(dir) {
     if (!fs.existsSync(dir)) {
@@ -49,6 +56,204 @@ function fail(message, failures) {
 
 function warn(message, warnings) {
     warnings.push(message);
+}
+
+// ── Strict 模式輔助函式 ──────────────────────────────────────────────────────
+
+function strictFail(ruleId, message, failures, exceptions) {
+    if (skipRules.has(ruleId)) return;
+    if (exceptions && Object.prototype.hasOwnProperty.call(exceptions, ruleId)) return;
+    failures.push(`[${ruleId}] ${message}`);
+}
+
+function strictWarn(ruleId, message, warnings, exceptions) {
+    if (skipRules.has(ruleId)) return;
+    if (exceptions && Object.prototype.hasOwnProperty.call(exceptions, ruleId)) return;
+    warnings.push(`[${ruleId}] ${message}`);
+}
+
+function walkLayoutNodes(node, callback, depth) {
+    if (!node || typeof node !== 'object') return;
+    callback(node, depth);
+    if (Array.isArray(node.children)) {
+        for (const child of node.children) {
+            walkLayoutNodes(child, callback, depth + 1);
+        }
+    }
+}
+
+function collectBindPaths(node, result) {
+    if (!node) return;
+    if (typeof node.bind === 'string' && node.bind.trim().length > 0) {
+        result.add(node.bind.trim());
+    }
+    if (Array.isArray(node.children)) {
+        for (const child of node.children) { collectBindPaths(child, result); }
+    }
+}
+
+function getLayoutFamily(layoutId) {
+    if (/^dialog-card/.test(layoutId)) return 'dialog-card';
+    if (/^rail-list/.test(layoutId)) return 'rail-list';
+    if (/^detail-split/.test(layoutId)) return 'detail-split';
+    return null;
+}
+
+function validateLayoutStrict(layoutJson, filePath, allSkinSlots, failures, warnings) {
+    const rel = relative(filePath);
+    const exceptions = (layoutJson.validation && layoutJson.validation.exceptions) || null;
+    const family = getLayoutFamily(layoutJson.id || '');
+    if (!layoutJson.root) return;
+
+    const DEPTH_LIMIT = 12;
+    const CHILDREN_LIMIT = 20;
+    const SPACING_MAX = 200;
+    const FONT_MIN = 10;
+    const FONT_MAX = 96;
+    const ALPHA_MAX = 255;
+
+    walkLayoutNodes(layoutJson.root, (node, depth) => {
+        const loc = `${rel} - node "${node.name || node.type || '?'}"`;
+
+        // R1: max-node-depth
+        if (depth > DEPTH_LIMIT) {
+            strictFail('max-node-depth', `${loc} 節點深度 ${depth} 超過限制 ${DEPTH_LIMIT}`, failures, exceptions);
+        }
+
+        // R2: max-children-per-container
+        if (Array.isArray(node.children) && node.children.length > CHILDREN_LIMIT) {
+            strictFail('max-children-per-container', `${loc} 擁有 ${node.children.length} 個子節點，超過限制 ${CHILDREN_LIMIT}`, failures, exceptions);
+        }
+
+        // R3: no-empty-container
+        if (node.type === 'container') {
+            const hasChildren = Array.isArray(node.children) && node.children.length > 0;
+            const hasSkinSlot = typeof node.skinSlot === 'string' && node.skinSlot.trim().length > 0;
+            if (!hasChildren && !hasSkinSlot) {
+                strictFail('no-empty-container', `${loc} 是空容器（無子節點且無 skinSlot）`, failures, exceptions);
+            }
+        }
+
+        // R4: scroll-list-needs-itemTemplate
+        if (node.type === 'scroll-list') {
+            const hasTemplate = typeof node.itemTemplate === 'string' && node.itemTemplate.trim().length > 0;
+            if (!hasTemplate) {
+                strictFail('scroll-list-needs-itemTemplate', `${loc} scroll-list 缺少 itemTemplate`, failures, exceptions);
+            }
+        }
+
+        // R5: spacing-range  (0 ~ 200 px)
+        if (node.layout && typeof node.layout.spacing === 'number') {
+            if (node.layout.spacing < 0 || node.layout.spacing > SPACING_MAX) {
+                strictFail('spacing-range', `${loc} layout.spacing=${node.layout.spacing} 超出範圍 [0, ${SPACING_MAX}]`, failures, exceptions);
+            }
+        }
+
+        // R6: font-size-range  (10 ~ 96 px)
+        if (typeof node.fontSize === 'number') {
+            if (node.fontSize < FONT_MIN || node.fontSize > FONT_MAX) {
+                strictFail('font-size-range', `${loc} fontSize=${node.fontSize} 超出範圍 [${FONT_MIN}, ${FONT_MAX}]`, failures, exceptions);
+            }
+        }
+
+        // R7: widget-border-valid  (所有 widget 數值必須為整數)
+        if (node.widget && typeof node.widget === 'object' && !Array.isArray(node.widget)) {
+            for (const [k, v] of Object.entries(node.widget)) {
+                if (typeof v === 'number' && !Number.isInteger(v)) {
+                    strictFail('widget-border-valid', `${loc} widget.${k}=${v} 必須為整數`, failures, exceptions);
+                }
+            }
+        }
+
+        // R8: alpha-range  (0 ~ 255)
+        if (typeof node.alpha === 'number') {
+            if (node.alpha < 0 || node.alpha > ALPHA_MAX) {
+                strictFail('alpha-range', `${loc} alpha=${node.alpha} 超出範圍 [0, ${ALPHA_MAX}]`, failures, exceptions);
+            }
+        }
+
+        // R9: opacity-range  (0.0 ~ 1.0)
+        if (typeof node.opacity === 'number') {
+            if (node.opacity < 0.0 || node.opacity > 1.0) {
+                strictFail('opacity-range', `${loc} opacity=${node.opacity} 超出範圍 [0.0, 1.0]`, failures, exceptions);
+            }
+        }
+
+        // R10: dialog-max-cta  (dialog-card 佈局 button container ≤ 2 CTA)
+        if (family === 'dialog-card' && node.type === 'container') {
+            const n = node.name || '';
+            if (/button.?group|btn.?group|cta.?group|footer.?btn|action.?bar/i.test(n)) {
+                const ctaCount = Array.isArray(node.children)
+                    ? node.children.filter((c) => c.type === 'button').length
+                    : 0;
+                if (ctaCount > 2) {
+                    strictFail('dialog-max-cta', `${loc} dialog-card CTA 按鈕數量 ${ctaCount} 超過限制 2`, failures, exceptions);
+                }
+            }
+        }
+
+        // R11: rail-list-min-items  (rail-list 佈局 railItems ≥ 1)
+        if (family === 'rail-list' && node.type === 'scroll-list') {
+            if (typeof node.railItems !== 'number') {
+                strictFail('rail-list-min-items', `${loc} rail-list 缺少 railItems 宣告`, failures, exceptions);
+            } else if (node.railItems < 1) {
+                strictFail('rail-list-min-items', `${loc} railItems=${node.railItems} 少於最低要求 1`, failures, exceptions);
+            }
+        }
+
+        // R12: detail-split-tab-count  (detail-split 佈局 tab 數量 2~6)
+        if (family === 'detail-split' && node.type === 'tab-bar') {
+            const tabCount = Array.isArray(node.children) ? node.children.length : 0;
+            if (tabCount < 2 || tabCount > 6) {
+                strictFail('detail-split-tab-count', `${loc} tab 數量 ${tabCount} 超出範圍 [2, 6]`, failures, exceptions);
+            }
+        }
+
+        // R15: no-dynamic-bind
+        if (node.bind === 'dynamic') {
+            strictFail('no-dynamic-bind', `${loc} 不允許 bind="dynamic"`, failures, exceptions);
+        }
+
+        // R16: nine-slice-border-not-zero
+        if (node.nineSlice && typeof node.nineSlice === 'object') {
+            const b = Array.isArray(node.nineSlice.border) ? node.nineSlice.border
+                    : Array.isArray(node.nineSlice) ? node.nineSlice
+                    : null;
+            if (b && b.length === 4 && b.every((v) => v === 0)) {
+                strictFail('nine-slice-border-not-zero', `${loc} nineSlice border 不得全為 [0,0,0,0]`, failures, exceptions);
+            }
+        }
+
+        // R17: skin-slot-references-exist
+        if (typeof node.skinSlot === 'string' && node.skinSlot.trim().length > 0) {
+            if (allSkinSlots.size > 0 && !allSkinSlots.has(node.skinSlot.trim())) {
+                strictFail('skin-slot-references-exist', `${rel} - node "${node.name || '?'}" skinSlot="${node.skinSlot}" 在所有 skin 中找不到對應 slot`, failures, exceptions);
+            }
+        }
+    }, 0);
+}
+
+function validateScreenStrict(screenNode, screenFilePath, layoutJsons, failures, warnings) {
+    const rel = relative(screenFilePath);
+    const exceptions = (screenNode.validation && screenNode.validation.exceptions) || null;
+
+    // R14: bind-path-declared
+    if (skipRules.has('bind-path-declared')) return;
+    const layoutId = typeof screenNode.layout === 'string' ? screenNode.layout.trim() : null;
+    if (!layoutId || !layoutJsons.has(layoutId)) return;
+    const layoutJson = layoutJsons.get(layoutId);
+    if (!layoutJson || !layoutJson.root) return;
+
+    const bindPaths = new Set();
+    collectBindPaths(layoutJson.root, bindPaths);
+    if (bindPaths.size === 0) return;
+
+    const reqFields = screenNode.contentRequirements && Array.isArray(screenNode.contentRequirements.requiredFields)
+        ? new Set(screenNode.contentRequirements.requiredFields)
+        : null;
+    if (!reqFields) {
+        strictWarn('bind-path-declared', `${rel} - 佈局 "${layoutId}" 含 ${bindPaths.size} 個 bind 宣告，但 screen 未設定 contentRequirements.requiredFields`, warnings, exceptions);
+    }
 }
 
 function assertNonEmptyString(value, label, filePath, failures) {
@@ -214,7 +419,9 @@ function validateScreenContentRequirements(screenNode, filePath, contracts, fail
 const failures = [];
 const warnings = [];
 const layouts = new Map();
+const layoutJsons = new Map();
 const skins = new Map();
+const allSkinSlots = new Set();
 const screens = [];
 
 for (const filePath of listJsonFiles(layoutDir)) {
@@ -239,6 +446,7 @@ for (const filePath of listJsonFiles(layoutDir)) {
                 fail(`${relative(filePath)} - layout.id 重複：${json.id}`, failures);
             } else {
                 layouts.set(json.id, filePath);
+                layoutJsons.set(json.id, json);
             }
         }
     } catch (error) {
@@ -260,6 +468,9 @@ for (const filePath of listJsonFiles(skinDir)) {
                 fail(`${relative(filePath)} - skin.id 重複：${json.id}`, failures);
             } else {
                 skins.set(json.id, filePath);
+                if (json.slots && typeof json.slots === 'object') {
+                    for (const key of Object.keys(json.slots)) { allSkinSlots.add(key); }
+                }
             }
         }
     } catch (error) {
@@ -267,7 +478,17 @@ for (const filePath of listJsonFiles(skinDir)) {
     }
 }
 
-const contracts = checkContentContract ? loadContracts(failures) : new Map();
+// --strict 模式：對所有已載入的 layout 執行品質規則
+if (strictMode) {
+    for (const [layoutId, layoutJson] of layoutJsons) {
+        const layoutFilePath = layouts.get(layoutId);
+        if (layoutFilePath) {
+            validateLayoutStrict(layoutJson, layoutFilePath, allSkinSlots, failures, warnings);
+        }
+    }
+}
+
+const contracts = (checkContentContract || strictMode) ? loadContracts(failures) : new Map();
 
 for (const filePath of listJsonFiles(screenDir)) {
     try {
@@ -277,8 +498,11 @@ for (const filePath of listJsonFiles(screenDir)) {
         if (Array.isArray(json.screens)) {
             json.screens.forEach((screenNode, index) => {
                 validateScreenNode(screenNode, filePath, layouts, skins, failures, `screens[${index}]`);
-                if (checkContentContract) {
+                if (checkContentContract || strictMode) {
                     validateScreenContentRequirements(screenNode, filePath, contracts, failures, warnings);
+                }
+                if (strictMode) {
+                    validateScreenStrict(screenNode, filePath, layoutJsons, failures, warnings);
                 }
             });
         } else if (Array.isArray(json.panels)) {
@@ -287,13 +511,19 @@ for (const filePath of listJsonFiles(screenDir)) {
                     fail(`${relative(filePath)} - panels.screen 必須為非空字串`, failures);
                 }
             }
-            if (checkContentContract) {
+            if (checkContentContract || strictMode) {
                 validateScreenContentRequirements(json, filePath, contracts, failures, warnings);
+            }
+            if (strictMode) {
+                validateScreenStrict(json, filePath, layoutJsons, failures, warnings);
             }
         } else {
             validateScreenNode(json, filePath, layouts, skins, failures, 'screen');
-            if (checkContentContract) {
+            if (checkContentContract || strictMode) {
                 validateScreenContentRequirements(json, filePath, contracts, failures, warnings);
+            }
+            if (strictMode) {
+                validateScreenStrict(json, filePath, layoutJsons, failures, warnings);
             }
         }
 
@@ -327,5 +557,6 @@ if (warnings.length > 0) {
     }
 }
 
-const contractSummary = checkContentContract ? `, contracts=${contracts.size}` : '';
-console.log(`✅ UI Spec 驗證通過（layouts=${layouts.size}, skins=${skins.size}, screens=${screens.length}${contractSummary}）`);
+const contractSummary = (checkContentContract || strictMode) ? `, contracts=${contracts.size}` : '';
+const strictSummary = strictMode ? ` [strict]` : '';
+console.log(`✅ UI Spec 驗證通過（layouts=${layouts.size}, skins=${skins.size}, screens=${screens.length}${contractSummary}${strictSummary}）`);

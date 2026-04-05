@@ -33,6 +33,7 @@ function printHelp() {
     '',
     '常用選項：',
     '  --config          讀取 proof-mapping JSON 設定檔，欄位可直接對應 Figma 09_Proof Mapping',
+    '  --figma-frame-id  指定 Figma 檔案 ID，自動載入 artifacts/ui-qa/<family>/proof-mapping-*.json 最新快照',
     '  --ui-id           UIManager 用的 UI ID，預設由 family-id 轉成 PascalCase',
     '  --layer           Screen layer，預設 Popup',
     '  --bundle          Screen / skin bundle，預設 lobby_ui',
@@ -1272,7 +1273,33 @@ function main() {
   }
 
   const configPath = getArg('config');
-  const fileConfig = configPath ? readJsonConfig(configPath) : {};
+  const figmaFrameId = getArg('figma-frame-id');
+
+  // 當指定 --figma-frame-id 時，自動查找 artifacts/ui-qa/<familyId>/proof-mapping-*.json 最新快照
+  let autoConfigPath = null;
+  if (figmaFrameId && !configPath) {
+    const candidateFamilyId = normalizeSlug(getArg('family-id'));
+    if (candidateFamilyId) {
+      const artifactsDir = path.join(PROJECT_ROOT, 'artifacts', 'ui-qa', candidateFamilyId);
+      if (fs.existsSync(artifactsDir)) {
+        const snapshots = fs.readdirSync(artifactsDir)
+          .filter((f) => f.startsWith('proof-mapping-') && f.endsWith('.json'))
+          .sort();
+        if (snapshots.length > 0) {
+          autoConfigPath = path.join(artifactsDir, snapshots[snapshots.length - 1]);
+          console.log(`[scaffold-ui-spec-family] figma-frame-id 模式：自動載入 ${path.relative(PROJECT_ROOT, autoConfigPath)}`);
+        } else {
+          console.warn(`[scaffold-ui-spec-family] 找不到 artifacts/ui-qa/${candidateFamilyId}/proof-mapping-*.json`);
+          console.warn('[scaffold-ui-spec-family] 請先執行：node tools_node/sync-figma-proof-mapping.js --frame-id ' + figmaFrameId + ' --family ' + candidateFamilyId);
+        }
+      } else {
+        console.warn(`[scaffold-ui-spec-family] artifacts/ui-qa/${candidateFamilyId}/ 目錄不存在`);
+        console.warn('[scaffold-ui-spec-family] 請先執行：node tools_node/sync-figma-proof-mapping.js --frame-id ' + figmaFrameId + ' --family ' + candidateFamilyId);
+      }
+    }
+  }
+
+  const fileConfig = (configPath || autoConfigPath) ? readJsonConfig(configPath || autoConfigPath) : {};
   const familyId = normalizeSlug(pickValue(getArg('family-id'), fileConfig.familyId, ''));
   if (!familyId) {
     printHelp();

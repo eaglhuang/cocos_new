@@ -1,0 +1,26 @@
+{
+  "$comment": "validate-ui-specs.js --strict 模式的全域閾值與家族覆蓋設定",
+  "version": "1.0.0",
+  "globals": {
+    "max-node-depth": 12,
+    "max-children-per-container": 20,
+    "spacing-range": { "min": 0, "max": 200 },
+    "font-size-range": { "min": 10, "max": 96 },
+    "alpha-range": { "min": 0, "max": 255 },
+    "opacity-range": { "min": 0.0, "max": 1.0 },
+    "detail-split-tab-count": { "min": 2, "max": 6 },
+    "dialog-max-cta": 2,
+    "rail-list-min-items": 1
+  },
+  "familyOverrides": {
+    "dialog-card": {
+      "dialog-max-cta": 2
+    },
+    "rail-list": {
+      "rail-list-min-items": 1
+    },
+    "detail-split": {
+      "detail-split-tab-count": { "min": 2, "max": 6 }
+    }
+  }
+}
