@@ -430,11 +430,13 @@ services().ui.open(UIID.BattleHUD);
 
 ### 立即下一步（Agent1 最優先）
 
-- 🔄 **P1 進行中 → 立即執行**：**UI-2-0076**（Binder 遷移：11 個元件從 `getChildByName/getChildByPath` 遷移至 `onReady(binder: UITemplateBinder)` 模式）
-  - 框架已就位（`buildScreen()` 會呼叫 `onReady(binder)`）
-  - 參考最佳實踐：`DuelChallengePanel.ts`（已完成遷移）
-  - `GeneralDetailOverviewShell.ts` 已移除 `_mountCardCopy`，是下一個優先遷移目標
-  - 完成後即可讓所有面板資料驅動、可單元測試
+- ✅ **P1 完成**：**UI-2-0076**（Binder 遷移完成，commit `845cae1`）
+  - StyleCheckPanel: `onBuildComplete` → `onReady`
+  - GeneralPortraitPanel: `getChildByPath` 按鈕綁定 → `onReady(binder)`
+  - GeneralListPanel: `getChildByPath` 按鈕綁定 → `onReady(binder)`
+  - GeneralDetailPanel: `_bindStaticEvents()` + `_setupClickBlocker()` + `_ensureOverviewShell()` → `onReady(binder)`
+  - GeneralDetailOverviewShell: 新增 `onReady(binder)` 收斂點，路徑輔助方法維持向後相容
+  - 附加修復：BattleScene.ts JSDoc 中 stray code 誤植已清除
 
 ### 後續排程
 
