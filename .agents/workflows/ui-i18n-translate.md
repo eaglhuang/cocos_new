@@ -2,6 +2,12 @@
 description: 利用 AI 將 i18n 字串翻譯為多國語系版本，考慮字型寬度與 UI 空間限制
 ---
 
+## Context Budget Guard
+
+- 進 workflow 前先看 `.agents/skills/context-budget-guard/SKILL.md`
+- 先跑 `node tools_node/check-context-budget.js --changed --emit-keep-note`
+- 大型 `.md` / `.json` 變更先跑 `node tools_node/summarize-structured-diff.js --git <file>`
+- 收工前跑 `node tools_node/report-turn-usage.js --changed --emit-final-line`，並在 final answer 補上 `Token 量級：少 / 中 / 大（估算）`
 # 多國語系翻譯自動化流程
 
 此 workflow 利用 AI 翻譯能力，將 zh-TW 基礎語系字串翻譯為其他語言，
@@ -70,3 +76,4 @@ description: 利用 AI 將 i18n 字串翻譯為多國語系版本，考慮字型
 1. 切換到目標語系
 2. 截圖檢查是否有文字溢出
 3. 回報結果
+

@@ -25,3 +25,7 @@
 - Agent1 先產出至少 3 個 v2 方向（`v2a/v2b/v2c`）。
 - 每個方向至少回收 `128 / 64 / 32` 三尺寸預覽。
 - 若仍有明顯差距，再把 carrier 與 glyph 再拆成單獨 refinement 子卡。
+
+## 更新
+- 2026-04-06 | 任務轉為 QA 選型；以 BattleScene 真場景 / compare board 檢視 v2a/v2b/v2c。
+

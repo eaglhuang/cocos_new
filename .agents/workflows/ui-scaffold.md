@@ -2,6 +2,12 @@
 description: 從 UILayoutConfig JSON 自動產生 Cocos 3.8 UI 組件代碼
 ---
 
+## Context Budget Guard
+
+- 進 workflow 前先看 `.agents/skills/context-budget-guard/SKILL.md`
+- 先跑 `node tools_node/check-context-budget.js --changed --emit-keep-note`
+- 大型 `.md` / `.json` 變更先跑 `node tools_node/summarize-structured-diff.js --git <file>`
+- 收工前跑 `node tools_node/report-turn-usage.js --changed --emit-final-line`，並在 final answer 補上 `Token 量級：少 / 中 / 大（估算）`
 # UI 代碼自動產出流程
 
 此 workflow 用於從 JSON 佈局配置自動產生 TypeScript UI 組件。
@@ -55,3 +61,4 @@ curl.exe http://localhost:7456/asset-db/refresh
 
 ### 5. 執行 /ui-verify 驗證
 觸發 ui-verify workflow 驗證渲染結果。
+

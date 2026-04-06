@@ -2,6 +2,12 @@
 description: 根據系統規格描述和風格參考圖，自動產生 UI 遊戲截圖作為佈局參考
 ---
 
+## Context Budget Guard
+
+- 進 workflow 前先看 `.agents/skills/context-budget-guard/SKILL.md`
+- 先跑 `node tools_node/check-context-budget.js --changed --emit-keep-note`
+- 大型 `.md` / `.json` 變更先跑 `node tools_node/summarize-structured-diff.js --git <file>`
+- 收工前跑 `node tools_node/report-turn-usage.js --changed --emit-final-line`，並在 final answer 補上 `Token 量級：少 / 中 / 大（估算）`
 # UI 參考截圖自動產出流程
 
 此 workflow 在 `artifacts/ui-source/{系統名}/reference.png` 不存在時，
@@ -81,3 +87,4 @@ artifacts/ui-source/{系統名}/reference.png
 - 此截圖為 AI 產出的參考圖，非最終設計
 - 若人工已提供 reference.png，此 workflow 會自動跳過
 - 產出的截圖會保留在 artifacts/ 中，不進 Cocos 打包
+

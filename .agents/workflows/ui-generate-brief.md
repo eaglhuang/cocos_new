@@ -2,6 +2,12 @@
 description: 根據系統規格書自動產生 UI 設計簡報（design-brief.md），供後續截圖產生或 AI 佈局分析使用
 ---
 
+## Context Budget Guard
+
+- 進 workflow 前先看 `.agents/skills/context-budget-guard/SKILL.md`
+- 先跑 `node tools_node/check-context-budget.js --changed --emit-keep-note`
+- 大型 `.md` / `.json` 變更先跑 `node tools_node/summarize-structured-diff.js --git <file>`
+- 收工前跑 `node tools_node/report-turn-usage.js --changed --emit-final-line`，並在 final answer 補上 `Token 量級：少 / 中 / 大（估算）`
 # UI 設計簡報自動產出流程
 
 此 workflow 根據已有的系統規格書或 UI 規格書，自動產出結構化的 design-brief.md，
@@ -89,3 +95,4 @@ docs/{系統規格書名稱}.md          ← 通用系統規格書
 檢查 `artifacts/ui-source/{系統名}/reference.png` 是否存在：
 - 存在 → 跳過截圖產生，直接使用
 - 不存在 → 觸發 `/ui-generate-reference` 自動產圖
+

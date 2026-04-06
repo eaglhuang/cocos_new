@@ -2,6 +2,12 @@
 description: 自動啟動 Cocos 預覽、截圖、檢查 Console 並驗證 UI 佈局
 ---
 
+## Context Budget Guard
+
+- 進 workflow 前先看 `.agents/skills/context-budget-guard/SKILL.md`
+- 先跑 `node tools_node/check-context-budget.js --changed --emit-keep-note`
+- 大型 `.md` / `.json` 變更先跑 `node tools_node/summarize-structured-diff.js --git <file>`
+- 收工前跑 `node tools_node/report-turn-usage.js --changed --emit-final-line`，並在 final answer 補上 `Token 量級：少 / 中 / 大（估算）`
 # UI 自動驗證流程
 
 此 workflow 用於在修改 UI 代碼或佈局 JSON 後，自動驗證渲染結果是否正確。
@@ -52,3 +58,4 @@ curl.exe http://localhost:7456/asset-db/refresh
 驗證通過後：
 - 將最終截圖嵌入 walkthrough artifact
 - 回報「✅ UI 驗證通過」
+

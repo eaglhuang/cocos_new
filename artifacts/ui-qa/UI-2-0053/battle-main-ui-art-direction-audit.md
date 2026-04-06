@@ -98,7 +98,7 @@
 - `tally.card.art`
   - 仍是 placeholder，需等 `UI-2-0034` + `UI-2-0039`
 - `unitinfo.type.icon`
-  - 仍需吃 `UI-2-0036` 的 F7 refinement
+  - `UI-2-0036` 的 F7 refinement 已產出 v2a/v2b/v2c × 128/64/32，下一步改為 QA 選型（BattleScene 真場景/compare board）
 
 所以這張卡目前能做的是 style audit，不是 placement 結案。
 

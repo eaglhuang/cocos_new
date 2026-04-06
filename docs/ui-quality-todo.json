@@ -1052,7 +1052,7 @@
       "started_by_agent": "Agent2",
       "type": "quality-pass",
       "title": "修正 BattleScene Icon 品質差異（v2）",
-      "description": "根據 UI-2-0028 的候選稿與 `docs/UI品質參考圖/` 的比對結果，做出更貼近正式美術語言的 BattleScene icon v2，重點強化 carrier、glyph 與 32x32 可讀性。",
+      "description": "根據 UI-2-0028 的候選稿與 `docs/UI品質參考圖/` 的比對結果，做出更貼近正式美術語言的 BattleScene icon v2，重點強化 carrier、glyph 與 32x32 可讀性。目前 v2a/v2b/v2c × 128/64/32 素材已生產完成，下一步進入 QA 選型階段。",
       "related": [
         "UI-2-0027",
         "UI-2-0028",
@@ -1062,7 +1062,7 @@
       "depends": [
         "UI-2-0028"
       ],
-      "notes": "2026-04-01 | 狀態: in-progress | 驗證: 已建立 baseline QA 目錄，並補出 Agent1 生圖 brief 與下游執行卡 UI-2-0036 | 變更: 將 v2 refinement 收斂為 F7 戰場微型 badge 規格，明確定義 carrier、glyph、配色、尺寸驗收與 negative prompt | 阻塞: 待 Agent1 接手產出 v2a / v2b / v2c 候選稿與 128 / 64 / 32 三尺寸預覽"
+      "notes": "2026-04-01 | 狀態: in-progress | 驗證: 已建立 baseline QA 目錄，並補出 Agent1 生圖 brief 與下游執行卡 UI-2-0036 | 變更: 將 v2 refinement 收斂為 F7 戰場微型 badge 規格，明確定義 carrier、glyph、配色、尺寸驗收與 negative prompt | 阻塞: 待 Agent1 接手產出 v2a / v2b / v2c 候選稿與 128 / 64 / 32 三尺寸預覽\n2026-04-06 | 狀態: in-progress | 處理: 任務轉為 QA 選型 | 驗證: 已收斂 `v2a/v2b/v2c` × 3 尺寸、style profile v1 明確把 `unitinfo.type.icon` 歸入 `F7 battle-micro-badge`。下一步：在 BattleScene 真場景/compare board 上驗證三套稿，決定採用哪一套或再開 refinement 卡。"
     },
     {
       "id": "UI-2-0035",
@@ -1252,7 +1252,7 @@
       "phase": "D",
       "priority": "P1",
       "owner": "Agent1",
-      "status": "open",
+      "status": "done",
       "created": "2026-04-01",
       "created_by_agent": "Agent2",
       "type": "runtime-support",
@@ -2376,7 +2376,7 @@
         "compare board 可追蹤某資產是否來自 AI 與後處理版本",
         "與正式資產命名規則對齊"
       ],
-      "notes": "2026-04-05 | 狀態: in-progress | 變更: 前置包啟動 A2-2 AI 資產治理盤點; MaterialRecipe.aiGenerated + artRecipeRef 已預留 | 阻塞: ArtRecipe manifest 等 UI-2-0088 proof-contract 完成",
+      "notes": "2026-04-05 | 狀態: in-progress | 變更: 前置包啟動 A2-2 AI 資產治理盤點; MaterialRecipe.aiGenerated + artRecipeRef 已預留 | 阻塞: ArtRecipe manifest 等 UI-2-0088 proof-contract 完成\n2026-04-06 | 狀態: in-progress | 處理: ArtRecipe TypeScript 介面已在 UISpecTypes.ts 正式定義（含 prompt/negativePrompt/seed/postProcess/approvalStatus/approvedBy/approvedAt/basedOn/lineage），可/禁止 AI 生成資產分類已寫入 JSDoc 說明；4 份 art-recipe JSON 已存在 artifacts/ui-source/ai-recipes/ | 驗證: get_errors 0 錯誤 | 阻塞: 至少 1 套試產流程（lineage 填入）尚待 Agent2 執行生圖",
       "started_at": "2026-04-05",
       "started_by_agent": "Agent2"
     },
@@ -2475,8 +2475,8 @@
       "created": "2026-04-05",
       "created_by_agent": "Agent2",
       "type": "asset-generation",
-      "title": "Jade / Crest / Rarity 正式資產切圖",
-      "description": "為 GeneralDetailBloodlineV3 交付第一批正式 final family 資產，包含 jade-parchment-panel-final、crest-medallion-final、jade-rarity-badge-final。此卡已於驗收複核後退回重做，因為目前 runtime 仍混用 proof 與 v3_parts，且視覺方向與九宮格完成度都未達標。",
+      "title": "Jade / Crest / Rarity 正式 family 產出",
+      "description": "為 GeneralDetailBloodlineV3 產出可正式掛 runtime 的 jade-parchment-panel-final、crest-medallion-final、jade-rarity-badge-final，完成從 proof / v3_parts 到 v3_final 的切換與驗收。",
       "related": [
         "UI-2-0054",
         "UI-2-0087",
@@ -2505,21 +2505,1565 @@
         "docs/cross-reference-index.md"
       ],
       "acceptance": [
-        "GeneralDetailBloodlineV3 skin 不再引用任何 proof 路徑",
-        "jade-parchment-panel-final 的 header/body/frame/fill 完整且可延展",
-        "crest-medallion-final 的 ring/face 與 jade family 同語系",
-        "jade-rarity-badge-final 四階版本完成且 tone 不跳",
-        "整體視覺符合扁平 jade-parchment + 水墨渲染感 + 細金線點綴",
-        "不得出現寫實玉石高光、厚 bevel、黑金重金屬、厚 medal 感",
-        "capture-ui-screens.js --target GeneralDetailOverview 得到可接受結果"
+        "GeneralDetailBloodlineV3 skin 不再引用 proof 路徑",
+        "jade-parchment-panel-final 完成 header / body / frame / fill family",
+        "crest-medallion-final 完成 ring / face 並與 jade family 一致",
+        "jade-rarity-badge-final 與 jade-parchment panel 語言一致",
+        "capture-ui-screens.js --target GeneralDetailOverview 可得到可接受結果"
       ],
-      "notes": "2026-04-05 | 狀態: open | 驗證: final-verification-retry 顯示 jade/crest 仍與參考圖差距明顯 | 處理: 驗收複核後退回重做，並補上扁平 jade-parchment + 水墨渲染感 + 細金線點綴的明確方向 | 阻塞: 需補正 jade panel 正式資產、crest face 正式資產、badge 家族一致性與 9-slice 安全區"
+      "notes": "2026-04-05 | 狀態: open | 驗證: final-verification-retry 仍持續收斂 | 變更: jade / crest / badge family 已逐步接到 v3_final，等待最終美術完成度過線 | 阻塞: 無"
+    },
+    {
+      "id": "UI-2-0093",
+      "priority": "P1",
+      "phase": "G",
+      "owner": "Agent2",
+      "status": "in-progress",
+      "created": "2026-04-06",
+      "created_by_agent": "Agent2",
+      "type": "layout-content-polish",
+      "title": "GeneralDetailBloodlineV3 Canonical Layout / Content Polish",
+      "description": "延續 UI-2-0092 的 final family 接線結果，開始收斂 GeneralDetailBloodlineV3 右側 overview 資訊區的版面密度、欄位階層與 sample content。重點是消除血脈摘要重疊、弱化左上空白框感，並把 crest / bloodline / summary 模組拉回更接近 canonical reference 的乾淨結構。",
+      "related": [
+        "UI-2-0054",
+        "UI-2-0059",
+        "UI-2-0091",
+        "UI-2-0092"
+      ],
+      "depends": [
+        "UI-2-0092"
+      ],
+      "template_family": "detail-split",
+      "content_contract": [
+        "coreStatsValue",
+        "roleValue",
+        "traitValue",
+        "bloodlineBody",
+        "crestHint"
+      ],
+      "skin_fragments": [
+        "general_detail/jade-parchment-panel-final",
+        "general_detail/crest-medallion-final",
+        "general_detail/story-strip-final"
+      ],
+      "smoke_route": "node tools_node/capture-ui-screens.js --target GeneralDetailOverview --outDir artifacts/ui-qa/UI-2-0093/r16-layout-polish",
+      "docs_backwritten": [
+        "docs/keep.md",
+        "docs/UI 規格書.md",
+        "docs/cross-reference-index.md"
+      ],
+      "acceptance": [
+        "血脈摘要區不再出現欄位與內文互相重疊",
+        "左上提示區不再出現突兀空白框或 ribbon 殘影",
+        "overview sample content 明顯變短，閱讀節奏更接近 canonical reference",
+        "crest 區節點結構回到卡內整合，不再依賴外部 overlay 疊放",
+        "capture-ui-screens.js --target GeneralDetailOverview 可得到可比較結果"
+      ],
+      "notes": "2026-04-06 | 狀態: in-progress | 處理: r16-layout-polish 收斂中；crest 模組與 header area 仍有空白 offset | 驗證: smoke-capture 待確認 | 阻塞: 依賴 DALL-E 3 資產最終交付\n2026-04-06 | 狀態: in-progress | 處理: GeneralDetailOverviewShell 修補完成（mythic tier + story strip 文字繫結 + PortraitRarityFrame 連線）；LobbyScene.waitForReady() 修正 headless 時序問題 | 驗證: capture-ui-screens.js --target GeneralDetailOverview 執行成功，截圖位於 artifacts/ui-qa/UI-2-0093/r16-layout-polish/GeneralDetailOverview.png | 阻塞: 無"
+    },
+    {
+      "id": "PROG-1-0001",
+      "priority": "P0",
+      "phase": "P",
+      "owner": "Agent1",
+      "status": "open",
+      "created": "2026-04-06",
+      "created_by_agent": "Agent1",
+      "type": "data-structure",
+      "title": "HeroBase 介面 + 6 位初始武將資料落地",
+      "description": "在 GeneralUnit.ts 或新建 HeroBase.ts 定義 HeroBase 介面（id, name, title, originRegion, coreFactorTag, rarity, element, initialRole, introLine, portraitKey, battleVoiceKey）；補齊 generals.json 6 位初始武將的全部對應欄位。",
+      "related": [
+        "PROG-1-0003",
+        "PROG-1-0007",
+        "PROG-1-0010"
+      ],
+      "depends": [],
+      "acceptance": [
+        "HeroBase TypeScript 介面定義完整，0 TS errors",
+        "generals.json 6 位初始武將均有 introLine / portraitKey / battleVoiceKey",
+        "node tools_node/validate-generals-data.js 零 error（若腳本已存在）"
+      ],
+      "deliverables": [
+        "assets/scripts/core/models/HeroBase.ts（或 GeneralUnit.ts 擴充）",
+        "assets/resources/data/generals.json（6 位初始武將完整欄位）"
+      ],
+      "notes": "2026-04-06 | 狀態: open | 來源: 程式規格書.md §3.1 | 阻塞: 無"
+    },
+    {
+      "id": "PROG-1-0002",
+      "priority": "P0",
+      "phase": "P",
+      "owner": "Agent1",
+      "status": "open",
+      "created": "2026-04-06",
+      "created_by_agent": "Agent1",
+      "type": "data-structure",
+      "title": "SupportCardBase 介面 + support-cards.json 初始落地",
+      "description": "建立 SupportCardBase.ts 介面（id, name, category, rarity, routeType, arrivalTime, rushPrice, effectTags, previewLine, portraitKey）；建立 assets/resources/data/support-cards.json，包含至少 3 筆初始支援角色資料（紅顏池用）。",
+      "related": [
+        "PROG-1-0008"
+      ],
+      "depends": [],
+      "acceptance": [
+        "SupportCardBase 介面完整，0 TS errors",
+        "support-cards.json 至少 3 筆，含 name / rarity / routeType / arrivalTime / rushPrice",
+        "JSON Schema 驗證通過"
+      ],
+      "deliverables": [
+        "assets/scripts/core/models/SupportCardBase.ts",
+        "assets/resources/data/support-cards.json"
+      ],
+      "notes": "2026-04-06 | 狀態: open | 來源: 程式規格書.md §3.2 | 阻塞: 無"
+    },
+    {
+      "id": "PROG-1-0003",
+      "priority": "P0",
+      "phase": "P",
+      "owner": "Agent1",
+      "status": "open",
+      "created": "2026-04-06",
+      "created_by_agent": "Agent1",
+      "type": "data-structure",
+      "title": "InheritLogic 介面 + 預設繼承規則落地",
+      "description": "建立 InheritLogic.ts 介面（fatherId, motherId, ancestorCount, allowedRegions, factorSlots, mutationRules, previewWeights, inheritCaps）；對照 BloodlineGenerator.ts 確認型別整合點；建立 assets/resources/data/inherit-logic-default.json。",
+      "related": [
+        "PROG-1-0010",
+        "PROG-1-0014"
+      ],
+      "depends": [],
+      "acceptance": [
+        "InheritLogic 介面 0 TS errors",
+        "與 BloodlineGenerator.ts 的型別無衝突",
+        "inherit-logic-default.json baseline 規則完整（mutationRules / previewWeights）"
+      ],
+      "deliverables": [
+        "assets/scripts/core/models/InheritLogic.ts",
+        "assets/resources/data/inherit-logic-default.json"
+      ],
+      "notes": "2026-04-06 | 狀態: open | 來源: 程式規格書.md §3.3 | 注意: 對照 BloodlineGenerator.ts 已有邏輯"
+    },
+    {
+      "id": "PROG-1-0004",
+      "priority": "P0",
+      "phase": "P",
+      "owner": "Agent1",
+      "status": "open",
+      "created": "2026-04-06",
+      "created_by_agent": "Agent1",
+      "type": "data-structure",
+      "title": "OpeningFlowConfig 介面 + 開場幕次 JSON 落地",
+      "description": "建立 OpeningFlowConfig.ts 介面（phaseId, phaseName, durationHint, entryCondition, exitCondition, requiredUi, requiredEffects, requiredRewards）；建立 assets/resources/data/opening-flow-config.json，涵蓋信件、漫畫、轉場、轉蛋、教學全幕次。",
+      "related": [
+        "PROG-1-0007",
+        "PROG-1-0012"
+      ],
+      "depends": [],
+      "acceptance": [
+        "OpeningFlowConfig 介面 0 TS errors",
+        "opening-flow-config.json 包含全部開場幕次（至少 5 幕）",
+        "每幕 entryCondition / exitCondition 明確定義"
+      ],
+      "deliverables": [
+        "assets/scripts/core/models/OpeningFlowConfig.ts",
+        "assets/resources/data/opening-flow-config.json"
+      ],
+      "notes": "2026-04-06 | 狀態: open | 來源: 程式規格書.md §3.4 §2.1 | 阻塞: 無"
+    },
+    {
+      "id": "PROG-1-0005",
+      "priority": "P0",
+      "phase": "P",
+      "owner": "Agent1",
+      "status": "open",
+      "created": "2026-04-06",
+      "created_by_agent": "Agent1",
+      "type": "data-structure",
+      "title": "GachaConfig 介面 + 抽卡配置 JSON 落地",
+      "description": "建立 GachaConfig.ts 介面（poolId, poolType, resetEnabled, guaranteeRarity, pickCount, candidateIds, firstPickOnly, confirmRequired）；建立 assets/resources/data/gacha-config.json，含名將池（resetEnabled: true）與紅顏池各一。",
+      "related": [
+        "PROG-1-0008",
+        "PROG-1-0013"
+      ],
+      "depends": [
+        "PROG-1-0001",
+        "PROG-1-0002"
+      ],
+      "acceptance": [
+        "GachaConfig 介面 0 TS errors",
+        "gacha-config.json 含兩個 pool：'hero-pool' (pickCount:10, resetEnabled:true) 與 'support-pool'",
+        "candidateIds 引用真實存在的 id"
+      ],
+      "deliverables": [
+        "assets/scripts/core/models/GachaConfig.ts",
+        "assets/resources/data/gacha-config.json"
+      ],
+      "notes": "2026-04-06 | 狀態: open | 來源: 程式規格書.md §3.5 §2.2 | 阻塞: 需先 PROG-1-0001 落地 candidateIds"
+    },
+    {
+      "id": "PROG-1-0006",
+      "priority": "P0",
+      "phase": "P",
+      "owner": "Agent1",
+      "status": "open",
+      "created": "2026-04-06",
+      "created_by_agent": "Agent1",
+      "type": "data-structure",
+      "title": "CountdownConfig 介面 + 倒數參數 JSON 落地",
+      "description": "建立 CountdownConfig.ts 介面（targetId, startTimestamp, finishTimestamp, rushPrice, displayLocation, notifyEveryLogin, canAccelerate）；建立 assets/resources/data/countdown-config.json，包含離線累積旗標與初始趕路設定。",
+      "related": [
+        "PROG-1-0009",
+        "PROG-1-0015"
+      ],
+      "depends": [],
+      "acceptance": [
+        "CountdownConfig 介面 0 TS errors",
+        "countdown-config.json 含至少一組趕路設定",
+        "canAccelerate / rushPrice 欄位完整"
+      ],
+      "deliverables": [
+        "assets/scripts/core/models/CountdownConfig.ts",
+        "assets/resources/data/countdown-config.json"
+      ],
+      "notes": "2026-04-06 | 狀態: open | 來源: 程式規格書.md §3.6 §2.3 | 阻塞: 無"
+    },
+    {
+      "id": "PROG-1-0007",
+      "priority": "P1",
+      "phase": "P",
+      "owner": "Agent1",
+      "status": "open",
+      "created": "2026-04-06",
+      "created_by_agent": "Agent1",
+      "type": "implementation",
+      "title": "OpeningFlowController 實作（事件驅動開場流程）",
+      "description": "建立 assets/scripts/core/controllers/OpeningFlowController.ts。實作事件驅動的開場流程（信件→漫畫→轉場→轉蛋→教學）；各幕進出條件可追蹤、可回溯；整合 SceneManager / UIManager / EventSystem；支援未登入時顯示預設內容。",
+      "related": [
+        "PROG-1-0012"
+      ],
+      "depends": [
+        "PROG-1-0001",
+        "PROG-1-0002",
+        "PROG-1-0004"
+      ],
+      "acceptance": [
+        "從空存檔啟動可跑完全部幕次，無 TypeError",
+        "phaseId 狀態可追蹤（console 或 EventSystem 有事件）",
+        "entryCondition / exitCondition 對照 opening-flow-config.json 全部正確觸發",
+        "未登入時各幕顯示預設內容而非空白 / crash"
+      ],
+      "deliverables": [
+        "assets/scripts/core/controllers/OpeningFlowController.ts"
+      ],
+      "notes": "2026-04-06 | 狀態: open | 來源: 程式規格書.md §2.1 §4 §5.1 | 阻塞: PROG-1-0004 需先完成"
+    },
+    {
+      "id": "PROG-1-0008",
+      "priority": "P1",
+      "phase": "P",
+      "owner": "Agent1",
+      "status": "open",
+      "created": "2026-04-06",
+      "created_by_agent": "Agent1",
+      "type": "implementation",
+      "title": "GachaManager 實作（無限重置十連抽 + 保底）",
+      "description": "建立 assets/scripts/core/managers/GachaManager.ts。實作無限重置十連抽（初始名將池 + 紅顏池）；保底（第 10 抽必出 guaranteeRarity）；重置（resetEnabled 旗標）；firstPickOnly 限制；confirmRequired 確認鎖定流程。",
+      "related": [
+        "PROG-1-0013",
+        "PROG-1-0016"
+      ],
+      "depends": [
+        "PROG-1-0001",
+        "PROG-1-0002",
+        "PROG-1-0005"
+      ],
+      "acceptance": [
+        "10 連抽結果正確（10 個 id 不重複且在 candidateIds 內）",
+        "呼叫 reset() 後狀態正確回初始（guaranteeCounter 歸零）",
+        "第 10 抽必出 guaranteeRarity（單元驗證）",
+        "firstPickOnly=true 時第二次 pick 報錯"
+      ],
+      "deliverables": [
+        "assets/scripts/core/managers/GachaManager.ts"
+      ],
+      "notes": "2026-04-06 | 狀態: open | 來源: 程式規格書.md §2.2 §5.2 | 阻塞: PROG-1-0005 需先完成"
+    },
+    {
+      "id": "PROG-1-0009",
+      "priority": "P1",
+      "phase": "P",
+      "owner": "Agent1",
+      "status": "open",
+      "created": "2026-04-06",
+      "created_by_agent": "Agent1",
+      "type": "implementation",
+      "title": "CountdownManager 實作（離線時間累積 + 加速 + 完成切換）",
+      "description": "建立 assets/scripts/core/managers/CountdownManager.ts。實作趕路倒數（支援角色/名將路程）；離線時間累積（使用 Date.now delta）；加速（rushPrice 消費縮短剩餘時間）；完成後切換為已到達狀態；主畫面常駐提示更新。",
+      "related": [
+        "PROG-1-0015",
+        "PROG-1-0016"
+      ],
+      "depends": [
+        "PROG-1-0006"
+      ],
+      "acceptance": [
+        "模擬離線 30min 後重入 App，剩餘時間正確縮短",
+        "finishTimestamp 到達後狀態切換為 'arrived'，無 flicker",
+        "rushPrice 消費正確縮短剩餘秒數",
+        "notifyEveryLogin=true 時每次登入彈出提示"
+      ],
+      "deliverables": [
+        "assets/scripts/core/managers/CountdownManager.ts"
+      ],
+      "notes": "2026-04-06 | 狀態: open | 來源: 程式規格書.md §2.3 §5.4 | 阻塞: PROG-1-0006 需先完成"
+    },
+    {
+      "id": "PROG-1-0010",
+      "priority": "P1",
+      "phase": "P",
+      "owner": "Agent1",
+      "status": "open",
+      "created": "2026-04-06",
+      "created_by_agent": "Agent1",
+      "type": "ui-component",
+      "title": "BloodlineTreePanel 元件實作（祖先矩陣 + 子嗣預測）",
+      "description": "建立 assets/scripts/ui/components/BloodlineTreePanel.ts。顯示祖先矩陣（至少 3 代 14 人）；因子繼承視覺化（連線/色塊）；子嗣預測欄位顯示；對接 BloodlineGenerator.ts 計算結果。注意：規格書稱 UI_BloodlineTree，建議命名為 BloodlineTreePanel 與現有元件一致。",
+      "related": [
+        "PROG-1-0003",
+        "PROG-1-0014"
+      ],
+      "depends": [
+        "PROG-1-0001",
+        "PROG-1-0003"
+      ],
+      "acceptance": [
+        "3 代 14 人矩陣在 720p 下無溢出",
+        "因子繼承連線正確（每個因子溯源至祖先）",
+        "子嗣預測欄位正確顯示 BloodlineGenerator.ts 計算結果",
+        "smoke capture 可截圖（--target BloodlineTree）"
+      ],
+      "deliverables": [
+        "assets/scripts/ui/components/BloodlineTreePanel.ts"
+      ],
+      "notes": "2026-04-06 | 狀態: open | 來源: 程式規格書.md §2.4 §5.3 | 阻塞: PROG-1-0003 完成後再接"
+    },
+    {
+      "id": "PROG-1-0011",
+      "priority": "P1",
+      "phase": "P",
+      "owner": "Agent1",
+      "status": "open",
+      "created": "2026-04-06",
+      "created_by_agent": "Agent1",
+      "type": "ui-component",
+      "title": "AttributePanel 元件實作（六維屬性 + 因子槽 + 六角圖）",
+      "description": "確認 GeneralDetailPanel.ts 是否已涵蓋；若不足請建立或擴充 AttributePanel.ts。顯示主因子（coreFactorTag）、次級因子、解鎖狀態；六角圖或等效圖表（使用 CurveSystem 或 Graphics API）；支援 GeneralDetailOverviewShell 整合掛載。",
+      "related": [
+        "PROG-1-0001"
+      ],
+      "depends": [
+        "PROG-1-0001"
+      ],
+      "acceptance": [
+        "六維屬性（ATK/DEF/HP/SPD/COST + 適性）正確顯示",
+        "主因子 / 次級因子槽正確對應 coreFactorTag",
+        "解鎖狀態視覺差異（灰色遮罩 vs 亮色）",
+        "六角圖 or 等效圖表在 720p 不失真"
+      ],
+      "deliverables": [
+        "assets/scripts/ui/components/AttributePanel.ts（新建或確認 GeneralDetailPanel.ts 已擁有）"
+      ],
+      "notes": "2026-04-06 | 狀態: open | 來源: 程式規格書.md §2.5 | 可先審 GeneralDetailPanel.ts 範圍再決定新建或擴充"
+    },
+    {
+      "id": "PROG-1-0012",
+      "priority": "P2",
+      "phase": "P",
+      "owner": "Agent1",
+      "status": "open",
+      "created": "2026-04-06",
+      "created_by_agent": "Agent1",
+      "type": "validation",
+      "title": "新手開場流程整合驗證（未登入 + 全幕通過）",
+      "description": "端到端驗證：空存檔啟動 → 開場全幕（信件/漫畫/轉場/轉蛋/教學）→ 進入 Lobby；確保未登入資料時各幕顯示預設內容；各幕進出條件正確觸發；OpeningFlowController 狀態機走完全程無 TypeError。",
+      "related": [
+        "PROG-1-0007"
+      ],
+      "depends": [
+        "PROG-1-0007",
+        "PROG-1-0008",
+        "PROG-1-0009"
+      ],
+      "acceptance": [
+        "從空存檔啟動 → 5 + 幕次全部通過，零 TypeError",
+        "未登入時各幕均有合理預設內容（非空白 / crash）",
+        "開場完成後正確進入 LobbyScene"
+      ],
+      "deliverables": [
+        "artifacts/ui-qa/PROG-1-0012/opening-flow-test-report.md（測試執行截圖/log）"
+      ],
+      "notes": "2026-04-06 | 狀態: open | 來源: 程式規格書.md §4 §5.1 | 阻塞: 依賴 PROG-1-0007/0008/0009"
+    },
+    {
+      "id": "PROG-1-0013",
+      "priority": "P2",
+      "phase": "P",
+      "owner": "Agent1",
+      "status": "open",
+      "created": "2026-04-06",
+      "created_by_agent": "Agent1",
+      "type": "validation",
+      "title": "抽卡重置邏輯驗證（保底 + reset 正確性）",
+      "description": "驗證 GachaManager：10 連抽結果正確；呼叫 reset() 後狀態完整歸零（guaranteeCounter / picks）；第 10 抽必出 guaranteeRarity；confirmRequired=true 時確認前不鎖定；firstPickOnly=true 時第二次 pick 報錯。",
+      "related": [
+        "PROG-1-0008"
+      ],
+      "depends": [
+        "PROG-1-0008"
+      ],
+      "acceptance": [
+        "10 次連续 reset → 每次初始狀態完全一致",
+        "第 10 抽必出 guaranteeRarity（10 輪測試全中）",
+        "confirmRequired flow 走完後 pick 鎖定，reset 後解除"
+      ],
+      "deliverables": [
+        "artifacts/ui-qa/PROG-1-0013/gacha-reset-test-report.md"
+      ],
+      "notes": "2026-04-06 | 狀態: open | 來源: 程式規格書.md §5.2 | 阻塞: PROG-1-0008"
+    },
+    {
+      "id": "PROG-1-0014",
+      "priority": "P2",
+      "phase": "P",
+      "owner": "Agent1",
+      "status": "open",
+      "created": "2026-04-06",
+      "created_by_agent": "Agent1",
+      "type": "validation",
+      "title": "因子預覽對應角色資料驗證",
+      "description": "驗證 BloodlineTreePanel 預覽的因子與 InheritLogic previewWeights 正確對應；子嗣預測顯示與 BloodlineGenerator.ts 計算結果一致；測試 10 筆不同父母組合，factor 預測均正確。",
+      "related": [
+        "PROG-1-0010",
+        "PROG-1-0003"
+      ],
+      "depends": [
+        "PROG-1-0010",
+        "PROG-1-0003"
+      ],
+      "acceptance": [
+        "10 筆測試組合，BloodlineTreePanel 顯示與 BloodlineGenerator.ts 輸出 100% 一致",
+        "無任何 null reference 或 undefined factor",
+        "previewWeights 極端值（全 0 / 全 max）不 crash"
+      ],
+      "deliverables": [
+        "artifacts/ui-qa/PROG-1-0014/factor-preview-test-report.md"
+      ],
+      "notes": "2026-04-06 | 狀態: open | 來源: 程式規格書.md §5.3 | 阻塞: PROG-1-0010"
+    },
+    {
+      "id": "PROG-1-0015",
+      "priority": "P2",
+      "phase": "P",
+      "owner": "Agent1",
+      "status": "open",
+      "created": "2026-04-06",
+      "created_by_agent": "Agent1",
+      "type": "validation",
+      "title": "倒數完成狀態切換驗證（離線累積 + 加速）",
+      "description": "驗證 CountdownManager：離線時間累積邏輯（mock Date.now delta）；startTimestamp/finishTimestamp 差值計算正確；倒數完成後 UI 切換為已到達狀態無 flicker；rushPrice 支付後縮短秒數正確；notifyEveryLogin 正確觸發。",
+      "related": [
+        "PROG-1-0009"
+      ],
+      "depends": [
+        "PROG-1-0009"
+      ],
+      "acceptance": [
+        "mock 離線 1800 秒後，remainingMs 正確縮短 1800s",
+        "finishTimestamp 到達後狀態 = 'arrived'，不反覆切換",
+        "rushPrice 使用 100 元 → 縮短時間正確（對應 CountdownConfig rushPrice 換算）"
+      ],
+      "deliverables": [
+        "artifacts/ui-qa/PROG-1-0015/countdown-test-report.md"
+      ],
+      "notes": "2026-04-06 | 狀態: open | 來源: 程式規格書.md §5.4 | 阻塞: PROG-1-0009"
+    },
+    {
+      "id": "PROG-1-0016",
+      "priority": "P2",
+      "phase": "P",
+      "owner": "Agent1",
+      "status": "open",
+      "created": "2026-04-06",
+      "created_by_agent": "Agent1",
+      "type": "validation",
+      "title": "商業化入口一致性驗證（配置表驅動 + 無硬編碼）",
+      "description": "驗證所有商業化入口（rushPrice、轉蛋、道具）都從統一配置表讀取；grep 確認零個硬編碼價格數字；與 OpeningFlowController 流程狀態一致（未啟動流程前商業入口不可見）。",
+      "related": [
+        "PROG-1-0005",
+        "PROG-1-0009",
+        "PROG-1-0007"
+      ],
+      "depends": [
+        "PROG-1-0007",
+        "PROG-1-0008",
+        "PROG-1-0009"
+      ],
+      "acceptance": [
+        "grep -r 'rushPrice\\s*=\\s*[0-9]' assets/scripts 零結果（無硬編碼）",
+        "gacha-config.json / countdown-config.json 是唯一價格來源",
+        "開場流程未完成時商業入口按鈕不可見或禁用"
+      ],
+      "deliverables": [
+        "artifacts/ui-qa/PROG-1-0016/commercial-entry-audit.md"
+      ],
+      "notes": "2026-04-06 | 狀態: open | 來源: 程式規格書.md §4 §5.5 | 阻塞: PROG-1-0007/0008/0009"
+    },
+    {
+      "id": "DC-0-0001",
+      "priority": "P0",
+      "phase": "DC",
+      "owner": "Agent1",
+      "status": "done",
+      "created": "2026-04-06",
+      "created_by_agent": "Agent1",
+      "type": "data-structure",
+      "title": "稀有度門檻 JSON 設定檔建立",
+      "description": "建立 assets/resources/data/rarity-thresholds.json，定義 N/R/SR/SSR/UR 五級的 maxStat 與 avg5 雙軸門檻值，不寫死在程式碼中。格式需可被 general-balance-tuner skill 讀取。",
+      "related": [
+        "DC-0-0002",
+        "DC-0-0003"
+      ],
+      "depends": [],
+      "acceptance": [
+        "rarity-thresholds.json 存在且 JSON Schema 合法",
+        "包含 legendary/epic/rare/common 四段 maxStat + avg5 門檻",
+        "node tools_node/validate-generals-data.js 可讀取該設定"
+      ],
+      "deliverables": [
+        "assets/resources/data/rarity-thresholds.json"
+      ],
+      "notes": "2026-04-06 | 狀態: open | 來源: 資料中心架構規格書.md §3.3 | 阻塞: 無"
+    },
+    {
+      "id": "DC-0-0002",
+      "priority": "P0",
+      "phase": "DC",
+      "owner": "Agent1",
+      "status": "done",
+      "created": "2026-04-06",
+      "created_by_agent": "Agent1",
+      "type": "data-structure",
+      "title": "GeneralUnit.ts 擴充 rarityTier + characterCategory 欄位",
+      "description": "在 assets/scripts/core/models/GeneralUnit.ts 的 GeneralConfig 介面中，補上 GeneralDetailRarityTier（N/R/SR/SSR/UR enum）與 characterCategory（civilian/general/famed/mythical/titled enum），並補上 JSDoc 說明。",
+      "related": [
+        "DC-0-0001",
+        "DC-0-0003"
+      ],
+      "depends": [],
+      "acceptance": [
+        "GeneralDetailRarityTier 型別定義完整（5 個值）",
+        "characterCategory 型別定義完整（5 個值）",
+        "GeneralConfig 介面含這兩個欄位，0 TS errors"
+      ],
+      "deliverables": [
+        "assets/scripts/core/models/GeneralUnit.ts（RarityTier + characterCategory 擴充）"
+      ],
+      "notes": "2026-04-06 | 狀態: open | 來源: 資料中心架構規格書.md §3.1-3.2 | 阻塞: 無"
+    },
+    {
+      "id": "DC-0-0003",
+      "priority": "P0",
+      "phase": "DC",
+      "owner": "Agent1",
+      "status": "done",
+      "created": "2026-04-06",
+      "created_by_agent": "Agent1",
+      "type": "feature",
+      "title": "resolveRarityTier() 雙軸演算法實作",
+      "description": "在 assets/scripts/ui/components/GeneralDetailOverviewMapper.ts（或新建 assets/scripts/core/utils/RarityResolver.ts）實作 resolveRarityTier(config: GeneralConfig): GeneralDetailRarityTier，從外部 rarity-thresholds.json 讀取門檻值，依 maxStat 和 avg5 雙軸取較高 tier 回傳。",
+      "related": [
+        "DC-0-0001",
+        "DC-0-0002"
+      ],
+      "depends": [
+        "DC-0-0001",
+        "DC-0-0002"
+      ],
+      "acceptance": [
+        "resolveRarityTier() 能正確讀取 rarity-thresholds.json 門檻",
+        "雙軸取較高 tier 邏輯正確（unit tests 覆蓋邊界案例）",
+        "mythical characterCategory 強制升至 UR 邏輯已實作",
+        "0 TS errors"
+      ],
+      "deliverables": [
+        "assets/scripts/core/utils/RarityResolver.ts（或 GeneralDetailOverviewMapper.ts 更新）"
+      ],
+      "notes": "2026-04-06 | 狀態: open | 來源: 資料中心架構規格書.md §3.3 | 阻塞: DC-0-0001 + DC-0-0002"
+    },
+    {
+      "id": "DC-1-0001",
+      "priority": "P0",
+      "phase": "DC",
+      "owner": "Agent1",
+      "status": "done",
+      "created": "2026-04-06",
+      "created_by_agent": "Agent1",
+      "type": "tooling",
+      "title": "建立 master/ 目錄結構與 JSON 骨架",
+      "description": "建立 assets/resources/data/master/ 目錄，並在其中放置以下 6 個空白骨架 JSON：generals-base.json、generals-lore.json、generals-stories.json、gene-dictionary.json、bloodline-templates.json、troop-definitions.json。每個檔案需有正確的根物件結構（含版本欄位與空 data 陣列）。",
+      "related": [
+        "DC-1-0003",
+        "DC-1-0004",
+        "DC-1-0006"
+      ],
+      "depends": [],
+      "acceptance": [
+        "6 個 JSON 骨架均存在且可 JSON.parse()",
+        "每個骨架含 version、updatedAt、data 欄位",
+        "validate-generals-data.js 可掃描該目錄（即使無資料也零 error）"
+      ],
+      "deliverables": [
+        "assets/resources/data/master/generals-base.json",
+        "assets/resources/data/master/generals-lore.json",
+        "assets/resources/data/master/generals-stories.json",
+        "assets/resources/data/master/gene-dictionary.json",
+        "assets/resources/data/master/bloodline-templates.json",
+        "assets/resources/data/master/troop-definitions.json"
+      ],
+      "notes": "2026-04-06 | 狀態: open | 來源: 資料中心架構規格書.md §2.1 | 阻塞: 無"
+    },
+    {
+      "id": "DC-1-0002",
+      "priority": "P0",
+      "phase": "DC",
+      "owner": "Agent1",
+      "status": "done",
+      "created": "2026-04-06",
+      "created_by_agent": "Agent1",
+      "type": "tooling",
+      "title": "validate-generals-data.js 資料品質驗證工具",
+      "description": "建立 tools_node/validate-generals-data.js，讀取 assets/resources/data/master/*.json，依欄位規則驗證：必填欄位存在、型別正確、數值範圍合法（Stats 0-100、EP >= 0）、gene_refs 格式符合 GENE_ID pattern。輸出 error/warning 清單，零 error 才視為通過。",
+      "related": [
+        "DC-1-0001",
+        "DC-1-0004",
+        "DC-1-0006"
+      ],
+      "depends": [
+        "DC-1-0001"
+      ],
+      "acceptance": [
+        "工具存在且可執行：node tools_node/validate-generals-data.js",
+        "空骨架時零 error",
+        "含非法型別時回報 error 並 exit(1)",
+        "含超範圍數值時回報 error"
+      ],
+      "deliverables": [
+        "tools_node/validate-generals-data.js"
+      ],
+      "notes": "2026-04-06 | 狀態: open | 來源: 資料中心架構規格書.md §六 M1 | 阻塞: DC-1-0001"
+    },
+    {
+      "id": "DC-1-0003",
+      "priority": "P0",
+      "phase": "DC",
+      "owner": "Agent1",
+      "status": "done",
+      "created": "2026-04-06",
+      "created_by_agent": "Agent1",
+      "type": "tooling",
+      "title": "merge-generals-master.js 資料合併工具",
+      "description": "建立 tools_node/merge-generals-master.js，從多個原始 JSON 來源（raw-wiki.json、raw-ai.json）合併去重、欄位映射，輸出至 master/generals-base.json 與 master/generals-lore.json。支援 --dry-run 旗標。",
+      "related": [
+        "DC-1-0001",
+        "DC-1-0002",
+        "DC-1-0004"
+      ],
+      "depends": [
+        "DC-1-0001",
+        "DC-1-0002"
+      ],
+      "acceptance": [
+        "工具可執行：node tools_node/merge-generals-master.js",
+        "--dry-run 不寫入檔案，只印 diff 報告",
+        "重複 uid 以已有資料為優先，不覆蓋",
+        "合併後自動執行 validate-generals-data.js"
+      ],
+      "deliverables": [
+        "tools_node/merge-generals-master.js"
+      ],
+      "notes": "2026-04-06 | 狀態: open | 來源: 資料中心架構規格書.md §2.1 | 阻塞: DC-1-0001, DC-1-0002"
+    },
+    {
+      "id": "DC-1-0004",
+      "priority": "P1",
+      "phase": "DC",
+      "owner": "Agent1",
+      "status": "done",
+      "created": "2026-04-06",
+      "created_by_agent": "Agent1",
+      "type": "tooling",
+      "title": "ingest-generals-wiki.js Wiki 爬取工具",
+      "description": "建立 tools_node/ingest-generals-wiki.js，爬取維基百科三國志人物列表與光榮 Wiki 的武將數值，映射至 25 個核心欄位 + 6 大屬性 + 適性，輸出至 temp_workspace/raw-wiki.json。加入 User-Agent 設定與速率限制避免封鎖。",
+      "related": [
+        "DC-1-0003",
+        "DC-1-0005"
+      ],
+      "depends": [
+        "DC-1-0001"
+      ],
+      "acceptance": [
+        "工具可執行，成功爬取至少 10 位武將作為 smoke test",
+        "輸出 JSON 符合 GeneralBase 欄位格式",
+        "User-Agent 與速率限制已設定",
+        "遇到封鎖時不崩潰，回報 warning"
+      ],
+      "deliverables": [
+        "tools_node/ingest-generals-wiki.js"
+      ],
+      "notes": "2026-04-06 | 狀態: open | 來源: 資料中心架構規格書.md §2.1, M1-A | 阻塞: DC-1-0001"
+    },
+    {
+      "id": "DC-1-0005",
+      "priority": "P1",
+      "phase": "DC",
+      "owner": "Agent1",
+      "status": "done",
+      "created": "2026-04-06",
+      "created_by_agent": "Agent1",
+      "type": "tooling",
+      "title": "ingest-generals-ai.js AI 故事生成工具",
+      "description": "建立 tools_node/ingest-generals-ai.js，從 generals-base.json 讀取武將資訊，呼叫本機 Copilot Skills（general-story-writer skill）批次生成歷史趣聞/血脈傳聞/故事條，輸出至 temp_workspace/raw-ai.json，供 merge-generals-master.js 合入。",
+      "related": [
+        "DC-1-0003",
+        "DC-1-0004"
+      ],
+      "depends": [
+        "DC-1-0001"
+      ],
+      "acceptance": [
+        "工具腳本存在且文檔清楚說明使用方式",
+        "輸出欄位包含 historicalAnecdote / bloodlineRumor / storyStripCells",
+        "遇 AI 呼叫失敗時回報 warning 並跳過，不整批失敗"
+      ],
+      "deliverables": [
+        "tools_node/ingest-generals-ai.js"
+      ],
+      "notes": "2026-04-06 | 狀態: open | 來源: 資料中心架構規格書.md §2.1, M1-A | 阻塞: DC-1-0001"
+    },
+    {
+      "id": "DC-1-0006",
+      "priority": "P1",
+      "phase": "DC",
+      "owner": "Agent1",
+      "status": "done",
+      "created": "2026-04-06",
+      "created_by_agent": "Agent1",
+      "type": "content",
+      "title": "首批 50 位核心武將資料落地",
+      "description": "利用 ingest-generals-wiki.js + ingest-generals-ai.js + merge-generals-master.js pipeline，完成首批 50 位核心武將（含 generals.json 現有 10 位）的完整資料落地至 master/generals-base.json + generals-lore.json + generals-stories.json。確保 validate-generals-data.js 零 error。",
+      "related": [
+        "DC-1-0001",
+        "DC-1-0002",
+        "DC-1-0003",
+        "DC-1-0004",
+        "DC-1-0005"
+      ],
+      "depends": [
+        "DC-1-0002",
+        "DC-1-0003",
+        "DC-1-0004",
+        "DC-1-0005"
+      ],
+      "acceptance": [
+        "master/ 中含 >= 50 位武將",
+        "node tools_node/validate-generals-data.js 零 error",
+        "每位武將均有 historicalAnecdote、至少 3 格 storyStripCells",
+        "rarityTier 與 characterCategory 欄位均已填寫"
+      ],
+      "deliverables": [
+        "assets/resources/data/master/generals-base.json（50 位）",
+        "assets/resources/data/master/generals-lore.json（50 位对应）",
+        "assets/resources/data/master/generals-stories.json（50 位对应）"
+      ],
+      "notes": "2026-04-06 | 狀態: open | 來源: 資料中心架構規格書.md §六 M1 驗收 | 阻塞: DC-1-0002~0005"
+    },
+    {
+      "id": "DC-1-0007",
+      "priority": "P1",
+      "phase": "DC",
+      "owner": "Agent1",
+      "status": "done",
+      "created": "2026-04-06",
+      "created_by_agent": "Agent1",
+      "type": "documentation",
+      "title": "武將資料管線規格書建立",
+      "description": "建立 docs/系統規格書/武將資料管線規格書.md，說明 M1 工具鏈（ingest-wiki / ingest-ai / merge / validate 的流程、欄位映射規則、執行順序、手動審核步驟、品質標準）。",
+      "related": [
+        "DC-1-0001",
+        "DC-1-0002",
+        "DC-1-0003",
+        "DC-1-0004",
+        "DC-1-0005"
+      ],
+      "depends": [
+        "DC-1-0002"
+      ],
+      "acceptance": [
+        "docs/系統規格書/武將資料管線規格書.md 存在",
+        "包含工具鏈流程圖（文字圖也可）",
+        "包含欄位映射表（25 核心欄位）",
+        "包含人工審核 checklist"
+      ],
+      "deliverables": [
+        "docs/系統規格書/武將資料管線規格書.md"
+      ],
+      "notes": "2026-04-06 | 狀態: open | 來源: 資料中心架構規格書.md §六 M1 | 阻塞: DC-1-0002"
+    },
+    {
+      "id": "DC-2-0001",
+      "priority": "P1",
+      "phase": "DC",
+      "owner": "Agent1",
+      "status": "done",
+      "created": "2026-04-06",
+      "created_by_agent": "Agent1",
+      "type": "feature",
+      "title": "DataStorageAdapter 抽象類 (IndexedDB/SQLite 雙實作)",
+      "description": "建立 assets/scripts/core/storage/DataStorageAdapter.ts（抽象類）與 IndexedDbAdapter.ts（Web 實作）、SqliteAdapter.ts（Native 實作）。統一 API：get(key)、set(key, value)、query(filter)、delete(key)、clear()、getStorageSize()。",
+      "related": [
+        "DC-2-0002",
+        "DC-2-0003",
+        "DC-2-0004",
+        "DC-2-0005"
+      ],
+      "depends": [
+        "DC-1-0001"
+      ],
+      "acceptance": [
+        "DataStorageAdapter 抽象類定義完整，0 TS errors",
+        "IndexedDbAdapter 可在 Web preview 中實際寫入/讀取",
+        "SqliteAdapter 含 stub，標記 TODO: Native 平台",
+        "API 文件完整（JSDoc）"
+      ],
+      "deliverables": [
+        "assets/scripts/core/storage/DataStorageAdapter.ts",
+        "assets/scripts/core/storage/IndexedDbAdapter.ts",
+        "assets/scripts/core/storage/SqliteAdapter.ts"
+      ],
+      "notes": "2026-04-06 | 狀態: open | 來源: 資料中心架構規格書.md §2.2 | 阻塞: DC-1-0001（master 格式確定後）"
+    },
+    {
+      "id": "DC-2-0002",
+      "priority": "P1",
+      "phase": "DC",
+      "owner": "Agent1",
+      "status": "done",
+      "created": "2026-04-06",
+      "created_by_agent": "Agent1",
+      "type": "feature",
+      "title": "DataCatalog L0 索引層實作",
+      "description": "建立 assets/scripts/core/storage/DataCatalog.ts，從 generals-index.json 載入 L0 索引（武將 uid、name、faction、rarityTier、layerKey），提供 find(uid)、search(filter)、getActivePage() 等查詢方法。App 啟動時載入，目標 < 100ms。",
+      "related": [
+        "DC-2-0001",
+        "DC-2-0003"
+      ],
+      "depends": [
+        "DC-2-0001"
+      ],
+      "acceptance": [
+        "DataCatalog 可在 App 啟動時正確載入 generals-index.json",
+        "350 武將模擬資料下啟動 < 100ms",
+        "find() 與 search() 可正確過濾",
+        "0 TS errors"
+      ],
+      "deliverables": [
+        "assets/scripts/core/storage/DataCatalog.ts",
+        "assets/resources/data/generals-index.json（空骨架）"
+      ],
+      "notes": "2026-04-06 | 狀態: open | 來源: 資料中心架構規格書.md §2.2 L0 | 阻塞: DC-2-0001"
+    },
+    {
+      "id": "DC-2-0003",
+      "priority": "P1",
+      "phase": "DC",
+      "owner": "Agent1",
+      "status": "done",
+      "created": "2026-04-06",
+      "created_by_agent": "Agent1",
+      "type": "feature",
+      "title": "DataPageLoader L1-L5 分頁載入器實作",
+      "description": "建立 assets/scripts/core/storage/DataPageLoader.ts，依 layer level (L1-L5) 和 page cursor 實作分頁載入。L1 進入 Lobby 時預載當前陣容；L2 用 page cursor 懶載倉庫；L3-L5 按需載入。搭配 DataStorageAdapter 底層。",
+      "related": [
+        "DC-2-0001",
+        "DC-2-0002",
+        "DC-2-0004"
+      ],
+      "depends": [
+        "DC-2-0001",
+        "DC-2-0002"
+      ],
+      "acceptance": [
+        "DataPageLoader 可正確載入 L1 active generals",
+        "L2 倉庫分頁 page cursor 可翻頁",
+        "倉庫分頁載入 < 50ms（350 武將模擬資料）",
+        "0 TS errors"
+      ],
+      "deliverables": [
+        "assets/scripts/core/storage/DataPageLoader.ts"
+      ],
+      "notes": "2026-04-06 | 狀態: open | 來源: 資料中心架構規格書.md §2.2 L1-L5 | 阻塞: DC-2-0001, DC-2-0002"
+    },
+    {
+      "id": "DC-2-0004",
+      "priority": "P1",
+      "phase": "DC",
+      "owner": "Agent1",
+      "status": "done",
+      "created": "2026-04-06",
+      "created_by_agent": "Agent1",
+      "type": "feature",
+      "title": "ResourceManager 擴充 loadPagedData() API",
+      "description": "在 assets/scripts/core/ResourceManager.ts 中新增 loadPagedData(layer: LayerLevel, page: number) 方法，統一對外暴露分層載入接口，底層委託 DataPageLoader。Unity 對照：Addressables.LoadAssetsAsync。",
+      "related": [
+        "DC-2-0003",
+        "DC-2-0005"
+      ],
+      "depends": [
+        "DC-2-0003"
+      ],
+      "acceptance": [
+        "loadPagedData() 方法存在且型別完整",
+        "現有 ResourceManager 功能不受影響（回歸測試）",
+        "0 TS errors"
+      ],
+      "deliverables": [
+        "assets/scripts/core/ResourceManager.ts（loadPagedData 更新）"
+      ],
+      "notes": "2026-04-06 | 狀態: open | 來源: 資料中心架構規格書.md §六 M2 | 阻塞: DC-2-0003"
+    },
+    {
+      "id": "DC-2-0005",
+      "priority": "P1",
+      "phase": "DC",
+      "owner": "Agent1",
+      "status": "done",
+      "created": "2026-04-06",
+      "created_by_agent": "Agent1",
+      "type": "feature",
+      "title": "MemoryManager 擴充 data scope 管理",
+      "description": "在 assets/scripts/core/MemoryManager.ts 中新增 data scope：'master-active'（Lobby 常駐）、'master-storage'（倉庫按需）、'lore'（故事 LRU 20）。實作 LRU 快取（最多 20 位武將完整故事常駐）與自動 eviction。Unity 對照：Addressables memory group。",
+      "related": [
+        "DC-2-0003",
+        "DC-2-0004"
+      ],
+      "depends": [
+        "DC-2-0003"
+      ],
+      "acceptance": [
+        "三個 data scope 均可正確管理生命週期",
+        "LRU 快取滿 20 時自動 evict 最舊武將故事",
+        "0 TS errors"
+      ],
+      "deliverables": [
+        "assets/scripts/core/MemoryManager.ts（data scope 擴充）"
+      ],
+      "notes": "2026-04-06 | 狀態: open | 來源: 資料中心架構規格書.md §六 M2 | 阻塞: DC-2-0003"
+    },
+    {
+      "id": "DC-2-0006",
+      "priority": "P2",
+      "phase": "DC",
+      "owner": "Agent1",
+      "status": "done",
+      "created": "2026-04-06",
+      "created_by_agent": "Agent1",
+      "type": "testing",
+      "title": "M2 分層載入效能基準測試",
+      "description": "撰寫 tools_node/benchmark-storage.js，模擬 350 位武將資料，量測：App 啟動 L0 載入時間、倉庫分頁 (L2) 載入時間、L3 單筆故事載入時間、記憶體峰值估算。輸出基準報告。",
+      "related": [
+        "DC-2-0001",
+        "DC-2-0002",
+        "DC-2-0003"
+      ],
+      "depends": [
+        "DC-2-0001",
+        "DC-2-0002",
+        "DC-2-0003",
+        "DC-2-0004",
+        "DC-2-0005"
+      ],
+      "acceptance": [
+        "benchmark 腳本可執行（Node.js）",
+        "L0 < 100ms、L2 分頁 < 50ms",
+        "報告含時間（ms）與估算記憶體（MB）"
+      ],
+      "deliverables": [
+        "tools_node/benchmark-storage.js",
+        "docs/tasks/benchmark-storage-report.md（首次執行報告）"
+      ],
+      "notes": "2026-04-06 | 狀態: open | 來源: 資料中心架構規格書.md §六 M2 驗收 | 阻塞: DC-2-0001~0005"
+    },
+    {
+      "id": "DC-3-0001",
+      "priority": "P1",
+      "phase": "DC",
+      "owner": "Agent1",
+      "status": "done",
+      "created": "2026-04-06",
+      "created_by_agent": "Agent1",
+      "type": "data-structure",
+      "title": "PersonRegistry 介面 + 資料表定義",
+      "description": "建立 assets/scripts/core/models/PersonRegistry.ts，定義 PersonRecord 介面（uid, template_id, name, gene_refs: string[], ep_base, faction, is_virtual）與 BloodlineLink 介面（child_uid, parent_uid, relation: 'F'|'M', generation）。建立對應的 person-registry.json 空骨架。",
+      "related": [
+        "DC-3-0002",
+        "DC-3-0003"
+      ],
+      "depends": [
+        "DC-1-0001"
+      ],
+      "acceptance": [
+        "PersonRecord + BloodlineLink 介面完整，0 TS errors",
+        "person-registry.json 骨架合法",
+        "型別與 GeneralUnit.ts 無衝突"
+      ],
+      "deliverables": [
+        "assets/scripts/core/models/PersonRegistry.ts",
+        "assets/resources/data/person-registry.json（空骨架）"
+      ],
+      "notes": "2026-04-06 | 狀態: open | 來源: 資料中心架構規格書.md §2.3 | 阻塞: DC-1-0001"
+    },
+    {
+      "id": "DC-3-0002",
+      "priority": "P1",
+      "phase": "DC",
+      "owner": "Agent1",
+      "status": "done",
+      "created": "2026-04-06",
+      "created_by_agent": "Agent1",
+      "type": "feature",
+      "title": "BloodlineGraph 服務實作",
+      "description": "建立 assets/scripts/core/services/BloodlineGraph.ts，提供：loadRegistry()（載入 PersonRegistry）、getAncestorChain(uid, depth): string[]（回溯祖先 uid 鏈）、calculateEP(uid): number（從 PersonRegistry 計算 EP）、getDescendants(uid): string[]（查後代）。",
+      "related": [
+        "DC-3-0001",
+        "DC-3-0003",
+        "DC-3-0004"
+      ],
+      "depends": [
+        "DC-3-0001",
+        "DC-2-0001"
+      ],
+      "acceptance": [
+        "getAncestorChain 可正確回傳 3 代 14 人 uid",
+        "calculateEP 數值與現有 BloodlineGenerator 無斷裂",
+        "5 代 500 位 + 2000 虛擬祖先模擬資料下記憶體 < 舊嵌套方案 70%",
+        "0 TS errors"
+      ],
+      "deliverables": [
+        "assets/scripts/core/services/BloodlineGraph.ts"
+      ],
+      "notes": "2026-04-06 | 狀態: open | 來源: 資料中心架構規格書.md §2.3, §六 M3 | 阻塞: DC-3-0001, DC-2-0001"
+    },
+    {
+      "id": "DC-3-0003",
+      "priority": "P1",
+      "phase": "DC",
+      "owner": "Agent1",
+      "status": "done",
+      "created": "2026-04-06",
+      "created_by_agent": "Agent1",
+      "type": "tooling",
+      "title": "Ancestors_JSON → ancestor_chain 遷移腳本",
+      "description": "建立 tools_node/migrate-bloodline-to-registry.js，讀取現有 generals.json 的 Ancestors_JSON 嵌套結構，自動建立 PersonRegistry 條目，並將 Ancestors_JSON 改為 ancestor_chain: string[] 格式（14 個 uid）。支援 --dry-run 旗標。遷移前自動備份。",
+      "related": [
+        "DC-3-0001",
+        "DC-3-0002",
+        "DC-3-0005"
+      ],
+      "depends": [
+        "DC-3-0001"
+      ],
+      "acceptance": [
+        "工具可執行，--dry-run 不修改檔案",
+        "遷移後 generals.json 的 ancestor_chain 含 14 個 uid",
+        "所有祖先均在 person-registry.json 中有對應條目",
+        "遷移前自動輸出 .bak 備份檔"
+      ],
+      "deliverables": [
+        "tools_node/migrate-bloodline-to-registry.js"
+      ],
+      "notes": "2026-04-06 | 狀態: open | 來源: 資料中心架構規格書.md §2.3, §六 M3 | 阻塞: DC-3-0001"
+    },
+    {
+      "id": "DC-3-0004",
+      "priority": "P2",
+      "phase": "DC",
+      "owner": "Agent1",
+      "status": "done",
+      "created": "2026-04-06",
+      "created_by_agent": "Agent1",
+      "type": "feature",
+      "title": "BloodlineTreePanel 改為從 PersonRegistry 渲染",
+      "description": "更新現有 BloodlineTreePanel（或對應 UI 元件），改為呼叫 BloodlineGraph.getAncestorChain() 取得祖先 uid，再從 PersonRegistry 查表取得各祖先資料，取代直接讀 Ancestors_JSON 嵌套。",
+      "related": [
+        "DC-3-0002"
+      ],
+      "depends": [
+        "DC-3-0002",
+        "DC-3-0003"
+      ],
+      "acceptance": [
+        "BloodlineTreePanel 渲染結果視覺不變（截圖比對或人工確認）",
+        "不再直接讀 Ancestors_JSON 嵌套",
+        "0 TS errors"
+      ],
+      "deliverables": [
+        "assets/scripts/ui/panels/BloodlineTreePanel.ts（或對應檔案，更新）"
+      ],
+      "notes": "2026-04-06 | 狀態: open | 來源: 資料中心架構規格書.md §六 M3 | 阻塞: DC-3-0002, DC-3-0003"
+    },
+    {
+      "id": "DC-3-0005",
+      "priority": "P1",
+      "phase": "DC",
+      "owner": "Agent1",
+      "status": "done",
+      "created": "2026-04-06",
+      "created_by_agent": "Agent1",
+      "type": "tooling",
+      "title": "validate-bloodline-integrity.js 完整性驗證工具",
+      "description": "建立 tools_node/validate-bloodline-integrity.js，驗證 person-registry.json 的圖完整性：所有 ancestor_chain uid 均有對應 PersonRecord、不存在孤立節點、generation 計算一致、無循環引用。",
+      "related": [
+        "DC-3-0001",
+        "DC-3-0003"
+      ],
+      "depends": [
+        "DC-3-0001"
+      ],
+      "acceptance": [
+        "工具可執行：node tools_node/validate-bloodline-integrity.js",
+        "5 代 500 位 + 2000 虛擬祖先的完整模擬資料下零 error",
+        "存在循環引用時報 error 並 exit(1)"
+      ],
+      "deliverables": [
+        "tools_node/validate-bloodline-integrity.js"
+      ],
+      "notes": "2026-04-06 | 狀態: open | 來源: 資料中心架構規格書.md §六 M3 | 阻塞: DC-3-0001"
+    },
+    {
+      "id": "DC-4-0001",
+      "priority": "P2",
+      "phase": "DC",
+      "owner": "Agent1",
+      "status": "done",
+      "created": "2026-04-06",
+      "created_by_agent": "Agent1",
+      "type": "feature",
+      "title": "MessagePack 序列化整合",
+      "description": "在 package.json 引入 @msgpack/msgpack（純 JS 版本，無 WASM）。建立 assets/scripts/core/serialization/MsgpackCodec.ts，封裝 encode/decode，確保與 Cocos Creator 3.8 相容（不依賴 Node.js built-in）。",
+      "related": [
+        "DC-4-0002",
+        "DC-4-0003"
+      ],
+      "depends": [
+        "DC-3-0002"
+      ],
+      "acceptance": [
+        "@msgpack/msgpack 安裝正確",
+        "MsgpackCodec.encode/decode 可在 Cocos Creator Web Preview 執行",
+        "encode + decode 來回無資料損失",
+        "0 TS errors"
+      ],
+      "deliverables": [
+        "assets/scripts/core/serialization/MsgpackCodec.ts",
+        "package.json（@msgpack/msgpack dependency 新增）"
+      ],
+      "notes": "2026-04-06 | 狀態: open | 來源: 資料中心架構規格書.md §2.4, §六 M4 | 阻塞: DC-3-0002"
+    },
+    {
+      "id": "DC-4-0002",
+      "priority": "P2",
+      "phase": "DC",
+      "owner": "Agent1",
+      "status": "done",
+      "created": "2026-04-06",
+      "created_by_agent": "Agent1",
+      "type": "feature",
+      "title": "pako gzip 壓縮整合",
+      "description": "整合 pako 函式庫（或確認已有依賴）。建立 assets/scripts/core/serialization/GzipCodec.ts，封裝 compress/decompress，確保在 Web 與 Native 環境均可用。",
+      "related": [
+        "DC-4-0001",
+        "DC-4-0003"
+      ],
+      "depends": [
+        "DC-4-0001"
+      ],
+      "acceptance": [
+        "GzipCodec.compress/decompress 可在 Web Preview 執行",
+        "2MB 測試資料壓縮後 < 600KB",
+        "壓縮/解壓來回無資料損失",
+        "0 TS errors"
+      ],
+      "deliverables": [
+        "assets/scripts/core/serialization/GzipCodec.ts"
+      ],
+      "notes": "2026-04-06 | 狀態: open | 來源: 資料中心架構規格書.md §2.4 | 阻塞: DC-4-0001"
+    },
+    {
+      "id": "DC-4-0003",
+      "priority": "P2",
+      "phase": "DC",
+      "owner": "Agent1",
+      "status": "done",
+      "created": "2026-04-06",
+      "created_by_agent": "Agent1",
+      "type": "feature",
+      "title": "SaveSerializer 服務實作（序列化 + 壓縮管線）",
+      "description": "建立 assets/scripts/core/services/SaveSerializer.ts，整合 MsgpackCodec + GzipCodec，提供 serialize(data): Uint8Array 與 deserialize(bytes): object。同時實作 JSON 欄位縮寫映射表（壓縮模式/展開模式雙向轉換），確保 2MB JSON → < 500KB compressed。",
+      "related": [
+        "DC-4-0001",
+        "DC-4-0002"
+      ],
+      "depends": [
+        "DC-4-0001",
+        "DC-4-0002"
+      ],
+      "acceptance": [
+        "SaveSerializer.serialize/deserialize 來回無資料損失",
+        "2MB JSON → serialize → < 500KB",
+        "deserialize < 50ms（中期存檔大小）",
+        "欄位縮寫映射表 JSON 可獨立編輯"
+      ],
+      "deliverables": [
+        "assets/scripts/core/services/SaveSerializer.ts",
+        "assets/resources/data/field-abbreviation-map.json"
+      ],
+      "notes": "2026-04-06 | 狀態: open | 來源: 資料中心架構規格書.md §2.4, §六 M4 驗收 | 阻塞: DC-4-0001, DC-4-0002"
+    },
+    {
+      "id": "DC-5-0001",
+      "priority": "P2",
+      "phase": "DC",
+      "owner": "Agent1",
+      "status": "done",
+      "created": "2026-04-06",
+      "created_by_agent": "Agent1",
+      "type": "feature",
+      "title": "DeltaPatchBuilder 服務實作（JSON Patch RFC 6902）",
+      "description": "建立 assets/scripts/core/services/DeltaPatchBuilder.ts，實作 build(base: object, current: object): JsonPatch[]（JSON Patch RFC 6902），與 apply(base: object, patches: JsonPatch[]): object。",
+      "related": [
+        "DC-5-0002"
+      ],
+      "depends": [
+        "DC-4-0003"
+      ],
+      "acceptance": [
+        "build() 輸出符合 JSON Patch RFC 6902 格式",
+        "apply(build(base, current)) 結果與 current 深等",
+        "典型日常 diff（改幾個 Stats）< 20KB patch",
+        "0 TS errors"
+      ],
+      "deliverables": [
+        "assets/scripts/core/services/DeltaPatchBuilder.ts"
+      ],
+      "notes": "2026-04-06 | 狀態: open | 來源: 資料中心架構規格書.md §2.5, §六 M5 | 阻塞: DC-4-0003"
+    },
+    {
+      "id": "DC-5-0002",
+      "priority": "P2",
+      "phase": "DC",
+      "owner": "Agent1",
+      "status": "done",
+      "created": "2026-04-06",
+      "created_by_agent": "Agent1",
+      "type": "feature",
+      "title": "SyncManager 改造：delta mode + 全量 fallback",
+      "description": "改造 assets/scripts/core/SyncManager.ts（或對應檔案），新增 syncDelta() 方法，優先使用 DeltaPatchBuilder 生成 delta patch 上傳，若 delta 失敗（hash 不匹配等）自動 fallback 至全量同步。",
+      "related": [
+        "DC-5-0001",
+        "DC-5-0003",
+        "DC-5-0004",
+        "DC-5-0005"
+      ],
+      "depends": [
+        "DC-5-0001"
+      ],
+      "acceptance": [
+        "syncDelta() 可在 dev 模式下執行（即使 server 為 stub）",
+        "delta 失敗時自動 fallback 全量且有 log",
+        "0 TS errors"
+      ],
+      "deliverables": [
+        "assets/scripts/core/SyncManager.ts（delta mode 更新）"
+      ],
+      "notes": "2026-04-06 | 狀態: open | 來源: 資料中心架構規格書.md §2.5 Phase 2 | 阻塞: DC-5-0001"
+    },
+    {
+      "id": "DC-5-0003",
+      "priority": "P2",
+      "phase": "DC",
+      "owner": "Agent1",
+      "status": "done",
+      "created": "2026-04-06",
+      "created_by_agent": "Agent1",
+      "type": "documentation",
+      "title": "Server API spec 文件（/sync/delta + /sync/full）",
+      "description": "建立 docs/系統規格書/同步API規格書.md，定義 POST /sync/delta（request: DeltaPatch, response: ConfirmOrConflict）與 POST /sync/full（request: FullSave, response: ConfirmOrConflict）的 schema、錯誤碼、HTTP status 碼。",
+      "related": [
+        "DC-5-0002"
+      ],
+      "depends": [
+        "DC-5-0001"
+      ],
+      "acceptance": [
+        "docs/系統規格書/同步API規格書.md 存在",
+        "含兩個 API endpoint 的 request/response schema",
+        "含 HTTP status 碼與錯誤碼表"
+      ],
+      "deliverables": [
+        "docs/系統規格書/同步API規格書.md"
+      ],
+      "notes": "2026-04-06 | 狀態: open | 來源: 資料中心架構規格書.md §六 M5 | 阻塞: DC-5-0001"
+    },
+    {
+      "id": "DC-5-0004",
+      "priority": "P2",
+      "phase": "DC",
+      "owner": "Agent1",
+      "status": "done",
+      "created": "2026-04-06",
+      "created_by_agent": "Agent1",
+      "type": "feature",
+      "title": "Action_Records 壓縮批次上傳",
+      "description": "在 SyncManager 中實作 Action_Records 的批次收集（buffer）與 gzip 壓縮上傳，搭配 SaveSerializer.serialize()，確保批次上傳的 Action_Records 體積合理。",
+      "related": [
+        "DC-5-0002"
+      ],
+      "depends": [
+        "DC-5-0002",
+        "DC-4-0003"
+      ],
+      "acceptance": [
+        "Action_Records 批次收集後壓縮再上傳",
+        "100 筆 Action_Records 壓縮後 < 50KB",
+        "0 TS errors"
+      ],
+      "deliverables": [
+        "assets/scripts/core/SyncManager.ts（Action_Records 批次壓縮更新）"
+      ],
+      "notes": "2026-04-06 | 狀態: open | 來源: 資料中心架構規格書.md §六 M5 | 阻塞: DC-5-0002, DC-4-0003"
+    },
+    {
+      "id": "DC-5-0005",
+      "priority": "P2",
+      "phase": "DC",
+      "owner": "Agent1",
+      "status": "done",
+      "created": "2026-04-06",
+      "created_by_agent": "Agent1",
+      "type": "feature",
+      "title": "Network 狀態偵測 + 自動重試 + 斷點續傳",
+      "description": "在 SyncManager 中實作網路狀態偵測（navigator.onLine / cc.sys.networkType），同步失敗自動重試 3 次（指數退避），斷線期間的 delta patch 佇列化，恢復連線後自動重送。",
+      "related": [
+        "DC-5-0002"
+      ],
+      "depends": [
+        "DC-5-0002"
+      ],
+      "acceptance": [
+        "網路斷線時佇列化，恢復後自動重送",
+        "重試 3 次後放棄並通知玩家",
+        "佇列化的 patch 不超過 10 筆（超過觸發全量同步）",
+        "0 TS errors"
+      ],
+      "deliverables": [
+        "assets/scripts/core/SyncManager.ts（network retry 更新）"
+      ],
+      "notes": "2026-04-06 | 狀態: open | 來源: 資料中心架構規格書.md §六 M5 驗收 | 阻塞: DC-5-0002"
+    },
+    {
+      "id": "DC-6-0001",
+      "priority": "P2",
+      "phase": "DC",
+      "owner": "Agent1",
+      "status": "done",
+      "created": "2026-04-06",
+      "created_by_agent": "Agent1",
+      "type": "content",
+      "title": "200+ 武將完整資料擴充",
+      "description": "利用 M1 管線工具，將 master/ 中武將資料從 50 位擴充至 200+ 位，每位含完整基礎屬性 + 故事條（historicalAnecdote/bloodlineRumor）+ 虛擬祖先 uid 鏈。validate-generals-data.js 零 error。",
+      "related": [
+        "DC-1-0006",
+        "DC-3-0001"
+      ],
+      "depends": [
+        "DC-1-0006",
+        "DC-3-0003"
+      ],
+      "acceptance": [
+        "master/generals-base.json 含 >= 200 位武將",
+        "validate-generals-data.js 零 error",
+        "每位均有 rarityTier、characterCategory、ancestor_chain"
+      ],
+      "deliverables": [
+        "assets/resources/data/master/generals-base.json（200+ 位）",
+        "assets/resources/data/master/generals-lore.json（200+ 位）"
+      ],
+      "notes": "2026-04-06 | 狀態: open | 來源: 資料中心架構規格書.md §六 M6 | 阻塞: DC-1-0006, DC-3-0003"
+    },
+    {
+      "id": "DC-6-0002",
+      "priority": "P2",
+      "phase": "DC",
+      "owner": "Agent1",
+      "status": "done",
+      "created": "2026-04-06",
+      "created_by_agent": "Agent1",
+      "type": "feature",
+      "title": "戰鬥日誌歸檔策略實作",
+      "description": "在 DataStorageAdapter 或 SyncManager 中實作戰鬥日誌歸檔：最近 100 場保留完整；101-200 場壓縮為季度摘要；200 場以上 2 年前刪除。提供 archiveBattleLogs() 方法供定期呼叫。",
+      "related": [
+        "DC-6-0005",
+        "DC-6-0006"
+      ],
+      "depends": [
+        "DC-2-0001",
+        "DC-3-0002"
+      ],
+      "acceptance": [
+        "超過 100 場時自動建立季度摘要",
+        "季度摘要含總勝敗/平均傷亡/關鍵事件計數",
+        "2 年前日誌可安全刪除且不影響核心存檔",
+        "0 TS errors"
+      ],
+      "deliverables": [
+        "assets/scripts/core/services/BattleLogArchiver.ts"
+      ],
+      "notes": "2026-04-06 | 狀態: open | 來源: 資料中心架構規格書.md §2.6, §六 M6 | 阻塞: DC-2-0001, DC-3-0002"
+    },
+    {
+      "id": "DC-6-0003",
+      "priority": "P2",
+      "phase": "DC",
+      "owner": "Agent1",
+      "status": "done",
+      "created": "2026-04-06",
+      "created_by_agent": "Agent1",
+      "type": "feature",
+      "title": "已故武將歸檔機制（Spirit_Card 快照）",
+      "description": "實作已故武將歸檔流程：武將死亡時，根據主職（武官/文官）建立 Spirit_Card 快照，主體資料移至 L5 歸檔層，從 L1 活躍列表移除。SpiritCard 保留 uid/name/gene_refs/ep_snapshot/deathContext。",
+      "related": [
+        "DC-2-0002",
+        "DC-6-0005"
+      ],
+      "depends": [
+        "DC-2-0001",
+        "DC-3-0002"
+      ],
+      "acceptance": [
+        "武將死亡後 Spirit_Card 建立，L1 記憶體釋放",
+        "SpiritCard 含規格書定義的全部欄位",
+        "可從 Spirit_Card uid 反查完整歸檔資料",
+        "0 TS errors"
+      ],
+      "deliverables": [
+        "assets/scripts/core/services/GeneralArchiver.ts",
+        "assets/scripts/core/models/SpiritCard.ts"
+      ],
+      "notes": "2026-04-06 | 狀態: open | 來源: 資料中心架構規格書.md §2.6, §六 M6 | 阻塞: DC-2-0001, DC-3-0002"
+    },
+    {
+      "id": "DC-6-0004",
+      "priority": "P2",
+      "phase": "DC",
+      "owner": "Agent1",
+      "status": "done",
+      "created": "2026-04-06",
+      "created_by_agent": "Agent1",
+      "type": "feature",
+      "title": "LRU 故事快取（20 位武將常駐）",
+      "description": "在 MemoryManager 的 lore scope 中實作 LRU（Least Recently Used）快取，最多允許 20 位武將的完整故事資料（generals-lore-{id}.json）同時常駐記憶體，超過時 evict 最久未存取的。",
+      "related": [
+        "DC-2-0005"
+      ],
+      "depends": [
+        "DC-2-0005"
+      ],
+      "acceptance": [
+        "LRU 快取上限 20，超過自動 evict",
+        "被 evict 的故事下次存取時可自動重載",
+        "LRU 可在 dev 模式下查看當前快取清單",
+        "0 TS errors"
+      ],
+      "deliverables": [
+        "assets/scripts/core/MemoryManager.ts（LRU 故事快取更新）"
+      ],
+      "notes": "2026-04-06 | 狀態: open | 來源: 資料中心架構規格書.md §2.6 | 阻塞: DC-2-0005"
+    },
+    {
+      "id": "DC-6-0005",
+      "priority": "P2",
+      "phase": "DC",
+      "owner": "Agent1",
+      "status": "done",
+      "created": "2026-04-06",
+      "created_by_agent": "Agent1",
+      "type": "feature",
+      "title": "DataGrowthMonitor 服務實作",
+      "description": "建立 assets/scripts/core/services/DataGrowthMonitor.ts，定期（每 10 分鐘或場景切換時）評估本地儲存使用量，分為正常/warning(>5MB)/error(>10MB) 三級，warning/error 時觸發事件（EventBus 或 callback）通知玩家。",
+      "related": [
+        "DC-6-0006"
+      ],
+      "depends": [
+        "DC-2-0001"
+      ],
+      "acceptance": [
+        "DataGrowthMonitor 可在 App 初始化後靜默啟動",
+        "> 5MB 觸發 warning 事件",
+        "> 10MB 觸發 error 事件",
+        "0 TS errors"
+      ],
+      "deliverables": [
+        "assets/scripts/core/services/DataGrowthMonitor.ts"
+      ],
+      "notes": "2026-04-06 | 狀態: open | 來源: 資料中心架構規格書.md §六 M6 | 阻塞: DC-2-0001"
+    },
+    {
+      "id": "DC-6-0006",
+      "priority": "P2",
+      "phase": "DC",
+      "owner": "Agent1",
+      "status": "done",
+      "created": "2026-04-06",
+      "created_by_agent": "Agent1",
+      "type": "testing",
+      "title": "M6 長期成長模擬測試",
+      "description": "撰寫 tools_node/simulate-data-growth.js，模擬 1000 天遊玩、500 位武將、10000 場戰鬥的儲存增長情境，輸出每個里程碑節點的預估存檔大小（compressed）。驗收：500 位武將 + 10000 場戰鬥 → 存檔 < 5MB compressed。",
+      "related": [
+        "DC-6-0002",
+        "DC-6-0003",
+        "DC-6-0005"
+      ],
+      "depends": [
+        "DC-6-0002",
+        "DC-6-0003",
+        "DC-6-0004",
+        "DC-6-0005"
+      ],
+      "acceptance": [
+        "simulate 腳本可執行（Node.js）",
+        "1000 天/500 武將/10000 場戰鬥模擬存檔 < 5MB compressed",
+        "報告含各資料類型的分項大小"
+      ],
+      "deliverables": [
+        "tools_node/simulate-data-growth.js",
+        "docs/tasks/simulate-data-growth-report.md（首次執行報告）"
+      ],
+      "notes": "2026-04-06 | 狀態: open | 來源: 資料中心架構規格書.md §六 M6 驗收 | 阻塞: DC-6-0002~0005"
     }
   ],
   "summary": {
-    "done": 69,
-    "in-progress": 20,
+    "done": 105,
+    "in-progress": 21,
     "completed": 1,
-    "open": 10
+    "open": 25
   }
 }

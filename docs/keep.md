@@ -1,5 +1,18 @@
 # Keep Consensus
 
+## P0. Agent Context Budget（2026-04-06）
+
+- 這件事列為目前第一最高優先級：任何會讓 Agent 對話上下文暴增的流程，都要先收斂再繼續。
+- 真正高風險來源不是一般程式碼，而是整份 `keep.md` / `ui-quality-todo.json`、QA compare board、screenshot、AI 原圖、binary diff、以及同一輪重複貼入相同背景。
+- 強制規則：Agent handoff 改用「摘要卡」，只傳任務目標、1~3 個必要檔案、3 點已知結論、3 點未決策項目、1 條驗證方式；禁止把整份 manifest、長篇 notes、成批圖片直接塞進對話。
+- 圖片節流：單次對話最多 2 張圖；只允許 1 張主圖 + 1 張對照圖，其餘只保留路徑、尺寸、用途與 QA 結論。
+- 文件節流：`keep.md` 只留最高層共識與 P0 警戒；長分析搬去 `docs/agent-context-budget.md`，在 keep 只留索引。
+- 警戒線：單檔文字估算超過 `6000 tokens` 禁止整份讀入；單輪估算超過 `18000 tokens` 必須提出警告；超過 `30000 tokens` 視為 `hard-stop`，必須先縮成摘要卡。
+- 工具：handoff 前先跑 `node tools_node/check-context-budget.js --changed --emit-keep-note`；若出現 `warn` 或 `hard-stop`，要先警告，再把原因寫回 keep。
+- 爆量事件紀錄格式：日期、估算 token 量級、疑似原因、已採取的縮減策略、是否列為 P0。不要把整份分析全文再寫回 keep，避免二次膨脹。
+- 詳細規範文件：`docs/agent-context-budget.md`
+- 2026-04-06 現況掃描：`node tools_node/check-context-budget.js --scan-default --emit-keep-note` 估算約 `791656 tokens`，`--changed` 估算約 `429502 tokens`，兩者皆為 `hard-stop`。疑似主因：compare board / screenshot / QA 圖片被納入、`keep.md` / `ui-quality-todo.json` / 大型 docs 被整份讀入、changed files 含大量 binary 與大型資料檔。這件事維持 P0，直到 handoff 全面改成摘要卡與路徑索引為止。
+
 ## 0. UI 任務 Shard 入口（2026-04-05）
 
 - `docs/ui-quality-tasks/*.json` 是 UI 任務機器可讀資料的可編輯 shard 來源。
@@ -12,7 +25,7 @@
   4. 執行 encoding touched check
 - 過渡期允許舊任務仍保留在 `docs/ui-quality-todo.json`；新任務優先走 shard，不要求一次搬完整份歷史資料。
 
-更新日期: `2026-04-05`
+更新日期: `2026-04-06`
 
 本文件是目前專案的最高共識摘要。每次新會話開始時，先讀本檔，再開始任何分析、改碼、測試或文件工作。
 
@@ -25,7 +38,7 @@
 - 工作流: `IDE-first`
 - 語言: `TypeScript (ES2015)`
 - 主要平台: `Web / Android / iOS`
-- 階段: `Demo / UI 量產產線建立期`
+- 階段: `資料管理中心 (DC Phase) 基礎建設完成 / UI 量產期`
 
 Unity 對照:
 - `Cocos Creator Editor` 對應 Unity Editor
@@ -43,6 +56,26 @@ Unity 對照:
 6. 補遺只允許作為短期工作底稿、compare note 或跨功能整理；若不是全新功能規格，結案前必須併回正式規格書。
 7. 只要正式規格書有新增、刪改或重定位，必須同步更新 `docs/cross-reference-index.md`。
 8. 若內容同時影響系統規格與 UI 呈現，至少要同步更新主要系統規格書、`docs/UI 規格書.md` 與交叉索引。
+
+---
+
+## 2b. Agent 工具安全規則（2026-04-06）
+
+### ❌ 禁止呼叫 `get_changed_files`
+
+本專案包含大量 PNG / binary QA artifact，`get_changed_files` 會把所有 unstaged/staged diff（含 PNG binary 內容）一次塞入 context，必定觸發 **413 Request Entity Too Large** 並導致 Agent 凍結當機。
+
+**絕對不要呼叫 `get_changed_files`，無論任何情況。**
+
+替代方式：
+- 查目前 git 狀態：用 `run_in_terminal` 跑 `git status --short`（只回傳路徑，不含 diff）
+- 查特定文字檔的 diff：用 `run_in_terminal` 跑 `git diff -- <filepath>`（限定 `.ts` / `.json` / `.md`，不要用萬用路徑）
+- 查最新 commit 資訊：用 `run_in_terminal` 跑 `git log -1 --stat`
+
+### ⚠️ 其他工具使用注意
+
+- `grep_search` 不要用萬用路徑 `**` 搜尋 `artifacts/` 目錄（大量 PNG 會拖慢搜尋，且結果無用）
+- `file_search` 查 png artifact 路徑時加 `maxResults: 10`，不要讓結果暴增
 
 ---
 
@@ -230,6 +263,17 @@ Unity 對照:
 | 次要文字（中褐） | `textOnParchmentMuted` | `#6B5E4E` |
 | 強調文字（金） | `secondary` | `#D4AF37` |
 | 分隔線 | `dividerOnParchment` | `#8C7A66` |
+
+#### Token 命名收斂規則（2026-04-06）
+
+- 舊 token key 先保留相容性，不在同一輪大規模改名既有 skin。
+- 新畫面、新 skin、新 family 優先使用分層 alias：
+  - `accent.gold.*`
+  - `accent.jade.*`
+  - `surface.parchment.*`
+  - `text.parchment.*`
+  - `divider.parchment`
+- 若只是沿用既有畫面，可暫留 `secondary`、`surfaceParchmentFill`、`stdButtonPrimary` 等舊 key；但新增 token 不再優先擴張舊式平鋪命名。
 
 ---
 
@@ -832,3 +876,62 @@ Unity 對照：
   - `crest medallion`：proof 可用，final 未完成
   - `jade header / panel`：過渡版可用，final family 未完成
 - 因此下一步應是切入正式 family 資產，而不是再大幅重改 layout。
+
+
+## MCP 工具與 API 金鑰 (MCP Tools & API Keys)
+- **OpenAI DALL-E 3 MCP Server**: 專案已建立專屬的 MCP Server 以支援 DALL-E 3 影像生成（位於 	ools_mcp/dalle3-mcp/）。
+- **DALL-E 3 共用 Skill**: 若要讓 Agent 用統一方式呼叫生圖，優先使用 `.github/skills/dalle3-image-gen/`；此 skill 會透過 wrapper 腳本連到既有 MCP server，而不是各自重寫臨時 client。
+- **API 金鑰安全規範**: OpenAI API Key (sk-proj-...) 已加密存放於 	ools_mcp/dalle3-mcp/.env 中。**嚴禁將明碼金鑰寫入任何 Markdown 或程式碼中**。其他 Agent 若需調用 OpenAI 相關服務，請直接讀取該 .env 檔案的 OPENAI_API_KEY 環境變數。
+## 24. Project Skills Sync（2026-04-06）
+
+- `.github/skills/` 為本專案共用 skill 的來源目錄，新的對話開始時應優先以這裡為準。
+- 本機安裝目錄為 `C:\Users\User\.codex\skills\`，可用 `powershell -ExecutionPolicy Bypass -File tools_node/sync-project-skills.ps1` 將專案 skills 同步到本機。
+- 同步採非破壞式覆寫：會更新同名 project skills，但不會刪除本機其他既有 skills。
+- 若後續產生新的專案 skill，應優先回寫到 `.github/skills/`，再執行同步腳本，讓所有 Agent 可共用同一套 skills。
+- `.agents/workflows/*.md` 目前視為 workflow 草稿來源，不視為正式自動執行入口；若某條流程要長期使用，應升級為 `.github/skills/<skill>/SKILL.md`。
+- `ui-generate-brief`、`ui-scaffold`、`ui-verify`、`ui-i18n-translate` 已正式升級為 project skills：
+  - `ui-brief-generator`
+  - `ui-spec-scaffold`
+  - `ui-runtime-verify`
+  - `ui-i18n-localize`
+- `ui-design-to-code`、`ui-generate-reference` 先保留在 `.agents/workflows/` 當草稿，不列入正式入口；前者依賴舊版 Stitch / layout 路徑，後者容易把 AI 整頁 mockup 誤當 canonical reference。
+
+### 24.1 UI Skill 入口圖（Agent 進場路由）
+
+後續 Agent 只要碰到 UI 任務，優先照這張入口圖選 skill，不要再從 `.agents/workflows/*.md` 猜流程。
+
+```mermaid
+flowchart TD
+    A[收到 UI 任務] --> B{任務目前缺什麼?}
+    B -->|需求與規格還分散| C[ui-brief-generator]
+    B -->|有參考圖 要拆結構| D[ui-reference-decompose]
+    B -->|有 proof contract 要分配 family / recipe| E[ui-family-architect]
+    B -->|已確認 family / screen 要落 JSON / Panel| F[ui-spec-scaffold]
+    B -->|資產已產出 要先過規則檢查| G[ui-asset-qc]
+    B -->|需要 runtime 截圖與殘差分析| H[ui-runtime-verify]
+    B -->|要做最終視覺評審| I[ui-preview-judge]
+    B -->|要補多語翻譯| J[ui-i18n-localize]
+    B -->|需要補單件概念圖 / badge / crest| K[dalle3-image-gen]
+
+    C --> D
+    D --> E
+    E --> F
+    F --> G
+    G --> H
+    H --> I
+```
+
+### 24.2 最常見 4 種入口
+
+1. 新畫面剛開工：
+   `ui-brief-generator` → `ui-reference-decompose` → `ui-family-architect` → `ui-spec-scaffold`
+2. 已有 ui-spec，要看 runtime：
+   `ui-runtime-verify`
+3. 已有資產，要先卡品質門：
+   `ui-asset-qc` → `ui-runtime-verify` → `ui-preview-judge`
+4. 已有 zh-TW 文案，要補多語：
+   `ui-i18n-localize`
+- 2026-04-06 新增 `.agents/skills/context-budget-guard/SKILL.md` 與 `tools_node/summarize-structured-diff.js`，之後凡是圖片批次、compare board、大型 `md/json`、長 handoff，都先走 skill 與摘要腳本，不再直接把整份內容塞進對話。
+- 2026-04-06 收工前一律補 `Token 量級：少 / 中 / 大` 的估算回報；標準命令為 `node tools_node/report-turn-usage.js --files <file...> --emit-final-line`，若無法精準列 touched files，至少跑 `--changed`。這是估算值，不是假裝成 API 精準計費。
+- 2026-04-06 新增 `(best)` 專案口令：只要使用者訊息以 `(best)` 開頭，就視為 strict mode，必須先走 `.agents/skills/best-mode/SKILL.md`，再走 `context-budget-guard`，禁止直接貼整份大檔、compare board、批次 screenshot 或大型 diff。
+- 2026-04-06 新增 wrapper 架構：UI 任務優先走 `node tools_node/run-ui-workflow.js --workflow <workflow-id> ...`，非 UI 但有圖片/大檔/重 diff 的任務優先走 `node tools_node/run-guarded-workflow.js --workflow <name> ...`，收工前優先走 `node tools_node/finalize-agent-turn.js ...`；底層共用 `tools_node/lib/context-guard-core.js`。
