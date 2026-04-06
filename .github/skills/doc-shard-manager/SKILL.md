@@ -26,11 +26,12 @@ argument-hint: >
 
 ## 本專案現有 Shard Groups
 
-| 索引 stub | Shard 目錄 | 分片數 | 類型 |
-|-----------|-----------|--------|------|
-| `docs/keep.md` | `docs/keep-shards/` | 4 | `markdown-h2` |
-| `docs/ui-quality-todo.json` | `docs/tasks/` | 4 | `json-array` |
-| `docs/cross-reference-index.md` | `docs/cross-ref/` | 3 | `markdown-h2` |
+| 索引 stub | Shard 目錄 | 分片數 | 類型 | 備註 |
+|-----------|-----------|--------|------|------|
+| `docs/keep.md` | `docs/keep-shards/` | 4 | `markdown-h2` | 主共識文件 |
+| `docs/ui-quality-todo.json` | `docs/tasks/` | 4 | `json-array` | 按 id 前綴分 |
+| `docs/cross-reference-index.md` | `docs/cross-ref/` | 3 | `markdown-h2` | A/B/C 節 |
+| `docs/tasks/tasks-ui.json` | `docs/tasks-ui-shards/` | 2 | `json-array` | 按 status 細拆（子分片，`keepSourceIntact`） |
 
 ---
 
@@ -51,6 +52,10 @@ node tools_node/shard-manager.js status  <shardDir>
 
 # 一次分片多個 shard 目錄
 node tools_node/shard-manager.js shard-all  docs/keep-shards docs/tasks docs/cross-ref
+
+# 偵測未管理的大型文件（> 6 KB）
+node tools_node/shard-manager.js scan  docs
+node tools_node/shard-manager.js scan  docs  --threshold 10   # 自訂門檻（KB）
 ```
 
 ---
@@ -203,7 +208,67 @@ node tools_node/shard-manager.js validate docs/keep-shards
 
 ---
 
-## 收工確認清單
+## Workflow D：子分片（Sub-Shard）— 針對仍然過大的分片細拆
+
+**觸發時機**：某個 shard 仍然 > 30 KB（例如 `tasks-ui.json` 112 KB），需要依另一個欄位再次細拆。
+
+**關鍵旗標**：`"keepSourceIntact": true` — 告訴 shard-manager **不要**用 index stub 覆蓋來源檔（因為來源本身是父層的 shard 檔）。
+
+**範例**：`docs/tasks-ui-shards/.shardrc.json`
+```json
+{
+  "version": 1,
+  "source": "../tasks/tasks-ui.json",
+  "type": "json-array",
+  "arrayPath": "tasks",
+  "splitField": "status",
+  "keepSourceIntact": true,
+  "shards": [
+    { "name": "tasks-ui-open", "title": "Active（open + in-progress）", "pattern": "^(open|in-progress)$" },
+    { "name": "tasks-ui-done", "title": "Done（done + completed）",   "pattern": "^(done|completed)$" }
+  ]
+}
+```
+
+**分片讀取策略**：
+- 只需看待辦事項 → 讀 `docs/tasks-ui-shards/tasks-ui-open.json`（約 35 KB）
+- 查歷史已完成 → 讀 `docs/tasks-ui-shards/tasks-ui-done.json`（約 71 KB）
+
+---
+
+## Workflow E：自動偵測新大型文件 → 建立 Shard Group
+
+**觸發時機**：不確定 `docs/` 下是否有新的大型文件需要納管；或定期健康檢查。
+
+### Step 1 — 執行 scan
+
+```bash
+node tools_node/shard-manager.js scan docs
+```
+
+→ 列出所有 > 6 KB 且未在任何 `.shardrc.json` 中管理的 `.md` / `.json` 檔案。
+
+### Step 2 — 評估優先順序
+
+優先處理：
+- 單檔 > 30 KB（肯定超過 6000 tokens）
+- 常被 Agent 讀入的規格書 / 任務 JSON
+- 有明確結構（章節 / id 欄位）可以切的文件
+
+跳過：
+- `docs/討論來源/` — 歷史討論，不常讀
+- 一次性參考圖說明文件
+
+### Step 3 — 建立 shard group（參考 Workflow B）
+
+```bash
+# 確認結構後建立目錄 + .shardrc.json，再執行分片
+node tools_node/shard-manager.js shard docs/my-new-shards
+```
+
+---
+
+
 
 - [ ] `validate` 三個 shard groups 全 pass
 - [ ] 所有 shard 單檔 < 30 KB（如超過考慮再拆）

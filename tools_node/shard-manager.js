@@ -21,6 +21,11 @@
  *   node tools_node/shard-manager.js validate       <shardDir>
  *   node tools_node/shard-manager.js status         <shardDir>
  *   node tools_node/shard-manager.js shard-all      docs/keep-shards docs/tasks docs/cross-ref
+ *   node tools_node/shard-manager.js scan           [directory]  (default: docs/)
+ *
+ * Extra .shardrc.json flags:
+ *   "keepSourceIntact": true   — do NOT overwrite source with a thin index stub.
+ *                                Use when the source is itself a shard of a parent group.
  */
 
 'use strict';
@@ -90,7 +95,11 @@ function shardMarkdownH2(cfg) {
   }
 
   // Overwrite the source file with a thin index stub
-  rebuildMarkdownIndex(cfg, bufs);
+  if (!cfg.keepSourceIntact) {
+    rebuildMarkdownIndex(cfg, bufs);
+  } else {
+    info(`keepSourceIntact=true — skipping index stub rebuild for ${path.basename(cfg._sourceAbs)}`);
+  }
 }
 
 function buildMdShardHeader(cfg, shard) {
@@ -164,7 +173,11 @@ function shardJsonArray(cfg) {
     info(`Wrote ${shardRelDir}/${shard.name}.json  (${bufs[shard.name].length} items)`);
   }
 
-  rebuildJsonIndex(cfg, bufs);
+  if (!cfg.keepSourceIntact) {
+    rebuildJsonIndex(cfg, bufs);
+  } else {
+    info(`keepSourceIntact=true — skipping index stub rebuild for ${path.basename(cfg._sourceAbs)}`);
+  }
 }
 
 function rebuildJsonIndex(cfg, bufs) {
@@ -272,6 +285,103 @@ function statusCmd(shardDir) {
   console.log('');
 }
 
+// ── SCAN — detect unmanaged large files ──────────────────────────────────────
+/**
+ * Walk `scanDir` recursively, find .md and .json files >= thresholdKB,
+ * collect all .shardrc.json source paths as "managed", then report
+ * unmanaged large files as candidates for a new shard group.
+ */
+function scanCmd(scanDir, thresholdKB = 6) {
+  const absBase = path.resolve(scanDir);
+  if (!fs.existsSync(absBase)) die(`Scan directory not found: ${absBase}`);
+
+  // ------ collect managed sources ------
+  const managedAbs = new Set();
+  const shardRcFiles = [];
+
+  function walkForRc(dir) {
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      const full = path.join(dir, entry.name);
+      if (entry.isDirectory()) {
+        // Skip common heavy dirs
+        if (['node_modules', 'library', 'temp', '.git'].includes(entry.name)) continue;
+        walkForRc(full);
+      } else if (entry.name === '.shardrc.json') {
+        shardRcFiles.push(full);
+      }
+    }
+  }
+  walkForRc(absBase);
+
+  for (const rcPath of shardRcFiles) {
+    try {
+      const cfg = JSON.parse(fs.readFileSync(rcPath, 'utf8'));
+      const srcAbs = path.resolve(path.dirname(rcPath), cfg.source);
+      managedAbs.add(srcAbs);
+      // Also mark the shard files themselves as managed
+      const ext = cfg.type === 'json-array' ? '.json' : '.md';
+      if (Array.isArray(cfg.shards)) {
+        for (const s of cfg.shards) {
+          managedAbs.add(path.join(path.dirname(rcPath), s.name + ext));
+        }
+      }
+    } catch { /* skip malformed */ }
+  }
+
+  // ------ walk for large files ------
+  const candidates = [];
+
+  function walkForLarge(dir) {
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      const full = path.join(dir, entry.name);
+      if (entry.isDirectory()) {
+        if (['node_modules', 'library', 'temp', '.git'].includes(entry.name)) continue;
+        walkForLarge(full);
+      } else {
+        const ext = path.extname(entry.name).toLowerCase();
+        if (ext !== '.md' && ext !== '.json') continue;
+        const stat = fs.statSync(full);
+        const kb   = stat.size / 1024;
+        if (kb < thresholdKB) continue;
+        if (managedAbs.has(full)) continue;
+        candidates.push({ path: path.relative(process.cwd(), full).replace(/\\/g, '/'), kb: +kb.toFixed(1) });
+      }
+    }
+  }
+  walkForLarge(absBase);
+
+  // ------ report ------
+  console.log(`\n[shard-manager] Scan: ${relDir(absBase)}  (threshold: ${thresholdKB} KB)\n`);
+
+  if (shardRcFiles.length > 0) {
+    console.log(`  Managed shard groups (${shardRcFiles.length}):`);
+    for (const rc of shardRcFiles) {
+      console.log(`    ${path.relative(process.cwd(), rc).replace(/\\/g, '/')}`);
+    }
+    console.log('');
+  }
+
+  if (candidates.length === 0) {
+    ok('No unmanaged large files found.');
+    return;
+  }
+
+  console.log(`  Unmanaged large files (${candidates.length}) — consider adding a shard group:\n`);
+  for (const c of candidates) {
+    console.log(`  ⚠  ${c.path}  (${c.kb} KB)`);
+  }
+
+  console.log(`
+  To create a shard group for any of these, add a directory with a .shardrc.json.
+  Example structure:
+    docs/my-shards/
+      .shardrc.json   ← define source, type, shards[]
+  Then run:
+    node tools_node/shard-manager.js shard docs/my-shards
+  See: .github/skills/doc-shard-manager/SKILL.md
+`);
+}
+
 // ── MAIN ──────────────────────────────────────────────────────────────────────
 const args = process.argv.slice(2);
 const cmd  = args[0];
@@ -286,6 +396,8 @@ Commands:
   validate       <shardDir>          Check all expected shard files are present
   status         <shardDir>          Show shard sizes and modification times
   shard-all      <dir1> [dir2...]    Run 'shard' on multiple shard dirs at once
+  scan           [directory]         Find .md/.json files >6KB not in any shard group
+                 [--threshold <KB>]  Override size threshold (default 6)
 
 .shardrc.json format:
   {
@@ -337,6 +449,18 @@ switch (cmd) {
       if (cfg.type === 'json-array') shardJsonArray(cfg);
       else shardMarkdownH2(cfg);
     }
+    break;
+  }
+  case 'scan': {
+    // scan [directory] [--threshold <KB>]
+    let scanDir   = 'docs';
+    let threshold = 6;
+    const rest = args.slice(1);
+    for (let i = 0; i < rest.length; i++) {
+      if (rest[i] === '--threshold' && rest[i + 1]) { threshold = parseFloat(rest[++i]); }
+      else if (!rest[i].startsWith('--'))            { scanDir = rest[i]; }
+    }
+    scanCmd(scanDir, threshold);
     break;
   }
   default:

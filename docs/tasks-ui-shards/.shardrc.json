@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "source": "../tasks/tasks-ui.json",
+  "indexTitle": "UI Tasks — Status Split",
+  "indexPath": "docs/tasks/tasks-ui.json",
+  "type": "json-array",
+  "arrayPath": "tasks",
+  "shardArrayPath": null,
+  "splitField": "status",
+  "defaultShard": "tasks-ui-done",
+  "keepSourceIntact": true,
+  "_comment": "Sub-shard of docs/tasks/tasks-ui.json by status. keepSourceIntact prevents overwriting the parent shard file.",
+  "shards": [
+    {
+      "name": "tasks-ui-open",
+      "title": "UI Tasks Active（open + in-progress）",
+      "pattern": "^(open|in-progress)$"
+    },
+    {
+      "name": "tasks-ui-done",
+      "title": "UI Tasks Done（done + completed）",
+      "pattern": "^(done|completed)$"
+    }
+  ]
+}

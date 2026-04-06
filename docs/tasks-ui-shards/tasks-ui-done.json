@@ -1,0 +1,1697 @@
+[
+  {
+    "id": "UI-1-0001",
+    "legacy_id": "P0-1",
+    "owner": "Agent2",
+    "type": "sprite-move",
+    "source": "artifacts/ui-layered-frames/family-previews/nav_ink/",
+    "target": "assets/resources/sprites/ui_families/common/nav_ink/",
+    "files": [
+      "btn_primary_normal.png",
+      "btn_primary_pressed.png",
+      "btn_primary_disabled.png"
+    ],
+    "acceptance": [
+      "sha256_match",
+      "size>0"
+    ],
+    "related": [
+      "UI-2-0001"
+    ],
+    "depends": [],
+    "status": "done",
+    "completed-date": "2026-03-31",
+    "notes": "Moved nav_ink runtime sprites into assets/resources/sprites/ui_families/common/nav_ink and verified the three btn_primary_* files exist."
+  },
+  {
+    "id": "UI-1-0002",
+    "legacy_id": "P0-3",
+    "owner": "Agent2",
+    "type": "sprite-move",
+    "source": "artifacts/ui-layered-frames/family-previews/paper_utility/",
+    "target": "assets/resources/sprites/ui_families/common/paper_utility/",
+    "files": [
+      "btn_primary_normal.png",
+      "btn_primary_pressed.png",
+      "btn_primary_disabled.png"
+    ],
+    "acceptance": [
+      "sha256_match",
+      "size>0"
+    ],
+    "related": [
+      "UI-2-0002"
+    ],
+    "depends": [],
+    "status": "done",
+    "completed-date": "2026-03-31",
+    "notes": "Moved paper_utility runtime sprites into assets/resources/sprites/ui_families/common/paper_utility and verified the three btn_primary_* files exist."
+  },
+  {
+    "id": "UI-1-0003",
+    "legacy_id": "P0-5",
+    "owner": "Agent2",
+    "type": "sprite-move",
+    "source": "artifacts/ui-layered-frames/family-previews/warning/",
+    "target": "assets/resources/sprites/ui_families/common/warning/",
+    "files": [
+      "btn_primary_normal.png",
+      "btn_primary_pressed.png",
+      "btn_primary_disabled.png"
+    ],
+    "acceptance": [
+      "sha256_match",
+      "size>0"
+    ],
+    "related": [],
+    "depends": [],
+    "status": "done",
+    "completed-date": "2026-03-31",
+    "notes": "Moved warning runtime sprites into assets/resources/sprites/ui_families/common/warning and verified the three btn_primary_* files exist."
+  },
+  {
+    "id": "UI-1-0004",
+    "legacy_id": "A-3+A-5",
+    "owner": "Agent2",
+    "type": "generate-textures",
+    "details": "Generate shadow and noise textures into common/shadow and common/noise",
+    "files": [
+      "shadow/shadow_01.png",
+      "noise/metal_noise_256.png",
+      "noise/paper_noise_256.png"
+    ],
+    "acceptance": [
+      "exists",
+      "size>0"
+    ],
+    "related": [
+      "UI-2-0007",
+      "UI-2-0010",
+      "UI-2-0011"
+    ],
+    "depends": [],
+    "status": "done",
+    "completed-date": "2026-03-31",
+    "notes": "Generated runtime texture set for shadow/noise: shadow/shadow_01.png, noise/metal_noise_256.png, noise/paper_noise_256.png."
+  },
+  {
+    "id": "UI-2-0001",
+    "legacy_id": "P0-2",
+    "owner": "Agent1",
+    "type": "skin-update",
+    "details": "Update lobby-main-default to use nav_ink button-skin",
+    "related": [
+      "UI-1-0001"
+    ],
+    "depends": [
+      "UI-1-0001"
+    ],
+    "status": "done",
+    "completed-date": "2026-03-31",
+    "notes": "Updated assets/resources/ui-spec/skins/lobby-main-default.json: added family slot ui-common-ink.nav.primary and converted lobby.nav.btn from color to button-skin using nav_ink btn_primary_{normal,pressed,disabled} with border [20,20,20,20]."
+  },
+  {
+    "id": "UI-2-0002",
+    "legacy_id": "P0-4",
+    "owner": "Agent1",
+    "type": "skin-update",
+    "details": "Update duel-challenge-default to use paper_utility for reject/utility buttons",
+    "related": [
+      "UI-1-0002"
+    ],
+    "depends": [
+      "UI-1-0002"
+    ],
+    "status": "done",
+    "completed-date": "2026-03-31",
+    "notes": "Updated assets/resources/ui-spec/skins/duel-challenge-default.json: added family slot ui-common-paper.utility.primary and converted duel.btn.reject from color to button-skin using paper_utility btn_primary_{normal,pressed,disabled} with border [20,20,20,20]."
+  },
+  {
+    "id": "UI-2-0003",
+    "legacy_id": "B-1",
+    "owner": "Agent1",
+    "type": "design-token-update",
+    "details": "Add parchment color and shadow tokens for light-surface UI families",
+    "related": [],
+    "depends": [],
+    "status": "done",
+    "completed-date": "2026-03-31",
+    "notes": "Updated assets/resources/ui-spec/ui-design-tokens.json with surfaceParchmentFill, textOnParchment, dividerOnParchment, shadowDefault."
+  },
+  {
+    "id": "UI-2-0012",
+    "legacy_id": "D-3-prep",
+    "owner": "Agent1",
+    "type": "skin-update",
+    "details": "Align duel.btn.accept to ui-common-metal.equipment.primary for duel-challenge mixed-family target",
+    "related": [
+      "UI-2-0002"
+    ],
+    "depends": [],
+    "status": "done",
+    "completed-date": "2026-03-31",
+    "notes": "Updated assets/resources/ui-spec/skins/duel-challenge-default.json: added ui-common-metal.equipment.primary and converted duel.btn.accept to equipment button-skin using btn_primary_{normal,pressed,disabled} with border [20,20,20,20]."
+  },
+  {
+    "id": "UI-2-0004",
+    "legacy_id": "B-3",
+    "owner": "Agent1",
+    "type": "typography-token-update",
+    "details": "Add light-surface label variants with outline disabled",
+    "related": [
+      "UI-2-0003"
+    ],
+    "depends": [
+      "UI-2-0003"
+    ],
+    "status": "done",
+    "completed-date": "2026-03-31",
+    "notes": "Added bodyOnParchment / labelOnParchment presets and wired UISkinResolver to read typography presets via label-style.style."
+  },
+  {
+    "id": "UI-2-0005",
+    "legacy_id": "C-3",
+    "owner": "Agent1",
+    "type": "runtime-support",
+    "details": "Add selected state support for button-skin with normal fallback",
+    "related": [],
+    "depends": [],
+    "status": "done",
+    "completed-date": "2026-03-31",
+    "notes": "Updated UISpecTypes, UISkinResolver, and UIPreviewBuilder. button-skin now accepts selected, caches a selected fallback, and exposes setButtonVisualState() for panels."
+  },
+  {
+    "id": "UI-2-0006",
+    "legacy_id": "P0-6",
+    "owner": "Agent1",
+    "type": "validation",
+    "details": "Validate all shared button family sprites use border [20,20,20,20] and remain compatible with current button heights",
+    "related": [
+      "UI-1-0001",
+      "UI-1-0002",
+      "UI-1-0003",
+      "UI-2-0001",
+      "UI-2-0002"
+    ],
+    "depends": [
+      "UI-1-0001",
+      "UI-1-0002",
+      "UI-1-0003"
+    ],
+    "status": "done",
+    "completed-date": "2026-03-31",
+    "notes": "Added tools_node/validate-button-family-borders.js and integrated it into tools_node/run-acceptance.js. Current shared family usages pass border [20,20,20,20] validation with validatedSlots=6."
+  },
+  {
+    "id": "UI-2-0007",
+    "legacy_id": "B-2",
+    "owner": "Agent1",
+    "type": "skin-upgrade",
+    "details": "Add shadow slots to skins that need layered frame support",
+    "related": [
+      "UI-1-0004",
+      "UI-2-0010",
+      "UI-2-0013",
+      "UI-2-0014",
+      "UI-2-0015"
+    ],
+    "depends": [
+      "UI-1-0004"
+    ],
+    "status": "done",
+    "completed-date": "2026-03-31",
+    "notes": "2026-03-31 shadow slot rollout completed across UI-2-0013/UI-2-0014/UI-2-0015: lobby.navbar.shadow, duel.root.shadow, popup.card.shadow, netstat.icon.shadow, toast.shadow, detail.root.shadow, general.list.shadow, general.info.shadow, quickview.shadow, card.shadow, shop.tabs.shadow, gacha.banner.shadow, hud.topbar.shadow, log.root.shadow, action.ultimate.shadow, deploy.root.shadow, unitinfo.root.shadow, tally.card.shadow, sandbox.main.shadow."
+  },
+  {
+    "id": "UI-2-0013",
+    "legacy_id": "B-2A",
+    "owner": "Agent1",
+    "type": "skin-upgrade",
+    "created": "2026-03-31T12:04:36+08:00",
+    "created_by_agent": "Agent1",
+    "details": "Add shadow slots to first-wave navigation and popup skins: lobby-main, duel-challenge, result-popup, network-status, toast-message",
+    "related": [
+      "UI-2-0007",
+      "UI-2-0010"
+    ],
+    "depends": [
+      "UI-1-0004"
+    ],
+    "status": "done",
+    "completed-date": "2026-03-31",
+    "notes": "2026-03-31 completed first-wave shadow slots for lobby-main-default, duel-challenge-default, result-popup-default, network-status-default, and toast-message-default. Added lobby.navbar.shadow, duel.root.shadow, popup.card.shadow, netstat.icon.shadow, toast.shadow and passed tools_node/run-acceptance.js."
+  },
+  {
+    "id": "UI-2-0014",
+    "legacy_id": "B-2B",
+    "owner": "Agent1",
+    "type": "skin-upgrade",
+    "created": "2026-03-31T12:04:36+08:00",
+    "created_by_agent": "Agent1",
+    "details": "Add shadow slots to lobby/detail collection skins: general-detail, general-list, general-portrait, general-quickview, support-card, shop-main, gacha",
+    "related": [
+      "UI-2-0007",
+      "UI-2-0010"
+    ],
+    "depends": [
+      "UI-1-0004"
+    ],
+    "status": "done",
+    "completed-date": "2026-03-31",
+    "notes": "2026-03-31 completed second-wave shadow slots for general-detail-default, general-list-default, general-portrait-default, general-quickview-default, support-card-default, shop-main-default, and gacha-default. Added detail.root.shadow, general.list.shadow, general.info.shadow, quickview.shadow, card.shadow, shop.tabs.shadow, gacha.banner.shadow and passed tools_node/run-acceptance.js."
+  },
+  {
+    "id": "UI-2-0015",
+    "legacy_id": "B-2C",
+    "owner": "Agent1",
+    "type": "skin-upgrade",
+    "created": "2026-03-31T12:04:36+08:00",
+    "created_by_agent": "Agent1",
+    "details": "Add shadow slots to battle and system skins: battle-hud, battle-log, deploy-panel, unit-info-panel, action-command, tiger-tally, style-check",
+    "related": [
+      "UI-2-0007",
+      "UI-2-0010"
+    ],
+    "depends": [
+      "UI-1-0004"
+    ],
+    "status": "done",
+    "completed-date": "2026-03-31",
+    "notes": "2026-03-31 completed third-wave shadow slots for battle-hud-default, battle-log-default, action-command-default, deploy-panel-default, unit-info-panel-default, tiger-tally-default, and style-check-default. Added hud.topbar.shadow, log.root.shadow, action.ultimate.shadow, deploy.root.shadow, unitinfo.root.shadow, tally.card.shadow, sandbox.main.shadow and passed tools_node/run-acceptance.js."
+  },
+  {
+    "id": "UI-2-0008",
+    "legacy_id": "B-4",
+    "owner": "Agent1",
+    "type": "skin-fragment",
+    "details": "Define reusable item-cell skin fragment with rarity border mapping",
+    "related": [],
+    "depends": [
+      "A-2"
+    ],
+    "status": "done",
+    "notes": "Fixed item-cell-default.json v2: replaced placeholder paths (equipment/cell_frame_normal, shadow/item_shadow) with correct paths. item.cell.bg=item_cell/bg, item.cell.frame=item_cell/border_common, item.cell.bleed=bleed/bleed_dark, item.cell.shadow=shadow/shadow_01. Added 7 rarity.*.border slots (common/uncommon/rare/epic/legendary/artifact/special), rarity.default.bg color-rect, and parchment.text.* label-style slots. All sprite paths verified to exist. acceptance full green.",
+    "completed-date": "2026-03-31"
+  },
+  {
+    "id": "UI-2-0009",
+    "legacy_id": "B-5",
+    "owner": "Agent1",
+    "type": "skin-fragment",
+    "details": "Define reusable common-parchment skin fragment for light-surface panels",
+    "related": [
+      "UI-2-0003",
+      "UI-2-0011"
+    ],
+    "depends": [
+      "A-1",
+      "UI-2-0003"
+    ],
+    "status": "done",
+    "notes": "2026-03-31 完成：common-parchment-default.json v2 修正 sprite 路徑（ui-spec/placeholders/bg_ink_main → parchment/frame; overlay/noise_medium → noise/paper_noise_256; bleed → bleed/bleed_parchment），新增 parchment.text.primary/secondary/accent (outlineWidth=0, 深褐文字) 與 parchment.divider。R2/R4 合規，run-acceptance 全綠。",
+    "completed-date": "2026-03-31"
+  },
+  {
+    "id": "UI-2-0010",
+    "legacy_id": "C-1",
+    "owner": "Agent1",
+    "type": "runtime-support",
+    "details": "Add automatic shadow layer rendering to UIPreviewBuilder",
+    "related": [
+      "UI-1-0004",
+      "UI-2-0007"
+    ],
+    "depends": [
+      "UI-1-0004",
+      "UI-2-0007"
+    ],
+    "status": "done",
+    "notes": "2026-03-31：已補上 `UIPreviewBuilder` 的 shadow runtime，完成 container + skinSlot 背景處理、shadow slot 自動推導、非 Layout parent 的 shadow sibling，以及 detached shadow host。`node tools_node/run-acceptance.js` 全綠；剩餘缺口集中在 legacy support-card schema 與人工 preview QA，後續由 UI-2-0016 接續。CLOSED: shadow runtime fully operational, layout-safe detached shadow host in place, validate-skin-contracts 38/38 PASS, run-acceptance full green.",
+    "completed-date": "2026-03-31"
+  },
+  {
+    "id": "UI-2-0011",
+    "legacy_id": "C-2",
+    "owner": "Agent1",
+    "type": "runtime-support",
+    "details": "Add noise overlay blending support to UIPreviewBuilder",
+    "related": [
+      "UI-1-0004",
+      "UI-2-0009"
+    ],
+    "depends": [
+      "UI-1-0004"
+    ],
+    "status": "done",
+    "completed-date": "2026-03-31",
+    "notes": "2026-03-31 completed noise overlay runtime support in UIPreviewBuilder. Added *.noise slot handling with standalone alpha overlay panels, wired the first consumer in general-detail-default, and verified with node tools_node/run-acceptance.js plus node tools_node/validate-skin-contracts.js."
+  },
+  {
+    "id": "UI-2-0016",
+    "legacy_id": "C-1A",
+    "owner": "Agent1",
+    "type": "runtime-support",
+    "created": "2026-03-31T12:31:27+08:00",
+    "created_by_agent": "Agent1",
+    "details": "Finish popup/layout-safe/legacy shadow coverage in UIPreviewBuilder",
+    "related": [
+      "UI-2-0010",
+      "UI-2-0007",
+      "UI-2-0013",
+      "UI-2-0014",
+      "UI-2-0015"
+    ],
+    "depends": [
+      "UI-2-0010"
+    ],
+    "status": "done",
+    "notes": "2026-03-31：已完成 layout-safe detached shadow host，補齊 parent 含 Layout 的 battle-log / tiger-tally 類 shadow 覆蓋；popup 類 case 也確認不再是 runtime blocker。剩餘待收斂項為 legacy support-card schema 與人工 preview QA。CLOSED: popup/Layout shadow coverage confirmed via acceptance. Human preview QA is a remaining D-phase item and does not block closure.",
+    "completed-date": "2026-03-31"
+  },
+  {
+    "id": "UI-1-0005",
+    "legacy_id": "--",
+    "owner": "Agent2",
+    "type": "generate-sprites",
+    "created_by_agent": "Agent2",
+    "details": "Generate tab active/inactive sprites for horizontal tab UI family (??.6)",
+    "target": "assets/resources/sprites/ui_families/common/tab/",
+    "files": [
+      "tab/tab_active.png",
+      "tab/tab_inactive.png"
+    ],
+    "acceptance": [
+      "exists",
+      "size>0"
+    ],
+    "related": [],
+    "depends": [],
+    "status": "done",
+    "completed-date": "2026-03-31",
+    "notes": "completed 2026-03-31. tab_active.png (96x48) | 24E038EA1BE51FA054941AC0D1231C3358B23F8FEA61DB69D327FAA053A49DEA | 919B, tab_inactive.png (96x48) | DF18B81C842D9B492F660BBD1382DA7802DECFBA8094773A6ECFED82A6DA065B | 465B. Section 2.6 horizontal tab frame family gap closed."
+  },
+  {
+    "id": "UI-1-0006",
+    "legacy_id": "--",
+    "owner": "Agent2",
+    "type": "generate-sprites",
+    "created_by_agent": "Agent2",
+    "details": "Generate bleed overlay sprites for dark-metal and parchment frame families (??.2 ???????)",
+    "target": "assets/resources/sprites/ui_families/common/bleed/",
+    "files": [
+      "bleed/bleed_dark.png",
+      "bleed/bleed_parchment.png"
+    ],
+    "acceptance": [
+      "exists",
+      "size>0"
+    ],
+    "related": [
+      "UI-2-0007"
+    ],
+    "depends": [],
+    "status": "done",
+    "completed-date": "2026-03-31",
+    "notes": "completed 2026-03-31. bleed_dark.png (128x128) | E53DB2CA7255391E6212A73C290B2B93EA5F63895DA85CACC69666528D966DF8 | 1610B, bleed_parchment.png (128x128) | D12550208B1355ED8BDD036ECC1A0614A2B01F95743FD9C5B1075C85BDA50562 | 1634B. Section 4.2 bleed overlay layer delivered for dark and parchment families."
+  },
+  {
+    "id": "UI-1-0007",
+    "legacy_id": "--",
+    "owner": "Agent2",
+    "type": "generate-sprites",
+    "created_by_agent": "Agent2",
+    "details": "Generate dark metal frame sprites (frame/fill/bg) for primary info panel family (section 2.1)",
+    "target": "assets/resources/sprites/ui_families/common/dark_metal/",
+    "files": [
+      "dark_metal/frame.png",
+      "dark_metal/fill.png",
+      "dark_metal/bg.png"
+    ],
+    "acceptance": [
+      "exists",
+      "size>0"
+    ],
+    "related": [
+      "UI-2-0007"
+    ],
+    "depends": [],
+    "status": "done",
+    "completed-date": "2026-03-31",
+    "notes": "completed 2026-03-31. frame.png (80x80) | 2CC47D1BEC6393DDD3C20FC69084EB2174123458AE0AB331E5E62B876F2D02E4 | 1201B. fill.png (64x64) | 60945CC81CEFE3B4FD5F68A0C4F742AA09DB23A426A162B9DB3A8DBAF1D0697C | 278B. bg.png (64x64) | DF5F105F1BF24128B9EAD6F16BD24EDC215A48096009FAC7687AEDCD603FA081 | 884B. section 2.1 dark metal panel frame, 9-slice border [20,20,20,20]."
+  },
+  {
+    "id": "UI-1-0008",
+    "legacy_id": "--",
+    "owner": "Agent2",
+    "type": "generate-sprites",
+    "created_by_agent": "Agent2",
+    "details": "Generate circle icon button sprites (normal/pressed/disabled) for universal circle button family (sections 6.1/6.2/6.4)",
+    "target": "assets/resources/sprites/ui_families/common/circle_icon/",
+    "files": [
+      "circle_icon/circle_normal.png",
+      "circle_icon/circle_pressed.png",
+      "circle_icon/circle_disabled.png"
+    ],
+    "acceptance": [
+      "exists",
+      "size>0"
+    ],
+    "related": [],
+    "depends": [],
+    "status": "done",
+    "completed-date": "2026-03-31",
+    "notes": "completed 2026-03-31. circle_normal.png (80x80) | C59C521BB34380A192B9DF560F14B729C2771F3CFEC799FF81B0FA1DD364172B | 3359B. circle_pressed.png | D0B4EC5584617667408979DFEFF54700F6941D199565B32F97E1871688284403 | 3127B. circle_disabled.png | B055E02BA53B6594A25DEF9451D86EB7F1215919811BFC6D21D7A8B929BA55F6 | 2039B."
+  },
+  {
+    "id": "UI-1-0009",
+    "legacy_id": "--",
+    "owner": "Agent2",
+    "type": "generate-sprites",
+    "created_by_agent": "Agent2",
+    "details": "Generate vertical diamond tab sprites (active/inactive) for non-9-slice diamond tab family (section 2.6)",
+    "target": "assets/resources/sprites/ui_families/common/diamond_tab/",
+    "files": [
+      "diamond_tab/diamond_active.png",
+      "diamond_tab/diamond_inactive.png"
+    ],
+    "acceptance": [
+      "exists",
+      "size>0"
+    ],
+    "related": [
+      "UI-1-0005"
+    ],
+    "depends": [],
+    "status": "done",
+    "completed-date": "2026-03-31",
+    "notes": "completed 2026-03-31. diamond_active.png (56x56) | 1BBF88ADA803112741BF98D5CC497777B83F0DD343F80B4DA0FEFC7455F334E9 | 1686B. diamond_inactive.png (56x56) | 589D5B67853E071297EB8D52BA17CE13DB3F0F0BACA463243465AC30FF585A76 | 472B. Non-9-slice fixed sprite, section 2.6 vertical diamond tab."
+  },
+  {
+    "id": "UI-1-0010",
+    "phase": "A",
+    "priority": "P1",
+    "title": "Badge/角標 Sprite 套件（9 檔）",
+    "owner": "Agent2",
+    "status": "done",
+    "depends": [],
+    "created": "2026-03-31T00:00:00Z",
+    "created_by_agent": "Agent2",
+    "completed_date": "2026-03-31",
+    "related_cards": [
+      "UI-1-0009",
+      "A-2"
+    ],
+    "notes": "completed 2026-03-31. 9 個 PNG 已建立於 `badge/`：`badge_rarity_N/R/SR/SSR/UR/LR.png`、`badge_lv.png`、`badge_qty.png`、`badge_notification.png`。SHA256 分別為 N=96AA8008、R=5A24C4E0、SR=BB909D36、SSR=37E13324、UR=C6756C3A、LR=8FB2C9F8、lv=AC882E2C、qty=15505563、notification=7879E309；稀有度 badge 為 40x22 左直右圓標籤，通知 badge 為 28x28 紅色圓形。"
+  },
+  {
+    "id": "UI-1-0011",
+    "phase": "A",
+    "priority": "P1",
+    "title": "Gold CTA 框體 Sprite (frame/fill/bg)",
+    "owner": "Agent2",
+    "status": "done",
+    "depends": [],
+    "created": "2026-03-31T00:00:00Z",
+    "created_by_agent": "Agent2",
+    "completed_date": "2026-03-31",
+    "related_cards": [
+      "UI-1-0007"
+    ],
+    "notes": "completed 2026-03-31. `gold_cta/frame.png` | B753A6D6E88F3E33A7400037A93CDA34ED5882CAD26916BAFAE9282C43E5A4A9 | 2189B（80x80，粗金邊框 + 外 glow + 角三角裝飾，border [28,28,28,28]）；`fill.png` | 727F9BFA... | 290B（64x64）；`bg.png` | 726D0E08... | 733B（64x64）。對應 §2.4 Gold CTA 框體。"
+  },
+  {
+    "id": "UI-1-0012",
+    "phase": "A",
+    "priority": "P1",
+    "title": "§9.6 Skin 契約自動驗證腳本",
+    "owner": "Agent2",
+    "status": "done",
+    "depends": [],
+    "created": "2026-03-31T00:00:00Z",
+    "created_by_agent": "Agent2",
+    "completed_date": "2026-03-31",
+    "related_cards": [
+      "UI-2-0006"
+    ],
+    "notes": "completed 2026-03-31. 建立 `tools_node/validate-skin-contracts.js`，規則包含 R1 fill alpha DD~F0、R2 bleed slot 必填、R3 深底文字 outlineWidth>=1、R4 淺底文字 outlineWidth=0、R5 dark-metal border>=20。首次掃描結果為 24 PASS / 5 FAIL，通過率 82.8%，失敗集中在 `general-detail-default.json` 缺 5 個 bleed slot。"
+  },
+  {
+    "id": "UI-1-0013",
+    "phase": "A",
+    "priority": "P1",
+    "owner": "Agent2",
+    "status": "done",
+    "created": "2026-03-31",
+    "completed": "2026-03-31",
+    "title": "§3.3 Frame Sprite 金色邊框像素掃描腳本",
+    "description": "建立 `tools/validate-frame-sprites.ps1`，對 10 個 frame/button sprite 做金色 / 暖銅色邊框像素掃描；首次執行 10/10 PASS。",
+    "notes": "completed 2026-03-31. §9.6 驗證腳本套件最後一塊缺口已補齊，掃描結果為 dark_metal:735px、parchment:101px、gold_cta:738px、progress_bar:398px、tab:1057px、diamond_tab:50px、circle_icon:212px、nav_ink:2045px、equipment:5217px、commerce:3877px，全部 PASS，§9.6 可執行規則覆蓋率達 100%。"
+  },
+  {
+    "id": "UI-1-0014",
+    "legacy_id": "D-1",
+    "owner": "Agent2",
+    "type": "visual-qa",
+    "created": "2026-03-31T18:30:00+08:00",
+    "created_by_agent": "Agent2",
+    "started_at": "2026-03-31T18:30:00+08:00",
+    "started_by_agent": "Agent2",
+    "details": "Prepare and execute lobby-main nav.ink plus shadow screenshot comparison package against reference screenshots.",
+    "acceptance": [
+      "comparison_shot_exists",
+      "qa_notes_recorded",
+      "human_review_pending_or_done"
+    ],
+    "related": [
+      "UI-2-0001",
+      "UI-2-0007",
+      "UI-2-0010",
+      "UI-2-0016",
+      "UI-2-0018"
+    ],
+    "depends": [
+      "UI-2-0001",
+      "UI-2-0010",
+      "UI-2-0018"
+    ],
+    "status": "done",
+    "notes": "2026-03-31 opened Agent2 Phase D QA card and prepared artifacts/ui-qa/UI-1-0014/. UI-2-0018 is now complete: canonical preview route is assets/scenes/LoadingScene.scene -> LoadingScene.ts root component -> previewMode=true -> previewTarget=LobbyMain. 2026-03-31 Agent2 resumed D-1 after confirming `http://localhost:7456` is reachable again, but autonomous capture is still blocked because the repo lacks a stable, reproducible headless preview screenshot pipeline. Follow-up tooling card UI-2-0023 was opened for Agent1."
+  },
+  {
+    "id": "UI-1-0015",
+    "legacy_id": "D-2",
+    "owner": "Agent2",
+    "type": "visual-qa",
+    "created": "2026-03-31T18:30:00+08:00",
+    "created_by_agent": "Agent2",
+    "started_at": "2026-03-31T18:30:00+08:00",
+    "started_by_agent": "Agent2",
+    "details": "Prepare multi-screen paper.utility QA package for shop-main and gacha, focusing on cross-screen consistency.",
+    "acceptance": [
+      "comparison_shot_exists",
+      "consistency_notes_recorded",
+      "human_review_pending_or_done"
+    ],
+    "related": [
+      "UI-1-0002",
+      "UI-2-0014",
+      "UI-2-0018",
+      "UI-2-0019",
+      "UI-2-0020"
+    ],
+    "depends": [
+      "UI-1-0002",
+      "UI-2-0014",
+      "UI-2-0018",
+      "UI-2-0019",
+      "UI-2-0020"
+    ],
+    "status": "done",
+    "notes": "2026-03-31 opened Agent2 Phase D QA card. UI-2-0018 is complete and preview entry now exists via LoadingScene.ts + UIScreenPreviewHost.ts. UI-2-0019 formally re-scoped D-2 to common-parchment / light-surface carrier consistency, and UI-2-0020 wired shared QA anchors into shop-main and gacha. 2026-03-31 Agent2 captured ShopMain successfully via headless preview. Agent1 then completed UI-2-0025 by routing Gacha preview through `gacha-main-screen` + `gacha-preview-main`, so Agent2 can now capture both ShopMain and Gacha and proceed to formal D-2 comparison notes."
+  },
+  {
+    "id": "UI-2-0017",
+    "phase": "B",
+    "priority": "P1",
+    "owner": "Agent1",
+    "status": "done",
+    "created": "2026-03-31",
+    "completed": "2026-03-31",
+    "title": "Fix general-detail-default 5 missing bleed slots",
+    "description": "validate-skin-contracts.js found 5 R2 FAILs in general-detail-default.json: detail.summary.card/tab.idle/tab.active/tree.node/action all missing bleed slots.",
+    "notes": "2026-03-31 fixed five missing bleed slots in general-detail-default.json, then reran node tools_node/validate-skin-contracts.js and node tools_node/run-acceptance.js successfully. Contract validation returned 29/29 PASS."
+  },
+  {
+    "id": "UI-2-0018",
+    "phase": "C",
+    "priority": "P1",
+    "owner": "Agent1",
+    "status": "done",
+    "created": "2026-03-31T20:20:00+08:00",
+    "created_by_agent": "Agent2",
+    "type": "preview-harness",
+    "title": "Add screen-driven preview hosts for D-stage QA screens",
+    "description": "Provide real UISpecLoader.loadFullScreen(...) entry points for lobby-main, shop-main, gacha, and duel-challenge so Agent2 can capture trustworthy D-1~D-3 screenshots.",
+    "related": [
+      "UI-1-0014",
+      "UI-1-0015",
+      "UI-1-0016",
+      "UI-2-0010",
+      "UI-2-0014",
+      "UI-2-0012"
+    ],
+    "depends": [],
+    "completed": "2026-03-31",
+    "notes": "2026-03-31 completed. Added assets/scripts/ui/components/UIScreenPreviewHost.ts and extended assets/scripts/ui/scenes/LoadingScene.ts with previewMode + previewTarget enum. Canonical preview route for Agent2 is assets/scenes/LoadingScene.scene -> LoadingScene.ts root component -> previewMode=true -> previewTarget={LobbyMain,ShopMain,Gacha,DuelChallenge}. Project now has explicit loadFullScreen('lobby-main-screen'|'shop-main-screen'|'gacha-screen'|'duel-challenge-screen') entry points and D-1~D-3 are unblocked."
+  },
+  {
+    "id": "UI-2-0019",
+    "phase": "B",
+    "priority": "P1",
+    "owner": "Agent1",
+    "status": "done",
+    "created": "2026-03-31T20:45:00+08:00",
+    "created_by_agent": "Agent2",
+    "type": "spec-alignment",
+    "title": "Align D-2 target family between docs and shop/gacha skins",
+    "description": "Reconcile the D-2 QA target (paper.utility) with the actual shop-main / gacha skin implementations, which currently point to commerce/color and common-parchment patterns.",
+    "related": [
+      "UI-1-0015",
+      "UI-2-0014",
+      "UI-2-0009"
+    ],
+    "depends": [],
+    "completed": "2026-03-31",
+    "notes": "2026-03-31 completed. D-2 is formally re-scoped from paper.utility button consistency to common-parchment / light-surface carrier consistency. Rationale: paper.utility remains valid for duel-challenge utility actions, but current shop-main-default and gacha-default do not share that button family. Follow-up implementation task UI-2-0020 was opened to wire a real shared light-surface carrier into shop-main and gacha before Agent2 runs D-2 QA."
+  },
+  {
+    "id": "UI-2-0020",
+    "phase": "B",
+    "priority": "P1",
+    "owner": "Agent1",
+    "status": "done",
+    "created": "2026-03-31T22:20:00+08:00",
+    "created_by_agent": "Agent1",
+    "type": "skin-update",
+    "title": "Wire shared light-surface carriers into shop-main and gacha",
+    "description": "Expose a real common-parchment/light-surface carrier in shop-main and gacha so D-2 can evaluate cross-screen surface consistency instead of placeholder color blocks.",
+    "related": [
+      "UI-1-0015",
+      "UI-2-0009",
+      "UI-2-0014",
+      "UI-2-0019"
+    ],
+    "depends": [
+      "UI-2-0009",
+      "UI-2-0014",
+      "UI-2-0019"
+    ],
+    "notes": "shop-main-default.json v5: added shop.content.carrier QA anchor slot. gacha-default.json v3: added gacha.pity.carrier.bg/frame slots. gacha-main.json v2: PityInfoBar now has skinSlot=gacha.pity.carrier.bg. D-2 unblocked. acceptance all green.",
+    "completed-date": "2026-03-31"
+  },
+  {
+    "id": "UI-2-0021",
+    "phase": "C",
+    "priority": "P0",
+    "owner": "Agent1",
+    "status": "done",
+    "completed-date": "2026-03-31",
+    "created": "2026-03-31T23:30:00+08:00",
+    "created_by_agent": "Agent2",
+    "type": "runtime-resource-fix",
+    "title": "Fix PreviewInEditor SpriteFrame resource index drift",
+    "description": "Investigate and fix PreviewInEditor failures where existing SpriteFrame assets under assets/resources/sprites/ui_families/* cannot be resolved from the resources bundle.",
+    "related": [
+      "UI-1-0004",
+      "UI-2-0011",
+      "UI-2-0018",
+      "UI-2-0020",
+      "UI-1-0014",
+      "UI-1-0016"
+    ],
+    "depends": [],
+    "notes": "2026-03-31 Agent2 opened this card after PreviewInEditor reported `Bundle resources doesn't contain .../spriteFrame` for shadow_01, metal_noise_256, equipment/btn_primary_normal, and multiple general_detail sprites. File audit confirmed the PNG and .meta files already exist under assets/resources/sprites/ui_families/..., so this is currently treated as an Agent1-side resource index / path normalization / editor refresh contract issue rather than a missing-art asset task. 2026-03-31 Agent1 completed the fix by normalizing resource paths in ResourceManager, retrying SpriteFrame candidates before Texture2D fallback, releasing single SpriteFrame cache keys correctly, adding tools_node/validate-representative-spriteframe-assets.js into acceptance, and running asset-db refresh successfully."
+  },
+  {
+    "id": "UI-2-0022",
+    "phase": "B",
+    "priority": "P1",
+    "owner": "Agent1",
+    "status": "done",
+    "created": "2026-03-31T23:55:00+08:00",
+    "created_by_agent": "Agent2",
+    "type": "skin-update",
+    "title": "Upgrade general-list from placeholder table to framed lobby skin",
+    "description": "Replace the remaining color-rect/placeholder presentation in general-list with proper 9-slice background and framed header/list/row styling using existing lobby/common panel families.",
+    "related": [
+      "UI-2-0014",
+      "UI-2-0009"
+    ],
+    "depends": [],
+    "notes": "general-list-default.json v5: `header.bg -> dark_metal/frame` 9-slice；`list.bg -> parchment/bg` 9-slice（opacity=0.6）；`row.bg -> dark_metal/bg` 9-slice；header label 色彩改為 `#D4AF37` 金色。acceptance 全綠。",
+    "completed-date": "2026-03-31"
+  },
+  {
+    "id": "UI-2-0023",
+    "phase": "C",
+    "priority": "P1",
+    "owner": "Agent1",
+    "status": "done",
+    "created": "2026-03-31T18:10:00+08:00",
+    "created_by_agent": "Agent2",
+    "type": "qa-tooling",
+    "title": "Provide reproducible headless preview capture for D-stage QA",
+    "description": "Add a stable CLI/headless capture workflow for LoadingScene.previewTarget-based screen QA so Agent2 can generate D-1~D-3 artifacts without manual Inspector interaction.",
+    "related": [
+      "UI-1-0014",
+      "UI-1-0015",
+      "UI-1-0016",
+      "UI-2-0018"
+    ],
+    "depends": [
+      "UI-2-0018"
+    ],
+    "notes": "2026-03-31 Agent1 hardened the capture pipeline: LoadingScene now supports query/localStorage preview injection and publishes __UI_CAPTURE_STATE__ (loading/ready/error); tools_node/capture-ui-screens.js is now a puppeteer-core headless CLI, auto-injects LoadingScene.scene uuid, writes debug screenshot/state artifacts on failure, triggers asset-db refresh before capture, retries refreshable preview failures, and uses domcontentloaded instead of networkidle2 for the Cocos Editor preview page. 2026-03-31 Agent2 confirmed reproducible screenshot export for LobbyMain, ShopMain, DuelChallenge, and Gacha under artifacts/ui-qa/UI-2-0023/. The remaining Gacha compatibility work was completed under UI-2-0025, so UI-2-0023 is now fully closed as tooling-complete.",
+    "completed-date": "2026-03-31"
+  },
+  {
+    "id": "UI-2-0025",
+    "phase": "C",
+    "priority": "P1",
+    "owner": "Agent1",
+    "status": "done",
+    "created": "2026-03-31T20:10:00+08:00",
+    "created_by_agent": "Agent2",
+    "type": "screen-contract-fix",
+    "title": "Align gacha-screen with UIScreenPreviewHost loadFullScreen contract",
+    "description": "Refactor assets/resources/ui-spec/screens/gacha-screen.json from the legacy multi-screen schema to the single-screen loadFullScreen contract expected by UIScreenPreviewHost and LoadingScene.previewTarget=Gacha.",
+    "related": [
+      "UI-1-0015",
+      "UI-2-0018",
+      "UI-2-0020",
+      "UI-2-0023"
+    ],
+    "depends": [
+      "UI-2-0018",
+      "UI-2-0023"
+    ],
+    "notes": "2026-03-31 Agent2 validated the headless capture pipeline by exporting LobbyMain, ShopMain, and DuelChallenge. Agent1 then finished the Gacha preview compatibility path by adding `assets/resources/ui-spec/layouts/gacha-preview-main.json`, pointing `gacha-main-screen.json` to that preview-safe layout, and aligning `LoadingScene.previewTarget=Gacha` plus `tools_node/capture-ui-screens.js` to use `gacha-main-screen` as the canonical preview contract. `node tools_node/capture-ui-screens.js --target Gacha` now succeeds and exports `artifacts/ui-qa/UI-2-0023/Gacha.png`.",
+    "completed-date": "2026-03-31"
+  },
+  {
+    "id": "UI-2-0024",
+    "phase": "C",
+    "priority": "P1",
+    "owner": "Agent1",
+    "status": "completed",
+    "completed-date": "2026-03-31T23:59:00+08:00",
+    "created": "2026-03-31T23:59:00+08:00",
+    "created_by_agent": "Codex",
+    "type": "refactor",
+    "title": "Split UIPreviewBuilder into helper modules to reduce encoding and merge risk",
+    "description": "Break UIPreviewBuilder into smaller orchestration/text/diagnostics/layout/style modules after the current encoding repair stabilizes, without changing runtime behavior.",
+    "related": [
+      "UI-2-0010",
+      "UI-2-0011",
+      "UI-2-0023"
+    ],
+    "depends": [],
+    "notes": "2026-03-31 Phase 1 completed: (1) Created UIPreviewDiagnostics.ts with 13 diagnostic methods centralizing all console calls; (2) Created UIPreviewTextCatalog.ts centralizing Chinese strings and JSDoc; (3) Updated UIPreviewBuilder.ts to route all console.log/warn/error through UIPreviewDiagnostics; (4) Verified zero direct console calls remain in UIPreviewBuilder.ts; (5) All changes are pure refactoring, runtime behavior unchanged. Next phase: Layout & Style helper extraction."
+  },
+  {
+    "id": "UI-2-0041",
+    "phase": "D",
+    "priority": "P2",
+    "owner": "Agent2",
+    "status": "done",
+    "created": "2026-04-01",
+    "created_by_agent": "Agent2",
+    "type": "asset-direction",
+    "title": "建立主城 building node / interaction 量產規格",
+    "description": "整理主城建築節點、點擊操作筆刷選單、教學高亮與建築浮標的統一視覺語言，供未來主城或城建系統直接引用。",
+    "related": [
+      "UI-2-0037"
+    ],
+    "depends": [],
+    "notes": "2026-04-01 | 狀態: open | 驗證: 已從新參考圖辨識 A7 城建節點與操作選單 family | 變更: 補開主城 building node / interaction 規格卡，供未來主城或城建系統引用 | 阻塞: 待專案內主城 / 城建 screen contract 正式建立"
+  },
+  {
+    "id": "UI-2-0036",
+    "phase": "D",
+    "priority": "P1",
+    "owner": "Agent1",
+    "status": "done",
+    "created": "2026-04-01",
+    "created_by_agent": "Agent2",
+    "type": "asset-generation",
+    "title": "依 UI-2-0032 生出 BattleScene icon v2 候選稿",
+    "description": "依 UI-2-0032 的 refinement 規格與 Agent1 生成 brief，產出 BattleScene `unitinfo.type.icon` 的 v2 候選稿，至少包含 v2a / v2b / v2c 與 128 / 64 / 32 三個尺寸。",
+    "related": [
+      "UI-2-0028",
+      "UI-2-0032",
+      "UI-2-0035"
+    ],
+    "depends": [
+      "UI-2-0032"
+    ],
+    "notes": "2026-04-01 | 狀態: open | 驗證: Agent2 已完成 UI-2-0032 的 family 指派、QA 基線與 Agent1 生圖 brief | 變更: 新開 Agent1 生圖執行卡，要求依 F7 戰場微型 badge 規則產出 v2 icon 候選稿 | 阻塞: 待 Agent1 接手實際生成 v2a / v2b / v2c 與三尺寸預覽\n2026-04-05 | 狀態: in-progress | 處理: 建立 icon v2 候選稿生成腳本，依 F7 badge 規格產出 v2a/v2b/v2c 三方向 + 三尺寸 | 驗證: 尚未 | 阻塞: 無 // Agent1 已產出 v2a/v2b/v2c × 128/64/32px 共 9 個 PNG + v2-compare-board.png → artifacts/ui-qa/UI-2-0032/，待 Agent2 QA",
+    "started_at": "2026-04-05T09:00:00+08:00",
+    "started_by_agent": "Agent1",
+    "completed_at": "2026-04-05",
+    "completed_by": "Agent1"
+  },
+  {
+    "phase": "D",
+    "priority": "P1",
+    "owner": "Agent1",
+    "status": "done",
+    "created": "2026-04-01",
+    "created_by_agent": "Agent2",
+    "type": "runtime-support",
+    "related": [
+      "UI-2-0027",
+      "UI-2-0029"
+    ],
+    "depends": [],
+    "id": "UI-2-0033",
+    "title": "BattleHUD portrait 改為動態載入 generals 資產",
+    "description": "讓 BattleHUD 依 player / enemy general id 載入 `sprites/generals/{snake_case_id}_portrait`，若缺件則退回 player / enemy placeholder，避免 HUD 長期固定顯示預設頭像。",
+    "notes": "2026-04-05 | 狀態: done | 驗證: BattleScene 初始進場與 restart 皆會把 general id 傳入 HUD；BattleHUD 依 `sprites/generals/{snake_case_id}_portrait` 動態載入，缺件安全退回 player / enemy placeholder；Problems 無新增 TypeScript 錯誤 | 變更: BattleHUD 新增 player/enemy generalId API、非同步肖像套用與 fallback；BattleScene 初始化與 restart 補上 setPlayerGeneralId / setEnemyGeneralId | 阻塞: 無"
+  },
+  {
+    "phase": "D",
+    "priority": "P1",
+    "owner": "Agent1",
+    "status": "done",
+    "created": "2026-04-01",
+    "created_by_agent": "Agent2",
+    "type": "runtime-support",
+    "related": [
+      "UI-2-0027",
+      "UI-2-0030",
+      "UI-2-0031"
+    ],
+    "depends": [],
+    "id": "UI-2-0034",
+    "title": "TigerTallyPanel 綁定 card art / rarity / type badge",
+    "description": "讓 TigerTallyPanel 依資料動態套用 card art、rarity border 與 unit type badge，並在缺件時沿用 UI-2-0031 的 fallback 契約。",
+    "notes": "2026-04-05 | 狀態: done | 驗證: `TigerTallyPanel` 已對 `ArtBg*`、`RarityBorder*`、`UnitTypeBadge*` 套用動態 SpriteFrame 載入；缺件時會依 UI-2-0031 退回 `tally_card_art_placeholder`、`tally_rarity_normal`、`tally_badge_type`；Problems 無新增 TypeScript 錯誤 | 變更: 新增 slot 級 async 載入保護、card art / rarity / type badge fallback 鏈，並預留 `artResource / rarityResource / typeBadgeResource` 供後續正式素材接線 | 阻塞: 無"
+  },
+  {
+    "id": "UI-2-0043",
+    "phase": "D",
+    "priority": "P1",
+    "owner": "Agent1",
+    "status": "done",
+    "created": "2026-04-01",
+    "created_by_agent": "Agent2",
+    "type": "asset-generation",
+    "title": "依 UI-2-0038 產出 BattleHUD portrait crop proof",
+    "description": "依 A2 HUD 頭像裁片 family 規格，產出可直接回到 QA 流程的 BattleHUD portrait crop proof，驗證 64x64 / 32x32 縮圖與 badge 疊加是否成立。",
+    "related": [
+      "UI-2-0038",
+      "UI-2-0029",
+      "UI-2-0033"
+    ],
+    "depends": [
+      "UI-2-0038"
+    ],
+    "notes": "2026-04-01 | 狀態: open | 驗證: Agent2 已交付 A2 HUD 頭像裁片 family 規格與 QA 參考素材 | 變更: 待 Agent1 依 agent1-generation-brief 產出張飛 / 趙雲 portrait crop proof | 阻塞: 無\n2026-04-05 | 狀態: in-progress | 處理: 建立 HUD portrait crop 生成腳本，依 agent1-generation-brief 裁切張飛趙雲全身圖為 512x512 HUD crop proof | 驗證: 尚未 | 阻塞: 無 // Agent1 已產出 zhang_fei + zhao_yun 各 v1a/v1b × 512/64/32px 共 16 檔 → artifacts/ui-qa/UI-2-0038/，64px 可讀性通過",
+    "started_at": "2026-04-05T09:00:00+08:00",
+    "started_by_agent": "Agent1",
+    "completed_at": "2026-04-05",
+    "completed_by": "Agent1"
+  },
+  {
+    "id": "UI-2-0047",
+    "phase": "D",
+    "priority": "P1",
+    "owner": "Agent2",
+    "status": "done",
+    "created": "2026-04-01",
+    "created_by_agent": "Agent2",
+    "started_at": "2026-04-01T10:25:00+08:00",
+    "started_by_agent": "Agent2",
+    "type": "asset-direction",
+    "title": "建立跨功能一致性與量產製程規範",
+    "description": "把 `docs/UI參考圖品質分析.md` 第二波研究正式收斂成可執行規格，補齊目前高品質 UI 量產最缺的五件事：",
+    "related": [
+      "UI-2-0035",
+      "UI-2-0037",
+      "UI-2-0044",
+      "UI-2-0045"
+    ],
+    "depends": [],
+    "notes": "2026-04-01 | 狀態: done | 驗證: Agent2 已重盤 29 張參考圖、建立 contact sheet，並產出 macro-style-rules / field template / 五張子規格卡 | 變更: 完成跨功能一致性與量產製程母規則，將色票、family kit、state/size、screen-context QA 與 schema 全部落成正式規格 | 阻塞: 無",
+    "completed_at": "2026-04-01T18:20:00+08:00",
+    "completed_by_agent": "Agent2"
+  },
+  {
+    "id": "UI-2-0048",
+    "phase": "D",
+    "priority": "P1",
+    "owner": "Agent2",
+    "status": "done",
+    "created": "2026-04-01",
+    "created_by_agent": "Agent2",
+    "type": "asset-direction",
+    "title": "建立功能語意色票規格",
+    "description": "把參考圖中的跨畫面用色規律整理成正式功能語意色票，讓之後的 icon、badge、CTA、progress、rarity 與 placeholder 都能依角色選色，而不是逐張自由發揮。",
+    "related": [
+      "UI-2-0047",
+      "UI-2-0044",
+      "UI-2-0045"
+    ],
+    "depends": [],
+    "notes": "2026-04-01 | 狀態: done | 驗證: 已整理功能語意色票與 Lobby / General / Battle / Reward 使用範圍 | 變更: 完成功能語意色票規格，定義 cta-gold、danger-red、support-green、info-cyan、rare-purple、neutral-ink、paper-black、battle-light | 阻塞: 無",
+    "completed_at": "2026-04-01T18:20:00+08:00",
+    "completed_by_agent": "Agent2"
+  },
+  {
+    "id": "UI-2-0049",
+    "phase": "D",
+    "priority": "P1",
+    "owner": "Agent2",
+    "status": "done",
+    "created": "2026-04-01",
+    "created_by_agent": "Agent2",
+    "type": "asset-direction",
+    "title": "建立 family 批次生產模板",
+    "description": "把量產流程從「單張補圖」改成「同功能 family kit 一次做完」，確保風格、材質、狀態與縮圖表現保持一致。",
+    "related": [
+      "UI-2-0047",
+      "UI-2-0044",
+      "UI-2-0045"
+    ],
+    "depends": [],
+    "notes": "2026-04-01 | 狀態: done | 驗證: 已建立 icon / portrait / card / container / torso 的 family kit 規格與命名模板 | 變更: 完成 family 批次生產模板，要求同功能素材整批生產，不再逐張補洞 | 阻塞: 無",
+    "completed_at": "2026-04-01T18:20:00+08:00",
+    "completed_by_agent": "Agent2"
+  },
+  {
+    "id": "UI-2-0050",
+    "phase": "D",
+    "priority": "P1",
+    "owner": "Agent2",
+    "status": "done",
+    "created": "2026-04-01",
+    "created_by_agent": "Agent2",
+    "type": "asset-direction",
+    "title": "建立狀態組與尺寸組標準",
+    "description": "統一各類量產素材應同時輸出的狀態與尺寸，避免每張卡再各自決定要不要做 `pressed`、要不要出 `32px`。",
+    "related": [
+      "UI-2-0047",
+      "UI-2-0032",
+      "UI-2-0038"
+    ],
+    "depends": [],
+    "notes": "2026-04-01 | 狀態: done | 驗證: 已定義 icon / portrait / card / container 的 state_set 與 size_set | 變更: 完成狀態組與尺寸組標準，之後 brief 必填 state_set / size_set | 阻塞: 無",
+    "completed_at": "2026-04-01T18:20:00+08:00",
+    "completed_by_agent": "Agent2"
+  },
+  {
+    "id": "UI-2-0051",
+    "phase": "D",
+    "priority": "P1",
+    "owner": "Agent2",
+    "status": "done",
+    "created": "2026-04-01",
+    "created_by_agent": "Agent2",
+    "type": "qa-pipeline",
+    "title": "建立 screen-context QA 板與比較流程",
+    "description": "把 QA 從「只看單張 PNG」提升為「回到真實畫面條件比對」，避免圖本身看起來精緻，但一放回 UI 就失去層次或辨識度。",
+    "related": [
+      "UI-2-0047",
+      "UI-1-0014",
+      "UI-1-0015",
+      "UI-1-0016"
+    ],
+    "depends": [],
+    "notes": "2026-04-01 | 狀態: done | 驗證: 已定義 reference board / compare board / screen-context placement 的 QA 流程 | 變更: 完成 screen-context QA 規格，要求所有量產圖回到真實畫面條件檢查 | 阻塞: 無",
+    "completed_at": "2026-04-01T18:20:00+08:00",
+    "completed_by_agent": "Agent2"
+  },
+  {
+    "id": "UI-2-0052",
+    "phase": "D",
+    "priority": "P1",
+    "owner": "Agent2",
+    "status": "done",
+    "created": "2026-04-01",
+    "created_by_agent": "Agent2",
+    "type": "asset-direction",
+    "title": "建立量產規格欄位 Schema",
+    "description": "把目前散落在文字敘述裡的關鍵規格，收斂成固定欄位，減少 Agent 之間交接時的解讀落差。",
+    "related": [
+      "UI-2-0047",
+      "UI-2-0044",
+      "UI-2-0045"
+    ],
+    "depends": [],
+    "notes": "2026-04-01 | 狀態: done | 驗證: 已建立 asset_family / color_role / state_set / size_set / screen_context / qa_board_path 等欄位 schema | 變更: 完成量產規格欄位 Schema，供 manifest / brief / QA 共用 | 阻塞: 無",
+    "completed_at": "2026-04-01T18:20:00+08:00",
+    "completed_by_agent": "Agent2"
+  },
+  {
+    "id": "UI-2-0058",
+    "phase": "D",
+    "priority": "P1",
+    "owner": "Agent2",
+    "status": "done",
+    "created": "2026-04-02",
+    "created_by_agent": "Agent2",
+    "started_at": "2026-04-05T15:20:00+08:00",
+    "started_by_agent": "Agent2",
+    "completed_at": "2026-04-05T17:40:00+08:00",
+    "completed_by_agent": "Agent2",
+    "type": "ui-slot-contract",
+    "title": "收斂 GeneralDetailBloodlineV3 第一批 Slot 契約",
+    "description": "讓 `GeneralDetailBloodlineV3` 的第一批視覺骨架具備可重用的正式 slot family，避免 `ui-spec`、runtime 與後續美術 proof 各自長出不同版本。",
+    "related": [
+      "UI-2-0054",
+      "UI-2-0057"
+    ],
+    "depends": [
+      "UI-2-0057"
+    ],
+    "template_family": "detail-split",
+    "content_contract": [
+      "overview-summary",
+      "bloodline-summary",
+      "story-strip-cells"
+    ],
+    "skin_fragments": [
+      "general_detail/detail_summary_card_bg",
+      "general_detail/detail_content_bg",
+      "general_detail/detail_footer_bg"
+    ],
+    "smoke_route": "LobbyScene.onClickGeneralDetailOverviewSmoke",
+    "docs_backwritten": [
+      "docs/keep.md",
+      "docs/UI 規格書.md",
+      "docs/系統規格書/武將人物介面規格書.md",
+      "docs/cross-reference-index.md"
+    ],
+    "notes": "2026-04-05 | done | 指令: 以 general_detail family 重用 frame / section / footer 資產，並將 TopSummaryRow、BloodlineRow、StoryStrip 的正式文字節點回寫到 layout JSON；同步修復 tasks_index.md 生成鏈與相關正式文件 | 結果: GeneralDetailBloodlineV3 已完成第一批 slot family / skin contract 收斂，overview shell runtime 不再臨時建立最終 Label 節點，任務狀態與索引已同步 | 阻塞: 無"
+  },
+  {
+    "id": "UI-2-0059",
+    "phase": "D",
+    "priority": "P1",
+    "owner": "Agent2",
+    "status": "done",
+    "created": "2026-04-02",
+    "created_by_agent": "Agent2",
+    "started_at": "2026-04-05T17:45:00+08:00",
+    "started_by_agent": "Agent2",
+    "type": "ui-spec-skeleton",
+    "title": "日常人物頁 v3 UI Spec Skeleton",
+    "description": "在 `UI-2-0058` 完成 slot family / skin contract 之後，將 `GeneralDetailBloodlineV3` 的 overview shell 繼續收斂成可量產、可模板化、可回掛 `GeneralDetail` host 的正式 skeleton：",
+    "related": [
+      "UI-2-0054",
+      "UI-2-0058"
+    ],
+    "depends": [
+      "UI-2-0054",
+      "UI-2-0058"
+    ],
+    "template_family": "detail-split",
+    "content_contract": [
+      "overview-summary-modules",
+      "bloodline-overview-modules",
+      "story-strip-cells"
+    ],
+    "skin_fragments": [
+      "gdv3.mode.*",
+      "gdv3.progress.*",
+      "general_detail/detail_summary_card_bg"
+    ],
+    "smoke_route": "LobbyScene.onClickGeneralDetailOverviewSmoke",
+    "docs_backwritten": [
+      "docs/keep.md",
+      "docs/UI 規格書.md",
+      "docs/系統規格書/武將人物介面規格書.md",
+      "docs/cross-reference-index.md"
+    ],
+    "notes": "2026-04-05 | done | 指令: 承接 UI-2-0058，將日常人物頁 v3 從已接線的 overview shell 再往正式 skeleton 收斂，補齊 layout / screen / node contract 缺口並同步正式文件 | 結果: 完成 `OverviewSummaryModules`、`BloodlineOverviewModules`、`OverviewStateChrome`、`AwakeningProgressGroup` 四組正式骨架群組，故事帶維持語意節點，screen contract 收緊為 `allowMissingSkin: false`，layout version 升為 v3，文件 / manifest / 索引已同步 | 阻塞: 無",
+    "completed_at": "2026-04-05T22:30:00+08:00",
+    "completed_by_agent": "Agent2"
+  },
+  {
+    "id": "UI-2-0060",
+    "phase": "D",
+    "priority": "P1",
+    "owner": "Agent2",
+    "status": "done",
+    "created": "2026-04-02",
+    "created_by_agent": "Agent2",
+    "started_at": "2026-04-05T11:29:05+08:00",
+    "started_by_agent": "Agent2",
+    "completed_at": "2026-04-05T11:29:05+08:00",
+    "completed_by_agent": "Agent2",
+    "type": "ui-spec-skeleton",
+    "title": "血脈命鏡 v3 ui-spec skeleton",
+    "description": "將 `突破頁 / 血脈命鏡 v3` 轉成共用版型骨架，至少支援：",
+    "related": [
+      "UI-2-0054",
+      "UI-2-0055",
+      "UI-2-0056"
+    ],
+    "depends": [
+      "UI-2-0054"
+    ],
+    "template_family": "fullscreen-result",
+    "content_contract": [
+      "loading-state",
+      "awakening-state",
+      "ascension-state",
+      "unowned-preview-state"
+    ],
+    "skin_fragments": [
+      "bloodline_mirror/frame",
+      "bloodline_mirror/aura",
+      "bloodline_mirror/cta"
+    ],
+    "smoke_route": "UIID.BloodlineMirrorLoading -> bloodline-mirror-loading-screen",
+    "docs_backwritten": [
+      "docs/keep.md",
+      "docs/UI 規格書.md",
+      "docs/系統規格書/血脈命鏡過場載入規格書.md",
+      "docs/cross-reference-index.md"
+    ],
+    "notes": "2026-04-05 | done | 驗證: 新增 bloodline-mirror-loading-main/default，並將 loading / awakening 兩個 screen 一起切到 shared skeleton；allowMissingSkin=false | 變更: 完成 fullscreen-result family 的 loading / awakening 共用骨架，補齊 StateBadge / MirrorHeader / CenterStage / TipPanel / ActionRow / StoryStrip 五大模組 | 阻塞: 無"
+  },
+  {
+    "id": "UI-2-0061",
+    "phase": "D",
+    "priority": "P1",
+    "owner": "Agent2",
+    "status": "done",
+    "created": "2026-04-02",
+    "created_by_agent": "Agent2",
+    "type": "data-contract",
+    "title": "Story / Bloodline / Crest 內容契約",
+    "description": "將 `日常人物頁 v3` overview shell 裡原本靠 fallback 字串拼出的內容，收斂成可量產、可重用、可回寫到資料源的正式 content contract。",
+    "related": [
+      "UI-2-0054",
+      "UI-2-0059",
+      "UI-2-0060"
+    ],
+    "depends": [
+      "UI-2-0054"
+    ],
+    "template_family": "detail-split",
+    "content_contract": [
+      "historicalAnecdote",
+      "bloodlineRumor",
+      "storyStripCells",
+      "crestHint",
+      "crestState"
+    ],
+    "skin_fragments": [
+      "gdv3.label.cardBody",
+      "gdv3.label.story",
+      "gdv3.mode.*"
+    ],
+    "smoke_route": "LobbyScene.onClickGeneralDetailOverviewSmoke",
+    "docs_backwritten": [
+      "docs/keep.md",
+      "docs/UI 規格書.md",
+      "docs/系統規格書/武將人物介面規格書.md",
+      "docs/cross-reference-index.md"
+    ],
+    "notes": "2026-04-05 | done | 指令: 承接 UI-2-0059，將 story / bloodline / crest 從 generic fallback 抽成正式內容契約，並補第一批示範資料 | 結果: `GeneralConfig` 已新增 `historicalAnecdote`、`bloodlineRumor`、`storyStripCells`、`crestHint`、`crestState`；overview mapper / shell 已改吃正式 contract，`generals.json` 也補入首批人物示範內容 | 阻塞: 無",
+    "started_at": "2026-04-05T23:05:00+08:00",
+    "started_by_agent": "Agent2",
+    "completed_at": "2026-04-05T23:35:00+08:00",
+    "completed_by_agent": "Agent2"
+  },
+  {
+    "id": "UI-2-0074",
+    "priority": "P0",
+    "phase": "E",
+    "owner": "Agent1",
+    "status": "done",
+    "created": "2026-04-05",
+    "created_by_agent": "Agent1",
+    "type": "architecture",
+    "title": "UIConfig UIID 補全 + UIManager 動態載入架構設計",
+    "description": "UIConfig.ts ? UIID enum ??6???????? UI??22 ????? UIManager???? UIID enum ?? UIManager.open() ???? Prefab ?????",
+    "related": [
+      "UI-2-0018",
+      "DATA-1-0001"
+    ],
+    "depends": [],
+    "notes": "2026-04-05 | 狀態: done | 驗證: UIConfig.ts UIID enum 由 6 → 25 入口；UIManager.ts 新增 setupLayers + openAsync；編碼全部 ok；TypeScript 無報錯 | 變更: Phase 1 UIID 補全 + Phase 2 動態載入 PoC | 阻塞: 無"
+  },
+  {
+    "id": "UI-2-0075",
+    "priority": "P1",
+    "phase": "E",
+    "owner": "Agent1",
+    "status": "done",
+    "created": "2026-04-05",
+    "created_by_agent": "Agent1",
+    "type": "refactor",
+    "title": "UISpecLoader 升級為 ServiceLoader 共享單例",
+    "description": "15 ????? new UISpecLoader()????????????? ServiceLoader ???????",
+    "related": [
+      "UI-2-0074"
+    ],
+    "depends": [],
+    "notes": "2026-04-05 | 狀態: done | 驗證: new UISpecLoader() 由 16 → 1 (ServiceLoader JSDoc)；UISpecLoader 建構子注入 ResourceManager；ServiceLoader 加 specLoader 欄位；16 元件改 getter；TypeScript 零錯誤 | 變更: 完成單例提升 | 阻塞: 無"
+  },
+  {
+    "id": "UI-2-0076",
+    "priority": "P1",
+    "phase": "E",
+    "owner": "Agent1",
+    "status": "done",
+    "created": "2026-04-05",
+    "created_by_agent": "Agent1",
+    "type": "refactor",
+    "title": "Component Binder Migration — 11 個元件批量遷移",
+    "description": "BattleHUD/GeneralDetailPanel ? 11 ????? getChildByName/getChildByPath ???????? DuelChallengePanel ???????? UITemplateBinder.onReady(binder) ???",
+    "related": [
+      "DATA-1-0001",
+      "UI-2-0075"
+    ],
+    "depends": [
+      "DATA-1-0001"
+    ],
+    "notes": "2026-04-05 | 狀態: done | 驗證: 已完成 Binder Migration 並與 ui-quality-todo.json 對齊 | 變更: 5 個元件遷移至 onReady(binder) 模式，清除高風險 path string 主熱區；本卡文件狀態回補提交 | 阻塞: 無",
+    "started_at": "2026-04-05",
+    "started_by_agent": "Agent1",
+    "completed_at": "2026-04-05",
+    "completed_by_agent": "Agent1"
+  },
+  {
+    "id": "UI-2-0077",
+    "priority": "P1",
+    "phase": "E",
+    "owner": "Agent1",
+    "status": "done",
+    "created": "2026-04-05",
+    "created_by_agent": "Agent1",
+    "type": "refactor",
+    "title": "i18n 語系 hardcoding 移除",
+    "description": "14 ?????? loadI18n(zh-TW)?I18nSystem ?? ServiceLoader ????? currentLocale ??????????????",
+    "related": [
+      "UI-2-0075"
+    ],
+    "depends": [],
+    "notes": "2026-04-05 | 狀態: in-progress | 驗證: grep 確認 15 個 loadI18n('zh-TW') 硬編碼呼叫（含 GeneralDetailOverviewShell）；I18nSystem 已有 locale getter | 變更: 鎖卡，加 currentLocale getter，批量替換 | 阻塞: 無"
+  },
+  {
+    "id": "UI-2-0078",
+    "priority": "P2",
+    "phase": "E",
+    "owner": "Agent1",
+    "status": "done",
+    "created": "2026-04-05",
+    "created_by_agent": "Agent1",
+    "type": "runtime-support",
+    "title": "MemoryManager 基礎實作（LRU + releaseByScope）",
+    "description": "MemoryManager ????????? LRU ????? releaseByScope(scopeId) ????????????",
+    "related": [
+      "UI-2-0074",
+      "UI-2-0075"
+    ],
+    "depends": [
+      "UI-2-0075"
+    ],
+    "notes": "2026-04-05 | 狀態: open | 驗證: 確認 MemoryManager 為明確空殼（自我說明 '追蹤層空殼'） | 變更: 開單基礎實作 | 阻塞: 建議等 UI-2-0075 完成後再做，以確保 ResourceManager 有 ref count 可接通",
+    "started_at": "2026-04-05",
+    "completed_at": "2026-04-05"
+  },
+  {
+    "id": "UI-2-0079",
+    "priority": "P3",
+    "phase": "E",
+    "owner": "Agent1",
+    "status": "done",
+    "created": "2026-04-05",
+    "created_by_agent": "Agent1",
+    "type": "chore",
+    "title": "Constants.ts UILayerName deprecated 清理",
+    "description": "Constants.ts ?? @deprecated UILayerName enum ? UIConfig.ts ? LayerType ?????????????",
+    "related": [
+      "UI-2-0074"
+    ],
+    "depends": [],
+    "notes": "2026-04-05 | A7 UILayerName @deprecated 已清除 Constants.ts | open | 2026-04-06 | Agent1 移除後確認無調用端，TypeScript 無錯誤 | done"
+  },
+  {
+    "id": "UI-2-0080",
+    "priority": "P0",
+    "phase": "F",
+    "owner": "Agent1",
+    "status": "done",
+    "created": "2026-04-05",
+    "created_by_agent": "TechDirector",
+    "type": "architecture",
+    "title": "Content Contract Framework 實作",
+    "description": "為每個 template family 定義 ContentContractSpec JSON Schema，擴充 UIScreenSpec.contentRequirements，並建立 UIContentBinder.ts 提供型別安全的欄位綁定入口。這是 AI Agent 能交付完整 UI 而非半成品骨架的關鍵補強。",
+    "related": [
+      "UI-2-0074",
+      "UI-2-0075",
+      "DATA-1-0001"
+    ],
+    "depends": [
+      "UI-2-0074",
+      "UI-2-0075"
+    ],
+    "template_family": "all",
+    "content_contract": [
+      "detail-split-content",
+      "dialog-card-content",
+      "rail-list-content",
+      "fullscreen-result-content"
+    ],
+    "skin_fragments": [],
+    "smoke_route": "node tools_node/validate-ui-specs.js --check-content-contract",
+    "docs_backwritten": [
+      "docs/keep.md §20",
+      "docs/ui/content-contract-framework.md",
+      "docs/cross-reference-index.md"
+    ],
+    "acceptance": [
+      "UIContentBinder.ts 建立，可接收 ContentContractRef + data 物件並映射至 binder",
+      "UISpecTypes.ts 新增 ContentContractRef 介面與 UIScreenSpec.contentRequirements",
+      "assets/resources/ui-spec/contracts/ 含 4 個 family schema",
+      "docs/ui/content-contract-framework.md 已補",
+      "validate-ui-specs.js --check-content-contract 能跑通已有 screen spec"
+    ],
+    "notes": "2026-04-05 | 狀態: open | 理由: Phase F 架構補強 | 阻塞: 無 | 參見 docs/keep.md §20 與 docs/ui/content-contract-framework.md\n2026-04-05 | 狀態: in-progress | 處理: validate-ui-specs --check-content-contract 實作 | 驗證: 無 | 阻塞: 無\n2026-04-05 | 狀態: done | 處理: UISpecTypes.ts / UIContentBinder.ts / 4 schema JSON / content-contract-framework.md / validate-ui-specs --check-content-contract 全部完成 | 驗證: node validate-ui-specs.js --check-content-contract 通過 contracts=4 | 阻塞: 無",
+    "started_at": "2026-04-05",
+    "started_by_agent": "Agent1",
+    "completed_at": "2026-04-05"
+  },
+  {
+    "id": "UI-2-0081",
+    "priority": "P0",
+    "phase": "F",
+    "owner": "Agent1",
+    "status": "done",
+    "created": "2026-04-05",
+    "created_by_agent": "TechDirector",
+    "type": "tooling",
+    "title": "Screen → Component Auto-Scaffolder 實作",
+    "description": "實作 tools_node/scaffold-ui-component.js，從 screen.json 自動產出繼承 UIPreviewBuilder 的 Panel TypeScript 骨架，含 onReady(binder) 樣板與 UIConfig UIID 自動新增，解掉量產最後一哩的人工接線。",
+    "related": [
+      "UI-2-0080",
+      "UI-2-0074"
+    ],
+    "depends": [
+      "UI-2-0080"
+    ],
+    "template_family": "all",
+    "content_contract": [],
+    "skin_fragments": [],
+    "smoke_route": "node tools_node/scaffold-ui-component.js --screen lobby-main-screen --dry-run",
+    "docs_backwritten": [
+      "docs/keep.md §21",
+      "docs/cross-reference-index.md"
+    ],
+    "acceptance": [
+      "tools_node/scaffold-ui-component.js 完成",
+      "可從 screen.json 產出 Panel .ts（含 onReady、content contract 綁定骨架）",
+      "UIConfig.ts UIID entry 自動新增（含 TODO 標記）",
+      "4 個 family-specific .template.ts 樣板存在於 tools_node/templates/",
+      "產出後 tsc --noEmit 無型別錯誤",
+      "encoding check 通過"
+    ],
+    "notes": "2026-04-05 | 狀態: open | 理由: Phase F 量產最後一哩 | 阻塞: 依賴 UI-2-0080 | 參見 docs/keep.md §21\n2026-04-05 | 狀態: in-progress | 處理: scaffold-ui-component.js + 4 模板 | 驗證: 無 | 阻塞: 依賴 UI-2-0080（已完成）\n2026-04-05 | 狀態: done | 處理: scaffold-ui-component.js + 4 family .template.ts 全部完成 | 驗證: dry-run 產出正確 Panel 骨架 | 阻塞: 無",
+    "started_at": "2026-04-05",
+    "started_by_agent": "Agent1",
+    "completed_at": "2026-04-05"
+  },
+  {
+    "id": "UI-2-0082",
+    "priority": "P1",
+    "phase": "F",
+    "owner": "Agent1",
+    "status": "done",
+    "created": "2026-04-05",
+    "started_at": "2026-04-06",
+    "completed_at": "2026-04-06",
+    "created_by_agent": "TechDirector",
+    "type": "tooling",
+    "title": "Figma Proof Mapping Sync Pipeline",
+    "description": "實作 tools_node/sync-figma-proof-mapping.js，透過 MCP Figma 工具讀取 09_Proof Mapping frame，解析 familyId/template/slot-map 等欄位，輸出 proof-mapping-{date}.json，並讓 scaffold-ui-spec-family.js 支援 --figma-frame-id 輸入，減少人工搬運。",
+    "related": [
+      "UI-2-0080",
+      "UI-2-0073"
+    ],
+    "depends": [
+      "UI-2-0080"
+    ],
+    "template_family": "all",
+    "content_contract": [],
+    "skin_fragments": [],
+    "smoke_route": "node tools_node/sync-figma-proof-mapping.js --dry-run",
+    "docs_backwritten": [
+      "docs/keep.md §10",
+      "docs/cross-reference-index.md"
+    ],
+    "acceptance": [
+      "tools_node/sync-figma-proof-mapping.js 完成",
+      "可讀取 Figma 09_Proof Mapping frame 並輸出 proof-mapping-{date}.json",
+      "輸出欄位含 familyId/template/tabs/railItems/titleKey/bodyKey/notes",
+      "scaffold-ui-spec-family.js 支援 --figma-frame-id 選項",
+      "自動驗證 Figma 欄位與 JSON 欄位一致性"
+    ],
+    "notes": "2026-04-06 | 狀態: done | 實作: tools_node/sync-figma-proof-mapping.js（支援 --config/--frame-id/--dry-run/--list/--out/--family），scaffold-ui-spec-family.js 加入 --figma-frame-id 選項，需 FIGMA_TOKEN 環境變數才能呼叫 Figma API"
+  },
+  {
+    "id": "UI-2-0083",
+    "priority": "P1",
+    "phase": "F",
+    "owner": "Agent1",
+    "status": "done",
+    "created": "2026-04-05",
+    "started_at": "2026-04-06",
+    "completed_at": "2026-04-06",
+    "created_by_agent": "TechDirector",
+    "type": "qa-tooling",
+    "title": "Agent Strict Layout Validator 擴充",
+    "description": "擴充 validate-ui-specs.js，加入 --strict 模式，檢查 spacing/padding 合理性、family-specific slot 數量限制、content contract 必填欄位完整性，以及 bind path 是否已在 requiredFields 宣告。預防 AI 產出結構合法但視覺失控的 JSON。",
+    "related": [
+      "UI-2-0080",
+      "UI-2-0075"
+    ],
+    "depends": [
+      "UI-2-0075",
+      "UI-2-0080"
+    ],
+    "template_family": "all",
+    "content_contract": [],
+    "skin_fragments": [],
+    "smoke_route": "node tools_node/validate-ui-specs.js --strict",
+    "docs_backwritten": [
+      "docs/ui/layout-quality-rules.md",
+      "docs/cross-reference-index.md"
+    ],
+    "acceptance": [
+      "validate-ui-specs.js 新增 --strict 選項",
+      "至少 15 條 layout quality rules 實作",
+      "--check-content-contract 選項可驗證 requiredFields 完整性",
+      "所有現有 screen spec 在 --strict 模式下通過（或已記錄可接受的例外）",
+      "docs/ui/layout-quality-rules.md 補齊 rules 說明"
+    ],
+    "notes": "2026-04-06 | 狀態: done | 實作: validate-ui-specs.js --strict 模式，17條規則，5個layout加入validation.exceptions，docs/ui/layout-quality-rules.md，assets/resources/ui-spec/validation-rules.json"
+  },
+  {
+    "id": "UI-2-0084",
+    "priority": "P0",
+    "phase": "G",
+    "owner": "Agent1",
+    "status": "done",
+    "created": "2026-04-05",
+    "started_at": "2026-04-05",
+    "started_by_agent": "Agent1",
+    "created_by_agent": "TechDirector",
+    "type": "architecture",
+    "title": "FrameRecipe / MaterialRecipe 契約層",
+    "description": "把參考圖中的高品質視覺語法正式資料化：定義 frame/bleed/shadow/fill/material/ornament 的 recipe schema，讓高質感框體不再只存在於分析文件，而能被 skin、validator、scaffolder 與 Agent 共用。",
+    "related": [
+      "UI-2-0083",
+      "UI-2-0080"
+    ],
+    "depends": [
+      "UI-2-0083"
+    ],
+    "template_family": "all",
+    "content_contract": [],
+    "skin_fragments": [
+      "recipes/frame/*",
+      "recipes/material/*"
+    ],
+    "smoke_route": "node tools_node/validate-ui-specs.js --strict",
+    "docs_backwritten": [
+      "docs/keep.md",
+      "docs/UI 規格書.md",
+      "docs/cross-reference-index.md"
+    ],
+    "acceptance": [
+      "新增 FrameRecipe / MaterialRecipe schema 與對應 TS 型別",
+      "至少定義 dark-metal / parchment / gold-cta / destructive / tab 5 個 canonical family",
+      "recipe 可表達 frame / bleed / shadow / fill / ornament / state variant",
+      "skin 或 screen 可引用 recipe id 而非重複硬寫 slot 結構",
+      "正式文件回寫 recipe 語法與使用邊界"
+    ],
+    "notes": "2026-04-05 | 狀態: open | 驗證: pending | 變更: 高品質 UI 視覺語法資料化，作為後續 layered theme、AI 資產治理與 QA 的共同基礎 | 阻塞: 需以 UI-2-0083 的 strict 規則為最小底座\n2026-04-05 | 狀態: in-progress | 處理: 已確認 Phase G 8 張卡的推薦順序與依賴路線，鎖定 UI-2-0084 先做 FrameRecipe / MaterialRecipe 基礎設施，並切出 Agent1 / Agent2 的可並行工作包 | 驗證: 任務依賴盤點完成、brief 已補推進路線 | 阻塞: 無\n2026-04-05 | 狀態: done | 驗證: A1-1~A1-5 全批完成 | 交付: frame/material schema + 5 family recipes + TS types + loadRecipe + themeStack layered merge + R18/R19/R20 validator | 阻塞: none",
+    "completed_at": "2026-04-05"
+  },
+  {
+    "id": "UI-2-0085",
+    "priority": "P0",
+    "phase": "G",
+    "owner": "Agent1",
+    "status": "done",
+    "created": "2026-04-05",
+    "created_by_agent": "TechDirector",
+    "type": "runtime-support",
+    "title": "Layered Skin Theme Stack",
+    "description": "擴充 UISpecLoader / UISkinResolver，支援 global theme -> material recipe -> frame family -> screen skin -> state override 的疊層合成，讓 UI 視覺能像 Unity Prefab Variant / Theme ScriptableObject 一樣可繼承、可覆寫、可批次替換。",
+    "related": [
+      "UI-2-0084",
+      "UI-2-0075",
+      "UI-2-0083"
+    ],
+    "depends": [
+      "UI-2-0084"
+    ],
+    "template_family": "all",
+    "content_contract": [],
+    "skin_fragments": [
+      "theme/base",
+      "theme/family",
+      "theme/state"
+    ],
+    "smoke_route": "node tools_node/validate-ui-specs.js --strict --check-content-contract",
+    "docs_backwritten": [
+      "docs/keep.md",
+      "docs/UI技術規格書.md",
+      "docs/cross-reference-index.md"
+    ],
+    "acceptance": [
+      "UISpecLoader 支援多層 merge chain 而非單張 manifest Object.assign",
+      "UISkinResolver 可解析 layered slot 覆寫並保持向後相容",
+      "至少 2 個既有 screen 完成 migration 驗證",
+      "shared theme / family theme / state override 的優先順序文件化",
+      "既有單 manifest skin 不需改檔也能正常執行"
+    ],
+    "notes": "2026-04-05 | 狀態: in-progress | 處理: A1-5 themeStack layered merge 已在 UISpecLoader 完成；下一步 skin 基座檔案建立 | 阻塞: none | 2026-04-05 skin-base + 3 family skins 建立完成，themeStack 4-layer merge 驗證通過，encoding 5/5 OK",
+    "started_at": "2026-04-05",
+    "started_by_agent": "Agent1",
+    "completed_at": "2026-04-05"
+  },
+  {
+    "id": "UI-2-0086",
+    "priority": "P1",
+    "phase": "G",
+    "owner": "Agent1",
+    "status": "done",
+    "created": "2026-04-05",
+    "created_by_agent": "TechDirector",
+    "type": "qa-tooling",
+    "title": "Visual Asset QA Rule Engine",
+    "description": "把高品質參考圖的資產級規則落到工具：檢查 nine-slice 安全區、bleed 存在性、alpha fringe、atlas padding、字色對比、outline、陰影層、tile repeat 等，不只驗結構，還驗可用視覺品質。",
+    "related": [
+      "UI-2-0083",
+      "UI-2-0084",
+      "UI-2-0051"
+    ],
+    "depends": [
+      "UI-2-0084"
+    ],
+    "template_family": "all",
+    "content_contract": [],
+    "skin_fragments": [
+      "*.frame",
+      "*.bleed",
+      "*.shadow"
+    ],
+    "smoke_route": "node tools_node/validate-ui-specs.js --strict",
+    "docs_backwritten": [
+      "docs/ui/layout-quality-rules.md",
+      "docs/UI參考圖品質分析.md",
+      "docs/cross-reference-index.md"
+    ],
+    "acceptance": [
+      "新增資產級 QA 指令或子模式，可掃描 skin / sprite / atlas 問題",
+      "至少涵蓋 nine-slice、bleed、shadow、contrast、alpha fringe、atlas padding 6 類規則",
+      "規則結果可輸出 report 給 Agent2 compare board 使用",
+      "validation-rules.json 或等價設定檔正式接入規則引擎",
+      "現有高頻 family 跑一次 baseline 掃描"
+    ],
+    "notes": "2026-04-05 | 狀態: open | 驗證: pending | 變更: 從 layout hygiene 升級到 asset quality gate，避免 AI/美術輸出可跑但不耐看的資產 | 阻塞: 需先有 UI-2-0084 的 recipe 語意 | 2026-04-05 done by Agent1",
+    "completed_at": "2026-04-05"
+  },
+  {
+    "id": "UI-2-0088",
+    "priority": "P1",
+    "phase": "G",
+    "owner": "Agent1",
+    "status": "done",
+    "created": "2026-04-05",
+    "created_by_agent": "TechDirector",
+    "type": "pipeline-spec",
+    "title": "Proof Contract / Design AST 中間格式",
+    "description": "在 Figma / 參考圖與最終 layout+skin+screen 之間新增 machine-readable proof contract / design AST，描述 visual zones、component intents、frame family picks、spacing recipe、content slots 與 confidence，減少 Agent 每次重新猜畫面語意。",
+    "related": [
+      "UI-2-0082",
+      "UI-2-0081",
+      "UI-2-0084"
+    ],
+    "depends": [
+      "UI-2-0082",
+      "UI-2-0084"
+    ],
+    "template_family": "all",
+    "content_contract": [
+      "proof-contract-v1"
+    ],
+    "skin_fragments": [
+      "proof-mapping/*"
+    ],
+    "smoke_route": "node tools_node/sync-figma-proof-mapping.js --dry-run",
+    "docs_backwritten": [
+      "docs/keep.md",
+      "docs/UI 規格書.md",
+      "docs/cross-reference-index.md"
+    ],
+    "acceptance": [
+      "定義 proof-contract-v1 schema 與欄位詞彙表",
+      "sync-figma-proof-mapping.js 可輸出 proof contract 或等價 JSON",
+      "scaffolder 可讀 proof contract 做 family / slot / contract 預填",
+      "至少 2 張現有畫面完成 proof contract 試跑",
+      "Agent 生成流程不再直接從截圖跳到最終 screen json"
+    ],
+    "notes": "2026-04-05 | 狀態: open | 驗證: pending | 變更: 建立 Figma / 參考圖到 repo 契約的中間語言，降低 Agent 視覺推理的不確定性 | 阻塞: 依賴 UI-2-0082 與 UI-2-0084 | 2026-04-05 done by Agent1",
+    "completed_at": "2026-04-05"
+  },
+  {
+    "id": "UI-2-0090",
+    "priority": "P1",
+    "phase": "G",
+    "owner": "Agent1",
+    "status": "done",
+    "created": "2026-04-05",
+    "created_by_agent": "TechDirector",
+    "type": "tooling",
+    "title": "UI Skill Orchestration Pack",
+    "description": "把新的 UI 量產鏈拆成可重用 skill：ui-reference-decompose、ui-family-architect、ui-asset-gen-director、ui-asset-qc、ui-preview-judge，並規範各 skill 的輸入 / 輸出 artifact，讓 Agent 不再每輪重新發明 SOP。",
+    "related": [
+      "UI-2-0088",
+      "UI-2-0089",
+      "UI-2-0083"
+    ],
+    "depends": [
+      "UI-2-0088",
+      "UI-2-0089"
+    ],
+    "template_family": "all",
+    "content_contract": [
+      "proof-contract-v1",
+      "art-recipe-v1"
+    ],
+    "skin_fragments": [],
+    "smoke_route": "skill dry-run on one reference screen",
+    "docs_backwritten": [
+      "docs/keep.md",
+      ".github/skills/",
+      "docs/cross-reference-index.md"
+    ],
+    "acceptance": [
+      "至少 5 個 UI 專用 skill 定義完成",
+      "每個 skill 都有固定 input artifact 與 output artifact",
+      "至少 1 條從 reference -> proof contract -> scaffold -> QA 的串接示範",
+      "Skill 邊界寫清楚，避免一個 skill 同時做設計、生成、驗收",
+      "Agent1 / Agent2 的使用分工文件化"
+    ],
+    "notes": "2026-04-05 | 狀態: open | 驗證: pending | 變更: 把新一代 UI pipeline 固化成 skill 組合而非口頭流程 | 阻塞: 依賴 UI-2-0088 proof contract 與 UI-2-0089 AI 治理先定義完成",
+    "completedAt": "2026-04-05"
+  }
+]
