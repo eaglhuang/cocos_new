@@ -8,6 +8,8 @@
 
 - 不讓 Agent 因為圖片、compare board、長篇 `md/json`、大批 changed files、整份 `keep.md` 或 `ui-quality-todo.json`，把上下文撐到不可控。
 
+目前已完成三個 Phase 的防線建設：Phase 1（共識 + 口令）、Phase 2（Wrapper 層 + 工具）、Phase 3（Shard 目錄架構）。
+
 ## 為什麼只靠 skill 不夠
 
 Skill 很重要，但 skill 本質上仍然偏向「高優先級規範」。
@@ -111,6 +113,36 @@ Skill 很重要，但 skill 本質上仍然偏向「高優先級規範」。
   - 收工 finalizer
   - 負責在 final 前輸出 budget 狀態、keep note 建議與 token 量級估算
 
+### 6. 文件分片架構（Shard Architecture，Phase 3）
+
+針對無法靠「不要讀」徹底解決的必讀大型文件，採用「大檔 → shard 目錄群 + 薄索引 stub」的架構：
+
+| 原始大檔（現為 index stub） | Shard 目錄 | 分片數 | 分片策略 |
+|---|---|---|---|
+| `docs/keep.md` | `docs/keep-shards/` | 4 | `markdown-h2`，依章節路由 |
+| `docs/ui-quality-todo.json` | `docs/tasks/` | 4 | `json-array`，依 id 前綴路由 |
+| `docs/cross-reference-index.md` | `docs/cross-ref/` | 3 | `markdown-h2`，依 A/B/C 節 |
+
+**工具**：`tools_node/shard-manager.js`
+
+```bash
+# 分片有更新 → 重建索引 stub
+node tools_node/shard-manager.js rebuild-index docs/keep-shards
+
+# 完整性驗證（收工前）
+node tools_node/shard-manager.js validate docs/keep-shards
+
+# 查看各分片大小
+node tools_node/shard-manager.js status docs/keep-shards
+
+# 初始分片（大檔有大幅改動時重跑）
+node tools_node/shard-manager.js shard docs/keep-shards
+```
+
+**設定**：各 shard 目錄下的 `.shardrc.json` 定義 source、type、shards 路由規則。支援新增任意大型文件的分片群，不限於上方三個。
+
+**Skill**：`.github/skills/doc-shard-manager/SKILL.md`
+
 ## 原理
 
 ### 原理 1：不要先讀整包
@@ -119,14 +151,16 @@ Skill 很重要，但 skill 本質上仍然偏向「高優先級規範」。
 
 高風險來源包括：
 
-- `docs/keep.md`
-- `docs/ui-quality-todo.json`
-- `docs/cross-reference-index.md`
+- `docs/keep.md` → ⚠️ 已拆分為 `docs/keep-shards/`（4 個分片，按需讀對應檔）
+- `docs/ui-quality-todo.json` → ⚠️ 已拆分為 `docs/tasks/`（4 個 prefix shard）
+- `docs/cross-reference-index.md` → ⚠️ 已拆分為 `docs/cross-ref/`（3 個 section shard）
 - 大型 QA notes
 - compare board
 - screenshot batch
 - contact sheet
 - binary / image diff
+
+> 上方三個巨型文件已拆分完畢。**禁止整份讀入這三個原始檔**；改讀對應的分片，或讀索引 stub 後再按需取分片。
 
 所以第一件事不是「讀」，而是先問：
 
@@ -174,6 +208,24 @@ Agent handoff 最容易爆量，因為大家會想把上下文補齊。
 - `avoid`
 
 這件事交給 `generate-context-summary.js`。
+
+### 原理 5：大型文件按需讀分片，不讀全文
+
+就算一定要讀某份共識文件，也應該只讀「對這個任務相關的那一節」，而不是整份讀入。
+
+分片架構讓這件事變成可操作的：
+
+| 任務類型 | 應讀分片 |
+|---|---|
+| 工具安全 / Skill 路由 | `docs/keep-shards/keep-core.md` |
+| Cocos 工作流 / 編碼 / Git | `docs/keep-shards/keep-workflow.md` |
+| UI 架構決策 | `docs/keep-shards/keep-ui-arch.md` |
+| 目前實作狀態 | `docs/keep-shards/keep-status.md` |
+| UI 任務（UI-*） | `docs/tasks/tasks-ui.json` |
+| 程式任務（PROG-*） | `docs/tasks/tasks-prog.json` |
+| 規格書索引 | `docs/cross-ref/cross-ref-specs.md` |
+
+不確定讀哪本？先看索引 stub（`docs/keep.md` 28 行），再決定要哪個分片。
 
 ### 原理 4：final 一定要量化
 
@@ -247,6 +299,8 @@ node tools_node/run-guarded-workflow.js --workflow image-review --task IMG-001 -
 2. 對 compare board / screenshot batch 增加更細的抽樣規則
 3. 把 keep note 寫入流程再自動化
 4. 做 wrapper usage audit，檢查哪些任務沒有走 wrapper
+5. `tasks-ui.json`（112 KB）可進一步按 status（done / open）再拆，進一步縮小「只看 open 任務」的需求量
+6. 新增大型文件時，自動偵測 > 6 KB 的 `.md/.json` 並提示是否納入 shard group
 
 ## 結論
 
