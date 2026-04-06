@@ -1,0 +1,547 @@
+[
+  {
+    "id": "UI-1-0010",
+    "phase": "A",
+    "priority": "P1",
+    "title": "Badge/角標 Sprite 套件（9 檔）",
+    "owner": "Agent2",
+    "status": "done",
+    "depends": [],
+    "created": "2026-03-31T00:00:00Z",
+    "created_by_agent": "Agent2",
+    "completed_date": "2026-03-31",
+    "related_cards": [
+      "UI-1-0009",
+      "A-2"
+    ],
+    "notes": "completed 2026-03-31. 9 個 PNG 已建立於 `badge/`：`badge_rarity_N/R/SR/SSR/UR/LR.png`、`badge_lv.png`、`badge_qty.png`、`badge_notification.png`。SHA256 分別為 N=96AA8008、R=5A24C4E0、SR=BB909D36、SSR=37E13324、UR=C6756C3A、LR=8FB2C9F8、lv=AC882E2C、qty=15505563、notification=7879E309；稀有度 badge 為 40x22 左直右圓標籤，通知 badge 為 28x28 紅色圓形。"
+  },
+  {
+    "id": "UI-1-0011",
+    "phase": "A",
+    "priority": "P1",
+    "title": "Gold CTA 框體 Sprite (frame/fill/bg)",
+    "owner": "Agent2",
+    "status": "done",
+    "depends": [],
+    "created": "2026-03-31T00:00:00Z",
+    "created_by_agent": "Agent2",
+    "completed_date": "2026-03-31",
+    "related_cards": [
+      "UI-1-0007"
+    ],
+    "notes": "completed 2026-03-31. `gold_cta/frame.png` | B753A6D6E88F3E33A7400037A93CDA34ED5882CAD26916BAFAE9282C43E5A4A9 | 2189B（80x80，粗金邊框 + 外 glow + 角三角裝飾，border [28,28,28,28]）；`fill.png` | 727F9BFA... | 290B（64x64）；`bg.png` | 726D0E08... | 733B（64x64）。對應 §2.4 Gold CTA 框體。"
+  },
+  {
+    "id": "UI-1-0012",
+    "phase": "A",
+    "priority": "P1",
+    "title": "§9.6 Skin 契約自動驗證腳本",
+    "owner": "Agent2",
+    "status": "done",
+    "depends": [],
+    "created": "2026-03-31T00:00:00Z",
+    "created_by_agent": "Agent2",
+    "completed_date": "2026-03-31",
+    "related_cards": [
+      "UI-2-0006"
+    ],
+    "notes": "completed 2026-03-31. 建立 `tools_node/validate-skin-contracts.js`，規則包含 R1 fill alpha DD~F0、R2 bleed slot 必填、R3 深底文字 outlineWidth>=1、R4 淺底文字 outlineWidth=0、R5 dark-metal border>=20。首次掃描結果為 24 PASS / 5 FAIL，通過率 82.8%，失敗集中在 `general-detail-default.json` 缺 5 個 bleed slot。"
+  },
+  {
+    "id": "UI-1-0013",
+    "phase": "A",
+    "priority": "P1",
+    "owner": "Agent2",
+    "status": "done",
+    "created": "2026-03-31",
+    "completed": "2026-03-31",
+    "title": "§3.3 Frame Sprite 金色邊框像素掃描腳本",
+    "description": "建立 `tools/validate-frame-sprites.ps1`，對 10 個 frame/button sprite 做金色 / 暖銅色邊框像素掃描；首次執行 10/10 PASS。",
+    "notes": "completed 2026-03-31. §9.6 驗證腳本套件最後一塊缺口已補齊，掃描結果為 dark_metal:735px、parchment:101px、gold_cta:738px、progress_bar:398px、tab:1057px、diamond_tab:50px、circle_icon:212px、nav_ink:2045px、equipment:5217px、commerce:3877px，全部 PASS，§9.6 可執行規則覆蓋率達 100%。"
+  },
+  {
+    "id": "UI-1-0014",
+    "legacy_id": "D-1",
+    "owner": "Agent2",
+    "type": "visual-qa",
+    "created": "2026-03-31T18:30:00+08:00",
+    "created_by_agent": "Agent2",
+    "started_at": "2026-03-31T18:30:00+08:00",
+    "started_by_agent": "Agent2",
+    "details": "Prepare and execute lobby-main nav.ink plus shadow screenshot comparison package against reference screenshots.",
+    "acceptance": [
+      "comparison_shot_exists",
+      "qa_notes_recorded",
+      "human_review_pending_or_done"
+    ],
+    "related": [
+      "UI-2-0001",
+      "UI-2-0007",
+      "UI-2-0010",
+      "UI-2-0016",
+      "UI-2-0018"
+    ],
+    "depends": [
+      "UI-2-0001",
+      "UI-2-0010",
+      "UI-2-0018"
+    ],
+    "status": "done",
+    "notes": "2026-03-31 opened Agent2 Phase D QA card and prepared artifacts/ui-qa/UI-1-0014/. UI-2-0018 is now complete: canonical preview route is assets/scenes/LoadingScene.scene -> LoadingScene.ts root component -> previewMode=true -> previewTarget=LobbyMain. 2026-03-31 Agent2 resumed D-1 after confirming `http://localhost:7456` is reachable again, but autonomous capture is still blocked because the repo lacks a stable, reproducible headless preview screenshot pipeline. Follow-up tooling card UI-2-0023 was opened for Agent1."
+  },
+  {
+    "id": "UI-1-0015",
+    "legacy_id": "D-2",
+    "owner": "Agent2",
+    "type": "visual-qa",
+    "created": "2026-03-31T18:30:00+08:00",
+    "created_by_agent": "Agent2",
+    "started_at": "2026-03-31T18:30:00+08:00",
+    "started_by_agent": "Agent2",
+    "details": "Prepare multi-screen paper.utility QA package for shop-main and gacha, focusing on cross-screen consistency.",
+    "acceptance": [
+      "comparison_shot_exists",
+      "consistency_notes_recorded",
+      "human_review_pending_or_done"
+    ],
+    "related": [
+      "UI-1-0002",
+      "UI-2-0014",
+      "UI-2-0018",
+      "UI-2-0019",
+      "UI-2-0020"
+    ],
+    "depends": [
+      "UI-1-0002",
+      "UI-2-0014",
+      "UI-2-0018",
+      "UI-2-0019",
+      "UI-2-0020"
+    ],
+    "status": "done",
+    "notes": "2026-03-31 opened Agent2 Phase D QA card. UI-2-0018 is complete and preview entry now exists via LoadingScene.ts + UIScreenPreviewHost.ts. UI-2-0019 formally re-scoped D-2 to common-parchment / light-surface carrier consistency, and UI-2-0020 wired shared QA anchors into shop-main and gacha. 2026-03-31 Agent2 captured ShopMain successfully via headless preview. Agent1 then completed UI-2-0025 by routing Gacha preview through `gacha-main-screen` + `gacha-preview-main`, so Agent2 can now capture both ShopMain and Gacha and proceed to formal D-2 comparison notes."
+  },
+  {
+    "id": "UI-1-0016",
+    "legacy_id": "D-3",
+    "owner": "Agent2",
+    "type": "visual-qa",
+    "created": "2026-03-31T18:30:00+08:00",
+    "created_by_agent": "Agent2",
+    "started_at": "2026-03-31T18:30:00+08:00",
+    "started_by_agent": "Agent2",
+    "details": "Prepare duel-challenge mixed-family QA package to confirm reject equals paper.utility and accept equals equipment.primary.",
+    "acceptance": [
+      "comparison_shot_exists",
+      "hierarchy_notes_recorded",
+      "human_review_pending_or_done"
+    ],
+    "related": [
+      "UI-2-0002",
+      "UI-2-0012",
+      "UI-2-0018"
+    ],
+    "depends": [
+      "UI-2-0002",
+      "UI-2-0012",
+      "UI-2-0018"
+    ],
+    "status": "in-progress",
+    "notes": "2026-03-31 opened Agent2 Phase D QA card. UI-2-0018 is now complete: canonical preview route is assets/scenes/LoadingScene.scene -> LoadingScene.ts root component -> previewMode=true -> previewTarget=DuelChallenge. 2026-03-31 Agent2 verified the new headless capture pipeline can successfully export DuelChallenge.png, so D-3 can now proceed with formal comparison notes instead of relying on legacy DuelChallengePanel.ts buildUI()."
+  },
+  {
+    "id": "UI-2-0017",
+    "phase": "B",
+    "priority": "P1",
+    "owner": "Agent1",
+    "status": "done",
+    "created": "2026-03-31",
+    "completed": "2026-03-31",
+    "title": "Fix general-detail-default 5 missing bleed slots",
+    "description": "validate-skin-contracts.js found 5 R2 FAILs in general-detail-default.json: detail.summary.card/tab.idle/tab.active/tree.node/action all missing bleed slots.",
+    "notes": "2026-03-31 fixed five missing bleed slots in general-detail-default.json, then reran node tools_node/validate-skin-contracts.js and node tools_node/run-acceptance.js successfully. Contract validation returned 29/29 PASS."
+  },
+  {
+    "id": "UI-2-0018",
+    "phase": "C",
+    "priority": "P1",
+    "owner": "Agent1",
+    "status": "done",
+    "created": "2026-03-31T20:20:00+08:00",
+    "created_by_agent": "Agent2",
+    "type": "preview-harness",
+    "title": "Add screen-driven preview hosts for D-stage QA screens",
+    "description": "Provide real UISpecLoader.loadFullScreen(...) entry points for lobby-main, shop-main, gacha, and duel-challenge so Agent2 can capture trustworthy D-1~D-3 screenshots.",
+    "related": [
+      "UI-1-0014",
+      "UI-1-0015",
+      "UI-1-0016",
+      "UI-2-0010",
+      "UI-2-0014",
+      "UI-2-0012"
+    ],
+    "depends": [],
+    "completed": "2026-03-31",
+    "notes": "2026-03-31 completed. Added assets/scripts/ui/components/UIScreenPreviewHost.ts and extended assets/scripts/ui/scenes/LoadingScene.ts with previewMode + previewTarget enum. Canonical preview route for Agent2 is assets/scenes/LoadingScene.scene -> LoadingScene.ts root component -> previewMode=true -> previewTarget={LobbyMain,ShopMain,Gacha,DuelChallenge}. Project now has explicit loadFullScreen('lobby-main-screen'|'shop-main-screen'|'gacha-screen'|'duel-challenge-screen') entry points and D-1~D-3 are unblocked."
+  },
+  {
+    "id": "UI-2-0019",
+    "phase": "B",
+    "priority": "P1",
+    "owner": "Agent1",
+    "status": "done",
+    "created": "2026-03-31T20:45:00+08:00",
+    "created_by_agent": "Agent2",
+    "type": "spec-alignment",
+    "title": "Align D-2 target family between docs and shop/gacha skins",
+    "description": "Reconcile the D-2 QA target (paper.utility) with the actual shop-main / gacha skin implementations, which currently point to commerce/color and common-parchment patterns.",
+    "related": [
+      "UI-1-0015",
+      "UI-2-0014",
+      "UI-2-0009"
+    ],
+    "depends": [],
+    "completed": "2026-03-31",
+    "notes": "2026-03-31 completed. D-2 is formally re-scoped from paper.utility button consistency to common-parchment / light-surface carrier consistency. Rationale: paper.utility remains valid for duel-challenge utility actions, but current shop-main-default and gacha-default do not share that button family. Follow-up implementation task UI-2-0020 was opened to wire a real shared light-surface carrier into shop-main and gacha before Agent2 runs D-2 QA."
+  },
+  {
+    "id": "UI-2-0020",
+    "phase": "B",
+    "priority": "P1",
+    "owner": "Agent1",
+    "status": "done",
+    "created": "2026-03-31T22:20:00+08:00",
+    "created_by_agent": "Agent1",
+    "type": "skin-update",
+    "title": "Wire shared light-surface carriers into shop-main and gacha",
+    "description": "Expose a real common-parchment/light-surface carrier in shop-main and gacha so D-2 can evaluate cross-screen surface consistency instead of placeholder color blocks.",
+    "related": [
+      "UI-1-0015",
+      "UI-2-0009",
+      "UI-2-0014",
+      "UI-2-0019"
+    ],
+    "depends": [
+      "UI-2-0009",
+      "UI-2-0014",
+      "UI-2-0019"
+    ],
+    "notes": "shop-main-default.json v5: added shop.content.carrier QA anchor slot. gacha-default.json v3: added gacha.pity.carrier.bg/frame slots. gacha-main.json v2: PityInfoBar now has skinSlot=gacha.pity.carrier.bg. D-2 unblocked. acceptance all green.",
+    "completed-date": "2026-03-31"
+  },
+  {
+    "id": "UI-2-0021",
+    "phase": "C",
+    "priority": "P0",
+    "owner": "Agent1",
+    "status": "done",
+    "completed-date": "2026-03-31",
+    "created": "2026-03-31T23:30:00+08:00",
+    "created_by_agent": "Agent2",
+    "type": "runtime-resource-fix",
+    "title": "Fix PreviewInEditor SpriteFrame resource index drift",
+    "description": "Investigate and fix PreviewInEditor failures where existing SpriteFrame assets under assets/resources/sprites/ui_families/* cannot be resolved from the resources bundle.",
+    "related": [
+      "UI-1-0004",
+      "UI-2-0011",
+      "UI-2-0018",
+      "UI-2-0020",
+      "UI-1-0014",
+      "UI-1-0016"
+    ],
+    "depends": [],
+    "notes": "2026-03-31 Agent2 opened this card after PreviewInEditor reported `Bundle resources doesn't contain .../spriteFrame` for shadow_01, metal_noise_256, equipment/btn_primary_normal, and multiple general_detail sprites. File audit confirmed the PNG and .meta files already exist under assets/resources/sprites/ui_families/..., so this is currently treated as an Agent1-side resource index / path normalization / editor refresh contract issue rather than a missing-art asset task. 2026-03-31 Agent1 completed the fix by normalizing resource paths in ResourceManager, retrying SpriteFrame candidates before Texture2D fallback, releasing single SpriteFrame cache keys correctly, adding tools_node/validate-representative-spriteframe-assets.js into acceptance, and running asset-db refresh successfully."
+  },
+  {
+    "id": "UI-2-0022",
+    "phase": "B",
+    "priority": "P1",
+    "owner": "Agent1",
+    "status": "done",
+    "created": "2026-03-31T23:55:00+08:00",
+    "created_by_agent": "Agent2",
+    "type": "skin-update",
+    "title": "Upgrade general-list from placeholder table to framed lobby skin",
+    "description": "Replace the remaining color-rect/placeholder presentation in general-list with proper 9-slice background and framed header/list/row styling using existing lobby/common panel families.",
+    "related": [
+      "UI-2-0014",
+      "UI-2-0009"
+    ],
+    "depends": [],
+    "notes": "general-list-default.json v5: `header.bg -> dark_metal/frame` 9-slice；`list.bg -> parchment/bg` 9-slice（opacity=0.6）；`row.bg -> dark_metal/bg` 9-slice；header label 色彩改為 `#D4AF37` 金色。acceptance 全綠。",
+    "completed-date": "2026-03-31"
+  },
+  {
+    "id": "UI-2-0023",
+    "phase": "C",
+    "priority": "P1",
+    "owner": "Agent1",
+    "status": "done",
+    "created": "2026-03-31T18:10:00+08:00",
+    "created_by_agent": "Agent2",
+    "type": "qa-tooling",
+    "title": "Provide reproducible headless preview capture for D-stage QA",
+    "description": "Add a stable CLI/headless capture workflow for LoadingScene.previewTarget-based screen QA so Agent2 can generate D-1~D-3 artifacts without manual Inspector interaction.",
+    "related": [
+      "UI-1-0014",
+      "UI-1-0015",
+      "UI-1-0016",
+      "UI-2-0018"
+    ],
+    "depends": [
+      "UI-2-0018"
+    ],
+    "notes": "2026-03-31 Agent1 hardened the capture pipeline: LoadingScene now supports query/localStorage preview injection and publishes __UI_CAPTURE_STATE__ (loading/ready/error); tools_node/capture-ui-screens.js is now a puppeteer-core headless CLI, auto-injects LoadingScene.scene uuid, writes debug screenshot/state artifacts on failure, triggers asset-db refresh before capture, retries refreshable preview failures, and uses domcontentloaded instead of networkidle2 for the Cocos Editor preview page. 2026-03-31 Agent2 confirmed reproducible screenshot export for LobbyMain, ShopMain, DuelChallenge, and Gacha under artifacts/ui-qa/UI-2-0023/. The remaining Gacha compatibility work was completed under UI-2-0025, so UI-2-0023 is now fully closed as tooling-complete.",
+    "completed-date": "2026-03-31"
+  },
+  {
+    "id": "UI-2-0025",
+    "phase": "C",
+    "priority": "P1",
+    "owner": "Agent1",
+    "status": "done",
+    "created": "2026-03-31T20:10:00+08:00",
+    "created_by_agent": "Agent2",
+    "type": "screen-contract-fix",
+    "title": "Align gacha-screen with UIScreenPreviewHost loadFullScreen contract",
+    "description": "Refactor assets/resources/ui-spec/screens/gacha-screen.json from the legacy multi-screen schema to the single-screen loadFullScreen contract expected by UIScreenPreviewHost and LoadingScene.previewTarget=Gacha.",
+    "related": [
+      "UI-1-0015",
+      "UI-2-0018",
+      "UI-2-0020",
+      "UI-2-0023"
+    ],
+    "depends": [
+      "UI-2-0018",
+      "UI-2-0023"
+    ],
+    "notes": "2026-03-31 Agent2 validated the headless capture pipeline by exporting LobbyMain, ShopMain, and DuelChallenge. Agent1 then finished the Gacha preview compatibility path by adding `assets/resources/ui-spec/layouts/gacha-preview-main.json`, pointing `gacha-main-screen.json` to that preview-safe layout, and aligning `LoadingScene.previewTarget=Gacha` plus `tools_node/capture-ui-screens.js` to use `gacha-main-screen` as the canonical preview contract. `node tools_node/capture-ui-screens.js --target Gacha` now succeeds and exports `artifacts/ui-qa/UI-2-0023/Gacha.png`.",
+    "completed-date": "2026-03-31"
+  },
+  {
+    "id": "UI-2-0026",
+    "phase": "D",
+    "priority": "P1",
+    "owner": "Agent1",
+    "status": "in-progress",
+    "created": "2026-04-01",
+    "created_by_agent": "Copilot",
+    "started_at": "2026-04-01T15:20:00+08:00",
+    "started_by_agent": "Agent1",
+    "type": "layout-fix",
+    "title": "BattleScene UI 佈局確認：Widget / Anchor / Layout Contract",
+    "description": "確認 BattleScene 各層 UI 佈局是否正確對應當前 layout JSON 契約，包括 HUD 各節點的 Widget/Anchor 設定是否能正確縮放、排除現有 label warn，確保 layouts + screens 中的 widget 設定完整，safeArea 邊距與 z-order 無衝突，並在 1920x1080 實機解析度下無裂版。",
+    "related": [
+      "DATA-1-0001",
+      "UI-2-0046"
+    ],
+    "depends": [],
+    "notes": "2026-04-01 | 狀態: in-progress | 驗證: 使用 cocos-screenshot 確認畫面佈局 | 變更: BattleScene 佈局框架確認，UI-2-0046 schema 回寫完成 | 阻塞: 待 UI-2-0046 完成後做最終全面確認",
+    "acceptanceCriteria": [
+      "執行 Cocos refresh，確認資源與 layout 正確載入。",
+      "HUD 所有元件正確顯示，在 1920x1080 下無明顯錯位。",
+      "在 16:9 / 19.5:9 比例下，safeArea 邊距正確。",
+      "temp/logs/project.log 掃描無 layout 相關 warn / error。"
+    ]
+  },
+  {
+    "id": "UI-2-0027",
+    "phase": "D",
+    "priority": "P1",
+    "owner": "Agent2",
+    "status": "in-progress",
+    "created": "2026-04-01",
+    "created_by_agent": "Copilot",
+    "started_at": "2026-04-01T00:47:55+08:00",
+    "started_by_agent": "Agent2",
+    "type": "asset-requirement",
+    "title": "戰場 UI 圖像資產需求總表",
+    "description": "建立 BattleScene 所需圖像資產的單一需求表，盤點 icon、頭像、部隊卡圖、狀態圖示、按鈕狀態圖與 fallback 規則，避免後續資產漏件或命名分裂。",
+    "related": [
+      "UI-2-0026",
+      "DATA-1-0001",
+      "UI-2-0028",
+      "UI-2-0029",
+      "UI-2-0030",
+      "UI-2-0031",
+      "UI-2-0032",
+      "UI-2-0035",
+      "UI-2-0033",
+      "UI-2-0034"
+    ],
+    "depends": [],
+    "notes": "2026-04-01 | 狀態: in-progress | 驗證: 已建立任務卡並鎖定 | 變更: Agent2 開始盤點 BattleScene 圖像資產需求，並將需求分流到 F7 micro-badge、F8 action-button、F6 collectible-card、F5 reward-cell 等 family | 阻塞: 待確認美術交付批次與命名規範"
+  },
+  {
+    "phase": "D",
+    "priority": "P1",
+    "owner": "Agent2",
+    "status": "in-progress",
+    "created": "2026-04-01",
+    "created_by_agent": "Copilot",
+    "type": "policy",
+    "related": [
+      "UI-2-0027",
+      "UI-2-0029",
+      "UI-2-0033"
+    ],
+    "depends": [],
+    "id": "UI-2-0031",
+    "title": "建立戰場 UI Fallback 規範",
+    "description": "定義 BattleScene 缺圖時的統一 fallback 規則，讓 portrait、icon、card art、badge 等同類型資產在缺件時仍保有一致、可讀、不中斷的畫面行為。",
+    "notes": "2026-04-01 | 狀態: in-progress | 驗證: 已盤點 `battle_ui` skin 內現有 placeholder、`_fallback` 顏色與現成 battle sprite | 變更: 建立 BattleScene portrait / icon / card art / badge 缺件時的統一 fallback 規則 | 阻塞: 待 Agent1 在各 runtime 模組實際套用相同 fallback 契約",
+    "started_at": "2026-04-01T12:35:00+08:00",
+    "started_by_agent": "Agent2"
+  },
+  {
+    "phase": "D",
+    "priority": "P1",
+    "owner": "Agent2",
+    "status": "in-progress",
+    "created": "2026-04-01",
+    "created_by_agent": "Copilot",
+    "type": "asset-requirement",
+    "related": [
+      "UI-2-0027",
+      "UI-2-0031",
+      "UI-2-0034"
+    ],
+    "depends": [],
+    "id": "UI-2-0030",
+    "title": "戰場 UI Card Art / Badge 資產清單",
+    "description": "盤點 TigerTally 需要的 `tally.card.art`、`tally.card.rarity.*`、`tally.badge.type` 資產，確認現有 battle sprites 的覆蓋程度，並區分資產缺件與 runtime 未套用兩種問題。",
+    "notes": "2026-04-01 | 狀態: in-progress | 驗證: 已盤點 TigerTally layout / skin / panel 綁定現況與現有 tally battle sprites | 變更: 建立 BattleScene card art / rarity / type badge 資產清單，確認 `tally.card.art` / `tally.card.rarity.*` 屬 F6，`tally.badge.type` 屬 F7 | 阻塞: 待 Agent1 接手 UI-2-0034，補齊 TigerTally runtime 的動態綁定與 fallback 契約",
+    "started_at": "2026-04-01T12:55:00+08:00",
+    "started_by_agent": "Agent2"
+  },
+  {
+    "phase": "D",
+    "priority": "P1",
+    "owner": "Agent2",
+    "status": "in-progress",
+    "created": "2026-04-01",
+    "created_by_agent": "Copilot",
+    "type": "asset-requirement",
+    "related": [
+      "UI-2-0027",
+      "UI-2-0033"
+    ],
+    "depends": [],
+    "id": "UI-2-0029",
+    "title": "戰場 UI Portrait 資產清單",
+    "description": "盤點 BattleHUD 左右兩側武將頭像所需的 portrait key、命名規則與目前 roster 覆蓋率，並區分缺圖與 runtime 未接線兩種問題。",
+    "notes": "2026-04-01 | 狀態: in-progress | 驗證: 已盤點 BattleHUD portrait slot、`generals.json` roster 與現有 `sprites/generals` 資產 | 變更: 建立 BattleScene portrait 資產清單並確認目前 5/5 武將頭像檔已存在，但 HUD 仍停留在 placeholder 路徑 | 阻塞: 待 Agent1 接手 UI-2-0033，將 BattleHUD 改為動態載入 generals portrait 與 fallback 契約",
+    "started_at": "2026-04-01T12:10:00+08:00",
+    "started_by_agent": "Agent2"
+  },
+  {
+    "phase": "D",
+    "priority": "P1",
+    "owner": "Agent2",
+    "status": "in-progress",
+    "created": "2026-04-01",
+    "created_by_agent": "Copilot",
+    "type": "asset-requirement",
+    "related": [
+      "UI-2-0027",
+      "UI-2-0032",
+      "UI-2-0035"
+    ],
+    "depends": [],
+    "id": "UI-2-0028",
+    "title": "戰場 UI Icon 資產清單",
+    "description": "盤點 BattleScene 需要補齊的 icon key，建立可量產的候選稿基線，並對照 `docs/UI品質參考圖/` 整理品質差異與下一輪修正方向。",
+    "notes": "2026-04-01 | 狀態: in-progress | 驗證: 已完成 `unitinfo.type.icon` 候選稿與參考圖比對，並建立 `artifacts/ui-qa/UI-2-0028/` QA 目錄 | 變更: 產出 `unitinfo_type_icon_spear_v1.png`、compare-board 與 QA notes，確認 `unitinfo.type.icon` 屬 F7、`log.btn.*` 屬 F8 | 阻塞: 待做 v2 refinement 並確認正式 runtime 採用版本",
+    "started_at": "2026-04-01T10:30:00+08:00",
+    "started_by_agent": "Agent2"
+  },
+  {
+    "id": "UI-2-0024",
+    "phase": "C",
+    "priority": "P1",
+    "owner": "Agent1",
+    "status": "completed",
+    "completed-date": "2026-03-31T23:59:00+08:00",
+    "created": "2026-03-31T23:59:00+08:00",
+    "created_by_agent": "Codex",
+    "type": "refactor",
+    "title": "Split UIPreviewBuilder into helper modules to reduce encoding and merge risk",
+    "description": "Break UIPreviewBuilder into smaller orchestration/text/diagnostics/layout/style modules after the current encoding repair stabilizes, without changing runtime behavior.",
+    "related": [
+      "UI-2-0010",
+      "UI-2-0011",
+      "UI-2-0023"
+    ],
+    "depends": [],
+    "notes": "2026-03-31 Phase 1 completed: (1) Created UIPreviewDiagnostics.ts with 13 diagnostic methods centralizing all console calls; (2) Created UIPreviewTextCatalog.ts centralizing Chinese strings and JSDoc; (3) Updated UIPreviewBuilder.ts to route all console.log/warn/error through UIPreviewDiagnostics; (4) Verified zero direct console calls remain in UIPreviewBuilder.ts; (5) All changes are pure refactoring, runtime behavior unchanged. Next phase: Layout & Style helper extraction."
+  },
+  {
+    "id": "UI-2-0032",
+    "phase": "D",
+    "priority": "P1",
+    "owner": "Agent2",
+    "status": "in-progress",
+    "created": "2026-04-01",
+    "created_by_agent": "Copilot",
+    "started_at": "2026-04-01T07:49:54+08:00",
+    "started_by_agent": "Agent2",
+    "type": "quality-pass",
+    "title": "修正 BattleScene Icon 品質差異（v2）",
+    "description": "根據 UI-2-0028 的候選稿與 `docs/UI品質參考圖/` 的比對結果，做出更貼近正式美術語言的 BattleScene icon v2，重點強化 carrier、glyph 與 32x32 可讀性。目前 v2a/v2b/v2c × 128/64/32 素材已生產完成，下一步進入 QA 選型階段。",
+    "related": [
+      "UI-2-0027",
+      "UI-2-0028",
+      "UI-2-0035",
+      "UI-2-0036"
+    ],
+    "depends": [
+      "UI-2-0028"
+    ],
+    "notes": "2026-04-01 | 狀態: in-progress | 驗證: 已建立 baseline QA 目錄，並補出 Agent1 生圖 brief 與下游執行卡 UI-2-0036 | 變更: 將 v2 refinement 收斂為 F7 戰場微型 badge 規格，明確定義 carrier、glyph、配色、尺寸驗收與 negative prompt | 阻塞: 待 Agent1 接手產出 v2a / v2b / v2c 候選稿與 128 / 64 / 32 三尺寸預覽\n2026-04-06 | 狀態: in-progress | 處理: 任務轉為 QA 選型 | 驗證: 已收斂 `v2a/v2b/v2c` × 3 尺寸、style profile v1 明確把 `unitinfo.type.icon` 歸入 `F7 battle-micro-badge`。下一步：在 BattleScene 真場景/compare board 上驗證三套稿，決定採用哪一套或再開 refinement 卡。"
+  },
+  {
+    "id": "UI-2-0035",
+    "phase": "D",
+    "priority": "P1",
+    "owner": "Agent2",
+    "status": "in-progress",
+    "created": "2026-04-01",
+    "created_by_agent": "Agent2",
+    "started_at": "2026-04-01T08:04:48+08:00",
+    "started_by_agent": "Agent2",
+    "type": "research-taxonomy",
+    "title": "擴充 UI 參考圖 icon family 規則庫（20-icon baseline）",
+    "description": "重新盤點 `docs/UI品質參考圖/` 全量截圖，至少列出 20 個不同 icon 樣本，整理出 icon family 類型、使用條件、高品質形成規則與 BattleScene 未來自動生成可直接套用的描述策略。",
+    "related": [
+      "UI-2-0027",
+      "UI-2-0028",
+      "UI-2-0032",
+      "UI-2-0037"
+    ],
+    "depends": [],
+    "notes": "2026-04-01 | 狀態: in-progress | 驗證: 已完成 20-icon sample matrix，並將 F1~F8 family 對應到既有量產需求單與 ui-spec screens/layouts | 變更: 補出 `icon-family-assignment.md`，定義 BattleScene / Gacha / Shop / SupportCard / NetworkStatus 等畫面應使用的 icon family | 阻塞: 待把 family 規則下沉到後續實際 icon 生成與 refinement 任務"
+  },
+  {
+    "id": "UI-2-0037",
+    "phase": "D",
+    "priority": "P1",
+    "owner": "Agent2",
+    "status": "in-progress",
+    "created": "2026-04-01",
+    "created_by_agent": "Agent2",
+    "started_at": "2026-04-01T13:40:00+08:00",
+    "started_by_agent": "Agent2",
+    "type": "research-taxonomy",
+    "title": "擴充 UI 參考圖可量產圖片 family 規則庫（portrait / card / props）",
+    "description": "延續 UI-2-0035 的 icon family 研究，但將範圍擴大到非 icon 的量產圖類型，包含 portrait、diorama card、building node、container、prop pack 與 outfit torso 等 family。",
+    "related": [
+      "UI-2-0027",
+      "UI-2-0029",
+      "UI-2-0030",
+      "UI-2-0035"
+    ],
+    "depends": [],
+    "notes": "2026-04-01 | 狀態: in-progress | 驗證: 已盤點 2026-04-01 新加入的 16 張參考圖，確認新增內容已超出純 icon 範圍 | 變更: 補開非 icon 量產圖 research 卡，擴充到 portrait、diorama card、容器寶箱、道具包、服裝 torso 等 family | 阻塞: 待把新 family 規則回寫到主報告、QA 目錄與需求單映射"
+  }
+]

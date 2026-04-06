@@ -129,7 +129,7 @@ Skill 很重要，但 skill 本質上仍然偏向「高優先級規範」。
 # 分片有更新 → 重建索引 stub
 node tools_node/shard-manager.js rebuild-index docs/keep-shards
 
-# 完整性驗證（收工前）
+# 完整性驗證（收工前，也會標示 >40 KB 的分片與 auto-parts 子目錄）
 node tools_node/shard-manager.js validate docs/keep-shards
 
 # 查看各分片大小
@@ -137,11 +137,56 @@ node tools_node/shard-manager.js status docs/keep-shards
 
 # 初始分片（大檔有大幅改動時重跑）
 node tools_node/shard-manager.js shard docs/keep-shards
+
+# 若某個分片仍超過閾值 → 自動等分為 N 個 parts
+node tools_node/shard-manager.js auto-split docs/tasks --threshold 30
 ```
 
-**設定**：各 shard 目錄下的 `.shardrc.json` 定義 source、type、shards 路由規則。支援新增任意大型文件的分片群，不限於上方三個。
+**設定**：各 shard 目錄下的 `.shardrc.json` 定義 source、type、shards 路由規則。  
+支援新增任意大型文件的分片群，不限於上方三個。  
+`auto-split` 產生的 sub-dir 使用 `type: "auto-parts"`，分片數動態計算（`ceil(fileSize / threshold)`），無需寫死。
 
 **Skill**：`.github/skills/doc-shard-manager/SKILL.md`
+
+### 6b. 被索引管理的文件變更規則
+
+當需要**人工修改**受 shard 管理的文件時，必須遵守以下規則，否則可能造成資料遺失或分片失去一致性。
+
+#### ✅ 可以直接修改的操作
+
+| 操作 | 說明 |
+|------|------|
+| 編輯分片檔案的**內容** | 直接編輯 `docs/keep-shards/keep-workflow.md`、`docs/tasks/tasks-ui.json` 等分片檔，不影響其他分片 |
+| 新增任務 item 到 JSON 分片 | 在 `tasks-ui.json` 末端新增 `{ "id": "UI-2-xxxx", ... }` |
+| 更新任務的 `status`、`notes`、`completed-date` | 業務欄位修改，不影響路由 |
+| 在 Markdown 分片內新增段落 | 在既有 section 內增加內容，不跨越 `##` 邊界 |
+| 修改 index stub 的**使用說明部分** | `docs/keep.md` 的 `## 使用說明` 區塊是手寫說明，可以更新 |
+
+**修改後必須執行：**
+```bash
+node tools_node/shard-manager.js rebuild-index <shardDir>
+node tools_node/shard-manager.js validate <shardDir>
+```
+
+#### ❌ 禁止的操作
+
+| 禁止行為 | 理由 |
+|----------|------|
+| 直接編輯 index stub 的**分片索引表**（`docs/keep.md`、`docs/ui-quality-todo.json`）| stub 是 auto-generated，手改會被下次 `rebuild-index` 覆蓋 |
+| 更改任務 `id` 的前綴（如把 `PROG-001` 改成 `UI-001`）| `id` 前綴決定資料路由到哪個分片，改了 prefix 會讓任務在下次 `shard` 時落入錯誤分片 |
+| 把屬於其他分片的 Markdown section（`## 7.`）貼進錯誤的分片檔 | 下次執行 `shard` 時會重新路由，手動貼入的內容將被分配到正確的地方並從這裡移除 |
+| 移動 Markdown 的 `##` section 跨分片邊界後不重跑 `shard` | 移動後的 heading 會繼續待在舊分片，直到下次 `shard` 才正確路由 |
+| 在 auto-parts 子目錄（`docs/tasks/tasks-ui/`）中直接編輯 `part-*.json` | auto-parts 是由 `auto-split` 全量重產，手改會在下次 `auto-split` 時被覆蓋 |
+| 刪除 `.shardrc.json` | 會讓整個分片群失去設定，所有 shard 命令都無法運作 |
+
+#### ⚠️ 大幅改動後需要重跑的情境
+
+| 情境 | 應執行的命令 |
+|------|-------------|
+| 在 `keep.md` 分片中新增了整個新 `##` section | `node tools_node/shard-manager.js shard docs/keep-shards` |
+| 在 `tasks-ui.json` 中新增超過 10 筆任務（分片可能膨脹） | `node tools_node/shard-manager.js validate docs/tasks` → 若出現 >40 KB 警告則 `auto-split docs/tasks` |
+| 某分片已超過 40 KB（validate 會警告） | `node tools_node/shard-manager.js auto-split <shardDir> --threshold 30` |
+| 確認分片結構完整後收工 | `node tools_node/shard-manager.js validate <shardDir>` |
 
 ## 原理
 
@@ -299,8 +344,8 @@ node tools_node/run-guarded-workflow.js --workflow image-review --task IMG-001 -
 2. 對 compare board / screenshot batch 增加更細的抽樣規則
 3. 把 keep note 寫入流程再自動化
 4. 做 wrapper usage audit，檢查哪些任務沒有走 wrapper
-5. `tasks-ui.json`（112 KB）可進一步按 status（done / open）再拆，進一步縮小「只看 open 任務」的需求量
-6. 新增大型文件時，自動偵測 > 6 KB 的 `.md/.json` 並提示是否納入 shard group
+5. ✅ `tasks-ui.json` 已按 status 細拆（`docs/tasks-ui-shards/`）；`auto-split` 可動態拆分
+6. ✅ 新增大型文件自動偵測：`scan` 命令；`validate` 自動警告 >40 KB 分片
 
 ## 結論
 

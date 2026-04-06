@@ -253,6 +253,23 @@ function validate(shardDir) {
     info(`  ✓ ${cfg.source}  (index stub, ${kb} KB)`);
   }
 
+  // Check for oversized shards and auto-parts sub-dirs
+  const OVERSIZE_KB = 40; // warn if any shard exceeds this
+  for (const s of cfg.shards) {
+    const p = path.join(cfg._dir, s.name + ext);
+    if (!fs.existsSync(p)) continue;
+    const kb = fs.statSync(p).size / 1024;
+    if (kb > OVERSIZE_KB) {
+      console.warn(`[shard-manager] WARN: ${s.name}${ext} is ${kb.toFixed(1)} KB > ${OVERSIZE_KB} KB.`);
+      console.warn(`       Consider: node tools_node/shard-manager.js auto-split ${relDir(cfg._dir)}`);
+    }
+    // Check for an auto-parts sub-dir for this shard
+    const subDir = path.join(cfg._dir, s.name);
+    if (fs.existsSync(path.join(subDir, '.shardrc.json'))) {
+      validateAutoPartsDir(subDir);
+    }
+  }
+
   if (allOk) ok('validate passed — all shards present');
   else       die('validate failed — see above');
 }
@@ -382,6 +399,162 @@ function scanCmd(scanDir, thresholdKB = 6) {
 `);
 }
 
+// ── AUTO-SPLIT — recursively split oversized shards into equal parts ──────────
+/**
+ * Detect shards in <shardDir> that exceed `thresholdKB` and split each one
+ * into equal-sized part files inside a sub-directory `<shardDir>/<shardName>/`.
+ *
+ * Unlike the manual shard command (which uses regex routing), auto-split
+ * produces plain index-range parts and writes an auto-generated `.shardrc.json`
+ * (type="auto-parts") so validate/status can inspect the sub-dir.
+ *
+ * Usage:
+ *   node tools_node/shard-manager.js auto-split <shardDir> [--threshold <KB>]
+ *   node tools_node/shard-manager.js auto-split docs/tasks [--threshold 30]
+ *
+ * Re-running auto-split regenerates the parts from the current shard content.
+ * keepSourceIntact is always true for auto-parts sub-dirs (source = parent shard).
+ */
+function autoSplitCmd(shardDir, thresholdKB = 30) {
+  const cfg  = readCfg(shardDir);
+  const ext  = cfg.type === 'json-array' ? '.json' : '.md';
+  let   didSplit = false;
+
+  for (const shard of cfg.shards) {
+    const shardPath = path.join(cfg._dir, shard.name + ext);
+    if (!fs.existsSync(shardPath)) continue;
+
+    const sizeKB = fs.statSync(shardPath).size / 1024;
+    if (sizeKB <= thresholdKB) {
+      info(`  ${shard.name}${ext}  ${sizeKB.toFixed(1)} KB  (within threshold — skip)`);
+      continue;
+    }
+
+    info(`  ${shard.name}${ext}  ${sizeKB.toFixed(1)} KB  > ${thresholdKB} KB → auto-split`);
+    if (cfg.type === 'json-array') {
+      splitJsonShardIntoParts(cfg, shard, shardPath, thresholdKB);
+    } else {
+      splitMarkdownShardIntoParts(cfg, shard, shardPath, thresholdKB);
+    }
+    didSplit = true;
+  }
+
+  if (!didSplit) ok(`No shards exceed ${thresholdKB} KB — nothing to split.`);
+}
+
+/** Extract items array from a shard file (handles both plain array and wrapped object). */
+function getItemsFromShardFile(shardPath, cfg) {
+  const raw = JSON.parse(fs.readFileSync(shardPath, 'utf8'));
+  if (Array.isArray(raw)) return raw;
+  const arrayKey  = cfg.shardArrayPath ?? cfg.arrayPath ?? null;
+  if (arrayKey && Array.isArray(raw[arrayKey])) return raw[arrayKey];
+  const firstAK   = Object.keys(raw).find(k => Array.isArray(raw[k]));
+  if (firstAK) return raw[firstAK];
+  return null;
+}
+
+function splitJsonShardIntoParts(cfg, shard, shardPath, thresholdKB) {
+  const items = getItemsFromShardFile(shardPath, cfg);
+  if (!items) {
+    console.warn(`[shard-manager] WARN: ${shard.name}.json — cannot locate items array; skipping auto-split`);
+    return;
+  }
+
+  const totalBytes  = fs.statSync(shardPath).size;
+  const partsNeeded = Math.max(2, Math.ceil(totalBytes / (thresholdKB * 1024)));
+  const batchSize   = Math.ceil(items.length / partsNeeded);
+
+  const subDir = path.join(cfg._dir, shard.name);
+  fs.mkdirSync(subDir, { recursive: true });
+
+  const partDefs = [];
+  let partIdx = 1;
+  for (let start = 0; start < items.length; start += batchSize) {
+    const end      = Math.min(start + batchSize, items.length);
+    const batch    = items.slice(start, end);
+    const partName = `${shard.name}-part-${partIdx}`;
+    const outPath  = path.join(subDir, partName + '.json');
+    fs.writeFileSync(outPath, JSON.stringify(batch, null, 2), 'utf8');
+    const kb = (fs.statSync(outPath).size / 1024).toFixed(1);
+    info(`    → ${relDir(subDir)}/${partName}.json  (${batch.length} items, ${kb} KB)`);
+    partDefs.push({
+      name:  partName,
+      title: `Part ${partIdx} (items ${start + 1}–${end})`,
+      range: [start, end - 1],
+    });
+    partIdx++;
+  }
+
+  writeAutoPartsRc(subDir, cfg, shard, 'json', partDefs, thresholdKB);
+  ok(`Auto-split ${shard.name}.json → ${partDefs.length} parts in ${relDir(subDir)}/`);
+}
+
+function splitMarkdownShardIntoParts(cfg, shard, shardPath, thresholdKB) {
+  const lines       = fs.readFileSync(shardPath, 'utf8').split('\n');
+  const totalBytes  = fs.statSync(shardPath).size;
+  const partsNeeded = Math.max(2, Math.ceil(totalBytes / (thresholdKB * 1024)));
+  const linesPerPart = Math.ceil(lines.length / partsNeeded);
+
+  const subDir = path.join(cfg._dir, shard.name);
+  fs.mkdirSync(subDir, { recursive: true });
+
+  const partDefs = [];
+  let partIdx = 1;
+  for (let start = 0; start < lines.length; start += linesPerPart) {
+    const end      = Math.min(start + linesPerPart, lines.length);
+    const partName = `${shard.name}-part-${partIdx}`;
+    const outPath  = path.join(subDir, partName + '.md');
+    fs.writeFileSync(outPath, lines.slice(start, end).join('\n'), 'utf8');
+    const kb = (fs.statSync(outPath).size / 1024).toFixed(1);
+    info(`    → ${relDir(subDir)}/${partName}.md  (${end - start} lines, ${kb} KB)`);
+    partDefs.push({
+      name:  partName,
+      title: `Part ${partIdx} (lines ${start + 1}–${end})`,
+      range: [start, end - 1],
+    });
+    partIdx++;
+  }
+
+  writeAutoPartsRc(subDir, cfg, shard, 'md', partDefs, thresholdKB);
+  ok(`Auto-split ${shard.name}.md → ${partDefs.length} parts in ${relDir(subDir)}/`);
+}
+
+function writeAutoPartsRc(subDir, parentCfg, shard, ext, partDefs, thresholdKB) {
+  const rc = {
+    _autoGenerated:  true,
+    _generatedBy:    'shard-manager auto-split',
+    _thresholdKB:    thresholdKB,
+    version:         1,
+    source:          `../${shard.name}.${ext}`,
+    indexTitle:      `${shard.title} (auto-parts)`,
+    type:            'auto-parts',
+    keepSourceIntact: true,
+    shards:          partDefs,
+  };
+  fs.writeFileSync(path.join(subDir, '.shardrc.json'), JSON.stringify(rc, null, 2), 'utf8');
+}
+
+// ── VALIDATE updated to warn oversize + check auto-parts sub-dirs ────────────
+function validateAutoPartsDir(subDir) {
+  const rcPath = path.join(subDir, '.shardrc.json');
+  if (!fs.existsSync(rcPath)) return;
+  const cfg = JSON.parse(fs.readFileSync(rcPath, 'utf8'));
+  if (cfg.type !== 'auto-parts') return;
+  const ext = path.extname(cfg.source); // '.json' or '.md'
+  let allOk = true;
+  for (const s of (cfg.shards || [])) {
+    const p = path.join(subDir, s.name + ext);
+    if (!fs.existsSync(p)) {
+      console.error(`[shard-manager]  MISSING auto-part: ${s.name}${ext} in ${relDir(subDir)}/`);
+      allOk = false;
+    } else {
+      const kb = (fs.statSync(p).size / 1024).toFixed(1);
+      info(`      ✓ ${relDir(subDir)}/${s.name}${ext}  (${kb} KB)`);
+    }
+  }
+  if (allOk) info(`    ✓ auto-parts sub-dir OK: ${relDir(subDir)}/`);
+}
+
 // ── MAIN ──────────────────────────────────────────────────────────────────────
 const args = process.argv.slice(2);
 const cmd  = args[0];
@@ -396,6 +569,8 @@ Commands:
   validate       <shardDir>          Check all expected shard files are present
   status         <shardDir>          Show shard sizes and modification times
   shard-all      <dir1> [dir2...]    Run 'shard' on multiple shard dirs at once
+  auto-split     <shardDir>          Auto-detect & split oversized shards into equal parts
+                 [--threshold <KB>]  Size threshold per part (default 30)
   scan           [directory]         Find .md/.json files >6KB not in any shard group
                  [--threshold <KB>]  Override size threshold (default 6)
 
@@ -449,6 +624,15 @@ switch (cmd) {
       if (cfg.type === 'json-array') shardJsonArray(cfg);
       else shardMarkdownH2(cfg);
     }
+    break;
+  }
+  case 'auto-split': {
+    if (!args[1]) die('auto-split requires a shardDir argument');
+    let threshold = 30;
+    for (let i = 2; i < args.length; i++) {
+      if (args[i] === '--threshold' && args[i + 1]) { threshold = parseFloat(args[++i]); }
+    }
+    autoSplitCmd(args[1], threshold);
     break;
   }
   case 'scan': {

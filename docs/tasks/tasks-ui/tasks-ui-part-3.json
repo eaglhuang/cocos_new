@@ -1,0 +1,594 @@
+[
+  {
+    "id": "UI-2-0038",
+    "phase": "D",
+    "priority": "P1",
+    "owner": "Agent2",
+    "status": "in-progress",
+    "created": "2026-04-01",
+    "created_by_agent": "Agent2",
+    "started_at": "2026-04-01T14:05:00+08:00",
+    "started_by_agent": "Agent2",
+    "type": "asset-direction",
+    "title": "建立 BattleHUD portrait 裁片量產規格",
+    "description": "為 BattleHUD / GeneralQuickView 整理 A2 HUD 頭像裁片 family，定義 64x64 裁切語言、badge 疊加規則、prompt DNA 與可直接交給 Agent1 的生成 brief。",
+    "related": [
+      "UI-2-0029",
+      "UI-2-0033",
+      "UI-2-0037",
+      "UI-2-0043"
+    ],
+    "depends": [],
+    "notes": "2026-04-01 | 狀態: in-progress | 驗證: 已比對 BattleHUD 64x64 slot、現有 generals portrait、placeholder 與 A2 HUD 頭像參考圖 | 變更: 補完 portrait-family-spec、Agent1 generation brief、QA 參考素材與裁切規格 | 阻塞: 待 Agent1 依 UI-2-0043 產出首批 crop proof"
+  },
+  {
+    "id": "UI-2-0039",
+    "phase": "D",
+    "priority": "P1",
+    "owner": "Agent2",
+    "status": "in-progress",
+    "created": "2026-04-01",
+    "created_by_agent": "Agent2",
+    "type": "asset-direction",
+    "title": "建立 TigerTally card art 量產規格",
+    "description": "為 `tally.card.art` 建立穩定主視覺母型，明確定義 TigerTally 以 A4 城樓 / 地圖式 diorama card family 為主、A5 主將半身 panel family 為輔。",
+    "related": [
+      "UI-2-0030",
+      "UI-2-0034",
+      "UI-2-0037"
+    ],
+    "depends": [],
+    "notes": "2026-04-01 | 狀態: in-progress | 驗證: 已比對 A4 diorama card 與 A5 hero-panel 兩條 family，並回看 TigerTally 現有 slot | 變更: 鎖定 TigerTally card art 主語言優先走 A4 城樓 / 地圖式 diorama，A5 僅保留給角色主題卡 | 阻塞: 待 Agent1 依生圖 brief 產出首輪 proof",
+    "started_at": "2026-04-01T19:05:00+08:00",
+    "started_by_agent": "Agent2"
+  },
+  {
+    "id": "UI-2-0040",
+    "phase": "D",
+    "priority": "P1",
+    "owner": "Agent2",
+    "status": "in-progress",
+    "created": "2026-04-01",
+    "created_by_agent": "Agent2",
+    "type": "asset-direction",
+    "title": "建立 reward container / bundle props 量產規格",
+    "description": "整理寶箱、禮盒、卷冊包、材料箱、補給箱等價值容器，建立可跨商城 bundle、獎勵揭示與活動包裝共用的 A8 reward / bundle props family。",
+    "related": [
+      "UI-2-0027",
+      "UI-2-0037"
+    ],
+    "depends": [],
+    "notes": "2026-04-01 | 狀態: in-progress | 驗證: 已比對新增 UI 參考圖中的 A8 容器 / 禮盒 / 卷冊包樣本，並整理 reward / bundle 共用價值語言 | 變更: 建立 reward container / bundle props 規格、批次產線與 Agent1 generation brief | 阻塞: 待後續依 shop / reward reveal 實際 slot 做 placement QA",
+    "started_at": "2026-04-01T22:55:00+08:00",
+    "started_by_agent": "Agent2"
+  },
+  {
+    "id": "UI-2-0041",
+    "phase": "D",
+    "priority": "P2",
+    "owner": "Agent2",
+    "status": "done",
+    "created": "2026-04-01",
+    "created_by_agent": "Agent2",
+    "type": "asset-direction",
+    "title": "建立主城 building node / interaction 量產規格",
+    "description": "整理主城建築節點、點擊操作筆刷選單、教學高亮與建築浮標的統一視覺語言，供未來主城或城建系統直接引用。",
+    "related": [
+      "UI-2-0037"
+    ],
+    "depends": [],
+    "notes": "2026-04-01 | 狀態: open | 驗證: 已從新參考圖辨識 A7 城建節點與操作選單 family | 變更: 補開主城 building node / interaction 規格卡，供未來主城或城建系統引用 | 阻塞: 待專案內主城 / 城建 screen contract 正式建立"
+  },
+  {
+    "id": "UI-2-0042",
+    "phase": "D",
+    "priority": "P2",
+    "owner": "Agent2",
+    "status": "open",
+    "created": "2026-04-01",
+    "created_by_agent": "Agent2",
+    "type": "asset-direction",
+    "title": "建立 outfit torso / paperdoll 量產規格",
+    "description": "整理去頭去手 torso 型服裝 / 甲冑素材的量產規格，供未來換裝、裝備、角色養成與收藏系統使用。",
+    "related": [
+      "UI-2-0037"
+    ],
+    "depends": [],
+    "notes": "2026-04-01 | 狀態: open | 驗證: 已從新參考圖辨識 A16 outfit torso paperdoll family | 變更: 補開服裝 / 裝備 torso 素材規格卡，供未來換裝、裝備或角色養成系統引用 | 阻塞: 待專案內相關系統規格與 ui-spec 入口建立"
+  },
+  {
+    "id": "UI-2-0036",
+    "phase": "D",
+    "priority": "P1",
+    "owner": "Agent1",
+    "status": "done",
+    "created": "2026-04-01",
+    "created_by_agent": "Agent2",
+    "type": "asset-generation",
+    "title": "依 UI-2-0032 生出 BattleScene icon v2 候選稿",
+    "description": "依 UI-2-0032 的 refinement 規格與 Agent1 生成 brief，產出 BattleScene `unitinfo.type.icon` 的 v2 候選稿，至少包含 v2a / v2b / v2c 與 128 / 64 / 32 三個尺寸。",
+    "related": [
+      "UI-2-0028",
+      "UI-2-0032",
+      "UI-2-0035"
+    ],
+    "depends": [
+      "UI-2-0032"
+    ],
+    "notes": "2026-04-01 | 狀態: open | 驗證: Agent2 已完成 UI-2-0032 的 family 指派、QA 基線與 Agent1 生圖 brief | 變更: 新開 Agent1 生圖執行卡，要求依 F7 戰場微型 badge 規則產出 v2 icon 候選稿 | 阻塞: 待 Agent1 接手實際生成 v2a / v2b / v2c 與三尺寸預覽\n2026-04-05 | 狀態: in-progress | 處理: 建立 icon v2 候選稿生成腳本，依 F7 badge 規格產出 v2a/v2b/v2c 三方向 + 三尺寸 | 驗證: 尚未 | 阻塞: 無 // Agent1 已產出 v2a/v2b/v2c × 128/64/32px 共 9 個 PNG + v2-compare-board.png → artifacts/ui-qa/UI-2-0032/，待 Agent2 QA",
+    "started_at": "2026-04-05T09:00:00+08:00",
+    "started_by_agent": "Agent1",
+    "completed_at": "2026-04-05",
+    "completed_by": "Agent1"
+  },
+  {
+    "phase": "D",
+    "priority": "P1",
+    "owner": "Agent1",
+    "status": "done",
+    "created": "2026-04-01",
+    "created_by_agent": "Agent2",
+    "type": "runtime-support",
+    "related": [
+      "UI-2-0027",
+      "UI-2-0029"
+    ],
+    "depends": [],
+    "id": "UI-2-0033",
+    "title": "BattleHUD portrait 改為動態載入 generals 資產",
+    "description": "讓 BattleHUD 依 player / enemy general id 載入 `sprites/generals/{snake_case_id}_portrait`，若缺件則退回 player / enemy placeholder，避免 HUD 長期固定顯示預設頭像。",
+    "notes": "2026-04-05 | 狀態: done | 驗證: BattleScene 初始進場與 restart 皆會把 general id 傳入 HUD；BattleHUD 依 `sprites/generals/{snake_case_id}_portrait` 動態載入，缺件安全退回 player / enemy placeholder；Problems 無新增 TypeScript 錯誤 | 變更: BattleHUD 新增 player/enemy generalId API、非同步肖像套用與 fallback；BattleScene 初始化與 restart 補上 setPlayerGeneralId / setEnemyGeneralId | 阻塞: 無"
+  },
+  {
+    "phase": "D",
+    "priority": "P1",
+    "owner": "Agent1",
+    "status": "done",
+    "created": "2026-04-01",
+    "created_by_agent": "Agent2",
+    "type": "runtime-support",
+    "related": [
+      "UI-2-0027",
+      "UI-2-0030",
+      "UI-2-0031"
+    ],
+    "depends": [],
+    "id": "UI-2-0034",
+    "title": "TigerTallyPanel 綁定 card art / rarity / type badge",
+    "description": "讓 TigerTallyPanel 依資料動態套用 card art、rarity border 與 unit type badge，並在缺件時沿用 UI-2-0031 的 fallback 契約。",
+    "notes": "2026-04-05 | 狀態: done | 驗證: `TigerTallyPanel` 已對 `ArtBg*`、`RarityBorder*`、`UnitTypeBadge*` 套用動態 SpriteFrame 載入；缺件時會依 UI-2-0031 退回 `tally_card_art_placeholder`、`tally_rarity_normal`、`tally_badge_type`；Problems 無新增 TypeScript 錯誤 | 變更: 新增 slot 級 async 載入保護、card art / rarity / type badge fallback 鏈，並預留 `artResource / rarityResource / typeBadgeResource` 供後續正式素材接線 | 阻塞: 無"
+  },
+  {
+    "id": "UI-2-0043",
+    "phase": "D",
+    "priority": "P1",
+    "owner": "Agent1",
+    "status": "done",
+    "created": "2026-04-01",
+    "created_by_agent": "Agent2",
+    "type": "asset-generation",
+    "title": "依 UI-2-0038 產出 BattleHUD portrait crop proof",
+    "description": "依 A2 HUD 頭像裁片 family 規格，產出可直接回到 QA 流程的 BattleHUD portrait crop proof，驗證 64x64 / 32x32 縮圖與 badge 疊加是否成立。",
+    "related": [
+      "UI-2-0038",
+      "UI-2-0029",
+      "UI-2-0033"
+    ],
+    "depends": [
+      "UI-2-0038"
+    ],
+    "notes": "2026-04-01 | 狀態: open | 驗證: Agent2 已交付 A2 HUD 頭像裁片 family 規格與 QA 參考素材 | 變更: 待 Agent1 依 agent1-generation-brief 產出張飛 / 趙雲 portrait crop proof | 阻塞: 無\n2026-04-05 | 狀態: in-progress | 處理: 建立 HUD portrait crop 生成腳本，依 agent1-generation-brief 裁切張飛趙雲全身圖為 512x512 HUD crop proof | 驗證: 尚未 | 阻塞: 無 // Agent1 已產出 zhang_fei + zhao_yun 各 v1a/v1b × 512/64/32px 共 16 檔 → artifacts/ui-qa/UI-2-0038/，64px 可讀性通過",
+    "started_at": "2026-04-05T09:00:00+08:00",
+    "started_by_agent": "Agent1",
+    "completed_at": "2026-04-05",
+    "completed_by": "Agent1"
+  },
+  {
+    "id": "UI-2-0044",
+    "phase": "D",
+    "priority": "P1",
+    "owner": "Agent1",
+    "status": "in-progress",
+    "created": "2026-04-01",
+    "created_by_agent": "Agent2",
+    "type": "asset-generation",
+    "title": "建立 Lobby icon 量產生圖卡",
+    "description": "依 `LobbyMain` 的 ui-spec slot 與 icon family 規則，建立 Lobby 專屬 icon 生圖任務，優先覆蓋：",
+    "related": [
+      "UI-2-0001",
+      "UI-1-0014",
+      "UI-2-0035"
+    ],
+    "depends": [],
+    "notes": "2026-04-01 | 狀態: in-progress | 驗證: Agent2 已完成 LobbyMain family 指派、色票、state/size、schema 與 QA 規格，Agent1 已接手生圖 | 變更: 交付 Lobby icon 規格與 generation brief，等待候選稿回流 QA | 阻塞: 等 Agent1 產出候選稿",
+    "started_at": "2026-04-01",
+    "started_by_agent": "Agent1"
+  },
+  {
+    "id": "UI-2-0045",
+    "phase": "D",
+    "priority": "P1",
+    "owner": "Agent1",
+    "status": "in-progress",
+    "created": "2026-04-01",
+    "created_by_agent": "Agent2",
+    "type": "asset-generation",
+    "title": "建立武將介紹 / QuickView icon 量產生圖卡",
+    "description": "依 `general-detail`、`general-quickview`、`general-portrait` 的 ui-spec slot 與 family 規則，建立武將介紹系統首批 icon / portrait 生圖任務。",
+    "related": [
+      "UI-2-0014",
+      "UI-2-0017",
+      "UI-2-0035",
+      "UI-2-0037"
+    ],
+    "depends": [],
+    "notes": "2026-04-01 | 狀態: in-progress | 驗證: Agent2 已完成武將介紹 / QuickView family 指派、色票、state/size、schema 與 QA 規格，Agent1 已接手生圖 | 變更: 交付武將介紹 / QuickView 生圖規格與 generation brief，等待候選稿回流 QA | 阻塞: 等 Agent1 產出候選稿",
+    "started_at": "2026-04-01",
+    "started_by_agent": "Agent1"
+  },
+  {
+    "id": "UI-2-0047",
+    "phase": "D",
+    "priority": "P1",
+    "owner": "Agent2",
+    "status": "done",
+    "created": "2026-04-01",
+    "created_by_agent": "Agent2",
+    "started_at": "2026-04-01T10:25:00+08:00",
+    "started_by_agent": "Agent2",
+    "type": "asset-direction",
+    "title": "建立跨功能一致性與量產製程規範",
+    "description": "把 `docs/UI參考圖品質分析.md` 第二波研究正式收斂成可執行規格，補齊目前高品質 UI 量產最缺的五件事：",
+    "related": [
+      "UI-2-0035",
+      "UI-2-0037",
+      "UI-2-0044",
+      "UI-2-0045"
+    ],
+    "depends": [],
+    "notes": "2026-04-01 | 狀態: done | 驗證: Agent2 已重盤 29 張參考圖、建立 contact sheet，並產出 macro-style-rules / field template / 五張子規格卡 | 變更: 完成跨功能一致性與量產製程母規則，將色票、family kit、state/size、screen-context QA 與 schema 全部落成正式規格 | 阻塞: 無",
+    "completed_at": "2026-04-01T18:20:00+08:00",
+    "completed_by_agent": "Agent2"
+  },
+  {
+    "id": "UI-2-0048",
+    "phase": "D",
+    "priority": "P1",
+    "owner": "Agent2",
+    "status": "done",
+    "created": "2026-04-01",
+    "created_by_agent": "Agent2",
+    "type": "asset-direction",
+    "title": "建立功能語意色票規格",
+    "description": "把參考圖中的跨畫面用色規律整理成正式功能語意色票，讓之後的 icon、badge、CTA、progress、rarity 與 placeholder 都能依角色選色，而不是逐張自由發揮。",
+    "related": [
+      "UI-2-0047",
+      "UI-2-0044",
+      "UI-2-0045"
+    ],
+    "depends": [],
+    "notes": "2026-04-01 | 狀態: done | 驗證: 已整理功能語意色票與 Lobby / General / Battle / Reward 使用範圍 | 變更: 完成功能語意色票規格，定義 cta-gold、danger-red、support-green、info-cyan、rare-purple、neutral-ink、paper-black、battle-light | 阻塞: 無",
+    "completed_at": "2026-04-01T18:20:00+08:00",
+    "completed_by_agent": "Agent2"
+  },
+  {
+    "id": "UI-2-0049",
+    "phase": "D",
+    "priority": "P1",
+    "owner": "Agent2",
+    "status": "done",
+    "created": "2026-04-01",
+    "created_by_agent": "Agent2",
+    "type": "asset-direction",
+    "title": "建立 family 批次生產模板",
+    "description": "把量產流程從「單張補圖」改成「同功能 family kit 一次做完」，確保風格、材質、狀態與縮圖表現保持一致。",
+    "related": [
+      "UI-2-0047",
+      "UI-2-0044",
+      "UI-2-0045"
+    ],
+    "depends": [],
+    "notes": "2026-04-01 | 狀態: done | 驗證: 已建立 icon / portrait / card / container / torso 的 family kit 規格與命名模板 | 變更: 完成 family 批次生產模板，要求同功能素材整批生產，不再逐張補洞 | 阻塞: 無",
+    "completed_at": "2026-04-01T18:20:00+08:00",
+    "completed_by_agent": "Agent2"
+  },
+  {
+    "id": "UI-2-0050",
+    "phase": "D",
+    "priority": "P1",
+    "owner": "Agent2",
+    "status": "done",
+    "created": "2026-04-01",
+    "created_by_agent": "Agent2",
+    "type": "asset-direction",
+    "title": "建立狀態組與尺寸組標準",
+    "description": "統一各類量產素材應同時輸出的狀態與尺寸，避免每張卡再各自決定要不要做 `pressed`、要不要出 `32px`。",
+    "related": [
+      "UI-2-0047",
+      "UI-2-0032",
+      "UI-2-0038"
+    ],
+    "depends": [],
+    "notes": "2026-04-01 | 狀態: done | 驗證: 已定義 icon / portrait / card / container 的 state_set 與 size_set | 變更: 完成狀態組與尺寸組標準，之後 brief 必填 state_set / size_set | 阻塞: 無",
+    "completed_at": "2026-04-01T18:20:00+08:00",
+    "completed_by_agent": "Agent2"
+  },
+  {
+    "id": "UI-2-0051",
+    "phase": "D",
+    "priority": "P1",
+    "owner": "Agent2",
+    "status": "done",
+    "created": "2026-04-01",
+    "created_by_agent": "Agent2",
+    "type": "qa-pipeline",
+    "title": "建立 screen-context QA 板與比較流程",
+    "description": "把 QA 從「只看單張 PNG」提升為「回到真實畫面條件比對」，避免圖本身看起來精緻，但一放回 UI 就失去層次或辨識度。",
+    "related": [
+      "UI-2-0047",
+      "UI-1-0014",
+      "UI-1-0015",
+      "UI-1-0016"
+    ],
+    "depends": [],
+    "notes": "2026-04-01 | 狀態: done | 驗證: 已定義 reference board / compare board / screen-context placement 的 QA 流程 | 變更: 完成 screen-context QA 規格，要求所有量產圖回到真實畫面條件檢查 | 阻塞: 無",
+    "completed_at": "2026-04-01T18:20:00+08:00",
+    "completed_by_agent": "Agent2"
+  },
+  {
+    "id": "UI-2-0052",
+    "phase": "D",
+    "priority": "P1",
+    "owner": "Agent2",
+    "status": "done",
+    "created": "2026-04-01",
+    "created_by_agent": "Agent2",
+    "type": "asset-direction",
+    "title": "建立量產規格欄位 Schema",
+    "description": "把目前散落在文字敘述裡的關鍵規格，收斂成固定欄位，減少 Agent 之間交接時的解讀落差。",
+    "related": [
+      "UI-2-0047",
+      "UI-2-0044",
+      "UI-2-0045"
+    ],
+    "depends": [],
+    "notes": "2026-04-01 | 狀態: done | 驗證: 已建立 asset_family / color_role / state_set / size_set / screen_context / qa_board_path 等欄位 schema | 變更: 完成量產規格欄位 Schema，供 manifest / brief / QA 共用 | 阻塞: 無",
+    "completed_at": "2026-04-01T18:20:00+08:00",
+    "completed_by_agent": "Agent2"
+  },
+  {
+    "id": "UI-2-0046",
+    "phase": "D",
+    "priority": "P1",
+    "owner": "Agent1",
+    "status": "in-progress",
+    "created": "2026-04-01",
+    "created_by_agent": "Copilot",
+    "started_at": "2026-04-01T15:20:00+08:00",
+    "started_by_agent": "Agent1",
+    "type": "qa-pipeline",
+    "title": "建立 BattleScene 真場景 headless capture 驗證鏈",
+    "description": "讓 `tools_node/capture-ui-screens.js` 能自動截取真正的 `BattleScene.scene`，而不是只截 screen-driven UI composite。這張卡主要解決：",
+    "related": [
+      "UI-2-0026"
+    ],
+    "depends": [],
+    "notes": "2026-04-01 | 狀態: in-progress | 驗證: 已確認現有 preview host 只處理純 UI screen，無法直接驗 BattleScene 真場景 | 變更: 補開 BattleScene capture pipeline 卡，支援 Top HUD 截圖驅動修正 | 阻塞: 需確認 BattleScene ready/error 訊號的最小侵入實作點"
+  },
+  {
+    "id": "UI-2-0053",
+    "phase": "D",
+    "priority": "P1",
+    "owner": "Agent2",
+    "status": "in-progress",
+    "created": "2026-04-01",
+    "created_by_agent": "Agent2",
+    "started_at": "2026-04-01T23:20:00+08:00",
+    "started_by_agent": "Agent2",
+    "type": "art-direction",
+    "title": "重審 BattleScene 主 UI 視覺風格、畫面分布與各主畫面 style profile",
+    "description": "以美術總監標準重新審視 `BattleScene` 主 UI 的整體視覺風格、資訊層級、畫面分布與 family 使用是否合理，並把這套判準擴寫成「各主畫面都要有自己的 style profile」的正式規格。",
+    "related": [
+      "UI-2-0026",
+      "UI-2-0046",
+      "UI-2-0047",
+      "UI-2-0048",
+      "UI-2-0049",
+      "UI-2-0050",
+      "UI-2-0051",
+      "UI-2-0052"
+    ],
+    "depends": [],
+    "notes": "2026-04-01 | 狀態: in-progress | 驗證: 已完成 battle-scene-main 與五個戰場子 screen/layout/skin、主戰場UI規格書、UI-2-0038、UI-2-0039、UI-2-0047~UI-2-0052 的 desk audit | 變更: 完成 BattleScene style zone audit、BattleScene style profile v1、以及各主畫面 screen style profile schema / 補件順序 | 阻塞: 待 UI-2-0046 建立真場景 capture 後，才能把目前的 style audit 轉成 placement QA 與最終 refinement"
+  },
+  {
+    "id": "UI-2-0054",
+    "phase": "D",
+    "priority": "P1",
+    "owner": "Agent2",
+    "status": "in-progress",
+    "created": "2026-04-01",
+    "created_by_agent": "Agent2",
+    "started_at": "2026-04-01T12:49:53.1123550+08:00",
+    "started_by_agent": "Agent2",
+    "type": "art-direction",
+    "title": "人物與命鏡主視覺方向收斂",
+    "description": "??????????? 3D / ???? / portrait / card art / reward props / ??? style profile ???????????????????????????????",
+    "related": [
+      "UI-2-0029",
+      "UI-2-0030",
+      "UI-2-0037",
+      "UI-2-0038",
+      "UI-2-0039",
+      "UI-2-0040",
+      "UI-2-0046",
+      "UI-2-0053"
+    ],
+    "depends": [],
+    "template_family": "fullscreen-result",
+    "content_contract": [
+      "loading-state",
+      "awakening-state",
+      "ascension-state",
+      "unowned-preview-state"
+    ],
+    "skin_fragments": [
+      "bloodline_mirror/frame",
+      "bloodline_mirror/aura",
+      "bloodline_mirror/cta"
+    ],
+    "smoke_route": "UIID.BloodlineMirrorLoading -> bloodline-mirror-loading-screen",
+    "docs_backwritten": [
+      "docs/keep.md",
+      "docs/UI 規格書.md",
+      "docs/系統規格書/血脈命鏡過場載入規格書.md",
+      "docs/cross-reference-index.md"
+    ],
+    "notes": "2026-04-05 | 狀態: in-progress | 驗證: 已完成命鏡 shared skeleton，並補上 bloodline-mirror-states-v1 四種 state content contract；loading / awakening screen 已指向對應 content.state | 變更: 將 Loading / 覺醒 / 升星 / 未持有預覽 收斂到同一份 fullscreen-result 內容契約，避免每個 state 再各自發明文案結構與節點命名 | 阻塞: 無"
+  },
+  {
+    "id": "UI-2-0055",
+    "phase": "D",
+    "priority": "P2",
+    "owner": "Agent2",
+    "status": "open",
+    "created": "2026-04-02",
+    "created_by_agent": "Agent2",
+    "type": "ui-content-spec",
+    "title": "血脈命鏡 Loading tips 文案池",
+    "description": "為 `血脈命鏡過場載入` 建立可量產的 tips 文案池規格，先定欄位、類型、輪播規則與未持有武將的展示策略，後續再補實際文案內容。",
+    "related": [
+      "UI-2-0054"
+    ],
+    "depends": [
+      "UI-2-0054",
+      "UI-2-0059"
+    ],
+    "notes": "2026-04-02 | 狀態: open | 工作: 先開單追蹤血脈命鏡 Loading tips 文案池，暫不進行文案量產 | 結論: 待血脈命鏡 v3 視覺母型穩定後，再補玩法提示 / 歷史趣聞 / 血脈傳聞三池文案 | 風險: 若過早寫死 tips，後續畫面欄位與節奏可能重工"
+  },
+  {
+    "id": "UI-2-0056",
+    "phase": "D",
+    "priority": "P2",
+    "owner": "Agent2",
+    "status": "open",
+    "created": "2026-04-02",
+    "created_by_agent": "Agent2",
+    "type": "ui-display-rule",
+    "title": "未持有武將標記規則",
+    "description": "定義 `血脈命鏡過場載入` 與後續角色展示頁中，未持有武將的標記、提示、稀有度呈現與抽卡導購規則。",
+    "related": [
+      "UI-2-0054"
+    ],
+    "depends": [
+      "UI-2-0054"
+    ],
+    "notes": "2026-04-02 | 狀態: open | 工作: 先開單追蹤血脈命鏡與 Loading 過場中的未持有武將標記規則 | 結論: 待 v3 視覺 proof 確認後，再細化 badge、遮罩、提示文案與抽卡誘因策略 | 風險: 若先定死標記樣式，可能與最終角色展示構圖衝突"
+  },
+  {
+    "id": "UI-2-0057",
+    "phase": "D",
+    "priority": "P1",
+    "owner": "Agent2",
+    "status": "open",
+    "created": "2026-04-02",
+    "created_by_agent": "Agent2",
+    "type": "art-contract",
+    "title": "祖紋命篆 / 命紋靈獸 / 六色因子視覺契約",
+    "description": "建立世界觀主體層的正式 art-direction contract，至少涵蓋：",
+    "related": [
+      "UI-2-0054",
+      "UI-2-0055",
+      "UI-2-0056"
+    ],
+    "depends": [
+      "UI-2-0054"
+    ],
+    "notes": "2026-04-02 | 狀態: open | 工作: 建立祖紋命篆 / 命紋靈獸 / 六色因子的統一視覺 contract | 結論: 日常人物頁 v3 與血脈命鏡 v3 都已通過 proof，下一步需要固定血脈符號母語與 family | 風險: 若不先固定 contract，後續 crest / 故事 / 虎符軍隊會各自長成不同語言"
+  },
+  {
+    "id": "UI-2-0058",
+    "phase": "D",
+    "priority": "P1",
+    "owner": "Agent2",
+    "status": "done",
+    "created": "2026-04-02",
+    "created_by_agent": "Agent2",
+    "started_at": "2026-04-05T15:20:00+08:00",
+    "started_by_agent": "Agent2",
+    "completed_at": "2026-04-05T17:40:00+08:00",
+    "completed_by_agent": "Agent2",
+    "type": "ui-slot-contract",
+    "title": "收斂 GeneralDetailBloodlineV3 第一批 Slot 契約",
+    "description": "讓 `GeneralDetailBloodlineV3` 的第一批視覺骨架具備可重用的正式 slot family，避免 `ui-spec`、runtime 與後續美術 proof 各自長出不同版本。",
+    "related": [
+      "UI-2-0054",
+      "UI-2-0057"
+    ],
+    "depends": [
+      "UI-2-0057"
+    ],
+    "template_family": "detail-split",
+    "content_contract": [
+      "overview-summary",
+      "bloodline-summary",
+      "story-strip-cells"
+    ],
+    "skin_fragments": [
+      "general_detail/detail_summary_card_bg",
+      "general_detail/detail_content_bg",
+      "general_detail/detail_footer_bg"
+    ],
+    "smoke_route": "LobbyScene.onClickGeneralDetailOverviewSmoke",
+    "docs_backwritten": [
+      "docs/keep.md",
+      "docs/UI 規格書.md",
+      "docs/系統規格書/武將人物介面規格書.md",
+      "docs/cross-reference-index.md"
+    ],
+    "notes": "2026-04-05 | done | 指令: 以 general_detail family 重用 frame / section / footer 資產，並將 TopSummaryRow、BloodlineRow、StoryStrip 的正式文字節點回寫到 layout JSON；同步修復 tasks_index.md 生成鏈與相關正式文件 | 結果: GeneralDetailBloodlineV3 已完成第一批 slot family / skin contract 收斂，overview shell runtime 不再臨時建立最終 Label 節點，任務狀態與索引已同步 | 阻塞: 無"
+  },
+  {
+    "id": "UI-2-0059",
+    "phase": "D",
+    "priority": "P1",
+    "owner": "Agent2",
+    "status": "done",
+    "created": "2026-04-02",
+    "created_by_agent": "Agent2",
+    "started_at": "2026-04-05T17:45:00+08:00",
+    "started_by_agent": "Agent2",
+    "type": "ui-spec-skeleton",
+    "title": "日常人物頁 v3 UI Spec Skeleton",
+    "description": "在 `UI-2-0058` 完成 slot family / skin contract 之後，將 `GeneralDetailBloodlineV3` 的 overview shell 繼續收斂成可量產、可模板化、可回掛 `GeneralDetail` host 的正式 skeleton：",
+    "related": [
+      "UI-2-0054",
+      "UI-2-0058"
+    ],
+    "depends": [
+      "UI-2-0054",
+      "UI-2-0058"
+    ],
+    "template_family": "detail-split",
+    "content_contract": [
+      "overview-summary-modules",
+      "bloodline-overview-modules",
+      "story-strip-cells"
+    ],
+    "skin_fragments": [
+      "gdv3.mode.*",
+      "gdv3.progress.*",
+      "general_detail/detail_summary_card_bg"
+    ],
+    "smoke_route": "LobbyScene.onClickGeneralDetailOverviewSmoke",
+    "docs_backwritten": [
+      "docs/keep.md",
+      "docs/UI 規格書.md",
+      "docs/系統規格書/武將人物介面規格書.md",
+      "docs/cross-reference-index.md"
+    ],
+    "notes": "2026-04-05 | done | 指令: 承接 UI-2-0058，將日常人物頁 v3 從已接線的 overview shell 再往正式 skeleton 收斂，補齊 layout / screen / node contract 缺口並同步正式文件 | 結果: 完成 `OverviewSummaryModules`、`BloodlineOverviewModules`、`OverviewStateChrome`、`AwakeningProgressGroup` 四組正式骨架群組，故事帶維持語意節點，screen contract 收緊為 `allowMissingSkin: false`，layout version 升為 v3，文件 / manifest / 索引已同步 | 阻塞: 無",
+    "completed_at": "2026-04-05T22:30:00+08:00",
+    "completed_by_agent": "Agent2"
+  }
+]
