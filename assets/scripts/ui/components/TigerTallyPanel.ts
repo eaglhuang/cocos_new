@@ -30,9 +30,11 @@ const UNIT_TYPE_BADGES: Record<string, { icon: string; color: Color }> = {
 };
 
 const RARITY_BORDER_COLORS: Record<TallyCardData['rarity'], Color> = {
-    normal: new Color(110, 122, 138, 255),
-    rare:   new Color(212, 175, 55, 255),
-    epic:   new Color(168, 85, 247, 255),
+    normal:    new Color(110, 122, 138, 255),
+    rare:      new Color(212, 175, 55, 255),
+    epic:      new Color(168, 85, 247, 255),
+    legendary: new Color(168, 85, 247, 255),
+    mythic:    new Color(255, 215, 0, 255),
 };
 
 const DEFAULT_BADGE_DEF = { icon: '？', color: new Color(220, 220, 220, 255) };
@@ -40,9 +42,11 @@ const TALLY_CARD_ART_FALLBACK_PATH = 'sprites/battle/tally_card_art_placeholder'
 const TALLY_TYPE_BADGE_FALLBACK_PATH = 'sprites/battle/tally_badge_type';
 const WHITE = new Color(255, 255, 255, 255);
 const TALLY_RARITY_PATHS: Record<TallyCardData['rarity'], string> = {
-    normal: 'sprites/battle/tally_rarity_normal',
-    rare: 'sprites/battle/tally_rarity_rare',
-    epic: 'sprites/battle/tally_rarity_epic',
+    normal:    'sprites/battle/tally_rarity_normal',
+    rare:      'sprites/battle/tally_rarity_rare',
+    epic:      'sprites/battle/tally_rarity_epic',
+    legendary: 'sprites/battle/tally_rarity_epic',
+    mythic:    'sprites/battle/tally_rarity_epic',
 };
 
 /** 虎符卡片資料結構（打通 TigerTallyPanel ↔ UnitInfoPanel 的資料契約） */
@@ -59,7 +63,7 @@ export interface TallyCardData {
     spd:  number;
     /** 糧草費用 */
     cost: number;
-    rarity: 'normal' | 'rare' | 'epic';
+    rarity: 'normal' | 'rare' | 'epic' | 'legendary' | 'mythic';
     /** 特性標籤列表（如：['衝鋒', '重甲']）*/
     traits: string[];
     /** 特殊能力描述列表 */

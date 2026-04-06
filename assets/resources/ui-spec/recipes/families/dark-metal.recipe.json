@@ -1,0 +1,61 @@
+{
+  "$schema": "../frame-recipe.schema.json",
+  "id": "dark-metal-v1",
+  "version": 1,
+  "family": "dark-metal",
+  "description": "深色金屬框體。主要用於主戰場面板、主要容器、角色詳情頁框架。特徵：厚重金屬邊框、強溢血羽化、淡化陰影、深色填底。",
+  "cornerRadius": 5,
+  "borderWeight": 10,
+  "bleedIntensity": 12,
+  "frame": {
+    "slot": "frame.dark-metal.edge",
+    "spriteType": "sliced",
+    "border": [12, 12, 12, 12],
+    "bleed": 4,
+    "opacity": 1.0,
+    "blendMode": "alpha"
+  },
+  "bleed": {
+    "slot": "frame.dark-metal.bleed",
+    "spriteType": "sliced",
+    "border": [20, 20, 20, 20],
+    "bleed": 12,
+    "opacity": 0.75,
+    "blendMode": "alpha"
+  },
+  "shadow": {
+    "offsetX": 0,
+    "offsetY": 6,
+    "blur": 12,
+    "spread": 2,
+    "color": "#000000",
+    "opacity": 0.65
+  },
+  "fill": {
+    "slot": "frame.dark-metal.fill",
+    "spriteType": "sliced",
+    "border": [8, 8, 8, 8],
+    "opacity": 1.0,
+    "blendMode": "alpha"
+  },
+  "ornament": {
+    "slot": "frame.dark-metal.corner",
+    "spriteType": "simple",
+    "opacity": 0.9,
+    "blendMode": "overlay",
+    "optional": true
+  },
+  "stateVariants": {
+    "hover": [
+      { "layer": "frame", "slot": "frame.dark-metal.edge-hover", "opacity": 1.0 }
+    ],
+    "pressed": [
+      { "layer": "frame", "slot": "frame.dark-metal.edge-pressed", "opacity": 1.0 }
+    ],
+    "disabled": [
+      { "layer": "frame", "slot": "frame.dark-metal.edge", "opacity": 0.5 },
+      { "layer": "fill",  "slot": "frame.dark-metal.fill",  "opacity": 0.5 }
+    ]
+  },
+  "materialId": "dark-metal-material-v1"
+}

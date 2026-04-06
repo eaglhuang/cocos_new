@@ -1,0 +1,55 @@
+{
+  "$schema": "../frame-recipe.schema.json",
+  "id": "parchment-v1",
+  "version": 1,
+  "family": "parchment",
+  "description": "羊皮紙/古卷風框體。主要用於說明卡、日誌頁、隊伍資訊、文字密集型容器。特徵：溫暖紙紋底色、輕邊框、細緻溢血羽化、低對比陰影。",
+  "cornerRadius": 3,
+  "borderWeight": 5,
+  "bleedIntensity": 8,
+  "frame": {
+    "slot": "frame.parchment.edge",
+    "spriteType": "sliced",
+    "border": [8, 8, 8, 8],
+    "bleed": 3,
+    "opacity": 1.0,
+    "blendMode": "alpha"
+  },
+  "bleed": {
+    "slot": "frame.parchment.bleed",
+    "spriteType": "sliced",
+    "border": [14, 14, 14, 14],
+    "bleed": 8,
+    "opacity": 0.55,
+    "blendMode": "alpha"
+  },
+  "shadow": {
+    "offsetX": 0,
+    "offsetY": 3,
+    "blur": 8,
+    "spread": 0,
+    "color": "#3a2800",
+    "opacity": 0.35
+  },
+  "fill": {
+    "slot": "frame.parchment.fill",
+    "spriteType": "sliced",
+    "border": [6, 6, 6, 6],
+    "opacity": 1.0,
+    "blendMode": "alpha"
+  },
+  "ornament": {
+    "slot": "frame.parchment.seal",
+    "spriteType": "simple",
+    "opacity": 0.7,
+    "blendMode": "multiply",
+    "optional": true
+  },
+  "stateVariants": {
+    "disabled": [
+      { "layer": "frame", "slot": "frame.parchment.edge", "opacity": 0.45 },
+      { "layer": "fill",  "slot": "frame.parchment.fill", "opacity": 0.45 }
+    ]
+  },
+  "materialId": "parchment-material-v1"
+}

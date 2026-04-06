@@ -12,10 +12,10 @@ const { ccclass } = _decorator;
 
 type TabKey = 'Basics' | 'Stats' | 'Bloodline' | 'Skills' | 'Aptitude' | 'Extended';
 
-const ACTIVE_TAB_COLOR = new Color(235, 222, 188, 255);
-const INACTIVE_TAB_COLOR = new Color(138, 130, 118, 255);
+const ACTIVE_TAB_COLOR = new Color(184, 215, 201, 255);
+const INACTIVE_TAB_COLOR = new Color(233, 225, 209, 255);
 const ACTIVE_TAB_TEXT = new Color(45, 41, 38, 255);
-const INACTIVE_TAB_TEXT = new Color(229, 226, 225, 255);
+const INACTIVE_TAB_TEXT = new Color(107, 94, 78, 255);
 
 const TAB_ORDER: TabKey[] = ['Basics', 'Stats', 'Bloodline', 'Skills', 'Aptitude', 'Extended'];
 const RESERVED_FOOTER_ACTIONS = ['BtnFavorite', 'BtnLock', 'BtnCompare', 'BtnShare'] as const;

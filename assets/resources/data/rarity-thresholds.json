@@ -1,0 +1,36 @@
+{
+  "version": "1.0.0",
+  "description": "武將稀有度自動判定門檻（雙軸制：maxStat + avg5 取較高 tier）",
+  "axes": {
+    "maxStat": {
+      "legendary": 95,
+      "epic": 80,
+      "rare": 65
+    },
+    "avg5": {
+      "legendary": 80,
+      "epic": 65,
+      "rare": 50
+    }
+  },
+  "excludeFromAvg": ["luk"],
+  "categoryOverrides": {
+    "mythical": "mythic",
+    "titled": "legendary"
+  },
+  "tierOrder": ["common", "rare", "epic", "legendary", "mythic"],
+  "tierLabels": {
+    "common": "N / 常規",
+    "rare": "R / 稀有",
+    "epic": "SR / 史詩",
+    "legendary": "SSR / 傳說",
+    "mythic": "UR / 神話"
+  },
+  "tierColors": {
+    "common": "#CCCCCC",
+    "rare": "#4CAF50",
+    "epic": "#2196F3",
+    "legendary": "#A855F7",
+    "mythic": "#FFD700"
+  }
+}

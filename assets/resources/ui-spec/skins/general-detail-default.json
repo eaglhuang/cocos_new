@@ -1,6 +1,6 @@
 {
   "id": "general-detail-default",
-  "version": 7,
+  "version": 8,
   "bundle": "lobby_ui",
   "atlasPolicy": "lobby",
   "$fragments": ["common-parchment-default"],
@@ -190,41 +190,43 @@
     },
     "detail.tabbar.rail.frame": {
       "kind": "sprite-frame",
-      "path": "sprites/ui_families/general_detail/detail_tabbar_rail_frame",
+      "path": "sprites/ui_families/common/parchment/frame",
       "spriteType": "sliced",
-      "border": [40, 40, 40, 40],
-      "bleed": 4,
+      "border": [16, 16, 16, 16],
+      "bleed": 2,
       "allowAutoAtlas": true
     },
     "detail.tabbar.rail.bleed": {
       "kind": "sprite-frame",
-      "path": "sprites/ui_families/general_detail/detail_tabbar_rail_bleed",
+      "path": "sprites/ui_families/common/bleed/bleed_parchment",
       "spriteType": "sliced",
-      "border": [40, 40, 40, 40],
+      "border": [24, 24, 24, 24],
       "allowAutoAtlas": true
     },
     "detail.tabbar.rail.fill": {
       "kind": "sprite-frame",
-      "path": "sprites/ui_families/general_detail/detail_tabbar_rail_fill",
+      "path": "sprites/ui_families/common/parchment/fill",
       "spriteType": "sliced",
-      "border": [40, 40, 40, 40],
-      "allowAutoAtlas": true
+      "border": [16, 16, 16, 16],
+      "allowAutoAtlas": true,
+      "opacity": 0.42
     },
     "detail.tabbar.rail.noise": {
       "kind": "sprite-frame",
-      "path": "sprites/ui_families/common/noise/metal_noise_256",
+      "path": "sprites/ui_families/common/noise/paper_noise_256",
       "spriteType": "tiled",
-      "opacity": 20,
+      "opacity": 10,
       "blendMode": "overlay",
       "allowAutoAtlas": true
     },
     "detail.tabbar.bg": {
       "kind": "sprite-frame",
-      "path": "sprites/ui_families/general_detail/detail_tabbar_rail_bg",
+      "path": "sprites/ui_families/common/parchment/bg",
       "spriteType": "sliced",
-      "border": [40, 40, 40, 40],
-      "bleed": 4,
-      "allowAutoAtlas": true
+      "border": [16, 16, 16, 16],
+      "bleed": 2,
+      "allowAutoAtlas": true,
+      "opacity": 0.86
     },
     "detail.tab.idle.frame": {
       "kind": "sprite-frame",
@@ -263,11 +265,11 @@
     },
     "detail.tab.idle": {
       "kind": "button-skin",
-      "normal": "sprites/ui_families/general_detail/tab_idle_button",
-      "pressed": "sprites/ui_families/general_detail/tab_active_button",
-      "disabled": "sprites/ui_families/general_detail/tab_disabled_button",
+      "normal": "sprites/ui_families/common/paper_utility/btn_primary_normal",
+      "pressed": "sprites/ui_families/common/paper_utility/btn_primary_pressed",
+      "disabled": "sprites/ui_families/common/paper_utility/btn_primary_disabled",
       "spriteType": "sliced",
-      "border": [40, 40, 40, 40],
+      "border": [16, 16, 16, 16],
       "allowAutoAtlas": true
     },
     "detail.content.frame": {
@@ -462,18 +464,17 @@
       "kind": "label-style",
       "fontSize": 46,
       "lineHeight": 52,
-      "color": "secondaryLight",
-      "outlineColor": "outlineHeavy",
-      "outlineWidth": 2,
+      "color": "tertiaryLight",
+      "outlineColor": "outlineLight",
+      "outlineWidth": 1,
       "horizontalAlign": "LEFT"
     },
     "detail.label.subtitle": {
       "kind": "label-style",
       "fontSize": 24,
       "lineHeight": 30,
-      "color": "textAccent",
-      "outlineColor": "outlineStandard",
-      "outlineWidth": 1,
+      "color": "tertiary",
+      "outlineWidth": 0,
       "horizontalAlign": "LEFT"
     },
     "detail.label.meta": {
@@ -487,9 +488,8 @@
       "kind": "label-style",
       "fontSize": 22,
       "lineHeight": 28,
-      "color": "secondary",
-      "outlineColor": "outlineStandard",
-      "outlineWidth": 1,
+      "color": "tertiary",
+      "outlineWidth": 0,
       "horizontalAlign": "LEFT"
     },
     "detail.label.caption": {
@@ -544,11 +544,10 @@
     },
     "detail.label.button": {
       "kind": "label-style",
-      "fontSize": 16,
-      "lineHeight": 20,
-      "color": "textPrimary",
-      "outlineColor": "outlineHeavy",
-      "outlineWidth": 1,
+      "fontSize": 12,
+      "lineHeight": 16,
+      "color": "textOnParchment",
+      "outlineWidth": 0,
       "horizontalAlign": "CENTER",
       "verticalAlign": "CENTER"
     },

@@ -263,3 +263,64 @@ node tools_node/run-guarded-workflow.js --workflow image-review --task IMG-001 -
 - finalizer
 
 目標不是讓 Agent 綁手綁腳，而是讓 Agent 在高風險任務裡，預設走最小上下文、最不容易爆 token 的路線。
+
+---
+
+## Phase 2：Path-Specific Instructions 強化（2026-04-06）
+
+### 背景
+
+Skill 與 `(best)` 口令仍然屬於「Agent 要主動記住」的規範層，並不能保證在所有路徑的工作中都被觸發。Phase 2 利用 VS Code Copilot 的 **path-specific `.instructions.md` 自動注入機制**，把規則與路徑綁定，讓 Agent 不需要要記憶，結構本身就會強制給它看到正確的規則。
+
+### 核心機制：`applyTo` 自動注入
+
+`.github/instructions/` 下的 `*.instructions.md` 檔案有 YAML frontmatter：
+
+```yaml
+---
+applyTo: "assets/scripts/**"
+---
+```
+
+VS Code Copilot 會在 Agent 工作的檔案路徑符合 `applyTo` 時，自動把該 instruction 注入對話上下文，無需 Agent 主動讀取。
+
+### 已建立的 Instruction 檔案
+
+| 檔案 | applyTo | 內容 |
+|------|---------|------|
+| `token-guard.instructions.md` | `**`（全域） | 警戒線 6k/18k/30k、禁止操作、替代做法、handoff 摘要卡格式 |
+| `artifacts-guard.instructions.md` | `artifacts/**` | 禁止整批讀 PNG、file_search 加 maxResults:10、圖片 1+1 限制 |
+| `ui-pipeline.instructions.md` | UI/prefab 相關路徑 | 5 步驟 UI Pipeline、Debug skill 路由、武將管線 3 步驟 |
+| `docs-guard.instructions.md` | `docs/**` | 先讀 keep.summary.md、讀 shard 不讀 aggregate；>6000 token 先用 grep |
+| `project-conventions.instructions.md` | `assets/scripts/**` | 架構原則、Unity 對照學習說明 |
+
+### keep.summary.md 輕量入口
+
+`docs/keep.summary.md` 是 `docs/keep.md`（~400 行）的 33 行摘要索引。
+
+- **Pre-flight 預設讀這份**，而非完整 keep.md
+- 每個段落只有一行摘要 + 指向完整章節的引用
+- 需要修改共識才讀 keep.md 全文
+
+### copilot-instructions.md 精簡
+
+主 instruction 檔從 102 行精簡至 26 行。
+
+- 刪除的段落（items 6-9、架構原則、學習說明）全部搬入 keep.md §2c 和各 path-specific instruction 檔
+- 只保留：語言規範、Build/Dev 指令、Pre-flight 5 條（含指向 path-specific instructions 的索引）
+
+### 為什麼同時寫入 keep.md
+
+Path-specific instructions 只在路徑符合時注入。若 Agent 工作的路徑不符合任何 instruction，它就看不到那些規則。
+
+**`keep.md §2c`** 是安全網：把最重要的常識（Skill 路由、UI Pipeline、架構原則、Unity 對照）放在 Agent 每次 pre-flight 必讀的位置，確保不被遺漏。
+
+### 新舊架構對比
+
+| 防線 | Phase 1 | Phase 2 新增 |
+|------|---------|--------------|
+| 全域口令 | `(best)` 觸發 best-mode | ✅ 保留 |
+| 主 instruction | copilot-instructions.md 102 行 | → 精簡至 26 行 |
+| 路徑規則 | 無 | `.github/instructions/*.md`（5 檔，自動注入） |
+| pre-flight 入口 | 讀 keep.md 全文（~400 行） | 讀 keep.summary.md（33 行） |
+| Agent 常識保底 | 在 copilot-instructions.md 內 | → 搬至 keep.md §2c（pre-flight 必讀） |

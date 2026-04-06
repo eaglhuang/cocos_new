@@ -14,6 +14,9 @@ import {
 } from 'cc';
 import { services } from '../../core/managers/ServiceLoader';
 import { UIScreenPreviewHost } from '../components/UIScreenPreviewHost';
+import { GeneralDetailPanel } from '../components/GeneralDetailPanel';
+import { GeneralDetailOverviewShell } from '../components/GeneralDetailOverviewShell';
+import { LobbyScene } from './LobbyScene';
 
 const { ccclass, property } = _decorator;
 
@@ -24,6 +27,7 @@ enum LoadingPreviewTarget {
     Gacha = 3,
     DuelChallenge = 4,
     BattleScene = 5,
+    GeneralDetailOverview = 6,
 }
 
 /**
@@ -103,6 +107,8 @@ export class LoadingScene extends Component {
             return 'duel-challenge-screen';
         case LoadingPreviewTarget.BattleScene:
             return 'battle-scene';
+        case LoadingPreviewTarget.GeneralDetailOverview:
+            return 'general-detail-bloodline-v3-screen';
         case LoadingPreviewTarget.Disabled:
         default:
             return 'lobby-main-screen';
@@ -246,6 +252,9 @@ export class LoadingScene extends Component {
             case LoadingPreviewTarget.BattleScene:
                 await this._previewBattleScene();
                 return;
+            case LoadingPreviewTarget.GeneralDetailOverview:
+                await this._previewGeneralDetailOverview();
+                return;
             case LoadingPreviewTarget.Disabled:
             default:
                 console.warn('[LoadingScene] previewMode=true 但 previewTarget 未指定，預設載入 lobby-main-screen');
@@ -290,6 +299,77 @@ export class LoadingScene extends Component {
                 resolve();
             });
         });
+    }
+
+    private async _previewGeneralDetailOverview(): Promise<void> {
+        console.log('[LoadingScene] Preview target -> LobbyScene GeneralDetailOverview smoke route');
+        await new Promise<void>((resolve, reject) => {
+            director.loadScene('LobbyScene', (error) => {
+                if (error) {
+                    reject(error);
+                    return;
+                }
+                resolve();
+            });
+        });
+
+        const lobbyScene = director.getScene()?.getComponentInChildren(LobbyScene) ?? null;
+        if (!lobbyScene) {
+            throw new Error('LobbyScene component not found after preview load');
+        }
+
+        // 等待 LobbyScene 完成 async start()（generals 資料載入完畢），避免 360ms 固定等待不夠
+        const isReady = await lobbyScene.waitForReady(10000);
+        if (!isReady) {
+            throw new Error('[LoadingScene] LobbyScene 未能在 10 秒內完成初始化（generals 尚未載入）');
+        }
+
+        await lobbyScene.onClickGeneralDetailOverviewSmoke();
+        await this._delay(420);
+        const previewState = await this._loadGeneralDetailOverviewPreviewState();
+        const overviewShell = await this._waitForOverviewShell(6500);
+        if (overviewShell && previewState) {
+            await overviewShell.showContentState(previewState);
+        }
+        if (!overviewShell) {
+            const detailPanel = director.getScene()?.getComponentInChildren(GeneralDetailPanel) ?? null;
+            throw new Error(
+                `[LoadingScene] GeneralDetailOverview preview 未找到 overview shell; detailPanelActive=${detailPanel?.node?.active ?? false}`,
+            );
+        }
+        await this._delay(180);
+        this._setCaptureState('ready', 'general-detail-bloodline-v3-screen');
+    }
+
+    private _delay(ms: number): Promise<void> {
+        return new Promise((resolve) => {
+            setTimeout(resolve, ms);
+        });
+    }
+
+    private async _waitForOverviewShell(timeoutMs: number): Promise<GeneralDetailOverviewShell | null> {
+        const startedAt = Date.now();
+        while (Date.now() - startedAt < timeoutMs) {
+            const shell = director.getScene()?.getComponentInChildren(GeneralDetailOverviewShell) ?? null;
+            if (shell && shell.node.activeInHierarchy) {
+                return shell;
+            }
+            await this._delay(80);
+        }
+        return null;
+    }
+
+    private async _loadGeneralDetailOverviewPreviewState(): Promise<any | null> {
+        try {
+            const content = await services().resource.loadJson<any>(
+                'ui-spec/content/general-detail-overview-states-v1',
+                { tags: ['LoadingScenePreview'] },
+            );
+            return content?.states?.['smoke-zhang-fei'] ?? null;
+        } catch (error) {
+            console.warn('[LoadingScene] 載入 GeneralDetailOverview preview state 失敗', error);
+            return null;
+        }
     }
 
     private async _startTransition() {

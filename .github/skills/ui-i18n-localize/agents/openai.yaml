@@ -1,0 +1,4 @@
+interface:
+  display_name: "UI I18N Localize"
+  short_description: "補多語翻譯與溢出風險摘要"
+  default_prompt: "Describe the i18n scope, target locales, and whether you need translation drafts, locale JSON updates, or an overflow risk report based on the current zh-TW source and supported locales."

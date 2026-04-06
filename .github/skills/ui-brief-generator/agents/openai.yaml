@@ -1,0 +1,4 @@
+interface:
+  display_name: "UI Brief Generator"
+  short_description: "整理 UI brief 與 task-ready 輸入"
+  default_prompt: "Describe the target UI screen, source specs, and whether you need a design brief or a task-ready brief with template family, content contract, skin fragments, and smoke route."

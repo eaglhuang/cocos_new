@@ -1,11 +1,50 @@
 {
   "id": "general-detail-bloodline-v3-screen",
-  "version": 2,
+  "version": 3,
   "uiId": "GeneralDetailBloodlineV3",
   "layer": "Popup",
   "bundle": "lobby_ui",
   "layout": "general-detail-bloodline-v3-main",
   "skin": "general-detail-bloodline-v3-default",
+  "contentRequirements": {
+    "schemaId": "general-detail-overview-content",
+    "familyId": "detail-split",
+    "requiredFields": [
+      "headerTitle",
+      "headerName",
+      "headerMeta",
+      "rarityLabel",
+      "rarityTier",
+      "portraitModeHint",
+      "overviewModeBadgeLabel",
+      "coreStatsTitle",
+      "coreStatsValue",
+      "roleTitle",
+      "roleValue",
+      "traitTitle",
+      "traitValue",
+      "bloodlineTitle",
+      "bloodlineName",
+      "awakeningLabel",
+      "awakeningProgress",
+      "personalityLabel",
+      "personalityValue",
+      "bloodlineCardTitle",
+      "bloodlineBody",
+      "crestTitle",
+      "crestHint",
+      "crestState",
+      "crestGlyphPrimary",
+      "crestGlyphSecondary",
+      "crestFaceResource",
+      "storyCells",
+      "portraitResource"
+    ]
+  },
+  "content": {
+    "source": "general-detail-overview-states-v1",
+    "state": "smoke-zhang-fei"
+  },
   "validation": {
     "devices": ["phone-16-9", "phone-19_5-9", "tablet-4-3"],
     "allowMissingSkin": false

@@ -228,6 +228,8 @@ export class BattleScene extends Component {
       const snap = services().battle.getSnapshot();
       // 初始化 DP 顯示（確保 DeployPanel 顯示正確的初始 DP）
       this.deployPanel?.updateDp(snap.playerDp);
+      this.hud?.setPlayerGeneralId(pgId);
+      this.hud?.setEnemyGeneralId(egId);
       this.hud?.setPlayerName(pg.name);
       this.hud?.setEnemyName(eg.name);
       this.hud?.refresh(
@@ -258,6 +260,8 @@ export class BattleScene extends Component {
         }
 
         const latestSnap = services().battle.getSnapshot();
+  this.hud.setPlayerGeneralId(pgId);
+  this.hud.setEnemyGeneralId(egId);
         this.hud.setPlayerName(pg.name);
         this.hud.setEnemyName(eg.name);
         this.hud.refresh(
@@ -1068,6 +1072,10 @@ export class BattleScene extends Component {
 
     const snap = services().battle.getSnapshot();
     this.playTurnBanner(Faction.Player);
+    this.hud?.setPlayerGeneralId(pgId);
+    this.hud?.setEnemyGeneralId(egId);
+    this.hud?.setPlayerName(pg.name);
+    this.hud?.setEnemyName(eg.name);
     this.hud?.refresh(
       snap.turn,
       snap.playerDp,

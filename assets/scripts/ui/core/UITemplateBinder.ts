@@ -16,18 +16,25 @@ export class UITemplateBinder {
     private _nodeMap = new Map<string, Node>();
     private _labelMap = new Map<string, Label>();
     private _spriteMap = new Map<string, Sprite>();
+    private _nodePathMap = new Map<string, Node>();
+    private _labelPathMap = new Map<string, Label>();
+    private _spritePathMap = new Map<string, Sprite>();
 
     /** 綁定已建構完成的節點樹 */
     bind(rootNode: Node, layoutSpec?: UILayoutNodeSpec): void {
         this._nodeMap.clear();
         this._labelMap.clear();
         this._spriteMap.clear();
+        this._nodePathMap.clear();
+        this._labelPathMap.clear();
+        this._spritePathMap.clear();
 
         // 方式一：從 layout spec 的 id 欄位收集節點名稱，再從 node tree 中對應
         if (layoutSpec) {
             const idNames = new Map<string, string>();
             this._collectIds(layoutSpec, idNames);
             this._matchNodes(rootNode, idNames);
+            this._indexPaths(rootNode, layoutSpec, '');
         }
 
         // 方式二：補掃整棵 node tree，把有 Label / Sprite 的節點按 Node.name 加入
@@ -42,14 +49,29 @@ export class UITemplateBinder {
         return this._nodeMap.get(id) ?? null;
     }
 
+    /** 以 layout 相對路徑取得綁定的 Node（不含 root name） */
+    getNodeByPath(path: string): Node | null {
+        return this._nodePathMap.get(path) ?? null;
+    }
+
     /** 取得綁定的 Label */
     getLabel(id: string): Label | null {
         return this._labelMap.get(id) ?? null;
     }
 
+    /** 以 layout 相對路徑取得綁定的 Label（不含 root name） */
+    getLabelByPath(path: string): Label | null {
+        return this._labelPathMap.get(path) ?? null;
+    }
+
     /** 取得綁定的 Sprite */
     getSprite(id: string): Sprite | null {
         return this._spriteMap.get(id) ?? null;
+    }
+
+    /** 以 layout 相對路徑取得綁定的 Sprite（不含 root name） */
+    getSpriteByPath(path: string): Sprite | null {
+        return this._spritePathMap.get(path) ?? null;
     }
 
     /** 取得綁定的 Button */
@@ -74,6 +96,16 @@ export class UITemplateBinder {
     setTexts(data: Record<string, string>): void {
         for (const [id, text] of Object.entries(data)) {
             const label = this._labelMap.get(id);
+            if (label) {
+                label.string = text;
+            }
+        }
+    }
+
+    /** 批次以 layout 相對路徑設定 Label 文字 */
+    setTextsByPath(data: Record<string, string>): void {
+        for (const [path, text] of Object.entries(data)) {
+            const label = this._labelPathMap.get(path);
             if (label) {
                 label.string = text;
             }
@@ -154,6 +186,53 @@ export class UITemplateBinder {
         }
         for (const child of node.children) {
             this._walkTree(child);
+        }
+    }
+
+    /** 根據 layout spec 建立相對路徑 → Node/Label/Sprite 映射（不含 root name） */
+    private _indexPaths(node: Node, spec: UILayoutNodeSpec, parentPath: string): void {
+        const currentPath = parentPath ? `${parentPath}/${spec.name}` : '';
+
+        if (currentPath) {
+            this._storePathBinding(currentPath, node);
+        }
+
+        if (!spec.children || spec.children.length === 0) {
+            return;
+        }
+
+        const childBuckets = new Map<string, Node[]>();
+        for (const childNode of node.children) {
+            const list = childBuckets.get(childNode.name) ?? [];
+            list.push(childNode);
+            childBuckets.set(childNode.name, list);
+        }
+
+        for (const childSpec of spec.children) {
+            const bucket = childBuckets.get(childSpec.name);
+            if (!bucket || bucket.length === 0) {
+                console.warn(`[UITemplateBinder] 路徑索引失敗：找不到節點 "${childSpec.name}"，parentPath="${parentPath || '<root>'}"`);
+                continue;
+            }
+            const childNode = bucket.shift()!;
+            this._indexPaths(childNode, childSpec, currentPath);
+        }
+    }
+
+    private _storePathBinding(path: string, node: Node): void {
+        if (this._nodePathMap.has(path)) {
+            return;
+        }
+        this._nodePathMap.set(path, node);
+
+        const label = node.getComponent(Label);
+        if (label) {
+            this._labelPathMap.set(path, label);
+        }
+
+        const sprite = node.getComponent(Sprite);
+        if (sprite) {
+            this._spritePathMap.set(path, sprite);
         }
     }
 }

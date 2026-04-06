@@ -32,6 +32,7 @@ const targets = [
     { id: 'Gacha', screenId: 'gacha-main-screen', targetIndex: 3 },
     { id: 'DuelChallenge', screenId: 'duel-challenge-screen', targetIndex: 4 },
     { id: 'BattleScene', screenId: 'battle-scene', targetIndex: 5 },
+    { id: 'GeneralDetailOverview', screenId: 'general-detail-bloodline-v3-screen', targetIndex: 6 },
 ];
 
 function resolveLoadingSceneUuid() {

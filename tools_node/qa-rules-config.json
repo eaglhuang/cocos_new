@@ -1,0 +1,43 @@
+{
+  "_comment": "Visual Asset QA Rule Engine 設定檔。每條規則可設定 enabled / severity / 閾值。",
+  "version": "1",
+  "rules": {
+    "R1_nine_slice_safety": {
+      "enabled": true,
+      "severity": "error",
+      "description": "nine-slice 安全區：sliced sprite 的 border 不得為 [0,0,0,0]，且 border[i] 建議 >= 4px",
+      "minBorderPx": 4
+    },
+    "R2_bleed_existence": {
+      "enabled": true,
+      "severity": "warning",
+      "description": "bleed 存在性：dark-metal / gold-cta / destructive family skin 中，若有 edge slot，必須也有對應的 bleed slot",
+      "requireBleedFamilies": ["dark-metal", "gold-cta", "destructive"]
+    },
+    "R3_shadow_existence": {
+      "enabled": true,
+      "severity": "warning",
+      "description": "shadow 層存在性：dark-metal / destructive family skin 建議含 shadow slot（blendMode=multiply/normal 的 sprite-frame）",
+      "requireShadowFamilies": ["dark-metal", "destructive"]
+    },
+    "R4_alpha_fringe": {
+      "enabled": true,
+      "severity": "warning",
+      "description": "alpha fringe：spriteType=sliced 的 sprite-frame 必須設定 border，不可為 [0,0,0,0]"
+    },
+    "R5_atlas_padding": {
+      "enabled": true,
+      "severity": "warning",
+      "description": "atlas padding：allowAutoAtlas=true 的 sprite-frame，border 任一值不應超過 32px（超出可能導致 Auto Atlas 截切）",
+      "maxBorderPxForAutoAtlas": 32
+    },
+    "R6_label_contrast": {
+      "enabled": true,
+      "severity": "warning",
+      "description": "字色對比：label-style 的 color 應在常見背景色上達到 WCAG AA 4.5:1 對比度",
+      "knownDarkBg": ["#1A1A1A", "#20201F", "#2A2A2A", "#0D0D0D"],
+      "knownLightBg": ["#E8DFD0", "#F0E8D8", "#E5E2E1", "#FFFFFF"],
+      "minContrastRatio": 4.5
+    }
+  }
+}

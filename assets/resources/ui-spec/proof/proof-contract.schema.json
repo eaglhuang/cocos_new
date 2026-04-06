@@ -1,0 +1,230 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "proof-contract.schema.json",
+  "title": "ProofContractV1",
+  "description": "proof-contract-v1：記錄 Figma / 參考圖與 screen spec 之間的設計 AST 橋接格式。由 Agent2 填寫 visualZones / componentIntents，scaffolder 消費以預填 layout + screen 草稿。",
+  "type": "object",
+  "required": [
+    "version",
+    "screenId",
+    "proofSource",
+    "capturedAt",
+    "capturedBy",
+    "confidence",
+    "visualZones",
+    "componentIntents",
+    "spacingRecipe",
+    "contentSlots"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": { "type": "string" },
+    "version": {
+      "type": "string",
+      "const": "1.0",
+      "description": "proof contract 版本，目前固定為 1.0"
+    },
+    "screenId": {
+      "type": "string",
+      "description": "對應 UIScreenSpec.uiId（CamelCase），例如 ShopMain"
+    },
+    "proofSource": {
+      "type": "string",
+      "description": "參考來源：figma://file/<id>?node=<nodeId> 或 ref://docs/UI品質參考圖/<filename>"
+    },
+    "capturedAt": {
+      "type": "string",
+      "description": "ISO 8601 日期，例如 2026-04-05"
+    },
+    "capturedBy": {
+      "type": "string",
+      "description": "填寫 Agent（如 Agent2 / TechDirector）"
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Agent 自評與參考圖的對齊度（0.0 = 完全不確定，1.0 = 完全對齊）"
+    },
+    "visualZones": {
+      "type": "array",
+      "description": "畫面的語意區塊清單（由低到高、由左到右排列）",
+      "items": { "$ref": "#/definitions/VisualZone" },
+      "minItems": 1
+    },
+    "componentIntents": {
+      "type": "array",
+      "description": "每個節點的語意宣告，scaffolder 用以預填 layout node type",
+      "items": { "$ref": "#/definitions/ComponentIntent" }
+    },
+    "spacingRecipe": {
+      "$ref": "#/definitions/SpacingRecipe",
+      "description": "全域排版比例系統"
+    },
+    "contentSlots": {
+      "type": "array",
+      "description": "內容插槽宣告，與 ContentContractRef.requiredFields 對齊",
+      "items": { "$ref": "#/definitions/ContentSlot" }
+    }
+  },
+  "definitions": {
+    "VisualZone": {
+      "type": "object",
+      "required": ["id", "label", "family"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "區域唯一識別碼（kebab-case），例如 header、item-grid"
+        },
+        "label": {
+          "type": "string",
+          "description": "人類可讀名稱，繁體中文"
+        },
+        "family": {
+          "type": "string",
+          "description": "對應 FrameFamily 值，例如 dark-metal、parchment、gold-cta",
+          "enum": [
+            "dark-metal",
+            "parchment",
+            "gold-cta",
+            "destructive",
+            "tab",
+            "item-cell",
+            "panel-light",
+            "none"
+          ]
+        },
+        "frameRecipeRef": {
+          "type": "string",
+          "description": "對應 FrameRecipe.id，例如 dark-metal-v1。可選；若 family 已確定可省略"
+        },
+        "bounds": {
+          "$ref": "#/definitions/Bounds",
+          "description": "設計稿像素座標；若尚未量取可省略"
+        },
+        "notes": {
+          "type": "string",
+          "description": "補充說明"
+        }
+      }
+    },
+    "ComponentIntent": {
+      "type": "object",
+      "required": ["zone", "nodeHint"],
+      "additionalProperties": false,
+      "properties": {
+        "zone": {
+          "type": "string",
+          "description": "對應 VisualZone.id"
+        },
+        "nodeHint": {
+          "type": "string",
+          "description": "節點語意類型提示，對應 UINodeType",
+          "enum": [
+            "panel",
+            "button",
+            "label",
+            "icon",
+            "scroll-list",
+            "grid",
+            "progress-bar",
+            "tab-bar",
+            "dialog",
+            "overlay",
+            "separator",
+            "image",
+            "input"
+          ]
+        },
+        "skinSlot": {
+          "type": "string",
+          "description": "建議對應的 skin slot key（可選，由 scaffolder 產生預填）"
+        },
+        "textKey": {
+          "type": "string",
+          "description": "i18n 文字 key（可選）"
+        },
+        "bind": {
+          "type": "string",
+          "description": "資料綁定路徑（可選），例如 shop.items[]"
+        },
+        "notes": {
+          "type": "string",
+          "description": "補充說明"
+        }
+      }
+    },
+    "SpacingRecipe": {
+      "type": "object",
+      "required": ["unitBasis"],
+      "additionalProperties": false,
+      "properties": {
+        "containerPadding": {
+          "type": "number",
+          "description": "外容器內距（px），對齊 unitBasis 倍數"
+        },
+        "itemSpacing": {
+          "type": "number",
+          "description": "同層元件間距（px）"
+        },
+        "sectionGap": {
+          "type": "number",
+          "description": "區段間距（px）"
+        },
+        "unitBasis": {
+          "type": "number",
+          "description": "基線格線單位（px），建議 4 或 8",
+          "enum": [4, 8]
+        }
+      }
+    },
+    "ContentSlot": {
+      "type": "object",
+      "required": ["id", "type"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "插槽識別碼，與 ContentContractRef.requiredFields 對應"
+        },
+        "type": {
+          "type": "string",
+          "description": "插槽類型",
+          "enum": ["label", "button", "list", "image", "icon", "number", "bool", "enum"]
+        },
+        "placeholder": {
+          "type": "string",
+          "description": "人類可讀佔位文字（繁體中文）"
+        },
+        "family": {
+          "type": "string",
+          "description": "對應的 FrameFamily（若為 button 類必填）"
+        },
+        "minCount": {
+          "type": "integer",
+          "description": "連接 list 時最小筆數"
+        },
+        "maxCount": {
+          "type": "integer",
+          "description": "連接 list 時最大筆數"
+        },
+        "optional": {
+          "type": "boolean",
+          "description": "是否為選填插槽，預設 false"
+        }
+      }
+    },
+    "Bounds": {
+      "type": "object",
+      "required": ["x", "y", "w", "h"],
+      "additionalProperties": false,
+      "properties": {
+        "x": { "type": "number" },
+        "y": { "type": "number" },
+        "w": { "type": "number" },
+        "h": { "type": "number" }
+      }
+    }
+  }
+}

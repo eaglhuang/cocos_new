@@ -1,0 +1,13 @@
+{
+  "$schema": "../material-recipe.schema.json",
+  "id": "parchment-material-v1",
+  "version": 1,
+  "description": "羊皮紙材質。溫暖米黃底，低雜訊紙紋，低金屬感，適合文字與說明性容器。AI 生成候選：paper-noise 貼圖高度適合 AI 生，但需保持柔和不搶眼。",
+  "baseColor": "color.frame.parchment.base",
+  "grainIntensity": 0.18,
+  "grainTexturePath": "textures/materials/paper-noise-warm",
+  "opacity": 1.0,
+  "blendMode": "alpha",
+  "metallicIntensity": 0.0,
+  "aiGenerated": false
+}

@@ -1,0 +1,63 @@
+{
+  "$schema": "../frame-recipe.schema.json",
+  "id": "gold-cta-v1",
+  "version": 1,
+  "family": "gold-cta",
+  "description": "金色確認/主要行動按鈕框體。主要用於確認、購買、強化、主要正向操作按鈕。特徵：金邊浮雕、中等溢血、強陰影托底、明亮填色。",
+  "cornerRadius": 7,
+  "borderWeight": 8,
+  "bleedIntensity": 10,
+  "frame": {
+    "slot": "btn.gold-cta.edge",
+    "spriteType": "sliced",
+    "border": [10, 10, 10, 10],
+    "bleed": 4,
+    "opacity": 1.0,
+    "blendMode": "alpha"
+  },
+  "bleed": {
+    "slot": "btn.gold-cta.glow",
+    "spriteType": "sliced",
+    "border": [16, 16, 16, 16],
+    "bleed": 10,
+    "opacity": 0.6,
+    "blendMode": "overlay"
+  },
+  "shadow": {
+    "offsetX": 0,
+    "offsetY": 4,
+    "blur": 10,
+    "spread": 1,
+    "color": "#4a2800",
+    "opacity": 0.7
+  },
+  "fill": {
+    "slot": "btn.gold-cta.fill",
+    "spriteType": "sliced",
+    "border": [8, 8, 8, 8],
+    "opacity": 1.0,
+    "blendMode": "alpha"
+  },
+  "ornament": {
+    "slot": "btn.gold-cta.shine",
+    "spriteType": "sliced",
+    "opacity": 0.45,
+    "blendMode": "overlay",
+    "optional": true
+  },
+  "stateVariants": {
+    "hover": [
+      { "layer": "fill",  "slot": "btn.gold-cta.fill-hover",    "opacity": 1.0 },
+      { "layer": "bleed", "slot": "btn.gold-cta.glow",          "opacity": 0.85 }
+    ],
+    "pressed": [
+      { "layer": "frame", "slot": "btn.gold-cta.edge-pressed",  "opacity": 1.0 },
+      { "layer": "fill",  "slot": "btn.gold-cta.fill-pressed",  "opacity": 1.0 }
+    ],
+    "disabled": [
+      { "layer": "frame", "slot": "btn.gold-cta.edge",          "opacity": 0.4 },
+      { "layer": "fill",  "slot": "btn.gold-cta.fill",          "opacity": 0.4 }
+    ]
+  },
+  "materialId": "gold-cta-material-v1"
+}

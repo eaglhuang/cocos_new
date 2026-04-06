@@ -1,0 +1,39 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "schemaId": "detail-split-content",
+  "familyId": "detail-split",
+  "version": 1,
+  "description": "detail-split 家族的內容契約。適用於武將詳細資料、血脈命鏡等具有多分頁結構的詳情畫面。",
+  "fields": {
+    "titleKey": {
+      "type": "string",
+      "contentType": "i18n-key",
+      "required": true,
+      "description": "畫面標題的 i18n key",
+      "bindPath": "header.title"
+    },
+    "bodyKey": {
+      "type": "string",
+      "contentType": "i18n-key",
+      "required": false,
+      "description": "副標題或說明文字的 i18n key（可選）",
+      "bindPath": "content.body"
+    },
+    "tabs": {
+      "type": "array",
+      "required": true,
+      "minItems": 2,
+      "maxItems": 6,
+      "description": "分頁設定，至少 2 個最多 6 個",
+      "bindPath": "tabs.items"
+    },
+    "defaultTab": {
+      "type": "string",
+      "required": false,
+      "default": "0",
+      "description": "預設選中的分頁 index（字串數字）",
+      "bindPath": "tabs.activeIndex"
+    }
+  },
+  "requiredFields": ["titleKey", "tabs"]
+}

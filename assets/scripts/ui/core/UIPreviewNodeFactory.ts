@@ -182,6 +182,17 @@ export class UIPreviewNodeFactory {
         if (!spec.skinSlot) return;
 
         const slot  = this.skinResolver.getSlot(spec.skinSlot);
+
+        if (slot && (slot.kind === 'color-rect' || (slot as any).kind === 'color')) {
+            await this.styleBuilder.applyBackgroundSkin(node, spec.skinSlot);
+            if (spec.interactable) {
+                const button = node.getComponent(Button) || node.addComponent(Button);
+                button.target = node;
+                button.interactable = true;
+            }
+            return;
+        }
+
         const frame = await this.skinResolver.getSpriteFrame(spec.skinSlot);
 
         if (!frame) {

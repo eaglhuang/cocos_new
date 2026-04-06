@@ -1,0 +1,340 @@
+{
+  "generatedAt": "2026-04-05T09:33:49.512Z",
+  "config": "C:\\Users\\User\\3KLife\\tools_node\\qa-rules-config.json",
+  "familyFilter": null,
+  "results": [
+    {
+      "file": "assets\\resources\\ui-spec\\skins\\action-command-default.json",
+      "skinId": "action-command-default",
+      "failures": [],
+      "warnings": []
+    },
+    {
+      "file": "assets\\resources\\ui-spec\\skins\\battle-hud-default.json",
+      "skinId": "battle-hud-default",
+      "failures": [],
+      "warnings": []
+    },
+    {
+      "file": "assets\\resources\\ui-spec\\skins\\battle-log-default.json",
+      "skinId": "battle-log-default",
+      "failures": [],
+      "warnings": []
+    },
+    {
+      "file": "assets\\resources\\ui-spec\\skins\\bloodline-mirror-default.json",
+      "skinId": "bloodline-mirror-default",
+      "failures": [],
+      "warnings": []
+    },
+    {
+      "file": "assets\\resources\\ui-spec\\skins\\bloodline-mirror-loading-default.json",
+      "skinId": "bloodline-mirror-loading-default",
+      "failures": [],
+      "warnings": []
+    },
+    {
+      "file": "assets\\resources\\ui-spec\\skins\\deploy-panel-default.json",
+      "skinId": "deploy-panel-default",
+      "failures": [],
+      "warnings": []
+    },
+    {
+      "file": "assets\\resources\\ui-spec\\skins\\dialog-confirm-default.json",
+      "skinId": "dialog-confirm-default",
+      "failures": [],
+      "warnings": []
+    },
+    {
+      "file": "assets\\resources\\ui-spec\\skins\\dialog-select-default.json",
+      "skinId": "dialog-select-default",
+      "failures": [],
+      "warnings": []
+    },
+    {
+      "file": "assets\\resources\\ui-spec\\skins\\duel-challenge-default.json",
+      "skinId": "duel-challenge-default",
+      "failures": [],
+      "warnings": []
+    },
+    {
+      "file": "assets\\resources\\ui-spec\\skins\\elite-troop-codex-default.json",
+      "skinId": "elite-troop-codex-default",
+      "failures": [],
+      "warnings": []
+    },
+    {
+      "file": "assets\\resources\\ui-spec\\skins\\elite-troop-codex-rail-default.json",
+      "skinId": "elite-troop-codex-rail-default",
+      "failures": [],
+      "warnings": []
+    },
+    {
+      "file": "assets\\resources\\ui-spec\\skins\\gacha-default.json",
+      "skinId": "gacha-default",
+      "failures": [],
+      "warnings": []
+    },
+    {
+      "file": "assets\\resources\\ui-spec\\skins\\general-detail-bloodline-v3-default.json",
+      "skinId": "general-detail-bloodline-v3-default",
+      "failures": [],
+      "warnings": [
+        "[R5] gdv3.rarity.band — allowAutoAtlas=true 但 border 最大值 40 超過建議上限 32px（Auto Atlas 可能截切）",
+        "[R5] gdv3.bloodline.crest.glow — allowAutoAtlas=true 但 border 最大值 40 超過建議上限 32px（Auto Atlas 可能截切）",
+        "[R5] gdv3.bloodline.crest.fill — allowAutoAtlas=true 但 border 最大值 40 超過建議上限 32px（Auto Atlas 可能截切）"
+      ]
+    },
+    {
+      "file": "assets\\resources\\ui-spec\\skins\\general-detail-default.json",
+      "skinId": "general-detail-default",
+      "failures": [],
+      "warnings": [
+        "[R5] detail.summary.card.bleed — allowAutoAtlas=true 但 border 最大值 40 超過建議上限 32px（Auto Atlas 可能截切）",
+        "[R5] detail.tab.idle.bleed — allowAutoAtlas=true 但 border 最大值 40 超過建議上限 32px（Auto Atlas 可能截切）",
+        "[R5] detail.tab.active.bleed — allowAutoAtlas=true 但 border 最大值 40 超過建議上限 32px（Auto Atlas 可能截切）",
+        "[R5] detail.header.frame — allowAutoAtlas=true 但 border 最大值 40 超過建議上限 32px（Auto Atlas 可能截切）",
+        "[R5] detail.header.bleed — allowAutoAtlas=true 但 border 最大值 40 超過建議上限 32px（Auto Atlas 可能截切）",
+        "[R5] detail.header.fill — allowAutoAtlas=true 但 border 最大值 40 超過建議上限 32px（Auto Atlas 可能截切）",
+        "[R5] detail.header.bg — allowAutoAtlas=true 但 border 最大值 40 超過建議上限 32px（Auto Atlas 可能截切）",
+        "[R5] detail.summary.frame — allowAutoAtlas=true 但 border 最大值 40 超過建議上限 32px（Auto Atlas 可能截切）",
+        "[R5] detail.summary.bleed — allowAutoAtlas=true 但 border 最大值 40 超過建議上限 32px（Auto Atlas 可能截切）",
+        "[R5] detail.summary.fill — allowAutoAtlas=true 但 border 最大值 40 超過建議上限 32px（Auto Atlas 可能截切）",
+        "[R5] detail.summary.bg — allowAutoAtlas=true 但 border 最大值 40 超過建議上限 32px（Auto Atlas 可能截切）",
+        "[R5] detail.summary.card.frame — allowAutoAtlas=true 但 border 最大值 40 超過建議上限 32px（Auto Atlas 可能截切）",
+        "[R5] detail.summary.card.fill — allowAutoAtlas=true 但 border 最大值 40 超過建議上限 32px（Auto Atlas 可能截切）",
+        "[R5] detail.summary.card.accent — allowAutoAtlas=true 但 border 最大值 40 超過建議上限 32px（Auto Atlas 可能截切）",
+        "[R5] detail.summary.card — allowAutoAtlas=true 但 border 最大值 40 超過建議上限 32px（Auto Atlas 可能截切）",
+        "[R5] detail.tabbar.rail.frame — allowAutoAtlas=true 但 border 最大值 40 超過建議上限 32px（Auto Atlas 可能截切）",
+        "[R5] detail.tabbar.rail.bleed — allowAutoAtlas=true 但 border 最大值 40 超過建議上限 32px（Auto Atlas 可能截切）",
+        "[R5] detail.tabbar.rail.fill — allowAutoAtlas=true 但 border 最大值 40 超過建議上限 32px（Auto Atlas 可能截切）",
+        "[R5] detail.tabbar.bg — allowAutoAtlas=true 但 border 最大值 40 超過建議上限 32px（Auto Atlas 可能截切）",
+        "[R5] detail.tab.idle.frame — allowAutoAtlas=true 但 border 最大值 40 超過建議上限 32px（Auto Atlas 可能截切）",
+        "[R5] detail.tab.idle.fill — allowAutoAtlas=true 但 border 最大值 40 超過建議上限 32px（Auto Atlas 可能截切）",
+        "[R5] detail.tab.active.frame — allowAutoAtlas=true 但 border 最大值 40 超過建議上限 32px（Auto Atlas 可能截切）",
+        "[R5] detail.tab.active.fill — allowAutoAtlas=true 但 border 最大值 40 超過建議上限 32px（Auto Atlas 可能截切）",
+        "[R5] detail.tab.active.accent — allowAutoAtlas=true 但 border 最大值 40 超過建議上限 32px（Auto Atlas 可能截切）",
+        "[R5] detail.section.frame — allowAutoAtlas=true 但 border 最大值 40 超過建議上限 32px（Auto Atlas 可能截切）",
+        "[R5] detail.section.bleed — allowAutoAtlas=true 但 border 最大值 40 超過建議上限 32px（Auto Atlas 可能截切）",
+        "[R5] detail.section.fill — allowAutoAtlas=true 但 border 最大值 40 超過建議上限 32px（Auto Atlas 可能截切）",
+        "[R5] detail.section.bg — allowAutoAtlas=true 但 border 最大值 40 超過建議上限 32px（Auto Atlas 可能截切）",
+        "[R5] detail.footer.frame — allowAutoAtlas=true 但 border 最大值 40 超過建議上限 32px（Auto Atlas 可能截切）",
+        "[R5] detail.footer.bleed — allowAutoAtlas=true 但 border 最大值 40 超過建議上限 32px（Auto Atlas 可能截切）",
+        "[R5] detail.footer.fill — allowAutoAtlas=true 但 border 最大值 40 超過建議上限 32px（Auto Atlas 可能截切）",
+        "[R5] detail.footer.bg — allowAutoAtlas=true 但 border 最大值 40 超過建議上限 32px（Auto Atlas 可能截切）",
+        "[R5] detail.action.frame — allowAutoAtlas=true 但 border 最大值 40 超過建議上限 32px（Auto Atlas 可能截切）",
+        "[R5] detail.action.fill — allowAutoAtlas=true 但 border 最大值 40 超過建議上限 32px（Auto Atlas 可能截切）",
+        "[R5] detail.action.accent — allowAutoAtlas=true 但 border 最大值 40 超過建議上限 32px（Auto Atlas 可能截切）",
+        "[R5] detail.action.bleed — allowAutoAtlas=true 但 border 最大值 40 超過建議上限 32px（Auto Atlas 可能截切）"
+      ]
+    },
+    {
+      "file": "assets\\resources\\ui-spec\\skins\\general-list-default.json",
+      "skinId": "general-list-default",
+      "failures": [],
+      "warnings": []
+    },
+    {
+      "file": "assets\\resources\\ui-spec\\skins\\general-portrait-default.json",
+      "skinId": "general-portrait-default",
+      "failures": [],
+      "warnings": []
+    },
+    {
+      "file": "assets\\resources\\ui-spec\\skins\\general-quickview-default.json",
+      "skinId": "general-quickview-default",
+      "failures": [],
+      "warnings": []
+    },
+    {
+      "file": "assets\\resources\\ui-spec\\skins\\lobby-main-default.json",
+      "skinId": "lobby-main-default",
+      "failures": [],
+      "warnings": []
+    },
+    {
+      "file": "assets\\resources\\ui-spec\\skins\\network-status-default.json",
+      "skinId": "network-status-default",
+      "failures": [],
+      "warnings": []
+    },
+    {
+      "file": "assets\\resources\\ui-spec\\skins\\result-popup-default.json",
+      "skinId": "result-popup-default",
+      "failures": [],
+      "warnings": [
+        "[R1] popup.overlay — border 值 1 小於建議最小值 4px（可能導致縮放損壞）",
+        "[R1] popup.overlay — border 值 1 小於建議最小值 4px（可能導致縮放損壞）",
+        "[R1] popup.overlay — border 值 1 小於建議最小值 4px（可能導致縮放損壞）",
+        "[R1] popup.overlay — border 值 1 小於建議最小值 4px（可能導致縮放損壞）",
+        "[R5] popup.card.bg — allowAutoAtlas=true 但 border 最大值 40 超過建議上限 32px（Auto Atlas 可能截切）",
+        "[R5] popup.card.win — allowAutoAtlas=true 但 border 最大值 40 超過建議上限 32px（Auto Atlas 可能截切）",
+        "[R5] popup.card.lose — allowAutoAtlas=true 但 border 最大值 40 超過建議上限 32px（Auto Atlas 可能截切）"
+      ]
+    },
+    {
+      "file": "assets\\resources\\ui-spec\\skins\\shop-main-default.json",
+      "skinId": "shop-main-default",
+      "failures": [],
+      "warnings": []
+    },
+    {
+      "file": "assets\\resources\\ui-spec\\skins\\skin-base-v1.json",
+      "skinId": "skin-base-v1",
+      "failures": [],
+      "warnings": [
+        "[R6] base.label.default — color #E5E2E1 vs light bg #E8DFD0 對比度 1.03 < 4.5（WCAG AA 不合格）",
+        "[R6] base.label.default — color #E5E2E1 vs light bg #F0E8D8 對比度 1.06 < 4.5（WCAG AA 不合格）",
+        "[R6] base.label.default — color #E5E2E1 vs light bg #E5E2E1 對比度 1.00 < 4.5（WCAG AA 不合格）",
+        "[R6] base.label.default — color #E5E2E1 vs light bg #FFFFFF 對比度 1.29 < 4.5（WCAG AA 不合格）",
+        "[R6] base.label.title — color #FFE088 vs light bg #E8DFD0 對比度 1.02 < 4.5（WCAG AA 不合格）",
+        "[R6] base.label.title — color #FFE088 vs light bg #F0E8D8 對比度 1.06 < 4.5（WCAG AA 不合格）",
+        "[R6] base.label.title — color #FFE088 vs light bg #E5E2E1 對比度 1.00 < 4.5（WCAG AA 不合格）",
+        "[R6] base.label.title — color #FFE088 vs light bg #FFFFFF 對比度 1.29 < 4.5（WCAG AA 不合格）",
+        "[R6] base.label.caption — color #D0C5AF vs light bg #E8DFD0 對比度 1.29 < 4.5（WCAG AA 不合格）",
+        "[R6] base.label.caption — color #D0C5AF vs light bg #F0E8D8 對比度 1.40 < 4.5（WCAG AA 不合格）",
+        "[R6] base.label.caption — color #D0C5AF vs light bg #E5E2E1 對比度 1.33 < 4.5（WCAG AA 不合格）",
+        "[R6] base.label.caption — color #D0C5AF vs light bg #FFFFFF 對比度 1.71 < 4.5（WCAG AA 不合格）",
+        "[R6] base.label.muted — color #99907C vs light bg #E8DFD0 對比度 2.40 < 4.5（WCAG AA 不合格）",
+        "[R6] base.label.muted — color #99907C vs light bg #F0E8D8 對比度 2.60 < 4.5（WCAG AA 不合格）",
+        "[R6] base.label.muted — color #99907C vs light bg #E5E2E1 對比度 2.46 < 4.5（WCAG AA 不合格）",
+        "[R6] base.label.muted — color #99907C vs light bg #FFFFFF 對比度 3.17 < 4.5（WCAG AA 不合格）"
+      ]
+    },
+    {
+      "file": "assets\\resources\\ui-spec\\skins\\skin-family-dark-metal.json",
+      "skinId": "skin-family-dark-metal",
+      "failures": [],
+      "warnings": [
+        "[R3] skin-family-dark-metal.json — dark-metal family 建議含 shadow slot（blendMode=multiply）",
+        "[R6] frame.dark-metal.label — color #E5E2E1 vs light bg #E8DFD0 對比度 1.03 < 4.5（WCAG AA 不合格）",
+        "[R6] frame.dark-metal.label — color #E5E2E1 vs light bg #F0E8D8 對比度 1.06 < 4.5（WCAG AA 不合格）",
+        "[R6] frame.dark-metal.label — color #E5E2E1 vs light bg #E5E2E1 對比度 1.00 < 4.5（WCAG AA 不合格）",
+        "[R6] frame.dark-metal.label — color #E5E2E1 vs light bg #FFFFFF 對比度 1.29 < 4.5（WCAG AA 不合格）",
+        "[R6] frame.dark-metal.label.title — color #FFE088 vs light bg #E8DFD0 對比度 1.02 < 4.5（WCAG AA 不合格）",
+        "[R6] frame.dark-metal.label.title — color #FFE088 vs light bg #F0E8D8 對比度 1.06 < 4.5（WCAG AA 不合格）",
+        "[R6] frame.dark-metal.label.title — color #FFE088 vs light bg #E5E2E1 對比度 1.00 < 4.5（WCAG AA 不合格）",
+        "[R6] frame.dark-metal.label.title — color #FFE088 vs light bg #FFFFFF 對比度 1.29 < 4.5（WCAG AA 不合格）"
+      ]
+    },
+    {
+      "file": "assets\\resources\\ui-spec\\skins\\skin-family-gold-cta.json",
+      "skinId": "skin-family-gold-cta",
+      "failures": [],
+      "warnings": [
+        "[R2/WARN] skin-family-gold-cta.json — 含 gold-cta edge slot 但未找到對應 bleed slot",
+        "[R6] btn.gold-cta.label — color #1A1000 vs dark bg #1A1A1A 對比度 1.08 < 4.5（WCAG AA 不合格）",
+        "[R6] btn.gold-cta.label — color #1A1000 vs dark bg #20201F 對比度 1.15 < 4.5（WCAG AA 不合格）",
+        "[R6] btn.gold-cta.label — color #1A1000 vs dark bg #2A2A2A 對比度 1.31 < 4.5（WCAG AA 不合格）",
+        "[R6] btn.gold-cta.label — color #1A1000 vs dark bg #0D0D0D 對比度 1.03 < 4.5（WCAG AA 不合格）",
+        "[R6] btn.gold-cta.label.shadow — color #FFE088 vs light bg #E8DFD0 對比度 1.02 < 4.5（WCAG AA 不合格）",
+        "[R6] btn.gold-cta.label.shadow — color #FFE088 vs light bg #F0E8D8 對比度 1.06 < 4.5（WCAG AA 不合格）",
+        "[R6] btn.gold-cta.label.shadow — color #FFE088 vs light bg #E5E2E1 對比度 1.00 < 4.5（WCAG AA 不合格）",
+        "[R6] btn.gold-cta.label.shadow — color #FFE088 vs light bg #FFFFFF 對比度 1.29 < 4.5（WCAG AA 不合格）"
+      ]
+    },
+    {
+      "file": "assets\\resources\\ui-spec\\skins\\skin-family-parchment.json",
+      "skinId": "skin-family-parchment",
+      "failures": [],
+      "warnings": [
+        "[R6] frame.parchment.label — color #2D2926 vs dark bg #1A1A1A 對比度 1.21 < 4.5（WCAG AA 不合格）",
+        "[R6] frame.parchment.label — color #2D2926 vs dark bg #20201F 對比度 1.13 < 4.5（WCAG AA 不合格）",
+        "[R6] frame.parchment.label — color #2D2926 vs dark bg #2A2A2A 對比度 1.00 < 4.5（WCAG AA 不合格）",
+        "[R6] frame.parchment.label — color #2D2926 vs dark bg #0D0D0D 對比度 1.35 < 4.5（WCAG AA 不合格）",
+        "[R6] frame.parchment.label.title — color #4a2800 vs dark bg #1A1A1A 對比度 1.32 < 4.5（WCAG AA 不合格）",
+        "[R6] frame.parchment.label.title — color #4a2800 vs dark bg #20201F 對比度 1.24 < 4.5（WCAG AA 不合格）",
+        "[R6] frame.parchment.label.title — color #4a2800 vs dark bg #2A2A2A 對比度 1.09 < 4.5（WCAG AA 不合格）",
+        "[R6] frame.parchment.label.title — color #4a2800 vs dark bg #0D0D0D 對比度 1.48 < 4.5（WCAG AA 不合格）",
+        "[R6] frame.parchment.label.muted — color #6B5E4E vs dark bg #1A1A1A 對比度 2.77 < 4.5（WCAG AA 不合格）",
+        "[R6] frame.parchment.label.muted — color #6B5E4E vs dark bg #20201F 對比度 2.59 < 4.5（WCAG AA 不合格）",
+        "[R6] frame.parchment.label.muted — color #6B5E4E vs dark bg #2A2A2A 對比度 2.28 < 4.5（WCAG AA 不合格）",
+        "[R6] frame.parchment.label.muted — color #6B5E4E vs dark bg #0D0D0D 對比度 3.09 < 4.5（WCAG AA 不合格）"
+      ]
+    },
+    {
+      "file": "assets\\resources\\ui-spec\\skins\\spirit-tally-detail-default.json",
+      "skinId": "spirit-tally-detail-default",
+      "failures": [],
+      "warnings": []
+    },
+    {
+      "file": "assets\\resources\\ui-spec\\skins\\style-check-default.json",
+      "skinId": "style-check-default",
+      "failures": [],
+      "warnings": [
+        "[R1] sandbox.main_bg — border 值 1 小於建議最小值 4px（可能導致縮放損壞）",
+        "[R1] sandbox.main_bg — border 值 1 小於建議最小值 4px（可能導致縮放損壞）",
+        "[R1] sandbox.main_bg — border 值 1 小於建議最小值 4px（可能導致縮放損壞）",
+        "[R1] sandbox.main_bg — border 值 1 小於建議最小值 4px（可能導致縮放損壞）"
+      ]
+    },
+    {
+      "file": "assets\\resources\\ui-spec\\skins\\support-card-default.json",
+      "skinId": "support-card-default",
+      "failures": [],
+      "warnings": []
+    },
+    {
+      "file": "assets\\resources\\ui-spec\\skins\\tiger-tally-default.json",
+      "skinId": "tiger-tally-default",
+      "failures": [
+        "[R1] tally.card.disabled — sliced sprite 的 border 全為 0，nine-slice 無效"
+      ],
+      "warnings": []
+    },
+    {
+      "file": "assets\\resources\\ui-spec\\skins\\toast-message-default.json",
+      "skinId": "toast-message-default",
+      "failures": [],
+      "warnings": []
+    },
+    {
+      "file": "assets\\resources\\ui-spec\\skins\\unit-info-panel-default.json",
+      "skinId": "unit-info-panel-default",
+      "failures": [],
+      "warnings": [
+        "[R5] unitinfo.root.bg — allowAutoAtlas=true 但 border 最大值 56 超過建議上限 32px（Auto Atlas 可能截切）",
+        "[R5] unitinfo.header.bg — allowAutoAtlas=true 但 border 最大值 40 超過建議上限 32px（Auto Atlas 可能截切）",
+        "[R5] unitinfo.section.bg — allowAutoAtlas=true 但 border 最大值 36 超過建議上限 32px（Auto Atlas 可能截切）"
+      ]
+    },
+    {
+      "file": "assets\\resources\\ui-spec\\recipes\\families\\dark-metal.recipe.json",
+      "recipeId": "dark-metal-v1",
+      "failures": [],
+      "warnings": []
+    },
+    {
+      "file": "assets\\resources\\ui-spec\\recipes\\families\\destructive.recipe.json",
+      "recipeId": "destructive-v1",
+      "failures": [],
+      "warnings": []
+    },
+    {
+      "file": "assets\\resources\\ui-spec\\recipes\\families\\gold-cta.recipe.json",
+      "recipeId": "gold-cta-v1",
+      "failures": [],
+      "warnings": []
+    },
+    {
+      "file": "assets\\resources\\ui-spec\\recipes\\families\\parchment.recipe.json",
+      "recipeId": "parchment-v1",
+      "failures": [],
+      "warnings": []
+    },
+    {
+      "file": "assets\\resources\\ui-spec\\recipes\\families\\tab.recipe.json",
+      "recipeId": "tab-v1",
+      "failures": [],
+      "warnings": []
+    }
+  ],
+  "summary": {
+    "totalFiles": 36,
+    "filesWithErrors": 1,
+    "filesWithWarnings": 9,
+    "totalErrors": 1,
+    "totalWarnings": 99
+  }
+}

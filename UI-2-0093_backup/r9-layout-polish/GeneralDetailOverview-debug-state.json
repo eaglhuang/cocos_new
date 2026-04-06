@@ -1,0 +1,107 @@
+{
+  "createdAt": "2026-04-05T17:36:03.426Z",
+  "target": "GeneralDetailOverview",
+  "error": "TimeoutError: Waiting failed: 45000ms exceeded",
+  "state": {
+    "href": "http://localhost:7456/?previewMode=true&previewTarget=6&t=1775410517662&scene=05b67b52-831e-4d74-a8a7-5955746bde7f",
+    "title": "Cocos Creator - 3KLife",
+    "captureState": {
+      "status": "error",
+      "screenId": "general-detail-bloodline-v3-screen",
+      "timestamp": 1775410521512,
+      "error": "Error: [LoadingScene] GeneralDetailOverview preview 未找到 overview shell; detailPanelActive=false"
+    },
+    "bodyText": "设计分辨率 (1920X1080)\nRotate\nDebug Mode:\nNone\nVerbose\nInfo\nWarn\nError\nInfo For Web Page\nWarn For Web Page\nError For Web Page\nShow FPS\nFPS:\nPause\nError (Please open the console to see detailed errors)\nError: UI capture error: Error: [LoadingScene] GeneralDetailOverview preview 未找到 overview shell; detailPanelActive=false",
+    "iframeCount": 0,
+    "canvasCount": 1
+  },
+  "diagnostics": {
+    "console": [
+      {
+        "type": "timeEnd",
+        "text": "Init Base: 0.739013671875 ms [\"Init Base: 0.739013671875 ms\"]"
+      },
+      {
+        "type": "timeEnd",
+        "text": "Init Infrastructure: 42.299072265625 ms [\"Init Infrastructure: 42.299072265625 ms\"]"
+      },
+      {
+        "type": "log",
+        "text": "meshopt wasm decoder initialized [\"meshopt wasm decoder initialized\"]"
+      },
+      {
+        "type": "log",
+        "text": "[bullet]:bullet wasm lib loaded. [\"[bullet]:bullet wasm lib loaded.\"]"
+      },
+      {
+        "type": "log",
+        "text": "[PHYSICS2D]: register box2d. [\"[PHYSICS2D]: register box2d.\"]"
+      },
+      {
+        "type": "log",
+        "text": "[PHYSICS]: register bullet. [\"[PHYSICS]: register bullet.\"]"
+      },
+      {
+        "type": "log",
+        "text": "[PHYSICS]: using bullet. [\"[PHYSICS]: using bullet.\"]"
+      },
+      {
+        "type": "timeEnd",
+        "text": "Init SubSystem: 226.10986328125 ms [\"Init SubSystem: 226.10986328125 ms\"]"
+      },
+      {
+        "type": "log",
+        "text": "Cocos Creator v3.8.8 [\"Cocos Creator v3.8.8\"]"
+      },
+      {
+        "type": "log",
+        "text": "Using custom pipeline: Builtin [\"Using custom pipeline: Builtin\"]"
+      },
+      {
+        "type": "timeEnd",
+        "text": "Init Project: 448.059814453125 ms [\"Init Project: 448.059814453125 ms\"]"
+      },
+      {
+        "type": "log",
+        "text": "[LoadingScene] Preview target -> LobbyScene GeneralDetailOverview smoke route [\"[LoadingScene] Preview target -> LobbyScene GeneralDetailOverview smoke route\"]"
+      },
+      {
+        "type": "timeEnd",
+        "text": "LoadScene LobbyScene: 72.967041015625 ms [\"LoadScene LobbyScene: 72.967041015625 ms\"]"
+      },
+      {
+        "type": "warn",
+        "text": "[LobbyScene] GeneralDetailOverview smoke 失敗：尚未載入武將資料 [\"[LobbyScene] GeneralDetailOverview smoke 失敗：尚未載入武將資料\"]"
+      },
+      {
+        "type": "log",
+        "text": "[UISpecLoader] loadLayout: 開始載入 \"toast-message-main\" [\"[UISpecLoader] loadLayout: 開始載入 \\\"toast-message-main\\\"\"]"
+      },
+      {
+        "type": "log",
+        "text": "[UISpecLoader] loadLayout: \"toast-message-main\" 載入成功，開始解析 $ref 引用 [\"[UISpecLoader] loadLayout: \\\"toast-message-main\\\" 載入成功，開始解析 $ref 引用\"]"
+      },
+      {
+        "type": "log",
+        "text": "[UIPreviewBuilder] buildScreen 開始 layout=\"toast-message-main\" skin=\"toast-message-default\" node=\"ToastContainer\" [\"[UIPreviewBuilder] buildScreen 開始 layout=\\\"toast-message-main\\\" skin=\\\"toast-message-default\\\" node=\\\"ToastContainer\\\"\"]"
+      },
+      {
+        "type": "log",
+        "text": "[UIPreviewBuilder] buildScreen 完成 (layout: toast-message-main) root.children=1 [\"[UIPreviewBuilder] buildScreen 完成 (layout: toast-message-main) root.children=1\"]"
+      },
+      {
+        "type": "error",
+        "text": "[object PromiseRejectionEvent] [{\"isTrusted\":true}]"
+      },
+      {
+        "type": "error",
+        "text": "[object PromiseRejectionEvent] [{\"isTrusted\":true}]"
+      }
+    ],
+    "pageErrors": [
+      "Error: [LoadingScene] GeneralDetailOverview preview 未找到 overview shell; detailPanelActive=false\nhttp://localhost:7456/scripting/x/chunks/62/62822f834f6017dd28374e0183f053d9c768018c.js:480:21",
+      "Error: UI capture error: Error: [LoadingScene] GeneralDetailOverview preview 未找到 overview shell; detailPanelActive=false"
+    ],
+    "requestFailures": []
+  }
+}

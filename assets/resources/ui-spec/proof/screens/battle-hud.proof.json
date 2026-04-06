@@ -1,0 +1,134 @@
+{
+  "$schema": "../proof-contract.schema.json",
+  "version": "1.0",
+  "screenId": "BattleHUD",
+  "proofSource": "ref://docs/UI品質參考圖/battle-hud.png",
+  "capturedAt": "2026-04-05",
+  "capturedBy": "Agent1",
+  "confidence": 0.75,
+
+  "visualZones": [
+    {
+      "id": "top-bar",
+      "label": "頂部狀態列（回合數、速度、Timer）",
+      "family": "dark-metal",
+      "frameRecipeRef": "dark-metal-v1",
+      "bounds": { "x": 0, "y": 0, "w": 1920, "h": 80 },
+      "notes": "深色金屬底板，顯示回合數與行動計時"
+    },
+    {
+      "id": "left-team",
+      "label": "我方武將列（最多 5 格）",
+      "family": "dark-metal",
+      "frameRecipeRef": "dark-metal-v1",
+      "bounds": { "x": 0, "y": 80, "w": 260, "h": 800 },
+      "notes": "每格含頭像、HP bar、buffs 圖示"
+    },
+    {
+      "id": "right-team",
+      "label": "敵方武將列（最多 5 格）",
+      "family": "dark-metal",
+      "frameRecipeRef": "dark-metal-v1",
+      "bounds": { "x": 1660, "y": 80, "w": 260, "h": 800 },
+      "notes": "右側鏡像排列"
+    },
+    {
+      "id": "action-bar",
+      "label": "底部行動指令列",
+      "family": "dark-metal",
+      "frameRecipeRef": "dark-metal-v1",
+      "bounds": { "x": 0, "y": 880, "w": 1920, "h": 200 },
+      "notes": "包含 攻擊 / 特技 / 撤退 三顆主按鈕"
+    },
+    {
+      "id": "battle-log",
+      "label": "戰鬥 Log 捲軸（右下）",
+      "family": "parchment",
+      "bounds": { "x": 1460, "y": 400, "w": 460, "h": 480 },
+      "notes": "半透明羊皮紙底，顯示最近 5 條戰鬥訊息"
+    }
+  ],
+
+  "componentIntents": [
+    {
+      "zone": "top-bar",
+      "nodeHint": "panel",
+      "skinSlot": "battle-hud.top-bar.bg",
+      "notes": "深色金屬框底"
+    },
+    {
+      "zone": "top-bar",
+      "nodeHint": "label",
+      "textKey": "battle.round",
+      "skinSlot": "battle-hud.round-label",
+      "notes": "回合：{n}"
+    },
+    {
+      "zone": "top-bar",
+      "nodeHint": "progress-bar",
+      "skinSlot": "battle-hud.timer-bar",
+      "bind": "battle.remainingTime"
+    },
+    {
+      "zone": "left-team",
+      "nodeHint": "grid",
+      "skinSlot": "battle-hud.unit-card.frame",
+      "bind": "battle.playerUnits[]",
+      "notes": "5 格武將卡，垂直排列"
+    },
+    {
+      "zone": "right-team",
+      "nodeHint": "grid",
+      "skinSlot": "battle-hud.unit-card.frame",
+      "bind": "battle.enemyUnits[]",
+      "notes": "5 格武將卡，右側對齊"
+    },
+    {
+      "zone": "action-bar",
+      "nodeHint": "button",
+      "skinSlot": "btn.gold-cta.fill",
+      "textKey": "battle.action.attack",
+      "bind": "battle.canAttack",
+      "notes": "金色行動按鈕：攻擊"
+    },
+    {
+      "zone": "action-bar",
+      "nodeHint": "button",
+      "skinSlot": "btn.gold-cta.fill",
+      "textKey": "battle.action.skill",
+      "bind": "battle.canUseSkill",
+      "notes": "技能按鈕（MP 不足時 disabled）"
+    },
+    {
+      "zone": "action-bar",
+      "nodeHint": "button",
+      "skinSlot": "battle-hud.btn-retreat",
+      "textKey": "battle.action.retreat",
+      "notes": "灰色次要按鈕：撤退"
+    },
+    {
+      "zone": "battle-log",
+      "nodeHint": "scroll-list",
+      "skinSlot": "battle-hud.log-panel.bg",
+      "bind": "battle.logEntries[]",
+      "notes": "羊皮卷軸底，支援自動捲到最新"
+    }
+  ],
+
+  "spacingRecipe": {
+    "containerPadding": 16,
+    "itemSpacing": 8,
+    "sectionGap": 24,
+    "unitBasis": 8
+  },
+
+  "contentSlots": [
+    { "id": "round",          "type": "number",  "placeholder": "回合數" },
+    { "id": "remainingTime",  "type": "number",  "placeholder": "剩餘秒數" },
+    { "id": "playerUnits",    "type": "list",    "placeholder": "我方武將",  "minCount": 1, "maxCount": 5 },
+    { "id": "enemyUnits",     "type": "list",    "placeholder": "敵方武將",  "minCount": 1, "maxCount": 5 },
+    { "id": "canAttack",      "type": "bool",    "placeholder": "可攻擊旗標" },
+    { "id": "canUseSkill",    "type": "bool",    "placeholder": "可使用技能旗標" },
+    { "id": "logEntries",     "type": "list",    "placeholder": "戰鬥 Log",  "minCount": 0, "maxCount": 20 }
+  ]
+}

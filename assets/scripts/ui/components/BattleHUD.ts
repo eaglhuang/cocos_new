@@ -10,7 +10,7 @@
  *
  * Unity 對照：GameHUDController，監聽事件更新各個 Binding
  */
-import { _decorator, Button, Color, Label, Node, UITransform, Vec3 } from 'cc';
+import { _decorator, Button, Color, Label, Node, Sprite, UITransform, Vec3 } from 'cc';
 import { EVENT_NAMES, Faction, GAME_CONFIG } from '../../core/config/Constants';
 import { services } from '../../core/managers/ServiceLoader';
 import { UIPreviewBuilder } from '../core/UIPreviewBuilder';
@@ -35,6 +35,10 @@ export class BattleHUD extends UIPreviewBuilder {
     private _pendingRefreshArgs: [number, number, number, number, number, number, number] | null = null;
     private _pendingPlayerName: string | null = null;
     private _pendingEnemyName: string | null = null;
+    private _pendingPlayerGeneralId: string | null = null;
+    private _pendingEnemyGeneralId: string | null = null;
+    private _playerPortraitLoadSeq = 0;
+    private _enemyPortraitLoadSeq = 0;
 
     // ── 節點引用（由 onBuildComplete 填入）──────────────────
     private _turnLabel:           Label  | null = null;
@@ -124,6 +128,8 @@ export class BattleHUD extends UIPreviewBuilder {
         this._enemyPortraitNode  = binder.getNode('EnemyPortrait');
         this._bindPortraitInteraction(this._playerPortraitNode, 'player');
         this._bindPortraitInteraction(this._enemyPortraitNode, 'enemy');
+        this._refreshPortrait('player');
+        this._refreshPortrait('enemy');
     }
 
     protected onBuildComplete(_rootNode: Node): void {
@@ -309,6 +315,16 @@ export class BattleHUD extends UIPreviewBuilder {
         if (this._enemyNameLabel) this._enemyNameLabel.string = name;
     }
 
+    public setPlayerGeneralId(generalId: string): void {
+        this._pendingPlayerGeneralId = generalId;
+        this._refreshPortrait('player');
+    }
+
+    public setEnemyGeneralId(generalId: string): void {
+        this._pendingEnemyGeneralId = generalId;
+        this._refreshPortrait('enemy');
+    }
+
     public waitUntilReady(timeoutMs = 5000): Promise<boolean> {
         if (this._buildCompleted) {
             return Promise.resolve(true);
@@ -353,6 +369,51 @@ export class BattleHUD extends UIPreviewBuilder {
         const resetScale = () => node.setScale(defaultScale);
         node.on(Node.EventType.TOUCH_END, resetScale, this);
         node.on(Node.EventType.TOUCH_CANCEL, resetScale, this);
+    }
+
+    private _refreshPortrait(side: 'player' | 'enemy'): void {
+        void this._applyPortrait(side);
+    }
+
+    private async _applyPortrait(side: 'player' | 'enemy'): Promise<void> {
+        const portraitNode = side === 'player' ? this._playerPortraitNode : this._enemyPortraitNode;
+        const generalId = side === 'player' ? this._pendingPlayerGeneralId : this._pendingEnemyGeneralId;
+        const fallbackPath = this._getPortraitFallbackPath(side);
+
+        if (!portraitNode) {
+            return;
+        }
+
+        const loadSeq = side === 'player'
+            ? ++this._playerPortraitLoadSeq
+            : ++this._enemyPortraitLoadSeq;
+
+        const portraitPath = generalId ? this._buildPortraitPath(generalId) : fallbackPath;
+        const spriteFrame = await services().resource.loadSpriteFrame(portraitPath).catch(async (error) => {
+            if (portraitPath !== fallbackPath) {
+                console.warn(`[BattleHUD] ${side} portrait 載入失敗，退回 placeholder: ${portraitPath}`, error);
+            }
+            return services().resource.loadSpriteFrame(fallbackPath).catch(() => null);
+        });
+
+        const latestSeq = side === 'player' ? this._playerPortraitLoadSeq : this._enemyPortraitLoadSeq;
+        if (loadSeq !== latestSeq || !spriteFrame) {
+            return;
+        }
+
+        const sprite = portraitNode.getComponent(Sprite) ?? portraitNode.addComponent(Sprite);
+        sprite.spriteFrame = spriteFrame;
+        sprite.sizeMode = Sprite.SizeMode.CUSTOM;
+    }
+
+    private _buildPortraitPath(generalId: string): string {
+        return `sprites/generals/${generalId.replace(/-/g, '_')}_portrait`;
+    }
+
+    private _getPortraitFallbackPath(side: 'player' | 'enemy'): string {
+        return side === 'player'
+            ? 'sprites/battle/portrait_player_placeholder'
+            : 'sprites/battle/portrait_enemy_placeholder';
     }
 
     // ── 內部更新方法 ─────────────────────────────────────────

@@ -1,0 +1,140 @@
+{
+  "$schema": "../../proof-contract.schema.json",
+  "version": "1.0",
+  "screenId": "ShopMain",
+  "proofSource": "ref://docs/UI品質參考圖/shop-main.png",
+  "capturedAt": "2026-04-05",
+  "capturedBy": "Agent1",
+  "confidence": 0.72,
+
+  "visualZones": [
+    {
+      "id": "header",
+      "label": "頂部標題列（商城）",
+      "family": "dark-metal",
+      "frameRecipeRef": "dark-metal-v1",
+      "bounds": { "x": 0, "y": 0, "w": 1920, "h": 120 },
+      "notes": "深色金屬底，顯示商城標題與關閉按鈕"
+    },
+    {
+      "id": "tab-bar",
+      "label": "商品分類 Tab 列",
+      "family": "tab",
+      "bounds": { "x": 0, "y": 120, "w": 1920, "h": 80 },
+      "notes": "武器 / 裝備 / 消耗品分頁切換"
+    },
+    {
+      "id": "item-grid",
+      "label": "商品格陣列",
+      "family": "item-cell",
+      "bounds": { "x": 0, "y": 200, "w": 1920, "h": 800 },
+      "notes": "2 欄或 3 欄格子，每格含圖示、名稱、售價"
+    },
+    {
+      "id": "currency-bar",
+      "label": "貨幣顯示列（右上）",
+      "family": "dark-metal",
+      "bounds": { "x": 1600, "y": 0, "w": 320, "h": 80 },
+      "notes": "顯示金錢 / 元寶餘額"
+    },
+    {
+      "id": "purchase-panel",
+      "label": "購買確認面板（選中商品後展開）",
+      "family": "parchment",
+      "bounds": { "x": 1300, "y": 200, "w": 620, "h": 400 },
+      "notes": "羊皮紙底，含商品詳情 + 購買按鈕"
+    }
+  ],
+
+  "componentIntents": [
+    {
+      "zone": "header",
+      "nodeHint": "panel",
+      "skinSlot": "shop.header.bg",
+      "notes": "深色金屬框底板"
+    },
+    {
+      "zone": "header",
+      "nodeHint": "label",
+      "textKey": "shop.title",
+      "skinSlot": "frame.dark-metal.label.title",
+      "notes": "商城"
+    },
+    {
+      "zone": "header",
+      "nodeHint": "button",
+      "skinSlot": "shop.btn-close",
+      "textKey": "common.close",
+      "notes": "X 關閉按鈕"
+    },
+    {
+      "zone": "tab-bar",
+      "nodeHint": "tab-bar",
+      "skinSlot": "shop.tab-bar",
+      "bind": "shop.selectedCategory",
+      "notes": "tab 切換類別"
+    },
+    {
+      "zone": "item-grid",
+      "nodeHint": "scroll-list",
+      "skinSlot": "shop.item-cell.frame",
+      "bind": "shop.items[]",
+      "notes": "按分類過濾商品"
+    },
+    {
+      "zone": "currency-bar",
+      "nodeHint": "label",
+      "skinSlot": "shop.currency.gold",
+      "bind": "player.gold",
+      "notes": "金錢餘額"
+    },
+    {
+      "zone": "currency-bar",
+      "nodeHint": "label",
+      "skinSlot": "shop.currency.gem",
+      "bind": "player.gems",
+      "notes": "元寶餘額（可選）",
+      "textKey": "currency.gem"
+    },
+    {
+      "zone": "purchase-panel",
+      "nodeHint": "panel",
+      "skinSlot": "frame.parchment.fill",
+      "notes": "選中商品後展開，羊皮紙底"
+    },
+    {
+      "zone": "purchase-panel",
+      "nodeHint": "label",
+      "skinSlot": "frame.parchment.label",
+      "bind": "shop.selectedItem.description",
+      "notes": "商品說明文字"
+    },
+    {
+      "zone": "purchase-panel",
+      "nodeHint": "button",
+      "skinSlot": "btn.gold-cta.fill",
+      "textKey": "shop.buy",
+      "family": "gold-cta",
+      "bind": "shop.canBuySelected",
+      "notes": "金色 CTA 購買按鈕"
+    }
+  ],
+
+  "spacingRecipe": {
+    "containerPadding": 24,
+    "itemSpacing": 16,
+    "sectionGap": 32,
+    "unitBasis": 8
+  },
+
+  "contentSlots": [
+    { "id": "title",           "type": "label",  "placeholder": "商城" },
+    { "id": "selectedCategory","type": "enum",   "placeholder": "當前分類（武器/裝備/消耗品）" },
+    { "id": "items",           "type": "list",   "placeholder": "商品清單",     "minCount": 1, "maxCount": 100 },
+    { "id": "selectedItem",    "type": "label",  "placeholder": "選中商品",     "optional": true },
+    { "id": "gold",            "type": "number", "placeholder": "金錢餘額" },
+    { "id": "gems",            "type": "number", "placeholder": "元寶餘額",     "optional": true },
+    { "id": "canBuySelected",  "type": "bool",   "placeholder": "可購買旗標",   "optional": true },
+    { "id": "cta-button",      "type": "button", "placeholder": "購買",         "family": "gold-cta" }
+  ]
+}

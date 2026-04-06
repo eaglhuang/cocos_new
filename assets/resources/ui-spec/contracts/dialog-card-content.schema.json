@@ -1,0 +1,38 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "schemaId": "dialog-card-content",
+  "familyId": "dialog-card",
+  "version": 1,
+  "description": "dialog-card 家族的內容契約。適用於確認對話框、提示訊息框、選擇框等互動彈窗。",
+  "fields": {
+    "titleKey": {
+      "type": "string",
+      "contentType": "i18n-key",
+      "required": true,
+      "description": "對話框標題的 i18n key",
+      "bindPath": "header.title"
+    },
+    "bodyKey": {
+      "type": "string",
+      "contentType": "i18n-key",
+      "required": true,
+      "description": "主要訊息文字的 i18n key",
+      "bindPath": "content.body"
+    },
+    "primaryKey": {
+      "type": "string",
+      "contentType": "i18n-key",
+      "required": true,
+      "description": "主要行動按鈕文字的 i18n key（確認、繼續等）",
+      "bindPath": "footer.primaryBtn.label"
+    },
+    "secondaryKey": {
+      "type": "string",
+      "contentType": "i18n-key",
+      "required": false,
+      "description": "次要按鈕文字的 i18n key（取消、稍後等）",
+      "bindPath": "footer.secondaryBtn.label"
+    }
+  },
+  "requiredFields": ["titleKey", "bodyKey", "primaryKey"]
+}

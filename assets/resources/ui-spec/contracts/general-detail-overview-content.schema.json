@@ -1,0 +1,216 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "schemaId": "general-detail-overview-content",
+  "familyId": "detail-split",
+  "version": 1,
+  "description": "GeneralDetailBloodlineV3 overview shell 的內容契約，提供標題列、摘要模組、血脈模組、故事帶與立繪資源的可驗證欄位。",
+  "fields": {
+    "headerTitle": {
+      "type": "string",
+      "required": true,
+      "description": "人物稱號。",
+      "bindPath": "InfoContent/HeaderRow/TitleLabel"
+    },
+    "headerName": {
+      "type": "string",
+      "required": true,
+      "description": "人物名稱。",
+      "bindPath": "InfoContent/HeaderRow/NameLabel"
+    },
+    "headerMeta": {
+      "type": "string",
+      "required": true,
+      "description": "陣營 / 角色定位 / 狀態摘要。",
+      "bindPath": "InfoContent/HeaderRow/MetaColumn/MetaLabel"
+    },
+    "rarityLabel": {
+      "type": "string",
+      "required": true,
+      "description": "稀有度主標籤，供首頁商業辨識使用。",
+      "bindPath": "InfoContent/HeaderRow/MetaColumn/RarityBadge/RarityBadgeLabel"
+    },
+    "rarityTier": {
+      "type": "string",
+      "required": true,
+      "description": "稀有度色階，驅動主視覺 accent 色。",
+      "enum": ["common", "rare", "epic", "legendary"],
+      "bindPath": "InfoCardAccentBand"
+    },
+    "portraitModeHint": {
+      "type": "string",
+      "required": true,
+      "description": "左上角模式提示。",
+      "bindPath": "OverviewStateChrome/PortraitModeHint"
+    },
+    "overviewModeBadgeLabel": {
+      "type": "string",
+      "required": true,
+      "description": "總覽模式 badge 文案。",
+      "bindPath": "InfoContent/HeaderRow/MetaColumn/OverviewModeBadge/OverviewModeBadgeLabel"
+    },
+    "coreStatsTitle": {
+      "type": "string",
+      "required": true,
+      "description": "核心能力卡標題。",
+      "bindPath": "InfoContent/OverviewSummaryModules/CoreStatsCard/CoreStatsTitle"
+    },
+    "coreStatsValue": {
+      "type": "string",
+      "required": true,
+      "description": "核心能力卡內容。",
+      "bindPath": "InfoContent/OverviewSummaryModules/CoreStatsCard/CoreStatsValue"
+    },
+    "roleTitle": {
+      "type": "string",
+      "required": true,
+      "description": "定位卡標題。",
+      "bindPath": "InfoContent/OverviewSummaryModules/RoleCard/RoleTitle"
+    },
+    "roleValue": {
+      "type": "string",
+      "required": true,
+      "description": "定位卡內容。",
+      "bindPath": "InfoContent/OverviewSummaryModules/RoleCard/RoleValue"
+    },
+    "traitTitle": {
+      "type": "string",
+      "required": true,
+      "description": "特質卡標題。",
+      "bindPath": "InfoContent/OverviewSummaryModules/TraitCard/TraitTitle"
+    },
+    "traitValue": {
+      "type": "string",
+      "required": true,
+      "description": "特質卡內容。",
+      "bindPath": "InfoContent/OverviewSummaryModules/TraitCard/TraitValue"
+    },
+    "bloodlineTitle": {
+      "type": "string",
+      "required": true,
+      "description": "血脈標題。",
+      "bindPath": "InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineSummaryCard/BloodlineSummaryFields/BloodlineTitle"
+    },
+    "bloodlineName": {
+      "type": "string",
+      "required": true,
+      "description": "血脈名稱。",
+      "bindPath": "InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineSummaryCard/BloodlineSummaryFields/BloodlineName"
+    },
+    "awakeningLabel": {
+      "type": "string",
+      "required": true,
+      "description": "覺醒進度標籤。",
+      "bindPath": "InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineSummaryCard/BloodlineSummaryFields/AwakeningProgressGroup/AwakeningLabel"
+    },
+    "awakeningProgress": {
+      "type": "number",
+      "required": true,
+      "description": "覺醒條進度值，0~1。",
+      "bindPath": "InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineSummaryCard/BloodlineSummaryFields/AwakeningProgressGroup/AwakeningBarTrack/AwakeningBarFill"
+    },
+    "personalityLabel": {
+      "type": "string",
+      "required": true,
+      "description": "血脈性格標籤。",
+      "bindPath": "InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineSummaryCard/BloodlineSummaryFields/PersonalityLabel"
+    },
+    "personalityValue": {
+      "type": "string",
+      "required": true,
+      "description": "血脈性格內容。",
+      "bindPath": "InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineSummaryCard/BloodlineSummaryFields/PersonalityValue"
+    },
+    "bloodlineCardTitle": {
+      "type": "string",
+      "required": true,
+      "description": "血脈摘要卡標題。",
+      "bindPath": "InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineSummaryCard/BloodlineCardTitle"
+    },
+    "bloodlineBody": {
+      "type": "string",
+      "required": true,
+      "description": "血脈摘要卡內文。",
+      "bindPath": "InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineSummaryCard/BloodlineBody"
+    },
+    "crestTitle": {
+      "type": "string",
+      "required": true,
+      "description": "命紋 / 祖紋區標題。",
+      "bindPath": "InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineCrestCard/CrestTitle"
+    },
+    "crestHint": {
+      "type": "string",
+      "required": true,
+      "description": "命紋 / 祖紋區提示。",
+      "bindPath": "InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineCrestCard/CrestHint"
+    },
+    "crestState": {
+      "type": "string",
+      "required": true,
+      "description": "命紋顯示狀態。",
+      "enum": ["placeholder", "rumored", "revealed", "awakened"],
+      "bindPath": "InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineCrestCard/BloodlineCrestCarrier/CrestStateLabel"
+    },
+    "crestGlyphPrimary": {
+      "type": "string",
+      "required": true,
+      "description": "命紋主 glyph，用於祖紋承載區中央。",
+      "bindPath": "InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineCrestCard/BloodlineCrestCarrier/CrestGlyphPrimary"
+    },
+    "crestGlyphSecondary": {
+      "type": "string",
+      "required": true,
+      "description": "命紋副標，用於 glyph 上方的族系提示。",
+      "bindPath": "InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineCrestCard/BloodlineCrestCarrier/CrestGlyphSecondary"
+    },
+    "crestFaceResource": {
+      "type": "string",
+      "required": true,
+      "description": "medallion face 資產路徑，優先於 glyph proof 顯示。",
+      "bindPath": "InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineCrestCard/BloodlineCrestCarrier/BloodlineCrestFace"
+    },
+    "storyCells": {
+      "type": "object",
+      "required": true,
+      "description": "六格故事帶內容。",
+      "bindPath": "StoryStrip"
+    },
+    "portraitResource": {
+      "type": "string",
+      "required": true,
+      "description": "角色立繪資源路徑。",
+      "bindPath": "PortraitCarrier/PortraitViewport/PortraitImage"
+    }
+  },
+  "requiredFields": [
+    "headerTitle",
+    "headerName",
+    "headerMeta",
+    "rarityLabel",
+    "rarityTier",
+    "portraitModeHint",
+    "overviewModeBadgeLabel",
+    "coreStatsTitle",
+    "coreStatsValue",
+    "roleTitle",
+    "roleValue",
+    "traitTitle",
+    "traitValue",
+    "bloodlineTitle",
+    "bloodlineName",
+    "awakeningLabel",
+    "awakeningProgress",
+    "personalityLabel",
+    "personalityValue",
+    "bloodlineCardTitle",
+    "bloodlineBody",
+    "crestTitle",
+    "crestHint",
+    "crestState",
+    "crestGlyphPrimary",
+    "crestGlyphSecondary",
+    "crestFaceResource",
+    "storyCells",
+    "portraitResource"
+  ]
+}

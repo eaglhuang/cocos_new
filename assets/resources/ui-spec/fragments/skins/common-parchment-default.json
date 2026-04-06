@@ -5,7 +5,7 @@
   "slots": {
     "parchment.bg.fill": {
       "kind": "color-rect",
-      "color": "surfaceParchmentFill",
+      "color": "surface.parchment.fill",
       "alpha": 230
     },
     "parchment.bg.frame": {
@@ -41,24 +41,24 @@
     "parchment.text.primary": {
       "kind": "label-style",
       "fontSize": 18,
-      "color": "textOnParchment",
+      "color": "text.parchment.primary",
       "outlineWidth": 0
     },
     "parchment.text.secondary": {
       "kind": "label-style",
       "fontSize": 14,
-      "color": "textOnParchmentMuted",
+      "color": "text.parchment.secondary",
       "outlineWidth": 0
     },
     "parchment.text.accent": {
       "kind": "label-style",
       "fontSize": 14,
-      "color": "secondary",
+      "color": "accent.gold.base",
       "outlineWidth": 0
     },
     "parchment.divider": {
       "kind": "color-rect",
-      "color": "dividerOnParchment"
+      "color": "divider.parchment"
     }
   }
 }

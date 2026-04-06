@@ -1,211 +1,456 @@
 {
   "id": "general-detail-bloodline-v3-default",
-  "version": 2,
+  "version": 9,
   "bundle": "lobby_ui",
   "atlasPolicy": "lobby",
   "slots": {
-    "gdv3.bg.full": {
+    "gdv3.bg.scene": {
       "kind": "sprite-frame",
-      "path": "ui-spec/placeholders/bg_ink_main",
+      "path": "sprites/ui_families/common/parchment/bg",
       "spriteType": "sliced",
-      "border": [96, 360, 96, 420],
-      "allowAutoAtlas": false
+      "border": [16, 16, 16, 16],
+      "allowAutoAtlas": true,
+      "opacity": 0.94
+    },
+    "gdv3.bg.overlay": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/parchment/frame",
+      "spriteType": "sliced",
+      "border": [16, 16, 16, 16],
+      "allowAutoAtlas": true,
+      "opacity": 0.6
+    },
+    "gdv3.bg.noise": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/noise/paper_noise_256",
+      "spriteType": "tiled",
+      "allowAutoAtlas": true,
+      "opacity": 0.02,
+      "blendMode": "overlay"
     },
     "gdv3.portrait.carrier": {
       "kind": "sprite-frame",
-      "path": "sprites/ui_families/general_detail/detail_summary_card_bg",
+      "path": "sprites/ui_families/common/parchment/frame",
       "spriteType": "sliced",
-      "border": [40, 40, 40, 40],
-      "allowAutoAtlas": true
+      "border": [16, 16, 16, 16],
+      "allowAutoAtlas": true,
+      "opacity": 0.86
+    },
+    "gdv3.portrait.shadow": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/shadow/shadow_01",
+      "spriteType": "sliced",
+      "border": [20, 20, 20, 20],
+      "allowAutoAtlas": true,
+      "opacity": 0.18
+    },
+    "gdv3.portrait.glow": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/bleed/bleed_parchment",
+      "spriteType": "sliced",
+      "border": [24, 24, 24, 24],
+      "allowAutoAtlas": true,
+      "opacity": 0.38
+    },
+    "gdv3.portrait.backdrop": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/parchment/fill",
+      "spriteType": "sliced",
+      "border": [16, 16, 16, 16],
+      "allowAutoAtlas": true,
+      "opacity": 0.28
+    },
+    "gdv3.portrait.inner": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/parchment/bg",
+      "spriteType": "sliced",
+      "border": [16, 16, 16, 16],
+      "allowAutoAtlas": true,
+      "opacity": 0.4
     },
     "gdv3.portrait.image": {
       "kind": "color-rect",
       "color": "transparent"
     },
-    "gdv3.mode.ribbon": {
+    "gdv3.portrait.rarity.frame": {
+      "kind": "color-rect",
+      "color": "transparent"
+    },
+    "gdv3.portrait.noise": {
       "kind": "sprite-frame",
-      "path": "sprites/ui_families/general_detail/detail_field_meta_bg",
+      "path": "sprites/ui_families/common/noise/paper_noise_256",
+      "spriteType": "tiled",
+      "allowAutoAtlas": true,
+      "opacity": 0.008,
+      "blendMode": "overlay"
+    },
+    "gdv3.rarity.band": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/v3_parts/parchment_header_band",
+      "spriteType": "sliced",
+      "border": [20, 0, 20, 0],
+      "allowAutoAtlas": true,
+      "opacity": 1.0
+    },
+    "gdv3.rarity.band.fill": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/v3_parts/parchment_header_fill",
       "spriteType": "sliced",
       "border": [20, 20, 20, 20],
-      "allowAutoAtlas": true
+      "allowAutoAtlas": true,
+      "opacity": 1.0
+    },
+    "gdv3.rarity.band.frame": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/v3_parts/parchment_header_frame",
+      "spriteType": "sliced",
+      "border": [16, 16, 16, 16],
+      "allowAutoAtlas": true,
+      "opacity": 0.98
+    },
+    "gdv3.rarity.band.bleed": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/bleed/bleed_parchment",
+      "spriteType": "sliced",
+      "border": [24, 24, 24, 24],
+      "allowAutoAtlas": true,
+      "opacity": 0.12
+    },
+    "gdv3.rarity.band.noise": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/noise/paper_noise_256",
+      "spriteType": "tiled",
+      "allowAutoAtlas": true,
+      "opacity": 0.03,
+      "blendMode": "overlay"
+    },
+    "gdv3.rarity.cap.left": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/v3_parts/parchment_header_cap_left",
+      "spriteType": "simple",
+      "allowAutoAtlas": true,
+      "opacity": 1.0
+    },
+    "gdv3.rarity.cap.right": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/v3_parts/parchment_header_cap_right",
+      "spriteType": "simple",
+      "allowAutoAtlas": true,
+      "opacity": 1.0
+    },
+    "gdv3.rarity.badge": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/v3_final/badge_family_legendary_v5",
+      "spriteType": "simple",
+      "allowAutoAtlas": true,
+      "opacity": 0.94,
+      "color": "#FFFFFF"
     },
     "gdv3.mode.badge": {
       "kind": "sprite-frame",
-      "path": "sprites/ui_families/general_detail/detail_field_name_bg",
+      "path": "sprites/ui_families/common/parchment/fill",
       "spriteType": "sliced",
-      "border": [20, 20, 20, 20],
-      "allowAutoAtlas": true
+      "border": [16, 16, 16, 16],
+      "allowAutoAtlas": true,
+      "opacity": 0.62
     },
-    "gdv3.info.card": {
+    "gdv3.info.card.fill": {
       "kind": "sprite-frame",
-      "path": "sprites/ui_families/general_detail/detail_content_bg",
+      "path": "sprites/ui_families/general_detail/v3_final/panel_body_fill",
       "spriteType": "sliced",
-      "border": [96, 96, 96, 96],
-      "allowAutoAtlas": false
+      "border": [16, 16, 16, 16],
+      "allowAutoAtlas": true,
+      "opacity": 1.0
+    },
+    "gdv3.info.card.frame": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/v3_final/panel_body_frame",
+      "spriteType": "sliced",
+      "border": [16, 16, 16, 16],
+      "allowAutoAtlas": true,
+      "opacity": 1.0
+    },
+    "gdv3.info.card.noise": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/noise/paper_noise_256",
+      "spriteType": "tiled",
+      "allowAutoAtlas": true,
+      "opacity": 0.012,
+      "blendMode": "overlay"
+    },
+    "gdv3.info.card.bleed": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/bleed/bleed_parchment",
+      "spriteType": "sliced",
+      "border": [24, 24, 24, 24],
+      "allowAutoAtlas": true,
+      "opacity": 0.14
     },
     "gdv3.module.card": {
       "kind": "sprite-frame",
-      "path": "sprites/ui_families/general_detail/detail_summary_card_bg",
+      "path": "sprites/ui_families/common/parchment/bg",
       "spriteType": "sliced",
-      "border": [40, 40, 40, 40],
-      "allowAutoAtlas": true
+      "border": [16, 16, 16, 16],
+      "allowAutoAtlas": true,
+      "opacity": 0.93
     },
     "gdv3.bloodline.card": {
       "kind": "sprite-frame",
-      "path": "sprites/ui_families/general_detail/detail_section_bg",
+      "path": "sprites/ui_families/common/parchment/bg",
       "spriteType": "sliced",
-      "border": [40, 40, 40, 40],
-      "allowAutoAtlas": true
+      "border": [16, 16, 16, 16],
+      "allowAutoAtlas": true,
+      "opacity": 0.95
     },
     "gdv3.bloodline.crest.card": {
       "kind": "sprite-frame",
-      "path": "sprites/ui_families/general_detail/detail_section_bg",
+      "path": "sprites/ui_families/common/parchment/fill",
       "spriteType": "sliced",
-      "border": [40, 40, 40, 40],
-      "allowAutoAtlas": true
+      "border": [16, 16, 16, 16],
+      "allowAutoAtlas": true,
+      "opacity": 1.0
+    },
+    "gdv3.bloodline.crest.glow": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/circle_icon/circle_normal",
+      "spriteType": "simple",
+      "allowAutoAtlas": true,
+      "opacity": 0.45
+    },
+    "gdv3.bloodline.crest.fill": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/circle_icon/circle_normal",
+      "spriteType": "simple",
+      "allowAutoAtlas": true,
+      "opacity": 0.55
+    },
+    "gdv3.bloodline.crest.inner": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/circle_icon/circle_normal",
+      "spriteType": "simple",
+      "allowAutoAtlas": true,
+      "opacity": 0.7
+    },
+    "gdv3.bloodline.crest.face": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/crest/proof/dragon_medallion_face_v1",
+      "spriteType": "simple",
+      "allowAutoAtlas": true,
+      "opacity": 0.95
     },
     "gdv3.bloodline.crest": {
       "kind": "sprite-frame",
-      "path": "sprites/ui_families/general_detail/detail_tree_node_fill",
-      "spriteType": "sliced",
-      "border": [18, 18, 18, 18],
-      "allowAutoAtlas": true
+      "path": "sprites/ui_families/common/circle_icon/circle_normal",
+      "spriteType": "simple",
+      "allowAutoAtlas": true,
+      "opacity": 0.12
+    },
+    "gdv3.bloodline.crest.frame": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/v3_final/crest_ring_v9",
+      "spriteType": "simple",
+      "allowAutoAtlas": true,
+      "opacity": 0.92
     },
     "gdv3.story.rail": {
       "kind": "sprite-frame",
-      "path": "sprites/ui_families/general_detail/detail_footer_bg",
+      "path": "sprites/ui_families/general_detail/v3_final/story_strip_base_v5",
       "spriteType": "sliced",
-      "border": [40, 40, 40, 40],
-      "allowAutoAtlas": true
+      "border": [16, 16, 16, 16],
+      "allowAutoAtlas": true,
+      "opacity": 0.88
     },
-    "gdv3.story.cell": {
+    "gdv3.story.rail.frame": {
       "kind": "sprite-frame",
-      "path": "sprites/ui_families/general_detail/detail_summary_card_bg",
+      "path": "sprites/ui_families/common/parchment/frame",
       "spriteType": "sliced",
-      "border": [40, 40, 40, 40],
-      "allowAutoAtlas": true
+      "border": [16, 16, 16, 16],
+      "allowAutoAtlas": true,
+      "opacity": 0.88
     },
-    "gdv3.story.cell.turn": {
+    "gdv3.story.rail.bleed": {
       "kind": "sprite-frame",
-      "path": "sprites/ui_families/general_detail/detail_summary_card_bg",
+      "path": "sprites/ui_families/common/bleed/bleed_parchment",
       "spriteType": "sliced",
-      "border": [40, 40, 40, 40],
-      "allowAutoAtlas": true
+      "border": [24, 24, 24, 24],
+      "allowAutoAtlas": true,
+      "opacity": 0.22
     },
-    "gdv3.story.cell.bloodline": {
+    "gdv3.story.art": {
       "kind": "sprite-frame",
-      "path": "sprites/ui_families/general_detail/detail_summary_card_bg",
-      "spriteType": "sliced",
-      "border": [40, 40, 40, 40],
-      "allowAutoAtlas": true
+      "path": "sprites/ui_families/general_detail/v3_final/story_strip_art_v9",
+      "spriteType": "simple",
+      "allowAutoAtlas": true,
+      "opacity": 0.95
     },
-    "gdv3.story.cell.future": {
+
+    "gdv3.story.caption": {
       "kind": "sprite-frame",
-      "path": "sprites/ui_families/general_detail/detail_summary_card_bg",
+      "path": "sprites/ui_families/common/parchment/fill",
       "spriteType": "sliced",
-      "border": [40, 40, 40, 40],
-      "allowAutoAtlas": true
+      "border": [16, 16, 16, 16],
+      "allowAutoAtlas": true,
+      "opacity": 0.92
+    },
+    "gdv3.story.caption.turn": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/parchment/fill",
+      "spriteType": "sliced",
+      "border": [16, 16, 16, 16],
+      "allowAutoAtlas": true,
+      "opacity": 0.92
+    },
+    "gdv3.story.caption.bloodline": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/parchment/fill",
+      "spriteType": "sliced",
+      "border": [16, 16, 16, 16],
+      "allowAutoAtlas": true,
+      "opacity": 0.92
+    },
+    "gdv3.story.caption.future": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/parchment/fill",
+      "spriteType": "sliced",
+      "border": [16, 16, 16, 16],
+      "allowAutoAtlas": true,
+      "opacity": 0.92
     },
     "gdv3.progress.track": {
       "kind": "sprite-frame",
-      "path": "sprites/ui_families/general_detail/detail_field_meta_bg",
+      "path": "sprites/ui_families/common/progress_bar/track",
       "spriteType": "sliced",
       "border": [20, 20, 20, 20],
       "allowAutoAtlas": true
     },
     "gdv3.progress.fill": {
-      "kind": "color-rect",
-      "color": "gdv3ProgressFill"
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/progress_bar/fill",
+      "spriteType": "sliced",
+      "border": [20, 20, 20, 20],
+      "allowAutoAtlas": true
     },
     "gdv3.label.name": {
       "kind": "label-style",
-      "fontSize": 42,
-      "lineHeight": 48,
-      "color": "gdv3LabelName",
-      "outlineColor": "outlineHeavy",
-      "outlineWidth": 2,
+      "fontSize": 50,
+      "lineHeight": 56,
+      "color": "textInk",
+      "outlineWidth": 0,
       "horizontalAlign": "LEFT"
     },
     "gdv3.label.title": {
       "kind": "label-style",
-      "fontSize": 28,
-      "lineHeight": 34,
-      "color": "gdv3LabelTitle",
-      "outlineColor": "outlineStandard",
-      "outlineWidth": 1,
+      "fontSize": 22,
+      "lineHeight": 26,
+      "color": "text.parchment.secondary",
+      "outlineWidth": 0,
       "horizontalAlign": "LEFT"
     },
     "gdv3.label.meta": {
       "kind": "label-style",
-      "fontSize": 20,
-      "lineHeight": 26,
-      "color": "gdv3LabelMeta",
-      "outlineColor": "outlineLight",
-      "outlineWidth": 1,
+      "fontSize": 15,
+      "lineHeight": 19,
+      "color": "text.parchment.secondary",
+      "outlineWidth": 0,
       "horizontalAlign": "LEFT"
     },
     "gdv3.label.section": {
       "kind": "label-style",
-      "fontSize": 24,
-      "lineHeight": 30,
-      "color": "gdv3LabelSection",
-      "outlineColor": "outlineStandard",
-      "outlineWidth": 1,
+      "fontSize": 20,
+      "lineHeight": 24,
+      "color": "tertiary",
+      "outlineWidth": 0,
       "horizontalAlign": "LEFT"
     },
     "gdv3.label.value": {
       "kind": "label-style",
-      "fontSize": 24,
-      "lineHeight": 30,
-      "color": "gdv3LabelValue",
-      "outlineColor": "outlineStandard",
-      "outlineWidth": 1,
+      "fontSize": 22,
+      "lineHeight": 28,
+      "color": "text.parchment.primary",
+      "outlineWidth": 0,
       "horizontalAlign": "LEFT"
     },
     "gdv3.label.note": {
       "kind": "label-style",
-      "fontSize": 18,
-      "lineHeight": 24,
-      "color": "gdv3LabelNote",
-      "outlineColor": "outlineLight",
-      "outlineWidth": 1,
+      "fontSize": 15,
+      "lineHeight": 20,
+      "color": "text.parchment.secondary",
+      "outlineWidth": 0,
       "horizontalAlign": "LEFT"
     },
     "gdv3.label.cardBody": {
       "kind": "label-style",
-      "fontSize": 20,
-      "lineHeight": 26,
-      "color": "gdv3LabelCardBody",
-      "outlineColor": "outlineLight",
-      "outlineWidth": 1,
+      "fontSize": 18,
+      "lineHeight": 25,
+      "color": "text.parchment.primary",
+      "outlineWidth": 0,
       "horizontalAlign": "LEFT"
     },
     "gdv3.label.story": {
       "kind": "label-style",
-      "fontSize": 17,
-      "lineHeight": 22,
-      "color": "gdv3LabelStory",
-      "outlineColor": "outlineLight",
-      "outlineWidth": 1,
+      "fontSize": 16,
+      "lineHeight": 20,
+      "color": "text.parchment.primary",
+      "outlineWidth": 0,
       "horizontalAlign": "LEFT"
+    },
+    "gdv3.label.storyCaption": {
+      "kind": "label-style",
+      "fontSize": 14,
+      "lineHeight": 18,
+      "color": "text.parchment.secondary",
+      "outlineWidth": 0,
+      "horizontalAlign": "CENTER"
     },
     "gdv3.label.mode": {
       "kind": "label-style",
-      "fontSize": 16,
-      "lineHeight": 20,
-      "color": "gdv3LabelMode",
-      "outlineColor": "outlineLight",
-      "outlineWidth": 1,
+      "fontSize": 13,
+      "lineHeight": 17,
+      "color": "text.parchment.secondary",
+      "outlineWidth": 0,
       "horizontalAlign": "LEFT"
     },
     "gdv3.label.badge": {
       "kind": "label-style",
-      "fontSize": 17,
-      "lineHeight": 20,
-      "color": "gdv3LabelValue",
-      "outlineColor": "outlineLight",
-      "outlineWidth": 1,
+      "fontSize": 13,
+      "lineHeight": 15,
+      "color": "text.parchment.primary",
+      "outlineWidth": 0,
       "horizontalAlign": "CENTER"
+    },
+    "gdv3.label.rarityBadge": {
+      "kind": "label-style",
+      "fontSize": 15,
+      "lineHeight": 17,
+      "color": "text.parchment.primary",
+      "outlineWidth": 0,
+      "horizontalAlign": "CENTER"
+    },
+    "gdv3.label.crestState": {
+      "kind": "label-style",
+      "fontSize": 14,
+      "lineHeight": 18,
+      "color": "tertiary",
+      "outlineWidth": 0,
+      "horizontalAlign": "CENTER"
+    },
+    "gdv3.label.crestGlyphSecondary": {
+      "kind": "label-style",
+      "fontSize": 13,
+      "lineHeight": 17,
+      "color": "text.parchment.secondary",
+      "outlineWidth": 0,
+      "horizontalAlign": "CENTER"
+    },
+    "gdv3.label.crestGlyphPrimary": {
+      "kind": "label-style",
+      "fontSize": 56,
+      "lineHeight": 62,
+      "color": "tertiary",
+      "outlineColor": "outlineHeavy",
+      "outlineWidth": 1,
+      "horizontalAlign": "CENTER",
+      "verticalAlign": "CENTER"
     }
   }
 }

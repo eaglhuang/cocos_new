@@ -1,0 +1,550 @@
+# Keep Consensus — UI Architecture（§7–§12 · §19–§23）
+
+> 這是 `keep.md` 的「UI Architecture（§7–§12 · §19–§23）」分片。完整索引見 `docs/keep.md`。
+
+## 7. UI 契約基礎
+
+- UI 必須維持資料驅動，不回退成「每個畫面手調 Prefab 當唯一真實來源」。
+- 正式 UI 契約為三層 JSON：
+  - `assets/resources/ui-spec/layouts/`
+  - `assets/resources/ui-spec/skins/`
+  - `assets/resources/ui-spec/screens/`
+- 全域設計 token：
+  - `assets/resources/ui-spec/ui-design-tokens.json`
+
+### 7.1 BattleScene UI Data Schema Contract（DATA-1-0001，完成於 2026-04-05）
+
+- 正式 TS 介面定義：`assets/scripts/core/data/BattleBindData.ts`
+- 定義 5 個介面（Unity 對照：相當於 ViewModel / SerializedField 的資料契約）：
+  - `BattleStateData`：`battleState.*`（玩家/敵方名稱、城牆 HP、回合數、糧食、狀態訊息）
+  - `UnitDisplayData`：`unit.*`（單位名稱、副稱、攻防血速費用、描述）
+  - `TallyUnitData`：`tally[n].*`（虎符列表各格的 atk/hp/badge/unitName/cost）
+  - `BattleActionData`：`battle.*`（奧義名稱、SP 百分比）
+  - `BattleLogData`：`battleLog.*`（戰報訊息）
+- 5 個 layout JSON 中共 38 個 `bind:"dynamic"` 已全部替換為明確 bind path
+- `UIPreviewNodeFactory` 現在將 bind path 節點顯示為 `{battleState.playerName}` 格式佔位文字
+- **重要**：所有新 UI 動態 label 的 bind 欄位必須使用 BattleBindData 契約中定義的 path，不得再寫 `"dynamic"`
+
+Unity 對照:
+- `layout` 類似 Prefab 結構
+- `skin` 類似 Theme / Sprite mapping
+- `screen` 類似 route / 開啟設定
+
+### 7.2 Design Token 使用規則（2026-04-05）
+
+**核心原則：skin / fragment JSON 中的所有顏色欄位，一律引用 `ui-design-tokens.json` 中的 token key，禁止直接寫 hex 硬編碼。**
+
+#### ✅ 正確寫法
+
+```json
+{ "kind": "color-rect",  "color": "surfaceParchmentFill", "alpha": 230 }
+{ "kind": "label-style", "color": "textOnParchment" }
+{ "kind": "color-rect",  "color": "dividerOnParchment" }
+```
+
+#### ❌ 禁止寫法
+
+```json
+{ "kind": "color-rect",  "color": "#F0E8D8E6" }
+{ "kind": "label-style", "color": "#2D2926" }
+{ "kind": "color-rect",  "color": "#8C7A66" }
+```
+
+#### 完整解釋
+
+- `UISkinResolver.resolveColor()` 是唯一的顏色解析出口：收到 token key → 查 `tokens.colors[key]` → 取 hex；若查不到則 fallback `Color.WHITE`。
+- 直接寫 hex 雖然短期能用，但繞過了 token 系統，主題切換或 token 更新時無法統一同步。
+- 未在 `ui-design-tokens.json` 中存在的顏色語意，**必須先補 token**，再在 skin 裡引用；不得把新顏色直接寫入 skin 或 fragment。
+
+#### 透明度表示方式
+
+- `color-rect`：透明度用 `"alpha": 0–255`（整數），不要把 alpha 寫進 8位 hex。
+- `sprite-frame`：透明度用 `"opacity": 0.0–1.0`（浮點）。
+- label 顏色固定不透明，不需要 alpha 欄位。
+
+#### 現有 Token 對照速查（羊皮紙系列）
+
+| 語意 | Token key | hex |
+|------|-----------|-----|
+| 羊皮紙填色背景 | `surfaceParchmentFill` | `#F0E8D8` |
+| 羊皮紙底色 | `surfaceParchment` | `#E8DFD0` |
+| 主要文字（深褐） | `textOnParchment` | `#2D2926` |
+| 次要文字（中褐） | `textOnParchmentMuted` | `#6B5E4E` |
+| 強調文字（金） | `secondary` | `#D4AF37` |
+| 分隔線 | `dividerOnParchment` | `#8C7A66` |
+
+#### Token 命名收斂規則（2026-04-06）
+
+- 舊 token key 先保留相容性，不在同一輪大規模改名既有 skin。
+- 新畫面、新 skin、新 family 優先使用分層 alias：
+  - `accent.gold.*`
+  - `accent.jade.*`
+  - `surface.parchment.*`
+  - `text.parchment.*`
+  - `divider.parchment`
+- 若只是沿用既有畫面，可暫留 `secondary`、`surfaceParchmentFill`、`stdButtonPrimary` 等舊 key；但新增 token 不再優先擴張舊式平鋪命名。
+
+---
+
+## 8. UI Template 新架構
+
+Agent1 已把 UI templates 重構成可重用架構，這是後續 UI 量產的核心基礎。
+
+### 主要實體
+
+- `assets/scripts/ui/core/UITemplateResolver.ts`
+- `assets/scripts/ui/core/UITemplateBinder.ts`
+- `assets/scripts/ui/core/UISpecTypes.ts`
+- `assets/resources/ui-spec/templates/`
+- `assets/resources/ui-spec/fragments/widgets/`
+- `assets/resources/ui-spec/fragments/layouts/`
+- `assets/resources/ui-spec/fragments/skins/`
+
+### 已落地模板
+
+- `dialog-confirm`
+- `dialog-info`
+- `dialog-select`
+- `fullscreen-result`
+
+### 核心意義
+
+- Template 負責骨架
+- Widget Fragment 負責可重用區塊
+- Skin Fragment 負責視覺片段
+- Binder 負責節點綁定
+
+這代表 UI 不再是「每次重畫一個新畫面」，而是「優先挑既有 template / widget family，再做 screen-specific 變化」。
+
+---
+
+## 9. 美術 × 技術量產協作規則
+
+這是目前最重要的新共識。
+
+### Template-first 原則
+
+- 美術在開始新畫面前，先指定「這張畫面屬於哪個已存在 template family」。
+- 若某個 family 已接上 runtime 但視覺仍停在 placeholder，第一步優先把 `color-rect` 換成既有 family 可重用的 skin slot，不要直接跳去重做整張畫面或重排節點。
+- 若能用既有 template 解決 70% 以上結構，就不得把它當成全新畫面重做。
+- 只有在既有 template 明顯不適用時，才新增新 template。
+
+### 美術交付順序
+
+1. 先選 template family
+2. 再做 wireframe
+3. 再做 slot-map
+4. 最後才做 screen-specific 視覺強化
+
+### 技術配合
+
+- 技術側要盡量把「共用骨架」沉到 template / fragment，不把共通結構散落在單一 screen JSON。
+- 新畫面若只是同一家族的變體，優先新增 config、skin 或 fragment，不急著新增 template。
+
+### 現階段模板家族
+
+- `detail-split`
+- `dialog-card`
+- `rail-list`
+
+---
+
+## 10. Figma + Cocos + Playwright 量產線
+
+正式量產線：
+
+1. `UI_PROOF_TEMPLATE`
+2. `Figma`
+3. `wireframe`
+4. `slot-map`
+5. `ui-spec skeleton`
+6. `preview / Playwright QA`
+
+Figma 檔案：
+- `https://www.figma.com/design/lf8ByZq8VVBtBTBJ0IpahX`
+
+規則：
+- `09_Proof Mapping` 不只是設計備註區，必須逐步收斂成 tooling 可直接吃的中介層。
+- family naming 必須對應 repo 內 skeleton 生成器輸入。
+
+---
+
+## 11. UI Skeleton 量產入口
+
+repo 內正式量產入口：
+- `tools_node/scaffold-ui-spec-family.js`
+
+目前支援模板：
+- `detail-split`
+- `dialog-card`
+- `rail-list`
+
+可直接從 config JSON 產出三層骨架：
+
+```bash
+node tools_node/scaffold-ui-spec-family.js --config <json>
+```
+
+命名規則：
+- `familyId` 用 kebab-case
+- layout: `<family>-main.json`
+- skin: `<family>-default.json`
+- screen: `<family>-screen.json`
+- slot prefix: `familyId` 的 `-` 轉 `.`
+
+---
+
+## 12. Proof Mapping Contract
+
+`09_Proof Mapping` 至少要維持這些欄位：
+
+- `familyId`
+- `template`
+- `uiId`
+- `bundle`
+- `atlasPolicy`
+- `titleKey`
+- `bodyKey`
+- `primaryKey`
+- `secondaryKey`
+- `tabs`
+- `railItems`
+- `proofVersion`
+- `figmaFrame`
+- `wireframeRef`
+- `slotMapRef`
+- `notes`
+
+若某份設計沒有對應到這組欄位，視為尚未進入正式量產入口。
+
+---
+
+## 19. UI 量產主工作流（2026-04-05）
+
+這一段是之後所有 UI Agent 都必須遵守的正式生產規則。若未來流程再演化，優先回寫本節與 `docs/UI 規格書.md`，不要把新共識只留在任務卡或補遺。
+
+### 19.1 核心原則
+
+- UI 量產的正式順序固定為：`先選 template family -> 再填 content contract -> 最後套 skin fragment`。
+- `layout / template` 只描述穩定結構，`content contract` 只描述角色或畫面內容差異，`skin / fragment` 只描述視覺風格與素材映射。
+- 若只是文案、故事條、血脈、徽記、狀態切換不同，優先修改 `content contract`，不要回頭重切 `layout JSON`。
+- 若只是紙材、框體、紋樣、配色、按鈕 family 不同，優先修改 `skin fragment`，不要複製一份新 `layout`。
+- 只有當畫面結構、導覽模型、slot 數量或互動骨架改變時，才允許新增 template family 或修改 template skeleton。
+
+### 19.2 標準落地步驟
+
+1. 先判定這張畫面屬於哪個 template family，例如 `detail-split`、`dialog-card`、`rail-list`。
+2. 在 Figma `09_Proof Mapping` 或對應 config 內補齊 `familyId / template / tabs / railItems / titleKey / bodyKey / notes` 等正式欄位。
+3. 以 scaffolder 生成三層骨架：`layouts / skins / screens`。
+4. 將角色差異、系統差異、故事差異收斂到 `content contract`，例如 `storyStripCells / crestState / bloodlineRumor`。
+5. 將視覺差異收斂到 `skin fragment`、token、atlas policy 與既有 widget family。
+6. 只在最後一步做 screen-specific 收尾；若收尾超過 20% 結構修改，代表 template family 判定可能錯了，應回頭重評估。
+7. 完成後必跑 `validate-ui-specs`、encoding touched check，以及最小 smoke / preview 驗證。
+
+### 19.3 什麼情況代表流程真的在加速
+
+- 新 UI 主要是在「選 family + 填 config + 補內容」，而不是重新手改大量節點。
+- 同一 family 的第二張、第三張畫面，主要變更集中在 `content contract` 與 `skin fragment`。
+- runtime 程式主要做 binder / mapper / host 組裝，而不是為每張新畫面重寫 panel 邏輯。
+- Figma proof mapping 欄位可以直接對應 repo 內 config，而不是每次重新口頭翻譯。
+
+若一張新 UI 還是需要大幅手改 `layout JSON`、臨時塞 runtime 節點、或為單畫面複製一整套新 family，表示量產鏈還沒打通，應優先補模板、fragment 或 contract，而不是繼續個案硬做。
+
+### 19.4 後續加速器
+
+- 維護 `template family catalogue`：清楚列出每個 family 的適用場景、限制與現成 fragment。
+- 維護 `content contract schema`：讓新 family 可直接用 config / JSON schema 建欄位，而不是人工猜欄位名。
+- 維護 `skin fragment library`：把常用框體、卡片、故事帶、徽記、進度條沉成可複用 fragment。
+- 維護 `preview / smoke routes`：每個高頻 family 至少有一條可快速驗證的 route。
+
+---
+
+## 23. MemoryManager LRU + Scope 批次釋放（UI-2-0078，2026-04-05）
+
+### 23.1 概念設計
+
+兩層式帳目架構（Unity Addressables 對照）：
+
+| 層 | 說明 | Unity 對照 |
+|----|------|------------|
+| `records` | active 資源（refCount > 0） | Addressables tracked handles |
+| `lruBuffer` | 軟釋放緩衝（refCount == 0，等待硬逐出） | soft-unload / 待 Release 的 handle |
+
+### 23.2 主要新增 API
+
+| 方法 / 屬性 | 說明 |
+|-------------|------|
+| `notifyLoaded(key, bundle, type, scope?)` | 第 4 參數 `scope` 為可選；同 key 若在 lruBuffer → 移回 active |
+| `notifyReleased(key)` | refCount 歸零 → 移入 lruBuffer（不立即刪除，支援再使用重拾） |
+| `releaseByScope(scope)` | 批次強制逐出指定 scope 下所有資源（active + lruBuffer），直接觸發 `onAssetEvicted` |
+| `evictLRU(count?)` | 手動逐出 lruBuffer 最舊條目；不帶參數時清空全部 |
+| `getLruReport()` | 取得 lruBuffer 快照陣列 |
+| `getByScope(scope)` | 取得 scope 內所有資源 key 清單 |
+| `lruMaxSize` | LRU buffer 上限（預設 50）；超過時自動觸發 `onAssetEvicted` |
+| `lruBufferCount` | 目前 lruBuffer 大小 |
+| `onAssetEvicted` | [Hook C] 硬逐出時觸發，供 ResourceManager 真正釋放 Cocos 資源 |
+
+### 23.3 使用範例
+
+```typescript
+// 場景切換前批次釋放
+services().memory.releaseByScope('battle');
+
+// 接 ResourceManager 的真正釋放（在 ServiceLoader 初始化後設置一次）
+services().memory.onAssetEvicted = (key, bundle) => {
+    services().resource.forceRelease(key, bundle);
+};
+
+// 記憶體壓力時手動清空 LRU buffer
+services().memory.evictLRU();
+
+// 載入時標記 scope
+services().memory.notifyLoaded('ui/battle-hud', 'resources', 'Prefab', 'battle');
+```
+
+### 23.4 向後相容
+
+- `notifyLoaded` 第 4 參數為可選，所有現有呼叫端（ResourceManager、VfxComposerTool）**無需修改**。
+- `AssetRecord` 新增 `lastUsedAt` 與 `scopes` 欄位；現有使用 `getReport()` 的程式碼仍正常工作。
+- 既有 `onThresholdExceeded` / `onAssetFullyReleased` Hook 語義不變。
+- 維護 `proof mapping -> scaffolder` 對映：讓 Figma 欄位可直接生成 config，而不是再人工轉譯一次。
+
+### 19.5 UI Agent 進場必讀順序
+
+所有新加入的 UI Agent，在開始實作前必須依序閱讀：
+
+1. `docs/keep.md`
+2. `docs/UI 規格書.md` 的「UI 量產工作流與 Agent 協作入口」
+3. 對應系統的正式規格書，例如 `武將人物介面規格書.md`
+4. 目前任務卡與 `docs/ui-quality-todo.json`
+5. `docs/cross-reference-index.md`，確認正式文件、程式檔與 ui-spec 的對應關係
+
+UI 任務卡建立或重寫時，優先使用 `docs/agent-briefs/UI-task-card-template.md`。
+
+若 Agent 沒有完成這個順序，就不應直接開始做新的 UI JSON、Panel 或 skin。
+
+### 19.6 Agent 協作的強制原則
+
+- Agent1/Agent2/其他 Agent 對 UI 的分工，必須建立在同一個 family、同一個 contract、同一套正式規格上。
+- 任一 Agent 發現可以抽成共用 template、fragment、schema 的重複模式時，優先補基礎設施，不要只解當前畫面。
+- 任一 Agent 若新增了 screen-specific workaround，必須在任務卡或正式規格寫明原因與退場條件。
+- 任一 Agent 完成 UI 任務後，至少同步更新：正式規格書、`cross-reference-index.md`、必要時更新 `keep.md`。
+
+### 19.7 正式參照
+
+- 執行準則以本節為主。
+- UI 正式方法論與結構定義，以 `docs/UI 規格書.md` 的「UI 量產工作流與 Agent 協作入口」為主。
+
+---
+
+## 20. Content Contract Framework（Phase F，2026-04-05）
+
+Content Contract Framework 是讓 AI Agent 能從「只會產 JSON 骨架」推進到「能交付可執行 UI」的關鍵補強層。
+
+Unity 對照：相當於把 Prefab 的 `SerializedField` 強制宣告出來，讓 Instantiate 時能靜態驗證該元件所需的所有欄位是否齊備。
+
+### 20.1 核心概念
+
+每個 template family 都必須有對應的 `ContentContractSpec`，描述：
+- 這個 family 的 screen 最少需要哪些欄位
+- 各欄位的型別、是否必填、有無預設值
+- 欄位對應的 bind path（供 `UIContentBinder` 使用）
+
+### 20.2 檔案位置
+
+| 層 | 路徑 |
+|----|------|
+| JSON Schema | `assets/resources/ui-spec/contracts/{family-id}-content.schema.json` |
+| TS 核心 | `assets/scripts/ui/core/UIContentBinder.ts` |
+| Screen 擴充欄位 | `UIScreenSpec.contentRequirements` |
+| 架構草案 | `docs/ui/content-contract-framework.md` |
+
+### 20.3 UIScreenSpec 擴充
+
+`UIScreenSpec` 新增選填欄位 `contentRequirements?: ContentContractRef`：
+- `schemaId`：對應 `contracts/{schemaId}.schema.json`
+- `familyId`：所屬 template family
+- `requiredFields`：最少必填欄位清單
+
+### 20.4 UIContentBinder（新增，2026-04-05）
+
+`UIContentBinder` 負責：
+1. 接收 `ContentContractRef` + runtime data object
+2. 以型別安全方式把欄位映射到 `UITemplateBinder` path
+3. 呼叫前驗證必填欄位是否存在，缺失時 warn 而非 silent fail
+
+位置：`assets/scripts/ui/core/UIContentBinder.ts`
+
+### 20.5 已落地 Content Schema（2026-04-05）
+
+| Family | Schema ID | 必填欄位 |
+|--------|-----------|----------|
+| `detail-split` | `detail-split-content` | `titleKey, bodyKey, tabs` |
+| `dialog-card` | `dialog-card-content` | `titleKey, bodyKey, primaryKey` |
+| `rail-list` | `rail-list-content` | `titleKey, railItems` |
+| `fullscreen-result` | `fullscreen-result-content` | `resultType, titleKey, descKey` |
+
+BattleScene 的 bind path 契約沿用 `BattleBindData.ts`，不另開 schema。
+
+### 20.6 強制規則
+
+- 任何新 screen spec 建立後，若 family 已有對應 schema，`contentRequirements` 欄位**必須填寫**。
+- `validate-ui-specs.js --check-content-contract` 必須通過才算完成 UI 任務。
+- Screen spec 中不得再出現未在 `requiredFields` 宣告的魔法字串 bind path。
+
+---
+
+## 21. Screen → Component 自動落地（Scaffold Pipeline，Phase F，2026-04-05）
+
+### 21.1 問題
+
+`scaffold-ui-spec-family.js` 只解決 JSON 骨架生成；從 `screen.json` 到可執行的 TypeScript Panel 仍是人工步驟，是目前量產最後一哩的主要瓶頸。
+
+Unity 對照：等同於只有 ScriptableObject 定義，但還沒有對應的 `MonoBehaviour` 骨架。
+
+### 21.2 工具入口（待實作 UI-2-0081）
+
+```bash
+node tools_node/scaffold-ui-component.js --screen <screenId> [--family <familyId>] [--out <dir>]
+```
+
+位置：`tools_node/scaffold-ui-component.js`
+
+### 21.3 產出物
+
+| 產出 | 說明 |
+|------|------|
+| `assets/scripts/ui/components/<PanelName>.ts` | 繼承 `UIPreviewBuilder` 的面板類別，含 `onReady(binder)` 骨架與 `content contract` 綁定範例 |
+| `UIConfig.ts` UIID entry | 自動新增 enum 成員（標記 `// TODO: 補 prefab 路徑`，不可留空字串） |
+
+### 21.4 Panel 樣板家族
+
+| Template Family | 樣板檔 |
+|-----------------|--------|
+| `detail-split` | `tools_node/templates/detail-split-panel.template.ts` |
+| `dialog-card` | `tools_node/templates/dialog-card-panel.template.ts` |
+| `rail-list` | `tools_node/templates/rail-list-panel.template.ts` |
+| `fullscreen-result` | `tools_node/templates/fullscreen-result-panel.template.ts` |
+
+### 21.5 規則
+
+- 產出的 Panel TS 只包含骨架，業務邏輯由後續 Agent 或開發者填充。
+- 每次 scaffold 後，自動跑 encoding check（BOM / U+FFFD 防禦）。
+- UIConfig 新增 entry 必須標記 `// TODO: 補 prefab 路徑`，不可留無效佔位字串。
+- scaffold 產出後，必須能通過 `tsc --noEmit` 靜態型別檢查。
+
+---
+
+## 22. Phase F 完成記錄（Agent1，2026-04-05）
+
+### 22.1 本批次完成的工作
+
+| 任務 | 產出 | 狀態 |
+|------|------|------|
+| UI-2-0080 Content Contract Framework | UISpecTypes.ts / UIContentBinder.ts / 4 schema JSON / content-contract-framework.md / validate-ui-specs `--check-content-contract` | ✅ done |
+| UI-2-0081 Screen→Component Scaffolder | `tools_node/scaffold-ui-component.js` + 4 Family Panel template | ✅ done |
+
+### 22.2 新增工具索引
+
+| 工具 | 路徑 | 說明 |
+|------|------|------|
+| scaffold-ui-component | `tools_node/scaffold-ui-component.js` | 從 screen spec 一鍵生成 Panel TypeScript骨架 |
+| Panel 模板 | `tools_node/templates/*.template.ts` | 4 家族各一份（detail-split / dialog-card / rail-list / fullscreen-result） |
+| Content Schema | `assets/resources/ui-spec/contracts/*.schema.json` | 4 家族內容契約 JSON |
+| UIContentBinder | `assets/scripts/ui/core/UIContentBinder.ts` | Content Contract 驗證與 binder 注入 |
+| validate-ui-specs `--check-content-contract` | `tools_node/validate-ui-specs.js` | 驗證 screen spec 的 contentRequirements 是否符合 schema |
+
+### 22.3 scaffold-ui-component.js 使用說明
+
+```bash
+# 基本用法
+node tools_node/scaffold-ui-component.js --screen <screenId>
+
+# 指定 family（省略時從 layout id 自動推斷）
+node tools_node/scaffold-ui-component.js --screen general-detail-screen --family detail-split
+
+# 先 dry-run 確認輸出
+node tools_node/scaffold-ui-component.js --screen lobby-main-screen --dry-run
+
+# 不自動修改 UIConfig
+node tools_node/scaffold-ui-component.js --screen my-screen --no-uiconfig
+```
+
+### 22.4 Phase F 完成（2026-04-06）
+
+- UI-2-0082（Figma Proof Mapping Sync）：✅ done — `tools_node/sync-figma-proof-mapping.js`
+- UI-2-0083（Agent Strict Layout Validator）：✅ done — `validate-ui-specs.js --strict`（17條規則）
+- UI-2-0078（MemoryManager LRU）：open，P2（Phase E 遺留）
+
+**Phase F 新增工具一覽**：
+- `tools_node/sync-figma-proof-mapping.js` — 從 Figma / 本地 config 輸出標準化 proof-mapping-{date}.json
+- `validate-ui-specs.js --strict` — 17條 layout 品質規則（節點深度、間距、skinSlot 交叉核對等）
+- `assets/resources/ui-spec/validation-rules.json` — 閾值設定檔
+- `docs/ui/layout-quality-rules.md` — 規則說明文件
+---
+
+## 23. UI 美術資產治理與量產切換（2026-04-05）
+
+### 23.1 目錄分層原則
+
+- `artifacts/ui-source/`
+  - 放 AI 原圖、裁切稿、compare input、recipe、prompt、審核紀錄。
+  - 不可作為正式 runtime 載入路徑。
+- `assets/resources/.../proof/`
+  - 只允許短期 preview / smoke / compare 驗證使用。
+  - 可暫時被 screen 或 skin 引用，但結案前必須替換或標記 blocker。
+- `assets/resources/.../final/` 或正式 family 路徑
+  - 只放已核准、可重用、允許正式打包的商業資產。
+  - 正式版本優先引用這一層。
+
+Unity 對照：
+- `artifacts/ui-source/` 比較像 DCC 原始稿 / PSD 輸出站，不進 Player。
+- `assets/resources/.../proof/` 像暫時掛在 Addressables/Resources 內的灰盒驗證圖。
+- `final/` 才是可長期 shipping 的 Prefab / Sprite family 正式依賴。
+
+### 23.2 Proof 與 Final 的切換規則
+
+- Proof 資產的任務是驗證：
+  - family 結構
+  - slot 對位
+  - 裁切策略
+  - runtime 載入鏈
+- Final 資產的任務是承擔：
+  - 正式商業質感
+  - 長期重用
+  - 包體輸出
+- 一個 family 只要下列條件成立，就應開始切正式貼圖，不必等整頁全部完成：
+  - layout / screen 結構已穩定
+  - slot-map 已穩定
+  - 該 family 會被多頁共用
+
+### 23.3 正式切圖優先順序
+
+現階段優先做高重用 family，不要整頁一次重畫：
+1. `jade-parchment-panel-final`
+2. `crest-medallion-final`
+3. `jade-rarity-badge-final`
+4. `portrait-stage-final`
+5. `story-strip-final`
+
+原則：
+- 先做 family，再做單頁特化。
+- 先做可重用 panel kit，再做一次性插畫。
+
+### 23.4 打包與污染防線
+
+- 不允許把 `artifacts/ui-source/` 當成 runtime 資源目錄。
+- `proof/` 目錄下的資產必須可被工具列出，方便之後清理或替換。
+- 後續驗證工具應新增一條規則：
+  - 正式 `screen / skin` 若仍引用 `proof/` 路徑，需輸出 warning；release 前升級為 error。
+- `type: texture` 的 proof 圖若短期需要進 runtime 驗證，允許透過 `ResourceManager` fallback 載入，但這是過渡措施，不代表該資產已成為 final。
+
+### 23.5 GeneralDetailBloodlineV3 當前狀態
+
+- 目前可視為：
+  - `layout / contract / runtime preview`：已打通
+  - `story strip`：proof 可用
+  - `crest medallion`：proof 可用，final 未完成
+  - `jade header / panel`：過渡版可用，final family 未完成
+- 因此下一步應是切入正式 family 資產，而不是再大幅重改 layout。
+

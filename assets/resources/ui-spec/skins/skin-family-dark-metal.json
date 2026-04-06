@@ -1,0 +1,77 @@
+{
+  "id": "skin-family-dark-metal",
+  "version": 1,
+  "bundle": "ui_common",
+  "atlasPolicy": "ui_family_dark_metal",
+  "description": "dark-metal family 共用 slot。主戰場面板、主要容器的框體家族。themeStack family 層使用，優先序高於 base。",
+  "slots": {
+    "frame.dark-metal.edge": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/dark_metal/frame_edge/spriteFrame",
+      "spriteType": "sliced",
+      "border": [12, 12, 12, 12],
+      "bleed": 4,
+      "allowAutoAtlas": true
+    },
+    "frame.dark-metal.bleed": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/dark_metal/frame_bleed/spriteFrame",
+      "spriteType": "sliced",
+      "border": [20, 20, 20, 20],
+      "bleed": 12,
+      "opacity": 0.75,
+      "blendMode": "alpha",
+      "allowAutoAtlas": true
+    },
+    "frame.dark-metal.fill": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/dark_metal/frame_fill/spriteFrame",
+      "spriteType": "sliced",
+      "border": [8, 8, 8, 8],
+      "allowAutoAtlas": true
+    },
+    "frame.dark-metal.corner": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/dark_metal/corner_ornament/spriteFrame",
+      "spriteType": "simple",
+      "opacity": 0.9,
+      "blendMode": "overlay",
+      "allowAutoAtlas": true
+    },
+    "frame.dark-metal.edge-hover": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/dark_metal/frame_edge_hover/spriteFrame",
+      "spriteType": "sliced",
+      "border": [12, 12, 12, 12],
+      "allowAutoAtlas": true
+    },
+    "frame.dark-metal.edge-pressed": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/dark_metal/frame_edge_pressed/spriteFrame",
+      "spriteType": "sliced",
+      "border": [12, 12, 12, 12],
+      "allowAutoAtlas": true
+    },
+    "frame.dark-metal.label": {
+      "kind": "label-style",
+      "color": "#E5E2E1",
+      "fontSize": 24,
+      "lineHeight": 32,
+      "isBold": false,
+      "horizontalAlign": "LEFT",
+      "verticalAlign": "CENTER",
+      "overflow": "SHRINK"
+    },
+    "frame.dark-metal.label.title": {
+      "kind": "label-style",
+      "color": "#FFE088",
+      "fontSize": 32,
+      "lineHeight": 40,
+      "isBold": true,
+      "horizontalAlign": "CENTER",
+      "verticalAlign": "CENTER",
+      "outlineColor": "#000000",
+      "outlineWidth": 1
+    }
+  }
+}

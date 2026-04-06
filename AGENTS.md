@@ -8,7 +8,7 @@
 
 ### 強制行為
 
-1. 先讀 `docs/keep.md`。
+1. 先讀 `docs/keep.summary.md`（需修改共識時才讀 `docs/keep.md` 全文）。
 2. 立刻套用 `.agents/skills/best-mode/SKILL.md` 的路由規則。
 3. 在讀取大型檔案、compare board、QA 圖片、長篇 notes、`docs/ui-quality-todo.json`、`docs/keep.md` 之前，先跑：
    ```bash

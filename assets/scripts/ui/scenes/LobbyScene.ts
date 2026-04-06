@@ -18,6 +18,16 @@ export class LobbyScene extends Component {
     private _listPanel: GeneralListPanel | null = null;
     private _detailPanel: GeneralDetailPanel | null = null;
     private _portraitPanel: GeneralPortraitPanel | null = null;
+    private _ready = false;
+
+    /** 等待 LobbyScene 資料初始化完成（供 headless smoke route 使用） */
+    public async waitForReady(timeoutMs = 8000): Promise<boolean> {
+        const start = Date.now();
+        while (!this._ready && Date.now() - start < timeoutMs) {
+            await new Promise<void>((r) => setTimeout(r, 80));
+        }
+        return this._ready;
+    }
 
     async start() {
         // 為 LobbyScene 大背板生成穩定的組件背景
@@ -73,6 +83,7 @@ export class LobbyScene extends Component {
             services().event.emit('SHOW_TOAST', { message: '系統：水墨金屬 UI 已啟動 (v2.2)' });
         }, 1);
 
+        this._ready = true;
     }
 
     private _ensureWidget(node: Node | null | undefined) {

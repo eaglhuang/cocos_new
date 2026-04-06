@@ -253,6 +253,25 @@ export interface UISkinManifest {
      *  格式: [fragmentId1, fragmentId2]
      */
     $fragments?: string[];
+    /**
+     * 此 manifest 所屬的框體 recipe 引用（Phase G 新增）。
+     * skin 層宣告後，screen 可在 recipeRef.slotOverrides 進一步覆寫。
+     * Unity 對照：Material 指派給一組 Renderer
+     */
+    recipeRef?: RecipeRef;
+    /**
+     * Layered theme stack 設定（UI-2-0085 預留）。
+     * 未設定時走現有 flat merge。
+     * base → family → stateOverrides → screen 四層優先序。
+     */
+    themeStack?: {
+        /** 全域 base skin id */
+        base?: string;
+        /** family-level skin id（e.g. "skin-family-dark-metal"） */
+        family?: string;
+        /** state override skin id 清單（由低到高優先權） */
+        stateOverrides?: string[];
+    };
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -265,6 +284,23 @@ export interface ValidationDef {
     devices?: string[];
     /** 是否允許缺少 skin（退回白模） */
     allowMissingSkin?: boolean;
+}
+
+/**
+ * Content Contract 引用定義
+ *
+ * 宣告此 Screen Spec 所屬 template family 對應的內容契約。
+ * 讓 AI Agent 能驗證生成的 screen config 是否符合 family 需求。
+ *
+ * Unity 對照：相當於 Prefab 的必填 SerializedField 清單宣告。
+ */
+export interface ContentContractRef {
+    /** 對應 assets/resources/ui-spec/contracts/{schemaId}.schema.json */
+    schemaId: string;
+    /** 所屬 template family id（kebab-case） */
+    familyId: string;
+    /** 最少必填欄位清單；validate-ui-specs --check-content-contract 會驗此清單 */
+    requiredFields: string[];
 }
 
 /** 完整的 Screen Spec */
@@ -287,6 +323,18 @@ export interface UIScreenSpec {
     prefabOutput?: string;
     /** 驗證規則 */
     validation?: ValidationDef;
+    /**
+     * Content Contract 引用（Phase F 新增）
+     * 宣告此畫面對應的內容契約，供 UIContentBinder 與驗證工具使用。
+     * 若 family 已有 schema，此欄位為必填。
+     */
+    contentRequirements?: ContentContractRef;
+    /**
+     * 此畫面引用的框體 recipe（Phase G 新增，UI-2-0084）。
+     * screen 層擁有最高優先，可覆寫 skin manifest 的 recipeRef.slotOverrides。
+     * Unity 對照：Renderer 上 Material 的 per-instance override。
+     */
+    recipeRef?: RecipeRef;
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -400,4 +448,247 @@ export interface UITemplateSpec {
     canvas?: CanvasDef;
     /** 預設 skin ID（可選） */
     defaultSkin?: string;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// 6. Phase G — Recipe 型別（UI-2-0084 / UI-2-0089）
+//
+// FrameRecipe / MaterialRecipe 是高品質 UI 的視覺語法契約層。
+// ArtRecipe 是 AI 生成資產的治理追蹤記錄（UI-2-0089）。
+//
+// 對應 JSON Schema: assets/resources/ui-spec/recipes/frame-recipe.schema.json
+//                   assets/resources/ui-spec/recipes/material-recipe.schema.json
+// ArtRecipe 檔案路徑:  artifacts/ui-source/ai-recipes/<id>.art-recipe.json
+//
+// Unity 對照：
+//   FrameRecipe    ≈ Shader / Material 的視覺語意標籤（非 runtime shader，而是設計契約）
+//   MaterialRecipe ≈ Material asset 的貼圖與混合參數描述
+//   ArtRecipe      ≈ Asset Importer 的 metadata + 來源追蹤（Source Control + GUID lineage）
+// ═══════════════════════════════════════════════════════════════
+
+/**
+ * ArtRecipe — AI 生成 UI 資產的治理追蹤記錄（UI-2-0089）。
+ *
+ * 每張 AI 生成或 AI 輔助生成的資產都必須對應一份 ArtRecipe。
+ * 目的：確保可維護性、風格可追溯、審核狀態清晰、衍生版本成鏈。
+ *
+ * 存放位置：artifacts/ui-source/ai-recipes/<id>.art-recipe.json
+ *
+ * Unity 對照：
+ *   類比 Unity 的 AssetImporter + Meta file + 手工 changelog，
+ *   但把「prompt / seed / post-process」資訊結構化。
+ *
+ * 可 AI 生成的資產類型（approvalStatus 可為 approved）：
+ *   - decorative-frame: 裝飾框體（玉、金、羊皮紙）
+ *   - background: 背景底圖（戰場、大廳）
+ *   - ornament: 紋樣、描邊花紋
+ *   - badge: 品質/稀有度徽章
+ *   - crest-medallion: 命紋徽章環框
+ *   - story-strip-art: 故事條插圖
+ *
+ * 禁止直接 AI 上線（需後製或人工審核）：
+ *   - character-portrait: 武將立繪（必須人工繪製或嚴格 style transfer）
+ *   - unit-icon: 單位頭像（要求一致風格，AI 個差異大）
+ *   - game-mechanic-icon: 遊戲機制圖示（清晰度/讀性優先，AI 難以穩定輸出）
+ */
+export interface ArtRecipe {
+    /** 唯一識別碼，格式：{family}-r{revision}，例如 crest-medallion-final-r1 */
+    id: string;
+    version: number;
+    /** 所屬 family，對應 MaterialRecipe 或 skin fragment 的 family 名稱 */
+    family: string;
+    /** 目標畫面 scene/screen id */
+    screenId?: string;
+    /** 目標皮膚 slot，對應 skin manifest 的 slot key */
+    targetSlot?: string;
+    /** 輸出的正式資產路徑（bundle 相對路徑或 db:// 路徑） */
+    outputAssetPath: string;
+    /** 生成工具/方式：'DALL-E 3' | 'Stable Diffusion' | 'Midjourney' | 'Agent1 final art production' 等 */
+    tool: string;
+    /** 美術方向參考文件路徑 */
+    assetDirectionRef?: string;
+    /** 正向提示詞（AI 生成時必填） */
+    prompt: string;
+    /** 負面提示詞 */
+    negativePrompt?: string;
+    /** 生成 seed（可重現性用，未記錄時為 null） */
+    seed?: number | null;
+    /** 後製步驟說明陣列（切片/調色/人工修飾等） */
+    postProcess?: string[];
+    /** 審核狀態 */
+    approvalStatus: 'pending' | 'approved' | 'rejected';
+    /** 審核者 */
+    approvedBy?: string | null;
+    /** 審核時間（ISO 8601） */
+    approvedAt?: string | null;
+    /** 所基於的父版 ArtRecipe id（衍生版本用） */
+    basedOn?: string | null;
+    /** 衍生 ArtRecipe id 清單（或衍生資產路徑），形成版本鍊 */
+    lineage?: string[];
+    notes?: string;
+}
+
+/**
+ * 七大框體家族標識。
+ * - dark-metal: 深色金屬，主戰場/主容器
+ * - parchment: 羊皮紙，文字/說明性容器
+ * - gold-cta: 金色確認按鈕
+ * - destructive: 破壞性操作按鈕
+ * - tab: 頁籤選擇器
+ * - semi-transparent-overlay: 半透明遮罩層
+ * - item-cell: 物品格/卡片單元
+ */
+export type FrameFamily =
+    | 'dark-metal'
+    | 'parchment'
+    | 'gold-cta'
+    | 'destructive'
+    | 'tab'
+    | 'semi-transparent-overlay'
+    | 'item-cell';
+
+/**
+ * 單一視覺層定義（frame / bleed / fill / ornament 共用）。
+ * slot 引用 skin manifest 中的 slot id；path 直接指定貼圖路徑（優先於 slot）。
+ */
+export interface FrameLayer {
+    /** 引用 skin manifest 中的 slot id */
+    slot?: string;
+    /** 直接指定貼圖路徑，優先於 slot（bundle 相對路徑） */
+    path?: string;
+    spriteType?: 'simple' | 'sliced' | 'tiled';
+    /** 九宮格邊距 [top, right, bottom, left]（像素） */
+    border?: [number, number, number, number];
+    /** 向外溢血像素 */
+    bleed?: number;
+    /** 不透明度 0~1 */
+    opacity?: number;
+    blendMode?: 'alpha' | 'overlay' | 'multiply';
+    /** true = 此層缺席不算 QA 失敗 */
+    optional?: boolean;
+}
+
+/**
+ * 陰影層設定。
+ * 支援兩種模式：
+ *   1. 指定 slot — 使用陰影貼圖（更精準，美術可控）
+ *   2. 指定 offset/blur/spread/color — 語意式陰影（供 validator 檢查與 compare board 標記）
+ */
+export interface ShadowConfig {
+    /** 陰影貼圖 slot id（若使用圖片陰影） */
+    slot?: string;
+    offsetX?: number;
+    offsetY?: number;
+    /** 模糊半徑（像素） */
+    blur?: number;
+    /** 擴張半徑（像素） */
+    spread?: number;
+    /** 陰影顏色，hex 或 token key */
+    color?: string;
+    opacity?: number;
+}
+
+/**
+ * 狀態覆寫項目。
+ * 在特定互動狀態（hover / pressed / disabled / selected）下替換某一層的 slot 或 opacity。
+ */
+export interface StateVariantOverride {
+    /** 要覆寫的層名稱 */
+    layer: 'frame' | 'bleed' | 'fill' | 'ornament';
+    /** 替換的 skin slot id */
+    slot: string;
+    opacity?: number;
+}
+
+/**
+ * FrameRecipe — 高品質 UI 框體視覺語法契約。
+ *
+ * 定義 frame / bleed / shadow / fill / ornament 五層疊層結構，
+ * 使 skin / screen 可宣告式引用框體家族，讓 validator 檢查語意一致性，
+ * 讓 Agent 可自動推理並回寫設計決策。
+ *
+ * 檔案位置：assets/resources/ui-spec/recipes/families/{family}.recipe.json
+ *
+ * Unity 對照：比 Material asset 更高層的「視覺風格契約」，
+ *   相當於把 URP Shader + 一組 Material Properties 合成一個具名的設計語意單元。
+ */
+export interface FrameRecipe {
+    /** kebab-case 唯一識別，e.g. "dark-metal-v1" */
+    id: string;
+    /** 版本號，遞增 */
+    version: number;
+    /** 所屬框體家族 */
+    family: FrameFamily;
+    description?: string;
+    /** 主框體層（必填） */
+    frame: FrameLayer;
+    /** 溢血層：框邊向外柔化的羽化貼圖 */
+    bleed?: FrameLayer;
+    /** 陰影層 */
+    shadow?: ShadowConfig;
+    /** 底色填充層（frame 下方） */
+    fill?: FrameLayer;
+    /** 角落/邊緣裝飾層（frame 上方） */
+    ornament?: FrameLayer;
+    /**
+     * 每個互動狀態的局部覆寫。
+     * key = 'normal' | 'hover' | 'pressed' | 'disabled' | 'selected'
+     */
+    stateVariants?: Record<string, StateVariantOverride[]>;
+    /** 圓角像素（0 = 直角） */
+    cornerRadius?: number;
+    /** 邊框粗細（像素） */
+    borderWeight?: number;
+    /** bleed 擴張像素（0 = 無溢血） */
+    bleedIntensity?: number;
+    /** 關聯的 MaterialRecipe id（可選） */
+    materialId?: string;
+}
+
+/**
+ * MaterialRecipe — UI 材質/紋理風格契約。
+ *
+ * 描述底層貼圖、紙紋雜訊、金屬感、透明度與混合模式，
+ * 供 FrameRecipe 引用，也可被 skin/screen 直接引用。
+ *
+ * 檔案位置：assets/resources/ui-spec/recipes/materials/{id}.material.json
+ *
+ * Unity 對照：Material asset（TextureSlot + 混合參數）的資料描述層。
+ */
+export interface MaterialRecipe {
+    id: string;
+    version: number;
+    description?: string;
+    /** 底層貼圖路徑（bundle 相對路徑） */
+    baseTexturePath?: string;
+    /** 底色，hex 或 token key，疊在 baseTexture 上方 */
+    baseColor?: string;
+    /** 紙紋/雜訊強度 0~1 */
+    grainIntensity?: number;
+    /** 雜訊/紙紋貼圖路徑 */
+    grainTexturePath?: string;
+    opacity?: number;
+    blendMode?: 'alpha' | 'overlay' | 'multiply';
+    /** 金屬感強度 0~1，0 = 無金屬感 */
+    metallicIntensity?: number;
+    /** true = 由 AI 生成，需有 artRecipeRef 追溯（UI-2-0089） */
+    aiGenerated?: boolean;
+    /** 關聯的 ArtRecipe id（UI-2-0089 使用） */
+    artRecipeRef?: string;
+}
+
+/**
+ * RecipeRef — skin manifest 或 screen spec 引用 recipe 的方式。
+ * 讓單一畫面可宣告「我用 dark-metal 框體」而不需重複定義五層 slot。
+ *
+ * Unity 對照：Prefab 上的 [RequireComponent] 或 StyleSheet reference。
+ */
+export interface RecipeRef {
+    /** 引用的 FrameRecipe id */
+    frameRecipeId: string;
+    /**
+     * 局部 slot 覆寫（screen-level 最高優先）。
+     * key = slot id, value = 覆寫的 FrameLayer 屬性（partial）
+     */
+    slotOverrides?: Record<string, Partial<FrameLayer>>;
 }

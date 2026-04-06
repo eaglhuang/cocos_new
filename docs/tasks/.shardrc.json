@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "source": "../ui-quality-todo.json",
+  "indexTitle": "UI Quality Tasks",
+  "indexPath": "docs/ui-quality-todo.json",
+  "type": "json-array",
+  "arrayPath": "tasks",
+  "shardArrayPath": "tasks",
+  "splitField": "id",
+  "defaultShard": "tasks-data",
+  "_comment": "splitField is matched via 'pattern' regex against each task's 'id' value.",
+  "shards": [
+    {
+      "name": "tasks-ui",
+      "title": "UI Tasks（UI-*）",
+      "pattern": "^UI-"
+    },
+    {
+      "name": "tasks-prog",
+      "title": "Prog Tasks（PROG-*）",
+      "pattern": "^PROG-"
+    },
+    {
+      "name": "tasks-dc",
+      "title": "DataCenter Tasks（DC-*）",
+      "pattern": "^DC-"
+    },
+    {
+      "name": "tasks-data",
+      "title": "Data Tasks（DATA-*）",
+      "pattern": "^DATA-"
+    }
+  ]
+}

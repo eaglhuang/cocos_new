@@ -9,7 +9,7 @@
  */
 import { _decorator } from 'cc';
 import { ResourceManager } from '../../core/systems/ResourceManager';
-import type { UILayoutSpec, UISkinManifest, UIScreenSpec, UISkinFragment, UILayoutNodeSpec, UITemplateSpec, UIWidgetFragmentSpec } from './UISpecTypes';
+import type { UILayoutSpec, UISkinManifest, UIScreenSpec, UISkinFragment, UILayoutNodeSpec, UITemplateSpec, UIWidgetFragmentSpec, FrameRecipe, SkinSlot } from './UISpecTypes';
 
 const { ccclass } = _decorator;
 
@@ -24,6 +24,7 @@ export class UISpecLoader {
     private _screenCache = new Map<string, UIScreenSpec>();
     private _templateCache = new Map<string, UITemplateSpec>();
     private _widgetCache = new Map<string, UIWidgetFragmentSpec>();
+    private _recipeCache = new Map<string, FrameRecipe>();
     private _designTokens: any = null;
 
     // ── 載入方法 ────────────────────────────────────────────────
@@ -104,6 +105,12 @@ export class UISpecLoader {
     /**
      * 載入 Skin Manifest
      * @param skinId skin JSON 的 id
+     *
+     * Phase G (UI-2-0085)：若 manifest 含 themeStack，自動進行四層合併：
+     *   base → family → stateOverrides → 本 manifest（後者覆寫前者）。
+     * 不含 themeStack 時退回 Phase F 的 flat merge，完全向後相容。
+     *
+     * Unity 對照：Prefab Variant 的 Material Override Chain
      */
     async loadSkin(skinId: string): Promise<UISkinManifest> {
         if (this._skinCache.has(skinId)) {
@@ -116,7 +123,7 @@ export class UISpecLoader {
             throw new Error(`[UISpecLoader] loadSkin: 找不到 skin "${skinId}"，請確認 assets/resources/ui-spec/skins/${skinId}.json 是否存在`);
         }
 
-        // 如果 skin 引用了碎片，載入並合併
+        // Phase F：$fragments 合併（flat merge，向後相容）
         if (manifest.$fragments && manifest.$fragments.length > 0) {
             for (const fragId of manifest.$fragments) {
                 try {
@@ -130,8 +137,87 @@ export class UISpecLoader {
             }
         }
 
+        // Phase G (UI-2-0085)：themeStack layered merge chain
+        // 僅當 manifest 有 themeStack 才進行疊層合併；否則維持現有行為。
+        if (manifest.themeStack) {
+            const mergedSlots = await this._buildThemeStackSlots(manifest, new Set([skinId]));
+            manifest.slots = mergedSlots;
+        }
+
         this._skinCache.set(skinId, manifest);
         return manifest;
+    }
+
+    /**
+     * 建立 themeStack 疊層合併後的 slots。
+     *
+     * 優先序（由低到高）：
+     *   1. base skin（全域設計 token / 預設 slot）
+     *   2. family skin（family 共用 slot，如 dark-metal 共用框邊）
+     *   3. stateOverrides skin 清單（低→高，後者覆寫前者）
+     *   4. 本 manifest 自身 slot（最高優先，screen-level 自訂）
+     *
+     * @param manifest 已載入的本 manifest（含 themeStack）
+     * @param visited  已訪問的 skin id Set（防止循環引用）
+     *
+     * Unity 對照：MaterialPropertyBlock 疊層，後者 Override 前者
+     */
+    private async _buildThemeStackSlots(
+        manifest: UISkinManifest,
+        visited: Set<string>
+    ): Promise<Record<string, SkinSlot>> {
+        const chain: Array<Record<string, SkinSlot>> = [];
+        const stack = manifest.themeStack!;
+
+        const safePush = async (refId: string, layerLabel: string) => {
+            if (!refId) return;
+            if (visited.has(refId)) {
+                console.warn(`[UISpecLoader] themeStack 循環引用，跳過 ${layerLabel} skin: ${refId}`);
+                return;
+            }
+            visited.add(refId);
+            const skin = await this.loadSkin(refId);
+            chain.push(skin.slots);
+        };
+
+        // 1. base（最低優先）
+        if (stack.base) await safePush(stack.base, 'base');
+        // 2. family
+        if (stack.family) await safePush(stack.family, 'family');
+        // 3. stateOverrides（由 index 0 到末尾，後者優先）
+        for (const soId of stack.stateOverrides ?? []) {
+            await safePush(soId, 'stateOverride');
+        }
+        // 4. 本 manifest 自身（最高優先）
+        chain.push(manifest.slots);
+
+        // 合併：後者 key 覆寫前者，未衝突的 key 全部保留
+        return Object.assign({}, ...chain);
+    }
+
+    /**
+     * 載入 FrameRecipe（高品質框體視覺語法契約）
+     * @param recipeId recipe 檔案的基底名（不含 .recipe.json），如 "dark-metal"
+     *
+     * 檔案路徑：assets/resources/ui-spec/recipes/families/{recipeId}.recipe.json
+     *
+     * Unity 對照：Material asset 的視覺語意契約描述
+     */
+    async loadRecipe(recipeId: string): Promise<FrameRecipe> {
+        if (this._recipeCache.has(recipeId)) {
+            return this._recipeCache.get(recipeId)!;
+        }
+        const recipe = await this._rm.loadJson<FrameRecipe>(
+            `ui-spec/recipes/families/${recipeId}.recipe`, { tags: ['UISpec'] }
+        );
+        if (!recipe) {
+            throw new Error(
+                `[UISpecLoader] recipe "${recipeId}" 不存在，` +
+                `請確認 assets/resources/ui-spec/recipes/families/${recipeId}.recipe.json 是否存在`
+            );
+        }
+        this._recipeCache.set(recipeId, recipe);
+        return recipe;
     }
 
     /**
@@ -235,6 +321,7 @@ export class UISpecLoader {
         this._screenCache.clear();
         this._templateCache.clear();
         this._widgetCache.clear();
+        this._recipeCache.clear();
         this._designTokens = null;
     }
 }

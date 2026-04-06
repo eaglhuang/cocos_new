@@ -1,0 +1,57 @@
+{
+  "id": "skin-base-v1",
+  "version": 1,
+  "bundle": "ui_common",
+  "atlasPolicy": "ui_base",
+  "description": "全域 base skin。提供 token 驅動的預設字型、佔位符與通用 slot。所有 themeStack 的最低優先層。",
+  "slots": {
+    "base.label.default": {
+      "kind": "label-style",
+      "style": "body",
+      "color": "#E5E2E1",
+      "fontSize": 24,
+      "lineHeight": 32,
+      "isBold": false,
+      "horizontalAlign": "LEFT",
+      "verticalAlign": "CENTER",
+      "overflow": "SHRINK"
+    },
+    "base.label.title": {
+      "kind": "label-style",
+      "style": "heading",
+      "color": "#FFE088",
+      "fontSize": 32,
+      "lineHeight": 40,
+      "isBold": true,
+      "horizontalAlign": "CENTER",
+      "verticalAlign": "CENTER",
+      "overflow": "SHRINK"
+    },
+    "base.label.caption": {
+      "kind": "label-style",
+      "color": "#D0C5AF",
+      "fontSize": 18,
+      "lineHeight": 24,
+      "horizontalAlign": "LEFT",
+      "verticalAlign": "CENTER",
+      "overflow": "SHRINK"
+    },
+    "base.label.muted": {
+      "kind": "label-style",
+      "color": "#99907C",
+      "fontSize": 18,
+      "lineHeight": 24,
+      "horizontalAlign": "LEFT",
+      "verticalAlign": "CENTER",
+      "overflow": "SHRINK"
+    },
+    "base.bg.overlay": {
+      "kind": "color-rect",
+      "color": "#000000AA"
+    },
+    "base.divider": {
+      "kind": "color-rect",
+      "color": "#4D4635"
+    }
+  }
+}

@@ -1,0 +1,385 @@
+{
+  "kind": "ui-quality-task-shard",
+  "version": 1,
+  "tasks": [
+    {
+      "id": "PROG-1-0001",
+      "priority": "P0",
+      "phase": "P",
+      "owner": "Agent1",
+      "status": "open",
+      "created": "2026-04-06",
+      "created_by_agent": "Agent1",
+      "type": "data-structure",
+      "title": "HeroBase 介面 + 6 位初始武將資料落地",
+      "description": "在 GeneralUnit.ts 或新建 HeroBase.ts 定義 HeroBase 介面（id, name, title, originRegion, coreFactorTag, rarity, element, initialRole, introLine, portraitKey, battleVoiceKey）；補齊 generals.json 6 位初始武將的全部對應欄位。",
+      "related": ["PROG-1-0003", "PROG-1-0007", "PROG-1-0010"],
+      "depends": [],
+      "acceptance": [
+        "HeroBase TypeScript 介面定義完整，0 TS errors",
+        "generals.json 6 位初始武將均有 introLine / portraitKey / battleVoiceKey",
+        "node tools_node/validate-generals-data.js 零 error（若腳本已存在）"
+      ],
+      "deliverables": [
+        "assets/scripts/core/models/HeroBase.ts（或 GeneralUnit.ts 擴充）",
+        "assets/resources/data/generals.json（6 位初始武將完整欄位）"
+      ],
+      "notes": "2026-04-06 | 狀態: open | 來源: 程式規格書.md §3.1 | 阻塞: 無"
+    },
+    {
+      "id": "PROG-1-0002",
+      "priority": "P0",
+      "phase": "P",
+      "owner": "Agent1",
+      "status": "open",
+      "created": "2026-04-06",
+      "created_by_agent": "Agent1",
+      "type": "data-structure",
+      "title": "SupportCardBase 介面 + support-cards.json 初始落地",
+      "description": "建立 SupportCardBase.ts 介面（id, name, category, rarity, routeType, arrivalTime, rushPrice, effectTags, previewLine, portraitKey）；建立 assets/resources/data/support-cards.json，包含至少 3 筆初始支援角色資料（紅顏池用）。",
+      "related": ["PROG-1-0008"],
+      "depends": [],
+      "acceptance": [
+        "SupportCardBase 介面完整，0 TS errors",
+        "support-cards.json 至少 3 筆，含 name / rarity / routeType / arrivalTime / rushPrice",
+        "JSON Schema 驗證通過"
+      ],
+      "deliverables": [
+        "assets/scripts/core/models/SupportCardBase.ts",
+        "assets/resources/data/support-cards.json"
+      ],
+      "notes": "2026-04-06 | 狀態: open | 來源: 程式規格書.md §3.2 | 阻塞: 無"
+    },
+    {
+      "id": "PROG-1-0003",
+      "priority": "P0",
+      "phase": "P",
+      "owner": "Agent1",
+      "status": "open",
+      "created": "2026-04-06",
+      "created_by_agent": "Agent1",
+      "type": "data-structure",
+      "title": "InheritLogic 介面 + 預設繼承規則落地",
+      "description": "建立 InheritLogic.ts 介面（fatherId, motherId, ancestorCount, allowedRegions, factorSlots, mutationRules, previewWeights, inheritCaps）；對照 BloodlineGenerator.ts 確認型別整合點；建立 assets/resources/data/inherit-logic-default.json。",
+      "related": ["PROG-1-0010", "PROG-1-0014"],
+      "depends": [],
+      "acceptance": [
+        "InheritLogic 介面 0 TS errors",
+        "與 BloodlineGenerator.ts 的型別無衝突",
+        "inherit-logic-default.json baseline 規則完整（mutationRules / previewWeights）"
+      ],
+      "deliverables": [
+        "assets/scripts/core/models/InheritLogic.ts",
+        "assets/resources/data/inherit-logic-default.json"
+      ],
+      "notes": "2026-04-06 | 狀態: open | 來源: 程式規格書.md §3.3 | 注意: 對照 BloodlineGenerator.ts 已有邏輯"
+    },
+    {
+      "id": "PROG-1-0004",
+      "priority": "P0",
+      "phase": "P",
+      "owner": "Agent1",
+      "status": "open",
+      "created": "2026-04-06",
+      "created_by_agent": "Agent1",
+      "type": "data-structure",
+      "title": "OpeningFlowConfig 介面 + 開場幕次 JSON 落地",
+      "description": "建立 OpeningFlowConfig.ts 介面（phaseId, phaseName, durationHint, entryCondition, exitCondition, requiredUi, requiredEffects, requiredRewards）；建立 assets/resources/data/opening-flow-config.json，涵蓋信件、漫畫、轉場、轉蛋、教學全幕次。",
+      "related": ["PROG-1-0007", "PROG-1-0012"],
+      "depends": [],
+      "acceptance": [
+        "OpeningFlowConfig 介面 0 TS errors",
+        "opening-flow-config.json 包含全部開場幕次（至少 5 幕）",
+        "每幕 entryCondition / exitCondition 明確定義"
+      ],
+      "deliverables": [
+        "assets/scripts/core/models/OpeningFlowConfig.ts",
+        "assets/resources/data/opening-flow-config.json"
+      ],
+      "notes": "2026-04-06 | 狀態: open | 來源: 程式規格書.md §3.4 §2.1 | 阻塞: 無"
+    },
+    {
+      "id": "PROG-1-0005",
+      "priority": "P0",
+      "phase": "P",
+      "owner": "Agent1",
+      "status": "open",
+      "created": "2026-04-06",
+      "created_by_agent": "Agent1",
+      "type": "data-structure",
+      "title": "GachaConfig 介面 + 抽卡配置 JSON 落地",
+      "description": "建立 GachaConfig.ts 介面（poolId, poolType, resetEnabled, guaranteeRarity, pickCount, candidateIds, firstPickOnly, confirmRequired）；建立 assets/resources/data/gacha-config.json，含名將池（resetEnabled: true）與紅顏池各一。",
+      "related": ["PROG-1-0008", "PROG-1-0013"],
+      "depends": ["PROG-1-0001", "PROG-1-0002"],
+      "acceptance": [
+        "GachaConfig 介面 0 TS errors",
+        "gacha-config.json 含兩個 pool：'hero-pool' (pickCount:10, resetEnabled:true) 與 'support-pool'",
+        "candidateIds 引用真實存在的 id"
+      ],
+      "deliverables": [
+        "assets/scripts/core/models/GachaConfig.ts",
+        "assets/resources/data/gacha-config.json"
+      ],
+      "notes": "2026-04-06 | 狀態: open | 來源: 程式規格書.md §3.5 §2.2 | 阻塞: 需先 PROG-1-0001 落地 candidateIds"
+    },
+    {
+      "id": "PROG-1-0006",
+      "priority": "P0",
+      "phase": "P",
+      "owner": "Agent1",
+      "status": "open",
+      "created": "2026-04-06",
+      "created_by_agent": "Agent1",
+      "type": "data-structure",
+      "title": "CountdownConfig 介面 + 倒數參數 JSON 落地",
+      "description": "建立 CountdownConfig.ts 介面（targetId, startTimestamp, finishTimestamp, rushPrice, displayLocation, notifyEveryLogin, canAccelerate）；建立 assets/resources/data/countdown-config.json，包含離線累積旗標與初始趕路設定。",
+      "related": ["PROG-1-0009", "PROG-1-0015"],
+      "depends": [],
+      "acceptance": [
+        "CountdownConfig 介面 0 TS errors",
+        "countdown-config.json 含至少一組趕路設定",
+        "canAccelerate / rushPrice 欄位完整"
+      ],
+      "deliverables": [
+        "assets/scripts/core/models/CountdownConfig.ts",
+        "assets/resources/data/countdown-config.json"
+      ],
+      "notes": "2026-04-06 | 狀態: open | 來源: 程式規格書.md §3.6 §2.3 | 阻塞: 無"
+    },
+    {
+      "id": "PROG-1-0007",
+      "priority": "P1",
+      "phase": "P",
+      "owner": "Agent1",
+      "status": "open",
+      "created": "2026-04-06",
+      "created_by_agent": "Agent1",
+      "type": "implementation",
+      "title": "OpeningFlowController 實作（事件驅動開場流程）",
+      "description": "建立 assets/scripts/core/controllers/OpeningFlowController.ts。實作事件驅動的開場流程（信件→漫畫→轉場→轉蛋→教學）；各幕進出條件可追蹤、可回溯；整合 SceneManager / UIManager / EventSystem；支援未登入時顯示預設內容。",
+      "related": ["PROG-1-0012"],
+      "depends": ["PROG-1-0001", "PROG-1-0002", "PROG-1-0004"],
+      "acceptance": [
+        "從空存檔啟動可跑完全部幕次，無 TypeError",
+        "phaseId 狀態可追蹤（console 或 EventSystem 有事件）",
+        "entryCondition / exitCondition 對照 opening-flow-config.json 全部正確觸發",
+        "未登入時各幕顯示預設內容而非空白 / crash"
+      ],
+      "deliverables": [
+        "assets/scripts/core/controllers/OpeningFlowController.ts"
+      ],
+      "notes": "2026-04-06 | 狀態: open | 來源: 程式規格書.md §2.1 §4 §5.1 | 阻塞: PROG-1-0004 需先完成"
+    },
+    {
+      "id": "PROG-1-0008",
+      "priority": "P1",
+      "phase": "P",
+      "owner": "Agent1",
+      "status": "open",
+      "created": "2026-04-06",
+      "created_by_agent": "Agent1",
+      "type": "implementation",
+      "title": "GachaManager 實作（無限重置十連抽 + 保底）",
+      "description": "建立 assets/scripts/core/managers/GachaManager.ts。實作無限重置十連抽（初始名將池 + 紅顏池）；保底（第 10 抽必出 guaranteeRarity）；重置（resetEnabled 旗標）；firstPickOnly 限制；confirmRequired 確認鎖定流程。",
+      "related": ["PROG-1-0013", "PROG-1-0016"],
+      "depends": ["PROG-1-0001", "PROG-1-0002", "PROG-1-0005"],
+      "acceptance": [
+        "10 連抽結果正確（10 個 id 不重複且在 candidateIds 內）",
+        "呼叫 reset() 後狀態正確回初始（guaranteeCounter 歸零）",
+        "第 10 抽必出 guaranteeRarity（單元驗證）",
+        "firstPickOnly=true 時第二次 pick 報錯"
+      ],
+      "deliverables": [
+        "assets/scripts/core/managers/GachaManager.ts"
+      ],
+      "notes": "2026-04-06 | 狀態: open | 來源: 程式規格書.md §2.2 §5.2 | 阻塞: PROG-1-0005 需先完成"
+    },
+    {
+      "id": "PROG-1-0009",
+      "priority": "P1",
+      "phase": "P",
+      "owner": "Agent1",
+      "status": "open",
+      "created": "2026-04-06",
+      "created_by_agent": "Agent1",
+      "type": "implementation",
+      "title": "CountdownManager 實作（離線時間累積 + 加速 + 完成切換）",
+      "description": "建立 assets/scripts/core/managers/CountdownManager.ts。實作趕路倒數（支援角色/名將路程）；離線時間累積（使用 Date.now delta）；加速（rushPrice 消費縮短剩餘時間）；完成後切換為已到達狀態；主畫面常駐提示更新。",
+      "related": ["PROG-1-0015", "PROG-1-0016"],
+      "depends": ["PROG-1-0006"],
+      "acceptance": [
+        "模擬離線 30min 後重入 App，剩餘時間正確縮短",
+        "finishTimestamp 到達後狀態切換為 'arrived'，無 flicker",
+        "rushPrice 消費正確縮短剩餘秒數",
+        "notifyEveryLogin=true 時每次登入彈出提示"
+      ],
+      "deliverables": [
+        "assets/scripts/core/managers/CountdownManager.ts"
+      ],
+      "notes": "2026-04-06 | 狀態: open | 來源: 程式規格書.md §2.3 §5.4 | 阻塞: PROG-1-0006 需先完成"
+    },
+    {
+      "id": "PROG-1-0010",
+      "priority": "P1",
+      "phase": "P",
+      "owner": "Agent1",
+      "status": "open",
+      "created": "2026-04-06",
+      "created_by_agent": "Agent1",
+      "type": "ui-component",
+      "title": "BloodlineTreePanel 元件實作（祖先矩陣 + 子嗣預測）",
+      "description": "建立 assets/scripts/ui/components/BloodlineTreePanel.ts。顯示祖先矩陣（至少 3 代 14 人）；因子繼承視覺化（連線/色塊）；子嗣預測欄位顯示；對接 BloodlineGenerator.ts 計算結果。注意：規格書稱 UI_BloodlineTree，建議命名為 BloodlineTreePanel 與現有元件一致。",
+      "related": ["PROG-1-0003", "PROG-1-0014"],
+      "depends": ["PROG-1-0001", "PROG-1-0003"],
+      "acceptance": [
+        "3 代 14 人矩陣在 720p 下無溢出",
+        "因子繼承連線正確（每個因子溯源至祖先）",
+        "子嗣預測欄位正確顯示 BloodlineGenerator.ts 計算結果",
+        "smoke capture 可截圖（--target BloodlineTree）"
+      ],
+      "deliverables": [
+        "assets/scripts/ui/components/BloodlineTreePanel.ts"
+      ],
+      "notes": "2026-04-06 | 狀態: open | 來源: 程式規格書.md §2.4 §5.3 | 阻塞: PROG-1-0003 完成後再接"
+    },
+    {
+      "id": "PROG-1-0011",
+      "priority": "P1",
+      "phase": "P",
+      "owner": "Agent1",
+      "status": "open",
+      "created": "2026-04-06",
+      "created_by_agent": "Agent1",
+      "type": "ui-component",
+      "title": "AttributePanel 元件實作（六維屬性 + 因子槽 + 六角圖）",
+      "description": "確認 GeneralDetailPanel.ts 是否已涵蓋；若不足請建立或擴充 AttributePanel.ts。顯示主因子（coreFactorTag）、次級因子、解鎖狀態；六角圖或等效圖表（使用 CurveSystem 或 Graphics API）；支援 GeneralDetailOverviewShell 整合掛載。",
+      "related": ["PROG-1-0001"],
+      "depends": ["PROG-1-0001"],
+      "acceptance": [
+        "六維屬性（ATK/DEF/HP/SPD/COST + 適性）正確顯示",
+        "主因子 / 次級因子槽正確對應 coreFactorTag",
+        "解鎖狀態視覺差異（灰色遮罩 vs 亮色）",
+        "六角圖 or 等效圖表在 720p 不失真"
+      ],
+      "deliverables": [
+        "assets/scripts/ui/components/AttributePanel.ts（新建或確認 GeneralDetailPanel.ts 已擁有）"
+      ],
+      "notes": "2026-04-06 | 狀態: open | 來源: 程式規格書.md §2.5 | 可先審 GeneralDetailPanel.ts 範圍再決定新建或擴充"
+    },
+    {
+      "id": "PROG-1-0012",
+      "priority": "P2",
+      "phase": "P",
+      "owner": "Agent1",
+      "status": "open",
+      "created": "2026-04-06",
+      "created_by_agent": "Agent1",
+      "type": "validation",
+      "title": "新手開場流程整合驗證（未登入 + 全幕通過）",
+      "description": "端到端驗證：空存檔啟動 → 開場全幕（信件/漫畫/轉場/轉蛋/教學）→ 進入 Lobby；確保未登入資料時各幕顯示預設內容；各幕進出條件正確觸發；OpeningFlowController 狀態機走完全程無 TypeError。",
+      "related": ["PROG-1-0007"],
+      "depends": ["PROG-1-0007", "PROG-1-0008", "PROG-1-0009"],
+      "acceptance": [
+        "從空存檔啟動 → 5 + 幕次全部通過，零 TypeError",
+        "未登入時各幕均有合理預設內容（非空白 / crash）",
+        "開場完成後正確進入 LobbyScene"
+      ],
+      "deliverables": [
+        "artifacts/ui-qa/PROG-1-0012/opening-flow-test-report.md（測試執行截圖/log）"
+      ],
+      "notes": "2026-04-06 | 狀態: open | 來源: 程式規格書.md §4 §5.1 | 阻塞: 依賴 PROG-1-0007/0008/0009"
+    },
+    {
+      "id": "PROG-1-0013",
+      "priority": "P2",
+      "phase": "P",
+      "owner": "Agent1",
+      "status": "open",
+      "created": "2026-04-06",
+      "created_by_agent": "Agent1",
+      "type": "validation",
+      "title": "抽卡重置邏輯驗證（保底 + reset 正確性）",
+      "description": "驗證 GachaManager：10 連抽結果正確；呼叫 reset() 後狀態完整歸零（guaranteeCounter / picks）；第 10 抽必出 guaranteeRarity；confirmRequired=true 時確認前不鎖定；firstPickOnly=true 時第二次 pick 報錯。",
+      "related": ["PROG-1-0008"],
+      "depends": ["PROG-1-0008"],
+      "acceptance": [
+        "10 次連续 reset → 每次初始狀態完全一致",
+        "第 10 抽必出 guaranteeRarity（10 輪測試全中）",
+        "confirmRequired flow 走完後 pick 鎖定，reset 後解除"
+      ],
+      "deliverables": [
+        "artifacts/ui-qa/PROG-1-0013/gacha-reset-test-report.md"
+      ],
+      "notes": "2026-04-06 | 狀態: open | 來源: 程式規格書.md §5.2 | 阻塞: PROG-1-0008"
+    },
+    {
+      "id": "PROG-1-0014",
+      "priority": "P2",
+      "phase": "P",
+      "owner": "Agent1",
+      "status": "open",
+      "created": "2026-04-06",
+      "created_by_agent": "Agent1",
+      "type": "validation",
+      "title": "因子預覽對應角色資料驗證",
+      "description": "驗證 BloodlineTreePanel 預覽的因子與 InheritLogic previewWeights 正確對應；子嗣預測顯示與 BloodlineGenerator.ts 計算結果一致；測試 10 筆不同父母組合，factor 預測均正確。",
+      "related": ["PROG-1-0010", "PROG-1-0003"],
+      "depends": ["PROG-1-0010", "PROG-1-0003"],
+      "acceptance": [
+        "10 筆測試組合，BloodlineTreePanel 顯示與 BloodlineGenerator.ts 輸出 100% 一致",
+        "無任何 null reference 或 undefined factor",
+        "previewWeights 極端值（全 0 / 全 max）不 crash"
+      ],
+      "deliverables": [
+        "artifacts/ui-qa/PROG-1-0014/factor-preview-test-report.md"
+      ],
+      "notes": "2026-04-06 | 狀態: open | 來源: 程式規格書.md §5.3 | 阻塞: PROG-1-0010"
+    },
+    {
+      "id": "PROG-1-0015",
+      "priority": "P2",
+      "phase": "P",
+      "owner": "Agent1",
+      "status": "open",
+      "created": "2026-04-06",
+      "created_by_agent": "Agent1",
+      "type": "validation",
+      "title": "倒數完成狀態切換驗證（離線累積 + 加速）",
+      "description": "驗證 CountdownManager：離線時間累積邏輯（mock Date.now delta）；startTimestamp/finishTimestamp 差值計算正確；倒數完成後 UI 切換為已到達狀態無 flicker；rushPrice 支付後縮短秒數正確；notifyEveryLogin 正確觸發。",
+      "related": ["PROG-1-0009"],
+      "depends": ["PROG-1-0009"],
+      "acceptance": [
+        "mock 離線 1800 秒後，remainingMs 正確縮短 1800s",
+        "finishTimestamp 到達後狀態 = 'arrived'，不反覆切換",
+        "rushPrice 使用 100 元 → 縮短時間正確（對應 CountdownConfig rushPrice 換算）"
+      ],
+      "deliverables": [
+        "artifacts/ui-qa/PROG-1-0015/countdown-test-report.md"
+      ],
+      "notes": "2026-04-06 | 狀態: open | 來源: 程式規格書.md §5.4 | 阻塞: PROG-1-0009"
+    },
+    {
+      "id": "PROG-1-0016",
+      "priority": "P2",
+      "phase": "P",
+      "owner": "Agent1",
+      "status": "open",
+      "created": "2026-04-06",
+      "created_by_agent": "Agent1",
+      "type": "validation",
+      "title": "商業化入口一致性驗證（配置表驅動 + 無硬編碼）",
+      "description": "驗證所有商業化入口（rushPrice、轉蛋、道具）都從統一配置表讀取；grep 確認零個硬編碼價格數字；與 OpeningFlowController 流程狀態一致（未啟動流程前商業入口不可見）。",
+      "related": ["PROG-1-0005", "PROG-1-0009", "PROG-1-0007"],
+      "depends": ["PROG-1-0007", "PROG-1-0008", "PROG-1-0009"],
+      "acceptance": [
+        "grep -r 'rushPrice\\s*=\\s*[0-9]' assets/scripts 零結果（無硬編碼）",
+        "gacha-config.json / countdown-config.json 是唯一價格來源",
+        "開場流程未完成時商業入口按鈕不可見或禁用"
+      ],
+      "deliverables": [
+        "artifacts/ui-qa/PROG-1-0016/commercial-entry-audit.md"
+      ],
+      "notes": "2026-04-06 | 狀態: open | 來源: 程式規格書.md §4 §5.5 | 阻塞: PROG-1-0007/0008/0009"
+    }
+  ]
+}

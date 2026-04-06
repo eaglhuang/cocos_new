@@ -1,0 +1,4 @@
+interface:
+  display_name: "UI Runtime Verify"
+  short_description: "刷新、截圖並驗證 UI runtime"
+  default_prompt: "Describe the target UI screen, capture target, and whether you need strict validation, runtime screenshots, or residual analysis after layout, skin, screen, content, or panel changes."

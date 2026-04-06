@@ -1,0 +1,49 @@
+{
+  "$schema": "../frame-recipe.schema.json",
+  "id": "tab-v1",
+  "version": 1,
+  "family": "tab",
+  "description": "頁籤選擇器框體。主要用於多分頁選單、功能切換標籤。特徵：細邊框、無溢血、輕陰影（active 狀態才顯示）、扁平填色。",
+  "cornerRadius": 3,
+  "borderWeight": 3,
+  "bleedIntensity": 0,
+  "frame": {
+    "slot": "tab.edge",
+    "spriteType": "sliced",
+    "border": [4, 4, 4, 4],
+    "bleed": 0,
+    "opacity": 0.8,
+    "blendMode": "alpha"
+  },
+  "shadow": {
+    "offsetX": 0,
+    "offsetY": 2,
+    "blur": 4,
+    "spread": 0,
+    "color": "#000000",
+    "opacity": 0.25
+  },
+  "fill": {
+    "slot": "tab.fill-inactive",
+    "spriteType": "sliced",
+    "border": [4, 4, 4, 4],
+    "opacity": 1.0,
+    "blendMode": "alpha"
+  },
+  "stateVariants": {
+    "selected": [
+      { "layer": "frame", "slot": "tab.edge-active",    "opacity": 1.0 },
+      { "layer": "fill",  "slot": "tab.fill-active",    "opacity": 1.0 }
+    ],
+    "hover": [
+      { "layer": "fill",  "slot": "tab.fill-hover",     "opacity": 1.0 }
+    ],
+    "pressed": [
+      { "layer": "fill",  "slot": "tab.fill-active",    "opacity": 0.85 }
+    ],
+    "disabled": [
+      { "layer": "frame", "slot": "tab.edge",           "opacity": 0.35 },
+      { "layer": "fill",  "slot": "tab.fill-inactive",  "opacity": 0.35 }
+    ]
+  }
+}

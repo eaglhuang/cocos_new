@@ -1,0 +1,12 @@
+{
+  "createdAt": "2026-04-06T10:13:20.861Z",
+  "host": "http://localhost:7456",
+  "machine": "DESKTOP-NREHEQ8",
+  "captures": [
+    {
+      "target": "GeneralDetailOverview",
+      "screenId": "general-detail-bloodline-v3-screen",
+      "file": "artifacts\\ui-qa\\UI-2-0093\\temp-check\\GeneralDetailOverview.png"
+    }
+  ]
+}

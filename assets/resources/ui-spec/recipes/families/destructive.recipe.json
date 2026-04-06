@@ -1,0 +1,56 @@
+{
+  "$schema": "../frame-recipe.schema.json",
+  "id": "destructive-v1",
+  "version": 1,
+  "family": "destructive",
+  "description": "破壞性/危險操作按鈕框體。主要用於刪除、解散、確認退出、撤退等高風險操作。特徵：暗紅邊框、中等溢血、強陰影、警示填色。",
+  "cornerRadius": 7,
+  "borderWeight": 8,
+  "bleedIntensity": 10,
+  "frame": {
+    "slot": "btn.destructive.edge",
+    "spriteType": "sliced",
+    "border": [10, 10, 10, 10],
+    "bleed": 4,
+    "opacity": 1.0,
+    "blendMode": "alpha"
+  },
+  "bleed": {
+    "slot": "btn.destructive.glow",
+    "spriteType": "sliced",
+    "border": [16, 16, 16, 16],
+    "bleed": 10,
+    "opacity": 0.55,
+    "blendMode": "overlay"
+  },
+  "shadow": {
+    "offsetX": 0,
+    "offsetY": 4,
+    "blur": 10,
+    "spread": 1,
+    "color": "#5a0000",
+    "opacity": 0.65
+  },
+  "fill": {
+    "slot": "btn.destructive.fill",
+    "spriteType": "sliced",
+    "border": [8, 8, 8, 8],
+    "opacity": 1.0,
+    "blendMode": "alpha"
+  },
+  "stateVariants": {
+    "hover": [
+      { "layer": "fill",  "slot": "btn.destructive.fill-hover",    "opacity": 1.0 },
+      { "layer": "bleed", "slot": "btn.destructive.glow",          "opacity": 0.8 }
+    ],
+    "pressed": [
+      { "layer": "frame", "slot": "btn.destructive.edge-pressed",  "opacity": 1.0 },
+      { "layer": "fill",  "slot": "btn.destructive.fill-pressed",  "opacity": 1.0 }
+    ],
+    "disabled": [
+      { "layer": "frame", "slot": "btn.destructive.edge",          "opacity": 0.4 },
+      { "layer": "fill",  "slot": "btn.destructive.fill",          "opacity": 0.4 }
+    ]
+  },
+  "materialId": "dark-metal-material-v1"
+}

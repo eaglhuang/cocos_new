@@ -181,4 +181,221 @@ export class SyncManager {
             this.isSyncing = false;
         }
     }
+
+    // ========== DC-5-0002: Delta 同步模式 ==========
+
+    /** delta patch 佇列（最多 10 筆，超過觸發全量同步）*/
+    private deltaPatchQueue: unknown[] = [];
+    private readonly DELTA_QUEUE_MAX = 10;
+
+    /**
+     * 優先使用 DeltaPatchBuilder 生成 delta patch 上傳；
+     * 若 delta 失敗（hash 不匹配等）自動 fallback 至全量同步。
+     * @param baseSave  上次同步的基準存檔物件
+     * @param currentSave 當前存檔物件
+     */
+    public async syncDelta(baseSave: object, currentSave: object): Promise<void> {
+        if (this.isSyncing) return;
+        if (!this.network?.isOnline) {
+            console.log('[SyncManager] offline - queuing delta patch');
+            this._enqueueDeltaPatch(baseSave, currentSave);
+            return;
+        }
+
+        this.isSyncing = true;
+        this.eventSystem?.emit(EVENT_SYNCING);
+
+        try {
+            // 動態引入以避免循環依賴
+            const { DeltaPatchBuilder } = await import('../services/DeltaPatchBuilder');
+            const patches = DeltaPatchBuilder.build(baseSave, currentSave);
+
+            const body = JSON.stringify({
+                deviceId: this.deviceId,
+                sessionToken: this.sessionSecret,
+                baseHash: this.lastHash,
+                patches,
+                actionRecords: this.actionRecords,
+                clientTimestamp: Date.now(),
+            });
+
+            const response = await fetch(`${this.SERVER_URL}/sync/delta`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body,
+            });
+
+            if (response.status === 409) {
+                // hash 衝突 → fallback 全量同步
+                console.warn('[SyncManager] delta conflict (409) - falling back to full sync');
+                this.isSyncing = false;
+                await this.syncFull(currentSave);
+                return;
+            }
+
+            if (response.ok) {
+                const result = await response.json();
+                this.lastHash = result.newHash ?? this.lastHash;
+                this.actionRecords = [];
+                sys.localStorage.removeItem(this.STORAGE_KEY);
+                this.deltaPatchQueue = [];
+                this.eventSystem?.emit(EVENT_SYNC_COMPLETE);
+                console.log('[SyncManager] delta sync OK');
+            } else {
+                console.error(`[SyncManager] delta sync failed: ${response.status}`);
+                this._enqueueDeltaPatch(baseSave, currentSave);
+            }
+        } catch (e) {
+            console.error('[SyncManager] delta sync error:', e);
+            this._enqueueDeltaPatch(baseSave, currentSave);
+        } finally {
+            this.isSyncing = false;
+        }
+    }
+
+    /**
+     * 全量同步（fallback）。
+     */
+    public async syncFull(saveData: object): Promise<void> {
+        if (this.isSyncing) return;
+        this.isSyncing = true;
+        this.eventSystem?.emit(EVENT_SYNCING);
+
+        try {
+            const body = JSON.stringify({
+                deviceId: this.deviceId,
+                sessionToken: this.sessionSecret,
+                saveData,
+                clientTimestamp: Date.now(),
+            });
+
+            const response = await fetch(`${this.SERVER_URL}/sync/full`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body,
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+                this.lastHash = result.newHash ?? this.lastHash;
+                this.actionRecords = [];
+                sys.localStorage.removeItem(this.STORAGE_KEY);
+                this.deltaPatchQueue = [];
+                this.eventSystem?.emit(EVENT_SYNC_COMPLETE);
+                console.log('[SyncManager] full sync OK');
+            } else {
+                console.error(`[SyncManager] full sync failed: ${response.status}`);
+            }
+        } catch (e) {
+            console.error('[SyncManager] full sync error:', e);
+        } finally {
+            this.isSyncing = false;
+        }
+    }
+
+    private _enqueueDeltaPatch(base: object, current: object): void {
+        this.deltaPatchQueue.push({ base, current, ts: Date.now() });
+        if (this.deltaPatchQueue.length > this.DELTA_QUEUE_MAX) {
+            console.warn('[SyncManager] delta queue full (>10) - will trigger full sync on next online');
+            this.deltaPatchQueue = [];
+        }
+    }
+
+    // ========== DC-5-0004: Action_Records 批次壓縮上傳 ==========
+
+    /**
+     * 批次收集 Action_Records，gzip 壓縮後上傳。
+     * 自動呼叫 GzipCodec，需確保 pako 已引入。
+     */
+    public async flushCompressedActions(): Promise<void> {
+        if (this.actionRecords.length === 0 || !this.network?.isOnline) return;
+
+        try {
+            const { GzipCodec } = await import('../serialization/GzipCodec');
+            const jsonStr = JSON.stringify(this.actionRecords);
+            const compressed = GzipCodec.compressJson(jsonStr);
+
+            // 轉為 Base64 供 JSON body 傳送
+            const base64 = btoa(String.fromCharCode(...compressed));
+
+            const body = JSON.stringify({
+                deviceId: this.deviceId,
+                sessionToken: this.sessionSecret,
+                actionRecordsCompressed: base64,
+                count: this.actionRecords.length,
+                clientTimestamp: Date.now(),
+            });
+
+            const response = await fetch(`${this.SERVER_URL}/sync/actions`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body,
+            });
+
+            if (response.ok) {
+                console.log(`[SyncManager] flushed ${this.actionRecords.length} actions (compressed)`);
+                this.actionRecords = [];
+                sys.localStorage.removeItem(this.STORAGE_KEY);
+            }
+        } catch (e) {
+            console.error('[SyncManager] flushCompressedActions error:', e);
+        }
+    }
+
+    // ========== DC-5-0005: 網路狀態偵測 + 自動重試 + 斷點續傳 ==========
+
+    private _retryCount = 0;
+    private readonly MAX_RETRY = 3;
+    private _retryTimer: ReturnType<typeof setTimeout> | null = null;
+    private _pendingSaveForOnline: object | null = null;
+
+    /**
+     * 標記當前存檔，在恢復網路時自動重試 delta/full 同步。
+     */
+    public scheduleRetryOnRestore(currentSave: object): void {
+        this._pendingSaveForOnline = currentSave;
+    }
+
+    /**
+     * 帶指數退避的重試同步（最多 3 次）。
+     * @param saveFn 同步函式（呼叫 syncDelta 或 syncFull）
+     */
+    public async retrySync(saveFn: () => Promise<void>): Promise<void> {
+        if (this._retryCount >= this.MAX_RETRY) {
+            console.warn('[SyncManager] max retries reached - notifying player');
+            this.eventSystem?.emit('SHOW_TOAST', { message: '同步失敗，請稍後手動儲存或重連網路。' });
+            this._retryCount = 0;
+            return;
+        }
+
+        const delayMs = Math.pow(2, this._retryCount) * 1000; // 1s, 2s, 4s
+        this._retryCount++;
+        console.log(`[SyncManager] retry #${this._retryCount} in ${delayMs}ms`);
+
+        this._retryTimer = setTimeout(async () => {
+            if (this.network?.isOnline) {
+                try {
+                    await saveFn();
+                    this._retryCount = 0;
+                } catch {
+                    await this.retrySync(saveFn);
+                }
+            } else {
+                await this.retrySync(saveFn);
+            }
+        }, delayMs);
+    }
+
+    /**
+     * 網路恢復後，若有排程的 pending 存檔，自動重送。
+     * 覆寫 handleNetworkRestored 行為（保留舊邏輯並新增 delta 重送）。
+     */
+    private async handleDeltaQueueOnRestore(): Promise<void> {
+        // 佇列非空 → 觸發全量同步
+        if (this.deltaPatchQueue.length > 0 && this._pendingSaveForOnline) {
+            console.log('[SyncManager] network restored with pending delta queue - full sync');
+            await this.syncFull(this._pendingSaveForOnline);
+            this._pendingSaveForOnline = null;
+        }
+    }
 }

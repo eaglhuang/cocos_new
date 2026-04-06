@@ -23,6 +23,7 @@ const skinDir = path.join(uiSpecRoot, 'skins');
 const screenDir = path.join(uiSpecRoot, 'screens');
 const contractDir = path.join(uiSpecRoot, 'contracts');
 const contentDir = path.join(uiSpecRoot, 'content');
+const recipeDir = path.join(uiSpecRoot, 'recipes', 'families');
 
 const checkContentContract = process.argv.includes('--check-content-contract');
 const strictMode = process.argv.includes('--strict');
@@ -99,6 +100,127 @@ function getLayoutFamily(layoutId) {
     return null;
 }
 
+function getBindRoot(bindPath) {
+    if (typeof bindPath !== 'string') return '';
+    const firstSegment = bindPath.trim().split('.')[0] ?? '';
+    return firstSegment.replace(/\[\d+\]/g, '');
+}
+
+// ── Recipe 驗證（UI-2-0084 Phase G）────────────────────────────────────────────
+
+/** 合法的 FrameFamily 列舉（對應 UISpecTypes.FrameFamily） */
+const VALID_FRAME_FAMILIES = new Set([
+    'dark-metal', 'parchment', 'gold-cta', 'destructive',
+    'tab', 'semi-transparent-overlay', 'item-cell'
+]);
+
+/** 這些 family 若無 shadow 層則給予 warning（光線感要求高） */
+const SHADOW_RECOMMENDED_FAMILIES = new Set(['dark-metal', 'parchment', 'gold-cta', 'destructive']);
+
+/**
+ * 載入所有 FrameRecipe (*.recipe.json) 並建立 {recipeId → json} 映射。
+ * recipeId = 檔名去掉 .recipe.json，eg. "dark-metal" → dark-metal.recipe.json
+ */
+function loadRecipes(failures) {
+    const recipes = new Map();
+    if (!fs.existsSync(recipeDir)) return recipes;
+
+    for (const file of fs.readdirSync(recipeDir)) {
+        if (!file.endsWith('.recipe.json')) continue;
+        const filePath = path.join(recipeDir, file);
+        const recipeId = file.replace('.recipe.json', '');
+        try {
+            const json = readJson(filePath);
+            if (!json.id || typeof json.id !== 'string') {
+                fail(`${relative(filePath)} - recipe.id 缺失或非字串`, failures);
+            }
+            if (!json.family || typeof json.family !== 'string') {
+                fail(`${relative(filePath)} - recipe.family 缺失`, failures);
+            }
+            if (!json.frame || typeof json.frame !== 'object') {
+                fail(`${relative(filePath)} - recipe.frame 缺失（必填層）`, failures);
+            }
+            if (recipes.has(recipeId)) {
+                fail(`${relative(filePath)} - recipe id 重複：${recipeId}`, failures);
+            } else {
+                recipes.set(recipeId, json);
+            }
+        } catch (error) {
+            fail(`${relative(filePath)} - JSON 解析失敗：${error.message}`, failures);
+        }
+    }
+    return recipes;
+}
+
+/**
+ * R18 recipe-ref-exists    — recipeRef.frameRecipeId 必須在 recipes map 中存在
+ * R19 recipe-family-valid  — recipe.family 必須在合法 FrameFamily 列舉中
+ * R20 recipe-shadow-recommended — dark-metal / parchment / gold-cta / destructive 建議有 shadow（warning）
+ *
+ * @param {object|undefined} recipeRef  skin 或 screen 上的 recipeRef 欄位
+ * @param {string} filePath             JSON 檔案路徑（用於錯誤訊息）
+ * @param {Map}    recipes              已載入的 recipe map（recipeId → json）
+ * @param {Array}  failures             錯誤清單
+ * @param {Array}  warnings             警告清單
+ * @param {string} contextLabel         顯示用標籤（e.g. "skin", "screen"）
+ */
+function validateRecipeRef(recipeRef, filePath, recipes, failures, warnings, contextLabel) {
+    if (!recipeRef || typeof recipeRef !== 'object') return;
+
+    // R18: recipe-ref-exists
+    const frameRecipeId = recipeRef.frameRecipeId;
+    if (typeof frameRecipeId !== 'string' || frameRecipeId.trim().length === 0) {
+        fail(`${relative(filePath)} - ${contextLabel}.recipeRef.frameRecipeId 必須為非空字串`, failures);
+        return;
+    }
+    if (!recipes.has(frameRecipeId)) {
+        strictFail(
+            'recipe-ref-exists',
+            `${relative(filePath)} - ${contextLabel}.recipeRef 引用了不存在的 recipe："${frameRecipeId}"` +
+            `（在 assets/resources/ui-spec/recipes/families/${frameRecipeId}.recipe.json 中找不到）`,
+            failures, null
+        );
+        return;
+    }
+
+    const recipe = recipes.get(frameRecipeId);
+
+    // R19: recipe-family-valid
+    if (!VALID_FRAME_FAMILIES.has(recipe.family)) {
+        strictFail(
+            'recipe-family-valid',
+            `${relative(filePath)} - ${contextLabel}.recipeRef 指向的 recipe "${frameRecipeId}"` +
+            ` family="${recipe.family}" 不在合法列表 [${[...VALID_FRAME_FAMILIES].join('|')}]`,
+            failures, null
+        );
+    }
+
+    // R20: recipe-shadow-recommended (warning only)
+    if (SHADOW_RECOMMENDED_FAMILIES.has(recipe.family) && !recipe.shadow) {
+        strictWarn(
+            'recipe-shadow-recommended',
+            `${relative(filePath)} - ${contextLabel} 使用 "${recipe.family}" family，` +
+            `但 recipe "${frameRecipeId}" 未定義 shadow 層（建議補上以符合高品質目標）`,
+            warnings, null
+        );
+    }
+
+    // slotOverrides opacity range check
+    if (recipeRef.slotOverrides && typeof recipeRef.slotOverrides === 'object') {
+        for (const [key, override] of Object.entries(recipeRef.slotOverrides)) {
+            if (override && typeof override === 'object' && typeof override.opacity === 'number') {
+                if (override.opacity < 0 || override.opacity > 1) {
+                    fail(
+                        `${relative(filePath)} - ${contextLabel}.recipeRef.slotOverrides["${key}"]` +
+                        `.opacity=${override.opacity} 超出範圍 [0, 1]`,
+                        failures
+                    );
+                }
+            }
+        }
+    }
+}
+
 function validateLayoutStrict(layoutJson, filePath, allSkinSlots, failures, warnings) {
     const rel = relative(filePath);
     const exceptions = (layoutJson.validation && layoutJson.validation.exceptions) || null;
@@ -136,7 +258,9 @@ function validateLayoutStrict(layoutJson, filePath, allSkinSlots, failures, warn
 
         // R4: scroll-list-needs-itemTemplate
         if (node.type === 'scroll-list') {
-            const hasTemplate = typeof node.itemTemplate === 'string' && node.itemTemplate.trim().length > 0;
+            const hasTemplate =
+                (typeof node.itemTemplate === 'string' && node.itemTemplate.trim().length > 0) ||
+                (!!node.itemTemplate && typeof node.itemTemplate === 'object' && !Array.isArray(node.itemTemplate));
             if (!hasTemplate) {
                 strictFail('scroll-list-needs-itemTemplate', `${loc} scroll-list 缺少 itemTemplate`, failures, exceptions);
             }
@@ -251,8 +375,21 @@ function validateScreenStrict(screenNode, screenFilePath, layoutJsons, failures,
     const reqFields = screenNode.contentRequirements && Array.isArray(screenNode.contentRequirements.requiredFields)
         ? new Set(screenNode.contentRequirements.requiredFields)
         : null;
+    const hasContentRef = !!screenNode.content && typeof screenNode.content === 'object' && !Array.isArray(screenNode.content);
+
     if (!reqFields) {
-        strictWarn('bind-path-declared', `${rel} - 佈局 "${layoutId}" 含 ${bindPaths.size} 個 bind 宣告，但 screen 未設定 contentRequirements.requiredFields`, warnings, exceptions);
+        if (hasContentRef) {
+            strictWarn('bind-path-declared', `${rel} - 佈局 "${layoutId}" 含 ${bindPaths.size} 個 bind 宣告，但 screen 已宣告 content 卻未設定 contentRequirements.requiredFields`, warnings, exceptions);
+        }
+        return;
+    }
+
+    for (const bindPath of bindPaths) {
+        const rootField = getBindRoot(bindPath);
+        if (!rootField) continue;
+        if (!reqFields.has(rootField)) {
+            strictWarn('bind-path-declared', `${rel} - 佈局 "${layoutId}" 的 bind="${bindPath}" 未在 contentRequirements.requiredFields 宣告（缺少 "${rootField}"）`, warnings, exceptions);
+        }
     }
 }
 
@@ -473,6 +610,8 @@ for (const filePath of listJsonFiles(skinDir)) {
                 }
             }
         }
+        // R18/R19/R20: recipe ref validation（recipeRef 若存在則立即驗證）
+        // recipes 尚未載入，改在下方 recipe 載入後的第二輪驗證；先收集到 skinJsons
     } catch (error) {
         fail(`${relative(filePath)} - JSON 解析失敗：${error.message}`, failures);
     }
@@ -490,6 +629,19 @@ if (strictMode) {
 
 const contracts = (checkContentContract || strictMode) ? loadContracts(failures) : new Map();
 
+// Recipe 驗證（UI-2-0084 Phase G）：載入所有 FrameRecipe 並對 skin 進行 R18/R19/R20 驗證
+const recipes = loadRecipes(failures);
+
+// skin recipeRef 驗證（第二輪，現在 recipes 已就緒）
+for (const filePath of listJsonFiles(skinDir)) {
+    try {
+        const json = readJson(filePath);
+        if (json.recipeRef) {
+            validateRecipeRef(json.recipeRef, filePath, recipes, failures, warnings, 'skin');
+        }
+    } catch (_) { /* JSON 解析錯誤已在第一輪收集 */ }
+}
+
 for (const filePath of listJsonFiles(screenDir)) {
     try {
         const json = readJson(filePath);
@@ -504,6 +656,10 @@ for (const filePath of listJsonFiles(screenDir)) {
                 if (strictMode) {
                     validateScreenStrict(screenNode, filePath, layoutJsons, failures, warnings);
                 }
+                // R18/R19/R20 recipe ref（無論是否 strict，有宣告就驗證）
+                if (screenNode.recipeRef) {
+                    validateRecipeRef(screenNode.recipeRef, filePath, recipes, failures, warnings, `screens[${index}]`);
+                }
             });
         } else if (Array.isArray(json.panels)) {
             for (const panel of json.panels) {
@@ -517,6 +673,9 @@ for (const filePath of listJsonFiles(screenDir)) {
             if (strictMode) {
                 validateScreenStrict(json, filePath, layoutJsons, failures, warnings);
             }
+            if (json.recipeRef) {
+                validateRecipeRef(json.recipeRef, filePath, recipes, failures, warnings, 'screen');
+            }
         } else {
             validateScreenNode(json, filePath, layouts, skins, failures, 'screen');
             if (checkContentContract || strictMode) {
@@ -524,6 +683,10 @@ for (const filePath of listJsonFiles(screenDir)) {
             }
             if (strictMode) {
                 validateScreenStrict(json, filePath, layoutJsons, failures, warnings);
+            }
+            // R18/R19/R20 recipe ref（無論是否 strict，有宣告就驗證）
+            if (json.recipeRef) {
+                validateRecipeRef(json.recipeRef, filePath, recipes, failures, warnings, 'screen');
             }
         }
 
@@ -558,5 +721,6 @@ if (warnings.length > 0) {
 }
 
 const contractSummary = (checkContentContract || strictMode) ? `, contracts=${contracts.size}` : '';
+const recipeSummary = recipes.size > 0 ? `, recipes=${recipes.size}` : '';
 const strictSummary = strictMode ? ` [strict]` : '';
-console.log(`✅ UI Spec 驗證通過（layouts=${layouts.size}, skins=${skins.size}, screens=${screens.length}${contractSummary}${strictSummary}）`);
+console.log(`✅ UI Spec 驗證通過（layouts=${layouts.size}, skins=${skins.size}, screens=${screens.length}${contractSummary}${recipeSummary}${strictSummary}）`);

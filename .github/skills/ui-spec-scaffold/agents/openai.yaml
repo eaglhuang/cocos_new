@@ -1,0 +1,4 @@
+interface:
+  display_name: "UI Spec Scaffold"
+  short_description: "產出 ui-spec 與 Panel 骨架"
+  default_prompt: "Describe the family, screen id, and whether you need ui-spec JSON, Panel scaffold, or both, using the current scaffold-ui-spec-family.js and scaffold-ui-component.js flow."

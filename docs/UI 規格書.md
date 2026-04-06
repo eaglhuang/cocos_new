@@ -220,3 +220,48 @@
 - 系統專屬規格，回寫到對應正式規格書，例如 `武將人物介面規格書.md`。
 - 程式 / 文件 / ui-spec 的對應關係，回寫 `docs/cross-reference-index.md`。
 - 補遺只可作暫時整理，不可長期取代正式母規格。
+### 8.2.7 美術資產治理與正式切換
+
+為避免 UI 自動化量產過程把 proof 圖、裁切稿、過渡資產混入正式包體，UI 美術資產必須分為三層：
+
+- `artifacts/ui-source/`
+  - AI 原圖、recipe、prompt、compare input、裁切來源。
+  - 只作來源管理，不可作為 runtime 載入路徑。
+- `assets/resources/.../proof/`
+  - 允許 preview / smoke / compare 驗證。
+  - 任務進行中可短期引用，但不得視為最終 shipping 資產。
+- `assets/resources/.../final/` 或正式 family 路徑
+  - 放正式核准資產。
+  - 用於可重用 family 與正式版本打包。
+
+正式量產的切換原則如下：
+
+1. 當 `layout / screen / slot-map` 已穩定時，不必等待整頁完成，即可開始切正式 family 資產。
+2. 優先切高重用 family，不優先切單頁一次性裝飾。
+3. 正式 screen / skin 長期不可依賴 `proof/` 路徑；release 前應視為阻塞。
+
+現階段 `GeneralDetailBloodlineV3` 的正式切圖優先順序：
+
+1. `jade-parchment-panel-final`
+2. `crest-medallion-final`
+3. `jade-rarity-badge-final`
+4. `portrait-stage-final`
+5. `story-strip-final`
+
+### 8.2.8 Jade-Parchment Family 品質目標
+
+參考圖的高級感不在於單一外框，而在於同一套 panel family 自然融入整體 UI。`jade-parchment` family 必須至少包含：
+
+- `base fill`
+  - 淺羊皮紙底色，不可過白。
+- `inner shadow / bevel`
+  - 讓主框與內容區自然內沉，而不是硬切。
+- `edge wear / paper noise`
+  - header、主框、crest 必須共用同一套紙張與歲月痕跡語言。
+- `jade cap / corner ornament`
+  - 玉飾不是額外貼片，而是 panel kit 的一部分。
+- `9-slice 規則`
+  - 只拉中段和平邊，不可拉壞角飾與玉件。
+
+Unity 對照：
+- 這比較像先做完整的共用 `UI Panel Kit / Theme Kit`，再讓各頁 prefab 套同一套皮，而不是每頁各自拼幾張 Image。

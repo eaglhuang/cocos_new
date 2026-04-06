@@ -1,0 +1,39 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "schemaId": "fullscreen-result-content",
+  "familyId": "fullscreen-result",
+  "version": 1,
+  "description": "fullscreen-result 家族的內容契約。適用於結算畫面、獲得武將、抽卡結果等全螢幕結果展示畫面。",
+  "fields": {
+    "resultType": {
+      "type": "string",
+      "enum": ["win", "lose", "draw", "acquire"],
+      "required": true,
+      "description": "結果類型，決定視覺主題（win/lose/draw/acquire）",
+      "bindPath": "root.resultType"
+    },
+    "titleKey": {
+      "type": "string",
+      "contentType": "i18n-key",
+      "required": true,
+      "description": "結果標題的 i18n key（如「勝利！」「大敗...」）",
+      "bindPath": "content.title"
+    },
+    "descKey": {
+      "type": "string",
+      "contentType": "i18n-key",
+      "required": true,
+      "description": "結果說明文字的 i18n key",
+      "bindPath": "content.desc"
+    },
+    "confirmKey": {
+      "type": "string",
+      "contentType": "i18n-key",
+      "required": false,
+      "default": "common.confirm",
+      "description": "確認按鈕文字的 i18n key，預設 'common.confirm'",
+      "bindPath": "footer.confirmBtn.label"
+    }
+  },
+  "requiredFields": ["resultType", "titleKey", "descKey"]
+}

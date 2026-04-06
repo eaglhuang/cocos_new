@@ -1,0 +1,78 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "frame-recipe.schema.json",
+  "title": "FrameRecipe",
+  "description": "高品質 UI 框體視覺語法契約。定義 frame/bleed/shadow/fill/ornament 五層疊層，使 skin/screen 可宣告式引用框體家族，並讓 validator 檢查語意一致性。",
+  "type": "object",
+  "required": ["id", "version", "family", "frame"],
+  "additionalProperties": false,
+  "properties": {
+    "id":            { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*[a-z0-9]$", "description": "kebab-case 唯一識別, e.g. dark-metal-v1" },
+    "version":       { "type": "integer", "minimum": 1 },
+    "family":        { "$ref": "#/definitions/FrameFamily" },
+    "description":   { "type": "string" },
+    "frame":         { "$ref": "#/definitions/FrameLayer", "description": "主框體層（必填）" },
+    "bleed":         { "$ref": "#/definitions/FrameLayer", "description": "溢血層：框邊向外柔化的羽化貼圖" },
+    "shadow":        { "$ref": "#/definitions/ShadowConfig", "description": "陰影層：box-shadow 語意或陰影貼圖" },
+    "fill":          { "$ref": "#/definitions/FrameLayer", "description": "底色填充層（frame 下方）" },
+    "ornament":      { "$ref": "#/definitions/FrameLayer", "description": "角落/邊緣裝飾層（frame 上方）" },
+    "stateVariants": {
+      "type": "object",
+      "description": "各互動狀態的局部覆寫，key = normal | hover | pressed | disabled | selected",
+      "additionalProperties": {
+        "type": "array",
+        "items": { "$ref": "#/definitions/StateVariantOverride" }
+      }
+    },
+    "cornerRadius":    { "type": "number", "minimum": 0, "description": "圓角像素（0 = 直角）" },
+    "borderWeight":    { "type": "number", "minimum": 0, "description": "邊框粗細（像素）" },
+    "bleedIntensity":  { "type": "number", "minimum": 0, "description": "bleed 擴張像素，0 = 無溢血" },
+    "materialId":      { "type": "string", "description": "關聯的 MaterialRecipe id（可選）" }
+  },
+  "definitions": {
+    "FrameFamily": {
+      "type": "string",
+      "description": "七大框體家族標識",
+      "enum": ["dark-metal", "parchment", "gold-cta", "destructive", "tab", "semi-transparent-overlay", "item-cell"]
+    },
+    "FrameLayer": {
+      "type": "object",
+      "description": "單一視覺層定義",
+      "additionalProperties": false,
+      "properties": {
+        "slot":        { "type": "string", "description": "引用 skin manifest 中的 slot id" },
+        "path":        { "type": "string", "description": "直接指定貼圖路徑（優先於 slot）" },
+        "spriteType":  { "type": "string", "enum": ["simple", "sliced", "tiled"] },
+        "border":      { "type": "array", "items": { "type": "number" }, "minItems": 4, "maxItems": 4, "description": "[top, right, bottom, left] 九宮格邊距（像素）" },
+        "bleed":       { "type": "number", "minimum": 0 },
+        "opacity":     { "type": "number", "minimum": 0, "maximum": 1 },
+        "blendMode":   { "type": "string", "enum": ["alpha", "overlay", "multiply"] },
+        "optional":    { "type": "boolean", "description": "true = 此層缺席不算 QA 失敗" }
+      }
+    },
+    "ShadowConfig": {
+      "type": "object",
+      "description": "陰影層設定",
+      "additionalProperties": false,
+      "properties": {
+        "slot":    { "type": "string", "description": "陰影貼圖 slot id（若使用圖片陰影）" },
+        "offsetX": { "type": "number" },
+        "offsetY": { "type": "number" },
+        "blur":    { "type": "number", "minimum": 0 },
+        "spread":  { "type": "number" },
+        "color":   { "type": "string", "description": "hex 或 token key" },
+        "opacity": { "type": "number", "minimum": 0, "maximum": 1 }
+      }
+    },
+    "StateVariantOverride": {
+      "type": "object",
+      "required": ["layer", "slot"],
+      "additionalProperties": false,
+      "properties": {
+        "layer":   { "type": "string", "enum": ["frame", "bleed", "fill", "ornament"], "description": "要覆寫的層名稱" },
+        "slot":    { "type": "string", "description": "替換的 skin slot id" },
+        "opacity": { "type": "number", "minimum": 0, "maximum": 1 }
+      }
+    }
+  }
+}

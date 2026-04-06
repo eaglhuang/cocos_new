@@ -9,6 +9,7 @@ import {
   TroopType,
   TROOP_DEPLOY_COST,
 } from "../../core/config/Constants";
+import { Color } from "cc";
 import { services } from "../../core/managers/ServiceLoader";
 import { GeneralUnit } from "../../core/models/GeneralUnit";
 import { TroopUnit, TroopStats } from "../../core/models/TroopUnit";
@@ -169,7 +170,17 @@ export class BattleController {
             const pos = board.getCellWorldPosition(0, 0, 0.1);
             // [LOG-DIAGNOSTIC] 合理的日誌輸出供後續追蹤
             console.log(`[BattleController:Vibe-QA] 預覽特效: zhen_ji_nova at ${pos.toString()}`);
-            services().effect.playFullEffect('zhen_ji_nova', pos);
+            // [TEMP-QA] 套用冰藍色覆寫，大幅調整參數使粒子在 3D 場景中可見
+            // 原因：原始 Prefab 是 additive 白色 + Cone 向上高速噴射，在明亮場景中完全不可見
+            services().effect.playFullEffect('zhen_ji_nova', pos, {
+                startColor: new Color(80, 180, 255, 255),
+                startSpeed: 0.3,          // 極低速度，讓粒子停留在發射點附近
+                startSize: 5.0,           // 大顆粒子（5 world units）
+                rateOverTime: 50,         // 高發射率
+                startLifetime: 2.0,       // 生命週期 2 秒
+                gravityModifier: -0.5,    // 微弱向上漂浮
+                shapeAngle: 0.1,          // 極小發射角度，近乎垂直向上
+            });
         } else {
             console.warn("[BattleController:Vibe-QA] BoardRenderer 尚未就緒，跳過本次 VFX 預覽");
         }

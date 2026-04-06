@@ -315,4 +315,64 @@ export class MemoryManager {
             this.onAssetEvicted?.(oldest, rec.bundle);
         }
     }
+
+  // ---- DC-2-0005: 武將資料 Scope 管理 ----
+
+  /**
+   * 預定義的武將資料 scope。
+   *   master-active  — Lobby 常駐：L1 陣容武將的完整資料（常駐記憶體）
+   *   master-storage — 按需載入：L2 倉庫武將資料（場景離開後釋放）
+   *   lore           — LRU 20：武將故事條/血脈 lore（最多同時保留 20 位）
+   */
+  public static readonly SCOPE_MASTER_ACTIVE = 'master-active';
+  public static readonly SCOPE_MASTER_STORAGE = 'master-storage';
+  public static readonly SCOPE_LORE = 'lore';
+
+  /** lore scope 的 LRU 上限（最多同時常駐 20 位武將完整故事） */
+  public LRU_LORE_MAX = 20;
+
+  /**
+   * 通知武將 lore 資料已載入（自動加入 lore scope，並觸發 LRU eviction）。
+   * Unity 對照：Addressables handle 加入 lore label group，超過上限時自動 Release 最舊。
+   */
+  public notifyLoreLoaded(uid: string): void {
+    this.notifyLoaded(`lore:${uid}`, 'master', 'GeneralLore', MemoryManager.SCOPE_LORE);
+    this._trimLoreScope();
+  }
+
+  /**
+   * 釋放指定武將的 lore 資料（從 lore scope 移除）。
+   */
+  public releaseLore(uid: string): void {
+    this.notifyReleased(`lore:${uid}`);
+  }
+
+  /**
+   * 當 lore scope 超過 LRU_LORE_MAX 時，逐出最舊的 lore 項目。
+   */
+  private _trimLoreScope(): void {
+    const loreKeys = this._scopeIndex.get(MemoryManager.SCOPE_LORE);
+    if (!loreKeys || loreKeys.size <= this.LRU_LORE_MAX) return;
+    let oldest = "";
+    let oldestTime = Infinity;
+    for (const key of loreKeys) {
+      const rec = this.records.get(key) ?? this._lruBuffer.get(key);
+      if (rec && rec.lastUsedAt < oldestTime) {
+        oldestTime = rec.lastUsedAt;
+        oldest = key;
+      }
+    }
+    if (oldest) this.notifyReleased(oldest);
+  }
+
+  /**
+   * 取得目前 data scope 使用摘要（用於 debug 面板）。
+   */
+  public getDataScopeStats(): Record<string, number> {
+    return {
+      'master-active': this._scopeIndex.get(MemoryManager.SCOPE_MASTER_ACTIVE)?.size ?? 0,
+      'master-storage': this._scopeIndex.get(MemoryManager.SCOPE_MASTER_STORAGE)?.size ?? 0,
+      'lore': this._scopeIndex.get(MemoryManager.SCOPE_LORE)?.size ?? 0,
+    };
+  }
 }

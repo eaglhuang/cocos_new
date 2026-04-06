@@ -1,0 +1,13 @@
+{
+  "$schema": "../material-recipe.schema.json",
+  "id": "gold-cta-material-v1",
+  "version": 1,
+  "description": "金色 CTA 按鈕材質。金黃底色，中金屬感，高亮反射。AI 生成候選：金屬高光紋理可 AI 生，需維持金屬光澤感但不過於刺眼。",
+  "baseColor": "color.button.gold-cta.base",
+  "grainIntensity": 0.12,
+  "grainTexturePath": "textures/materials/metal-sheen-gold",
+  "opacity": 1.0,
+  "blendMode": "alpha",
+  "metallicIntensity": 0.85,
+  "aiGenerated": false
+}

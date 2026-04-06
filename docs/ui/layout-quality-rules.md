@@ -44,7 +44,7 @@ node tools_node/validate-ui-specs.js --strict --check-content-contract
 | `max-node-depth` | 節點巢狀深度上限 | ≤ 12 層 |
 | `max-children-per-container` | 單一容器子節點數量上限 | ≤ 20 個 |
 | `no-empty-container` | 容器類型節點不得既無子節點又無 skinSlot | — |
-| `scroll-list-needs-itemTemplate` | `scroll-list` 類型節點必須宣告 `itemTemplate` | — |
+| `scroll-list-needs-itemTemplate` | `scroll-list` 類型節點必須宣告 `itemTemplate`（可為字串引用或 inline object） | — |
 
 ### 數值範圍類
 
@@ -71,7 +71,7 @@ node tools_node/validate-ui-specs.js --strict --check-content-contract
 | ID | 說明 | 嚴重性 |
 |----|------|--------|
 | `content-contract-requiredFields` | Screen 的 `contentRequirements.requiredFields` 須對應 contract schema 中定義的欄位，且 content state 中必須存在這些欄位 | ❌ 錯誤（需搭配 `--check-content-contract` 或 `--strict`） |
-| `bind-path-declared` | Layout 的 `bind` 宣告節點若對應 screen 有 `contentRequirements`，bind 路徑應在 `requiredFields` 中 | ⚠️ 告警 |
+| `bind-path-declared` | 僅當 screen 已宣告 `content` / `contentRequirements` 時，Layout 的 `bind` 根欄位必須在 `requiredFields` 中 | ⚠️ 告警 |
 | `no-dynamic-bind` | 不允許 `bind: "dynamic"` 的動態綁定宣告 | ❌ 錯誤 |
 
 ### 視覺品質類

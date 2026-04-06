@@ -1,0 +1,13 @@
+{
+  "$schema": "../material-recipe.schema.json",
+  "id": "dark-metal-material-v1",
+  "version": 1,
+  "description": "深色金屬材質。底色深沉帶藍黑感，高金屬感，適合主戰場與主容器。AI 生成候選：metal grain 貼圖可 AI 生，底色需手工調色。",
+  "baseColor": "color.frame.dark-metal.base",
+  "grainIntensity": 0.35,
+  "grainTexturePath": "textures/materials/metal-grain-dark",
+  "opacity": 1.0,
+  "blendMode": "alpha",
+  "metallicIntensity": 0.7,
+  "aiGenerated": false
+}

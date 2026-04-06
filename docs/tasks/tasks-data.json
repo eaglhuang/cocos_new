@@ -1,0 +1,87 @@
+{
+  "audit_source": "artifacts/ui-source/button-family-screen-audit-2026-03-31.csv",
+  "id_schema": "{domain}-{agent}-{serial4}",
+  "task_template": {
+    "status": "所有任務都必須明確標示狀態、owner 與 type。",
+    "workflow": "新增或調整任務時，需同步 keep、brief、相關規格與 audit 證據來源。",
+    "started_at": "進入 in-progress 時必填 RFC3339 時間戳記。",
+    "started_by_agent": "進入 in-progress 時必填實際接手的 Agent 名稱。",
+    "lock_rule": "任務一旦標為 in-progress，必須同步補上 started_at / started_by_agent，避免重複接手。",
+    "notes_template": "YYYY-MM-DD | 狀態: <done|in-progress|blocked> | 驗證: <command/result> | 變更: <summary> | 阻塞: <none or reason>",
+    "commit_rule": "若 commit 僅處理單一 bug，請使用 bug commit 格式；其他工作維持一般提交訊息。",
+    "bug_commit_format": "[bug][模組] Bug修正: 摘要 [AgentX]",
+    "ui_workflow_rule": "For new UI work, default to: choose template family -> fill content contract -> apply skin fragment -> run smoke/preview -> backwrite formal docs.",
+    "ui_task_card_template_path": "docs/agent-briefs/UI-task-card-template.md",
+    "ui_checklist_fields": [
+      "template_family",
+      "content_contract",
+      "skin_fragments",
+      "smoke_route",
+      "docs_backwritten"
+    ],
+    "ui_notes_rule": "UI task notes should mention template family, content contract, skin fragment, smoke route, and formal docs backwrite status."
+  },
+  "shard": "DATA",
+  "generated": "2026-04-06",
+  "summary": {
+    "done": 1,
+    "in_progress": 0,
+    "open": 0,
+    "total": 1
+  },
+  "tasks": [
+    {
+      "id": "DATA-1-0001",
+      "phase": "D",
+      "priority": "P1",
+      "owner": "Agent1",
+      "status": "done",
+      "created": "2026-04-01",
+      "created_by_agent": "Copilot",
+      "type": "contract",
+      "title": "建立 BattleScene UI Data Schema Contract",
+      "description": "為 `battle-hud-main`、`battle-log-main`、`unit-info-panel-main`、`action-command-main`、`tiger-tally-main` 這 5 份 layout JSON 建立正式資料契約，將所有 `bind:\"dynamic\"` label 改成明確 bind path，並以 TypeScript 介面收斂 BattleScene 的 UI ViewModel。",
+      "affected_labels": {
+        "battle-hud-main": [
+          "PlayerName",
+          "PlayerFortressLabel",
+          "TurnLabel",
+          "FoodLabel",
+          "StatusLabel",
+          "EnemyFortressLabel",
+          "EnemyName"
+        ],
+        "battle-log-main": [
+          "LogLabel"
+        ],
+        "unit-info-panel-main": [
+          "UnitName",
+          "UnitSub",
+          "AtkRow",
+          "DefRow",
+          "HpRow",
+          "SpdRow",
+          "CostRow",
+          "DescText"
+        ],
+        "action-command-main": [
+          "UltLabel",
+          "SpPctLabel"
+        ],
+        "tiger-tally-main": [
+          "AtkLabel1~4",
+          "HpLabel1~4",
+          "UnitName1~4",
+          "CostBadge1~4"
+        ]
+      },
+      "related": [
+        "UI-2-0024"
+      ],
+      "depends": [],
+      "notes": "2026-04-01 | 狀態: open | 驗證: 已從 project.log 與 BattleScene 畫面警告盤點 5 份 layout 的 bind 缺口 | 變更: 開立 BattleScene UI Data Schema Contract 任務，準備以 BattleBindData 取代 `bind:\"dynamic\"` | 阻塞: 待 Agent1 實作 TypeScript 介面與 layout 回寫\n2026-04-05 | 狀態: done | 驗證: `BattleBindData.ts` 已建立 5 個 interface、38 個 `bind:\"dynamic\"` 已全部替換、`UIPreviewNodeFactory` 會顯示 bind path 佔位 | 變更: 完成 BattleScene UI Data Schema Contract 收斂 | 阻塞: 無",
+      "completed": "2026-04-05",
+      "completed_by_agent": "Agent1"
+    }
+  ]
+}

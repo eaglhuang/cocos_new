@@ -1,0 +1,12 @@
+{
+  "createdAt": "2026-04-06T02:58:42.408Z",
+  "host": "http://localhost:7456",
+  "machine": "DESKTOP-NREHEQ8",
+  "captures": [
+    {
+      "target": "GeneralDetailOverview",
+      "screenId": "general-detail-bloodline-v3-screen",
+      "file": "artifacts\\ui-qa\\UI-2-0093\\r20-crest-proof-bridge\\GeneralDetailOverview.png"
+    }
+  ]
+}

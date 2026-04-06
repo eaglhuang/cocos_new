@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "source": "../cross-reference-index.md",
+  "indexTitle": "交叉索引表 (Cross-Reference Index)",
+  "indexPath": "docs/cross-reference-index.md",
+  "type": "markdown-h2",
+  "preambleShard": "cross-ref-specs",
+  "defaultShard": "cross-ref-specs",
+  "_comment": "Sections routed by stripped h2 heading text. Preamble (batch history) goes to specs shard.",
+  "shards": [
+    {
+      "name": "cross-ref-specs",
+      "title": "規格書索引（Sec A）",
+      "pattern": "^A\\."
+    },
+    {
+      "name": "cross-ref-code",
+      "title": "代碼索引（Sec B）",
+      "pattern": "^B\\."
+    },
+    {
+      "name": "cross-ref-ui-spec",
+      "title": "UI 規格索引（Sec C）",
+      "pattern": "^C\\."
+    }
+  ]
+}

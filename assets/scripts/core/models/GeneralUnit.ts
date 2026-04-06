@@ -113,6 +113,21 @@ export type GeneralDetailCrestState =
   | 'revealed'
   | 'awakened';
 
+export type GeneralDetailRarityTier =
+  | 'common'
+  | 'rare'
+  | 'epic'
+  | 'legendary'
+  | 'mythic';
+
+/** 角色分類（世界觀標籤，與 rarityTier 獨立）*/
+export type CharacterCategory =
+  | 'civilian'
+  | 'general'
+  | 'famed'
+  | 'mythical'
+  | 'titled';
+
 export interface GeneralConfig {
   id: string;
   name: string;
@@ -158,6 +173,10 @@ export interface GeneralConfig {
   bloodlineRumor?: string;
   crestHint?: string;
   crestState?: GeneralDetailCrestState;
+  rarityTier?: GeneralDetailRarityTier;
+  rarityLabel?: string;
+  /** 角色分類：civilian 民間 / general 一般武將 / famed 名將 / mythical 神話 / titled 稱號特殊 */
+  characterCategory?: CharacterCategory;
   storyStripCells?: GeneralDetailStoryCellConfig[];
   genes?: GeneralGeneConfig[];
 

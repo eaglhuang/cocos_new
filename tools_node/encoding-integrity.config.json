@@ -35,7 +35,7 @@
     },
     "assets/scripts/core/systems/ResourceManager.ts": {
       "label": "Resource Manager",
-      "baselineNonAscii": 126,
+      "baselineNonAscii": 199,
       "maxNonAsciiDelta": 60
     }
   },

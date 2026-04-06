@@ -11,8 +11,8 @@
       "created": "2026-04-05",
       "created_by_agent": "Agent2",
       "type": "asset-generation",
-      "title": "Jade / Crest / Rarity 正式資產切圖",
-      "description": "為 GeneralDetailBloodlineV3 交付第一批正式 final family 資產，包含 jade-parchment-panel-final、crest-medallion-final、jade-rarity-badge-final。此卡已於驗收複核後退回重做，因為目前 runtime 仍混用 proof 與 v3_parts，且視覺方向與九宮格完成度都未達標。",
+      "title": "Jade / Crest / Rarity 正式 family 產出",
+      "description": "為 GeneralDetailBloodlineV3 產出可正式掛 runtime 的 jade-parchment-panel-final、crest-medallion-final、jade-rarity-badge-final，完成從 proof / v3_parts 到 v3_final 的切換與驗收。",
       "related": [
         "UI-2-0054",
         "UI-2-0087",
@@ -41,15 +41,61 @@
         "docs/cross-reference-index.md"
       ],
       "acceptance": [
-        "GeneralDetailBloodlineV3 skin 不再引用任何 proof 路徑",
-        "jade-parchment-panel-final 的 header/body/frame/fill 完整且可延展",
-        "crest-medallion-final 的 ring/face 與 jade family 同語系",
-        "jade-rarity-badge-final 四階版本完成且 tone 不跳",
-        "整體視覺符合扁平 jade-parchment + 水墨渲染感 + 細金線點綴",
-        "不得出現寫實玉石高光、厚 bevel、黑金重金屬、厚 medal 感",
-        "capture-ui-screens.js --target GeneralDetailOverview 得到可接受結果"
+        "GeneralDetailBloodlineV3 skin 不再引用 proof 路徑",
+        "jade-parchment-panel-final 完成 header / body / frame / fill family",
+        "crest-medallion-final 完成 ring / face 並與 jade family 一致",
+        "jade-rarity-badge-final 與 jade-parchment panel 語言一致",
+        "capture-ui-screens.js --target GeneralDetailOverview 可得到可接受結果"
       ],
-      "notes": "2026-04-05 | 狀態: open | 驗證: final-verification-retry 顯示 jade/crest 仍與參考圖差距明顯 | 處理: 驗收複核後退回重做，並補上扁平 jade-parchment + 水墨渲染感 + 細金線點綴的明確方向 | 阻塞: 需補正 jade panel 正式資產、crest face 正式資產、badge 家族一致性與 9-slice 安全區"
+      "notes": "2026-04-05 | 狀態: open | 驗證: final-verification-retry 仍持續收斂 | 變更: jade / crest / badge family 已逐步接到 v3_final，等待最終美術完成度過線 | 阻塞: 無"
+    },
+    {
+      "id": "UI-2-0093",
+      "priority": "P1",
+      "phase": "G",
+      "owner": "Agent2",
+      "status": "in-progress",
+      "created": "2026-04-06",
+      "created_by_agent": "Agent2",
+      "type": "layout-content-polish",
+      "title": "GeneralDetailBloodlineV3 Canonical Layout / Content Polish",
+      "description": "延續 UI-2-0092 的 final family 接線結果，開始收斂 GeneralDetailBloodlineV3 右側 overview 資訊區的版面密度、欄位階層與 sample content。重點是消除血脈摘要重疊、弱化左上空白框感，並把 crest / bloodline / summary 模組拉回更接近 canonical reference 的乾淨結構。",
+      "related": [
+        "UI-2-0054",
+        "UI-2-0059",
+        "UI-2-0091",
+        "UI-2-0092"
+      ],
+      "depends": [
+        "UI-2-0092"
+      ],
+      "template_family": "detail-split",
+      "content_contract": [
+        "coreStatsValue",
+        "roleValue",
+        "traitValue",
+        "bloodlineBody",
+        "crestHint"
+      ],
+      "skin_fragments": [
+        "general_detail/jade-parchment-panel-final",
+        "general_detail/crest-medallion-final",
+        "general_detail/story-strip-final"
+      ],
+      "smoke_route": "node tools_node/capture-ui-screens.js --target GeneralDetailOverview --outDir artifacts/ui-qa/UI-2-0093/r16-layout-polish",
+      "docs_backwritten": [
+        "docs/keep.md",
+        "docs/UI 規格書.md",
+        "docs/cross-reference-index.md"
+      ],
+      "acceptance": [
+        "血脈摘要區不再出現欄位與內文互相重疊",
+        "左上提示區不再出現突兀空白框或 ribbon 殘影",
+        "overview sample content 明顯變短，閱讀節奏更接近 canonical reference",
+        "crest 區節點結構回到卡內整合，不再依賴外部 overlay 疊放",
+        "capture-ui-screens.js --target GeneralDetailOverview 可得到可比較結果"
+      ],
+      "notes": "2026-04-06 | 狀態: in-progress | 處理: r16-layout-polish 收斂中；crest 模組與 header area 仍有空白 offset | 驗證: smoke-capture 待確認 | 阻塞: 依賴 DALL-E 3 資產最終交付\n2026-04-06 | 狀態: in-progress | 處理: GeneralDetailOverviewShell 修補完成（mythic tier + story strip 文字繫結 + PortraitRarityFrame 連線）；LobbyScene.waitForReady() 修正 headless 時序問題 | 驗證: capture-ui-screens.js --target GeneralDetailOverview 執行成功，截圖位於 artifacts/ui-qa/UI-2-0093/r16-layout-polish/GeneralDetailOverview.png | 阻塞: 無"
     }
   ]
 }

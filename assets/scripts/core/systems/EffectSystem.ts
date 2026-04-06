@@ -166,15 +166,43 @@ export class EffectSystem {
      * 也確保 Layer 設定正確（非 UI 特效不應處於 UI Layer）。
      */
     private sanitizeVfxNode(node: Node): void {
-        // 1. 強制 Layer 校正：若父節點非 UI，則特效不應在 UI 層級
-        const UI_LAYER = 1 << 25; // 常見 UI Layer mask
-        if (node.layer >= UI_LAYER) {
-            // console.warn(`[EffectSystem] 特效節點 "${node.name}" Layer 異常 (${node.layer})，重設為 Default`);
-            node.layer = 1; // Default Layer
-            node.walk((child: Node) => { child.layer = 1; });
+        // 1. 強制 Layer 校正：3D 特效用 DEFAULT layer 才能被 3D Camera 渲染
+        const DEFAULT_LAYER = 1 << 0;  // Layers.Enum.DEFAULT
+        const UI_LAYER = 1 << 25;
+        const needsLayerFix = node.layer >= UI_LAYER;
+
+        if (needsLayerFix) {
+            console.warn(`[EffectSystem:Sanitize] "${node.name}" Layer=${node.layer} 在 UI 層級，強制修正為 DEFAULT`);
         }
 
-        // 2. 深度檢查渲染組件：防止底層內核在 updateUVs 或 render 階段崩潰
+        // 對整棵節點樹設定 layer（即使當前正確也統一設定，防止子節點不一致）
+        node.layer = DEFAULT_LAYER;
+        node.walk((child: Node) => {
+            child.layer = DEFAULT_LAYER;
+        });
+
+        // 2. 診斷 ParticleSystem 狀態
+        const allPS = node.getComponentsInChildren(ParticleSystem);
+        let enabledCount = 0;
+        allPS.forEach(ps => {
+            if (!ps.enabled) {
+                // [TEMP-QA] 若 PS 被 BuffEffectPrefabController 停用，嘗試重新啟用
+                // 除非是根節點上的「遺留」PS（通常被 disableLegacyRootParticle 明確停用）
+                const isRootPS = ps.node === node;
+                if (!isRootPS) {
+                    console.warn(`[EffectSystem:Sanitize] 重新啟用被停用的 PS: "${ps.node.name}"`);
+                    ps.enabled = true;
+                    ps.playOnAwake = true;
+                }
+            }
+            if (ps.enabled) enabledCount++;
+        });
+
+        if (enabledCount === 0 && allPS.length > 0) {
+            console.error(`[EffectSystem:Sanitize] "${node.name}" 所有 ${allPS.length} 個 ParticleSystem 都被停用！特效將不可見。`);
+        }
+
+        // 3. 深度檢查渲染組件：防止底層內核在 updateUVs 或 render 階段崩潰
         node.walk((target: Node) => {
             // 檢查 Sprite
             const sprite = target.getComponent(Sprite);
@@ -290,7 +318,7 @@ export class EffectSystem {
         const node = this.poolSystem?.acquire(blockId);
         if (!node) {
             // 輸出 renderMode 協助診斷（例：開發者忘記為 cpu-only 的 Trail 積木建立 Prefab）
-            console.warn(`[EffectSystem] playBlock: "${blockId}" 未在 PoolSystem 中註冊。renderMode=${block.renderMode}`);
+            console.error(`[EffectSystem] playBlock: "${blockId}" 未在 PoolSystem 中註冊（prefab 載入失敗？）。renderMode=${block.renderMode}, prefabPath=${block.prefabPath ?? '未設定'}`);
             return null;
         }
 
@@ -299,16 +327,42 @@ export class EffectSystem {
         if (parent) node.parent = parent;
         node.setWorldPosition(position);
 
-        // 4. 套用粒子動態覆寫（若有）
+        // 4. 先執行 sanitize（修正 layer / 重新啟用被停用的 PS）
+        this.sanitizeVfxNode(node);
+
+        // 5. 套用粒子動態覆寫（在 sanitize 之後，確保新啟用的 PS 也能接收到覆寫）
+        const allPS = node.getComponentsInChildren(ParticleSystem);
         if (override) {
-            node.getComponentsInChildren(ParticleSystem)
-                .forEach(ps => applyParticleOverride(ps, override));
+            allPS.filter(ps => ps.enabled).forEach(ps => applyParticleOverride(ps, override));
         }
 
-        // 5. 播放粒子群組與動畫
-        this.playGroup(node);
+        // 6. [TEMP-QA] 診斷日誌：確認粒子系統狀態
+        const enabledPS = allPS.filter(ps => ps.enabled);
+        console.log(`[EffectSystem:playBlock] "${blockId}" PS狀態: 全部=${allPS.length}, 啟用=${enabledPS.length}, Layer=${node.layer}, Pos=${position.toString()}`);
+        enabledPS.forEach(ps => {
+            const renderer = (ps as any).renderer;
+            const hasTexture = renderer?._mainTexture != null;
+            const hasMaterial = renderer?._cpuMaterial != null || renderer?._gpuMaterial != null;
+            console.log(`  ↳ PS "${ps.node.name}": size=${ps.startSizeX.constant.toFixed(2)}, speed=${ps.startSpeed.constant.toFixed(2)}, rate=${ps.rateOverTime.constant}, tex=${hasTexture}, mat=${hasMaterial}, loop=${ps.loop}`);
+        });
 
-        // 7. 定時回收
+        // 7. 播放粒子群組與動畫（跳過重複 sanitize）
+        try {
+            allPS.filter(ps => ps.enabled).forEach(ps => {
+                try { ps.play(); } catch (e) {
+                    console.error(`[EffectSystem] PS播放失敗 "${ps.node.name}":`, e);
+                }
+            });
+            node.getComponentsInChildren(Animation).forEach(a => {
+                try { a.play(); } catch (e) {
+                    console.error(`[EffectSystem] Animation播放失敗:`, e);
+                }
+            });
+        } catch (e) {
+            console.error(`[EffectSystem] playBlock 渲染啟動失敗 "${blockId}":`, e);
+        }
+
+        // 8. 定時回收
         if (duration > 0) {
             setTimeout(() => {
                 this.stopGroup(node, true);

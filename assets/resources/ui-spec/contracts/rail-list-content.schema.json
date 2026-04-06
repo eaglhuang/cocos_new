@@ -1,0 +1,37 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "schemaId": "rail-list-content",
+  "familyId": "rail-list",
+  "version": 1,
+  "description": "rail-list 家族的內容契約。適用於武將列表、商城商品列表、戰報條目列表等橫向或縱向捲動列表畫面。",
+  "fields": {
+    "titleKey": {
+      "type": "string",
+      "contentType": "i18n-key",
+      "required": true,
+      "description": "列表標題的 i18n key",
+      "bindPath": "header.title"
+    },
+    "railItems": {
+      "type": "array",
+      "required": true,
+      "minItems": 1,
+      "description": "列表項目資料陣列（至少 1 筆）",
+      "bindPath": "content.list.items"
+    },
+    "emptyStateKey": {
+      "type": "string",
+      "contentType": "i18n-key",
+      "required": false,
+      "description": "空清單狀態時顯示的 i18n key",
+      "bindPath": "content.emptyState.label"
+    },
+    "sortOptions": {
+      "type": "array",
+      "required": false,
+      "description": "排序選項陣列（可選；無此欄位時隱藏排序列）",
+      "bindPath": "header.sortBar.options"
+    }
+  },
+  "requiredFields": ["titleKey", "railItems"]
+}

@@ -1,0 +1,85 @@
+{
+  "id": "skin-family-gold-cta",
+  "version": 1,
+  "bundle": "ui_common",
+  "atlasPolicy": "ui_family_gold_cta",
+  "description": "gold-cta family 共用 slot。主要行動按鈕（戰鬥開始、確認、購買）。themeStack family 層使用。",
+  "slots": {
+    "btn.gold-cta.edge": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/gold_cta/btn_edge/spriteFrame",
+      "spriteType": "sliced",
+      "border": [12, 12, 12, 12],
+      "bleed": 6,
+      "allowAutoAtlas": true
+    },
+    "btn.gold-cta.glow": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/gold_cta/btn_glow/spriteFrame",
+      "spriteType": "sliced",
+      "border": [18, 18, 18, 18],
+      "bleed": 10,
+      "opacity": 0.65,
+      "blendMode": "add",
+      "allowAutoAtlas": true
+    },
+    "btn.gold-cta.fill": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/gold_cta/btn_fill_normal/spriteFrame",
+      "spriteType": "sliced",
+      "border": [8, 8, 8, 8],
+      "allowAutoAtlas": true
+    },
+    "btn.gold-cta.shine": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/gold_cta/btn_shine/spriteFrame",
+      "spriteType": "sliced",
+      "border": [4, 4, 4, 4],
+      "opacity": 0.4,
+      "blendMode": "screen",
+      "allowAutoAtlas": true
+    },
+    "btn.gold-cta.fill-hover": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/gold_cta/btn_fill_hover/spriteFrame",
+      "spriteType": "sliced",
+      "border": [8, 8, 8, 8],
+      "allowAutoAtlas": true
+    },
+    "btn.gold-cta.fill-pressed": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/gold_cta/btn_fill_pressed/spriteFrame",
+      "spriteType": "sliced",
+      "border": [8, 8, 8, 8],
+      "allowAutoAtlas": true
+    },
+    "btn.gold-cta.edge-pressed": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/gold_cta/btn_edge_pressed/spriteFrame",
+      "spriteType": "sliced",
+      "border": [12, 12, 12, 12],
+      "bleed": 4,
+      "allowAutoAtlas": true
+    },
+    "btn.gold-cta.label": {
+      "kind": "label-style",
+      "color": "#1A1000",
+      "fontSize": 28,
+      "lineHeight": 36,
+      "isBold": true,
+      "horizontalAlign": "CENTER",
+      "verticalAlign": "CENTER",
+      "overflow": "SHRINK"
+    },
+    "btn.gold-cta.label.shadow": {
+      "kind": "label-style",
+      "color": "#FFE088",
+      "fontSize": 28,
+      "lineHeight": 36,
+      "isBold": true,
+      "horizontalAlign": "CENTER",
+      "verticalAlign": "CENTER",
+      "overflow": "SHRINK"
+    }
+  }
+}

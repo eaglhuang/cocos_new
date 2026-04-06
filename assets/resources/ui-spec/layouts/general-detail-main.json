@@ -1,6 +1,6 @@
 {
   "id": "general-detail-main",
-  "version": 7,
+  "version": 8,
   "canvas": {
     "fitWidth": true,
     "fitHeight": true,
@@ -96,38 +96,38 @@
       {
         "type": "panel",
         "name": "RightTabBarFill",
-        "widget": { "top": 60, "bottom": 56, "right": 24 },
-        "width": 112,
+        "widget": { "top": 64, "bottom": 60, "right": 20 },
+        "width": 76,
         "skinSlot": "detail.tabbar.rail.fill"
       },
       {
         "type": "panel",
         "name": "RightTabBarBleed",
-        "widget": { "top": 60, "bottom": 56, "right": 24 },
-        "width": 112,
+        "widget": { "top": 64, "bottom": 60, "right": 20 },
+        "width": 76,
         "skinSlot": "detail.tabbar.rail.bleed"
       },
       {
         "type": "panel",
         "name": "RightTabBarFrame",
-        "widget": { "top": 60, "bottom": 56, "right": 24 },
-        "width": 112,
+        "widget": { "top": 64, "bottom": 60, "right": 20 },
+        "width": 76,
         "skinSlot": "detail.tabbar.rail.frame"
       },
       {
         "type": "container",
         "name": "RightTabBar",
-        "widget": { "top": 60, "bottom": 56, "right": 24 },
-        "width": 112,
-        "layout": { "type": "vertical", "spacing": 14, "paddingTop": 18, "paddingBottom": 18, "paddingLeft": 8, "paddingRight": 8 },
+        "widget": { "top": 64, "bottom": 60, "right": 20 },
+        "width": 76,
+        "layout": { "type": "vertical", "spacing": 8, "paddingTop": 12, "paddingBottom": 12, "paddingLeft": 5, "paddingRight": 5 },
         "children": [
-          { "type": "button", "name": "BtnTabBasics", "width": 96, "height": 84, "skinSlot": "detail.tab.idle", "styleSlot": "detail.label.button", "textKey": "ui.general.tab.basics" },
-          { "type": "button", "name": "BtnTabStats", "width": 96, "height": 84, "skinSlot": "detail.tab.idle", "styleSlot": "detail.label.button", "textKey": "ui.general.tab.stats" },
-          { "type": "button", "name": "BtnTabBloodline", "width": 96, "height": 84, "skinSlot": "detail.tab.idle", "styleSlot": "detail.label.button", "textKey": "ui.general.tab.bloodline" },
-          { "type": "button", "name": "BtnTabSkills", "width": 96, "height": 84, "skinSlot": "detail.tab.idle", "styleSlot": "detail.label.button", "textKey": "ui.general.tab.skills" },
-          { "type": "button", "name": "BtnTabAptitude", "width": 96, "height": 84, "skinSlot": "detail.tab.idle", "styleSlot": "detail.label.button", "textKey": "ui.general.tab.aptitude" },
-          { "type": "button", "name": "BtnTabExtended", "width": 96, "height": 84, "skinSlot": "detail.tab.idle", "styleSlot": "detail.label.button", "textKey": "ui.general.tab.extended" },
-          { "type": "button", "name": "BtnClose", "width": 96, "height": 84, "skinSlot": "common.button.primary", "styleSlot": "detail.label.button", "textKey": "ui.close" }
+          { "type": "button", "name": "BtnTabBasics", "width": 66, "height": 60, "skinSlot": "detail.tab.idle", "styleSlot": "detail.label.button", "textKey": "ui.general.tab.basics" },
+          { "type": "button", "name": "BtnTabStats", "width": 66, "height": 60, "skinSlot": "detail.tab.idle", "styleSlot": "detail.label.button", "textKey": "ui.general.tab.stats" },
+          { "type": "button", "name": "BtnTabBloodline", "width": 66, "height": 60, "skinSlot": "detail.tab.idle", "styleSlot": "detail.label.button", "textKey": "ui.general.tab.bloodline" },
+          { "type": "button", "name": "BtnTabSkills", "width": 66, "height": 60, "skinSlot": "detail.tab.idle", "styleSlot": "detail.label.button", "textKey": "ui.general.tab.skills" },
+          { "type": "button", "name": "BtnTabAptitude", "width": 66, "height": 60, "skinSlot": "detail.tab.idle", "styleSlot": "detail.label.button", "textKey": "ui.general.tab.aptitude" },
+          { "type": "button", "name": "BtnTabExtended", "width": 66, "height": 60, "skinSlot": "detail.tab.idle", "styleSlot": "detail.label.button", "textKey": "ui.general.tab.extended" },
+          { "type": "button", "name": "BtnClose", "width": 66, "height": 60, "skinSlot": "common.button.primary", "styleSlot": "detail.label.button", "textKey": "ui.close" }
         ]
       },
       {
