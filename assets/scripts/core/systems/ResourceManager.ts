@@ -371,32 +371,4 @@ export class ResourceManager {
     // 清除標籤紀錄
     this.pathTags.clear();
   }
-
-  // ---- DC-2-0004: loadPagedData API ----
-  /**
-   * 統一分層分頁資料載入入口。
-   * 底層委託 DataPageLoader，對外暴露統一介面。
-   * Unity 對照：Addressables.LoadAssetsAsync<T>(label, callback)
-   * @param layer 資料層級("L1"~"L5") @param page 頁碼 @param options faction/uid/pageSize
-   */
-  public async loadPagedData<T>(
-    layer: 'L1' | 'L2' | 'L3' | 'L4' | 'L5',
-    page = 0,
-    options?: { faction?: string; uid?: string; pageSize?: number }
-  ): Promise<T[]> {
-    const { DataPageLoader } = await import('../storage/DataPageLoader');
-    const loader = DataPageLoader.getInstance();
-    if (layer === 'L1') { const r = await loader.loadL1Active<T>(); return r.data; }
-    if (layer === 'L2') {
-      const ps = options?.pageSize ?? 20;
-      const cursor = page === 0 ? null : { offset: page * ps, pageSize: ps, hasMore: true };
-      const r = await loader.loadL2Page<T>(cursor, options?.faction); return r.data;
-    }
-    if (layer === 'L3' && options?.uid) { const i = await loader.loadL3Detail<T>(options.uid); return i ? [i] : []; }
-    if ((layer === 'L4' || layer === 'L5') && options?.uid) {
-      const i = await loader.loadLayerData<T>(options.uid, layer as 'L4'|'L5');
-      return i ? [i] : [];
-    }
-    return [];
-  }
 }
