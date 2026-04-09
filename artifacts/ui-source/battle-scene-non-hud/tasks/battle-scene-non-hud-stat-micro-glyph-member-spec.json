@@ -1,0 +1,67 @@
+{
+  "screenId": "BattleSceneNonHUD",
+  "iconFamilyId": "battle-status-icon-v1",
+  "suiteId": "battle-stat-micro-suite",
+  "structureMode": "glyph-only",
+  "generationPolicy": "spec-only-no-image-output",
+  "firstBatchMembers": [
+    {
+      "memberKey": "atk",
+      "label": "攻擊",
+      "runtimeShortLabel": null,
+      "semantic": "兵刃、突刺、斬擊等進攻意象；需在 16px 仍可辨識，不可退化成字母 A 或誇張武器貼圖。",
+      "canonicalGlyphPath": "sprites/battle/battle_stat_atk_glyph",
+      "legacyGlyphFallbackPath": null,
+      "dockingTargets": [
+        "TigerTallyPanel.AtkLabel",
+        "UnitInfoPanel.AtkRow"
+      ],
+      "numberDockPolicy": "icon-before-number",
+      "notes": "僅輸出內容層 glyph，不含 badge 底牌、框體、數值。"
+    },
+    {
+      "memberKey": "hp",
+      "label": "生命",
+      "runtimeShortLabel": null,
+      "semantic": "血量、耐久、生存能力；應偏戰場可讀性的護體/生命意象，不可做成可愛愛心貼紙。",
+      "canonicalGlyphPath": "sprites/battle/battle_stat_hp_glyph",
+      "legacyGlyphFallbackPath": null,
+      "dockingTargets": [
+        "TigerTallyPanel.HpLabel",
+        "UnitInfoPanel.HpRow"
+      ],
+      "numberDockPolicy": "icon-before-number",
+      "notes": "保持 battle drawer 可讀性，不使用糖果色或醫療貼圖語感。"
+    },
+    {
+      "memberKey": "cost",
+      "label": "軍糧",
+      "runtimeShortLabel": null,
+      "semantic": "軍糧、補給、出征成本；必須是戰場補給語意，不可畫成金幣、元寶、商城貨幣或抽卡票券。",
+      "canonicalGlyphPath": "sprites/battle/battle_stat_cost_glyph",
+      "legacyGlyphFallbackPath": null,
+      "dockingTargets": [
+        "TigerTallyPanel.CostBadge",
+        "UnitInfoPanel.CostRow"
+      ],
+      "numberDockPolicy": "icon-before-number",
+      "notes": "允許穀袋、軍糧箱、簡化糧草束等意象，但需維持 micro glyph 的簡潔剪影。"
+    }
+  ],
+  "deferredMembers": [
+    {
+      "memberKey": "def",
+      "label": "防禦",
+      "reason": "UnitInfoPanel 雖已有 DefRow，但 TigerTally 首批只需要 atk / hp / cost；先避免把第二批成員提前混入首批 suite。"
+    },
+    {
+      "memberKey": "spd",
+      "label": "速度",
+      "reason": "UnitInfoPanel 雖已有 SpdRow，但 TigerTally 首批不顯示速度；待第一批 glyph runtime clean pass 後再獨立納入。"
+    }
+  ],
+  "runtimeTargets": [
+    "TigerTallyPanel.atkHpCost",
+    "UnitInfoPanel.statsOptional"
+  ]
+}

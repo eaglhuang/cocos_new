@@ -1,0 +1,53 @@
+{
+  "screenId": "BattleSceneNonHUD",
+  "updatedAt": "2026-04-08T07:32:45.885Z",
+  "latestStage": "assetTaskManifest",
+  "overallVerdict": "pass",
+  "stages": {
+    "assetTaskManifest": {
+      "verdict": "pass",
+      "validatedAt": "2026-04-08T07:32:45.885Z",
+      "fileCount": 3,
+      "failureCount": 0,
+      "files": [
+        {
+          "kind": "intake",
+          "filePath": "artifacts\\ui-source\\battle-scene-non-hud\\manifests\\intake.json",
+          "ok": true,
+          "failReasons": []
+        },
+        {
+          "kind": "familyMap",
+          "filePath": "artifacts\\ui-source\\battle-scene-non-hud\\proof\\battle-scene-non-hud.family-map.json",
+          "ok": true,
+          "failReasons": []
+        },
+        {
+          "kind": "assetTaskManifest",
+          "filePath": "artifacts\\ui-source\\battle-scene-non-hud\\manifests\\asset-task-manifest.json",
+          "ok": true,
+          "failReasons": []
+        }
+      ],
+      "crossFileFailReasons": [],
+      "metadata": {
+        "screenId": "BattleSceneNonHUD",
+        "output": "manifests/asset-task-manifest.json",
+        "taskCount": 4
+      },
+      "history": [
+        {
+          "verdict": "pass",
+          "validatedAt": "2026-04-08T07:32:45.885Z",
+          "fileCount": 3,
+          "failureCount": 0,
+          "metadata": {
+            "screenId": "BattleSceneNonHUD",
+            "output": "manifests/asset-task-manifest.json",
+            "taskCount": 4
+          }
+        }
+      ]
+    }
+  }
+}

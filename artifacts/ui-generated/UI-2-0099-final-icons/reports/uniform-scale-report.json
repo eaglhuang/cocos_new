@@ -1,0 +1,210 @@
+[
+    {
+        "name":  "cavalry",
+        "normalizationMode":  "alpha-bounds-auto",
+        "sourcePath":  "artifacts\\ui-generated\\UI-2-0099-final-icons\\processed\\cavalry_256.png",
+        "sourceMode":  "processed-alpha-canvas",
+        "sourceWidth":  256,
+        "sourceHeight":  256,
+        "alphaBounds":  {
+                            "x":  24,
+                            "y":  26,
+                            "width":  205,
+                            "height":  207
+                        },
+        "targetBox":  150,
+        "scaleFactor":  0.7246,
+        "drawWidth":  186,
+        "drawHeight":  186,
+        "drawX":  36,
+        "drawY":  34,
+        "normalizedAlphaBounds":  {
+                                      "x":  53,
+                                      "y":  52,
+                                      "width":  150,
+                                      "height":  152
+                                  }
+    },
+    {
+        "name":  "infantry",
+        "normalizationMode":  "alpha-bounds-auto",
+        "sourcePath":  "artifacts\\ui-generated\\UI-2-0099-final-icons\\processed\\infantry_256.png",
+        "sourceMode":  "processed-alpha-canvas",
+        "sourceWidth":  256,
+        "sourceHeight":  256,
+        "alphaBounds":  {
+                            "x":  40,
+                            "y":  37,
+                            "width":  177,
+                            "height":  180
+                        },
+        "targetBox":  150,
+        "scaleFactor":  0.8333,
+        "drawWidth":  213,
+        "drawHeight":  213,
+        "drawX":  21,
+        "drawY":  22,
+        "normalizedAlphaBounds":  {
+                                      "x":  54,
+                                      "y":  52,
+                                      "width":  148,
+                                      "height":  151
+                                  }
+    },
+    {
+        "name":  "shield",
+        "normalizationMode":  "alpha-bounds-auto",
+        "sourcePath":  "artifacts\\ui-generated\\UI-2-0099-final-icons\\processed\\shield_256.png",
+        "sourceMode":  "processed-alpha-canvas",
+        "sourceWidth":  256,
+        "sourceHeight":  256,
+        "alphaBounds":  {
+                            "x":  52,
+                            "y":  25,
+                            "width":  152,
+                            "height":  202
+                        },
+        "targetBox":  150,
+        "scaleFactor":  0.7426,
+        "drawWidth":  190,
+        "drawHeight":  190,
+        "drawX":  33,
+        "drawY":  34,
+        "normalizedAlphaBounds":  {
+                                      "x":  71,
+                                      "y":  52,
+                                      "width":  114,
+                                      "height":  151
+                                  }
+    },
+    {
+        "name":  "archer",
+        "normalizationMode":  "alpha-bounds-auto",
+        "sourcePath":  "artifacts\\ui-generated\\UI-2-0099-final-icons\\processed\\archer_256.png",
+        "sourceMode":  "processed-alpha-canvas",
+        "sourceWidth":  256,
+        "sourceHeight":  256,
+        "alphaBounds":  {
+                            "x":  29,
+                            "y":  17,
+                            "width":  198,
+                            "height":  219
+                        },
+        "targetBox":  150,
+        "scaleFactor":  0.6849,
+        "drawWidth":  175,
+        "drawHeight":  175,
+        "drawX":  40,
+        "drawY":  41,
+        "normalizedAlphaBounds":  {
+                                      "x":  59,
+                                      "y":  52,
+                                      "width":  137,
+                                      "height":  151
+                                  }
+    },
+    {
+        "name":  "pikeman",
+        "normalizationMode":  "alpha-bounds-auto",
+        "sourcePath":  "artifacts\\ui-generated\\UI-2-0099-final-icons\\processed\\pikeman_256.png",
+        "sourceMode":  "processed-alpha-canvas",
+        "sourceWidth":  256,
+        "sourceHeight":  256,
+        "alphaBounds":  {
+                            "x":  27,
+                            "y":  27,
+                            "width":  202,
+                            "height":  203
+                        },
+        "targetBox":  150,
+        "scaleFactor":  0.7389,
+        "drawWidth":  189,
+        "drawHeight":  189,
+        "drawX":  33,
+        "drawY":  33,
+        "normalizedAlphaBounds":  {
+                                      "x":  53,
+                                      "y":  52,
+                                      "width":  149,
+                                      "height":  151
+                                  }
+    },
+    {
+        "name":  "engineer",
+        "normalizationMode":  "alpha-bounds-auto",
+        "sourcePath":  "artifacts\\ui-generated\\UI-2-0099-final-icons\\processed\\engineer_256.png",
+        "sourceMode":  "processed-alpha-canvas",
+        "sourceWidth":  256,
+        "sourceHeight":  256,
+        "alphaBounds":  {
+                            "x":  36,
+                            "y":  43,
+                            "width":  184,
+                            "height":  174
+                        },
+        "targetBox":  150,
+        "scaleFactor":  0.8152,
+        "drawWidth":  209,
+        "drawHeight":  209,
+        "drawX":  24,
+        "drawY":  22,
+        "normalizedAlphaBounds":  {
+                                      "x":  53,
+                                      "y":  57,
+                                      "width":  151,
+                                      "height":  143
+                                  }
+    },
+    {
+        "name":  "medic",
+        "normalizationMode":  "alpha-bounds-auto",
+        "sourcePath":  "artifacts\\ui-generated\\UI-2-0099-final-icons\\raw\\medic.png",
+        "sourceMode":  "raw-background-removal",
+        "sourceWidth":  177,
+        "sourceHeight":  174,
+        "alphaBounds":  {
+                            "x":  0,
+                            "y":  4,
+                            "width":  172,
+                            "height":  166
+                        },
+        "targetBox":  150,
+        "scaleFactor":  0.8721,
+        "drawWidth":  154,
+        "drawHeight":  152,
+        "drawX":  53,
+        "drawY":  52,
+        "normalizedAlphaBounds":  {
+                                      "x":  53,
+                                      "y":  55,
+                                      "width":  150,
+                                      "height":  146
+                                  }
+    },
+    {
+        "name":  "navy",
+        "normalizationMode":  "alpha-bounds-auto",
+        "sourcePath":  "artifacts\\ui-generated\\UI-2-0099-final-icons\\processed\\navy_256.png",
+        "sourceMode":  "processed-alpha-canvas",
+        "sourceWidth":  500,
+        "sourceHeight":  468,
+        "alphaBounds":  {
+                            "x":  17,
+                            "y":  14,
+                            "width":  471,
+                            "height":  442
+                        },
+        "targetBox":  150,
+        "scaleFactor":  0.3185,
+        "drawWidth":  159,
+        "drawHeight":  149,
+        "drawX":  48,
+        "drawY":  53,
+        "normalizedAlphaBounds":  {
+                                      "x":  53,
+                                      "y":  57,
+                                      "width":  150,
+                                      "height":  141
+                                  }
+    }
+]

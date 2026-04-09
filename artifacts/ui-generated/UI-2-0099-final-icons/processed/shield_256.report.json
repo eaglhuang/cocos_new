@@ -1,0 +1,67 @@
+{
+  "reportVersion": "1.0",
+  "generatedAt": "2026-04-09T01:03:10.355Z",
+  "input": "artifacts\\ui-generated\\UI-2-0099-final-icons\\raw\\shield.png",
+  "output": "artifacts\\ui-generated\\UI-2-0099-final-icons\\processed\\shield_256.png",
+  "spriteType": "simple",
+  "requestedTargetLongEdge": null,
+  "requestedBorder": null,
+  "border": null,
+  "borderSource": "unset",
+  "suggestedBorder": null,
+  "trim": {
+    "inputWidth": 342,
+    "inputHeight": 341,
+    "background": {
+      "r": 34,
+      "g": 38,
+      "b": 41,
+      "a": 255,
+      "spread": 2.253
+    },
+    "bounds": {
+      "minX": 0,
+      "minY": 0,
+      "maxX": 341,
+      "maxY": 340
+    },
+    "crop": {
+      "x": 0,
+      "y": 0,
+      "width": 342,
+      "height": 341
+    },
+    "output": {
+      "width": 256,
+      "height": 256
+    },
+    "foregroundCount": 20374,
+    "cleanup": {
+      "enabled": true,
+      "deterministicBackground": true,
+      "removedPixels": 38009,
+      "removedOuterRingPixels": 0,
+      "removedEdgeFringePixels": 38009
+    }
+  },
+  "analysis": {
+    "width": 256,
+    "height": 256,
+    "opaquePixels": 11943,
+    "semiTransparentPixels": 0,
+    "edgeAlphaPixels": 0,
+    "outerRingAlphaPixels": 0,
+    "occupancyRatio": 0.1822357177734375,
+    "bounds": {
+      "minX": 16,
+      "minY": 17,
+      "maxX": 182,
+      "maxY": 239,
+      "width": 167,
+      "height": 223
+    }
+  },
+  "failures": [],
+  "warnings": [],
+  "status": "pass"
+}

@@ -1,0 +1,35 @@
+{
+  "taskId": "battle-scene-non-hud-type-icon-glyph",
+  "screenId": "BattleSceneNonHUD",
+  "model": "nano-banana-2",
+  "zone": "unit-info-panel",
+  "slot": "typeIconGlyph",
+  "taskType": "generate-partial-asset",
+  "label": "F7 UnitInfo type icon glyph mother",
+  "family": "dark-metal-drawer",
+  "recipe": "dark-metal-v1",
+  "structureOwner": "unit-info-panel-screen + UITemplateResolver",
+  "skinOwner": "UISkinResolver",
+  "contentOwner": "UnitInfoPanel",
+  "widgetRefs": [
+    "detail-drawer"
+  ],
+  "templateRefs": [],
+  "targetStyle": "dark-metal-drawer / dark-metal-v1",
+  "mustKeep": [],
+  "mustAvoid": [],
+  "fitRules": {
+    "maxVisualOccupancy": 0.65,
+    "runtimeIntrusionForbidden": true
+  },
+  "postProcess": {
+    "trimByBackground": true,
+    "spriteType": "simple"
+  },
+  "output": {
+    "preferredMime": "image/png",
+    "targetLongEdge": 512,
+    "transparentBackgroundPreferred": true,
+    "outputName": "battle-unitinfo_type_glyph"
+  }
+}

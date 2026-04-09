@@ -1,0 +1,31 @@
+{
+  "$schema": "../../schemas/intake.schema.json",
+  "screenId": "BattleSceneNonHUD",
+  "tier": "C",
+  "templateFamilyCandidate": "battle-scene-composite",
+  "uiId": "BattleScenePanel",
+  "sourceOfTruth": {
+    "screenSpec": "assets/resources/ui-spec/screens/battle-scene-main.json",
+    "layout": null,
+    "skin": null,
+    "bundle": "battle_ui",
+    "layer": "Game"
+  },
+  "canonicalReferences": [
+    "artifacts/ui-qa/battle-hud/runtime-triage-r5/BattleScene.png",
+    "artifacts/ui-qa/battle-hud/runtime-triage-r5/capture-report.json",
+    "artifacts/ui-qa/UI-2-0053/battle-main-ui-art-direction-audit.md"
+  ],
+  "riskZones": [
+    "tiger-tally-panel",
+    "unit-info-panel",
+    "battle-log-rail",
+    "action-command-cluster",
+    "deploy-panel-runtime-link",
+    "battlefield-non-hud-residual"
+  ],
+  "smokeRoute": "node tools_node/capture-ui-screens.js --target BattleScene --outDir artifacts/ui-qa/UI-2-0098/runtime-baseline",
+  "notes": "BattleHUD 已於 2026-04-08 clean pass；此 intake 僅覆蓋 BattleScene 內 HUD 以外的 composite slice，包含 battle-log、action-command、tiger-tally、unit-info 與其互動 residual，不回頭處理 BattleHUD 既有 warning 或重新調 HUD layout/skin。",
+  "generatedAt": "2026-04-08T13:05:01.9751370+08:00",
+  "generatedBy": "Agent3"
+}

@@ -1,0 +1,37 @@
+{
+  "taskId": "battle-scene-non-hud-type-badge-underlay",
+  "screenId": "BattleSceneNonHUD",
+  "model": "nano-banana-2",
+  "zone": "tiger-tally-panel",
+  "slot": "typeBadgeUnderlay",
+  "taskType": "generate-partial-asset",
+  "label": "F7 TigerTally type badge underlay",
+  "family": "battle-card-rail",
+  "recipe": "tactical-diorama-v1",
+  "structureOwner": "tiger-tally-screen + UITemplateResolver",
+  "skinOwner": "UISkinResolver",
+  "contentOwner": "TigerTallyPanel",
+  "widgetRefs": [
+    "card-rail",
+    "tally-card"
+  ],
+  "templateRefs": [],
+  "targetStyle": "battle-card-rail / tactical-diorama-v1",
+  "mustKeep": [],
+  "mustAvoid": [],
+  "fitRules": {
+    "maxVisualOccupancy": 0.65,
+    "runtimeIntrusionForbidden": true
+  },
+  "postProcess": {
+    "trimByBackground": true,
+    "spriteType": "sliced",
+    "border": [10, 10, 10, 10]
+  },
+  "output": {
+    "preferredMime": "image/png",
+    "targetLongEdge": 512,
+    "transparentBackgroundPreferred": true,
+    "outputName": "battle-unit-type_badge_underlay"
+  }
+}

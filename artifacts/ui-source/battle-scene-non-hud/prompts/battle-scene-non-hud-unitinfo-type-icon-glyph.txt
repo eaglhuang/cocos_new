@@ -1,0 +1,5 @@
+Create a single isolated UI partial asset for BattleSceneNonHUD. Zone: unit-info-panel. Slot: typeIconGlyph. Visual target: battle-status-icon-v1 / F7 battle micro badge glyph mother.
+
+This asset is the mother glyph style for unitinfo.type.icon and should inherit the refined F7 battle badge language from the existing spear v2 exploration. Keep these qualities: old-coin tactical badge feeling, compact readable silhouette, deep-ink battlefield tone, restrained metal edge, readable at 38x38 and 32x32.
+
+Avoid: text, letters, numbers, commerce badge, reward medal, thick collectible frame, heavy neon glow, full button rectangle.

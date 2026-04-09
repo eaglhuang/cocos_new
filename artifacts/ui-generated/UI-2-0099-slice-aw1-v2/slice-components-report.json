@@ -1,0 +1,41 @@
+{
+  "input": "C:\\Users\\User\\Pictures\\cocos專案\\UI\\兵種UI\\Ancient_warfare_1.jpeg",
+  "outDir": "C:\\Users\\User\\3KLife\\artifacts\\ui-generated\\UI-2-0099-slice-aw1-v2",
+  "tempRoot": "C:\\Users\\User\\3KLife\\artifacts\\ui-generated\\UI-2-0099-slice-aw1-v2\\temp",
+  "selectedRoot": "C:\\Users\\User\\3KLife\\artifacts\\ui-generated\\UI-2-0099-slice-aw1-v2\\selected",
+  "scanned": 1,
+  "options": {
+    "pad": 4,
+    "minAreaRatio": 0.0003,
+    "maxAreaRatio": 0.35,
+    "colorThreshold": 30,
+    "alphaFloor": 12,
+    "maxComponents": 20,
+    "minWidthRatio": 0.01,
+    "minHeightRatio": 0.01,
+    "mergeGap": -1,
+    "tempDirName": "temp",
+    "selectedDirName": "selected"
+  },
+  "completed": 1,
+  "results": [
+    {
+      "input": "C:\\Users\\User\\Pictures\\cocos專案\\UI\\兵種UI\\Ancient_warfare_1.jpeg",
+      "outDir": "C:\\Users\\User\\3KLife\\artifacts\\ui-generated\\UI-2-0099-slice-aw1-v2\\temp\\Ancient_warfare_1",
+      "tempDir": "C:\\Users\\User\\3KLife\\artifacts\\ui-generated\\UI-2-0099-slice-aw1-v2\\temp\\Ancient_warfare_1\\components",
+      "selectedDir": "C:\\Users\\User\\3KLife\\artifacts\\ui-generated\\UI-2-0099-slice-aw1-v2\\selected\\Ancient_warfare_1",
+      "sourceSize": {
+        "width": 1024,
+        "height": 1024
+      },
+      "componentCount": 10,
+      "exportedCount": 10,
+      "countsByKind": {
+        "noise": 6,
+        "cap": 3,
+        "badge": 1
+      },
+      "pickedCount": 3
+    }
+  ]
+}

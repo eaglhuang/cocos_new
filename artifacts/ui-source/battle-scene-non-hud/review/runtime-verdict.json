@@ -1,0 +1,54 @@
+{
+  "$schema": "../../schemas/runtime-verdict.schema.json",
+  "screenId": "BattleSceneNonHUD",
+  "runId": "unitinfo-r8-open",
+  "status": "pass-with-minor-residuals",
+  "residuals": [
+    "TigerTally F7 type badge/type icon flow is runtime-ready; no current blocker on non-HUD onboarding.",
+    "UnitInfoPanel token colors and nested layout pass are fixed, but the drawer still needs final polish on opacity/readability before clean pass.",
+    "BattleLog / ActionCommand F8 overlay icon slots are wired and runtime-ready; remaining work is button-internal alignment and visual polish.",
+    "DeployPanel and world-space battlefield feedback remain a separate BattleScene residual outside the clean-pass scope for non-HUD panels."
+  ],
+  "promoteable": false,
+  "factoryLearnings": [
+    "BattleScene non-HUD panels need design tokens loaded alongside fullScreen and i18n; otherwise token names fall through and render incorrect colors at runtime.",
+    "UIPreviewBuilder needs a post-build recursive Layout.updateLayout(true) pass; widget realignment alone does not resolve nested vertical groups like UnitInfoPanel.",
+    "F8 was blocked mainly by missing overlay image slots, not by the icon pipeline itself; once slots exist, BattleLog / ActionCommand move quickly to runtime-ready.",
+    "BattleScene QA should keep a dedicated non-HUD open-state capture in addition to the full BattleScene baseline, otherwise drawer regressions are easy to miss."
+  ],
+  "latestStage": "runtimeCapture",
+  "captureArtifacts": {
+    "screenshotPath": "artifacts/ui-qa/UI-2-0098/unitinfo-r8-open/BattleScene-unitinfo-open.png",
+    "captureReportPath": "artifacts/ui-qa/UI-2-0098/unitinfo-r8-open/unitinfo-open-state.json"
+  },
+  "diagnosticsSummary": {
+    "consoleErrorCount": 0,
+    "consoleWarningCount": 0,
+    "pageErrorCount": 0,
+    "requestFailureCount": 0
+  },
+  "history": [
+    {
+      "runId": "unitinfo-r8-open",
+      "status": "pass-with-minor-residuals",
+      "updatedAt": "2026-04-08T14:15:00+08:00",
+      "residualCount": 4,
+      "promoteable": false
+    },
+    {
+      "runId": "f8-runtime-r1",
+      "status": "pass-with-minor-residuals",
+      "updatedAt": "2026-04-08T07:32:00.000Z",
+      "residualCount": 4,
+      "promoteable": false
+    },
+    {
+      "runId": "baseline-triage-r1",
+      "status": "pass-with-minor-residuals",
+      "updatedAt": "2026-04-08T13:05:01.9751370+08:00",
+      "residualCount": 4,
+      "promoteable": false
+    }
+  ],
+  "updatedAt": "2026-04-08T14:15:00+08:00"
+}

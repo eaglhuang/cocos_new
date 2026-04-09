@@ -1,0 +1,5 @@
+Create a single isolated UI partial asset for BattleSceneNonHUD. Zone: action-command-cluster. Slot: commandGlyphSuite. Visual target: battle-action-icon-v1 / F8 command glyph mother.
+
+This asset defines the glyph mother language for action command controls: end turn, tactics, and duel. Keep these qualities: battle command readability, decisive tactical silhouette, restrained gold command signal, readable at 48x48 and 82x82, consistent with the log control family without becoming a full reward badge.
+
+Avoid: text, letters, full button plate, collectible medal, giant ornamental frame, sci-fi HUD, exaggerated neon glow.

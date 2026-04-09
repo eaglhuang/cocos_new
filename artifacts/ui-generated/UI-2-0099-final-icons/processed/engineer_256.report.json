@@ -1,0 +1,67 @@
+{
+  "reportVersion": "1.0",
+  "generatedAt": "2026-04-09T01:03:15.658Z",
+  "input": "artifacts\\ui-generated\\UI-2-0099-final-icons\\raw\\engineer.png",
+  "output": "artifacts\\ui-generated\\UI-2-0099-final-icons\\processed\\engineer_256.png",
+  "spriteType": "simple",
+  "requestedTargetLongEdge": null,
+  "requestedBorder": null,
+  "border": null,
+  "borderSource": "unset",
+  "suggestedBorder": null,
+  "trim": {
+    "inputWidth": 341,
+    "inputHeight": 341,
+    "background": {
+      "r": 47,
+      "g": 48,
+      "b": 49,
+      "a": 255,
+      "spread": 2.427
+    },
+    "bounds": {
+      "minX": 67,
+      "minY": 67,
+      "maxX": 283,
+      "maxY": 275
+    },
+    "crop": {
+      "x": 43,
+      "y": 43,
+      "width": 265,
+      "height": 257
+    },
+    "output": {
+      "width": 256,
+      "height": 256
+    },
+    "foregroundCount": 19115,
+    "cleanup": {
+      "enabled": true,
+      "deterministicBackground": true,
+      "removedPixels": 35690,
+      "removedOuterRingPixels": 0,
+      "removedEdgeFringePixels": 35690
+    }
+  },
+  "analysis": {
+    "width": 256,
+    "height": 256,
+    "opaquePixels": 12918,
+    "semiTransparentPixels": 0,
+    "edgeAlphaPixels": 0,
+    "outerRingAlphaPixels": 0,
+    "occupancyRatio": 0.197113037109375,
+    "bounds": {
+      "minX": 36,
+      "minY": 43,
+      "maxX": 219,
+      "maxY": 216,
+      "width": 184,
+      "height": 174
+    }
+  },
+  "failures": [],
+  "warnings": [],
+  "status": "pass"
+}

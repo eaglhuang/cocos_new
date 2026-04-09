@@ -1,0 +1,55 @@
+{
+  "taskId": "battle-scene-non-hud-stat-micro-glyph-suite",
+  "screenId": "BattleSceneNonHUD",
+  "taskType": "icon-suite",
+  "label": "UI-2-0101 Battle stat micro glyph suite",
+  "iconFamilyId": "battle-status-icon-v1",
+  "suiteId": "battle-stat-micro-suite",
+  "structureMode": "glyph-only",
+  "generationStatus": "spec-only",
+  "members": [
+    "atk",
+    "hp",
+    "cost"
+  ],
+  "deferredMembers": [
+    "def",
+    "spd"
+  ],
+  "memberSpec": "artifacts/ui-source/battle-scene-non-hud/tasks/battle-scene-non-hud-stat-micro-glyph-member-spec.json",
+  "runtimeTargets": [
+    "TigerTallyPanel.atkHpCost",
+    "UnitInfoPanel.statsOptional"
+  ],
+  "dockingTargets": {
+    "atk": [
+      "TigerTallyPanel.AtkLabel",
+      "UnitInfoPanel.AtkRow"
+    ],
+    "hp": [
+      "TigerTallyPanel.HpLabel",
+      "UnitInfoPanel.HpRow"
+    ],
+    "cost": [
+      "TigerTallyPanel.CostBadge",
+      "UnitInfoPanel.CostRow"
+    ]
+  },
+  "promptCard": "artifacts/ui-source/battle-scene-non-hud/reference/prompts/battle-stat-micro-glyph-prompt-card.md",
+  "promptFile": "artifacts/ui-source/battle-scene-non-hud/prompts/battle-scene-non-hud-stat-micro-glyph-suite.txt",
+  "generatedDir": "artifacts/ui-source/battle-scene-non-hud/reference/generated/icon-suite/battle-status-icon-v1/",
+  "selectedReference": "artifacts/ui-source/battle-scene-non-hud/reference/selected/battle-stat-micro-runtime-reference.md",
+  "expectedOutputs": [
+    "battle-stat-atk_glyph",
+    "battle-stat-hp_glyph",
+    "battle-stat-cost_glyph"
+  ],
+  "styleGuard": {
+    "artBible": "docs/美術風格規格書.md",
+    "mustFollow": [
+      "deep-ink battlefield + cold tactical HUD + restrained antique metal",
+      "content-layer glyph only",
+      "cost means military provision, not coin or premium currency"
+    ]
+  }
+}
