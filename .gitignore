@@ -36,6 +36,9 @@ test-parser*.js
 # Generated QA / Preview Artifacts
 #//////////////////////////
 artifacts/ui-layered-frames/
+artifacts/ui-qa/
+artifacts/ui-generated/
+artifacts/_view_image/
 
 #//////////////////////////
 # Non-asset meta noise

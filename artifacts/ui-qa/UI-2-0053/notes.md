@@ -1,1 +1,0 @@
-2026-04-01 | 狀態: in-progress | 驗證: 已以 `battle-scene-main.json`、五個戰場子 screen/layout/skin、`主戰場UI規格書.md`、`主戰場UI規格補充_v3.md`、`UI-2-0038`、`UI-2-0039`、`UI-2-0047`~`UI-2-0052` 完成桌上審核 | 變更: 完成 BattleScene style zone 拆解、BattleScene style profile v1、以及各主畫面 screen style profile schema / 補件順序 | 阻塞: 待 `UI-2-0046` 真場景 capture 就緒後，才能把目前的 desk audit 轉成 placement QA 與實景 refinement
