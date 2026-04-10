@@ -2,29 +2,41 @@
 applyTo: "**"
 ---
 
-# Token 節流規則
+# Token Guard
 
-## 警戒線
+## Context Threshold
 
-- 單檔文字估算 >6000 tokens → 禁止整份讀入，先用搜尋或摘要
-- 單輪估算 >18000 tokens → 必須提出警告
-- 單輪估算 >30000 tokens → hard-stop，先縮成摘要卡再繼續
+- Keep routine turns below roughly `6000` tokens when possible.
+- If the working set grows past roughly `18000`, compress before continuing.
+- If the working set approaches roughly `30000`, stop expanding context and shrink first.
 
-## 禁止行為
+## Default Guardrails
 
-- ❌ 呼叫 `get_changed_files`（本專案含大量 PNG binary，必定觸發 413 當機）
-- ❌ 整份讀入 `docs/keep.md`、`docs/ui-quality-todo.json`、大型 notes
-- ❌ 一次帶入 >2 張圖片（限 1 主圖 + 1 對照圖）
-- ❌ `grep_search` 用萬用路徑搜 `artifacts/` 目錄
-- ❌ `file_search` 查 PNG artifact 不加 `maxResults: 10`
+- Prefer `git status --short` and targeted reads over loading large files blindly.
+- Read `docs/keep.summary.md` before reaching for larger consensus docs.
+- Avoid dumping large notes, compare boards, or many screenshots into the conversation.
+- For image artifacts, prefer at most `1` main image and `1` comparison image per turn.
 
-## 替代做法
+## Image View Enforcement
 
-- git 狀態 → `git status --short`
-- 特定文字檔 diff → `git diff -- <file>`（限 .ts/.json/.md）
-- keep.md → 先讀 `docs/keep.summary.md`，需修改共識時才讀全文
-- ui-quality-todo → 讀對應 shard `docs/ui-quality-tasks/*.json`
+- Before every `view_image`, inspect the image size first.
+- Apply thumbnail-first progressive zoom: start at `125px`, and only enlarge when `125px` is not readable enough for the current decision.
+- For full-screen screenshots, browser captures, editor captures, compare boards, and PrintWindow images: crop the relevant area first, then apply the same `125 -> 250 -> 500` ladder to the crop.
+- `512px` is not the default reading width anymore. Use approximately `500px` only as the highest normal rung after smaller attempts failed.
+- Before every `view_image`, run:
+  - `node tools_node/prepare-view-image.js --input <path>`
+- Preferred wrapper:
+  - `node tools_node/prepare-view-image-progressive.js --input <path> --level thumb`
+- If `125px` is insufficient, rerun with:
+  - `node tools_node/prepare-view-image.js --input <path> --maxWidth 250`
+  - then `node tools_node/prepare-view-image.js --input <path> --maxWidth 500` only if still necessary
+- Or use the wrapper levels instead:
+  - `node tools_node/prepare-view-image-progressive.js --input <path> --level inspect`
+  - `node tools_node/prepare-view-image-progressive.js --input <path> --level detail`
+- If you are advancing from an existing preview path, add `--source <original-path>` together with `--next`.
+- If the helper emits a resized output path, only use that resized path for `view_image`.
+- Only view a `>500px` original image when the user explicitly says to relax this rule.
 
-## Handoff 摘要卡格式
+## Handoff
 
-只傳：任務目標、1~3 個必要檔案、3 點已知結論、3 點未決策、1 條驗證方式。
+- Keep handoff summaries short and focused on changed files, outcome, and next step.

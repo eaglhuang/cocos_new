@@ -6,8 +6,8 @@
   "slots": {
     "log.root.bg": {
       "kind": "color",
-      "color": "surfaceCharcoal",
-      "alpha": 205
+      "color": "surfaceInkBlue",
+      "alpha": 156
     },
     "log.root.shadow": {
       "kind": "sprite-frame",
@@ -18,8 +18,8 @@
     },
     "log.header.bg": {
       "kind": "color",
-      "color": "surfaceCharcoalBlue",
-      "alpha": 235
+      "color": "backgroundNavyAlt",
+      "alpha": 188
     },
     "log.btn.toggle": {
       "kind": "color",
@@ -31,33 +31,57 @@
     "log.btn.auto": {
       "kind": "color",
       "color": "surfaceGreenDeep",
-      "alpha": 220,
+      "alpha": 180,
       "_doc": "Auto 自動戰鬥按鈕，32×32"
     },
     "log.btn.speed": {
       "kind": "color",
       "color": "surfaceBlueDeep",
-      "alpha": 220,
+      "alpha": 180,
       "_doc": "x2 加速按鈕，32×32"
     },
     "log.btn.setting": {
       "kind": "color",
       "color": "surfaceMidGray",
-      "alpha": 220,
+      "alpha": 180,
       "_doc": "⚙ 設定按鈕，32×32"
     },
     "log.btn.collapse": {
       "kind": "color",
-      "color": "surfaceInkBlue",
-      "alpha": 200,
+      "color": "surfaceSepiaDeep",
+      "alpha": 170,
       "_doc": "📋 收合/展開日誌按鈕，全寬 28px"
+    },
+    "log.icon.auto": {
+      "kind": "sprite-frame",
+      "path": "sprites/battle/log_icon_auto/spriteFrame",
+      "spriteType": "simple",
+      "allowAutoAtlas": true
+    },
+    "log.icon.speed": {
+      "kind": "sprite-frame",
+      "path": "sprites/battle/log_icon_speed/spriteFrame",
+      "spriteType": "simple",
+      "allowAutoAtlas": true
+    },
+    "log.icon.setting": {
+      "kind": "sprite-frame",
+      "path": "sprites/battle/log_icon_setting/spriteFrame",
+      "spriteType": "simple",
+      "allowAutoAtlas": true
+    },
+    "log.icon.collapse": {
+      "kind": "sprite-frame",
+      "path": "sprites/battle/log_icon_collapse/spriteFrame",
+      "spriteType": "simple",
+      "allowAutoAtlas": true
     },
     "log.label.title": {
       "kind": "label-style",
       "font": "fonts/newsreader/font",
-      "fontSize": 16,
+      "fontSize": 15,
       "lineHeight": 20,
-      "color": "textPrimary",
+      "color": "secondaryLight",
       "isBold": true,
       "overflow": "CLAMP",
       "horizontalAlign": "LEFT"
@@ -67,15 +91,15 @@
       "font": "fonts/notosans_tc/font",
       "fontSize": 14,
       "lineHeight": 18,
-      "color": "textKhaki",
+      "color": "textWarmGold",
       "horizontalAlign": "CENTER"
     },
     "log.label.content": {
       "kind": "label-style",
       "font": "fonts/notosans_tc/font",
-      "fontSize": 13,
+      "fontSize": 12,
       "lineHeight": 18,
-      "color": "textLightGray",
+      "color": "textSteelLight",
       "overflow": "RESIZE_HEIGHT"
     },
     "log.label.btn": {

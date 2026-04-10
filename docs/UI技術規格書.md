@@ -79,7 +79,54 @@ UI 畫布 (Canvas) 底下將嚴格分出幾大層 (LayerNode)：
 
 ---
 
-## 5. 整合現有 UI 規格 (Integration with Specs)
+## 5. 元件幾何行為分類 (Component Geometry Behavior)
+
+> 完整矩陣與 Title 分類規則見 → **`docs/ui/component-sizing-contract.md`**（唯一尺寸真相來源）。
+> 此節提供概念定義；實際標準尺寸請讀 sizing contract。
+
+### 5.1 六類幾何行為
+
+所有 UI 元件必須在 screen spec / task card 中明確標記以下六類之一：
+
+| 代號 | 行為 | 說明 |
+|------|------|------|
+| **FX** | `fixed-scale` | 固定 W × H；只允許整體等比 scale，不可單軸拉伸 |
+| **SS** | `stretch-safe-segmented` | 必須分件（cap＋band＋fill）才能安全左右拉伸 |
+| **SR** | `sliced-rect` | 9-slice 矩形框；四角固定、四邊可拉 |
+| **TR** | `tiled-repeat` | 紋理可重複貼磚 |
+| **LC** | `layout-container` | 由 `cc.Layout` 驅動，隨子節點自動擴展 |
+| **DI** | `data-image-fixed` | 尺寸固定槽，runtime 圖片 crop/fit 進此槽 |
+
+**核心決策原則**：
+- 元件是否有裝飾邊角且需要動態改寬？→ SS（分件），不可用整張圖拉伸
+- 元件是否為純矩形可 9-slice？→ SR
+- 元件是否固定出現於某畫面特定位置，文字長度有上限？→ FX
+- **FX 元件必須有明確的 W × H 標準尺寸**，「依參考圖」不算完整規格
+- 若 icon 結構為 `underlay + glyph`，主 glyph 的外圍矩陣預設佔底板有效承載區 **80%**，作為全域一致性基準；不得對每顆 icon 個別重定比例
+
+### 5.2 Title 元件兩類分類強制規則
+
+**Title（標題）元件是幾何行為最常被誤判的類別**，必須在 spec 建立時先判斷：
+
+- **Type A — 畫面專屬固定標題**（幾何行為 `FX`）
+  - 只在一個畫面 / 一個 zone 出現、文字長度有上限
+  - **不可預設生成 left-cap / right-cap 資產**
+  - 整體 scale 或純 label-style 即可
+
+- **Type B — 通用可拉伸標題**（幾何行為 `SS`）
+  - 跨畫面復用，或需依不同文字寬度延展
+  - **必須**拆成三件：`{name}-cap-left` + `{name}-band-fill` + `{name}-cap-right`
+
+### 5.3 與三層 JSON 契約的對應
+
+幾何行為在三層 JSON 中的落點：
+- `geometry` 欄位：在 `ui-spec/screens/*.json` 中每個 component 對應的 sizing entry
+- `spriteType`：`simple`（FX/DI） / `sliced`（SR） / `tiled`（TR）
+- cap/fill/band 路徑：在 `ui-spec/skins/*.json` 中的 `skinSlot` 映射
+
+---
+
+## 6. 整合現有 UI 規格 (Integration with Specs)
 
 1. **視覺風格切換** (`UI 規格書.md` 提及 Win95、像素轉場)
    - 需透過 AssetBundle 機制將不同風格的美術圖集打包分開。
@@ -102,3 +149,127 @@ UI 畫布 (Canvas) 底下將嚴格分出幾大層 (LayerNode)：
 
 ---
 `docs/UI技術規格書.md` 確定了目前專案健康且穩健的實作方向。接下來的任何 UI 工作，皆須依照此標準，從「實作純資料與排版的 Prefab」開始堆疊遊戲畫面。
+
+---
+
+## 7. Fragment 系統（Fragment System）
+
+Fragment 系統是 UI 量產鏈的可重用積木層。所有跨畫面複用的結構（Widget / Layout 片段）都必須以 fragment 形式管理，而不是在每個 layout JSON 內手寫重複結構。
+
+### 7.1 Fragment 目錄結構
+
+```
+assets/resources/ui-spec/fragments/
+  widgets/          ← 可引用的 widget fragment JSON（12 個，見 widget-registry.json）
+  layouts/          ← 可引用的 layout 結構片段
+  skins/            ← 可重用的 skin 片段
+  widget-registry.json  ← Widget 正式索引（id / category / type / description / slots / params）
+```
+
+### 7.2 $ref 引用語意
+
+Layout JSON 中任何節點支援 `"$ref": "fragments/widgets/<widget>.json"` 引用：
+
+```json
+{ "$ref": "fragments/widgets/action-button.json", "id": "btnConfirm", "texts": { "label": "確認" } }
+```
+
+**合併規則**：`{ ...fragment, ...node }` — node 的屬性覆蓋 fragment 同名屬性；fragment 的 children 若未覆寫則原樣帶入。
+
+**Immutable Keys**：`type` 欄位受保護，不可在 node 覆蓋 fragment 的 `type`。違規時：
+- Runtime：`UISpecLoader` 發出 warn，防止結構破壞。
+- 靜態：`validate-ui-specs.js` R18 规則攔截，報告 error。
+
+### 7.3 Widget Registry 使用守則
+
+- 新 layout 開工前必須先讀 `widget-registry.json`，優先使用既有 widget。
+- 新增 widget 後必須同步更新 registry，並執行 `node tools_node/validate-widget-registry.js`。
+- 12 個現有 widget 分 7 類：`action / container / header / display / content / overlay / feedback`。
+
+### 7.4 Fragment 修改防護
+
+修改任何 fragment 前必須遵守五步防護流程（詳見 `.github/instructions/fragment-guard.instructions.md`）：
+
+1. 查使用地圖：`node tools_node/build-fragment-usage-map.js --query <ref>`
+2. 確認影響範圍（受影響的 layout 清單）
+3. 評估是否影響 immutable key（若會改 `type`，必須另建新 fragment）
+4. 修改後重跑 `validate-ui-specs.js --strict`
+5. 跑 snapshot regression：`headless-snapshot-test.js`
+
+### 7.5 Engine Adapter 介面層
+
+Fragment 與 layout 的渲染由引擎無關介面承接，具體實作在平台目錄：
+
+| 介面 | 路徑 |
+|------|------|
+| `INodeFactory` | `assets/scripts/ui/core/interfaces/INodeFactory.ts` |
+| `IStyleApplicator` | `assets/scripts/ui/core/interfaces/IStyleApplicator.ts` |
+| `ILayoutResolver` | `assets/scripts/ui/core/interfaces/ILayoutResolver.ts` |
+| Cocos 實作 | `assets/scripts/ui/platform/cocos/CocosNodeFactory.ts` |
+| Unity stub | `assets/scripts/ui/platform/unity/UnityNodeFactory.ts` |
+
+---
+
+## 8. Testing 策略（Testing Strategy）
+
+### 8.1 靜態驗證 — validate-ui-specs.js
+
+執行 R1–R18 完整規則，涵蓋：
+
+| 規則組 | 內容 |
+|--------|------|
+| R1–R5 | 必要欄位、type 枚舉、id 唯一性 |
+| R6–R10 | $ref 解析完整性、skin slot 存在性 |
+| R11–R15 | content contract 欄位對應、bind path 格式 |
+| R16–R17 | design token 引用（禁止 hex 硬編碼）|
+| R18 | immutable key override 偵測（$ref type 覆蓋防護）|
+
+```bash
+node tools_node/validate-ui-specs.js --strict
+node tools_node/validate-ui-specs.js --check-content-contract
+```
+
+### 8.2 Snapshot Regression — headless-snapshot-test.js
+
+對 113 個 UI spec 的 JSON 結構做 hash 快照，偵測非預期結構變動：
+
+```bash
+# 比對現況 vs baseline
+node tools_node/headless-snapshot-test.js
+
+# 確認改變屬於預期後更新 baseline
+node tools_node/headless-snapshot-test.js --update
+```
+
+baseline 存於 `tools_node/.ui-spec-snapshot.json`，應 commit 進 git。
+
+### 8.3 Layout Diff — layout-diff.js
+
+```bash
+# 比對兩個 layout 檔案
+node tools_node/layout-diff.js <file-a> <file-b>
+
+# 比對 git HEAD vs 工作目錄
+node tools_node/layout-diff.js --git <file>
+```
+
+輸出人類可讀的節點增刪格式，用於 code review 輔助。
+
+### 8.4 i18n 溢出檢查 — i18n-overflow-check.js
+
+```bash
+node tools_node/i18n-overflow-check.js
+```
+
+以 CJK 字元寬度估算各語系文字長度，輸出溢出風險摘要。i18n 目錄不存在時 graceful exit。
+
+### 8.5 Testing 觸發點（Mandatory Gates）
+
+| 情境 | 必跑工具 |
+|------|---------|
+| 修改任何 layout / skin / screen JSON | `validate-ui-specs.js --strict` |
+| 修改 fragment | `build-fragment-usage-map.js --query <ref>` + `validate-ui-specs.js --strict` + `headless-snapshot-test.js` |
+| 新增 / 刪除 widget fragment | `validate-widget-registry.js` |
+| layout 大批次 refactor | `headless-snapshot-test.js` + `layout-diff.js --git <file>` |
+| 新增 / 修改 i18n key | `i18n-overflow-check.js` |
+| 收工前（post-flight） | `check-encoding-touched.js <changed-files>` + `validate-ui-specs.js --strict --check-content-contract` |

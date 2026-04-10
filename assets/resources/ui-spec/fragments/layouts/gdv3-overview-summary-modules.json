@@ -1,0 +1,102 @@
+{
+  "type": "container",
+  "name": "OverviewSummaryModules",
+  "widget": { "top": 154, "left": 18, "right": 18 },
+  "height": 192,
+  "layout": { "type": "horizontal", "spacing": 20 },
+  "children": [
+    {
+      "type": "panel",
+      "name": "CoreStatsCard",
+      "width": "39%",
+      "height": 192,
+      "skinSlot": "gdv3.module.card",
+      "children": [
+        {
+          "type": "container",
+          "name": "CoreStatsTitleBand",
+          "widget": { "top": 16, "left": 24, "right": 24 },
+          "height": 42,
+          "children": [
+            {
+              "type": "image",
+              "name": "CoreStatsTitleBandFill",
+              "widget": { "top": 0, "bottom": 0, "left": 0, "right": 0 },
+              "skinSlot": "gdv3.summary.titleStrip"
+            },
+            {
+              "type": "label",
+              "name": "CoreStatsTitle",
+              "widget": { "left": 18, "right": 18, "vCenter": true },
+              "height": 30,
+              "styleSlot": "gdv3.label.sectionBand"
+            }
+          ]
+        },
+        { "type": "label", "name": "CoreStatsValue", "widget": { "top": 66, "bottom": 18, "left": 24, "right": 24 }, "styleSlot": "gdv3.label.cardBodySummary" }
+      ]
+    },
+    {
+      "type": "panel",
+      "name": "RoleCard",
+      "width": "26%",
+      "height": 192,
+      "skinSlot": "gdv3.module.card",
+      "children": [
+        {
+          "type": "container",
+          "name": "RoleTitleBand",
+          "widget": { "top": 16, "left": 18, "right": 18 },
+          "height": 42,
+          "children": [
+            {
+              "type": "image",
+              "name": "RoleTitleBandFill",
+              "widget": { "top": 0, "bottom": 0, "left": 0, "right": 0 },
+              "skinSlot": "gdv3.summary.titleStrip"
+            },
+            {
+              "type": "label",
+              "name": "RoleTitle",
+              "widget": { "left": 16, "right": 16, "vCenter": true },
+              "height": 30,
+              "styleSlot": "gdv3.label.sectionBand"
+            }
+          ]
+        },
+        { "type": "label", "name": "RoleValue", "widget": { "top": 66, "bottom": 18, "left": 18, "right": 18 }, "styleSlot": "gdv3.label.cardBodySummary" }
+      ]
+    },
+    {
+      "type": "panel",
+      "name": "TraitCard",
+      "width": "35%",
+      "height": 192,
+      "skinSlot": "gdv3.module.card",
+      "children": [
+        {
+          "type": "container",
+          "name": "TraitTitleBand",
+          "widget": { "top": 16, "left": 24, "right": 24 },
+          "height": 42,
+          "children": [
+            {
+              "type": "image",
+              "name": "TraitTitleBandFill",
+              "widget": { "top": 0, "bottom": 0, "left": 0, "right": 0 },
+              "skinSlot": "gdv3.summary.titleStrip"
+            },
+            {
+              "type": "label",
+              "name": "TraitTitle",
+              "widget": { "left": 18, "right": 18, "vCenter": true },
+              "height": 30,
+              "styleSlot": "gdv3.label.sectionBand"
+            }
+          ]
+        },
+        { "type": "label", "name": "TraitValue", "widget": { "top": 66, "bottom": 18, "left": 24, "right": 24 }, "styleSlot": "gdv3.label.cardBodySummary" }
+      ]
+    }
+  ]
+}

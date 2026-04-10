@@ -88,22 +88,29 @@
 | 文件 | 被依賴 | 依賴 |
 |---|---|---|
 | keep.md | 全專案（最高執行準則） | — |
+| agent-context-budget.md | keep.md、AGENTS.md、.github/instructions/token-guard.instructions.md、.github/instructions/image-view-guard.instructions.md | keep.md |
 | demo_playbook.md | 場景搭建指南、主戰場UI規格書 | 戰場部署系統、兵種（虎符）系統、數值系統 |
 | demo_技術架構.md | — | 數值系統、戰法系統、資源循環系統、戰法場景規格書 |
 | 場景搭建指南.md | — | demo_playbook |
 | 討論來源整併狀態.md | keep.md | cross-reference-index.md |
 | 正式規格矛盾審查.md | keep.md | 討論來源整併狀態.md、cross-reference-index.md |
 | 程式規格書.md | — | 新手開場規格書、血統理論系統、轉蛋系統 |
-| 資料中心架構規格書.md | demo_技術架構.md、Data Schema文件（本機端與Server端）.md | GeneralUnit.ts、BloodlineGenerator.ts、MemoryManager.ts、ResourceManager.ts、SyncManager.ts、DataStorageAdapter.ts、DataCatalog.ts、DataPageLoader.ts、PersonRegistry.ts、BloodlineGraph.ts、SaveSerializer.ts、DeltaPatchBuilder.ts、DataGrowthMonitor.ts |
+| 資料中心架構規格書.md | demo_技術架構.md、Data Schema文件（本機端與Server端）.md、名詞定義文件.md | GeneralUnit.ts、FormulaSystem.ts、GeneralDetailOverviewMapper.ts、rarity-thresholds.json、audit-generals-commercial-balance.js、BloodlineGenerator.ts、MemoryManager.ts、ResourceManager.ts、SyncManager.ts、DataStorageAdapter.ts、SchemaMigration.ts、DataCatalog.ts、DataPageLoader.ts、PersonRegistry.ts、BloodlineGraph.ts、SaveSerializer.ts、DeltaPatchBuilder.ts、GeneralArchiver.ts、BattleLogArchiver.ts、SpiritCard.ts、DataGrowthMonitor.ts、GeneralLifecycle.ts、FamilyBranchSummary.ts、AIPopulationConfig.ts、PendingDeleteStore.ts、SeasonalRollup.ts、BranchCompactor.ts、BreedingQuotaEnforcer.ts（IBreedingGate）、DataLifecycleScheduler.ts、ai-population-config.json |
 | dc-datacenter-tasks.md（tasks/） | 資料中心架構規格書.md | phase-dc-datacenter.json（ui-quality-tasks/） |
 | phase-dc-datacenter.json（ui-quality-tasks/） | 資料中心架構規格書.md | dc-datacenter-tasks.md、ui-quality-todo.json |
 | UI 規格書.md | 正式版劇本文案、UI技術規格書、武將人物介面規格書.md、血統樹14人UI規格書.md | 新手開場規格書、程式規格書、血統理論系統.md、兵種（虎符）系統.md |
 | 武將人物介面規格書.md | UI技術規格書、武將系統.md、血統理論系統.md、戰法系統.md、戰場適性系統.md、兵種（虎符）系統.md | GeneralDetailPanel.ts、GeneralUnit.ts、GeneralListPanel.ts、LobbyScene.ts |
 | 武將人物介面美術接線清單.md | 武將人物介面規格書.md、UI技術規格書.md | — |
-| 主戰場UI規格書.md | UI技術規格書 | demo_playbook、戰場部署系統、兵種（虎符）系統、戰法場景規格書（§ 6 場景視覺主題） |
-| 美術素材規劃與使用說明.md | UI技術規格書、demo_技術架構.md | keep.md |
+| 主戰場UI規格書.md | UI技術規格書 | demo_playbook、戰場部署系統、兵種（虎符）系統、戰法場景規格書（§ 6 場景視覺主題）、美術風格規格書.md |
+| 美術素材規劃與使用說明.md | UI技術規格書、demo_技術架構.md | keep.md、artifacts/ui-library/_registry/asset-registry.json、tools_node/promote-ui-library-asset.js |
 | UI參考圖品質分析.md | UI技術規格書、UI 規格書.md、美術素材規劃與使用說明.md、ui-quality-todo.md、美術風格規格書.md | ui-design-tokens.json、general-detail-default.json、keep.md § 4.1 |
-| 美術風格規格書.md | UI技術規格書、UI 規格書.md、美術素材規劃與使用說明.md、武將人物介面規格書.md | UI參考圖品質分析.md、UI品質檢核表.md、ui-design-tokens.json、general-detail-bloodline-v3-default.json |
+| 美術風格規格書.md | UI技術規格書、UI 規格書.md、美術素材規劃與使用說明.md、武將人物介面規格書.md、主戰場UI規格書.md | UI參考圖品質分析.md、UI品質檢核表.md、ui-design-tokens.json、general-detail-bloodline-v3-default.json、header-rarity-plaque.json、gacha-preview-main.json、battle-scene-main.json |
+| UI-factory-agent-entry.md | UI-reference-source-workflow.md、artifacts/ui-source/general-detail-overview/decomposition-pipeline-ops-guide.md、docs/ui/UI-asset-slice-pipeline-quickstart.md | keep.summary.md、UI技術規格書.md、UI品質檢核表.md、美術風格規格書.md |
+| UI-asset-slice-pipeline-quickstart.md | UI-factory-agent-entry.md、.github/skills/ui-asset-slice-pipeline/SKILL.md、artifacts/ui-source/general-detail-overview/manifests/selected-slice-postprocess-demo.selection-map.json | keep.summary.md、UI技術規格書.md、UI品質檢核表.md、美術素材規劃與使用說明.md |
+| docs/ui/ComfyUI-Cocos-partial-asset-minimal-flow.md | UI-asset-slice-pipeline-quickstart.md、UI-factory-agent-entry.md、artifacts/ui-source/*/manifests/asset-task-manifest.json | keep.summary.md、UI技術規格書.md、UI品質檢核表.md、美術素材規劃與使用說明.md、UI-reference-source-workflow.md |
+| UI-icon-factory-workflow.md | UI-factory-agent-entry.md、artifacts/ui-source/*/reference/prompts/icon-prompt-card-*.md | keep.summary.md、UI技術規格書.md、UI品質檢核表.md、美術風格規格書.md、UI-icon-family-registry.md |
+| UI-icon-family-registry.md | UI-factory-agent-entry.md、UI-icon-factory-workflow.md、artifacts/ui-source/*/reference/prompts/icon-prompt-card-*.md | keep.summary.md、UI-icon-factory-workflow.md、UI品質檢核表.md |
+| UI-reference-source-workflow.md | UI-factory-agent-entry.md、artifacts/ui-source/*/reference/* | keep.summary.md、UI技術規格書.md、UI品質檢核表.md、美術風格規格書.md、主戰場UI規格書.md |
 | ui-quality-todo.md | — | UI參考圖品質分析.md § 8、keep.md、美術素材規劃與使用說明.md |
 | UI技術規格書.md | — | keep.md、UI 規格書.md、主戰場UI規格書.md、美術素材規劃與使用說明.md、武將人物介面規格書.md、武將人物介面美術接線清單.md |
 | 熱更新與版本控制規格書.md | — | Data Schema文件（本機端與Server端）.md |

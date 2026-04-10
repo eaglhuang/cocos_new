@@ -13,54 +13,151 @@
     "type": "container",
     "name": "ActionCommandRoot",
     "widget": {
-      "bottom": 24,
-      "right": 40
+      "bottom": 18,
+      "right": 18
     },
-    "width": 320,
-    "height": 240,
+    "width": 246,
+    "height": 226,
     "children": [
       {
-        "type": "button",
-        "name": "TacticsBtn",
-        "id": "tacticsBtn",
+        "type": "panel",
+        "name": "CommandDockPlate",
         "widget": {
-          "hCenter": 0,
-          "top": 0
+          "left": 0,
+          "right": 0,
+          "bottom": 0
         },
-        "width": 80,
-        "height": 80,
-        "skinSlot": "action.util.tactics",
-        "_doc": "計謀按鈕：大圓正上方，80px。觸發計謀面板。",
-        "children": [
-          {
-            "type": "label",
-            "name": "TacticsLabel",
-            "width": 56,
-            "height": 22,
-            "text": "計謀",
-            "styleSlot": "action.util.label"
-          }
-        ]
+        "width": 246,
+        "height": 142,
+        "skinSlot": "action.dock.bg",
+        "_doc": "右下指令底座，先以深色 plate 建立主從關係；之後若有正式美術可替換。"
       },
       {
         "type": "button",
         "name": "EndTurnBtn",
         "id": "endTurnBtn",
         "widget": {
-          "left": 0,
-          "bottom": 60
+          "top": 12,
+          "left": 130
         },
-        "width": 80,
-        "height": 80,
+        "width": 48,
+        "height": 48,
         "skinSlot": "action.util.endturn",
-        "_doc": "結束回合按鈕：大圓左側，80px。",
+        "_doc": "待機 / 結束回合屬低頻操作，縮為最小次級按鈕，放在操作群上方內側。",
         "children": [
+          {
+            "type": "image",
+            "name": "EndTurnIcon",
+            "id": "endTurnIcon",
+            "widget": {
+              "top": 6,
+              "left": 15
+            },
+            "width": 18,
+            "height": 18,
+            "skinSlot": "action.icon.endturn",
+            "_doc": "F8 command overlay glyph"
+          },
           {
             "type": "label",
             "name": "EndTurnLabel",
-            "width": 56,
-            "height": 22,
-            "text": "結束",
+            "widget": {
+              "left": 4,
+              "right": 4,
+              "bottom": 4
+            },
+            "width": 40,
+            "height": 16,
+            "text": "待機",
+            "styleSlot": "action.util.endturn.label"
+          }
+        ]
+      },
+      {
+        "type": "button",
+        "name": "UltimateBtn",
+        "id": "ultimateBtn",
+        "widget": {
+          "left": 0,
+          "bottom": 0
+        },
+        "width": 132,
+        "height": 132,
+        "skinSlot": "action.ultimate.bg",
+        "_doc": "奧義主按鈕，保留為群組裡最大主操作圓盤。",
+        "children": [
+          {
+            "type": "image",
+            "name": "SpRing",
+            "id": "spRing",
+            "widget": {
+              "top": -10,
+              "bottom": -10,
+              "left": -10,
+              "right": -10
+            },
+            "skinSlot": "action.sp.ring",
+            "_doc": "SP填充環（8px寬圓環）。TS透過 Sprite.fillRange(0.0~1.0) 控制，順時針填充。滿SP切換skin→action.sp.ring.ready"
+          },
+          {
+            "type": "label",
+            "name": "UltLabel",
+            "id": "ultLabel",
+            "width": 92,
+            "height": 30,
+            "styleSlot": "action.ultimate.label",
+            "bind": "battle.ultName",
+            "_doc": "SP未滿顯示'奧義'；SP滿顯示'發動'"
+          },
+          {
+            "type": "label",
+            "name": "SpPctLabel",
+            "id": "spPctLabel",
+            "width": 78,
+            "height": 20,
+            "styleSlot": "action.sp.pct.label",
+            "bind": "battle.spPct",
+            "_doc": "顯示'SP 75%'，SP滿時隱藏"
+          }
+        ]
+      },
+      {
+        "type": "button",
+        "name": "TacticsBtn",
+        "id": "tacticsBtn",
+        "widget": {
+          "right": 68,
+          "bottom": 8
+        },
+        "width": 82,
+        "height": 82,
+        "skinSlot": "action.util.tactics",
+        "_doc": "中頻操作 1：計謀，配置於主按鈕右側。",
+        "children": [
+          {
+            "type": "image",
+            "name": "TacticsIcon",
+            "id": "tacticsIcon",
+            "widget": {
+              "top": 14,
+              "left": 27
+            },
+            "width": 28,
+            "height": 28,
+            "skinSlot": "action.icon.tactics",
+            "_doc": "F8 command overlay glyph"
+          },
+          {
+            "type": "label",
+            "name": "TacticsLabel",
+            "widget": {
+              "left": 10,
+              "right": 10,
+              "bottom": 10
+            },
+            "width": 50,
+            "height": 18,
+            "text": "計謀",
             "styleSlot": "action.util.label"
           }
         ]
@@ -71,68 +168,38 @@
         "id": "duelBtn",
         "widget": {
           "right": 0,
-          "bottom": 60
+          "bottom": 8
         },
-        "width": 80,
-        "height": 80,
+        "width": 82,
+        "height": 82,
         "skinSlot": "action.util.duel",
-        "_doc": "單挑按鈕：大圓右側，80px。條件不足時灰度。",
-        "children": [
-          {
-            "type": "label",
-            "name": "DuelLabel",
-            "width": 56,
-            "height": 22,
-            "text": "單挑",
-            "styleSlot": "action.util.label"
-          }
-        ]
-      },
-      {
-        "type": "container",
-        "name": "UltimateBtn",
-        "id": "ultimateBtn",
-        "widget": {
-          "hCenter": 0,
-          "bottom": 0
-        },
-        "width": 120,
-        "height": 120,
-        "skinSlot": "action.ultimate.bg",
-        "_doc": "奧義大圓，120px。SP環+文字+點擊彈出選擇窗（SP>=100%才可發動）。",
+        "_doc": "中頻操作 2：單挑，與計謀共同形成主按鈕右側雙次鍵。",
         "children": [
           {
             "type": "image",
-            "name": "SpRing",
-            "id": "spRing",
+            "name": "DuelIcon",
+            "id": "duelIcon",
             "widget": {
-              "top": -8,
-              "bottom": -8,
-              "left": -8,
-              "right": -8
+              "top": 14,
+              "left": 27
             },
-            "skinSlot": "action.sp.ring",
-            "_doc": "SP填充環（8px寬圓環）。TS透過 Sprite.fillRange(0.0~1.0) 控制，順時針填充。滿SP切換skin→action.sp.ring.ready"
-          },
-          {
-            "type": "label",
-            "name": "UltLabel",
-            "id": "ultLabel",
-            "width": 80,
+            "width": 28,
             "height": 28,
-            "styleSlot": "action.ultimate.label",
-            "bind": "battle.ultName",
-            "_doc": "SP未滿顯示'奧義'；SP滿顯示'發動'"
+            "skinSlot": "action.icon.duel",
+            "_doc": "F8 command overlay glyph"
           },
           {
             "type": "label",
-            "name": "SpPctLabel",
-            "id": "spPctLabel",
-            "width": 70,
-            "height": 20,
-            "styleSlot": "action.sp.pct.label",
-            "bind": "battle.spPct",
-            "_doc": "顯示'SP 75%'，SP滿時隱藏"
+            "name": "DuelLabel",
+            "widget": {
+              "left": 10,
+              "right": 10,
+              "bottom": 10
+            },
+            "width": 50,
+            "height": 18,
+            "text": "單挑",
+            "styleSlot": "action.util.label"
           }
         ]
       },
@@ -141,8 +208,8 @@
         "name": "UltimatePopup",
         "id": "ultimatePopup",
         "widget": {
-          "hCenter": 0,
-          "bottom": 130
+          "left": 8,
+          "bottom": 146
         },
         "width": 220,
         "height": 0,

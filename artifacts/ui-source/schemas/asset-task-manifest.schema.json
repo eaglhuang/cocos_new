@@ -1,0 +1,118 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "asset-task-manifest.schema.json",
+  "title": "UIFactoryAssetTaskManifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "screenId",
+    "sourceFamilyMap",
+    "generatedAt",
+    "taskCount",
+    "tasks",
+    "warnings"
+  ],
+  "properties": {
+    "$schema": { "type": "string", "const": "../../schemas/asset-task-manifest.schema.json" },
+    "screenId": { "type": "string", "minLength": 1 },
+    "sourceFamilyMap": { "type": "string", "minLength": 1 },
+    "generatedAt": { "type": "string", "minLength": 1 },
+    "taskCount": { "type": "integer", "minimum": 0 },
+    "tasks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "taskId",
+          "screenId",
+          "model",
+          "zone",
+          "slot",
+          "taskType",
+          "label",
+          "family",
+          "recipe",
+          "structureOwner",
+          "skinOwner",
+          "contentOwner",
+          "widgetRefs",
+          "templateRefs",
+          "targetStyle",
+          "mustKeep",
+          "mustAvoid",
+          "fitRules",
+          "postProcess",
+          "output"
+        ],
+        "properties": {
+          "taskId": { "type": "string", "minLength": 1 },
+          "screenId": { "type": "string", "minLength": 1 },
+          "model": { "type": "string", "minLength": 1 },
+          "zone": { "type": "string", "minLength": 1 },
+          "slot": { "type": "string", "minLength": 1 },
+          "taskType": { "type": "string", "enum": ["generate-partial-asset"] },
+          "label": { "type": "string", "minLength": 1 },
+          "family": { "type": "string", "minLength": 1 },
+          "recipe": { "type": "string", "minLength": 1 },
+          "structureOwner": { "type": "string", "minLength": 1 },
+          "skinOwner": { "type": "string", "minLength": 1 },
+          "contentOwner": { "type": "string", "minLength": 1 },
+          "widgetRefs": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+          "templateRefs": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+          "targetStyle": { "type": "string", "minLength": 1 },
+          "mustKeep": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+          "mustAvoid": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+          "fitRules": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["maxVisualOccupancy", "runtimeIntrusionForbidden"],
+            "properties": {
+              "maxVisualOccupancy": { "type": "number", "minimum": 0, "maximum": 1 },
+              "runtimeIntrusionForbidden": { "type": "boolean" }
+            }
+          },
+          "postProcess": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "trimByBackground": { "type": "boolean" },
+              "allowFadeSide": { "type": "string", "enum": ["none", "left", "right"] },
+              "fadeStartRatio": { "type": "number", "exclusiveMinimum": 0, "maximum": 1 },
+              "fitPadding": { "type": "number" },
+              "spriteType": { "type": "string", "enum": ["simple", "sliced", "tiled"] },
+              "border": {
+                "oneOf": [
+                  {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  {
+                    "type": "array",
+                    "minItems": 4,
+                    "maxItems": 4,
+                    "items": { "type": "number" }
+                  }
+                ]
+              },
+              "autoDetectBorder": { "type": "boolean" }
+            }
+          },
+          "output": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["preferredMime", "targetLongEdge", "transparentBackgroundPreferred", "outputName"],
+            "properties": {
+              "preferredMime": { "type": "string", "const": "image/png" },
+              "targetLongEdge": { "type": "integer", "minimum": 64 },
+              "transparentBackgroundPreferred": { "type": "boolean" },
+              "outputName": { "type": "string", "minLength": 1 }
+            }
+          }
+        }
+      }
+    },
+    "warnings": { "type": "array", "items": { "type": "string" } }
+  }
+}

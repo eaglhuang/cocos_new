@@ -1,5 +1,6 @@
 import { Node, Layout, Widget, UITransform } from 'cc';
 import type { UILayoutNodeSpec } from './UISpecTypes';
+import { resolveSize } from './UISpecTypes';
 
 /**
  * UIPreviewLayoutBuilder
@@ -21,13 +22,18 @@ export class UIPreviewLayoutBuilder {
      *   hCenter: number               → 水平置中偏移（正值向右）
      *   vCenter: number               → 垂直置中偏移（正值向上）
      */
-    public applyWidget(node: Node, widgetDef?: UILayoutNodeSpec['widget']): void {
+    public applyWidget(
+        node: Node,
+        widgetDef?: UILayoutNodeSpec['widget'],
+        parentWidth = 0,
+        parentHeight = 0,
+    ): void {
         if (!widgetDef) return;
         const widget = node.getComponent(Widget) || node.addComponent(Widget);
-        if (widgetDef.top    !== undefined) { widget.isAlignTop    = true; widget.top    = widgetDef.top;    }
-        if (widgetDef.bottom !== undefined) { widget.isAlignBottom = true; widget.bottom = widgetDef.bottom; }
-        if (widgetDef.left   !== undefined) { widget.isAlignLeft   = true; widget.left   = widgetDef.left;   }
-        if (widgetDef.right  !== undefined) { widget.isAlignRight  = true; widget.right  = widgetDef.right;  }
+        if (widgetDef.top    !== undefined) { widget.isAlignTop    = true; widget.top    = resolveSize(widgetDef.top, parentHeight); }
+        if (widgetDef.bottom !== undefined) { widget.isAlignBottom = true; widget.bottom = resolveSize(widgetDef.bottom, parentHeight); }
+        if (widgetDef.left   !== undefined) { widget.isAlignLeft   = true; widget.left   = resolveSize(widgetDef.left, parentWidth); }
+        if (widgetDef.right  !== undefined) { widget.isAlignRight  = true; widget.right  = resolveSize(widgetDef.right, parentWidth); }
 
         // 水平置中：hCenter = true（偏移 0）或 hCenter = number（帶偏移）
         const hc = (widgetDef as any).hCenter;
@@ -69,7 +75,14 @@ export class UIPreviewLayoutBuilder {
         layout.paddingTop    = spec.layout.paddingTop    ?? 0;
         layout.paddingBottom = spec.layout.paddingBottom ?? 0;
         
-        // 預設不自動調整容器大小，除非是 scroll-list content
-        layout.resizeMode    = Layout.ResizeMode.NONE;
+        // resizeMode：預設 NONE（僅排位），可由 spec 指定
+        //   'container' → 容器自適應子節點總尺寸
+        //   'children'  → 子節點自適應容器尺寸（均分）
+        // Unity 對照：ContentSizeFitter / LayoutGroup.childForceExpand
+        switch (spec.layout.resizeMode) {
+            case 'container': layout.resizeMode = Layout.ResizeMode.CONTAINER; break;
+            case 'children':  layout.resizeMode = Layout.ResizeMode.CHILDREN;  break;
+            default:          layout.resizeMode = Layout.ResizeMode.NONE;      break;
+        }
     }
 }

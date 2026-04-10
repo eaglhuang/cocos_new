@@ -1,9 +1,10 @@
 // @spec-source → 見 docs/cross-reference-index.md
-import { Asset, assetManager, AssetManager, Font, ImageAsset, JsonAsset, Prefab, resources, SpriteFrame, Texture2D } from "cc";
+import { Asset, assetManager, AssetManager, Font, ImageAsset, JsonAsset, Prefab, Rect, resources, SpriteFrame, Texture2D } from "cc";
 import { MemoryManager } from "./MemoryManager";
 
 export interface LoadOptions {
     tags?: string[];
+  preferTextureFallback?: boolean;
 }
 
 export class ResourceManager {
@@ -196,6 +197,7 @@ export class ResourceManager {
     const cacheKey = normalizedPath.endsWith('/spriteFrame') ? normalizedPath : `${normalizedPath}/spriteFrame`;
     const spriteFrameCandidates = this.buildSpriteFrameCandidates(path);
     const textureCandidates = this.buildTextureCandidates(path);
+    const preferTextureFallback = !!options?.preferTextureFallback && !normalizedPath.endsWith('/spriteFrame');
 
     const cached = this.singleSpriteFrameCache.get(cacheKey);
     if (cached) return Promise.resolve(cached);
@@ -218,13 +220,15 @@ export class ResourceManager {
           }
 
           const frame = new SpriteFrame();
-          frame.texture = textureAsset;
-          // 防禦性檢查：確保 textureAsset 存在且有內容，避免 _applySpriteSize 報錯
-          if (textureAsset && (textureAsset as any).width !== undefined) {
-             frame.name = candidate.split('/').pop() ?? 'generated-sprite-frame';
-          } else {
-             frame.name = 'invalid-frame';
+          frame.packable = false;
+          const width = Math.max(1, (textureAsset as any).width ?? 0);
+          const height = Math.max(1, (textureAsset as any).height ?? 0);
+          frame.rect = new Rect(0, 0, width, height);
+          if (!(textureAsset as any).loaded) {
+            (textureAsset as any).loaded = true;
           }
+          frame.texture = textureAsset;
+          frame.name = candidate.split('/').pop() ?? 'generated-sprite-frame';
           frame.addRef();
           this.singleSpriteFrameCache.set(cacheKey, frame);
           this.memoryManager?.notifyLoaded(cacheKey, 'resources', 'SpriteFrame(Texture2D fallback)');
@@ -252,6 +256,11 @@ export class ResourceManager {
           resolve(asset);
         });
       };
+
+      if (preferTextureFallback) {
+        tryLoadTexture(0);
+        return;
+      }
 
       tryLoadSpriteFrame(0);
     });
@@ -346,6 +355,83 @@ export class ResourceManager {
       this.releaseAsset(path);
     });
   }
+
+  // ─── DC-2-0004: 分層分頁載入 API ──────────────────────────────────────────
+
+  private _pageLoader: import('../storage/DataPageLoader').DataPageLoader | null = null;
+
+  /**
+   * 注入 DataPageLoader（由 ServiceLoader.initialize() 呼叫）。
+   * Unity 對照：相當於在 GameManager 中注入 Addressables IResourceLocator。
+   */
+  public bindPageLoader(loader: import('../storage/DataPageLoader').DataPageLoader): void {
+    this._pageLoader = loader;
+  }
+
+  /**
+   * 分層分頁載入武將資料。統一對外暴露分層載入接口，底層委託 DataPageLoader。
+   *
+   * Unity 對照：Addressables.LoadAssetsAsync<T>(label, callback)，
+   * 搭配課程 Group / layer 來控制何時載入哪批資源。
+   *
+   * @param layer  層級：'L1'（陣容）| 'L2'（倉庫分頁）| 'L3'（詳情）| 'L4'（故事）| 'L5'（基因）
+   * @param page   L2 使用的 page 編號（0-based），其他層忽略；負數表示接續上一頁 cursor
+   * @param options 可選：{ uid?: string; faction?: string }
+   * @returns PageResult<T> 分頁結果（含 data + cursor + elapsedMs）
+   * @throws 若 DataPageLoader 未初始化（bindPageLoader 尚未呼叫）則丟出 Error
+   */
+  public async loadPagedData<T>(
+    layer: import('../storage/DataPageLoader').LayerLevel,
+    page: number = 0,
+    options?: { uid?: string; faction?: string }
+  ): Promise<import('../storage/DataPageLoader').PageResult<T>> {
+    if (!this._pageLoader) {
+      throw new Error(
+        '[ResourceManager] loadPagedData: DataPageLoader 未初始化，請先呼叫 bindPageLoader()。'
+      );
+    }
+
+    switch (layer) {
+      case 'L1':
+        return this._pageLoader.loadL1Active<T>();
+
+      case 'L2': {
+        const pageSize = 20;
+        const cursor = page > 0
+          ? { offset: page * pageSize, pageSize, hasMore: true }
+          : null;
+        return this._pageLoader.loadL2Page<T>(cursor, options?.faction);
+      }
+
+      case 'L3': {
+        const uid = options?.uid;
+        if (!uid) throw new Error('[ResourceManager] loadPagedData L3 需要 options.uid');
+        const detail = await this._pageLoader.loadL3Detail<T>(uid);
+        return {
+          data: detail ? [detail] : [],
+          cursor: { offset: 0, pageSize: 1, hasMore: false },
+          elapsedMs: 0,
+        };
+      }
+
+      case 'L4':
+      case 'L5': {
+        const uid = options?.uid;
+        if (!uid) throw new Error(`[ResourceManager] loadPagedData ${layer} 需要 options.uid`);
+        const data = await this._pageLoader.loadLayerData<T>(uid, layer);
+        return {
+          data: data ? [data] : [],
+          cursor: { offset: 0, pageSize: 1, hasMore: false },
+          elapsedMs: 0,
+        };
+      }
+
+      default:
+        throw new Error(`[ResourceManager] loadPagedData: 未知 layer "${String(layer)}"`);
+    }
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────
 
   public clearCache(): void {
     this.jsonCache.forEach((_, path) => this.memoryManager?.notifyReleased(path));

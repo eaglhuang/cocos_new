@@ -1,0 +1,75 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "family-map.schema.json",
+  "title": "UIFactoryFamilyMap",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "screenId",
+    "templateFamilyCandidate",
+    "sourceProof",
+    "generatedAt",
+    "zoneFamilyMap"
+  ],
+  "properties": {
+    "$schema": { "type": "string", "const": "../../schemas/family-map.schema.json" },
+    "screenId": { "type": "string", "minLength": 1 },
+    "templateFamilyCandidate": { "type": "string" },
+    "sourceProof": { "type": "string", "minLength": 1 },
+    "generatedAt": { "type": "string", "minLength": 1 },
+    "zoneFamilyMap": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "zone",
+          "family",
+          "recipe",
+          "structureOwner",
+          "skinOwner",
+          "contentOwner",
+          "generationNeed",
+          "widgetRefs",
+          "templateRefs",
+          "sourceProofFamily",
+          "sourceProofRecipe",
+          "notes"
+        ],
+        "properties": {
+          "zone": { "type": "string", "minLength": 1 },
+          "family": { "type": "string", "minLength": 1 },
+          "recipe": { "type": "string" },
+          "structureOwner": { "type": "string", "minLength": 1 },
+          "skinOwner": { "type": "string", "minLength": 1 },
+          "contentOwner": { "type": "string", "minLength": 1 },
+          "generationNeed": {
+            "type": "string",
+            "enum": ["reuse-only", "param-tune", "generate-partial-asset", "partial", "new-family-required"]
+          },
+          "widgetRefs": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+          "templateRefs": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+          "assetTargets": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["slot", "taskIdSuffix", "label", "outputName"],
+              "properties": {
+                "slot": { "type": "string", "minLength": 1 },
+                "taskIdSuffix": { "type": "string", "minLength": 1 },
+                "label": { "type": "string", "minLength": 1 },
+                "outputName": { "type": "string", "minLength": 1 }
+              }
+            }
+          },
+          "sourceProofFamily": { "type": "string", "minLength": 1 },
+          "sourceProofRecipe": { "type": ["string", "null"] },
+          "notes": { "type": ["string", "null"] }
+        }
+      }
+    }
+  }
+}

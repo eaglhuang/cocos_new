@@ -74,13 +74,25 @@ if ($ok) { Write-Host "截圖完成: $out ($([int]((Get-Item $out).Length/1KB)) 
 
 > **提示**：若 `WinEnum` 已在同一 PowerShell session 載入，直接從 `$hwnd = ...` 開始即可。
 
-### Step 1.2：用 `view_image` 讀取截圖
+### Step 1.2：縮圖採 thumbnail-first progressive zoom（硬規定，在 `view_image` 前必須執行）
+
+```powershell
+$imgPath = "c:\Users\User\3KLife\temp\cocos-screenshot.png"
+node tools_node/prepare-view-image.js --input $imgPath
+# 若 125px 不足，再依序改跑：
+# node tools_node/prepare-view-image.js --input $imgPath --maxWidth 250
+# node tools_node/prepare-view-image.js --input $imgPath --maxWidth 500
+```
+
+> ⚠️ 先試 `125px`，足夠就停止；只有在前一級不足時才可放大。需要看 `>500px` 原圖時，必須先取得使用者明確同意。
+
+### Step 1.3：用 `view_image` 讀取截圖
 
 ```
 filePath: c:\Users\User\3KLife\temp\cocos-screenshot.png
 ```
 
-### Step 1.3：從截圖提取線索
+### Step 1.4：從截圖提取線索
 
 填寫以下排查表（內部分析用）：
 

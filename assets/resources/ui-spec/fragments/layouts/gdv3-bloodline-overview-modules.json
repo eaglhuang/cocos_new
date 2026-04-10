@@ -1,0 +1,154 @@
+{
+  "type": "container",
+  "name": "BloodlineOverviewModules",
+  "widget": { "top": 372, "left": 18, "right": 18 },
+  "height": 314,
+  "children": [
+    {
+      "type": "container",
+      "name": "BloodlineRow",
+      "widget": { "top": 0, "left": 0, "right": 0 },
+      "height": 314,
+      "layout": { "type": "horizontal", "spacing": 18 },
+      "children": [
+        {
+          "type": "panel",
+          "name": "BloodlineSummaryCard",
+          "width": "59.5%",
+          "height": 314,
+          "skinSlot": "gdv3.bloodline.card",
+          "children": [
+            { "type": "label", "name": "BloodlineCardTitle", "widget": { "top": 18, "left": 26, "right": 26 }, "height": 36, "styleSlot": "gdv3.label.section" },
+            {
+              "type": "container",
+              "name": "BloodlineSummaryFields",
+              "widget": { "top": 62, "left": 26, "right": 26 },
+              "height": 158,
+              "layout": { "type": "vertical", "spacing": 2 },
+              "children": [
+                { "type": "label", "name": "BloodlineTitle", "widget": { "left": 0, "right": 0 }, "width": "100%", "height": 22, "styleSlot": "gdv3.label.meta" },
+                { "type": "label", "name": "BloodlineName", "widget": { "left": 0, "right": 0 }, "width": "100%", "height": 34, "styleSlot": "gdv3.label.value" },
+                {
+                  "type": "container",
+                  "name": "AwakeningProgressGroup",
+                  "widget": { "left": 0, "right": 0 },
+                  "width": "100%",
+                  "height": 44,
+                  "layout": { "type": "vertical", "spacing": 4 },
+                  "children": [
+                    { "type": "label", "name": "AwakeningLabel", "widget": { "left": 0, "right": 0 }, "width": "100%", "height": 22, "styleSlot": "gdv3.label.meta" },
+                    {
+                      "type": "panel",
+                      "name": "AwakeningBarTrack",
+                      "width": "72%",
+                      "height": 14,
+                      "skinSlot": "gdv3.progress.track",
+                      "children": [
+                        {
+                          "type": "image",
+                          "name": "AwakeningBarFill",
+                          "widget": { "top": 0, "bottom": 0, "left": 0 },
+                          "width": "100%",
+                          "skinSlot": "gdv3.progress.fill"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                { "type": "label", "name": "PersonalityLabel", "widget": { "left": 0, "right": 0 }, "width": "100%", "height": 22, "styleSlot": "gdv3.label.meta" },
+                { "type": "label", "name": "PersonalityValue", "widget": { "left": 0, "right": 0 }, "width": "100%", "height": 24, "styleSlot": "gdv3.label.note" }
+              ]
+            },
+            { "type": "label", "name": "BloodlineBody", "widget": { "top": 228, "bottom": 18, "left": 26, "right": 26 }, "styleSlot": "gdv3.label.cardBody" }
+          ]
+        },
+        {
+          "type": "panel",
+          "name": "BloodlineCrestCard",
+          "width": "40.5%",
+          "height": 314,
+          "skinSlot": "gdv3.bloodline.crest.card",
+          "children": [
+            { "type": "label", "name": "CrestTitle", "widget": { "top": 18, "left": 22, "right": 22 }, "height": 36, "styleSlot": "gdv3.label.section" },
+            { "type": "label", "name": "CrestHint", "widget": { "top": 62, "left": 22, "right": 22 }, "height": 32, "styleSlot": "gdv3.label.note" },
+            {
+              "type": "container",
+              "name": "BloodlineCrestCarrier",
+              "widget": { "top": 102, "bottom": 18, "left": 22, "right": 22 },
+              "children": [
+                {
+                  "type": "image",
+                  "name": "BloodlineCrestGlow",
+                  "widget": { "hCenter": true, "vCenter": 2 },
+                  "width": 194,
+                  "height": 194,
+                  "skinSlot": "gdv3.bloodline.crest.glow"
+                },
+                {
+                  "type": "image",
+                  "name": "BloodlineCrestFill",
+                  "widget": { "hCenter": true, "vCenter": 2 },
+                  "width": 166,
+                  "height": 166,
+                  "skinSlot": "gdv3.bloodline.crest.fill"
+                },
+                {
+                  "type": "image",
+                  "name": "BloodlineCrestInnerRing",
+                  "widget": { "hCenter": true, "vCenter": 2 },
+                  "width": 178,
+                  "height": 178,
+                  "skinSlot": "gdv3.bloodline.crest.inner"
+                },
+                {
+                  "type": "image",
+                  "name": "BloodlineCrest",
+                  "widget": { "hCenter": true, "vCenter": 2 },
+                  "width": 148,
+                  "height": 148,
+                  "skinSlot": "gdv3.bloodline.crest"
+                },
+                {
+                  "type": "label",
+                  "name": "CrestGlyphSecondary",
+                  "widget": { "top": 42, "left": 72, "right": 72 },
+                  "height": 20,
+                  "styleSlot": "gdv3.label.crestGlyphSecondary"
+                },
+                {
+                  "type": "label",
+                  "name": "CrestGlyphPrimary",
+                  "widget": { "top": 64, "bottom": 58, "left": 58, "right": 58 },
+                  "styleSlot": "gdv3.label.crestGlyphPrimary"
+                },
+                {
+                  "type": "image",
+                  "name": "BloodlineCrestFrame",
+                  "widget": { "hCenter": true, "vCenter": 2 },
+                  "width": 190,
+                  "height": 190,
+                  "skinSlot": "gdv3.bloodline.crest.frame"
+                },
+                {
+                  "type": "image",
+                  "name": "BloodlineCrestFace",
+                  "widget": { "hCenter": true, "vCenter": 2 },
+                  "width": 138,
+                  "height": 138,
+                  "skinSlot": "gdv3.bloodline.crest.face"
+                },
+                {
+                  "type": "label",
+                  "name": "CrestStateLabel",
+                  "widget": { "left": 30, "right": 30, "bottom": 16 },
+                  "height": 24,
+                  "styleSlot": "gdv3.label.crestState"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

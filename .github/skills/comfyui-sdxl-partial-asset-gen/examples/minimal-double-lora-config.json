@@ -1,0 +1,28 @@
+{
+  "host": "127.0.0.1",
+  "port": 8000,
+  "checkpoint": "sd_xl_base_1.0.safetensors",
+  "loras": [
+    {
+      "name": "Chinese_Ink_Painting_Lora_SDXL.safetensors",
+      "strengthModel": 0.75,
+      "strengthClip": 0.75
+    },
+    {
+      "name": "engraving-sdxl-lora-001.safetensors",
+      "strengthModel": 0.3,
+      "strengthClip": 0.3
+    }
+  ],
+  "steps": 28,
+  "cfg": 6.5,
+  "sampler": "dpmpp_2m",
+  "scheduler": "karras",
+  "width": 1024,
+  "height": 1024,
+  "batchSize": 1,
+  "seed": 0,
+  "filenamePrefix": "3KLife/comfyui-sdxl-partial-asset",
+  "pollMs": 3000,
+  "timeoutMs": 900000
+}

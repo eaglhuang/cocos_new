@@ -1,0 +1,48 @@
+{
+  "taskId": "gacha-main-pool-tier-badge-badge-underlay",
+  "screenId": "GachaMain",
+  "model": "nano-banana-2",
+  "zone": "pool-tier-badge",
+  "slot": "badgeUnderlay",
+  "taskType": "generate-partial-asset",
+  "label": "badge 襯底 / underlay",
+  "family": "icon-badge-suite",
+  "recipe": "lobby-badge-icon-v1",
+  "structureOwner": "UITemplateResolver+widget-compose",
+  "skinOwner": "UISkinResolver",
+  "contentOwner": "contentContract",
+  "widgetRefs": [
+    "badge-underlay",
+    "badge-fill",
+    "badge-glyph"
+  ],
+  "templateRefs": [],
+  "targetStyle": "icon-badge-suite / lobby-badge-icon-v1",
+  "mustKeep": [
+    "supports runtime label overlay",
+    "flat readable silhouette",
+    "same family batch consistency"
+  ],
+  "mustAvoid": [
+    "text",
+    "letters",
+    "heavy metal frame",
+    "deep perspective"
+  ],
+  "fitRules": {
+    "maxVisualOccupancy": 0.65,
+    "runtimeIntrusionForbidden": true
+  },
+  "postProcess": {
+    "trimByBackground": true,
+    "fitPadding": 10,
+    "spriteType": "sliced",
+    "border": [10, 32, 10, 32]
+  },
+  "output": {
+    "preferredMime": "image/png",
+    "targetLongEdge": 512,
+    "transparentBackgroundPreferred": true,
+    "outputName": "pool-tier-badge_badge_underlay"
+  }
+}

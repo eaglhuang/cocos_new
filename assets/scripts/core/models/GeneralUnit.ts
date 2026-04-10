@@ -17,12 +17,16 @@ export class GeneralUnit {
   public readonly maxSp: number;
   public currentSp: number;
 
-  /** 六色屬性：武力（物理型單挑首選）*/
+  /** 六色屬性：武力（物理型單挑攻擊力首選）*/
   public readonly str: number;
-  /** 六色屬性：智力（謀略型單挑首選）*/
+  /** 六色屬性：智力（謀略型單挗首選）*/
   public readonly int: number;
-  /** 六色屬性：統率（任意型皆使用）*/
+  /** 六色屬性：統率（任意型皮使用）*/
   public readonly lea: number;
+  /** 六色屬性：政治（內政產出公式使用）*/
+  public readonly pol: number;
+  /** 六色屬性：魅力（外交/商業產出公式使用）*/
+  public readonly cha: number;
   /** 六色屬性：運氣（影響暴擊與閃躲機率，對應 E-11）*/
   public readonly luk: number;
 
@@ -45,10 +49,12 @@ export class GeneralUnit {
     this.maxSp = config.maxSp ?? 100;
     this.currentSp = config.initialSp ?? 0;
     this.skillId = config.skillId ?? null;
-    this.str = config.str ?? 0;
-    this.int = config.int ?? 0;
-    this.lea = config.lea ?? 0;
-    this.luk = config.luk ?? 0;
+    this.str = config.str ?? config.stats?.str ?? 0;
+    this.int = config.int ?? config.stats?.int ?? 0;
+    this.lea = config.lea ?? config.stats?.lea ?? 0;
+    this.pol = config.pol ?? config.stats?.pol ?? 0;
+    this.cha = config.cha ?? config.stats?.cha ?? 0;
+    this.luk = config.luk ?? config.stats?.luk ?? 0;
     this.attackBonus = config.attackBonus ?? 0;
     this.preferredTerrain = config.preferredTerrain ?? TerrainType.Plain;
     this.terrainDefenseBonus = config.terrainDefenseBonus ?? 0;
@@ -131,6 +137,7 @@ export type CharacterCategory =
 export interface GeneralConfig {
   id: string;
   name: string;
+  alias?: string[];
   faction: Faction;
   hp: number;
   maxSp?: number;

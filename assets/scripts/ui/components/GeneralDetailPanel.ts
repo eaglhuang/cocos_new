@@ -1,5 +1,5 @@
 // @spec-source → 見 docs/cross-reference-index.md
-import { _decorator, Label, Button, Color, Node, Sprite, SpriteFrame, Texture2D, resources, UITransform, BlockInputEvents, Widget } from 'cc';
+import { _decorator, Label, Button, Color, Node, Sprite, SpriteFrame, Texture2D, resources, UITransform, BlockInputEvents, Widget, Layout } from 'cc';
 import type { GeneralConfig, GeneralGeneConfig, GeneralStatsConfig } from '../../core/models/GeneralUnit';
 import { UIPreviewBuilder } from '../core/UIPreviewBuilder';
 import { UITemplateBinder } from '../core/UITemplateBinder';
@@ -7,15 +7,35 @@ import { SolidBackground } from './SolidBackground';
 import { buildGeneralDetailOverview } from './GeneralDetailOverviewMapper';
 import { GeneralDetailOverviewShell } from './GeneralDetailOverviewShell';
 import { services } from '../../core/managers/ServiceLoader';
+import { BloodlineTreePanel } from '../panels/BloodlineTreePanel';
 
 const { ccclass } = _decorator;
 
 type TabKey = 'Basics' | 'Stats' | 'Bloodline' | 'Skills' | 'Aptitude' | 'Extended';
 
-const ACTIVE_TAB_COLOR = new Color(184, 215, 201, 255);
-const INACTIVE_TAB_COLOR = new Color(233, 225, 209, 255);
-const ACTIVE_TAB_TEXT = new Color(45, 41, 38, 255);
-const INACTIVE_TAB_TEXT = new Color(107, 94, 78, 255);
+const ACTIVE_TAB_COLOR = new Color(82, 150, 116, 255);
+const INACTIVE_TAB_COLOR = new Color(241, 233, 217, 255);
+const ACTIVE_TAB_TEXT = new Color(248, 244, 236, 255);
+const INACTIVE_TAB_TEXT = new Color(91, 78, 62, 255);
+const WHITE_TINT = new Color(255, 255, 255, 255);
+const OVERVIEW_TAB_BUTTON_SIZE = { width: 72, height: 84 };
+const CLASSIC_TAB_BUTTON_SIZE = { width: 98, height: 60 };
+const OVERVIEW_TAB_LABELS: Record<TabKey, string> = {
+    Basics: '總\n覽',
+    Stats: '屬\n性',
+    Bloodline: '血\n脈',
+    Skills: '戰\n技',
+    Aptitude: '適\n性',
+    Extended: '延\n伸',
+};
+const CLASSIC_TAB_LABELS: Record<TabKey, string> = {
+    Basics: '基本資料',
+    Stats: '六色屬性',
+    Bloodline: '血統與因子',
+    Skills: '戰法與技能',
+    Aptitude: '戰場適性',
+    Extended: '延伸資訊',
+};
 
 const TAB_ORDER: TabKey[] = ['Basics', 'Stats', 'Bloodline', 'Skills', 'Aptitude', 'Extended'];
 const RESERVED_FOOTER_ACTIONS = ['BtnFavorite', 'BtnLock', 'BtnCompare', 'BtnShare'] as const;
@@ -76,6 +96,7 @@ export class GeneralDetailPanel extends UIPreviewBuilder {
         this._bindStaticEvents();
         this._setupClickBlocker();
         this._ensureOverviewShell();
+        this._styleTopCloseButton();
     }
 
     public async show(config: GeneralConfig): Promise<void> {
@@ -115,7 +136,7 @@ export class GeneralDetailPanel extends UIPreviewBuilder {
 
     private _bindStaticEvents(): void {
         this._syncReservedFooterActions();
-        this._bindClick('RightTabBar/BtnClose', () => this.hide());
+        this._bindClick('TopCloseBtn', () => this.hide());
         this._bindClick('ClickBlocker', () => this.hide());
 
         for (const tab of TAB_ORDER) {
@@ -131,6 +152,23 @@ export class GeneralDetailPanel extends UIPreviewBuilder {
             if (!comp) {
                 comp = blocker.addComponent(BlockInputEvents);
             }
+        }
+    }
+
+    private _styleTopCloseButton(): void {
+        const buttonNode = this._getNode('TopCloseBtn');
+        if (!buttonNode) {
+            return;
+        }
+
+        const sprite = buttonNode.getComponent(Sprite);
+        if (sprite) {
+            sprite.color = new Color(241, 236, 226, 255);
+        }
+
+        const label = buttonNode.getChildByName('Label')?.getComponent(Label);
+        if (label) {
+            label.color = new Color(58, 48, 36, 255);
         }
     }
 
@@ -155,24 +193,53 @@ export class GeneralDetailPanel extends UIPreviewBuilder {
             const buttonNode = this._getNode(`RightTabBar/BtnTab${entry}`);
             if (!buttonNode) continue;
 
+            const isActive = entry === tab;
+            this.setButtonVisualState(buttonNode, 'normal');
+            this._syncTabActiveIndicator(buttonNode, isActive);
+
             const background = buttonNode.getComponent(SolidBackground);
             if (background) {
-                background.color = entry === tab ? ACTIVE_TAB_COLOR : INACTIVE_TAB_COLOR;
+                background.color = isActive ? ACTIVE_TAB_COLOR : INACTIVE_TAB_COLOR;
             }
 
             const sprite = buttonNode.getComponent(Sprite);
             if (sprite) {
-                sprite.color = entry === tab ? ACTIVE_TAB_COLOR : INACTIVE_TAB_COLOR;
+                sprite.color = isActive ? ACTIVE_TAB_COLOR : INACTIVE_TAB_COLOR;
             }
 
-            buttonNode.setScale(entry === tab ? 1.03 : 1, entry === tab ? 1.03 : 1, 1);
+            buttonNode.setScale(isActive ? 1.01 : 1, isActive ? 1.01 : 1, 1);
 
             const labelNode = buttonNode.getChildByName('Label');
             const label = labelNode?.getComponent(Label);
             if (label) {
-                label.color = entry === tab ? ACTIVE_TAB_TEXT : INACTIVE_TAB_TEXT;
+                label.color = isActive ? ACTIVE_TAB_TEXT : INACTIVE_TAB_TEXT;
             }
         }
+    }
+
+    private _syncTabActiveIndicator(buttonNode: Node, isActive: boolean): void {
+        let indicator = buttonNode.getChildByName('ActiveIndicator');
+        if (!indicator) {
+            indicator = new Node('ActiveIndicator');
+            indicator.layer = buttonNode.layer;
+            indicator.parent = buttonNode;
+
+            const transform = indicator.addComponent(UITransform);
+            transform.setContentSize(10, 50);
+            indicator.setPosition(-22, 0, 0);
+
+            const background = indicator.addComponent(SolidBackground);
+            background.color = ACTIVE_TAB_COLOR;
+        }
+
+        indicator.setSiblingIndex(buttonNode.children.length - 1);
+
+        const background = indicator.getComponent(SolidBackground);
+        if (background) {
+            background.color = ACTIVE_TAB_COLOR;
+        }
+
+        indicator.active = isActive;
     }
 
     private _ensureOverviewShell(): void {
@@ -196,12 +263,23 @@ export class GeneralDetailPanel extends UIPreviewBuilder {
         transform.setContentSize(1920, 1080);
 
         const widget = host.getComponent(Widget) || host.addComponent(Widget);
-        widget.isAlignTop = widget.isAlignBottom = widget.isAlignLeft = widget.isAlignRight = true;
-        widget.top = widget.bottom = widget.left = widget.right = 0;
+        widget.isAlignTop = false;
+        widget.isAlignBottom = false;
+        widget.isAlignLeft = false;
+        widget.isAlignRight = false;
+        widget.isAlignHorizontalCenter = true;
+        widget.isAlignVerticalCenter = true;
+        widget.horizontalCenter = 0;
+        widget.verticalCenter = 0;
 
         const tabBarFill = root.getChildByName('RightTabBarFill');
         if (tabBarFill) {
             host.setSiblingIndex(tabBarFill.getSiblingIndex());
+        }
+
+        const topCloseBtn = root.getChildByName('TopCloseBtn');
+        if (topCloseBtn) {
+            topCloseBtn.setSiblingIndex(root.children.length - 1);
         }
 
         this._overviewShell = host.getComponent(GeneralDetailOverviewShell) || host.addComponent(GeneralDetailOverviewShell);
@@ -227,9 +305,174 @@ export class GeneralDetailPanel extends UIPreviewBuilder {
             }
         }
 
+    this._syncOverviewTabBarChromeHost(enabled);
+        this._syncOverviewTabBarHost(enabled);
+        this._syncOverviewCloseButtonHost(enabled);
+
         if (this._overviewShell) {
             this._overviewShell.node.active = enabled;
         }
+    }
+
+    private _syncOverviewTabBarChromeHost(enabled: boolean): void {
+        const root = this.node.getChildByName('GeneralDetailRoot');
+        if (!root) {
+            return;
+        }
+
+        const chromeNodeNames = [
+            'RightTabBarFill',
+            'RightTabBarFillNoise',
+            'RightTabBarBleed',
+            'RightTabBarBleedNoise',
+            'RightTabBarFrame',
+            'RightTabBarFrameNoise',
+        ];
+
+        for (const nodeName of chromeNodeNames) {
+            const node = this._getNode(nodeName);
+            if (!node) {
+                continue;
+            }
+
+            const widget = node.getComponent(Widget);
+            const targetParent = root;
+            if (node.parent !== targetParent) {
+                node.parent = targetParent;
+            }
+
+            node.active = !enabled;
+
+            if (enabled) {
+                continue;
+            }
+
+            if (!widget) {
+                continue;
+            }
+
+            widget.isAlignLeft = false;
+            widget.isAlignHorizontalCenter = false;
+            widget.isAlignVerticalCenter = false;
+            widget.isAlignTop = true;
+            widget.isAlignBottom = true;
+            widget.isAlignRight = true;
+
+            widget.top = 64;
+            widget.bottom = 60;
+            widget.right = 20;
+
+            widget.updateAlignment();
+        }
+    }
+
+    private _syncOverviewTabBarHost(enabled: boolean): void {
+        const root = this.node.getChildByName('GeneralDetailRoot');
+        const tabBar = this._getNode('RightTabBar');
+        const host = this._overviewShell?.node ?? null;
+        if (!root || !tabBar || !host) {
+            return;
+        }
+
+        const widget = tabBar.getComponent(Widget);
+        if (!widget) {
+            return;
+        }
+
+        const targetParent = enabled ? host : root;
+        if (tabBar.parent !== targetParent) {
+            tabBar.parent = targetParent;
+        }
+
+        const tabBarTransform = tabBar.getComponent(UITransform);
+        if (tabBarTransform) {
+            tabBarTransform.setContentSize(enabled ? 76 : 108, tabBarTransform.height);
+        }
+
+        const layout = tabBar.getComponent(Layout);
+        if (layout) {
+            layout.spacingY = enabled ? 8 : 8;
+            layout.paddingTop = enabled ? 0 : 12;
+            layout.paddingBottom = enabled ? 0 : 12;
+            layout.paddingLeft = enabled ? 0 : 5;
+            layout.paddingRight = enabled ? 0 : 5;
+            layout.updateLayout();
+        }
+
+        widget.isAlignLeft = false;
+        widget.isAlignHorizontalCenter = false;
+        widget.isAlignVerticalCenter = false;
+        widget.isAlignTop = true;
+        widget.isAlignBottom = true;
+        widget.isAlignRight = true;
+
+        if (enabled) {
+            widget.top = 96;
+            widget.bottom = 164;
+            widget.right = 8;
+        } else {
+            widget.top = 64;
+            widget.bottom = 60;
+            widget.right = 20;
+        }
+
+        const buttonSize = enabled ? OVERVIEW_TAB_BUTTON_SIZE : CLASSIC_TAB_BUTTON_SIZE;
+        const buttonFontSize = enabled ? 17 : 12;
+        const buttonLineHeight = enabled ? 22 : 16;
+        for (const node of tabBar.children) {
+            const transform = node.getComponent(UITransform);
+            if (transform) {
+                transform.setContentSize(buttonSize.width, buttonSize.height);
+            }
+
+            const labelNode = node.getChildByName('Label');
+            const label = labelNode?.getComponent(Label);
+            if (label) {
+                label.fontSize = buttonFontSize;
+                label.lineHeight = buttonLineHeight;
+                const tabKey = node.name.replace('BtnTab', '') as TabKey;
+                label.string = enabled ? OVERVIEW_TAB_LABELS[tabKey] : CLASSIC_TAB_LABELS[tabKey];
+            }
+        }
+
+        widget.updateAlignment();
+    }
+
+    private _syncOverviewCloseButtonHost(enabled: boolean): void {
+        const root = this.node.getChildByName('GeneralDetailRoot');
+        const closeButton = this._getNode('TopCloseBtn');
+        const host = this._overviewShell?.node ?? null;
+        if (!root || !closeButton || !host) {
+            return;
+        }
+
+        const widget = closeButton.getComponent(Widget);
+        if (!widget) {
+            return;
+        }
+
+        const targetParent = enabled ? host : root;
+        if (closeButton.parent !== targetParent) {
+            closeButton.parent = targetParent;
+        }
+
+        widget.isAlignTop = true;
+        widget.isAlignLeft = true;
+        widget.isAlignBottom = false;
+        widget.isAlignRight = false;
+        widget.isAlignHorizontalCenter = false;
+        widget.isAlignVerticalCenter = false;
+
+        if (enabled) {
+            widget.top = 28;
+            widget.left = 28;
+        } else {
+            widget.top = 76;
+            widget.left = 118;
+        }
+
+        closeButton.setSiblingIndex(closeButton.parent.children.length - 1);
+        widget.updateAlignment();
     }
 
     private _populateUI(config: GeneralConfig): void {
@@ -367,6 +610,30 @@ export class GeneralDetailPanel extends UIPreviewBuilder {
     }
 
     private _populateAncestorTree(config: GeneralConfig): void {
+        const ancestorTreeRoot = this._getNode('RightContentArea/TabBloodline/AncestorTree');
+        if (ancestorTreeRoot) {
+            let panel = ancestorTreeRoot.getComponent(BloodlineTreePanel);
+            if (!panel) {
+                panel = ancestorTreeRoot.addComponent(BloodlineTreePanel);
+            }
+
+            panel.gen1Container = ancestorTreeRoot.getChildByPath('Gen1Container');
+            panel.gen2Container = ancestorTreeRoot.getChildByPath('Gen2Container');
+            panel.gen3Container = ancestorTreeRoot.getChildByPath('Gen3Container');
+
+            if (panel.gen1Container && panel.gen2Container && panel.gen3Container) {
+                void panel.loadForGeneral(config.id).catch((error) => {
+                    console.warn('[GeneralDetailPanel] 祖先樹改用 PersonRegistry 載入失敗，退回舊資料：', error);
+                    this._populateLegacyAncestorTree(config);
+                });
+                return;
+            }
+        }
+
+        this._populateLegacyAncestorTree(config);
+    }
+
+    private _populateLegacyAncestorTree(config: GeneralConfig): void {
         const tree = (config as any).ancestorTree;
         if (!tree) return;
 
@@ -596,7 +863,17 @@ export class GeneralDetailPanel extends UIPreviewBuilder {
     }
 
     private _getNode(path: string): Node | null {
-        return this.node.getChildByPath(`GeneralDetailRoot/${path}`);
+        const fromRoot = this.node.getChildByPath(`GeneralDetailRoot/${path}`);
+        if (fromRoot) {
+            return fromRoot;
+        }
+
+        const fromOverviewHost = this._overviewShell?.node.getChildByPath(path) ?? null;
+        if (fromOverviewHost) {
+            return fromOverviewHost;
+        }
+
+        return null;
     }
 
     private _setLabel(path: string, text: string): void {

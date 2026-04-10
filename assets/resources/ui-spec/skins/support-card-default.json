@@ -8,11 +8,14 @@
   "slots": {
 
     "topbar.btn.back": {
-      "kind": "sprite-button",
-      "normal":   "ui/support_card/btn_back_normal",
-      "pressed":  "ui/support_card/btn_back_pressed",
-      "disabled": "ui/support_card/btn_back_disabled",
-      "border": [4,4,4,4]
+      "kind": "button-skin",
+      "normal":   "sprites/common/btn_secondary_normal/spriteFrame",
+      "pressed":  "sprites/common/btn_secondary_pressed/spriteFrame",
+      "disabled": "sprites/common/btn_secondary_disabled/spriteFrame",
+      "spriteType": "sliced",
+      "border": [20,20,20,20],
+      "allowAutoAtlas": true,
+      "note": "舊 support_card 專用 back button 已失效，先回落到 shared secondary family；若要恢復明確 back glyph，需另補 dedicated icon slot。"
     },
     "topbar.label.title": {
       "kind": "label-style",
@@ -23,10 +26,13 @@
       "overflow": "SHRINK"
     },
     "topbar.btn.borrow": {
-      "kind": "sprite-button",
-      "normal":   "ui/support_card/btn_borrow_normal",
-      "pressed":  "ui/support_card/btn_borrow_pressed",
-      "border": [12,12,12,12]
+      "kind": "button-skin",
+      "normal": "sprites/ui_families/common/commerce/btn_primary_normal",
+      "pressed": "sprites/ui_families/common/commerce/btn_primary_pressed",
+      "disabled": "sprites/ui_families/common/commerce/btn_primary_disabled",
+      "spriteType": "sliced",
+      "border": [20,20,20,20],
+      "allowAutoAtlas": true
     },
 
     "tab.toggle": {
@@ -40,10 +46,13 @@
     },
 
     "filterbar.btn.filter": {
-      "kind": "sprite-button",
-      "normal":  "ui/common/btn_filter_normal",
-      "pressed": "ui/common/btn_filter_pressed",
-      "border": [8,8,8,8]
+      "kind": "button-skin",
+      "normal": "sprites/common/btn_secondary_normal/spriteFrame",
+      "pressed": "sprites/common/btn_secondary_pressed/spriteFrame",
+      "disabled": "sprites/common/btn_secondary_disabled/spriteFrame",
+      "spriteType": "sliced",
+      "border": [20,20,20,20],
+      "allowAutoAtlas": true
     },
     "filterbar.label.sort": {
       "kind": "label-style",
@@ -123,12 +132,13 @@
       "color": "textOnParchment"
     },
     "bottombar.btn.team": {
-      "kind": "sprite-button",
-      "normal":   "ui/common/btn_secondary_normal",
-      "pressed":  "ui/common/btn_secondary_pressed",
-      "labelColor": "#FFE088",
-      "fontSize": 24,
-      "border": [16,16,16,16]
+      "kind": "button-skin",
+      "normal": "sprites/common/btn_secondary_normal/spriteFrame",
+      "pressed": "sprites/common/btn_secondary_pressed/spriteFrame",
+      "disabled": "sprites/common/btn_secondary_disabled/spriteFrame",
+      "spriteType": "sliced",
+      "border": [20,20,20,20],
+      "allowAutoAtlas": true
     },
 
     "detail.tab.effects": {
@@ -181,20 +191,22 @@
     },
 
     "breakthrough.btn.confirm": {
-      "kind": "sprite-button",
-      "normal":  "ui/support_card/btn_breakthrough_normal",
-      "pressed": "ui/support_card/btn_breakthrough_pressed",
-      "labelColor": "#2D2926",
-      "fontSize": 26,
-      "border": [20,20,20,20]
+      "kind": "button-skin",
+      "normal": "sprites/ui_families/common/commerce/btn_primary_normal",
+      "pressed": "sprites/ui_families/common/commerce/btn_primary_pressed",
+      "disabled": "sprites/ui_families/common/commerce/btn_primary_disabled",
+      "spriteType": "sliced",
+      "border": [20,20,20,20],
+      "allowAutoAtlas": true
     },
     "breakthrough.btn.fragment": {
-      "kind": "sprite-button",
-      "normal":  "ui/common/btn_secondary_normal",
-      "pressed": "ui/common/btn_secondary_pressed",
-      "labelColor": "#FFE088",
-      "fontSize": 22,
-      "border": [16,16,16,16]
+      "kind": "button-skin",
+      "normal": "sprites/common/btn_secondary_normal/spriteFrame",
+      "pressed": "sprites/common/btn_secondary_pressed/spriteFrame",
+      "disabled": "sprites/common/btn_secondary_disabled/spriteFrame",
+      "spriteType": "sliced",
+      "border": [20,20,20,20],
+      "allowAutoAtlas": true
     },
 
     "borrow.card.bg": {

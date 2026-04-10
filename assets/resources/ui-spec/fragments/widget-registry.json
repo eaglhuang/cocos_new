@@ -1,0 +1,157 @@
+{
+  "_meta": {
+    "description": "Widget Fragment 統一索引。Agent 讀此檔即可查表所有可用元件，不需逐一讀 widget JSON。",
+    "maintainedBy": "tools_node/validate-widget-registry.js",
+    "lastUpdated": "2026-04-10"
+  },
+  "widgets": [
+    {
+      "id": "button-bar",
+      "name": "ButtonBar",
+      "category": "action",
+      "type": "container",
+      "description": "水平按鈕組列，1~3 顆按鈕自動佈局",
+      "childCount": 3,
+      "slots": ["widget.btn.primary", "widget.btn.secondary", "widget.btn.tertiary"],
+      "params": {
+        "buttonCount": { "type": "number", "default": 3, "description": "顯示幾顆按鈕（1-3）" }
+      },
+      "usageExample": "{ \"$widget\": \"button-bar\", \"buttonCount\": 2 }"
+    },
+    {
+      "id": "close-button",
+      "name": "CloseButton",
+      "category": "action",
+      "type": "button",
+      "description": "右上角 × 關閉鈕",
+      "childCount": 0,
+      "slots": ["widget.close.btn"],
+      "params": {},
+      "usageExample": "{ \"$widget\": \"close-button\" }"
+    },
+    {
+      "id": "dialog-card",
+      "name": "DialogCard",
+      "category": "container",
+      "type": "panel",
+      "description": "圓角卡片底板，彈窗中央主體",
+      "childCount": 0,
+      "slots": ["${skinSlot}"],
+      "params": {
+        "skinSlot": { "type": "string", "required": true, "description": "動態 skinSlot 名稱" }
+      },
+      "usageExample": "{ \"$widget\": \"dialog-card\", \"skinSlot\": \"gdv3.dialog.bg\" }"
+    },
+    {
+      "id": "header-rarity-plaque",
+      "name": "HeaderRarityPlaque",
+      "category": "header",
+      "type": "container",
+      "description": "牌匾式標題列：主標題 + 稀有度字標 dock",
+      "childCount": 6,
+      "slots": [
+        "widget.header.plaque.base",
+        "widget.header.plaque.fill",
+        "widget.header.plaque.band",
+        "widget.header.plaque.title",
+        "widget.header.plaque.badge.underlay",
+        "widget.header.plaque.badge"
+      ],
+      "params": {},
+      "usageExample": "{ \"$widget\": \"header-rarity-plaque\" }"
+    },
+    {
+      "id": "hp-bar",
+      "name": "HpBar",
+      "category": "display",
+      "type": "container",
+      "description": "血量條（填充 + 文字 + 陣營色）",
+      "childCount": 3,
+      "slots": ["widget.hpbar.track", "widget.hpbar.fill.${faction}", "widget.hpbar.label"],
+      "params": {
+        "faction": { "type": "string", "description": "陣營代碼，影響填充色" }
+      },
+      "usageExample": "{ \"$widget\": \"hp-bar\", \"faction\": \"shu\" }"
+    },
+    {
+      "id": "overlay-mask",
+      "name": "OverlayMask",
+      "category": "overlay",
+      "type": "panel",
+      "description": "全屏半透明黑底遮罩（Popup 背景）",
+      "childCount": 0,
+      "slots": ["widget.overlay.mask"],
+      "params": {},
+      "usageExample": "{ \"$widget\": \"overlay-mask\" }"
+    },
+    {
+      "id": "panel-header",
+      "name": "PanelHeader",
+      "category": "header",
+      "type": "container",
+      "description": "標題列：標題 + 可選關閉/info 鈕",
+      "childCount": 4,
+      "slots": ["widget.header.bg", "widget.header.title", "widget.header.info.btn", "widget.header.close.btn"],
+      "params": {
+        "showInfoButton": { "type": "boolean", "default": false, "description": "是否顯示 info 按鈕" },
+        "showCloseButton": { "type": "boolean", "default": true, "description": "是否顯示關閉按鈕" }
+      },
+      "usageExample": "{ \"$widget\": \"panel-header\", \"showCloseButton\": true }"
+    },
+    {
+      "id": "resource-display",
+      "name": "ResourceDisplay",
+      "category": "display",
+      "type": "container",
+      "description": "資源顯示（icon + 數字 + 可選動畫）",
+      "childCount": 2,
+      "slots": ["widget.resource.icon", "widget.resource.value"],
+      "params": {},
+      "usageExample": "{ \"$widget\": \"resource-display\" }"
+    },
+    {
+      "id": "scroll-panel",
+      "name": "ScrollPanel",
+      "category": "container",
+      "type": "container",
+      "description": "可收合 ScrollView 面板",
+      "childCount": 2,
+      "slots": ["widget.scroll.bg", "widget.scroll.collapse.btn"],
+      "params": {},
+      "usageExample": "{ \"$widget\": \"scroll-panel\" }"
+    },
+    {
+      "id": "stat-row",
+      "name": "StatRow",
+      "category": "display",
+      "type": "container",
+      "description": "單行屬性顯示（icon + label + value）",
+      "childCount": 3,
+      "slots": ["widget.stat.icon", "widget.stat.label", "widget.stat.value"],
+      "params": {},
+      "usageExample": "{ \"$widget\": \"stat-row\" }"
+    },
+    {
+      "id": "text-body",
+      "name": "TextBody",
+      "category": "content",
+      "type": "label",
+      "description": "內容文字區塊（對話框/資訊面板主體）",
+      "childCount": 0,
+      "slots": ["widget.text.body"],
+      "params": {},
+      "usageExample": "{ \"$widget\": \"text-body\" }"
+    },
+    {
+      "id": "toast",
+      "name": "Toast",
+      "category": "feedback",
+      "type": "panel",
+      "description": "輕量通知（黑色 2 秒自動消失）",
+      "childCount": 1,
+      "slots": ["widget.toast.bg", "widget.toast.text"],
+      "params": {},
+      "usageExample": "{ \"$widget\": \"toast\" }"
+    }
+  ]
+}

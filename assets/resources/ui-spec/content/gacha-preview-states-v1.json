@@ -1,0 +1,70 @@
+{
+  "id": "gacha-preview-states-v1",
+  "version": 1,
+  "defaultState": "hero",
+  "states": {
+    "hero": {
+      "texts": {
+        "TitleLabel": "英靈名將池",
+        "PoolSubtitleLabel": "常設精選招募",
+        "FeaturedLabel": "當期主打．關羽 / 張飛 / 趙雲",
+        "TimerLabel": "常設卡池",
+        "SmallPityLabel": "再 8 抽必得 SSR+",
+        "BigPityLabel": "天命值 120/200"
+      },
+      "rarityDocks": [
+        {
+          "tier": "epic",
+          "binding": {
+            "dockNodeName": "PoolTierDock",
+            "underlayNodeName": "PoolTierUnderlay",
+            "badgeNodeName": "PoolTierBadge",
+            "labelNodeName": "PoolTierLabel"
+          }
+        }
+      ]
+    },
+    "support": {
+      "texts": {
+        "TitleLabel": "策謀紅顏池",
+        "PoolSubtitleLabel": "支援卡精選招募",
+        "FeaturedLabel": "當期主打．黃月英 / 甄姬 / 大喬",
+        "TimerLabel": "常設支援池",
+        "SmallPityLabel": "再 10 抽必得 SR+",
+        "BigPityLabel": "天命值 64/200"
+      },
+      "rarityDocks": [
+        {
+          "tier": "rare",
+          "binding": {
+            "dockNodeName": "PoolTierDock",
+            "underlayNodeName": "PoolTierUnderlay",
+            "badgeNodeName": "PoolTierBadge",
+            "labelNodeName": "PoolTierLabel"
+          }
+        }
+      ]
+    },
+    "limited": {
+      "texts": {
+        "TitleLabel": "期間限定池",
+        "PoolSubtitleLabel": "限時精選招募",
+        "FeaturedLabel": "當期主打．呂布 / 貂蟬 / 諸葛亮",
+        "TimerLabel": "剩餘 03:12:44",
+        "SmallPityLabel": "再 5 抽必得 UR+",
+        "BigPityLabel": "天命值 180/200"
+      },
+      "rarityDocks": [
+        {
+          "tier": "legendary",
+          "binding": {
+            "dockNodeName": "PoolTierDock",
+            "underlayNodeName": "PoolTierUnderlay",
+            "badgeNodeName": "PoolTierBadge",
+            "labelNodeName": "PoolTierLabel"
+          }
+        }
+      ]
+    }
+  }
+}

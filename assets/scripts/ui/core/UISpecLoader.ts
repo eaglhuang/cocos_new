@@ -65,6 +65,9 @@ export class UISpecLoader {
      * 遞迴處理佈局中的 $ref 並載入對應碎片。
      * Unity 對照：Prefab 部份載入與合併。
      */
+    /** 不可被 $ref 覆寫的欄位（覆寫代表邏輯矛盾） */
+    private static readonly _IMMUTABLE_REF_KEYS: ReadonlySet<string> = new Set(['type']);
+
     private async _resolveLayoutRefs(node: UILayoutNodeSpec): Promise<void> {
         if (node.$ref) {
             try {
@@ -72,6 +75,20 @@ export class UISpecLoader {
                 const fragment = await this._rm.loadJson<UILayoutNodeSpec>(
                     `ui-spec/${node.$ref}`, { tags: ['UISpec'] }
                 );
+
+                // Immutable key guard: 如果 node 與 fragment 都有且值不同 → 警告
+                for (const key of UISpecLoader._IMMUTABLE_REF_KEYS) {
+                    const nodeVal = (node as any)[key];
+                    const fragVal = (fragment as any)[key];
+                    if (nodeVal !== undefined && fragVal !== undefined && nodeVal !== fragVal) {
+                        console.warn(
+                            `[UISpecLoader] ⚠️ $ref immutable key 衝突: ` +
+                            `"${node.$ref}" 的 ${key}="${fragVal}" 被 node override 為 "${nodeVal}"。` +
+                            `這通常代表使用錯誤，請確認 $ref 指向正確的 fragment。`
+                        );
+                    }
+                }
+
                 // 合併屬性：保留當前節點 overrides，碎片作為基礎。
                 // 合併邏輯: 除了 $ref 以外，fragment 屬性作為 fallback
                 const originalRef = node.$ref;

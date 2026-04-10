@@ -1,0 +1,9 @@
+{
+  "$schema": "../../schemas/param-tune-manifest.schema.json",
+  "screenId": "SpiritTallyDetail",
+  "sourceFamilyMap": "SpiritTallyDetail",
+  "generatedAt": "2026-04-08T04:52:37.266Z",
+  "taskCount": 0,
+  "tasks": [],
+  "warnings": []
+}

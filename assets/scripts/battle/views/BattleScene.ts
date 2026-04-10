@@ -167,8 +167,14 @@ export class BattleScene extends Component {
       console.log("[BattleScene] ActionSystem + VFX 效果表載入完成");
 
       // 2.6 預熱 VFX 池（依據 VFX_BLOCK_REGISTRY 中定義的 prefabPath）
-      await this.prewarmVfxPools();
-      console.log("[BattleScene] VFX 池預熱完成");
+      // capture mode 只做靜態 UI / HUD 驗證，不需要把整批可選特效池都預熱進來，
+      // 否則不存在的可選 prefab 會把 UI residual 報表洗成假噪音。
+      if (!isBattleCaptureMode) {
+        await this.prewarmVfxPools();
+        console.log("[BattleScene] VFX 池預熱完成");
+      } else {
+        console.log("[BattleScene] capture mode 略過 VFX 池預熱");
+      }
 
       // 3. 從 encounters.json 讀取遭遇戰設定
       const encounter = await this.loadEncounter(this.currentEncounterId);
@@ -1235,13 +1241,14 @@ export class BattleScene extends Component {
         name: string;
         sub: string;
         rarity: 'normal' | 'rare' | 'epic';
+      artResource: string;
         traits: string[];
         desc: string;
     }> = [
-        { type: TroopType.Cavalry,  name: '虎豹騎', sub: '重騎兵',  rarity: 'rare',   traits: ['衝鋒', '剋步兵'], desc: '機動性最強的精銳鐵騎，能快速突破敵陣。' },
-        { type: TroopType.Infantry, name: '陷陣營', sub: '重步兵',  rarity: 'normal', traits: ['盾牆', '韌性'],   desc: '堅若磐石的步兵方陣，擅長穩守要地。' },
-        { type: TroopType.Shield,   name: '大戟士', sub: '防禦盾兵', rarity: 'normal', traits: ['重甲', '剋弓兵'], desc: '以大盾與重甲著稱的防禦核心。' },
-        { type: TroopType.Archer,   name: '連弩手', sub: '遠程弓兵', rarity: 'normal', traits: ['穿透', '遠程'],   desc: '善用強弩齊射的遠程打擊兵種。' },
+      { type: TroopType.Cavalry,  name: '虎豹騎', sub: '重騎兵',  rarity: 'rare',   artResource: 'sprites/battle/tally_card_art_cavalry_formal',  traits: ['衝鋒', '剋步兵'], desc: '機動性最強的精銳鐵騎，能快速突破敵陣。' },
+      { type: TroopType.Infantry, name: '陷陣營', sub: '重步兵',  rarity: 'normal', artResource: 'sprites/battle/tally_card_art_infantry_formal', traits: ['盾牆', '韌性'],   desc: '堅若磐石的步兵方陣，擅長穩守要地。' },
+      { type: TroopType.Shield,   name: '大戟士', sub: '防禦盾兵', rarity: 'normal', artResource: 'sprites/battle/tally_card_art_shield_formal',   traits: ['重甲', '剋弓兵'], desc: '以大盾與重甲著稱的防禦核心。' },
+      { type: TroopType.Archer,   name: '連弩手', sub: '遠程弓兵', rarity: 'normal', artResource: 'sprites/battle/tally_card_art_archer_formal',   traits: ['穿透', '遠程'],   desc: '善用強弩齊射的遠程打擊兵種。' },
     ];
 
     // troops.json 靜態預設值（ctrl.state.getTroopConfig() 尚未實作時作為 fallback）
@@ -1265,6 +1272,7 @@ export class BattleScene extends Component {
             spd:  stats.moveRange ?? 1,
             cost: TROOP_DEPLOY_COST[s.type],
             rarity: s.rarity,
+            artResource: s.artResource,
             traits: s.traits,
             abilities: [],
             desc: s.desc,

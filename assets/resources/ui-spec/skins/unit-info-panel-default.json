@@ -6,14 +6,10 @@
   "_doc": "兵種資訊面板皮膚。從左滑出的小抽屜，深色水墨底板，金色分段標題線。",
   "slots": {
     "unitinfo.root.bg": {
-      "kind": "sprite-frame",
-      "path": "sprites/battle/unitinfo_root_bg/spriteFrame",
-      "spriteType": "sliced",
-      "border": [56, 56, 56, 56],
-      "bleed": 4,
-      "allowAutoAtlas": true,
-      "_fallback": "#10141C",
-      "_doc": "主體底板：深色偏黑"
+      "kind": "color",
+      "color": "surfaceSepia",
+      "alpha": 255,
+      "_doc": "主體底板改為近乎不透的深褐墨底，避免戰場地磚從抽屜底部透出。"
     },
     "unitinfo.root.shadow": {
       "kind": "sprite-frame",
@@ -23,20 +19,16 @@
       "allowAutoAtlas": true
     },
     "unitinfo.header.bg": {
-      "kind": "sprite-frame",
-      "path": "sprites/battle/unitinfo_header_bg/spriteFrame",
-      "spriteType": "sliced",
-      "border": [28, 40, 28, 40],
-      "allowAutoAtlas": true,
-      "_fallback": "#1C2230"
+      "kind": "color",
+      "color": "backgroundNavyAlt",
+      "alpha": 255,
+      "_doc": "Header 維持更冷一階的深墨色，讓標題區不受戰場背景干擾。"
     },
     "unitinfo.section.bg": {
-      "kind": "sprite-frame",
-      "path": "sprites/battle/unitinfo_section_bg/spriteFrame",
-      "spriteType": "sliced",
-      "border": [36, 36, 36, 36],
-      "allowAutoAtlas": true,
-      "_fallback": "#161C28"
+      "kind": "color",
+      "color": "surfaceSepiaWarm",
+      "alpha": 248,
+      "_doc": "Section 以更厚的深褐墨色模組承接戰場系統感，壓低底圖透視感。"
     },
     "unitinfo.type.icon": {
       "kind": "sprite-frame",
@@ -54,9 +46,9 @@
     },
     "unitinfo.label.name": {
       "kind": "label-style",
-      "fontSize": 15,
-      "lineHeight": 20,
-      "color": "textOffWhite",
+      "fontSize": 16,
+      "lineHeight": 22,
+      "color": "secondaryLight",
       "horizontalAlign": "LEFT",
       "isBold": true
     },
@@ -64,14 +56,14 @@
       "kind": "label-style",
       "fontSize": 11,
       "lineHeight": 14,
-      "color": "textSteelDark",
+      "color": "textSteelGray",
       "horizontalAlign": "LEFT"
     },
     "unitinfo.label.section": {
       "kind": "label-style",
       "fontSize": 11,
       "lineHeight": 14,
-      "color": "secondary",
+      "color": "secondaryLight",
       "horizontalAlign": "LEFT",
       "isBold": true
     },
@@ -79,7 +71,7 @@
       "kind": "label-style",
       "fontSize": 13,
       "lineHeight": 16,
-      "color": "textSteelLighter",
+      "color": "textOffWhite",
       "horizontalAlign": "LEFT"
     },
     "unitinfo.label.trait.tag": {
@@ -94,7 +86,7 @@
       "kind": "label-style",
       "fontSize": 12,
       "lineHeight": 18,
-      "color": "textSteelGray",
+      "color": "textSecondary",
       "horizontalAlign": "LEFT",
       "overflow": "clampByHeight"
     }

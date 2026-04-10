@@ -182,6 +182,59 @@ export class UIValidationRunner {
             }
         }
 
+        // ── 檢查 label overflow 保護 ────────────────────────
+        if (spec.type === 'label' && spec.styleSlot) {
+            const slot = skin.slots[spec.styleSlot];
+            if (slot && slot.kind === 'label-style') {
+                const overflow = (slot as any).overflow as string | undefined;
+                if (!overflow) {
+                    this.issues.push({
+                        severity: 'info',
+                        path,
+                        message: `styleSlot "${spec.styleSlot}" 未指定 overflow，builder 將自動套用 SHRINK`,
+                        suggestion: '建議在 skin 中明確加上 "overflow": "SHRINK"',
+                    });
+                }
+            }
+        }
+
+        // ── 檢查 Layout 容器子節點溢出 ──────────────────────
+        if (spec.children && spec.layout) {
+            const isVertical = spec.layout.type === 'vertical';
+            const isHorizontal = spec.layout.type === 'horizontal';
+            if (isVertical || isHorizontal) {
+                const containerSize = isVertical ? h : w;
+                const padStart = isVertical
+                    ? (spec.layout.paddingTop ?? 0) : (spec.layout.paddingLeft ?? 0);
+                const padEnd = isVertical
+                    ? (spec.layout.paddingBottom ?? 0) : (spec.layout.paddingRight ?? 0);
+                const layoutSpacing = spec.layout.spacing ?? 0;
+
+                let totalChildSize = 0;
+                let childCount = 0;
+                for (const child of spec.children) {
+                    const childSize = isVertical
+                        ? resolveSize(child.height, h)
+                        : resolveSize(child.width, w);
+                    totalChildSize += childSize;
+                    childCount++;
+                }
+                const totalSpacing = Math.max(0, childCount - 1) * layoutSpacing;
+                const available = containerSize - padStart - padEnd;
+                const totalRequired = totalChildSize + totalSpacing;
+
+                if (available > 0 && totalRequired > available) {
+                    const overflow = totalRequired - available;
+                    this.issues.push({
+                        severity: 'error',
+                        path,
+                        message: `Layout 子節點總尺寸 ${Math.round(totalRequired)}px 超出容器可用空間 ${Math.round(available)}px（溢出 ${Math.round(overflow)}px）`,
+                        suggestion: '減少子節點尺寸、改用 Widget 彈性拉伸、或增加容器高度。builder 會在 runtime 自動縮減子節點。',
+                    });
+                }
+            }
+        }
+
         // ── 遞迴子節點 ──────────────────────────────────────
         if (spec.children) {
             for (const child of spec.children) {

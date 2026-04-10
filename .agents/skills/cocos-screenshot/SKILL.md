@@ -113,6 +113,18 @@ if ($ok) {
 
 > **提示**：若 PowerShell 工作階段中 `WinEnum` 類別已載入（同一 session），可跳過 `Add-Type` 區塊直接從 `$hwnd = ...` 開始執行。
 
+## Step 1b：縮圖採 thumbnail-first progressive zoom（硬規定，在 view_image 前必須執行）
+
+```powershell
+$imgPath = "c:\Users\User\3KLife\temp\cocos-screenshot.png"
+node tools_node/prepare-view-image.js --input $imgPath
+# 若 125px 不足，再依序改跑：
+# node tools_node/prepare-view-image.js --input $imgPath --maxWidth 250
+# node tools_node/prepare-view-image.js --input $imgPath --maxWidth 500
+```
+
+> ⚠️ 先試 `125px`，足夠就停止；只有在前一級不足時才可放大。需要看 `>500px` 原圖時，必須先取得使用者明確同意。
+
 ## Step 2：使用 view_image 工具讀取截圖
 
 執行完上面指令後，**必須立即呼叫 `view_image` 工具**：

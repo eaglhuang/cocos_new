@@ -1,0 +1,154 @@
+{
+  "screenId": "GachaMain",
+  "updatedAt": "2026-04-08T05:06:05.996Z",
+  "latestStage": "paramTuneManifest",
+  "overallVerdict": "pass",
+  "stages": {
+    "intake": {
+      "verdict": "pass",
+      "validatedAt": "2026-04-08T05:06:05.849Z",
+      "fileCount": 1,
+      "failureCount": 0,
+      "files": [
+        {
+          "kind": "intake",
+          "filePath": "artifacts\\ui-source\\gacha-main\\manifests\\intake.json",
+          "ok": true,
+          "failReasons": []
+        }
+      ],
+      "crossFileFailReasons": [],
+      "metadata": {
+        "screenId": "GachaMain",
+        "output": "manifests/intake.json"
+      },
+      "history": [
+        {
+          "verdict": "pass",
+          "validatedAt": "2026-04-08T05:06:05.849Z",
+          "fileCount": 1,
+          "failureCount": 0,
+          "metadata": {
+            "screenId": "GachaMain",
+            "output": "manifests/intake.json"
+          }
+        }
+      ]
+    },
+    "familyMap": {
+      "verdict": "pass",
+      "validatedAt": "2026-04-08T05:06:05.895Z",
+      "fileCount": 2,
+      "failureCount": 0,
+      "files": [
+        {
+          "kind": "intake",
+          "filePath": "artifacts\\ui-source\\gacha-main\\manifests\\intake.json",
+          "ok": true,
+          "failReasons": []
+        },
+        {
+          "kind": "familyMap",
+          "filePath": "artifacts\\ui-source\\gacha-main\\proof\\gacha-main.family-map.json",
+          "ok": true,
+          "failReasons": []
+        }
+      ],
+      "crossFileFailReasons": [],
+      "metadata": {
+        "screenId": "GachaMain",
+        "output": "proof\\gacha-main.family-map.json"
+      },
+      "history": [
+        {
+          "verdict": "pass",
+          "validatedAt": "2026-04-08T05:06:05.895Z",
+          "fileCount": 2,
+          "failureCount": 0,
+          "metadata": {
+            "screenId": "GachaMain",
+            "output": "proof\\gacha-main.family-map.json"
+          }
+        }
+      ]
+    },
+    "assetTaskManifest": {
+      "verdict": "pass",
+      "validatedAt": "2026-04-08T05:06:05.948Z",
+      "fileCount": 3,
+      "failureCount": 0,
+      "files": [
+        {
+          "kind": "intake",
+          "filePath": "artifacts\\ui-source\\gacha-main\\manifests\\intake.json",
+          "ok": true,
+          "failReasons": []
+        },
+        {
+          "kind": "familyMap",
+          "filePath": "artifacts\\ui-source\\gacha-main\\proof\\gacha-main.family-map.json",
+          "ok": true,
+          "failReasons": []
+        },
+        {
+          "kind": "assetTaskManifest",
+          "filePath": "artifacts\\ui-source\\gacha-main\\manifests\\asset-task-manifest.json",
+          "ok": true,
+          "failReasons": []
+        }
+      ],
+      "crossFileFailReasons": [],
+      "metadata": {
+        "screenId": "GachaMain",
+        "output": "manifests/asset-task-manifest.json",
+        "taskCount": 2
+      },
+      "history": [
+        {
+          "verdict": "pass",
+          "validatedAt": "2026-04-08T05:06:05.948Z",
+          "fileCount": 3,
+          "failureCount": 0,
+          "metadata": {
+            "screenId": "GachaMain",
+            "output": "manifests/asset-task-manifest.json",
+            "taskCount": 2
+          }
+        }
+      ]
+    },
+    "paramTuneManifest": {
+      "verdict": "pass",
+      "validatedAt": "2026-04-08T05:06:05.995Z",
+      "fileCount": 1,
+      "failureCount": 0,
+      "files": [
+        {
+          "kind": "paramTuneManifest",
+          "filePath": "artifacts\\ui-source\\gacha-main\\manifests\\param-tune-manifest.json",
+          "ok": true,
+          "failReasons": []
+        }
+      ],
+      "crossFileFailReasons": [],
+      "metadata": {
+        "screenId": "GachaMain",
+        "output": "manifests/param-tune-manifest.json",
+        "taskCount": 0
+      },
+      "history": [
+        {
+          "verdict": "pass",
+          "validatedAt": "2026-04-08T05:06:05.995Z",
+          "fileCount": 1,
+          "failureCount": 0,
+          "metadata": {
+            "screenId": "GachaMain",
+            "output": "manifests/param-tune-manifest.json",
+            "taskCount": 0
+          }
+        }
+      ]
+    }
+  }
+}

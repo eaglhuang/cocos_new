@@ -258,7 +258,7 @@ export class BattleHUD extends UIPreviewBuilder {
             // [UI-2-0027] 初始化尚未完成（buildScreen 仍在非同步執行中），
             // 暫存參數，等 onBuildComplete 完成後由 _replayPendingRefresh() 自動重播。
             // Unity 對照：在 Awake 呼叫 Start() 期業務邏輯的 Deferred 處理
-            console.warn('[BattleHUD] refresh() 在初始化完成前被呼叫 — 已暫存，初始化完成後將自動重播');
+            console.log('[BattleHUD] refresh() 在初始化完成前被呼叫 — 已暫存，初始化完成後將自動重播');
             this._pendingRefreshArgs = [turn, food, maxFood, playerGeneralHp, playerGeneralMaxHp, enemyGeneralHp, enemyGeneralMaxHp];
             return;
         }

@@ -12,7 +12,57 @@
  *   const obj = MsgpackCodec.decode<MyType>(bytes);
  */
 
-import { encode, decode } from '../../../../node_modules/@msgpack/msgpack/dist.esm/index.mjs';
+type MsgpackModule = {
+    encode(data: unknown): Uint8Array;
+    decode<T = unknown>(bytes: Uint8Array): T;
+};
+
+let _msgpackModule: MsgpackModule | null | undefined;
+
+function loadMsgpackModule(): MsgpackModule | null {
+    if (_msgpackModule !== undefined) {
+        return _msgpackModule;
+    }
+
+    const globalModule = (globalThis as { msgpack?: MsgpackModule }).msgpack;
+    if (globalModule?.encode && globalModule?.decode) {
+        _msgpackModule = globalModule;
+        return _msgpackModule;
+    }
+
+    try {
+        const requireFactory = Function('try { return typeof require !== "undefined" ? require : undefined; } catch { return undefined; }');
+        const requireFn = requireFactory() as ((id: string) => unknown) | undefined;
+        if (requireFn) {
+            const module = requireFn('@msgpack/msgpack') as Partial<MsgpackModule>;
+            if (module.encode && module.decode) {
+                _msgpackModule = {
+                    encode: module.encode.bind(module),
+                    decode: module.decode.bind(module),
+                };
+                return _msgpackModule;
+            }
+        }
+    } catch {
+        // Ignore and use JSON fallback below.
+    }
+
+    _msgpackModule = null;
+    return _msgpackModule;
+}
+
+function encodeJsonFallback(data: unknown): Uint8Array {
+    return new TextEncoder().encode(JSON.stringify(data));
+}
+
+function decodeJsonFallback<T>(bytes: Uint8Array): T {
+    try {
+        const json = new TextDecoder().decode(bytes);
+        return JSON.parse(json) as T;
+    } catch (error) {
+        throw new Error(`MsgpackCodec: 目前 runtime 無法載入 @msgpack/msgpack，且 JSON fallback 解碼失敗。${String(error)}`);
+    }
+}
 
 export class MsgpackCodec {
 
@@ -22,7 +72,8 @@ export class MsgpackCodec {
      * @returns Uint8Array 二進位位元組
      */
     public static encode(data: unknown): Uint8Array {
-        return encode(data);
+        const module = loadMsgpackModule();
+        return module ? module.encode(data) : encodeJsonFallback(data);
     }
 
     /**
@@ -31,7 +82,8 @@ export class MsgpackCodec {
      * @returns 解碼後的物件（型別不保證，需外部校驗）
      */
     public static decode<T = unknown>(bytes: Uint8Array): T {
-        return decode(bytes) as T;
+        const module = loadMsgpackModule();
+        return module ? module.decode<T>(bytes) : decodeJsonFallback<T>(bytes);
     }
 
     /**

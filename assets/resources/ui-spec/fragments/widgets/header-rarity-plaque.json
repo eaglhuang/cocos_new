@@ -1,0 +1,154 @@
+{
+  "id": "header-rarity-plaque",
+  "description": "共享牌匾式標題列：主標題 + 稀有度字標 dock",
+  "category": "container",
+  "params": {
+    "title": { "type": "string", "required": true },
+    "badgeText": { "type": "string", "required": true },
+    "showBadge": { "type": "boolean", "default": true }
+  },
+  "layout": {
+    "type": "container",
+    "name": "HeaderRarityPlaque",
+    "width": "100%",
+    "height": 56,
+    "children": [
+      {
+        "type": "panel",
+        "name": "PlaqueBase",
+        "widget": { "top": 2, "bottom": 6, "left": 0, "right": 0 },
+        "skinSlot": "widget.header.plaque.base"
+      },
+      {
+        "type": "image",
+        "name": "PlaqueFill",
+        "widget": { "top": 6, "bottom": 10, "left": 0, "right": 0 },
+        "skinSlot": "widget.header.plaque.fill"
+      },
+      {
+        "type": "image",
+        "name": "PlaqueBand",
+        "widget": { "top": 20, "bottom": 20, "left": 20, "right": 20 },
+        "skinSlot": "widget.header.plaque.band"
+      },
+      {
+        "type": "label",
+        "name": "PlaqueTitle",
+        "widget": { "top": 6, "left": 18 },
+        "width": "62%",
+        "height": 28,
+        "text": "${title}",
+        "styleSlot": "widget.header.plaque.title"
+      },
+      {
+        "type": "label",
+        "name": "PlaqueSubtitle",
+        "widget": { "bottom": 6, "left": 18 },
+        "width": "48%",
+        "height": 20,
+        "text": "${title}",
+        "styleSlot": "widget.header.plaque.subtitle"
+      },
+      {
+        "type": "container",
+        "name": "PlaqueBadgeDock",
+        "widget": { "right": 10, "vCenter": 0 },
+        "width": 156,
+        "height": 40,
+        "active": "${showBadge}",
+        "children": [
+          {
+            "type": "image",
+            "name": "PlaqueBadgeUnderlay",
+            "widget": { "hCenter": true, "vCenter": true },
+            "width": 156,
+            "height": 36,
+            "skinSlot": "widget.header.plaque.badge.underlay"
+          },
+          {
+            "type": "panel",
+            "name": "PlaqueBadge",
+            "widget": { "hCenter": true, "vCenter": true },
+            "width": 144,
+            "height": 30,
+            "skinSlot": "widget.header.plaque.badge.fill",
+            "layout": { "type": "vertical", "paddingTop": 4, "paddingBottom": 4, "paddingLeft": 10, "paddingRight": 10 },
+            "children": [
+              {
+                "type": "label",
+                "name": "PlaqueBadgeLabel",
+                "width": "100%",
+                "height": 22,
+                "text": "${badgeText}",
+                "styleSlot": "widget.header.plaque.badge.label"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "defaultSkinSlots": {
+    "widget.header.plaque.base": {
+      "kind": "color-rect",
+      "color": "surfaceDeep",
+      "alpha": 224
+    },
+    "widget.header.plaque.fill": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/detail_header_fill",
+      "spriteType": "simple",
+      "allowAutoAtlas": true,
+      "opacity": 0.92
+    },
+    "widget.header.plaque.band": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/formal/header_band_formal",
+      "spriteType": "sliced",
+      "border": [20, 0, 20, 0],
+      "allowAutoAtlas": true,
+      "opacity": 0.42
+    },
+    "widget.header.plaque.title": {
+      "kind": "label-style",
+      "fontSize": 28,
+      "lineHeight": 30,
+      "color": "colorWhite",
+      "outlineWidth": 0,
+      "horizontalAlign": "LEFT"
+    },
+    "widget.header.plaque.subtitle": {
+      "kind": "label-style",
+      "fontSize": 16,
+      "lineHeight": 18,
+      "color": "accentGold",
+      "outlineWidth": 0,
+      "horizontalAlign": "LEFT"
+    },
+    "widget.header.plaque.badge.underlay": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/parchment/fill",
+      "spriteType": "sliced",
+      "border": [16, 16, 16, 16],
+      "allowAutoAtlas": true,
+      "opacity": 0.9
+    },
+    "widget.header.plaque.badge.fill": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/parchment/fill",
+      "spriteType": "sliced",
+      "border": [16, 16, 16, 16],
+      "allowAutoAtlas": true,
+      "opacity": 0.96
+    },
+    "widget.header.plaque.badge.label": {
+      "kind": "label-style",
+      "fontSize": 22,
+      "lineHeight": 24,
+      "color": "colorWhite",
+      "outlineWidth": 1,
+      "outlineColor": "outlineHeavy",
+      "horizontalAlign": "CENTER"
+    }
+  }
+}

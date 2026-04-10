@@ -39,7 +39,7 @@ export class BattleLogPanel extends UIPreviewBuilder {
     // ── 私有狀態 ─────────────────────────────────────────────────────────────
     private readonly _lines: string[] = [];
     private _contentNode: Node | null = null;
-    private _collapsed = false;
+    private _collapsed = true;
     private _logPanelNode: Node | null = null;   // BattleLogPanel 子節點（可折疊區段）
     private _collapsedHeight = 0;
     private _expandedHeight = 410;
@@ -66,11 +66,12 @@ export class BattleLogPanel extends UIPreviewBuilder {
     private async _initialize(): Promise<void> {
         if (this._initialized) return;
         try {
-            const [fullScreen, i18n] = await Promise.all([
+            const [fullScreen, i18n, tokens] = await Promise.all([
                 this._specLoader.loadFullScreen('battle-log-screen'),
                 this._specLoader.loadI18n(services().i18n.currentLocale),
+                this._specLoader.loadDesignTokens(),
             ]);
-            await this.buildScreen(fullScreen.layout, fullScreen.skin, i18n);
+            await this.buildScreen(fullScreen.layout, fullScreen.skin, i18n, tokens);
             this._initialized = true;
         } catch (e) {
             console.warn('[BattleLogPanel] 規格載入失敗，退回白模', e);
@@ -114,6 +115,8 @@ export class BattleLogPanel extends UIPreviewBuilder {
             `[BattleLogPanel] 綁定完成 — ` +
             `scrollView:${!!this.scrollView} label:${!!this.logLabel} contentNode:${!!this._contentNode}`
         );
+
+        this._applyCollapsedState(this._collapsed, false);
 
         this._buildCompleted = true;
         this._flushReadyWaiters(true);
@@ -207,24 +210,34 @@ export class BattleLogPanel extends UIPreviewBuilder {
      * tween 0.3s 動畫改變 BattleLogPanel 子節點的 height。
      * Unity 對照：ToggleLogPanel() 搭配 DOTween
      */
-    private _onCollapseClick(): void {        this._collapsed = !this._collapsed;
+    private _onCollapseClick(): void {
+        this._collapsed = !this._collapsed;
+        this._applyCollapsedState(this._collapsed, true);
+    }
+
+    private _applyCollapsedState(collapsed: boolean, animated: boolean): void {
         const panelNode = this._logPanelNode;
         if (!panelNode) return;
 
         const tf = panelNode.getComponent(UITransform);
         if (!tf) return;
 
-        const targetH = this._collapsed ? this._collapsedHeight : this._expandedHeight;
+        const targetH = collapsed ? this._collapsedHeight : this._expandedHeight;
 
-        if (!this._collapsed) {
-            // 展開時先顯示節點再做動畫
+        if (!collapsed) {
             panelNode.active = true;
+        }
+
+        if (!animated) {
+            tf.height = targetH;
+            panelNode.active = !collapsed;
+            return;
         }
 
         tween(tf)
             .to(0.3, { height: targetH } as any, { easing: 'quadOut' })
             .call(() => {
-                if (panelNode && this._collapsed) panelNode.active = false;
+                if (panelNode && collapsed) panelNode.active = false;
             })
             .start();
     }

@@ -42,12 +42,6 @@
       "description": "左上角模式提示。",
       "bindPath": "OverviewStateChrome/PortraitModeHint"
     },
-    "overviewModeBadgeLabel": {
-      "type": "string",
-      "required": true,
-      "description": "總覽模式 badge 文案。",
-      "bindPath": "InfoContent/HeaderRow/MetaColumn/OverviewModeBadge/OverviewModeBadgeLabel"
-    },
     "coreStatsTitle": {
       "type": "string",
       "required": true,
@@ -189,7 +183,6 @@
     "rarityLabel",
     "rarityTier",
     "portraitModeHint",
-    "overviewModeBadgeLabel",
     "coreStatsTitle",
     "coreStatsValue",
     "roleTitle",

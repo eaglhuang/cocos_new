@@ -91,6 +91,7 @@
             "destructive",
             "tab",
             "item-cell",
+            "icon",
             "panel-light",
             "none"
           ]

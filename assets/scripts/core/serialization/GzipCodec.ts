@@ -12,7 +12,51 @@
  *   const original = await GzipCodec.decompress(compressed);
  */
 
-import pako from '../../../../node_modules/pako/dist/pako.esm.mjs';
+type PakoModule = {
+    gzip(data: Uint8Array): Uint8Array;
+    ungzip(data: Uint8Array): Uint8Array;
+};
+
+let _pakoModule: PakoModule | null | undefined;
+
+function loadPakoModule(): PakoModule | null {
+    if (_pakoModule !== undefined) {
+        return _pakoModule;
+    }
+
+    const globalModule = (globalThis as { pako?: Partial<PakoModule> }).pako;
+    if (globalModule?.gzip && globalModule?.ungzip) {
+        _pakoModule = {
+            gzip: globalModule.gzip.bind(globalModule),
+            ungzip: globalModule.ungzip.bind(globalModule),
+        };
+        return _pakoModule;
+    }
+
+    try {
+        const requireFactory = Function('try { return typeof require !== "undefined" ? require : undefined; } catch { return undefined; }');
+        const requireFn = requireFactory() as ((id: string) => unknown) | undefined;
+        if (requireFn) {
+            const module = requireFn('pako') as Partial<PakoModule>;
+            if (module.gzip && module.ungzip) {
+                _pakoModule = {
+                    gzip: module.gzip.bind(module),
+                    ungzip: module.ungzip.bind(module),
+                };
+                return _pakoModule;
+            }
+        }
+    } catch {
+        // Ignore and use pass-through fallback below.
+    }
+
+    _pakoModule = null;
+    return _pakoModule;
+}
+
+function hasGzipHeader(data: Uint8Array): boolean {
+    return data.byteLength >= 2 && data[0] === 0x1f && data[1] === 0x8b;
+}
 
 export class GzipCodec {
 
@@ -22,7 +66,8 @@ export class GzipCodec {
      * @returns 壓縮後的 Uint8Array
      */
     public static compress(data: Uint8Array): Uint8Array {
-        return pako.gzip(data);
+        const module = loadPakoModule();
+        return module ? module.gzip(data) : data.slice();
     }
 
     /**
@@ -31,7 +76,16 @@ export class GzipCodec {
      * @returns 解壓後的 Uint8Array
      */
     public static decompress(data: Uint8Array): Uint8Array {
-        return pako.ungzip(data);
+        const module = loadPakoModule();
+        if (module) {
+            return module.ungzip(data);
+        }
+
+        if (hasGzipHeader(data)) {
+            throw new Error('GzipCodec: 目前 runtime 無法載入 pako，無法解壓既有 gzip 資料。');
+        }
+
+        return data.slice();
     }
 
     /**

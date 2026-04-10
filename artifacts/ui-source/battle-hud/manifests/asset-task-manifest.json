@@ -1,0 +1,9 @@
+{
+  "$schema": "../../schemas/asset-task-manifest.schema.json",
+  "screenId": "BattleHUD",
+  "sourceFamilyMap": "BattleHUD",
+  "generatedAt": "2026-04-08T03:33:08.907Z",
+  "taskCount": 0,
+  "tasks": [],
+  "warnings": []
+}

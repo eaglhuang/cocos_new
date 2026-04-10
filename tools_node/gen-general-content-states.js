@@ -8,6 +8,9 @@
 
 const fs = require('fs');
 const path = require('path');
+const { resolveRarityTier, loadThresholds } = require('./lib/rarity-resolver');
+
+loadThresholds(); // 載入 rarity-thresholds.json 門檻（若存在）
 
 const GENERALS_PATH   = path.join(__dirname, '..', 'assets', 'resources', 'data', 'generals.json');
 const STATES_PATH     = path.join(__dirname, '..', 'assets', 'resources', 'ui-spec', 'content', 'general-detail-overview-states-v1.json');
@@ -43,33 +46,6 @@ function stat(g, k) {
 }
 
 function fmtStat(v) { return v ? `${v}` : '--'; }
-
-function resolveRarityTier(g) {
-    if (g.rarityTier) return g.rarityTier;
-    const cat = g.characterCategory;
-    if (cat === 'mythical') return 'mythic';
-    if (cat === 'titled')   return 'legendary';
-    const stats = [stat(g,'str'), stat(g,'int'), stat(g,'lea'), stat(g,'pol'), stat(g,'cha')];
-    const maxSt = Math.max(...stats);
-    const avg5  = stats.reduce((s,v)=>s+v,0) / stats.length;
-    if (maxSt === 0) {
-        const ep = g.ep ?? 0;
-        if (ep >= 90) return 'legendary';
-        if (ep >= 75) return 'epic';
-        if (ep >= 60) return 'rare';
-        return 'common';
-    }
-    const TIER_RANK = { common:0, rare:1, epic:2, legendary:3, mythic:4 };
-    function toTier(v, lv, ev, rv) {
-        if (v >= lv) return 'legendary';
-        if (v >= ev) return 'epic';
-        if (v >= rv) return 'rare';
-        return 'common';
-    }
-    const tMax = toTier(maxSt, 95, 80, 65);
-    const tAvg = toTier(avg5,  80, 65, 50);
-    return (TIER_RANK[tMax] ?? 0) >= (TIER_RANK[tAvg] ?? 0) ? tMax : tAvg;
-}
 
 function resolveCrestState(g) {
     if (g.crestState) return g.crestState;

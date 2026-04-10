@@ -184,7 +184,11 @@ to.clip = clip;
 
         const clip = this.clipCache.get(name);
         if (!clip) {
-            console.warn(`[AudioSystem] SFX clip 不存在: ${name}`);
+            if (this._isPreviewMode()) {
+                console.log(`[AudioSystem] preview mode SFX clip 缺失，略過: ${name}`);
+            } else {
+                console.warn(`[AudioSystem] SFX clip 不存在: ${name}`);
+            }
             return;
         }
         this.sfxSource.playOneShot(clip, volume);
@@ -203,10 +207,27 @@ to.clip = clip;
 
         const clip = this.clipCache.get(name);
         if (!clip) {
-            console.warn(`[AudioSystem] SFX clip 不存在: ${name}`);
+            if (this._isPreviewMode()) {
+                console.log(`[AudioSystem] preview mode SFX clip 缺失，略過: ${name}`);
+            } else {
+                console.warn(`[AudioSystem] SFX clip 不存在: ${name}`);
+            }
             return;
         }
         this.sfxSource.playOneShot(clip, volume);
+    }
+
+    private _isPreviewMode(): boolean {
+        try {
+            const globalScope = globalThis as any;
+            const search = globalScope?.window?.location?.search as string | undefined;
+            const query = new URLSearchParams(search ?? '');
+            const queryMode = query.get('previewMode') ?? query.get('PREVIEW_MODE');
+            const storedMode = globalScope?.window?.localStorage?.getItem('PREVIEW_MODE') ?? '';
+            return queryMode === 'true' || storedMode === 'true';
+        } catch {
+            return false;
+        }
     }
 
     // ─────────────────────────────────────────

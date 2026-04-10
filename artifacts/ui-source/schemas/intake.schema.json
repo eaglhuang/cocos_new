@@ -1,0 +1,53 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "intake.schema.json",
+  "title": "UIFactoryIntake",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "screenId",
+    "tier",
+    "templateFamilyCandidate",
+    "uiId",
+    "sourceOfTruth",
+    "canonicalReferences",
+    "riskZones",
+    "smokeRoute",
+    "notes",
+    "generatedAt",
+    "generatedBy"
+  ],
+  "properties": {
+    "$schema": { "type": "string", "const": "../../schemas/intake.schema.json" },
+    "screenId": { "type": "string", "minLength": 1 },
+    "tier": { "type": "string", "enum": ["A", "B", "C"] },
+    "templateFamilyCandidate": { "type": "string" },
+    "uiId": { "type": "string", "minLength": 1 },
+    "sourceOfTruth": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["screenSpec", "layout", "skin", "bundle", "layer"],
+      "properties": {
+        "screenSpec": { "type": ["string", "null"] },
+        "layout": { "type": ["string", "null"] },
+        "skin": { "type": ["string", "null"] },
+        "bundle": { "type": ["string", "null"] },
+        "layer": { "type": ["string", "null"] }
+      }
+    },
+    "canonicalReferences": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "minItems": 1
+    },
+    "riskZones": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "smokeRoute": { "type": "string", "minLength": 1 },
+    "notes": { "type": ["string", "null"] },
+    "generatedAt": { "type": "string", "minLength": 1 },
+    "generatedBy": { "type": "string", "minLength": 1 }
+  }
+}

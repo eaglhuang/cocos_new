@@ -1,0 +1,85 @@
+{
+  "$schema": "../../schemas/family-map.schema.json",
+  "screenId": "BattleHUD",
+  "templateFamilyCandidate": "",
+  "sourceProof": "ref://docs/UI品質參考圖/battle-hud.png",
+  "generatedAt": "2026-04-08T03:28:00.236Z",
+  "zoneFamilyMap": [
+    {
+      "zone": "top-bar",
+      "family": "dark-metal",
+      "recipe": "dark-metal-v1",
+      "structureOwner": "UITemplateResolver+widget-compose",
+      "skinOwner": "UISkinResolver",
+      "contentOwner": "contentContract",
+      "generationNeed": "reuse-only",
+      "widgetRefs": [],
+      "templateRefs": [],
+      "sourceProofFamily": "dark-metal",
+      "sourceProofRecipe": "dark-metal-v1",
+      "notes": "深色金屬底板，顯示回合數與行動計時"
+    },
+    {
+      "zone": "left-team",
+      "family": "dark-metal",
+      "recipe": "dark-metal-v1",
+      "structureOwner": "UITemplateResolver+widget-compose",
+      "skinOwner": "UISkinResolver",
+      "contentOwner": "contentContract",
+      "generationNeed": "reuse-only",
+      "widgetRefs": [
+        "unit-card"
+      ],
+      "templateRefs": [],
+      "sourceProofFamily": "dark-metal",
+      "sourceProofRecipe": "dark-metal-v1",
+      "notes": "每格含頭像、HP bar、buffs 圖示"
+    },
+    {
+      "zone": "right-team",
+      "family": "dark-metal",
+      "recipe": "dark-metal-v1",
+      "structureOwner": "UITemplateResolver+widget-compose",
+      "skinOwner": "UISkinResolver",
+      "contentOwner": "contentContract",
+      "generationNeed": "reuse-only",
+      "widgetRefs": [
+        "unit-card"
+      ],
+      "templateRefs": [],
+      "sourceProofFamily": "dark-metal",
+      "sourceProofRecipe": "dark-metal-v1",
+      "notes": "右側鏡像排列"
+    },
+    {
+      "zone": "action-bar",
+      "family": "dark-metal",
+      "recipe": "dark-metal-v1",
+      "structureOwner": "UITemplateResolver+widget-compose",
+      "skinOwner": "UISkinResolver",
+      "contentOwner": "contentContract",
+      "generationNeed": "param-tune",
+      "widgetRefs": [],
+      "templateRefs": [],
+      "sourceProofFamily": "dark-metal",
+      "sourceProofRecipe": "dark-metal-v1",
+      "notes": "包含 攻擊 / 特技 / 撤退 三顆主按鈕"
+    },
+    {
+      "zone": "battle-log",
+      "family": "parchment-list",
+      "recipe": "parchment-v1",
+      "structureOwner": "UITemplateResolver+widget-compose",
+      "skinOwner": "UISkinResolver",
+      "contentOwner": "contentContract",
+      "generationNeed": "reuse-only",
+      "widgetRefs": [
+        "list-panel"
+      ],
+      "templateRefs": [],
+      "sourceProofFamily": "parchment",
+      "sourceProofRecipe": null,
+      "notes": "半透明羊皮紙底，顯示最近 5 條戰鬥訊息"
+    }
+  ]
+}

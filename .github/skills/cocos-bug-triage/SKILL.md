@@ -63,7 +63,19 @@ $ok = [WinEnum]::Snap($hwnd, $out)
 if ($ok) { Write-Host "截圖完成: $out ($([int]((Get-Item $out).Length/1KB)) KB)" }
 ```
 
-然後呼叫 `view_image { filePath: "c:\Users\User\3KLife\temp\cocos-screenshot.png" }`
+然後先走 thumbnail-first progressive zoom：
+
+```powershell
+$imgPath = "c:\Users\User\3KLife\temp\cocos-screenshot.png"
+node tools_node/prepare-view-image.js --input $imgPath
+# 若 125px 不足，再依序改跑：
+# node tools_node/prepare-view-image.js --input $imgPath --maxWidth 250
+# node tools_node/prepare-view-image.js --input $imgPath --maxWidth 500
+```
+
+再呼叫 `view_image { filePath: "c:\Users\User\3KLife\temp\cocos-screenshot.png" }`
+
+> ⚠️ 先試 `125px`，足夠就停止；只有在前一級不足時才可放大。需要看 `>500px` 原圖時，必須先取得使用者明確同意。
 
 ---
 

@@ -88,6 +88,10 @@ Avoid:
 - 單次對話最多 2 張圖
 - 同系列驗證圖只保留索引檔或 compare board
 - 原圖、中間稿、1024 輸出圖不可一起帶入
+- 讀圖一律先走 thumbnail-first progressive zoom：先 `125px`，不夠才 `250px`，再不夠才 `500px`
+- 只要 `125px` 已足夠辨識，就不准放大；禁止預設直接看 `500px` 或原圖
+- 全畫面 screenshot / compare board / editor capture 先裁主區域，再套用同一套 `125 -> 250 -> 500` 規則
+- 若不想手記寬度，標準 wrapper 是 `node tools_node/prepare-view-image-progressive.js --input <path> --level thumb`，之後依序改 `inspect`、`detail`；若從 preview 繼續升級，需用 `--next --source <original-path>`
 - 大圖只保留路徑與一句摘要，例如：
 
 ```text
@@ -123,6 +127,7 @@ artifacts/ui-qa/UI-2-0032/unitinfo_type_icon_spear_v2b_dalle3_1024.png
 
 - 單輪超過 `3` 張圖片：警告
 - 單輪圖片總量超過 `4 MB`：警告
+- 原圖或寬度 `>500px` 的圖，只能在 `125 / 250 / 500` 都不足時，且使用者明確同意後才讀
 
 ## 工具
 

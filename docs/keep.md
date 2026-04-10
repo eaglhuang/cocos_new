@@ -7,10 +7,10 @@
 
 | 分片 | 路徑 | 大小 |
 |------|------|------|
-| Core（P0 · §0–§2c） | `docs/keep-shards/keep-core.md` | 81 行 / ~3 KB |
-| Workflow（§3–§6 · §13） | `docs/keep-shards/keep-workflow.md` | 137 行 / ~2 KB |
-| UI Architecture（§7–§12 · §19–§23） | `docs/keep-shards/keep-ui-arch.md` | 547 行 / ~16 KB |
-| Current Status（§14–§18 · §24 · MCP） | `docs/keep-shards/keep-status.md` | 173 行 / ~8 KB |
+| Core（P0 · §0–§2c） | `docs/keep-shards/keep-core.md` | 89 行 / ~4 KB |
+| Workflow（§3–§6 · §13） | `docs/keep-shards/keep-workflow.md` | 149 行 / ~3 KB |
+| UI Architecture（§7–§12 · §19–§23） | `docs/keep-shards/keep-ui-arch.md` | 607 行 / ~19 KB |
+| Current Status（§14–§18 · §24 · MCP） | `docs/keep-shards/keep-status.md` | 178 行 / ~8 KB |
 
 ## 使用說明
 

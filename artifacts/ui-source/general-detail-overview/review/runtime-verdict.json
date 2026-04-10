@@ -1,0 +1,567 @@
+{
+  "$schema": "../../schemas/runtime-verdict.schema.json",
+  "screenId": "GeneralDetailOverview",
+  "runId": "general-detail-widget-stretch-20260410",
+  "status": "pass-with-minor-residuals",
+  "residuals": [
+    "console warnings: 11 (其中 7 為 _enforceContainerBounds 自動縮減警告，屬預期行為)"
+  ],
+  "promoteable": true,
+  "factoryLearnings": [
+    "runtime capture connected to capture-ui-screens.js",
+    "overview mode moves RightTabBar under the overview host, so tab-state lookups must fall back to the host hierarchy or active styling will miss the visible buttons",
+    "header 與摘要卡要升級質感時，優先在既有安全框內補內部 band/strip 節點並重分配 padding，不要先擴外框或硬抬字級",
+    "血脈摘要欄位不能只保子 label stretch；BloodlineSummaryFields 與 AwakeningProgressGroup 容器本身也必須 stretch，否則整組欄位仍可能向左漂移",
+    "摘要卡正文需要獨立的 shrink-safe style 與最小寬度守門；中間窄卡應保留至少 26% 寬度，並由 regression script 檢查",
+    "卡片內子節點不應用固定 height + vertical Layout；改用 Widget top+bottom stretch 讓值標籤自適應容器剩餘空間",
+    "UISkinResolver._parseOverflow 未指定時預設 SHRINK，applyLabelStyle 強制 overflow ≥ SHRINK，確保所有 label 文字永不超框",
+    "_enforceContainerBounds post-build pass 自動偵測並按比例縮減溢出子節點，是最後一道安全網"
+  ],
+  "latestStage": "runtimeCapture",
+  "captureArtifacts": {
+    "screenshotPath": "artifacts/ui-qa/general-detail-widget-stretch-20260410/GeneralDetailOverview.png",
+    "captureReportPath": "artifacts/ui-qa/general-detail-widget-stretch-20260410/capture-report.json"
+  },
+  "diagnosticsSummary": {
+    "consoleErrorCount": 0,
+    "consoleWarningCount": 11,
+    "pageErrorCount": 0,
+    "requestFailureCount": 0
+  },
+  "history": [
+    {
+      "runId": "general-detail-widget-stretch-20260410",
+      "status": "pass-with-minor-residuals",
+      "updatedAt": "2026-04-10T03:48:00.000Z",
+      "residualCount": 1,
+      "promoteable": true,
+      "note": "全面重構：Label overflow 三層保護鏈 + post-build 容器溢出自動修正 + Widget stretch 取代固定 height"
+    },
+    {
+      "runId": "general-detail-regression-fix-20260410",
+      "status": "pass",
+      "updatedAt": "2026-04-10T03:22:20.080Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "general-detail-option12b-pass-20260410",
+      "status": "pass",
+      "updatedAt": "2026-04-10T03:14:31.447Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "tab-rail-selected-r14",
+      "status": "pass",
+      "updatedAt": "2026-04-09T21:55:38.3096715+08:00",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "runtime-gate-f-r1",
+      "status": "pass-with-minor-residuals",
+      "updatedAt": "2026-04-08T03:57:44.367Z",
+      "residualCount": 1,
+      "promoteable": true
+    },
+    {
+      "runId": "runtime-triage-r2",
+      "status": "pass-with-minor-residuals",
+      "updatedAt": "2026-04-08T04:22:29.612Z",
+      "residualCount": 1,
+      "promoteable": true
+    },
+    {
+      "runId": "runtime-triage-r3",
+      "status": "pass-with-minor-residuals",
+      "updatedAt": "2026-04-08T04:35:29.637Z",
+      "residualCount": 1,
+      "promoteable": true
+    },
+    {
+      "runId": "runtime-triage-r4",
+      "status": "pass",
+      "updatedAt": "2026-04-08T04:39:07.526Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "general-detail-overview-explicit-border-runtime",
+      "status": "pass",
+      "updatedAt": "2026-04-08T08:12:31.400Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "general-detail-overview-runtime-fixed",
+      "status": "pass",
+      "updatedAt": "2026-04-08T08:14:42.372Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "general-detail-overview-runtime-named",
+      "status": "pass",
+      "updatedAt": "2026-04-08T08:16:37.517Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "formal-pass-r5-v4j-cap",
+      "status": "pass",
+      "updatedAt": "2026-04-09T08:00:01.942Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "formal-pass-r5-v4j-cap-full",
+      "status": "pass",
+      "updatedAt": "2026-04-09T08:02:15.727Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "v4j-cap-clean-probe",
+      "status": "pass",
+      "updatedAt": "2026-04-09T08:15:06.349Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "debug-hide-cap-left",
+      "status": "pass",
+      "updatedAt": "2026-04-09T08:18:10.796Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "debug-hide-overview-modules",
+      "status": "pass",
+      "updatedAt": "2026-04-09T08:19:58.042Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "debug-hide-both-caps",
+      "status": "pass",
+      "updatedAt": "2026-04-09T08:21:12.427Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "final-header-clean-pass",
+      "status": "pass",
+      "updatedAt": "2026-04-09T08:23:53.842Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "final-header-clean-pass-r2",
+      "status": "pass",
+      "updatedAt": "2026-04-09T08:26:18.468Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "debug-hide-band",
+      "status": "pass",
+      "updatedAt": "2026-04-09T08:40:33.633Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "debug-hide-fill",
+      "status": "pass",
+      "updatedAt": "2026-04-09T08:41:02.019Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "final-header-band-removed",
+      "status": "pass",
+      "updatedAt": "2026-04-09T08:42:29.540Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "header-text-formal-pass",
+      "status": "pass",
+      "updatedAt": "2026-04-09T08:48:09.230Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "header-art-direction-pass-1",
+      "status": "pass",
+      "updatedAt": "2026-04-09T08:59:25.418Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "header-art-direction-pass-2",
+      "status": "pass",
+      "updatedAt": "2026-04-09T09:01:52.363Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "header-fill-disabled-pass",
+      "status": "pass",
+      "updatedAt": "2026-04-09T09:06:02.525Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "debug-hide-backgroundscene",
+      "status": "pass",
+      "updatedAt": "2026-04-09T09:09:08.187Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "debug-hide-infocardfill",
+      "status": "pass",
+      "updatedAt": "2026-04-09T09:09:35.203Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "body-fill-parchment-pass",
+      "status": "pass",
+      "updatedAt": "2026-04-09T09:55:40.587Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "header-stretch-return-pass",
+      "status": "pass",
+      "updatedAt": "2026-04-09T10:49:28.311Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "header-cap-4j-return-pass",
+      "status": "pass",
+      "updatedAt": "2026-04-09T12:09:54.563Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "header-band-removed-r2",
+      "status": "pass",
+      "updatedAt": "2026-04-09T12:10:44.639Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "header-v4j-fill-r1",
+      "status": "pass",
+      "updatedAt": "2026-04-09T12:35:17.105Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "header-v4j-fill-fullheight-r2",
+      "status": "pass",
+      "updatedAt": "2026-04-09T12:36:17.739Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "header-v4j-fill-proportion-r3",
+      "status": "pass",
+      "updatedAt": "2026-04-09T12:38:23.699Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "header-v4j-fill-middle-stretch-r4",
+      "status": "pass",
+      "updatedAt": "2026-04-09T12:39:33.812Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "header-v4j-fill-tight-r5",
+      "status": "pass",
+      "updatedAt": "2026-04-09T12:43:47.969Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "header-v4j-fill-framed-r6",
+      "status": "pass",
+      "updatedAt": "2026-04-09T12:48:31.473Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "header-v4j-seam-align-r7",
+      "status": "pass",
+      "updatedAt": "2026-04-09T12:54:51.710Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "header-text-reflow-r8",
+      "status": "pass",
+      "updatedAt": "2026-04-09T13:03:13.467Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "header-content-rail-r9",
+      "status": "pass",
+      "updatedAt": "2026-04-09T13:11:24.329Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "header-group-shift-r10",
+      "status": "pass",
+      "updatedAt": "2026-04-09T13:16:44.403Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "header-two-rail-r11",
+      "status": "pass",
+      "updatedAt": "2026-04-09T13:25:31.597Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "tab-rail-selected-r12",
+      "status": "pass",
+      "updatedAt": "2026-04-09T13:32:13.650Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "tab-rail-selected-r12b",
+      "status": "pass",
+      "updatedAt": "2026-04-09T13:34:17.629Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "tab-rail-selected-r12c",
+      "status": "pass",
+      "updatedAt": "2026-04-09T13:37:02.769Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "tab-rail-selected-r12d",
+      "status": "pass",
+      "updatedAt": "2026-04-09T13:39:37.650Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "tab-rail-selected-r12e",
+      "status": "pass",
+      "updatedAt": "2026-04-09T13:41:40.724Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "tab-rail-selected-r13",
+      "status": "pass",
+      "updatedAt": "2026-04-09T13:50:27.010Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "tab-rail-selected-r14",
+      "status": "pass",
+      "updatedAt": "2026-04-09T13:53:44.203Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "general-detail-header-panel-refresh-20260410",
+      "status": "pass",
+      "updatedAt": "2026-04-09T17:55:36.341Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "general-detail-header-panel-polish-20260410",
+      "status": "pass",
+      "updatedAt": "2026-04-10T01:12:36.411Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "general-detail-header-stripless-20260410",
+      "status": "pass",
+      "updatedAt": "2026-04-10T01:19:21.853Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "general-detail-commercial-pass-20260410",
+      "status": "pass",
+      "updatedAt": "2026-04-10T01:30:51.674Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "general-detail-overflow-fix-20260410",
+      "status": "pass",
+      "updatedAt": "2026-04-10T01:46:21.019Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "general-detail-card-readability-20260410",
+      "status": "pass",
+      "updatedAt": "2026-04-10T01:51:21.992Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "general-detail-layout-rootfix-20260410",
+      "status": "pass",
+      "updatedAt": "2026-04-10T01:53:21.808Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "general-detail-label-probe-20260410",
+      "status": "pass",
+      "updatedAt": "2026-04-10T01:55:35.858Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "general-detail-card-regress-revert-20260410",
+      "status": "pass",
+      "updatedAt": "2026-04-10T02:00:28.092Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "general-detail-card-typography-revert-20260410",
+      "status": "pass",
+      "updatedAt": "2026-04-10T02:02:13.735Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "general-detail-diagnostics-pass-20260410",
+      "status": "pass",
+      "updatedAt": "2026-04-10T02:06:02.648Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "general-detail-diagnostics-pass2-20260410",
+      "status": "pass-with-minor-residuals",
+      "updatedAt": "2026-04-10T02:07:07.827Z",
+      "residualCount": 1,
+      "promoteable": true
+    },
+    {
+      "runId": "general-detail-diagnostics-pass3-20260410",
+      "status": "pass-with-minor-residuals",
+      "updatedAt": "2026-04-10T02:08:56.109Z",
+      "residualCount": 1,
+      "promoteable": true
+    },
+    {
+      "runId": "general-detail-diagnostics-pass4-20260410",
+      "status": "pass-with-minor-residuals",
+      "updatedAt": "2026-04-10T02:15:53.021Z",
+      "residualCount": 1,
+      "promoteable": true
+    },
+    {
+      "runId": "general-detail-diagnostics-pass5-20260410",
+      "status": "pass-with-minor-residuals",
+      "updatedAt": "2026-04-10T02:17:34.347Z",
+      "residualCount": 1,
+      "promoteable": true
+    },
+    {
+      "runId": "general-detail-layout-budget-fix-20260410",
+      "status": "pass-with-minor-residuals",
+      "updatedAt": "2026-04-10T02:28:36.356Z",
+      "residualCount": 1,
+      "promoteable": true
+    },
+    {
+      "runId": "general-detail-fields-budget-fix-20260410",
+      "status": "pass-with-minor-residuals",
+      "updatedAt": "2026-04-10T02:30:27.845Z",
+      "residualCount": 1,
+      "promoteable": true
+    },
+    {
+      "runId": "general-detail-stage-probe-20260410",
+      "status": "pass-with-minor-residuals",
+      "updatedAt": "2026-04-10T02:31:57.845Z",
+      "residualCount": 1,
+      "promoteable": true
+    },
+    {
+      "runId": "general-detail-stretch-widget-fix-20260410",
+      "status": "pass-with-minor-residuals",
+      "updatedAt": "2026-04-10T02:34:01.911Z",
+      "residualCount": 1,
+      "promoteable": true
+    },
+    {
+      "runId": "general-detail-final-clean-20260410",
+      "status": "pass",
+      "updatedAt": "2026-04-10T02:36:32.971Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "general-detail-premium-pass-20260410",
+      "status": "pass",
+      "updatedAt": "2026-04-10T02:43:49.094Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "general-detail-option12-pass-20260410",
+      "status": "pass",
+      "updatedAt": "2026-04-10T02:54:07.984Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "general-detail-option12b-pass-20260410",
+      "status": "pass",
+      "updatedAt": "2026-04-10T03:14:31.448Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "general-detail-regression-check-20260410",
+      "status": "pass",
+      "updatedAt": "2026-04-10T03:19:58.828Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "general-detail-regression-fix-20260410",
+      "status": "pass",
+      "updatedAt": "2026-04-10T03:22:20.081Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "general-detail-widget-stretch-20260410",
+      "status": "pass-with-minor-residuals",
+      "updatedAt": "2026-04-10T03:43:08.769Z",
+      "residualCount": 1,
+      "promoteable": true
+    }
+  ],
+  "updatedAt": "2026-04-10T03:43:08.769Z"
+}

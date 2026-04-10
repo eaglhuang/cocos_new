@@ -6,6 +6,7 @@ import { UIPreviewBuilder } from '../core/UIPreviewBuilder';
 import { UIContentBinder } from '../core/UIContentBinder';
 import { UITemplateBinder } from '../core/UITemplateBinder';
 import type { UIScreenSpec } from '../core/UISpecTypes';
+import { applyUIRarityMarkToNodes } from '../core/UIRarityMarkVisual';
 import {
     buildGeneralDetailOverviewContentState,
     type GeneralDetailOverviewContentState,
@@ -14,16 +15,18 @@ import { services } from '../../core/managers/ServiceLoader';
 
 const { ccclass } = _decorator;
 
+const GENERAL_DETAIL_DEBUG_HIDE_PATHS_KEY = 'GENERAL_DETAIL_OVERVIEW_HIDE_PATHS';
+
 type LabelBinding = {
     path: string;
     text: string;
 };
 
 const CREST_VISUAL_STATE: Record<GeneralDetailCrestState, { label: string; glow: number; fill: number; crest: number; }> = {
-    placeholder: { label: '命紋未定', glow: 8, fill: 20, crest: 18 },
-    rumored: { label: '傳聞浮現', glow: 28, fill: 52, crest: 72 },
-    revealed: { label: '命紋顯現', glow: 50, fill: 82, crest: 102 },
-    awakened: { label: '命紋覺醒', glow: 70, fill: 110, crest: 132 },
+    placeholder: { label: '命紋未定', glow: 4, fill: 14, crest: 12 },
+    rumored: { label: '傳聞浮現', glow: 16, fill: 36, crest: 56 },
+    revealed: { label: '命紋顯現', glow: 28, fill: 58, crest: 82 },
+    awakened: { label: '命紋覺醒', glow: 40, fill: 84, crest: 108 },
 };
 
 const RARITY_VISUAL_STATE: Record<GeneralDetailRarityTier, { accent: Color; soft: Color; title: Color; }> = {
@@ -51,29 +54,6 @@ const RARITY_VISUAL_STATE: Record<GeneralDetailRarityTier, { accent: Color; soft
         accent: new Color(255, 215, 0, 255),
         soft: new Color(255, 248, 180, 255),
         title: new Color(255, 215, 0, 255),
-    },
-};
-
-const RARITY_ART_PATH: Record<GeneralDetailRarityTier, { badge: string; portraitFrame: string; }> = {
-    common: {
-        badge: 'sprites/ui_families/general_detail/v3_final/badge_family_common_v5',
-        portraitFrame: 'sprites/ui_families/common/item_cell/border_common',
-    },
-    rare: {
-        badge: 'sprites/ui_families/general_detail/v3_final/badge_family_rare_v5',
-        portraitFrame: 'sprites/ui_families/common/item_cell/border_rare',
-    },
-    epic: {
-        badge: 'sprites/ui_families/general_detail/v3_final/badge_family_epic_v5',
-        portraitFrame: 'sprites/ui_families/common/item_cell/border_epic',
-    },
-    legendary: {
-        badge: 'sprites/ui_families/general_detail/v3_final/badge_family_legendary_v5',
-        portraitFrame: 'sprites/ui_families/common/item_cell/border_legendary',
-    },
-    mythic: {
-        badge: 'sprites/ui_families/general_detail/v3_final/badge_family_mythic_v5',
-        portraitFrame: 'sprites/ui_families/common/item_cell/border_mythic',
     },
 };
 
@@ -133,15 +113,14 @@ export class GeneralDetailOverviewShell extends UIPreviewBuilder {
         const textBindings: LabelBinding[] = [
             { path: 'InfoContent/HeaderRow/NameTitleColumn/NameLabel', text: content.headerName },
             { path: 'InfoContent/HeaderRow/NameTitleColumn/TitleLabel', text: content.headerTitle },
-            { path: 'InfoContent/HeaderRow/MetaColumn/MetaLabel', text: content.headerMeta },
-            { path: 'InfoContent/HeaderRow/MetaColumn/RarityBadge/RarityBadgeLabel', text: content.rarityLabel },
+            { path: 'InfoContent/HeaderRow/MetaColumn/MetaLabel', text: this._formatHeaderMeta(content.headerMeta) },
+            { path: 'InfoContent/HeaderRow/MetaColumn/RarityBadgeDock/RarityBadge/RarityBadgeLabel', text: content.rarityLabel },
             { path: 'OverviewStateChrome/PortraitModeHint', text: content.portraitModeHint },
-            { path: 'InfoContent/HeaderRow/MetaColumn/OverviewModeBadge/OverviewModeBadgeLabel', text: content.overviewModeBadgeLabel },
-            { path: 'InfoContent/OverviewSummaryModules/CoreStatsCard/CoreStatsTitle', text: content.coreStatsTitle },
+            { path: 'InfoContent/OverviewSummaryModules/CoreStatsCard/CoreStatsTitleBand/CoreStatsTitle', text: content.coreStatsTitle },
             { path: 'InfoContent/OverviewSummaryModules/CoreStatsCard/CoreStatsValue', text: content.coreStatsValue },
-            { path: 'InfoContent/OverviewSummaryModules/RoleCard/RoleTitle', text: content.roleTitle },
+            { path: 'InfoContent/OverviewSummaryModules/RoleCard/RoleTitleBand/RoleTitle', text: content.roleTitle },
             { path: 'InfoContent/OverviewSummaryModules/RoleCard/RoleValue', text: content.roleValue },
-            { path: 'InfoContent/OverviewSummaryModules/TraitCard/TraitTitle', text: content.traitTitle },
+            { path: 'InfoContent/OverviewSummaryModules/TraitCard/TraitTitleBand/TraitTitle', text: content.traitTitle },
             { path: 'InfoContent/OverviewSummaryModules/TraitCard/TraitValue', text: content.traitValue },
             { path: 'InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineSummaryCard/BloodlineSummaryFields/BloodlineTitle', text: content.bloodlineTitle },
             { path: 'InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineSummaryCard/BloodlineSummaryFields/BloodlineName', text: content.bloodlineName },
@@ -161,6 +140,7 @@ export class GeneralDetailOverviewShell extends UIPreviewBuilder {
                 this._binder,
                 this._screenSpec.contentRequirements,
                 content as unknown as Record<string, unknown>,
+                { suppressUnresolvedWarnings: true },
             );
         }
 
@@ -168,7 +148,7 @@ export class GeneralDetailOverviewShell extends UIPreviewBuilder {
         this._applyLabels(textBindings);
 
         this._setAwakeningProgress(content.awakeningProgress);
-        await this._applyDynamicRarityArtwork(content.rarityTier);
+        this._applyRarityBadgeVisual(content.rarityTier);
         this._applyRarityAccent(content.rarityTier);
         await this._applyCrestFace(content.crestFaceResource);
         this._applyCrestState(content.crestState);
@@ -182,6 +162,34 @@ export class GeneralDetailOverviewShell extends UIPreviewBuilder {
         }
     }
 
+    private _formatHeaderMeta(raw: string): string {
+        const parts = raw
+            .split('|')
+            .map((entry) => entry.trim())
+            .filter((entry) => entry.length > 0)
+            .map((entry) => {
+                const lower = entry.toLowerCase();
+                switch (lower) {
+                case 'shu':
+                    return '蜀';
+                case 'wei':
+                    return '魏';
+                case 'wu':
+                    return '吳';
+                case 'neutral':
+                    return '中立';
+                case 'commander':
+                    return '統帥';
+                case 'support':
+                    return '支援';
+                default:
+                    return entry;
+                }
+            });
+
+        return parts.join(' · ');
+    }
+
     private _setAwakeningProgress(progress: number): void {
         const fillNode = this._getNode('InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineSummaryCard/BloodlineSummaryFields/AwakeningProgressGroup/AwakeningBarTrack/AwakeningBarFill');
         if (!fillNode) {
@@ -193,8 +201,10 @@ export class GeneralDetailOverviewShell extends UIPreviewBuilder {
             return;
         }
 
+        const trackWidth = fillNode.parent?.getComponent(UITransform)?.width ?? 260;
+
         transform.setAnchorPoint(0, 0.5);
-        transform.width = Math.max(24, Math.floor(260 * progress));
+        transform.width = Math.max(18, Math.floor(trackWidth * progress));
     }
 
     private _applyCrestState(state: GeneralDetailCrestState): void {
@@ -227,10 +237,10 @@ export class GeneralDetailOverviewShell extends UIPreviewBuilder {
             const faceTransform = faceNode.getComponent(UITransform) || faceNode.addComponent(UITransform);
             const carrierTransform = faceNode.parent?.getComponent(UITransform) || null;
             if (carrierTransform) {
-                const size = Math.max(112, Math.min(carrierTransform.width, carrierTransform.height) * 0.72);
+                const size = Math.max(120, Math.min(carrierTransform.width, carrierTransform.height) * 0.76);
                 faceTransform.setContentSize(size, size);
             }
-            faceNode.setPosition(0, 4);
+            faceNode.setPosition(0, 2);
             faceNode.active = true;
             this._setNodeOpacity('InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineCrestCard/BloodlineCrestCarrier/BloodlineCrestFace', 255);
             if (primaryNode) primaryNode.active = false;
@@ -278,10 +288,10 @@ export class GeneralDetailOverviewShell extends UIPreviewBuilder {
             const faceTransform = faceNode.getComponent(UITransform) || faceNode.addComponent(UITransform);
             const carrierTransform = faceNode.parent?.getComponent(UITransform) || null;
             if (carrierTransform) {
-                const size = Math.max(112, Math.min(carrierTransform.width, carrierTransform.height) * 0.72);
+                const size = Math.max(120, Math.min(carrierTransform.width, carrierTransform.height) * 0.76);
                 faceTransform.setContentSize(size, size);
             }
-            faceNode.setPosition(0, 4);
+            faceNode.setPosition(0, 2);
             faceNode.active = true;
             this._setNodeOpacity('InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineCrestCard/BloodlineCrestCarrier/BloodlineCrestFace', 255);
             if (primaryNode) primaryNode.active = false;
@@ -304,93 +314,134 @@ export class GeneralDetailOverviewShell extends UIPreviewBuilder {
 
     private _applyRarityAccent(tier: GeneralDetailRarityTier): void {
         const visual = RARITY_VISUAL_STATE[tier] ?? RARITY_VISUAL_STATE.common;
+        const strongInk = new Color(49, 37, 26, 255);
+        const softInk = new Color(90, 70, 45, 255);
+        const quietInk = new Color(122, 102, 76, 255);
+        const sectionInk = new Color(78, 88, 64, 255);
+        const bodyInk = new Color(68, 52, 36, 255);
+        const jadeInk = new Color(84, 110, 92, 255);
+        const storyFrame = new Color(148, 122, 80, 255);
 
-        // ── Header 牌匾：深醬棕玉牌系，讓名字在厚重底色上凸顯 ──
-        // fill：米白偏暖，接近宣紙質地
-        const headerFill = new Color(236, 228, 210, 255);
-        const headerBand = new Color(86, 118, 98, 255);
-        const headerEdge = new Color(146, 126, 82, 255);
+        // 主卡底板：保留板材紋理，讓右側主資訊區更像工藝件而不是鋪色矩形。
+        this._setSpriteColor('InfoCardChrome/InfoCardFill', new Color(252, 248, 241, 255));
+        this._setNodeOpacity('InfoCardChrome/InfoCardFill', 246);
+        this._setSpriteColor('InfoContent/HeaderUnderlay/HeaderUnderlayFill', new Color(241, 232, 214, 255));
+        this._setNodeOpacity('InfoContent/HeaderUnderlay/HeaderUnderlayFill', 176);
 
-        // ── Crest 命紋：回到 pale jade + parchment，避免右下角退回深綠裝備面板語言 ──
-        const crestGlow  = new Color(188, 212, 200, 255);
-        const crestFill  = new Color(214, 226, 216, 255);
-        const crestInner = new Color(182, 198, 186, 255);
-        const crestFrame = new Color(188, 160, 108, 255);
-
-        // Header Chrome 顏色（完整路徑）
-        this._setSpriteColor('InfoCardHeaderChrome/InfoCardAccentFill', headerFill);
-        this._setSpriteColor('InfoCardHeaderChrome/InfoCardAccentBand', headerBand);
-        this._setSpriteColor('InfoCardHeaderChrome/InfoCardAccentFrame', headerEdge);
-        this._setSpriteColor('InfoCardHeaderChrome/InfoCardAccentCapLeft', new Color(172, 150, 96, 255));
-        this._setSpriteColor('InfoCardHeaderChrome/InfoCardAccentCapRight', new Color(172, 150, 96, 255));
-
-        // 主卡底色：略深的米黃，和 header 形成明確層次差
-        this._setSpriteColor('InfoCardChrome/InfoCardFill', new Color(222, 212, 188, 255));
-        this._setSpriteColor('InfoCardChrome/InfoCardFrame', new Color(126, 100, 64, 255));
-
-        this._setSpriteColor('PortraitCarrier/PortraitFrameBase', new Color(60, 56, 48, 255));
-        this._setSpriteColor('PortraitCarrier/PortraitBackdrop', new Color(84, 80, 70, 255));
-        this._setSpriteColor('PortraitCarrier/PortraitInnerPlate', new Color(110, 104, 92, 255));
-        this._setSpriteColor('PortraitCarrier/PortraitGlow', new Color(126, 110, 82, 255));
+        this._setSpriteColor('PortraitCarrier/PortraitFrameBase', new Color(241, 232, 214, 255));
+        this._setSpriteColor('PortraitCarrier/PortraitBackdrop', new Color(138, 118, 88, 255));
+        this._setSpriteColor('PortraitCarrier/PortraitGlow', new Color(190, 163, 104, 255));
+        this._setNodeOpacity('PortraitCarrier/PortraitFrameBase', 228);
+        this._setNodeOpacity('PortraitCarrier/PortraitBackdrop', 116);
+        this._setNodeOpacity('PortraitCarrier/PortraitGlow', 54);
+        this._setNodeOpacity('PortraitCarrier/PortraitShadow', 58);
 
         // Badge 系列
-        this._setSpriteColor('InfoContent/HeaderRow/MetaColumn/RarityBadge', visual.soft);
-        this._setSpriteColor('InfoContent/HeaderRow/MetaColumn/OverviewModeBadge', new Color(228, 219, 194, 255));
+        this._setNodeOpacity('InfoContent/HeaderRow/MetaColumn/RarityBadgeDock/RarityBadgeUnderlay', 182);
+        this._setNodeOpacity('InfoContent/HeaderRow/MetaColumn/RarityBadgeDock/RarityBadge', 228);
+        // 三欄資訊卡：保留一點暖冷差，但不要回到過度上色的示意圖感。
+        this._setSpriteColor('InfoContent/OverviewSummaryModules/CoreStatsCard', new Color(251, 247, 239, 255));
+        this._setSpriteColor('InfoContent/OverviewSummaryModules/RoleCard', new Color(247, 248, 243, 255));
+        this._setSpriteColor('InfoContent/OverviewSummaryModules/TraitCard', new Color(250, 246, 239, 255));
+        this._setNodeOpacity('InfoContent/OverviewSummaryModules/CoreStatsCard', 252);
+        this._setNodeOpacity('InfoContent/OverviewSummaryModules/RoleCard', 248);
+        this._setNodeOpacity('InfoContent/OverviewSummaryModules/TraitCard', 252);
+        this._setSpriteColor('InfoContent/OverviewSummaryModules/CoreStatsCard/CoreStatsTitleBand/CoreStatsTitleBandFill', new Color(240, 228, 204, 255));
+        this._setSpriteColor('InfoContent/OverviewSummaryModules/RoleCard/RoleTitleBand/RoleTitleBandFill', new Color(228, 234, 222, 255));
+        this._setSpriteColor('InfoContent/OverviewSummaryModules/TraitCard/TraitTitleBand/TraitTitleBandFill', new Color(239, 230, 210, 255));
+        this._setNodeOpacity('InfoContent/OverviewSummaryModules/CoreStatsCard/CoreStatsTitleBand/CoreStatsTitleBandFill', 224);
+        this._setNodeOpacity('InfoContent/OverviewSummaryModules/RoleCard/RoleTitleBand/RoleTitleBandFill', 214);
+        this._setNodeOpacity('InfoContent/OverviewSummaryModules/TraitCard/TraitTitleBand/TraitTitleBandFill', 220);
 
-        // 三欄資訊卡：交替冷暖底色，增加視覺節奏
-        this._setSpriteColor('InfoContent/OverviewSummaryModules/CoreStatsCard', new Color(236, 229, 212, 255));
-        this._setSpriteColor('InfoContent/OverviewSummaryModules/RoleCard', new Color(228, 232, 220, 255));
-        this._setSpriteColor('InfoContent/OverviewSummaryModules/TraitCard', new Color(241, 229, 208, 255));
-
-        // 血脈摘要卡：維持 parchment 承載，crest 卡只做偏 jade 的閱讀變體
-        this._setSpriteColor('InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineSummaryCard', new Color(226, 226, 214, 255));
-        this._setSpriteColor('InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineCrestCard', new Color(228, 232, 224, 255));
+        // 血脈摘要卡：主敘事卡壓回柔和 parchment，命紋卡稍亮，讓右下角不會比主資訊還跳。
+        this._setSpriteColor('InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineSummaryCard', new Color(252, 248, 241, 255));
+        this._setSpriteColor('InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineCrestCard', new Color(247, 247, 241, 255));
+        this._setNodeOpacity('InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineSummaryCard', 252);
+        this._setNodeOpacity('InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineCrestCard', 252);
 
         // 覺醒進度條
+        this._setSpriteColor('InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineSummaryCard/BloodlineSummaryFields/AwakeningProgressGroup/AwakeningBarTrack', new Color(76, 68, 58, 255));
+        this._setNodeOpacity('InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineSummaryCard/BloodlineSummaryFields/AwakeningProgressGroup/AwakeningBarTrack', 142);
         this._setSpriteColor('InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineSummaryCard/BloodlineSummaryFields/AwakeningProgressGroup/AwakeningBarTrack/AwakeningBarFill', visual.accent);
+        this._setNodeOpacity('InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineSummaryCard/BloodlineSummaryFields/AwakeningProgressGroup/AwakeningBarTrack/AwakeningBarFill', 224);
 
         // Crest 命紋層次
-        this._setSpriteColor('InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineCrestCard/BloodlineCrestCarrier/BloodlineCrestInnerRing', crestInner);
-        this._setSpriteColor('InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineCrestCard/BloodlineCrestCarrier/BloodlineCrestGlow', crestGlow);
-        this._setSpriteColor('InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineCrestCard/BloodlineCrestCarrier/BloodlineCrestFill', crestFill);
-        this._setSpriteColor('InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineCrestCard/BloodlineCrestCarrier/BloodlineCrest', new Color(136, 160, 146, 255));
-        this._setSpriteColor('InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineCrestCard/BloodlineCrestCarrier/BloodlineCrestFrame', crestFrame);
+        this._setSpriteColor('InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineCrestCard/BloodlineCrestCarrier/BloodlineCrestInnerRing', new Color(200, 193, 177, 255));
+        this._setSpriteColor('InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineCrestCard/BloodlineCrestCarrier/BloodlineCrestGlow', new Color(214, 228, 219, 255));
+        this._setSpriteColor('InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineCrestCard/BloodlineCrestCarrier/BloodlineCrestFill', new Color(228, 237, 230, 255));
+        this._setSpriteColor('InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineCrestCard/BloodlineCrestCarrier/BloodlineCrest', new Color(120, 154, 144, 255));
+        this._setSpriteColor('InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineCrestCard/BloodlineCrestCarrier/BloodlineCrestFrame', new Color(188, 168, 122, 255));
+        this._setNodeOpacity('InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineCrestCard/BloodlineCrestCarrier/BloodlineCrestGlow', 118);
+        this._setNodeOpacity('InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineCrestCard/BloodlineCrestCarrier/BloodlineCrestFill', 138);
+        this._setNodeOpacity('InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineCrestCard/BloodlineCrestCarrier/BloodlineCrestInnerRing', 150);
+        this._setNodeOpacity('InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineCrestCard/BloodlineCrestCarrier/BloodlineCrestFrame', 192);
 
         // ── Labels ──
-        // 姓名：拉亮到 parchment 白金，避免被 jade header 吃掉
-        this._setLabelColor('InfoContent/HeaderRow/NameTitleColumn/NameLabel', new Color(248, 241, 222, 255));
-        // 封號與 meta：維持暖棕，但略亮於 band
-        this._setLabelColor('InfoContent/HeaderRow/NameTitleColumn/TitleLabel', new Color(214, 198, 154, 255));
-        this._setLabelColor('InfoContent/HeaderRow/MetaColumn/MetaLabel', new Color(178, 158, 116, 255));
-        this._setLabelColor('InfoContent/HeaderRow/MetaColumn/OverviewModeBadge/OverviewModeBadgeLabel', new Color(88, 72, 50, 255));
-
+        // Header 三件套拔除後，header 文字改回適合淺底卡面的墨棕階。
+        this._setLabelColor('InfoContent/HeaderRow/NameTitleColumn/NameLabel', strongInk);
+        this._setLabelColor('InfoContent/HeaderRow/NameTitleColumn/TitleLabel', quietInk);
+        this._setLabelColor('InfoContent/HeaderRow/MetaColumn/MetaLabel', quietInk);
         // Section 標題：墨綠金色系
-        this._setLabelColor('InfoContent/OverviewSummaryModules/CoreStatsCard/CoreStatsTitle', new Color(78, 108, 88, 255));
-        this._setLabelColor('InfoContent/OverviewSummaryModules/RoleCard/RoleTitle', new Color(78, 108, 88, 255));
-        this._setLabelColor('InfoContent/OverviewSummaryModules/TraitCard/TraitTitle', new Color(78, 108, 88, 255));
-        this._setLabelColor('InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineSummaryCard/BloodlineCardTitle', new Color(78, 108, 88, 255));
+        this._setLabelColor('InfoContent/OverviewSummaryModules/CoreStatsCard/CoreStatsTitleBand/CoreStatsTitle', sectionInk);
+        this._setLabelColor('InfoContent/OverviewSummaryModules/RoleCard/RoleTitleBand/RoleTitle', sectionInk);
+        this._setLabelColor('InfoContent/OverviewSummaryModules/TraitCard/TraitTitleBand/TraitTitle', sectionInk);
+        this._setLabelColor('InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineSummaryCard/BloodlineCardTitle', sectionInk);
         // Crest 卡改回淺底後，標題回到 jade 墨綠
-        this._setLabelColor('InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineCrestCard/CrestTitle', new Color(92, 122, 102, 255));
+        this._setLabelColor('InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineCrestCard/CrestTitle', jadeInk);
 
         // 數值文字
-        this._setLabelColor('InfoContent/OverviewSummaryModules/CoreStatsCard/CoreStatsValue', new Color(48, 40, 28, 255));
-        this._setLabelColor('InfoContent/OverviewSummaryModules/RoleCard/RoleValue', new Color(48, 40, 28, 255));
-        this._setLabelColor('InfoContent/OverviewSummaryModules/TraitCard/TraitValue', new Color(48, 40, 28, 255));
+        this._setLabelColor('InfoContent/OverviewSummaryModules/CoreStatsCard/CoreStatsValue', bodyInk);
+        this._setLabelColor('InfoContent/OverviewSummaryModules/RoleCard/RoleValue', bodyInk);
+        this._setLabelColor('InfoContent/OverviewSummaryModules/TraitCard/TraitValue', bodyInk);
 
         // 血脈區 labels（淺色底）
-        this._setLabelColor('InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineSummaryCard/BloodlineSummaryFields/BloodlineTitle', new Color(120, 102, 72, 255));
-        this._setLabelColor('InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineSummaryCard/BloodlineSummaryFields/BloodlineName', new Color(44, 38, 28, 255));
-        this._setLabelColor('InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineSummaryCard/BloodlineSummaryFields/AwakeningProgressGroup/AwakeningLabel', new Color(120, 102, 72, 255));
-        this._setLabelColor('InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineSummaryCard/BloodlineSummaryFields/PersonalityLabel', new Color(120, 102, 72, 255));
-        this._setLabelColor('InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineSummaryCard/BloodlineSummaryFields/PersonalityValue', new Color(66, 58, 44, 255));
-        this._setLabelColor('InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineSummaryCard/BloodlineBody', new Color(58, 50, 38, 255));
+        this._setLabelColor('InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineSummaryCard/BloodlineSummaryFields/BloodlineTitle', quietInk);
+        this._setLabelColor('InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineSummaryCard/BloodlineSummaryFields/BloodlineName', strongInk);
+        this._setLabelColor('InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineSummaryCard/BloodlineSummaryFields/AwakeningProgressGroup/AwakeningLabel', quietInk);
+        this._setLabelColor('InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineSummaryCard/BloodlineSummaryFields/PersonalityLabel', quietInk);
+        this._setLabelColor('InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineSummaryCard/BloodlineSummaryFields/PersonalityValue', bodyInk);
+        this._setLabelColor('InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineSummaryCard/BloodlineBody', bodyInk);
 
         // Crest 卡改回淺底後，說明與狀態字也回到可讀的暖棕／暖金
-        this._setLabelColor('InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineCrestCard/CrestHint', new Color(128, 104, 68, 255));
-        this._setLabelColor('InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineCrestCard/BloodlineCrestCarrier/CrestStateLabel', new Color(176, 150, 102, 255));
+        this._setLabelColor('InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineCrestCard/CrestHint', bodyInk);
+        this._setLabelColor('InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineCrestCard/BloodlineCrestCarrier/CrestStateLabel', new Color(154, 132, 92, 255));
 
-        // Rarity badge 文字
-        this._setLabelColor('InfoContent/HeaderRow/MetaColumn/RarityBadge/RarityBadgeLabel', new Color(255, 252, 230, 255));
+        // Rarity badge 與 story strip：保留家族辨識，但把細節層次拉開。
+        this._setLabelColor('InfoContent/HeaderRow/MetaColumn/RarityBadgeDock/RarityBadge/RarityBadgeLabel', new Color(246, 239, 225, 255));
+        this._setSpriteColor('StoryStripRail/StoryStripFill', new Color(239, 231, 216, 255));
+        this._setSpriteColor('StoryStripRail/StoryStripFrame', storyFrame);
+        this._setNodeOpacity('StoryStripRail/StoryStripFill', 232);
+        this._setNodeOpacity('StoryStripRail/StoryStripFrame', 112);
+        this._setNodeOpacity('StoryStripArt', 162);
+        this._setNodeOpacity('StoryStripRail/StoryStripBleed', 26);
+
+        const storyCaptionNodes = [
+            'StoryStrip/StoryCellOrigin/StoryCaption',
+            'StoryStrip/StoryCellFaction/StoryCaption',
+            'StoryStrip/StoryCellRole/StoryCaption',
+            'StoryStrip/StoryCellAwakening/StoryCaption',
+            'StoryStrip/StoryCellBloodline/StoryCaption',
+            'StoryStrip/StoryCellFuture/StoryCaption',
+        ];
+        const storyCaptionLabels = [
+            'StoryStrip/StoryCellOrigin/StoryCaption/StoryCaptionLabel',
+            'StoryStrip/StoryCellFaction/StoryCaption/StoryCaptionLabel',
+            'StoryStrip/StoryCellRole/StoryCaption/StoryCaptionLabel',
+            'StoryStrip/StoryCellAwakening/StoryCaption/StoryCaptionLabel',
+            'StoryStrip/StoryCellBloodline/StoryCaption/StoryCaptionLabel',
+            'StoryStrip/StoryCellFuture/StoryCaption/StoryCaptionLabel',
+        ];
+
+        for (const path of storyCaptionNodes) {
+            this._setSpriteColor(path, new Color(246, 238, 222, 255));
+            this._setNodeOpacity(path, 238);
+        }
+
+        for (const path of storyCaptionLabels) {
+            this._setLabelColor(path, strongInk);
+        }
+
+        this._applyDebugHiddenPaths();
     }
 
     private async _loadPortrait(path: string): Promise<void> {
@@ -417,17 +468,23 @@ export class GeneralDetailOverviewShell extends UIPreviewBuilder {
                 });
             }
 
+            const mask = viewportNode.getComponent(Mask);
+            if (mask) {
+                mask.enabled = false;
+            }
+
+            const sprite = portraitNode.getComponent(Sprite) || portraitNode.addComponent(Sprite);
             if (!spriteFrame) {
+                sprite.spriteFrame = null;
+                portraitNode.active = false;
+                console.warn(`[GeneralDetailOverviewShell] 找不到武將立繪: ${path}`);
                 return;
             }
 
-            const mask = viewportNode.getComponent(Mask) || viewportNode.addComponent(Mask);
-            mask.type = Mask.Type.GRAPHICS_RECT;
-
-            const sprite = portraitNode.getComponent(Sprite) || portraitNode.addComponent(Sprite);
+            portraitNode.active = true;
             sprite.spriteFrame = spriteFrame;
             sprite.sizeMode = Sprite.SizeMode.CUSTOM;
-            sprite.color = new Color(255, 252, 246, 255);
+            sprite.color = new Color(255, 255, 255, 255);
 
             const viewportTransform = viewportNode.getComponent(UITransform);
             const portraitTransform = portraitNode.getComponent(UITransform) || portraitNode.addComponent(UITransform);
@@ -441,65 +498,39 @@ export class GeneralDetailOverviewShell extends UIPreviewBuilder {
             const fitScale = Math.min(
                 viewportTransform.width / sourceWidth,
                 viewportTransform.height / sourceHeight,
-            ) * 1.22;  // 放大 fill 比，讓人物更充滿舞台
+            ) * 1.1;  // 略退一步，讓左側人物舞台留出呼吸感，不再壓過右側資訊區
 
             portraitTransform.setContentSize(
                 Math.max(1, Math.floor(sourceWidth * fitScale)),
                 Math.max(1, Math.floor(sourceHeight * fitScale)),
             );
-            portraitNode.setPosition(0, -32);  // 稍微上移，讓臉部更凸顯
+            portraitNode.setPosition(0, -12);  // 保留頭部焦點，同時讓角色不再過近貼臉
         } catch (error) {
             console.warn('[GeneralDetailOverviewShell] 載入武將立繪失敗', error);
         }
     }
 
-    private async _applyDynamicRarityArtwork(tier: GeneralDetailRarityTier): Promise<void> {
-        const art = RARITY_ART_PATH[tier] ?? RARITY_ART_PATH.common;
-        await Promise.all([
-            this._setNodeSpriteFrame('InfoContent/HeaderRow/MetaColumn/RarityBadge', art.badge),
-            // this._setNodeSpriteFrame('PortraitCarrier/PortraitRarityFrame', art.portraitFrame), // 註解掉：拔除不合理的粗糙裝備框，改用暗景托底
-        ]);
+    private _applyRarityBadgeVisual(tier: GeneralDetailRarityTier): void {
+        applyUIRarityMarkToNodes(tier, {
+            dockNode: this._getNode('InfoContent/HeaderRow/MetaColumn/RarityBadgeDock'),
+            underlayNode: this._getNode('InfoContent/HeaderRow/MetaColumn/RarityBadgeDock/RarityBadgeUnderlay'),
+            badgeNode: this._getNode('InfoContent/HeaderRow/MetaColumn/RarityBadgeDock/RarityBadge'),
+            labelNode: this._getNode('InfoContent/HeaderRow/MetaColumn/RarityBadgeDock/RarityBadge/RarityBadgeLabel'),
+        });
     }
 
     private _applyStoryCells(storeCells: Record<GeneralDetailStorySlot, string>): void {
         const SLOT_NODES: Array<[GeneralDetailStorySlot, string]> = [
-            ['origin',    'StoryStrip/StoryCellOrigin'],
-            ['faction',   'StoryStrip/StoryCellFaction'],
-            ['role',      'StoryStrip/StoryCellRole'],
-            ['awakening', 'StoryStrip/StoryCellAwakening'],
-            ['bloodline', 'StoryStrip/StoryCellBloodline'],
-            ['future',    'StoryStrip/StoryCellFuture'],
+            ['origin',    'StoryStrip/StoryCellOrigin/StoryCaption/StoryCaptionLabel'],
+            ['faction',   'StoryStrip/StoryCellFaction/StoryCaption/StoryCaptionLabel'],
+            ['role',      'StoryStrip/StoryCellRole/StoryCaption/StoryCaptionLabel'],
+            ['awakening', 'StoryStrip/StoryCellAwakening/StoryCaption/StoryCaptionLabel'],
+            ['bloodline', 'StoryStrip/StoryCellBloodline/StoryCaption/StoryCaptionLabel'],
+            ['future',    'StoryStrip/StoryCellFuture/StoryCaption/StoryCaptionLabel'],
         ];
 
         for (const [slot, nodePath] of SLOT_NODES) {
-            const cellNode = this._getNode(nodePath);
-            if (!cellNode) continue;
-
-            // 找或建立子 Label 節點
-            let labelNode = cellNode.getChildByName('CellText');
-            if (!labelNode) {
-                labelNode = new Node('CellText');
-                cellNode.addChild(labelNode);
-            }
-
-            let label = labelNode.getComponent(Label);
-            if (!label) {
-                label = labelNode.addComponent(Label);
-                label.overflow = Label.Overflow.SHRINK;
-                label.enableWrapText = true;
-                label.lineHeight = 22;
-                label.fontSize = 18;
-                // 細白 + 淡金色，在深底上可見
-                label.color = new Color(230, 218, 182, 255);
-            }
-
-            const transform = labelNode.getComponent(UITransform) || labelNode.addComponent(UITransform);
-            const cellTransform = cellNode.getComponent(UITransform);
-            if (cellTransform) {
-                transform.setContentSize(cellTransform.width, cellTransform.height);
-            }
-
-            label.string = storeCells[slot] ?? '';
+            this._setLabel(nodePath, storeCells[slot] ?? '');
         }
     }
 
@@ -548,32 +579,6 @@ export class GeneralDetailOverviewShell extends UIPreviewBuilder {
         sprite.color = color.clone();
     }
 
-    private async _setNodeSpriteFrame(path: string, resourcePath: string): Promise<void> {
-        const node = this._getNode(path);
-        if (!node) {
-            return;
-        }
-
-        const sprite = node.getComponent(Sprite);
-        if (!sprite) {
-            return;
-        }
-
-        try {
-            const spriteFrame = await services().resource.loadSpriteFrame(resourcePath).catch(() => null);
-            if (!spriteFrame) {
-                return;
-            }
-
-            sprite.spriteFrame = spriteFrame;
-            sprite.type = Sprite.Type.SIMPLE;
-            sprite.sizeMode = Sprite.SizeMode.CUSTOM;
-            sprite.color = Color.WHITE.clone();
-        } catch (error) {
-            console.warn('[GeneralDetailOverviewShell] 載入動態稀有度資產失敗', error);
-        }
-    }
-
     private _setLabelColor(path: string, color: Color): void {
         const node = this._getNode(path);
         if (!node) {
@@ -587,4 +592,28 @@ export class GeneralDetailOverviewShell extends UIPreviewBuilder {
 
         label.color = color.clone();
     }
+
+    private _applyDebugHiddenPaths(): void {
+        const globalScope = globalThis as any;
+        const raw = globalScope?.localStorage?.getItem?.(GENERAL_DETAIL_DEBUG_HIDE_PATHS_KEY) ?? '';
+        if (!raw) {
+            return;
+        }
+
+        const paths = raw
+            .split(',')
+            .map((entry: string) => entry.trim())
+            .filter((entry: string) => entry.length > 0);
+
+        for (const path of paths) {
+            const node = this._getNode(path);
+            if (!node) {
+                continue;
+            }
+            node.active = false;
+            const opacity = node.getComponent(UIOpacity) || node.addComponent(UIOpacity);
+            opacity.opacity = 0;
+        }
+    }
+
 }

@@ -17,18 +17,6 @@
       { "type": "panel", "name": "MainCard", "widget": { "top": 54, "bottom": 64, "left": 54, "right": 54 }, "skinSlot": "std.card.main" },
       {
         "type": "container",
-        "name": "HeaderRow",
-        "widget": { "top": 76, "left": 82, "right": 82 },
-        "height": 92,
-        "layout": { "type": "horizontal", "spacing": 18 },
-        "children": [
-          { "type": "label", "name": "HeroName", "width": "28%", "height": 80, "styleSlot": "std.label.name" },
-          { "type": "label", "name": "TallyTitle", "width": "40%", "height": 80, "styleSlot": "std.label.title" },
-          { "type": "label", "name": "SpiritRank", "width": "30%", "height": 80, "styleSlot": "std.label.rank" }
-        ]
-      },
-      {
-        "type": "container",
         "name": "MainSplit",
         "widget": { "top": 192, "bottom": 214, "left": 82, "right": 82 },
         "layout": { "type": "horizontal", "spacing": 18 },
@@ -70,6 +58,41 @@
               { "type": "image", "name": "TroopUnitArt", "widget": { "top": 182, "left": 24, "right": 24 }, "height": 230, "skinSlot": "std.art.troop-unit" },
               { "type": "image", "name": "TroopCrest", "widget": { "bottom": 26, "hCenter": 0 }, "width": 148, "height": 148, "skinSlot": "std.art.troop-crest" },
               { "type": "panel", "name": "TroopSummaryPanel", "widget": { "left": 0, "right": 0, "bottom": 0 }, "height": "28%", "skinSlot": "std.panel.summary" }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "container",
+        "name": "HeaderRow",
+        "widget": { "top": 76, "left": 82, "right": 82 },
+        "height": 92,
+        "children": [
+          { "type": "panel", "name": "HeaderPlaqueBase", "widget": { "top": 2, "bottom": 6, "left": 0, "right": 0 }, "skinSlot": "widget.header.plaque.base" },
+          { "type": "image", "name": "HeaderPlaqueFill", "widget": { "top": 6, "bottom": 10, "left": 0, "right": 0 }, "skinSlot": "widget.header.plaque.fill" },
+          { "type": "image", "name": "HeaderPlaqueBand", "widget": { "top": 26, "bottom": 30, "left": 24, "right": 24 }, "skinSlot": "widget.header.plaque.band" },
+          { "type": "label", "name": "HeroName", "widget": { "top": 8, "left": 24 }, "width": 320, "height": 30, "styleSlot": "widget.header.plaque.title", "text": "趙雲" },
+          { "type": "label", "name": "TallyTitle", "widget": { "bottom": 10, "left": 24 }, "width": 360, "height": 20, "styleSlot": "widget.header.plaque.subtitle", "text": "將魂命鏡" },
+          {
+            "type": "container",
+            "name": "SpiritRankDock",
+            "widget": { "right": 12, "vCenter": 0 },
+            "width": 176,
+            "height": 44,
+            "children": [
+              { "type": "image", "name": "SpiritRankUnderlay", "widget": { "hCenter": true, "vCenter": true }, "width": 176, "height": 40, "skinSlot": "widget.header.plaque.badge.underlay" },
+              {
+                "type": "panel",
+                "name": "SpiritRankBadge",
+                "widget": { "hCenter": true, "vCenter": true },
+                "width": 162,
+                "height": 34,
+                "skinSlot": "widget.header.plaque.badge.fill",
+                "layout": { "type": "vertical", "paddingTop": 4, "paddingBottom": 4, "paddingLeft": 10, "paddingRight": 10 },
+                "children": [
+                  { "type": "label", "name": "SpiritRank", "width": 142, "height": 24, "styleSlot": "widget.header.plaque.badge.label", "text": "SSR" }
+                ]
+              }
             ]
           }
         ]

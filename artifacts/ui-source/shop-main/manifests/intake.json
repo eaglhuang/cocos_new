@@ -1,0 +1,26 @@
+{
+  "$schema": "../../schemas/intake.schema.json",
+  "screenId": "ShopMain",
+  "tier": "C",
+  "templateFamilyCandidate": "",
+  "uiId": "ShopMain",
+  "sourceOfTruth": {
+    "screenSpec": "assets/resources/ui-spec/screens/shop-main-screen.json",
+    "layout": "shop-main-main",
+    "skin": "shop-main-default",
+    "bundle": "lobby_ui",
+    "layer": "Popup"
+  },
+  "canonicalReferences": [
+    "ref://docs/UI品質參考圖/shop-main.png"
+  ],
+  "riskZones": [
+    "tab-bar",
+    "item-grid",
+    "purchase-panel"
+  ],
+  "smokeRoute": "node tools_node/capture-ui-screens.js --target ShopMain --outDir artifacts/ui-qa/shop-main/runtime-smoke",
+  "notes": "non-GeneralDetail family reuse validation",
+  "generatedAt": "2026-04-08T03:21:37.650Z",
+  "generatedBy": "tools_node/intake-ui-screen.js"
+}

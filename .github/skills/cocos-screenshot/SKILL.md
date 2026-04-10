@@ -76,6 +76,16 @@ if ($ok) { Write-Host "截圖完成: $out ($([int]((Get-Item $out).Length/1KB)) 
 
 > 若 `WinEnum` 類別已在 session 中載入，直接從 `$hwnd = ...` 開始執行。
 
+**Step 1b — 縮圖採 thumbnail-first progressive zoom（硬規定，在 view_image 前必須執行）：**
+```powershell
+$imgPath = "c:\Users\User\3KLife\temp\cocos-screenshot.png"
+node tools_node/prepare-view-image.js --input $imgPath
+# 若 125px 不足以判讀，才依序改跑：
+# node tools_node/prepare-view-image.js --input $imgPath --maxWidth 250
+# node tools_node/prepare-view-image.js --input $imgPath --maxWidth 500
+```
+> ⚠️ 規則是先試 `125px`，足夠就停止；只有在 `125px` 明確不夠時才可放大。需要看 `>500px` 原圖時，必須先取得使用者明確同意。
+
 **Step 2 — 用 `view_image` 讀取：**
 ```
 filePath: c:\Users\User\3KLife\temp\cocos-screenshot.png

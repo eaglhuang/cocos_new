@@ -44,6 +44,11 @@ const checks = [
         command: 'node',
         args: [path.join(__dirname, 'validate-button-family-borders.js')],
     },
+    {
+        label: 'General Data Tooling 驗收',
+        command: 'node',
+        args: [path.join(__dirname, 'validate-general-data-tooling.js')],
+    },
 ];
 
 const regressionCheckFile = path.join(projectRoot, 'tools', 'check-unity-compound-regression.mjs');

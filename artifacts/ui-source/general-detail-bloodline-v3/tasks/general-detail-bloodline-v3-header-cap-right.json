@@ -1,0 +1,41 @@
+{
+  "taskId": "general-detail-bloodline-v3-header-cap-right",
+  "screenId": "GeneralDetailBloodlineV3",
+  "model": "nano-banana-2",
+  "zone": "header-plaque",
+  "slot": "capRight",
+  "taskType": "generate-partial-asset",
+  "label": "Header 右端 ornament",
+  "family": "header-rarity-plaque",
+  "recipe": "jade-parchment-light",
+  "structureOwner": "UITemplateResolver+widget-compose",
+  "skinOwner": "UISkinResolver",
+  "contentOwner": "contentContract",
+  "widgetRefs": [
+    "header-title-block",
+    "rarity-badge-dock"
+  ],
+  "templateRefs": [
+    "detail-split"
+  ],
+  "targetStyle": "header-rarity-plaque / jade-parchment-light",
+  "mustKeep": [],
+  "mustAvoid": [],
+  "fitRules": {
+    "maxVisualOccupancy": 0.65,
+    "runtimeIntrusionForbidden": true
+  },
+  "postProcess": {
+    "trimByBackground": true,
+    "allowFadeSide": "left",
+    "fitPadding": 12,
+    "spriteType": "sliced",
+    "border": [20, 12, 20, 12]
+  },
+  "output": {
+    "preferredMime": "image/png",
+    "targetLongEdge": 512,
+    "transparentBackgroundPreferred": true,
+    "outputName": "header_cap_right"
+  }
+}

@@ -7,7 +7,7 @@
       "priority": "P1",
       "phase": "G",
       "owner": "Agent1",
-      "status": "open",
+      "status": "in-progress",
       "created": "2026-04-05",
       "created_by_agent": "Agent2",
       "type": "asset-generation",
@@ -95,7 +95,54 @@
         "crest 區節點結構回到卡內整合，不再依賴外部 overlay 疊放",
         "capture-ui-screens.js --target GeneralDetailOverview 可得到可比較結果"
       ],
-      "notes": "2026-04-06 | 狀態: in-progress | 處理: r16-layout-polish 收斂中；crest 模組與 header area 仍有空白 offset | 驗證: smoke-capture 待確認 | 阻塞: 依賴 DALL-E 3 資產最終交付\n2026-04-06 | 狀態: in-progress | 處理: GeneralDetailOverviewShell 修補完成（mythic tier + story strip 文字繫結 + PortraitRarityFrame 連線）；LobbyScene.waitForReady() 修正 headless 時序問題 | 驗證: capture-ui-screens.js --target GeneralDetailOverview 執行成功，截圖位於 artifacts/ui-qa/UI-2-0093/r16-layout-polish/GeneralDetailOverview.png | 阻塞: 無"
+      "notes": "2026-04-06 | 狀態: in-progress | 處理: r16-layout-polish 收斂中；crest 模組與 header area 仍有空白 offset | 驗證: smoke-capture 待確認 | 阻塞: 依賴 DALL-E 3 資產最終交付\n2026-04-06 | 狀態: in-progress | 處理: GeneralDetailOverviewShell 修補完成（mythic tier + story strip 文字繫結 + PortraitRarityFrame 連線）；LobbyScene.waitForReady() 修正 headless 時序問題 | 驗證: capture-ui-screens.js --target GeneralDetailOverview 執行成功，截圖位於 artifacts/ui-qa/UI-2-0093/r16-layout-polish/GeneralDetailOverview.png | 阻塞: 無\n2026-04-06 | 狀態: in-progress | 處理: 進入 canonical polish 最後一輪，聚焦 header -> right cards -> crest socket -> portrait scale/background；final medallion / header ornament / portrait frame 已拆出 UI-2-0094 | 驗證: 待本輪結構檢查與 preview 環境恢復後複核 | 阻塞: 本地 preview 受 pako / @msgpack/msgpack 缺模組影響，smoke 可能不穩"
+    },
+    {
+      "id": "UI-2-0094",
+      "priority": "P1",
+      "phase": "G",
+      "owner": "Agent1",
+      "status": "open",
+      "created": "2026-04-06",
+      "created_by_agent": "Agent2",
+      "type": "asset-finish",
+      "title": "GeneralDetailBloodlineV3 Canonical Finish Asset Pack",
+      "description": "從 UI-2-0093 拆出的 final finish 補單，專責補齊 final medallion、header ornament、portrait frame 等真正決定 canonical finish 天花板的視覺資產，不再把 finish 問題留在 layout-content polish 卡內反覆微調。",
+      "related": [
+        "UI-2-0054",
+        "UI-2-0092",
+        "UI-2-0093"
+      ],
+      "depends": [
+        "UI-2-0092",
+        "UI-2-0093"
+      ],
+      "template_family": "detail-split",
+      "content_contract": [
+        "crestFaceAsset",
+        "headerOrnamentAsset",
+        "portraitFrameAsset"
+      ],
+      "skin_fragments": [
+        "general_detail/crest-medallion-final",
+        "general_detail/header-ornament-final",
+        "general_detail/portrait-frame-final"
+      ],
+      "smoke_route": "node tools_node/capture-ui-screens.js --target GeneralDetailOverview --outDir artifacts/ui-qa/UI-2-0094/final-finish-verification",
+      "docs_backwritten": [
+        "docs/keep.md",
+        "docs/UI 規格書.md",
+        "docs/cross-reference-index.md"
+      ],
+      "acceptance": [
+        "GeneralDetailBloodlineV3 不再以 proof bridge 承擔 crest medallion 視覺完成度，BloodlineCrestCard 可直接吃 final medallion family",
+        "header ornament 補上後，title 區仍維持清楚可讀，且 header 讀起來是 jade-parchment 牌匾，不是厚重深綠橫條",
+        "portrait frame family 補上後，左側人物舞台不再只靠暗色托底撐質感，且 frame 不可搶過角色主體",
+        "新資產套入後，右側 overview 仍維持 parchment-first 的閱讀承載面，不可把 Dark Metal Frame 語言推回主面板",
+        "final medallion / header ornament / portrait frame 套入後，畫面高級感明顯跨過 UI-2-0093 的 layout ceiling，且不靠額外 tint / glow 補假完成度",
+        "capture-ui-screens.js --target GeneralDetailOverview 可得到可接受結果，且 runtime 不出現 page/module error"
+      ],
+      "notes": "2026-04-06 | 狀態: open | 來源: 從 UI-2-0093 拆出 canonical finish 資產題，避免在 layout polish 卡內持續微調卻無法跨過視覺天花板 | 處理: 待 Agent1 補 final medallion、header ornament、portrait frame family | 阻塞: 無\n2026-04-07 | 狀態: open | 處理: runtime smoke 已恢復，GeneralDetailOverview 可重新穩定出圖；本卡需求補上 art-direction contract 與 reject 條件，避免資產往深綠重金或裝備框語言滑回 | 驗證: artifacts/ui-qa/UI-2-0093/r25-recheck-after-codec-fix/GeneralDetailOverview.png | 阻塞: 待 Agent1 正式交付 final asset pack\n2026-04-08 | 狀態: in-progress | 處理: 新增 background-aware trim 工具，將 r4-self-gen header ornaments 裁成透明且放大有效 ornament 區域；skin slot 暫改掛 `panel_header_cap_l_trimmed` / `panel_header_cap_r_trimmed`，避開 `panel_header_cap_l.png` 舊檔被外部程序鎖住無法覆寫的 blocker | 驗證: node tools_node/validate-ui-specs.js --strict --check-content-contract；node tools_node/check-encoding-touched.js --files tools_node/trim-png-by-background.js assets/resources/ui-spec/skins/general-detail-bloodline-v3-default.json docs/ui-quality-tasks/phase-g-agent1.json；node tools_node/capture-ui-screens.js --target GeneralDetailOverview --outDir artifacts/ui-qa/UI-2-0094/runtime-trim-check | 結果: runtime header end-cap 已回到可讀範圍，title 區維持清楚可讀 | 阻塞: 左側舊 alias 檔仍被外部程序鎖定，後續若要回寫原檔需先釋放鎖定\n2026-04-08 | 狀態: in-progress | 處理: 確認 DALL-E 與 Nano Banana 風格落差後，優先回到 Banana 家族；`nano-banana-2` 在本機生成 `header_ornament_l_r5b` 連續 timeout（180000ms 無產物），因此改以 `nano-banana` 產出 r5 header 候選，再用 `trim-png-by-background.js --focus left/right --max-content-ratio 0.72` 收短 connector stub，覆寫現行 `panel_header_cap_l_trimmed` / `panel_header_cap_r_trimmed` | 驗證: node tools_node/check-encoding-touched.js --files tools_node/trim-png-by-background.js .github/skills/nano-banana-gen/scripts/generate-banana.js；node tools_node/capture-ui-screens.js --target GeneralDetailOverview --outDir artifacts/ui-qa/UI-2-0094/runtime-r5-banana-cap | 結果: runtime header cap 比前一輪更接近 isolated ornament，header 視覺重心提升且 title 區仍可讀 | 阻塞: `nano-banana-2` 本機 timeout 原因待後續另查，不影響目前 Banana fallback 線\n2026-04-08 | 狀態: in-progress | 處理: 盤點到另一個 Agent 正在同時跑 `nano-banana-2` 產圖，將 `nb2` timeout 重新判定為併發壅塞風險而非模型故障；wrapper 已補 progress 訊號與 slow-model 預設 timeout 300000ms，並把 Banana fallback cap 再收緊到 `--max-content-ratio 0.65 --fit-padding 12` | 驗證: node tools_node/capture-ui-screens.js --target GeneralDetailOverview --outDir artifacts/ui-qa/UI-2-0094/runtime-r5-banana-cap-r065；無併發空檔重試 `header_ornament_l_r5_nb2` -> `artifacts/ui-qa/UI-2-0094/r6-nb2-retry/` | 結果: r065 runtime 輪廓比 r072 更緊，`nb2` 主線重試已成功進入 generateContent，待產圖完成 | 阻塞: 需等無併發空檔完成 r6-left nb2 產圖後才能決定是否切回正式主線\n2026-04-08 | 狀態: in-progress | 處理: 已在 `generate-banana.js` 新增單機單飛 lock (`temp_workspace/agent-locks/nano-banana-image.lock`) 來序列化 Banana 產圖請求；清空併發後，`nb2` 短 prompt smoke test 已在約 26 秒內完成 generateContent、save 與 lock release | 驗證: temp/nb2_short_prompt_test2.jpg；node tools_node/check-encoding-touched.js --files .github/skills/nano-banana-gen/scripts/generate-banana.js docs/ui-quality-tasks/phase-g-agent1.json | 結果: `nano-banana-2` 已可在無併發條件下正常出圖，主線生成器可恢復使用，但正式生圖應避免與其他 Agent 並發共享同一 wrapper\n2026-04-08 | 狀態: in-progress | 處理: 依保守路徑只替換左側為 `nb2` 候選（`r7-left-only-nb2`），用相同 `focus left + max-content-ratio 0.65` trim 後做單側 compare；compare 後已回退到成對的 Banana r065 基線，避免把左右不對稱狀態留在正式 runtime | 驗證: artifacts/ui-qa/UI-2-0094/r7-left-only-nb2/header_ornament_l_r7.jpg；artifacts/ui-qa/UI-2-0094/runtime-r7-left-only-nb2/GeneralDetailOverview.png | 結果: `nb2` 左側候選確實更有精緻捲草語氣，但單側替換對整體 header 提升有限，且不值得保留不對稱狀態；下一步應直接成對生成左右 `nb2` 再做正式切換\n2026-04-08 | 狀態: in-progress | 處理: 已成對生成 `r8-paired-nb2` 左右 cap，並用 `focus left/right + max-content-ratio 0.65` 正式切換進 runtime compare；compare 後確認 header 區域仍顯擁擠，因此已回退到 Banana r065 基線 | 驗證: artifacts/ui-qa/UI-2-0094/r8-paired-nb2/header_ornament_l_r8.jpg；artifacts/ui-qa/UI-2-0094/r8-paired-nb2/header_ornament_r_r8.jpg；artifacts/ui-qa/UI-2-0094/runtime-r8-paired-nb2/GeneralDetailOverview.png | 結果: 成對 `nb2` cap 的局部 ornament 精緻度更高，但它們本身缺少足夠的 attachment 留白，與 header band 既有中段 ornament 疊加後，名字區周圍視覺資訊過密，整體仍讀成一團；正式 runtime 不保留此版\n2026-04-08 | 狀態: in-progress | 處理: 進一步把 layout cap slot 縮小並外移（84x64, left/right -40），同時將 runtime cap opacity 從 220 降到 192；另行驗證 `r9` / `r10` prompt 時確認，純 prompt 強化仍會被模型翻成雙軌或雙桿 connector，因此目前最穩定的改善來自 slot geometry + opacity 降權，而不是直接換成新的 nb2 資產 | 驗證: artifacts/ui-qa/UI-2-0094/runtime-r10-slot-tighten/GeneralDetailOverview.png；artifacts/ui-qa/UI-2-0094/runtime-r11-cap-opacity-192/GeneralDetailOverview.png；artifacts/ui-qa/UI-2-0094/r9-prompt-tight/header_ornament_l_r9.jpg；artifacts/ui-qa/UI-2-0094/r10-prompt-single-rail/header_ornament_l_r10.jpg | 結果: header 已比先前更乾淨，但新的 nb2 prompt 仍未產出可直接上線的 cap；目前保留 Banana r065 基線並保留 layout/opacity 修補\n2026-04-08 | 狀態: in-progress | 處理: option 2 改走既有 Banana 資產的手術式後處理，在 `trim-png-by-background.js` 新增 `--fade-side` / `--fade-start-ratio`，用單邊 alpha 漸消把 cap 內側權重壓淡；先做左側 `r12-left-fade42` compare，再將對稱版套到右側形成 `r13-paired-fade42` | 驗證: artifacts/ui-qa/UI-2-0094/runtime-r12-left-fade42/GeneralDetailOverview.png；artifacts/ui-qa/UI-2-0094/runtime-r13-paired-fade42/GeneralDetailOverview.png | 結果: 成對 fade42 不是大翻盤，但確實再削弱了 cap 內側往名字區頂進來的重量，且未引入新的怪形；目前正式 runtime 保留這版 paired fade42 手術結果\n2026-04-08 | 狀態: in-progress | 處理: 沿著 paired fade42 正式版，只替換 `gdv3.rarity.band.fill` 為較乾淨的 `sprites/ui_families/common/parchment/fill`，不再追加 cap 變因，專注削弱 header 中段底層紋理重量 | 驗證: node tools_node/validate-ui-specs.js --strict --check-content-contract；node tools_node/check-encoding-touched.js --files assets/resources/ui-spec/skins/general-detail-bloodline-v3-default.json docs/ui-quality-tasks/phase-g-agent1.json；node tools_node/capture-ui-screens.js --target GeneralDetailOverview --outDir artifacts/ui-qa/UI-2-0094/runtime-r14-header-fill-clean | 結果: r14 相比 r13 不是大翻盤，但 header 中段更平整，沒有洗掉 jade-parchment 牌匾感，也未破壞 paired fade42 已收斂的名字區可讀性；目前建議把後續火力留給 header 中段 ornament 結構，而不是繼續深磨 cap fade 比例\n2026-04-08 | 狀態: in-progress | 處理: 針對維護性先刪除長期未使用的 dead layers：layout 移除 `BackgroundFrameOverlay`、`BackgroundNoiseOverlay`、`SharedBaseboardChrome`、`PortraitInnerPlate`、`PortraitNoiseOverlay`、`InfoCardAccentBleed`、`InfoCardAccentNoise`，shell 同步移除對應引用；同時把 `PortraitBackdrop` opacity 從 54 拉回 96，讓左側人物舞台的斜向墨筆重新可見 | 驗證: node tools_node/validate-ui-specs.js --strict --check-content-contract；node tools_node/capture-ui-screens.js --target GeneralDetailOverview --outDir artifacts/ui-qa/UI-2-0094/runtime-r15-prune-and-portrait-ink；artifacts/ui-qa/UI-2-0094/runtime-r15-prune-and-portrait-ink/GeneralDetailOverview.png 對比 r14 左側裁圖 | 結果: 左側由左下到右上的墨筆已回來，header 刪除死層後未破壞既有 fill/band/cap/frame 結構，畫面維持乾淨且較容易追蹤真正的髒點層位\n2026-04-08 | 狀態: in-progress | 處理: 繼續沿 dead-layer 路線，把 `InfoCardChrome/InfoCardFrame` 與 `PortraitCarrier/PortraitRarityFrame` 從 layout 移除，並同步刪除只服務這些死層的 skin slots；另外把上一輪留下的 orphan slots `gdv3.bg.overlay`、`gdv3.bg.noise`、`gdv3.portrait.inner`、`gdv3.portrait.noise`、`gdv3.rarity.band.bleed`、`gdv3.rarity.band.noise` 一併清掉 | 驗證: node tools_node/validate-ui-specs.js --strict --check-content-contract；node tools_node/capture-ui-screens.js --target GeneralDetailOverview --outDir artifacts/ui-qa/UI-2-0094/runtime-r16-prune-info-card-and-portrait | 結果: r16 與 r15 可見畫面一致，確認這批是純死層刪除；`InfoCardChrome` 目前已無長期 opacity=0 的 image layer，剩下 `InfoCardBleed`/`InfoCardNoise` 為低權重可見層，不屬於同類死層問題\n2026-04-08 | 狀態: in-progress | 處理: 進一步驗證 `InfoCardBleed` / `InfoCardNoise` 是否已低到可直接刪除；由於它們只在本頁使用，且 shell runtime 權重僅 4 與 10，故直接從 layout、skin、shell 一次移除做 r17 compare | 驗證: node tools_node/validate-ui-specs.js --strict --check-content-contract；node tools_node/capture-ui-screens.js --target GeneralDetailOverview --outDir artifacts/ui-qa/UI-2-0094/runtime-r17-delete-info-card-bleed-noise | 結果: r17 與 r16 可見畫面一致，確認 `InfoCardBleed` / `InfoCardNoise` 可正式刪除；目前 `InfoCardChrome` 已只剩實際承擔畫面的 fill 層\n2026-04-08 | 狀態: in-progress | 處理: 再將 header 右上的 `OverviewModeBadge` 與外圈 `InfoCardAccentFrame` 整條刪除鏈收乾淨：layout node、skin slot、shell 視覺設定、screen requiredFields、contract schema、mapper 與 preview content states 一併移除 | 驗證: node tools_node/validate-ui-specs.js --strict --check-content-contract；node tools_node/capture-ui-screens.js --target GeneralDetailOverview --outDir artifacts/ui-qa/UI-2-0094/runtime-r18-delete-badge-and-header-frame | 結果: r18 相較 r17，header 明顯變薄，右上角重複語意消失，名字區不再被 badge/frame 競爭注意力；目前 header 剩下的厚度主因已集中到 fill + band + cap 的同區域疊層，而非多餘外掛元件\n2026-04-08 | 狀態: in-progress | 處理: 只動 `fill / band / caps` 的相對權重做最後一輪瘦身，在 shell 將 `InfoCardAccentFill` opacity 238→228、`InfoCardAccentBand` 122→108、左右 cap 192→176，不更換資產也不再動 header 結構 | 驗證: node tools_node/validate-ui-specs.js --strict --check-content-contract；node tools_node/capture-ui-screens.js --target GeneralDetailOverview --outDir artifacts/ui-qa/UI-2-0094/runtime-r19-header-final-weight-tune | 結果: r19 相較 r18 為小幅但有效的瘦身，header 牌匾邊界更退後，名字對比仍穩定；這輪已接近只靠權重可取得的上限，後續若再收，應改回資產層而非再壓 runtime opacity"
     }
   ]
 }

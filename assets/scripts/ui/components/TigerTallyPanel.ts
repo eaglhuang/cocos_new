@@ -38,8 +38,9 @@ const RARITY_BORDER_COLORS: Record<TallyCardData['rarity'], Color> = {
 };
 
 const DEFAULT_BADGE_DEF = { icon: '？', color: new Color(220, 220, 220, 255) };
-const TALLY_CARD_ART_FALLBACK_PATH = 'sprites/battle/tally_card_art_placeholder';
+const TALLY_CARD_ART_FALLBACK_PATH = 'sprites/battle/tally_card_art_placeholder/spriteFrame';
 const TALLY_TYPE_BADGE_FALLBACK_PATH = 'sprites/battle/tally_badge_type';
+const TROOP_TYPE_SUITE_UNDERLAY_PATH = 'sprites/battle/battle_unit_type_underlay';
 const WHITE = new Color(255, 255, 255, 255);
 const TALLY_RARITY_PATHS: Record<TallyCardData['rarity'], string> = {
     normal:    'sprites/battle/tally_rarity_normal',
@@ -78,6 +79,7 @@ export interface TallyCardData {
     rarityResource?: string;
     /** 可選：指定兵種 badge 資源路徑，未填時依 unitType 推導。 */
     typeBadgeResource?: string;
+    typeIconResource?: string;
 }
 
 @ccclass('TigerTallyPanel')
@@ -116,12 +118,13 @@ export class TigerTallyPanel extends UIPreviewBuilder {
         if (this._initialized) return;
         try {
             console.log('[TigerTallyPanel] _initialize 開始載入規格...');
-            const [fullScreen, i18n] = await Promise.all([
+            const [fullScreen, i18n, tokens] = await Promise.all([
                 this._specLoader.loadFullScreen('tiger-tally-screen'),
                 this._specLoader.loadI18n(services().i18n.currentLocale),
+                this._specLoader.loadDesignTokens(),
             ]);
             console.log('[TigerTallyPanel] 規格載入完成，開始 buildScreen...');
-            await this.buildScreen(fullScreen.layout, fullScreen.skin, i18n);
+            await this.buildScreen(fullScreen.layout, fullScreen.skin, i18n, tokens);
             this._initialized = true;
             console.log('[TigerTallyPanel] _initialize: buildScreen 完成，node active:', this.node.active,
                 'layer:', this.node.layer);
@@ -204,45 +207,36 @@ export class TigerTallyPanel extends UIPreviewBuilder {
         const atkLabelNode  = cardNode.getChildByName(`AtkLabel${slot}`);
         const hpLabelNode   = cardNode.getChildByName(`HpLabel${slot}`);
         const nameLabelNode = cardNode.getChildByName(`UnitName${slot}`);
+        const subLabelNode  = cardNode.getChildByName(`UnitSub${slot}`);
         const costLabelNode = cardNode.getChildByName(`CostBadge${slot}`);
         const atkLabel  = atkLabelNode?.getComponent(Label)  ?? null;
         const hpLabel   = hpLabelNode?.getComponent(Label)   ?? null;
         const nameLabel = nameLabelNode?.getComponent(Label) ?? null;
+        const subLabel  = subLabelNode?.getComponent(Label)  ?? null;
         const costLabel = costLabelNode?.getComponent(Label) ?? null;
 
         if (atkLabel) {
-            atkLabel.string = `ATK ${data.atk}`;
-            atkLabel.color = new Color(0xFF, 0x6B, 0x6B, 0xFF);
-            atkLabel.fontSize = 22;
-            atkLabel.horizontalAlign = Label.HorizontalAlign.LEFT;
-            atkLabel.overflow = Label.Overflow.NONE;
+            atkLabel.string = `${data.atk}`;
             atkLabelNode!.active = true;
         } else { console.warn(`[TigerTallyPanel] 找不到 AtkLabel${slot}`); }
 
         if (hpLabel) {
-            hpLabel.string = `HP ${data.hp}`;
-            hpLabel.color = new Color(0x6B, 0xCB, 0x77, 0xFF);
-            hpLabel.fontSize = 22;
-            hpLabel.horizontalAlign = Label.HorizontalAlign.RIGHT;
-            hpLabel.overflow = Label.Overflow.NONE;
+            hpLabel.string = `${data.hp}`;
             hpLabelNode!.active = true;
         } else { console.warn(`[TigerTallyPanel] 找不到 HpLabel${slot}`); }
 
         if (nameLabel) {
             nameLabel.string = data.unitName;
-            nameLabel.color = new Color(0xE8, 0xE4, 0xDC, 0xFF);
-            nameLabel.fontSize = 24;
-            nameLabel.horizontalAlign = Label.HorizontalAlign.CENTER;
-            nameLabel.overflow = Label.Overflow.NONE;
             nameLabelNode!.active = true;
         } else { console.warn(`[TigerTallyPanel] 找不到 UnitName${slot}`); }
 
+        if (subLabel) {
+            subLabel.string = data.unitSub || data.unitType;
+            subLabelNode!.active = true;
+        }
+
         if (costLabel) {
             costLabel.string = `${data.cost}`;
-            costLabel.color = new Color(0xD4, 0xAF, 0x37, 0xFF);
-            costLabel.fontSize = 22;
-            costLabel.horizontalAlign = Label.HorizontalAlign.CENTER;
-            costLabel.overflow = Label.Overflow.NONE;
             costLabelNode!.active = true;
         } else { console.warn(`[TigerTallyPanel] 找不到 CostBadge${slot}`); }
 
@@ -251,7 +245,9 @@ export class TigerTallyPanel extends UIPreviewBuilder {
         void this._applyRarityBorder(slot, data, loadSeq);
         this._applyUnitTypeBadge(slot, data, loadSeq);
 
-        const mask = b?.getNode(`DisabledMask${slot}`);
+        const mask = this._binder?.getNode(`disabledMask${slot}`)
+            ?? this._binder?.getNode(`DisabledMask${slot}`)
+            ?? cardNode.getChildByName(`DisabledMask${slot}`);
         if (mask) mask.active = !!data.isDisabled;
 
         const btn = cardNode.getComponent(Button);
@@ -296,10 +292,10 @@ export class TigerTallyPanel extends UIPreviewBuilder {
         const label = textNode.getComponent(Label);
         if (label) {
             label.string = badgeDef.icon;
-            // 套用對應的專屬顏色，讓 CV 變金、IN 變藍 等等
+            // 側欄卡縮成角標後，兵種縮寫維持精簡小號即可。
             label.color  = badgeDef.color; 
-            label.fontSize = 20;
-            label.lineHeight = 24;
+            label.fontSize = 16;
+            label.lineHeight = 18;
             label.horizontalAlign = Label.HorizontalAlign.CENTER;
             label.verticalAlign   = Label.VerticalAlign.CENTER;
             label.overflow = Label.Overflow.NONE;
@@ -321,6 +317,7 @@ export class TigerTallyPanel extends UIPreviewBuilder {
             `tally.card.art[${slot}]`,
             this._buildArtCandidates(data),
             TALLY_CARD_ART_FALLBACK_PATH,
+            { preferTextureFallback: true },
         );
         if (!spriteFrame || !this._isLoadSeqCurrent(slot, loadSeq)) return;
 
@@ -357,6 +354,7 @@ export class TigerTallyPanel extends UIPreviewBuilder {
             `tally.badge.type[${slot}]`,
             this._uniquePaths([
                 data.typeBadgeResource,
+                TROOP_TYPE_SUITE_UNDERLAY_PATH,
                 normalizedType ? `sprites/battle/tally_badge_type_${normalizedType}` : null,
             ]),
             TALLY_TYPE_BADGE_FALLBACK_PATH,
@@ -381,9 +379,10 @@ export class TigerTallyPanel extends UIPreviewBuilder {
         slotKey: string,
         preferredPaths: string[],
         fallbackPath: string,
+        preferredLoadOptions?: { preferTextureFallback?: boolean },
     ): Promise<SpriteFrame | null> {
         for (const path of preferredPaths) {
-            const spriteFrame = await services().resource.loadSpriteFrame(path).catch(() => null);
+            const spriteFrame = await services().resource.loadSpriteFrame(path, preferredLoadOptions).catch(() => null);
             if (spriteFrame) {
                 return spriteFrame;
             }
@@ -405,7 +404,7 @@ export class TigerTallyPanel extends UIPreviewBuilder {
         const key = `${slotKey}|${preferredPaths.join(',')}|${fallbackPath}`;
         if (this._warnedFallbacks.has(key)) return;
         this._warnedFallbacks.add(key);
-        console.warn(
+        console.log(
             `[TigerTallyPanel] ${slotKey} 缺少正式資源，改用 fallback: ${fallbackPath} | tried=${preferredPaths.join(', ')}`,
         );
     }

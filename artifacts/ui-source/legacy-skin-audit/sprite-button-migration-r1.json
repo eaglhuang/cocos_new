@@ -1,0 +1,86 @@
+{
+  "reportVersion": "1.0",
+  "generatedAt": "2026-04-08T05:30:00.000Z",
+  "goal": "將殘留的 legacy sprite-button 全數遷移到現行 button-skin 契約，並記錄需要後續補語義資產的槽位。",
+  "summary": {
+    "migratedSlotCount": 9,
+    "skinsAffected": 2,
+    "remainingLegacySlotCountExpected": 0
+  },
+  "migratedSlots": [
+    {
+      "skinId": "gacha-default",
+      "slotId": "gacha.btn.rate_info",
+      "previousKind": "sprite-button",
+      "migratedKind": "button-skin",
+      "mappedFamily": "common-secondary",
+      "risk": "low"
+    },
+    {
+      "skinId": "gacha-default",
+      "slotId": "gacha.btn.add_currency",
+      "previousKind": "sprite-button",
+      "migratedKind": "button-skin",
+      "mappedFamily": "common-secondary",
+      "risk": "medium",
+      "note": "shared secondary family 可先消除 legacy path，但若要 plus glyph 應拆成 button + icon 組合。"
+    },
+    {
+      "skinId": "gacha-default",
+      "slotId": "gacha.btn.divination",
+      "previousKind": "sprite-button",
+      "migratedKind": "button-skin",
+      "mappedFamily": "commerce-primary",
+      "risk": "low"
+    },
+    {
+      "skinId": "support-card-default",
+      "slotId": "topbar.btn.back",
+      "previousKind": "sprite-button",
+      "migratedKind": "button-skin",
+      "mappedFamily": "common-secondary",
+      "risk": "high",
+      "note": "舊專用 back button 資產已失效；shared secondary 只解決契約與載入問題，未補 dedicated back glyph。"
+    },
+    {
+      "skinId": "support-card-default",
+      "slotId": "topbar.btn.borrow",
+      "previousKind": "sprite-button",
+      "migratedKind": "button-skin",
+      "mappedFamily": "commerce-primary",
+      "risk": "low"
+    },
+    {
+      "skinId": "support-card-default",
+      "slotId": "filterbar.btn.filter",
+      "previousKind": "sprite-button",
+      "migratedKind": "button-skin",
+      "mappedFamily": "common-secondary",
+      "risk": "low"
+    },
+    {
+      "skinId": "support-card-default",
+      "slotId": "bottombar.btn.team",
+      "previousKind": "sprite-button",
+      "migratedKind": "button-skin",
+      "mappedFamily": "common-secondary",
+      "risk": "low"
+    },
+    {
+      "skinId": "support-card-default",
+      "slotId": "breakthrough.btn.confirm",
+      "previousKind": "sprite-button",
+      "migratedKind": "button-skin",
+      "mappedFamily": "commerce-primary",
+      "risk": "low"
+    },
+    {
+      "skinId": "support-card-default",
+      "slotId": "breakthrough.btn.fragment",
+      "previousKind": "sprite-button",
+      "migratedKind": "button-skin",
+      "mappedFamily": "common-secondary",
+      "risk": "low"
+    }
+  ]
+}

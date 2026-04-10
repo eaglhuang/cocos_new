@@ -70,43 +70,43 @@
       "kind": "label-style",
       "fontSize": 20,
       "lineHeight": 28,
-      "color": "textOnParchment",
+      "color": "textInk",
+      "isBold": true,
       "horizontalAlign": "LEFT",
-      "overflow": "SHRINK",
-      "outlineWidth": 0
+      "overflow": "SHRINK"
     },
     "general.label.name": {
       "kind": "label-style",
-      "fontSize": 20,
-      "lineHeight": 26,
-      "color": "textOnParchment",
+      "fontSize": 22,
+      "lineHeight": 28,
+      "color": "textInk",
+      "isBold": true,
       "horizontalAlign": "LEFT",
-      "overflow": "SHRINK",
-      "outlineWidth": 0
+      "overflow": "SHRINK"
     },
     "general.label.value": {
       "kind": "label-style",
       "fontSize": 20,
       "lineHeight": 26,
-      "color": "textOnParchmentMuted",
-      "horizontalAlign": "LEFT",
-      "outlineWidth": 0
+      "color": "textInk",
+      "isBold": true,
+      "horizontalAlign": "LEFT"
     },
     "general.label.faction": {
       "kind": "label-style",
       "fontSize": 20,
       "lineHeight": 26,
-      "color": "textOnParchmentMuted",
-      "horizontalAlign": "LEFT",
-      "outlineWidth": 0
+      "color": "textInk",
+      "isBold": true,
+      "horizontalAlign": "LEFT"
     },
     "general.label.positive": {
       "kind": "label-style",
       "fontSize": 20,
       "lineHeight": 26,
-      "color": "tertiary",
-      "horizontalAlign": "LEFT",
-      "outlineWidth": 0
+      "color": "textPositiveOnParchment",
+      "isBold": true,
+      "horizontalAlign": "LEFT"
     },
     "ui-common-metal.equipment.primary": {
       "kind": "button-skin",

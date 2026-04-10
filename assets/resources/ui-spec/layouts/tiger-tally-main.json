@@ -1,7 +1,7 @@
 {
   "id": "tiger-tally-main",
   "version": 2,
-  "_doc": "Zone 3: 虎符卡片區。左側螢幕，TopBar 下方，固定 4 張卡片。每張卡 160px 高；點擊任一卡片觸發 UnitInfoPanel 滑出。",
+  "_doc": "Zone 3: 虎符卡片區。左側螢幕，TopBar 下方，固定 4 張卡片。每張卡 188px 高；點擊任一卡片觸發 UnitInfoPanel 滑出。",
   "canvas": {
     "fitWidth": true,
     "fitHeight": true,
@@ -14,28 +14,28 @@
     "name": "TigerTallyRoot",
     "id": "tigerTallyRoot",
     "widget": {
-      "top": 128,
+      "top": 144,
       "left": 0,
       "bottom": 0
     },
-    "width": "16%",
+    "width": "16.7%",
     "layout": {
       "type": "vertical",
-      "spacing": 10,
+      "spacing": 14,
       "paddingTop": 0,
       "paddingBottom": 8,
       "paddingLeft": 0,
       "paddingRight": 12
     },
-    "_doc": "寬度 16% ≈ 307px (@1920)。卡片左緣貼齊螢幕左邊；整列從 Top HUD（88px TopBar + 32px fortress bar）下方開始，避免與左上主將頭像交叉。",
+    "_doc": "左側虎符欄再微收版：寬度 16.7% ≈ 321px (@1920)，避免壓進戰場 5x8 格子；整列相對 Top HUD 再下壓一段，保留明確留白，避免與上方 Top Bar Zone 視覺貼得過近。",
     "children": [
       {
         "type": "button",
         "name": "TallyCard1",
         "id": "tallyCard1",
         "width": "100%",
-        "height": 160,
-        "skinSlot": "tally.card.bg",
+        "height": 188,
+        "skinSlot": "tally.card.bg.hard",
         "_doc": "虎符卡 1（玩家目前上場武將的第1支兵種）",
         "children": [
           {
@@ -64,15 +64,51 @@
             "skinSlot": "tally.card.rarity.normal"
           },
           {
+            "type": "image",
+            "name": "TopShade1",
+            "id": "topShade1",
+            "widget": {
+              "top": 0,
+              "left": 0,
+              "right": 0
+            },
+            "height": 44,
+            "skinSlot": "tally.card.topShade"
+          },
+          {
+            "type": "image",
+            "name": "BottomStatBar1",
+            "id": "bottomStatBar1",
+            "widget": {
+              "left": 0,
+              "right": 0,
+              "bottom": 0
+            },
+            "height": 38,
+            "skinSlot": "tally.card.statBar"
+          },
+          {
+            "type": "image",
+            "name": "CostPlate1",
+            "id": "costPlate1",
+            "widget": {
+              "right": 8,
+              "top": 8
+            },
+            "width": 36,
+            "height": 28,
+            "skinSlot": "tally.card.costPlate"
+          },
+          {
             "type": "label",
             "name": "AtkLabel1",
             "id": "atkLabel1",
             "widget": {
-              "left": 6,
-              "top": 6
+              "left": 14,
+              "bottom": 5
             },
-            "width": 90,
-            "height": 28,
+            "width": 54,
+            "height": 26,
             "styleSlot": "tally.label.atk",
             "bind": "tally[0].atk",
             "_doc": "攻擊值：⚔N"
@@ -82,11 +118,11 @@
             "name": "HpLabel1",
             "id": "hpLabel1",
             "widget": {
-              "right": 6,
-              "top": 6
+              "right": 14,
+              "bottom": 5
             },
-            "width": 90,
-            "height": 28,
+            "width": 54,
+            "height": 26,
             "styleSlot": "tally.label.hp",
             "bind": "tally[0].hp",
             "_doc": "生命值：❤N"
@@ -96,11 +132,11 @@
             "name": "UnitTypeBadge1",
             "id": "unitTypeBadge1",
             "widget": {
-              "left": 4,
-              "bottom": 4
+              "left": 8,
+              "top": 6
             },
-            "width": 40,
-            "height": 40,
+            "width": 30,
+            "height": 30,
             "skinSlot": "tally.badge.type",
             "_doc": "兵種圓徽章 40×40",
             "children": [
@@ -108,8 +144,8 @@
                 "type": "label",
                 "name": "BadgeText1",
                 "id": "badgeText1",
-                "width": 40,
-                "height": 40,
+                "width": 30,
+                "height": 30,
                 "styleSlot": "tally.label.badge",
                 "bind": "tally[0].unitTypeBadge",
                 "_doc": "兵種縮寫（CV/IN/AR...）；無 Widget，預設 position(0,0) 在父節點中心即為置中"
@@ -121,25 +157,39 @@
             "name": "UnitName1",
             "id": "unitName1",
             "widget": {
-              "hCenter": 0,
-              "vCenter": 0
+              "left": 44,
+              "top": 10
             },
-            "width": 200,
-            "height": 32,
+            "width": 172,
+            "height": 24,
             "styleSlot": "tally.label.name",
             "bind": "tally[0].unitName",
             "_doc": "兵種名稱，卡片正中"
           },
           {
             "type": "label",
+            "name": "UnitSub1",
+            "id": "unitSub1",
+            "widget": {
+              "left": 44,
+              "top": 32
+            },
+            "width": 150,
+            "height": 16,
+            "styleSlot": "tally.label.sub",
+            "bind": "tally[0].unitSub",
+            "_doc": "特殊部隊副標，例如突擊、支援、工兵等定位。"
+          },
+          {
+            "type": "label",
             "name": "CostBadge1",
             "id": "costBadge1",
             "widget": {
-              "right": 6,
-              "bottom": 6
+              "right": 14,
+              "top": 10
             },
-            "width": 36,
-            "height": 36,
+            "width": 20,
+            "height": 20,
             "styleSlot": "tally.label.cost",
             "bind": "tally[0].cost"
           },
@@ -163,8 +213,8 @@
         "name": "TallyCard2",
         "id": "tallyCard2",
         "width": "100%",
-        "height": 160,
-        "skinSlot": "tally.card.bg",
+        "height": 188,
+        "skinSlot": "tally.card.bg.hard",
         "_doc": "虎符卡 2",
         "children": [
           {
@@ -193,15 +243,51 @@
             "skinSlot": "tally.card.rarity.normal"
           },
           {
+            "type": "image",
+            "name": "TopShade2",
+            "id": "topShade2",
+            "widget": {
+              "top": 0,
+              "left": 0,
+              "right": 0
+            },
+            "height": 44,
+            "skinSlot": "tally.card.topShade"
+          },
+          {
+            "type": "image",
+            "name": "BottomStatBar2",
+            "id": "bottomStatBar2",
+            "widget": {
+              "left": 0,
+              "right": 0,
+              "bottom": 0
+            },
+            "height": 38,
+            "skinSlot": "tally.card.statBar"
+          },
+          {
+            "type": "image",
+            "name": "CostPlate2",
+            "id": "costPlate2",
+            "widget": {
+              "right": 8,
+              "top": 8
+            },
+            "width": 36,
+            "height": 28,
+            "skinSlot": "tally.card.costPlate"
+          },
+          {
             "type": "label",
             "name": "AtkLabel2",
             "id": "atkLabel2",
             "widget": {
-              "left": 6,
-              "top": 6
+              "left": 14,
+              "bottom": 5
             },
-            "width": 90,
-            "height": 28,
+            "width": 54,
+            "height": 26,
             "styleSlot": "tally.label.atk",
             "bind": "tally[1].atk"
           },
@@ -210,11 +296,11 @@
             "name": "HpLabel2",
             "id": "hpLabel2",
             "widget": {
-              "right": 6,
-              "top": 6
+              "right": 14,
+              "bottom": 5
             },
-            "width": 90,
-            "height": 28,
+            "width": 54,
+            "height": 26,
             "styleSlot": "tally.label.hp",
             "bind": "tally[1].hp"
           },
@@ -223,19 +309,19 @@
             "name": "UnitTypeBadge2",
             "id": "unitTypeBadge2",
             "widget": {
-              "left": 4,
-              "bottom": 4
+              "left": 8,
+              "top": 6
             },
-            "width": 40,
-            "height": 40,
+            "width": 30,
+            "height": 30,
             "skinSlot": "tally.badge.type",
             "children": [
               {
                 "type": "label",
                 "name": "BadgeText2",
                 "id": "badgeText2",
-                "width": 40,
-                "height": 40,
+                "width": 30,
+                "height": 30,
                 "styleSlot": "tally.label.badge",
                 "bind": "tally[1].unitTypeBadge"
               }
@@ -246,24 +332,37 @@
             "name": "UnitName2",
             "id": "unitName2",
             "widget": {
-              "hCenter": 0,
-              "vCenter": 0
+              "left": 44,
+              "top": 10
             },
-            "width": 200,
-            "height": 32,
+            "width": 172,
+            "height": 24,
             "styleSlot": "tally.label.name",
             "bind": "tally[1].unitName"
+          },
+          {
+            "type": "label",
+            "name": "UnitSub2",
+            "id": "unitSub2",
+            "widget": {
+              "left": 44,
+              "top": 32
+            },
+            "width": 150,
+            "height": 16,
+            "styleSlot": "tally.label.sub",
+            "bind": "tally[1].unitSub"
           },
           {
             "type": "label",
             "name": "CostBadge2",
             "id": "costBadge2",
             "widget": {
-              "right": 6,
-              "bottom": 6
+              "right": 14,
+              "top": 10
             },
-            "width": 36,
-            "height": 36,
+            "width": 20,
+            "height": 20,
             "styleSlot": "tally.label.cost",
             "bind": "tally[1].cost"
           },
@@ -287,8 +386,8 @@
         "name": "TallyCard3",
         "id": "tallyCard3",
         "width": "100%",
-        "height": 160,
-        "skinSlot": "tally.card.bg",
+        "height": 188,
+        "skinSlot": "tally.card.bg.hard",
         "_doc": "虎符卡 3",
         "children": [
           {
@@ -317,15 +416,51 @@
             "skinSlot": "tally.card.rarity.normal"
           },
           {
+            "type": "image",
+            "name": "TopShade3",
+            "id": "topShade3",
+            "widget": {
+              "top": 0,
+              "left": 0,
+              "right": 0
+            },
+            "height": 44,
+            "skinSlot": "tally.card.topShade"
+          },
+          {
+            "type": "image",
+            "name": "BottomStatBar3",
+            "id": "bottomStatBar3",
+            "widget": {
+              "left": 0,
+              "right": 0,
+              "bottom": 0
+            },
+            "height": 38,
+            "skinSlot": "tally.card.statBar"
+          },
+          {
+            "type": "image",
+            "name": "CostPlate3",
+            "id": "costPlate3",
+            "widget": {
+              "right": 8,
+              "top": 8
+            },
+            "width": 36,
+            "height": 28,
+            "skinSlot": "tally.card.costPlate"
+          },
+          {
             "type": "label",
             "name": "AtkLabel3",
             "id": "atkLabel3",
             "widget": {
-              "left": 6,
-              "top": 6
+              "left": 14,
+              "bottom": 5
             },
-            "width": 90,
-            "height": 28,
+            "width": 54,
+            "height": 26,
             "styleSlot": "tally.label.atk",
             "bind": "tally[2].atk"
           },
@@ -334,11 +469,11 @@
             "name": "HpLabel3",
             "id": "hpLabel3",
             "widget": {
-              "right": 6,
-              "top": 6
+              "right": 14,
+              "bottom": 5
             },
-            "width": 90,
-            "height": 28,
+            "width": 54,
+            "height": 26,
             "styleSlot": "tally.label.hp",
             "bind": "tally[2].hp"
           },
@@ -347,19 +482,19 @@
             "name": "UnitTypeBadge3",
             "id": "unitTypeBadge3",
             "widget": {
-              "left": 4,
-              "bottom": 4
+              "left": 8,
+              "top": 6
             },
-            "width": 40,
-            "height": 40,
+            "width": 30,
+            "height": 30,
             "skinSlot": "tally.badge.type",
             "children": [
               {
                 "type": "label",
                 "name": "BadgeText3",
                 "id": "badgeText3",
-                "width": 40,
-                "height": 40,
+                "width": 30,
+                "height": 30,
                 "styleSlot": "tally.label.badge",
                 "bind": "tally[2].unitTypeBadge"
               }
@@ -370,24 +505,37 @@
             "name": "UnitName3",
             "id": "unitName3",
             "widget": {
-              "hCenter": 0,
-              "vCenter": 0
+              "left": 44,
+              "top": 10
             },
-            "width": 200,
-            "height": 32,
+            "width": 172,
+            "height": 24,
             "styleSlot": "tally.label.name",
             "bind": "tally[2].unitName"
+          },
+          {
+            "type": "label",
+            "name": "UnitSub3",
+            "id": "unitSub3",
+            "widget": {
+              "left": 44,
+              "top": 32
+            },
+            "width": 150,
+            "height": 16,
+            "styleSlot": "tally.label.sub",
+            "bind": "tally[2].unitSub"
           },
           {
             "type": "label",
             "name": "CostBadge3",
             "id": "costBadge3",
             "widget": {
-              "right": 6,
-              "bottom": 6
+              "right": 14,
+              "top": 10
             },
-            "width": 36,
-            "height": 36,
+            "width": 20,
+            "height": 20,
             "styleSlot": "tally.label.cost",
             "bind": "tally[2].cost"
           },
@@ -411,8 +559,8 @@
         "name": "TallyCard4",
         "id": "tallyCard4",
         "width": "100%",
-        "height": 160,
-        "skinSlot": "tally.card.bg",
+        "height": 188,
+        "skinSlot": "tally.card.bg.hard",
         "_doc": "虎符卡 4（冷卻中，預設 disabledMask active:true）",
         "children": [
           {
@@ -441,15 +589,51 @@
             "skinSlot": "tally.card.rarity.normal"
           },
           {
+            "type": "image",
+            "name": "TopShade4",
+            "id": "topShade4",
+            "widget": {
+              "top": 0,
+              "left": 0,
+              "right": 0
+            },
+            "height": 44,
+            "skinSlot": "tally.card.topShade"
+          },
+          {
+            "type": "image",
+            "name": "BottomStatBar4",
+            "id": "bottomStatBar4",
+            "widget": {
+              "left": 0,
+              "right": 0,
+              "bottom": 0
+            },
+            "height": 38,
+            "skinSlot": "tally.card.statBar"
+          },
+          {
+            "type": "image",
+            "name": "CostPlate4",
+            "id": "costPlate4",
+            "widget": {
+              "right": 8,
+              "top": 8
+            },
+            "width": 36,
+            "height": 28,
+            "skinSlot": "tally.card.costPlate"
+          },
+          {
             "type": "label",
             "name": "AtkLabel4",
             "id": "atkLabel4",
             "widget": {
-              "left": 6,
-              "top": 6
+              "left": 14,
+              "bottom": 5
             },
-            "width": 90,
-            "height": 28,
+            "width": 54,
+            "height": 26,
             "styleSlot": "tally.label.atk",
             "bind": "tally[3].atk"
           },
@@ -458,11 +642,11 @@
             "name": "HpLabel4",
             "id": "hpLabel4",
             "widget": {
-              "right": 6,
-              "top": 6
+              "right": 14,
+              "bottom": 5
             },
-            "width": 90,
-            "height": 28,
+            "width": 54,
+            "height": 26,
             "styleSlot": "tally.label.hp",
             "bind": "tally[3].hp"
           },
@@ -471,19 +655,19 @@
             "name": "UnitTypeBadge4",
             "id": "unitTypeBadge4",
             "widget": {
-              "left": 4,
-              "bottom": 4
+              "left": 8,
+              "top": 6
             },
-            "width": 40,
-            "height": 40,
+            "width": 30,
+            "height": 30,
             "skinSlot": "tally.badge.type",
             "children": [
               {
                 "type": "label",
                 "name": "BadgeText4",
                 "id": "badgeText4",
-                "width": 40,
-                "height": 40,
+                "width": 30,
+                "height": 30,
                 "styleSlot": "tally.label.badge",
                 "bind": "tally[3].unitTypeBadge"
               }
@@ -494,24 +678,37 @@
             "name": "UnitName4",
             "id": "unitName4",
             "widget": {
-              "hCenter": 0,
-              "vCenter": 0
+              "left": 44,
+              "top": 10
             },
-            "width": 200,
-            "height": 32,
+            "width": 172,
+            "height": 24,
             "styleSlot": "tally.label.name",
             "bind": "tally[3].unitName"
+          },
+          {
+            "type": "label",
+            "name": "UnitSub4",
+            "id": "unitSub4",
+            "widget": {
+              "left": 44,
+              "top": 32
+            },
+            "width": 150,
+            "height": 16,
+            "styleSlot": "tally.label.sub",
+            "bind": "tally[3].unitSub"
           },
           {
             "type": "label",
             "name": "CostBadge4",
             "id": "costBadge4",
             "widget": {
-              "right": 6,
-              "bottom": 6
+              "right": 14,
+              "top": 10
             },
-            "width": 36,
-            "height": 36,
+            "width": 20,
+            "height": 20,
             "styleSlot": "tally.label.cost",
             "bind": "tally[3].cost"
           },

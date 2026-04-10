@@ -1,0 +1,14 @@
+{
+  "screenId": "GachaMain",
+  "description": "Auto-match demo for selected-to-postprocess wrapper on a non-GeneralDetail screen.",
+  "selectedDir": "artifacts/ui-generated/gacha-selected-curated-demo/selected/curated",
+  "generatedRoot": "artifacts/ui-generated/gacha-main-selected-demo",
+  "taskIds": [
+    "gacha-main-pool-tier-badge-badge-glyph",
+    "gacha-main-pool-tier-badge-badge-underlay"
+  ],
+  "notes": [
+    "This demo validates auto-exact matching by naming selected files after task outputName.",
+    "No selection-map is needed for this demo because the selected filenames already align with the manifest output names."
+  ]
+}

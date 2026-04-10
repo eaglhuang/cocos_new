@@ -1,0 +1,38 @@
+{
+  "inputWidth": 1024,
+  "inputHeight": 1024,
+  "background": {
+    "r": 233,
+    "g": 233,
+    "b": 225,
+    "a": 255,
+    "spread": 3.221,
+    "checkerboard": false,
+    "bgLight": null,
+    "bgDark": null
+  },
+  "bounds": {
+    "minX": 92,
+    "minY": 102,
+    "maxX": 933,
+    "maxY": 946
+  },
+  "crop": {
+    "x": 68,
+    "y": 78,
+    "width": 890,
+    "height": 893
+  },
+  "output": {
+    "width": 890,
+    "height": 893
+  },
+  "foregroundCount": 542567,
+  "cleanup": {
+    "enabled": true,
+    "deterministicBackground": true,
+    "removedPixels": 243882,
+    "removedOuterRingPixels": 7116,
+    "removedEdgeFringePixels": 236766
+  }
+}

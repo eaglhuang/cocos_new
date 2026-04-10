@@ -37,6 +37,8 @@
     "text.parchment.secondary": "#6B5E4E",
     "textPositive":         "#86E1A5",
     "textNegative":      "#FF6B6B",
+    "textPositiveOnParchment": "#1B6B3A",
+    "textNegativeOnParchment": "#B22222",
 
     "outline":           "#4D4635",
     "outlineSubtle":     "#353535",

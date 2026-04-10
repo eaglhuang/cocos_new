@@ -1,0 +1,84 @@
+{
+  "screenId": "GeneralDetailOverview",
+  "updatedAt": "2026-04-08T03:27:57.084Z",
+  "latestStage": "assetTaskManifest",
+  "overallVerdict": "pass",
+  "stages": {
+    "intake": {
+      "verdict": "pass",
+      "validatedAt": "2026-04-08T03:27:56.965Z",
+      "fileCount": 1,
+      "failureCount": 0,
+      "files": [
+        {
+          "kind": "intake",
+          "filePath": "artifacts\\ui-source\\general-detail-overview\\manifests\\intake.json",
+          "ok": true,
+          "failReasons": []
+        }
+      ],
+      "crossFileFailReasons": [],
+      "metadata": {
+        "screenId": "GeneralDetailOverview",
+        "output": "manifests/intake.json"
+      }
+    },
+    "familyMap": {
+      "verdict": "pass",
+      "validatedAt": "2026-04-08T03:27:57.029Z",
+      "fileCount": 2,
+      "failureCount": 0,
+      "files": [
+        {
+          "kind": "intake",
+          "filePath": "artifacts\\ui-source\\general-detail-overview\\manifests\\intake.json",
+          "ok": true,
+          "failReasons": []
+        },
+        {
+          "kind": "familyMap",
+          "filePath": "artifacts\\ui-source\\general-detail-overview\\proof\\general-detail-overview.family-map.json",
+          "ok": true,
+          "failReasons": []
+        }
+      ],
+      "crossFileFailReasons": [],
+      "metadata": {
+        "screenId": "GeneralDetailOverview",
+        "output": "proof\\general-detail-overview.family-map.json"
+      }
+    },
+    "assetTaskManifest": {
+      "verdict": "pass",
+      "validatedAt": "2026-04-08T03:27:57.083Z",
+      "fileCount": 3,
+      "failureCount": 0,
+      "files": [
+        {
+          "kind": "intake",
+          "filePath": "artifacts\\ui-source\\general-detail-overview\\manifests\\intake.json",
+          "ok": true,
+          "failReasons": []
+        },
+        {
+          "kind": "familyMap",
+          "filePath": "artifacts\\ui-source\\general-detail-overview\\proof\\general-detail-overview.family-map.json",
+          "ok": true,
+          "failReasons": []
+        },
+        {
+          "kind": "assetTaskManifest",
+          "filePath": "artifacts\\ui-source\\general-detail-overview\\manifests\\asset-task-manifest.json",
+          "ok": true,
+          "failReasons": []
+        }
+      ],
+      "crossFileFailReasons": [],
+      "metadata": {
+        "screenId": "GeneralDetailOverview",
+        "output": "manifests/asset-task-manifest.json",
+        "taskCount": 4
+      }
+    }
+  }
+}

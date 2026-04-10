@@ -3,6 +3,7 @@ import { _decorator } from 'cc';
 import { UIPreviewBuilder } from '../core/UIPreviewBuilder';
 import { UISpecLoader } from '../core/UISpecLoader';
 import { services } from '../../core/managers/ServiceLoader';
+import { UITemplateBinder } from '../core/UITemplateBinder';
 
 const { ccclass, property } = _decorator;
 
@@ -20,6 +21,11 @@ export class UIScreenPreviewHost extends UIPreviewBuilder {
     private get _specLoader() { return services().specLoader; }
     private _currentScreenId = '';
     private _isLoading = false;
+    private _binder: UITemplateBinder | null = null;
+
+    public get binder(): UITemplateBinder | null {
+        return this._binder;
+    }
 
     public async showScreen(screenId: string): Promise<void> {
         if (!screenId) {
@@ -58,9 +64,14 @@ export class UIScreenPreviewHost extends UIPreviewBuilder {
     }
 
     private _destroyBuiltChildren(): void {
+        this._binder = null;
         const children = [...this.node.children];
         for (const child of children) {
             child.destroy();
         }
+    }
+
+    protected onReady(binder: UITemplateBinder): void {
+        this._binder = binder;
     }
 }

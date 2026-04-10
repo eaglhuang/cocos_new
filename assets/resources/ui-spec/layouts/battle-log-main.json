@@ -11,10 +11,10 @@
   "root": {
     "type": "container",
     "name": "SidePanelRoot",
-    "width": "10%",
+    "width": "11%",
     "widget": {
-      "right": 0,
-      "top": 88
+      "right": 16,
+      "top": 168
     },
     "layout": {
       "type": "vertical",
@@ -25,13 +25,13 @@
         "type": "panel",
         "name": "ControlBar",
         "width": "100%",
-        "height": 40,
+        "height": 44,
         "skinSlot": "log.header.bg",
         "layout": {
           "type": "horizontal",
-          "spacing": 8,
-          "paddingLeft": 12,
-          "paddingRight": 12
+          "spacing": 10,
+          "paddingLeft": 10,
+          "paddingRight": 10
         },
         "children": [
           {
@@ -40,7 +40,22 @@
             "id": "btnAuto",
             "width": 32,
             "height": 32,
-            "skinSlot": "log.btn.auto"
+            "skinSlot": "log.btn.auto",
+            "children": [
+              {
+                "type": "image",
+                "name": "AutoIcon",
+                "id": "autoIcon",
+                "widget": {
+                  "top": 8,
+                  "left": 8
+                },
+                "width": 16,
+                "height": 16,
+                "skinSlot": "log.icon.auto",
+                "_doc": "F8 tactical control overlay glyph"
+              }
+            ]
           },
           {
             "type": "button",
@@ -48,7 +63,22 @@
             "id": "btnSpeed",
             "width": 32,
             "height": 32,
-            "skinSlot": "log.btn.speed"
+            "skinSlot": "log.btn.speed",
+            "children": [
+              {
+                "type": "image",
+                "name": "SpeedIcon",
+                "id": "speedIcon",
+                "widget": {
+                  "top": 8,
+                  "left": 8
+                },
+                "width": 16,
+                "height": 16,
+                "skinSlot": "log.icon.speed",
+                "_doc": "F8 tactical control overlay glyph"
+              }
+            ]
           },
           {
             "type": "button",
@@ -56,7 +86,22 @@
             "id": "btnSetting",
             "width": 32,
             "height": 32,
-            "skinSlot": "log.btn.setting"
+            "skinSlot": "log.btn.setting",
+            "children": [
+              {
+                "type": "image",
+                "name": "SettingIcon",
+                "id": "settingIcon",
+                "widget": {
+                  "top": 8,
+                  "left": 8
+                },
+                "width": 16,
+                "height": 16,
+                "skinSlot": "log.icon.setting",
+                "_doc": "F8 tactical control overlay glyph"
+              }
+            ]
           }
         ]
       },
@@ -65,7 +110,7 @@
         "name": "BattleLogPanel",
         "id": "battleLogPanel",
         "width": "100%",
-        "height": 410,
+        "height": 344,
         "skinSlot": "log.root.bg",
         "layout": {
           "type": "vertical",
@@ -76,7 +121,7 @@
             "type": "panel",
             "name": "Header",
             "width": "100%",
-            "height": 34,
+            "height": 36,
             "skinSlot": "log.header.bg",
             "layout": {
               "type": "horizontal",
@@ -101,7 +146,7 @@
             "name": "ScrollView",
             "id": "scrollView",
             "width": "100%",
-            "height": 348,
+            "height": 308,
             "children": [
               {
                 "type": "container",
@@ -130,10 +175,25 @@
         "name": "BtnCollapse",
         "id": "btnCollapse",
         "width": "100%",
-        "height": 28,
-        "text": "收合",
+        "height": 30,
+        "text": "戰報",
         "skinSlot": "log.btn.collapse",
         "styleSlot": "log.label.toggle",
+        "children": [
+          {
+            "type": "image",
+            "name": "CollapseIcon",
+            "id": "collapseIcon",
+            "widget": {
+              "right": 10,
+              "top": 9
+            },
+            "width": 12,
+            "height": 12,
+            "skinSlot": "log.icon.collapse",
+            "_doc": "F8 tactical control overlay glyph"
+          }
+        ],
         "_comment": "Toggle: collapse hides BattleLogPanel (h→0), button changes to 32x32 icon; expand restores to ~410px with Tween 0.3s"
       }
     ]

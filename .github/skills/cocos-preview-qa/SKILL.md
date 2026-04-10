@@ -34,8 +34,8 @@ argument-hint: 'Specify target screen and task id only after confirming the Brow
 ```
 Step1: 確認 localhost:7456 可達
 Step2: node tools_node/capture-ui-screens.js --target <X> --outDir artifacts/ui-qa/<taskId>
-Step3: view_image 逐張查看截圖
-Step4: view_image 對照參考圖比較
+Step3: 一次只看 1 張新截圖（先試 `125px`）
+Step4: 再加 1 張對照圖（同樣先試 `125px`）做比較
 Step5: 寫 notes.md + 更新 ui-quality-todo.json
 ```
 
@@ -48,6 +48,13 @@ node tools_node/capture-ui-screens.js --outDir artifacts/ui-qa/<taskId>
 # 截單一 screen
 node tools_node/capture-ui-screens.js --target LobbyMain --outDir artifacts/ui-qa/<taskId>
 ```
+
+## 看圖硬規定
+
+- `capture-ui-screens.js` 的輸出仍需遵守 thumbnail-first progressive zoom，先試 `125px`
+- 一次最多只開 `1` 張主圖 + `1` 張對照圖
+- 參考圖先用 `node tools_node/prepare-view-image.js --input <path>`，預設先看 `125px`；看不清才改 `--maxWidth 250`，再不夠才 `--maxWidth 500`
+- 若要看 `>500px` 原圖，必須先取得使用者明確同意
 
 ## 完整 SOP
 

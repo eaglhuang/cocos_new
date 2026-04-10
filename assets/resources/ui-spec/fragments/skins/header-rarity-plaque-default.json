@@ -1,0 +1,68 @@
+{
+  "id": "header-rarity-plaque-default",
+  "version": 1,
+  "description": "共享牌匾式標題列 skin fragment：深綠 plaque + tier mark dock",
+  "slots": {
+    "widget.header.plaque.base": {
+      "kind": "color-rect",
+      "color": "surfaceDeep",
+      "alpha": 224
+    },
+    "widget.header.plaque.fill": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/detail_header_fill",
+      "spriteType": "simple",
+      "allowAutoAtlas": true,
+      "opacity": 0.92
+    },
+    "widget.header.plaque.band": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/formal/header_band_formal",
+      "spriteType": "sliced",
+      "border": [20, 0, 20, 0],
+      "allowAutoAtlas": true,
+      "opacity": 0.42
+    },
+    "widget.header.plaque.title": {
+      "kind": "label-style",
+      "fontSize": 28,
+      "lineHeight": 30,
+      "color": "colorWhite",
+      "outlineWidth": 0,
+      "horizontalAlign": "LEFT"
+    },
+    "widget.header.plaque.subtitle": {
+      "kind": "label-style",
+      "fontSize": 16,
+      "lineHeight": 18,
+      "color": "accentGold",
+      "outlineWidth": 0,
+      "horizontalAlign": "LEFT"
+    },
+    "widget.header.plaque.badge.underlay": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/parchment/fill",
+      "spriteType": "sliced",
+      "border": [16, 16, 16, 16],
+      "allowAutoAtlas": true,
+      "opacity": 0.9
+    },
+    "widget.header.plaque.badge.fill": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/parchment/fill",
+      "spriteType": "sliced",
+      "border": [16, 16, 16, 16],
+      "allowAutoAtlas": true,
+      "opacity": 0.96
+    },
+    "widget.header.plaque.badge.label": {
+      "kind": "label-style",
+      "fontSize": 22,
+      "lineHeight": 24,
+      "color": "colorWhite",
+      "outlineWidth": 1,
+      "outlineColor": "outlineHeavy",
+      "horizontalAlign": "CENTER"
+    }
+  }
+}

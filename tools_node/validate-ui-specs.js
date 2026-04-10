@@ -15,13 +15,14 @@
 
 const fs = require('fs');
 const path = require('path');
+const config = require('./lib/project-config');
 
-const projectRoot = path.resolve(__dirname, '..');
-const uiSpecRoot = path.join(projectRoot, 'assets', 'resources', 'ui-spec');
-const layoutDir = path.join(uiSpecRoot, 'layouts');
-const skinDir = path.join(uiSpecRoot, 'skins');
-const screenDir = path.join(uiSpecRoot, 'screens');
-const contractDir = path.join(uiSpecRoot, 'contracts');
+const projectRoot = config.ROOT;
+const uiSpecRoot = config.paths.uiSpecDir;
+const layoutDir = config.paths.layoutsDir;
+const skinDir = config.paths.skinsDir;
+const screenDir = config.paths.screensDir;
+const contractDir = config.paths.contractsDir;
 const contentDir = path.join(uiSpecRoot, 'content');
 const recipeDir = path.join(uiSpecRoot, 'recipes', 'families');
 
@@ -219,6 +220,42 @@ function validateRecipeRef(recipeRef, filePath, recipes, failures, warnings, con
             }
         }
     }
+}
+
+// ─── R18: no-override-immutable ($ref 不可覆寫的欄位) ────────────
+const REF_IMMUTABLE_KEYS = ['type'];
+
+function validateRefImmutableOverrides(layoutJson, filePath, failures, warnings) {
+    const rel = relative(filePath);
+    const exceptions = (layoutJson.validation && layoutJson.validation.exceptions) || null;
+    const fragBase = path.join(uiSpecRoot, 'fragments');
+
+    function checkNode(node) {
+        if (!node) return;
+        if (node.$ref) {
+            // 載入被引用的 fragment 比較 immutable keys
+            const fragPath = path.join(uiSpecRoot, node.$ref + '.json');
+            if (fs.existsSync(fragPath)) {
+                try {
+                    const fragment = JSON.parse(fs.readFileSync(fragPath, 'utf8'));
+                    for (const key of REF_IMMUTABLE_KEYS) {
+                        if (node[key] !== undefined && fragment[key] !== undefined && node[key] !== fragment[key]) {
+                            strictFail(
+                                'no-override-immutable',
+                                `${rel} - $ref="${node.$ref}" 的 ${key}="${fragment[key]}" 被 node 覆寫為 "${node[key]}"，` +
+                                `這通常代表 $ref 指向錯誤或應移除 node 的 ${key} 宣告`,
+                                failures, exceptions
+                            );
+                        }
+                    }
+                } catch (e) { /* fragment parse error handled elsewhere */ }
+            }
+        }
+        if (node.children) node.children.forEach(checkNode);
+        if (node.itemTemplate) checkNode(node.itemTemplate);
+    }
+
+    if (layoutJson.root) checkNode(layoutJson.root);
 }
 
 function validateLayoutStrict(layoutJson, filePath, allSkinSlots, failures, warnings) {
@@ -623,6 +660,7 @@ if (strictMode) {
         const layoutFilePath = layouts.get(layoutId);
         if (layoutFilePath) {
             validateLayoutStrict(layoutJson, layoutFilePath, allSkinSlots, failures, warnings);
+            validateRefImmutableOverrides(layoutJson, layoutFilePath, failures, warnings);
         }
     }
 }

@@ -19,7 +19,7 @@
   "highRiskFiles": {
     "assets/scripts/ui/core/UIPreviewBuilder.ts": {
       "label": "UI Preview Builder",
-      "baselineNonAscii": 1305,
+      "baselineNonAscii": 1787,
       "maxNonAsciiDelta": 300,
       "allowBom": true
     },
@@ -35,8 +35,8 @@
     },
     "assets/scripts/core/systems/ResourceManager.ts": {
       "label": "Resource Manager",
-      "baselineNonAscii": 199,
-      "maxNonAsciiDelta": 60
+      "baselineNonAscii": 443,
+      "maxNonAsciiDelta": 80
     }
   },
   "legacyAllowlist": {

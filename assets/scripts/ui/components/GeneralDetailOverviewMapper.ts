@@ -7,6 +7,8 @@ import type {
     GeneralStatsConfig,
     CharacterCategory,
 } from '../../core/models/GeneralUnit';
+import { getUIRarityMarkLabel, normalizeUIRarityMarkLabel } from '../core/UIRarityMark';
+import { resolveRarityTier } from '../../core/utils/RarityResolver';
 
 export interface GeneralDetailOverviewData {
     header: {
@@ -42,7 +44,6 @@ export interface GeneralDetailOverviewContentState {
     rarityLabel: string;
     rarityTier: GeneralDetailRarityTier;
     portraitModeHint: string;
-    overviewModeBadgeLabel: string;
     coreStatsTitle: string;
     coreStatsValue: string;
     roleTitle: string;
@@ -179,7 +180,6 @@ export function buildGeneralDetailOverviewContentState(config: GeneralConfig): G
         rarityLabel: resolveRarityLabel(config),
         rarityTier: resolveRarityTier(config),
         portraitModeHint: '總覽模式 / 血脈命鏡',
-        overviewModeBadgeLabel: '血脈總覽',
         coreStatsTitle: '核心屬性',
         coreStatsValue: overview.cards.coreStatsSummary,
         roleTitle: '戰場定位',
@@ -197,7 +197,7 @@ export function buildGeneralDetailOverviewContentState(config: GeneralConfig): G
         crestTitle: overview.cards.crestTitle,
         crestHint: overview.cards.crestHint,
         crestState: overview.cards.crestState,
-        crestFaceResource: 'sprites/ui_families/general_detail/crest/proof/dragon_medallion_face_v1',
+        crestFaceResource: 'sprites/ui_families/general_detail/formal/crest_face_formal',
         crestGlyphPrimary: buildCrestGlyphPrimary(config),
         crestGlyphSecondary: buildCrestGlyphSecondary(config),
         storyCells: storyCellsToRecord(overview.cards.storyCells),
@@ -260,22 +260,23 @@ function buildRoleSummary(str?: number, int?: number, lea?: number): string {
         return '定位未定';
     }
 
-    return values.slice(0, 2).map((item) => item.key).join(' / ');
+    return values.slice(0, 2).map((item) => item.key).join('\n');
 }
 
 function buildTraitSummary(config: GeneralConfig, currentSp: number, maxSp: number): string {
     const parts: string[] = [];
 
-    if (config.skillId) {
-        parts.push(currentSp >= maxSp ? '列陣直進' : `戰意回填 ${currentSp}/${maxSp}`);
+    if (maxSp > 0) {
+        const ratio = currentSp / maxSp;
+        parts.push(ratio >= 0.85 ? '戰意高張' : ratio >= 0.45 ? '戰意漸起' : '戰意待聚');
     }
 
     if (config.preferredTerrain) {
-        parts.push(`地形適應 ${TERRAIN_DISPLAY[config.preferredTerrain] ?? config.preferredTerrain}`);
+        parts.push(`${TERRAIN_DISPLAY[config.preferredTerrain] ?? config.preferredTerrain}適性`);
     }
 
-    if (config.attackBonus !== undefined && config.attackBonus > 0) {
-        parts.push(`衝鋒增傷 +${Math.floor(config.attackBonus * 100)}%`);
+    if (parts.length < 2 && config.attackBonus !== undefined && config.attackBonus > 0) {
+        parts.push('衝鋒增傷');
     }
 
     if (parts.length === 0) {
@@ -286,9 +287,13 @@ function buildTraitSummary(config: GeneralConfig, currentSp: number, maxSp: numb
 }
 
 function buildPersonalitySummary(config: GeneralConfig): string {
-    const shortPersonality = shortenText(config.parentsSummary, 14);
+    const shortPersonality = shortenText(config.bloodlineRumor || config.historicalAnecdote, 14);
     if (shortPersonality) {
         return shortPersonality;
+    }
+    const lineageTone = shortenText(config.parentsSummary, 12);
+    if (lineageTone && !lineageTone.includes('未公開')) {
+        return lineageTone;
     }
     if (config.epRating) {
         return `EP 評級 ${config.epRating}`;
@@ -297,18 +302,15 @@ function buildPersonalitySummary(config: GeneralConfig): string {
 }
 
 function buildBloodlineBody(config: GeneralConfig): string {
-    const lines: string[] = [];
-
-    const parentLine = shortenText(config.parentsSummary, 12);
     const ancestorLine = shortenText(config.ancestorsSummary, 12);
     const impressionLine = shortenText(config.bloodlineRumor || config.historicalAnecdote, 14);
-
-    if (parentLine) {
-        lines.push(`父脈：${parentLine}`);
-    }
+    const displayName = formatBloodlineDisplayName(config.bloodlineId, '');
+    const lines: string[] = [];
 
     if (ancestorLine) {
-        lines.push(`祖脈：${ancestorLine}`);
+        lines.push(`祖紋：${ancestorLine}`);
+    } else if (displayName) {
+        lines.push(`族脈：${displayName}`);
     }
 
     if (impressionLine) {
@@ -373,76 +375,13 @@ function resolveAwakeningProgress(ep: number | undefined): number {
     return Math.max(0.08, Math.min(1, ep / 100));
 }
 
-function resolveRarityTier(config: GeneralConfig): GeneralDetailRarityTier {
-    // 手動指定永遠最高優先
-    if (config.rarityTier) {
-        return config.rarityTier;
-    }
-
-    // 角色分類 override：神話 → mythic，稱號特殊 → legendary
-    const cat = config.characterCategory;
-    if (cat === 'mythical') return 'mythic';
-    if (cat === 'titled') return 'legendary';
-
-    // 雙軸自動判定：maxStat 軸 + avg5 軸，取較高 tier
-    const stats = [
-        config.str ?? config.stats?.str ?? 0,
-        config.int ?? config.stats?.int ?? 0,
-        config.lea ?? config.stats?.lea ?? 0,
-        config.pol ?? config.stats?.pol ?? 0,
-        config.cha ?? config.stats?.cha ?? 0,
-    ];
-    const maxStat = Math.max(...stats);
-    const avg5 = stats.reduce((s, v) => s + v, 0) / (stats.length || 1);
-
-    // 若五維全為 0（資料尚未填入），fallback 用 EP
-    if (maxStat === 0) {
-        return resolveRarityTierByEp(config.ep ?? 0);
-    }
-
-    const tierFromMax = statToTier(maxStat, 95, 80, 65);
-    const tierFromAvg = statToTier(avg5, 80, 65, 50);
-    return higherTier(tierFromMax, tierFromAvg);
-}
-
-/** EP-based fallback（相容原有資料） */
-function resolveRarityTierByEp(ep: number): GeneralDetailRarityTier {
-    if (ep >= 90) return 'legendary';
-    if (ep >= 75) return 'epic';
-    if (ep >= 60) return 'rare';
-    return 'common';
-}
-
-const TIER_RANK: Record<string, number> = { common: 0, rare: 1, epic: 2, legendary: 3, mythic: 4 };
-
-function statToTier(value: number, legendary: number, epic: number, rare: number): GeneralDetailRarityTier {
-    if (value >= legendary) return 'legendary';
-    if (value >= epic) return 'epic';
-    if (value >= rare) return 'rare';
-    return 'common';
-}
-
-function higherTier(a: GeneralDetailRarityTier, b: GeneralDetailRarityTier): GeneralDetailRarityTier {
-    return (TIER_RANK[a] ?? 0) >= (TIER_RANK[b] ?? 0) ? a : b;
-}
-
 function resolveRarityLabel(config: GeneralConfig): string {
-    if (config.rarityLabel) {
-        return config.rarityLabel;
+    const normalized = normalizeUIRarityMarkLabel(config.rarityLabel);
+    if (normalized) {
+        return normalized;
     }
 
-    switch (resolveRarityTier(config)) {
-        case 'mythic':
-            return 'UR / 神話';
-        case 'legendary':
-            return 'SSR / 傳說';
-        case 'epic':
-            return 'SR / 史詩';
-        case 'rare':
-            return 'R / 稀有';
-        default:
-            return 'N / 常規';
-    }
+    return getUIRarityMarkLabel(resolveRarityTier(config));
 }
 
 function storyCellsToRecord(storyCells: GeneralDetailStoryCellConfig[]): Record<GeneralDetailStorySlot, string> {
@@ -466,6 +405,8 @@ function shortenText(value: string | undefined, maxLength: number): string {
     }
 
     const normalized = value
+        .replace(/[\uD800-\uDFFF]/g, '')
+        .replace(/[^\p{L}\p{N}\p{Script=Han}\s/．、，。：；「」『』（）【】《》！？—-]/gu, ' ')
         .replace(/[|｜]/g, ' / ')
         .replace(/[，,、；;]/g, ' / ')
         .replace(/\s+/g, ' ')

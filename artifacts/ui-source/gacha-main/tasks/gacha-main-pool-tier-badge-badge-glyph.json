@@ -1,0 +1,46 @@
+{
+  "taskId": "gacha-main-pool-tier-badge-badge-glyph",
+  "screenId": "GachaMain",
+  "model": "nano-banana-2",
+  "zone": "pool-tier-badge",
+  "slot": "badgeGlyph",
+  "taskType": "generate-partial-asset",
+  "label": "badge 主 glyph",
+  "family": "icon-badge-suite",
+  "recipe": "lobby-badge-icon-v1",
+  "structureOwner": "UITemplateResolver+widget-compose",
+  "skinOwner": "UISkinResolver",
+  "contentOwner": "contentContract",
+  "widgetRefs": [
+    "badge-underlay",
+    "badge-fill",
+    "badge-glyph"
+  ],
+  "templateRefs": [],
+  "targetStyle": "icon-badge-suite / lobby-badge-icon-v1",
+  "mustKeep": [
+    "single centered badge glyph",
+    "small-size readability",
+    "batch-consistent ornament language"
+  ],
+  "mustAvoid": [
+    "text",
+    "letters",
+    "numbers",
+    "full panel rectangle"
+  ],
+  "fitRules": {
+    "maxVisualOccupancy": 0.65,
+    "runtimeIntrusionForbidden": true
+  },
+  "postProcess": {
+    "trimByBackground": true,
+    "fitPadding": 8
+  },
+  "output": {
+    "preferredMime": "image/png",
+    "targetLongEdge": 512,
+    "transparentBackgroundPreferred": true,
+    "outputName": "pool-tier-badge_badge_glyph"
+  }
+}

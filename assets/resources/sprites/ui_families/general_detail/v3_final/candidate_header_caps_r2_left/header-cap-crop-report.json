@@ -1,0 +1,151 @@
+{
+  "input": "c:\\Users\\User\\3KLife\\artifacts\\ui-qa\\UI-2-0094\\r2-candidates\\header_ornament_l_new.png",
+  "outDir": "c:\\Users\\User\\3KLife\\assets\\resources\\sprites\\ui_families\\general_detail\\v3_final\\candidate_header_caps_r2_left",
+  "sourceSize": {
+    "width": 1024,
+    "height": 1024
+  },
+  "mode": "auto-detect",
+  "analysis": {
+    "imageSize": {
+      "width": 1024,
+      "height": 1024
+    },
+    "background": {
+      "r": 218.62326388888889,
+      "g": 222.37673611111111,
+      "b": 225.625,
+      "a": 255
+    },
+    "candidateCount": 3,
+    "candidates": [
+      {
+        "bbox": {
+          "x": 0,
+          "y": 383,
+          "width": 49,
+          "height": 66
+        },
+        "area": 1603,
+        "areaRatio": 0.0015287399291992188,
+        "widthRatio": 0.0478515625,
+        "heightRatio": 0.064453125,
+        "aspect": 0.7424242424242424,
+        "solidity": 0.49567099567099565,
+        "centerX": 24.5,
+        "centerY": 416,
+        "leftScore": 0.8464381714747925,
+        "rightScore": 0.5173732300685425
+      },
+      {
+        "bbox": {
+          "x": 59,
+          "y": 389,
+          "width": 66,
+          "height": 65
+        },
+        "area": 1220,
+        "areaRatio": 0.001163482666015625,
+        "widthRatio": 0.064453125,
+        "heightRatio": 0.0634765625,
+        "aspect": 1.0153846153846153,
+        "solidity": 0.28438228438228436,
+        "centerX": 92,
+        "centerY": 421.5,
+        "leftScore": 0.7155478310751748,
+        "rightScore": 0.44416111232517486
+      },
+      {
+        "bbox": {
+          "x": 681,
+          "y": 405,
+          "width": 52,
+          "height": 71
+        },
+        "area": 1443,
+        "areaRatio": 0.0013761520385742188,
+        "widthRatio": 0.05078125,
+        "heightRatio": 0.0693359375,
+        "aspect": 0.7323943661971831,
+        "solidity": 0.3908450704225352,
+        "centerX": 707,
+        "centerY": 440.5,
+        "leftScore": 0.5069692023669796,
+        "rightScore": 0.5860951789294796
+      }
+    ],
+    "bestLeft": {
+      "bbox": {
+        "x": 0,
+        "y": 383,
+        "width": 49,
+        "height": 66
+      },
+      "area": 1603,
+      "areaRatio": 0.0015287399291992188,
+      "widthRatio": 0.0478515625,
+      "heightRatio": 0.064453125,
+      "aspect": 0.7424242424242424,
+      "solidity": 0.49567099567099565,
+      "centerX": 24.5,
+      "centerY": 416,
+      "leftScore": 0.8464381714747925,
+      "rightScore": 0.5173732300685425
+    },
+    "bestRight": {
+      "bbox": {
+        "x": 681,
+        "y": 405,
+        "width": 52,
+        "height": 71
+      },
+      "area": 1443,
+      "areaRatio": 0.0013761520385742188,
+      "widthRatio": 0.05078125,
+      "heightRatio": 0.0693359375,
+      "aspect": 0.7323943661971831,
+      "solidity": 0.3908450704225352,
+      "centerX": 707,
+      "centerY": 440.5,
+      "leftScore": 0.5069692023669796,
+      "rightScore": 0.5860951789294796
+    }
+  },
+  "detectedSides": [
+    "left",
+    "right"
+  ],
+  "outputs": {
+    "left": {
+      "detected": {
+        "x": 0,
+        "y": 383,
+        "width": 49,
+        "height": 66
+      },
+      "padded": {
+        "x": 0,
+        "y": 379,
+        "width": 57,
+        "height": 74
+      },
+      "output": "c:\\Users\\User\\3KLife\\assets\\resources\\sprites\\ui_families\\general_detail\\v3_final\\candidate_header_caps_r2_left\\panel_header_cap_l_sheet_r2.png"
+    },
+    "right": {
+      "detected": {
+        "x": 681,
+        "y": 405,
+        "width": 52,
+        "height": 71
+      },
+      "padded": {
+        "x": 677,
+        "y": 401,
+        "width": 60,
+        "height": 79
+      },
+      "output": "c:\\Users\\User\\3KLife\\assets\\resources\\sprites\\ui_families\\general_detail\\v3_final\\candidate_header_caps_r2_left\\header_cap_right.png"
+    }
+  },
+  "status": "matched"
+}

@@ -1,0 +1,27 @@
+{
+  "$schema": "../../schemas/intake.schema.json",
+  "screenId": "GeneralDetailOverview",
+  "tier": "B",
+  "templateFamilyCandidate": "detail-split",
+  "uiId": "GeneralDetailBloodlineV3",
+  "sourceOfTruth": {
+    "screenSpec": "assets/resources/ui-spec/screens/general-detail-bloodline-v3-screen.json",
+    "layout": "general-detail-bloodline-v3-main",
+    "skin": "general-detail-bloodline-v3-default",
+    "bundle": "lobby_ui",
+    "layer": "Popup"
+  },
+  "canonicalReferences": [
+    "artifacts/ui-qa/UI-2-0094/runtime-r18-delete-badge-and-header-frame/GeneralDetailOverview.png",
+    "artifacts/ui-qa/UI-2-0094/runtime-r19-header-final-weight-tune/GeneralDetailOverview.png"
+  ],
+  "riskZones": [
+    "headerPlaque",
+    "crestMedallion",
+    "portraitStage"
+  ],
+  "smokeRoute": "node tools_node/capture-ui-screens.js --target GeneralDetailOverview --outDir artifacts/ui-qa/general-detail-overview/runtime-smoke",
+  "notes": null,
+  "generatedAt": "2026-04-08T03:27:56.963Z",
+  "generatedBy": "tools_node/intake-ui-screen.js"
+}

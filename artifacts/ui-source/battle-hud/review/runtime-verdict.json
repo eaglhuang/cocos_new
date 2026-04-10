@@ -1,0 +1,270 @@
+{
+  "$schema": "../../schemas/runtime-verdict.schema.json",
+  "screenId": "BattleHUD",
+  "runId": "runtime-width-backoff-r25",
+  "status": "pass",
+  "residuals": [],
+  "promoteable": true,
+  "factoryLearnings": [
+    "runtime capture connected to capture-ui-screens.js"
+  ],
+  "latestStage": "runtimeCapture",
+  "captureArtifacts": {
+    "screenshotPath": "artifacts/ui-qa/UI-2-0100/runtime-width-backoff-r25/BattleScene.png",
+    "captureReportPath": "artifacts/ui-qa/UI-2-0100/runtime-width-backoff-r25/capture-report.json"
+  },
+  "diagnosticsSummary": {
+    "consoleErrorCount": 0,
+    "consoleWarningCount": 0,
+    "pageErrorCount": 0,
+    "requestFailureCount": 0
+  },
+  "history": [
+    {
+      "runId": "runtime-gate-f-r1",
+      "status": "pass-with-minor-residuals",
+      "updatedAt": "2026-04-08T03:58:15.619Z",
+      "residualCount": 1,
+      "promoteable": true
+    },
+    {
+      "runId": "runtime-triage-r2",
+      "status": "pass-with-minor-residuals",
+      "updatedAt": "2026-04-08T04:32:43.580Z",
+      "residualCount": 1,
+      "promoteable": true
+    },
+    {
+      "runId": "runtime-triage-r3",
+      "status": "pass-with-minor-residuals",
+      "updatedAt": "2026-04-08T04:34:24.542Z",
+      "residualCount": 2,
+      "promoteable": true
+    },
+    {
+      "runId": "runtime-triage-r4",
+      "status": "pass-with-minor-residuals",
+      "updatedAt": "2026-04-08T04:38:03.000Z",
+      "residualCount": 1,
+      "promoteable": true
+    },
+    {
+      "runId": "runtime-triage-r5",
+      "status": "pass",
+      "updatedAt": "2026-04-08T04:45:08.075Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "f7-runtime-r1",
+      "status": "pass",
+      "updatedAt": "2026-04-08T07:01:11.795Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "f7-runtime-r2",
+      "status": "pass",
+      "updatedAt": "2026-04-08T07:05:28.467Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "unitinfo-r6",
+      "status": "pass",
+      "updatedAt": "2026-04-08T09:23:59.571Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "unitinfo-r7",
+      "status": "pass",
+      "updatedAt": "2026-04-08T09:30:51.810Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "runtime-baseline",
+      "status": "pass",
+      "updatedAt": "2026-04-09T13:37:21.283Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "runtime-fullres-r2",
+      "status": "pass",
+      "updatedAt": "2026-04-09T16:56:14.275Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "runtime-fullres-r3",
+      "status": "pass",
+      "updatedAt": "2026-04-09T17:07:36.958Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "runtime-fullres-r4",
+      "status": "pass",
+      "updatedAt": "2026-04-09T17:10:14.063Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "runtime-fullres-r5",
+      "status": "pass",
+      "updatedAt": "2026-04-09T17:12:59.625Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "runtime-fullres-r6",
+      "status": "pass",
+      "updatedAt": "2026-04-09T17:18:17.007Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "runtime-fullres-r7",
+      "status": "pass",
+      "updatedAt": "2026-04-09T17:23:05.816Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "runtime-fullres-r8",
+      "status": "pass",
+      "updatedAt": "2026-04-09T17:25:17.038Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "runtime-fullres-r9",
+      "status": "pass",
+      "updatedAt": "2026-04-09T17:27:03.096Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "runtime-fullres-r10",
+      "status": "pass",
+      "updatedAt": "2026-04-09T17:28:57.190Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "runtime-fullres-r11",
+      "status": "pass",
+      "updatedAt": "2026-04-09T17:30:44.464Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "runtime-fullres-r12",
+      "status": "pass",
+      "updatedAt": "2026-04-09T17:32:29.138Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "runtime-fullres-r13",
+      "status": "pass",
+      "updatedAt": "2026-04-09T17:33:58.524Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "runtime-fullres-r14",
+      "status": "pass",
+      "updatedAt": "2026-04-09T17:37:53.263Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "runtime-fullres-r15",
+      "status": "pass",
+      "updatedAt": "2026-04-09T17:40:52.179Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "runtime-fullres-r16",
+      "status": "pass-with-minor-residuals",
+      "updatedAt": "2026-04-09T17:42:31.663Z",
+      "residualCount": 1,
+      "promoteable": true
+    },
+    {
+      "runId": "runtime-fullres-r17",
+      "status": "pass-with-minor-residuals",
+      "updatedAt": "2026-04-09T17:43:38.621Z",
+      "residualCount": 1,
+      "promoteable": true
+    },
+    {
+      "runId": "runtime-fullres-r18",
+      "status": "pass-with-minor-residuals",
+      "updatedAt": "2026-04-09T17:44:54.718Z",
+      "residualCount": 1,
+      "promoteable": true
+    },
+    {
+      "runId": "runtime-fullres-r19",
+      "status": "pass-with-minor-residuals",
+      "updatedAt": "2026-04-09T17:47:29.190Z",
+      "residualCount": 1,
+      "promoteable": true
+    },
+    {
+      "runId": "runtime-fullres-r20",
+      "status": "pass-with-minor-residuals",
+      "updatedAt": "2026-04-09T17:48:48.303Z",
+      "residualCount": 1,
+      "promoteable": true
+    },
+    {
+      "runId": "runtime-fullres-final",
+      "status": "pass",
+      "updatedAt": "2026-04-09T17:50:24.651Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "runtime-fullres-r21",
+      "status": "pass",
+      "updatedAt": "2026-04-10T01:20:37.097Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "runtime-fullres-r22",
+      "status": "pass",
+      "updatedAt": "2026-04-10T01:29:57.371Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "runtime-fullres-r23",
+      "status": "pass",
+      "updatedAt": "2026-04-10T01:47:44.295Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "runtime-width-backoff-r24",
+      "status": "pass",
+      "updatedAt": "2026-04-10T02:25:14.535Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "runtime-width-backoff-r25",
+      "status": "pass",
+      "updatedAt": "2026-04-10T02:44:21.850Z",
+      "residualCount": 0,
+      "promoteable": true
+    }
+  ],
+  "updatedAt": "2026-04-10T02:44:21.850Z"
+}

@@ -30,11 +30,23 @@ Unity 對照：相當於 Art Director 審圖後給技術美術的「元素清單
 
 ### Step 1 — 讀取參考圖
 
-若 proofSource 為 `ref://` 路徑，先用 `view_image` 載入查看：
+若 proofSource 為 `ref://` 路徑，先走 thumbnail-first progressive zoom：先產出 `125px` 預覽；只有在看不清時才升到 `250px`，再不夠才到 `500px`。
+
+```powershell
+$imgPath = "c:\Users\User\3KLife\<path-after-ref://>"
+node tools_node/prepare-view-image.js --input $imgPath
+# 若 125px 不足，再依序改跑：
+# node tools_node/prepare-view-image.js --input $imgPath --maxWidth 250
+# node tools_node/prepare-view-image.js --input $imgPath --maxWidth 500
+```
 
 ```
 view_image { filePath: "c:\Users\User\3KLife\<path-after-ref://>" }
 ```
+
+若 helper 產出縮圖檔，改看那張 preview 檔，不要直接看原圖。
+
+> 一次最多只開 1 張主圖；若需要對照圖，另加 1 張即可。
 
 若 proofSource 為 `figma://`，讀取 sync-figma-proof-mapping.js 輸出的快照（`artifacts/ui-qa/`）。
 

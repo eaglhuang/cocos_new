@@ -24,6 +24,16 @@ export interface GeneralIndexEntry {
   rarityTier: GeneralDetailRarityTier;
   /** 分頁 layer key（L1~L5 分層存取用） */
   layerKey: string;
+  role?: string;
+  characterCategory?: string;
+  str?: number;
+  int?: number;
+  lea?: number;
+  pol?: number;
+  cha?: number;
+  luk?: number;
+  ep?: number;
+  gender?: string;
 }
 
 /** DataCatalog 查詢過濾器 */
@@ -116,6 +126,31 @@ export class DataCatalog {
       results.push(entry);
     }
     return results;
+  }
+
+  /** 取得所有索引項目快照，供 debug/search UI 使用。 */
+  getAllEntries(): GeneralIndexEntry[] {
+    return Array.from(this._index.values()).map(entry => ({ ...entry }));
+  }
+
+  /** 以 patch 更新單筆索引，供 runtime debug panel 即時反映資料變更。 */
+  updateEntry(uid: string, patch: Partial<GeneralIndexEntry>): GeneralIndexEntry | null {
+    const existing = this._index.get(uid);
+    if (!existing) return null;
+
+    const next = { ...existing, ...patch };
+    if (patch.uid && patch.uid !== uid) {
+      this._index.delete(uid);
+      this._index.set(patch.uid, next);
+    } else {
+      this._index.set(uid, next);
+    }
+    return { ...next };
+  }
+
+  /** 新增或覆寫索引項目。 */
+  upsertEntry(entry: GeneralIndexEntry): void {
+    this._index.set(entry.uid, { ...entry });
   }
 
   /**

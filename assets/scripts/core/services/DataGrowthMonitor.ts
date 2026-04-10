@@ -38,6 +38,9 @@ export class DataGrowthMonitor {
     private adapter: DataStorageAdapter;
     private _onWarning: StorageLevelCallback | null = null;
     private _onError: StorageLevelCallback | null = null;
+    /** §2.6 降級觸發回調：warning → 觸發 rollup；error → 觸發 sweep */
+    private _onRollupNeeded: StorageLevelCallback | null = null;
+    private _onSweepNeeded: StorageLevelCallback | null = null;
     private _timer: ReturnType<typeof setInterval> | null = null;
 
     constructor(adapter: DataStorageAdapter) {
@@ -45,7 +48,7 @@ export class DataGrowthMonitor {
     }
 
     /**
-     * 設定 warning 事件回調（>= 5MB）。
+     * 設定 warning 事件回調（>= 5MB，顯示用）。
      */
     public onWarning(callback: StorageLevelCallback): this {
         this._onWarning = callback;
@@ -53,7 +56,7 @@ export class DataGrowthMonitor {
     }
 
     /**
-     * 設定 error 事件回調（>= 10MB）。
+     * 設定 error 事件回調（>= 10MB，顯示用）。
      */
     public onError(callback: StorageLevelCallback): this {
         this._onError = callback;
@@ -61,7 +64,26 @@ export class DataGrowthMonitor {
     }
 
     /**
+     * 設定降級觸發回調（warning → SeasonalRollup）。
+     * 由 DataLifecycleScheduler 注入，收到回調時執行季結壓縮。
+     */
+    public onRollupNeeded(callback: StorageLevelCallback): this {
+        this._onRollupNeeded = callback;
+        return this;
+    }
+
+    /**
+     * 設定降級觸發回調（error → PendingDeleteStore.sweep）。
+     * 由 DataLifecycleScheduler 注入，收到回調時執行強制清掃。
+     */
+    public onSweepNeeded(callback: StorageLevelCallback): this {
+        this._onSweepNeeded = callback;
+        return this;
+    }
+
+    /**
      * 立即執行一次儲存量檢查。
+     * warning → 觸發 rollup 回調；error → 觸發 sweep 回調（再觸發 rollup）。
      */
     public async checkNow(): Promise<StorageCheckResult> {
         let stats: StorageStats;
@@ -73,10 +95,15 @@ export class DataGrowthMonitor {
 
         const result = DataGrowthMonitor._evaluate(stats);
 
-        if (result.level === 'error' && this._onError) {
-            this._onError(result);
-        } else if (result.level === 'warning' && this._onWarning) {
-            this._onWarning(result);
+        if (result.level === 'error') {
+            if (this._onError) this._onError(result);
+            // error 時：先 rollup 再 sweep（積極降級）
+            if (this._onRollupNeeded) this._onRollupNeeded(result);
+            if (this._onSweepNeeded) this._onSweepNeeded(result);
+        } else if (result.level === 'warning') {
+            if (this._onWarning) this._onWarning(result);
+            // warning 時：只做 rollup，不強制清掃
+            if (this._onRollupNeeded) this._onRollupNeeded(result);
         }
 
         return result;

@@ -1,0 +1,23 @@
+{
+  "taskId": "shop-main-header-param-tune",
+  "screenId": "ShopMain",
+  "zone": "header",
+  "taskType": "param-tune",
+  "label": "header param tune",
+  "family": "dark-metal",
+  "recipe": "dark-metal-v1",
+  "reason": "深色金屬底，顯示商城標題與關閉按鈕",
+  "adjustTargets": [
+    "opacity",
+    "title-alignment",
+    "padding"
+  ],
+  "suggestedOps": [
+    "tune-bar-padding",
+    "tune-label-alignment",
+    "tune-frame-opacity"
+  ],
+  "widgetRefs": [],
+  "templateRefs": [],
+  "notes": "深色金屬底，顯示商城標題與關閉按鈕"
+}

@@ -33,10 +33,10 @@ export interface CanvasDef {
 
 /** Widget 自適應定義 */
 export interface WidgetDef {
-    top?: number;
-    bottom?: number;
-    left?: number;
-    right?: number;
+    top?: number | string;
+    bottom?: number | string;
+    left?: number | string;
+    right?: number | string;
     /** 水平置中。true = 偏移 0；number = 帶偏移（正值向右） */
     hCenter?: boolean | number;
     /** 垂直置中。true = 偏移 0；number = 帶偏移（正值向上） */
@@ -51,6 +51,14 @@ export interface LayoutDef {
     paddingRight?: number;
     paddingTop?: number;
     paddingBottom?: number;
+    /**
+     * 子節點尺寸策略（Cocos Layout.ResizeMode）：
+     *   - 'none'：Layout 僅排位，不調整子節點尺寸（預設）
+     *   - 'container'：容器自動調整大小以容納所有子節點
+     *   - 'children'：子節點自動調整大小以填滿容器
+     * Unity 對照：ContentSizeFitter / LayoutGroup.childForceExpand
+     */
+    resizeMode?: 'none' | 'container' | 'children';
 }
 
 /** 過渡動畫定義（保留參數，UIPreviewBuilder 提供預設值） */

@@ -87,7 +87,11 @@ export class UISkinResolver {
             this._spriteCache.set(slotId, frame);
             return frame;
         } catch (e) {
-            console.warn(`[UISkinResolver] 載入 SpriteFrame 失敗: ${slotId} → ${path}`, e);
+            if (path.startsWith('ui-spec/placeholders/')) {
+                console.log(`[UISkinResolver] placeholder SpriteFrame 缺失，沿用呼叫端 fallback: ${slotId} → ${path}`);
+            } else {
+                console.warn(`[UISkinResolver] 載入 SpriteFrame 失敗: ${slotId} → ${path}`, e);
+            }
             this._spriteCache.set(slotId, null);
             return null;
         }
@@ -200,10 +204,11 @@ export class UISkinResolver {
 
     private _parseOverflow(overflow?: string): number {
         switch (overflow?.toUpperCase()) {
+            case 'NONE':          return 0; // Label.Overflow.NONE — 僅在明確指定時啟用
             case 'CLAMP':         return 1;
             case 'SHRINK':        return 2;
             case 'RESIZE_HEIGHT': return 3;
-            default:              return 0; // NONE
+            default:              return 2; // SHRINK — 未指定時預設自動縮小，防止文字溢出
         }
     }
 

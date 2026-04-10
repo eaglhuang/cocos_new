@@ -1,0 +1,87 @@
+{
+  "reportVersion": "1.0",
+  "updatedAt": "2026-04-08T03:40:00.000Z",
+  "gates": [
+    {
+      "id": "A",
+      "title": "結構編譯可運作",
+      "status": "done",
+      "evidence": [
+        "schema + validator 已落地",
+        "compiler 寫檔後自動自檢"
+      ]
+    },
+    {
+      "id": "B",
+      "title": "同 family 可複用",
+      "status": "done",
+      "evidence": [
+        "GeneralDetailOverview",
+        "GeneralDetailBloodlineV3"
+      ]
+    },
+    {
+      "id": "C",
+      "title": "非 GeneralDetail Popup 可複用",
+      "status": "done",
+      "evidence": [
+        "ShopMain"
+      ]
+    },
+    {
+      "id": "D",
+      "title": "戰場語言可複用",
+      "status": "done",
+      "evidence": [
+        "BattleHUD"
+      ]
+    },
+    {
+      "id": "E",
+      "title": "Review 產物齊備",
+      "status": "done",
+      "evidence": [
+        "generated-review.json",
+        "runtime-verdict.json skeleton"
+      ]
+    },
+    {
+      "id": "F",
+      "title": "Runtime 驗證自動化",
+      "status": "done",
+      "evidence": [
+        "shop-main/review/runtime-verdict.json",
+        "general-detail-overview/review/runtime-verdict.json",
+        "battle-hud/review/runtime-verdict.json",
+        "general-detail-bloodline-v3/review/runtime-verdict.json"
+      ]
+    },
+    {
+      "id": "G",
+      "title": "量產效果可量化",
+      "status": "in-progress",
+      "evidence": [
+        "artifacts/ui-source/factory-throughput-report.json"
+      ]
+    }
+  ],
+  "validatedScreens": [
+    "GeneralDetailOverview",
+    "GeneralDetailBloodlineV3",
+    "ShopMain",
+    "BattleHUD"
+  ],
+  "summary": {
+    "doneGateCount": 6,
+    "inProgressGateCount": 1,
+    "pendingGateCount": 0,
+    "factoryReady": false,
+    "note": "4 張當前主要驗證樣本都已接上實際 runtime capture，throughput 量化已開始，但仍需累積更多時間序列與新 screen onboarding 樣本。"
+  },
+  "nextFocus": [
+    "補齊 reference source + prompt card 正式流程",
+    "針對高 warning 的 runtime verdict 做 residual triage",
+    "找全新 screen 做第一次完整 onboarding 驗證",
+    "補 task / human-time 長期紀錄，讓 throughput 變成趨勢報表"
+  ]
+}

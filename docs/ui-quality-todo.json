@@ -19,7 +19,7 @@
       "name": "tasks-dc",
       "title": "DataCenter Tasks（DC-*）",
       "path": "docs/tasks/tasks-dc.json",
-      "count": 35
+      "count": 37
     },
     {
       "name": "tasks-data",

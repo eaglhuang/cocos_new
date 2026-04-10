@@ -58,20 +58,10 @@ export class GeneralListPanel extends UIPreviewBuilder {
                 const factionLbl = row.getChildByName('Faction')!.getComponent(Label)!;
                 if (item.faction === 'player') {
                     factionLbl.string = '我方';
-                    factionLbl.color = this.resolveColor('textPositive');
+                    factionLbl.color = this.resolveColor('textPositiveOnParchment');
                 } else {
                     factionLbl.string = '敵方';
-                    factionLbl.color = this.resolveColor('textNegative');
-                }
-
-                // 診斷日誌：確保 Name 節點名稱正確指派
-                const nameNode = row.getChildByName('Name');
-                const nameLbl = nameNode?.getComponent(Label);
-                if (nameLbl) {
-                    nameLbl.string = item.name;
-                    console.log(`[GeneralListPanel] Row populated: ${item.name} (${item.id})`);
-                } else {
-                    console.warn(`[GeneralListPanel] Name node not found for item: ${item.id}`, row.children.map(c => c.name));
+                    factionLbl.color = this.resolveColor('textNegativeOnParchment');
                 }
 
                 row.getChildByName('Hp')!.getComponent(Label)!.string = item.hp.toString();

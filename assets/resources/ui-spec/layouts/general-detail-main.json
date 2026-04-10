@@ -21,6 +21,17 @@
         "skinSlot": "detail.bg.fullscreen"
       },
       {
+        "type": "button",
+        "name": "TopCloseBtn",
+        "id": "topCloseBtn",
+        "widget": { "top": 76, "left": 118 },
+        "width": 42,
+        "height": 42,
+        "skinSlot": "detail.close.btn",
+        "styleSlot": "detail.close.label",
+        "text": "×"
+      },
+      {
         "type": "panel",
         "name": "ClickBlocker",
         "widget": { "top": 0, "bottom": 0, "left": 0, "right": 0 },
@@ -118,16 +129,15 @@
         "type": "container",
         "name": "RightTabBar",
         "widget": { "top": 64, "bottom": 60, "right": 20 },
-        "width": 76,
+        "width": 108,
         "layout": { "type": "vertical", "spacing": 8, "paddingTop": 12, "paddingBottom": 12, "paddingLeft": 5, "paddingRight": 5 },
         "children": [
-          { "type": "button", "name": "BtnTabBasics", "width": 66, "height": 60, "skinSlot": "detail.tab.idle", "styleSlot": "detail.label.button", "textKey": "ui.general.tab.basics" },
-          { "type": "button", "name": "BtnTabStats", "width": 66, "height": 60, "skinSlot": "detail.tab.idle", "styleSlot": "detail.label.button", "textKey": "ui.general.tab.stats" },
-          { "type": "button", "name": "BtnTabBloodline", "width": 66, "height": 60, "skinSlot": "detail.tab.idle", "styleSlot": "detail.label.button", "textKey": "ui.general.tab.bloodline" },
-          { "type": "button", "name": "BtnTabSkills", "width": 66, "height": 60, "skinSlot": "detail.tab.idle", "styleSlot": "detail.label.button", "textKey": "ui.general.tab.skills" },
-          { "type": "button", "name": "BtnTabAptitude", "width": 66, "height": 60, "skinSlot": "detail.tab.idle", "styleSlot": "detail.label.button", "textKey": "ui.general.tab.aptitude" },
-          { "type": "button", "name": "BtnTabExtended", "width": 66, "height": 60, "skinSlot": "detail.tab.idle", "styleSlot": "detail.label.button", "textKey": "ui.general.tab.extended" },
-          { "type": "button", "name": "BtnClose", "width": 66, "height": 60, "skinSlot": "common.button.primary", "styleSlot": "detail.label.button", "textKey": "ui.close" }
+          { "type": "button", "name": "BtnTabBasics", "width": 98, "height": 60, "skinSlot": "detail.tab.idle", "styleSlot": "detail.label.button", "textKey": "ui.general.tab.basics" },
+          { "type": "button", "name": "BtnTabStats", "width": 98, "height": 60, "skinSlot": "detail.tab.idle", "styleSlot": "detail.label.button", "textKey": "ui.general.tab.stats" },
+          { "type": "button", "name": "BtnTabBloodline", "width": 98, "height": 60, "skinSlot": "detail.tab.idle", "styleSlot": "detail.label.button", "textKey": "ui.general.tab.bloodline" },
+          { "type": "button", "name": "BtnTabSkills", "width": 98, "height": 60, "skinSlot": "detail.tab.idle", "styleSlot": "detail.label.button", "textKey": "ui.general.tab.skills" },
+          { "type": "button", "name": "BtnTabAptitude", "width": 98, "height": 60, "skinSlot": "detail.tab.idle", "styleSlot": "detail.label.button", "textKey": "ui.general.tab.aptitude" },
+          { "type": "button", "name": "BtnTabExtended", "width": 98, "height": 60, "skinSlot": "detail.tab.idle", "styleSlot": "detail.label.button", "textKey": "ui.general.tab.extended" }
         ]
       },
       {

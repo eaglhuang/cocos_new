@@ -1,0 +1,104 @@
+{
+  "$schema": "../../schemas/asset-task-manifest.schema.json",
+  "screenId": "GachaMain",
+  "sourceFamilyMap": "GachaMain",
+  "generatedAt": "2026-04-08T05:06:05.943Z",
+  "taskCount": 2,
+  "tasks": [
+    {
+      "taskId": "gacha-main-pool-tier-badge-badge-glyph",
+      "screenId": "GachaMain",
+      "model": "nano-banana-2",
+      "zone": "pool-tier-badge",
+      "slot": "badgeGlyph",
+      "taskType": "generate-partial-asset",
+      "label": "badge 主 glyph",
+      "family": "icon-badge-suite",
+      "recipe": "lobby-badge-icon-v1",
+      "structureOwner": "UITemplateResolver+widget-compose",
+      "skinOwner": "UISkinResolver",
+      "contentOwner": "contentContract",
+      "widgetRefs": [
+        "badge-underlay",
+        "badge-fill",
+        "badge-glyph"
+      ],
+      "templateRefs": [],
+      "targetStyle": "icon-badge-suite / lobby-badge-icon-v1",
+      "mustKeep": [
+        "single centered badge glyph",
+        "small-size readability",
+        "batch-consistent ornament language"
+      ],
+      "mustAvoid": [
+        "text",
+        "letters",
+        "numbers",
+        "full panel rectangle"
+      ],
+      "fitRules": {
+        "maxVisualOccupancy": 0.65,
+        "runtimeIntrusionForbidden": true
+      },
+      "postProcess": {
+        "trimByBackground": true,
+        "fitPadding": 8
+      },
+      "output": {
+        "preferredMime": "image/png",
+        "targetLongEdge": 512,
+        "transparentBackgroundPreferred": true,
+        "outputName": "pool-tier-badge_badge_glyph"
+      }
+    },
+    {
+      "taskId": "gacha-main-pool-tier-badge-badge-underlay",
+      "screenId": "GachaMain",
+      "model": "nano-banana-2",
+      "zone": "pool-tier-badge",
+      "slot": "badgeUnderlay",
+      "taskType": "generate-partial-asset",
+      "label": "badge 襯底 / underlay",
+      "family": "icon-badge-suite",
+      "recipe": "lobby-badge-icon-v1",
+      "structureOwner": "UITemplateResolver+widget-compose",
+      "skinOwner": "UISkinResolver",
+      "contentOwner": "contentContract",
+      "widgetRefs": [
+        "badge-underlay",
+        "badge-fill",
+        "badge-glyph"
+      ],
+      "templateRefs": [],
+      "targetStyle": "icon-badge-suite / lobby-badge-icon-v1",
+      "mustKeep": [
+        "supports runtime label overlay",
+        "flat readable silhouette",
+        "same family batch consistency"
+      ],
+      "mustAvoid": [
+        "text",
+        "letters",
+        "heavy metal frame",
+        "deep perspective"
+      ],
+      "fitRules": {
+        "maxVisualOccupancy": 0.65,
+        "runtimeIntrusionForbidden": true
+      },
+      "postProcess": {
+        "trimByBackground": true,
+        "fitPadding": 10,
+        "spriteType": "sliced",
+        "border": [10, 32, 10, 32]
+      },
+      "output": {
+        "preferredMime": "image/png",
+        "targetLongEdge": 512,
+        "transparentBackgroundPreferred": true,
+        "outputName": "pool-tier-badge_badge_underlay"
+      }
+    }
+  ],
+  "warnings": []
+}

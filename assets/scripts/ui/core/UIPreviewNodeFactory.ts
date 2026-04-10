@@ -100,11 +100,18 @@ export class UIPreviewNodeFactory {
 
         if (spec.styleSlot) {
             const style = this.skinResolver.getLabelStyle(spec.styleSlot);
-            if (style) this.styleBuilder.applyLabelStyle(label, style);
+            if (style) {
+                this.styleBuilder.applyLabelStyle(label, style);
+                // applyLabelStyle 已保證 overflow ≥ SHRINK，不再硬蓋
+            } else {
+                // styleSlot 找不到時，仍保障 SHRINK
+                label.overflow = Label.Overflow.SHRINK;
+            }
+        } else {
+            // 無 styleSlot 的 label，一律 SHRINK 防溢出
+            // Unity 對照：TextMeshPro AutoSize 預設行為
+            label.overflow = Label.Overflow.SHRINK;
         }
-
-        // 超出時自動縮小（Unity 對照：TextMeshPro AutoSize）
-        label.overflow = Label.Overflow.SHRINK;
     }
 
     /**

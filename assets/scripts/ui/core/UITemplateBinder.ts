@@ -209,6 +209,9 @@ export class UITemplateBinder {
         }
 
         for (const childSpec of spec.children) {
+            if (!childSpec?.name || childSpec.name.trim().length === 0) {
+                continue;
+            }
             const bucket = childBuckets.get(childSpec.name);
             if (!bucket || bucket.length === 0) {
                 console.warn(`[UITemplateBinder] 路徑索引失敗：找不到節點 "${childSpec.name}"，parentPath="${parentPath || '<root>'}"`);

@@ -5,6 +5,12 @@
   "atlasPolicy": "action_command",
   "_doc": "Zone 7: 奧義大圓 + 3個技能小圓皮膚。深色底板，金色奧義環，SP填充藍環。",
   "slots": {
+    "action.dock.bg": {
+      "kind": "color",
+      "color": "backgroundNavyAlt",
+      "alpha": 176,
+      "_doc": "右下指令底座；先用深色半透明板建立群組感。"
+    },
     "action.ultimate.bg": {
       "kind": "sprite-frame",
       "path": "sprites/battle/action_ult_bg/spriteFrame",
@@ -83,6 +89,12 @@
       "allowAutoAtlas": true,
       "_fallback": "#1a6a2a"
     },
+    "action.icon.endturn": {
+      "kind": "sprite-frame",
+      "path": "sprites/battle/action_icon_endturn/spriteFrame",
+      "spriteType": "simple",
+      "allowAutoAtlas": true
+    },
     "action.util.tactics": {
       "kind": "sprite-frame",
       "path": "sprites/battle/action_util_tactics/spriteFrame",
@@ -90,6 +102,12 @@
       "border": [6, 6, 6, 6],
       "allowAutoAtlas": true,
       "_fallback": "#1E3A4A"
+    },
+    "action.icon.tactics": {
+      "kind": "sprite-frame",
+      "path": "sprites/battle/action_icon_tactics/spriteFrame",
+      "spriteType": "simple",
+      "allowAutoAtlas": true
     },
     "action.util.duel": {
       "kind": "sprite-frame",
@@ -99,12 +117,18 @@
       "allowAutoAtlas": true,
       "_fallback": "#4A3A1E"
     },
+    "action.icon.duel": {
+      "kind": "sprite-frame",
+      "path": "sprites/battle/action_icon_duel/spriteFrame",
+      "spriteType": "simple",
+      "allowAutoAtlas": true
+    },
     "action.ultimate.label": {
       "kind": "label-style",
       "font": "fonts/notosans_tc/font",
-      "fontSize": 16,
-      "lineHeight": 20,
-      "color": "textOffWhite",
+      "fontSize": 18,
+      "lineHeight": 22,
+      "color": "secondaryLight",
       "horizontalAlign": "CENTER",
       "isBold": true,
       "_doc": "SP未滿顯示'奧義'；SP滿時顯示'發動'（金色）"
@@ -112,9 +136,9 @@
     "action.sp.pct.label": {
       "kind": "label-style",
       "font": "fonts/manrope/font",
-      "fontSize": 12,
-      "lineHeight": 14,
-      "color": "textSteelBlue",
+      "fontSize": 13,
+      "lineHeight": 16,
+      "color": "textCyanLight",
       "horizontalAlign": "CENTER"
     },
     "action.skill.label": {
@@ -128,9 +152,17 @@
     "action.util.label": {
       "kind": "label-style",
       "font": "fonts/notosans_tc/font",
-      "fontSize": 12,
-      "lineHeight": 14,
-      "color": "textOffWhite",
+      "fontSize": 11,
+      "lineHeight": 13,
+      "color": "textSteelLighter",
+      "horizontalAlign": "CENTER"
+    },
+    "action.util.endturn.label": {
+      "kind": "label-style",
+      "font": "fonts/notosans_tc/font",
+      "fontSize": 10,
+      "lineHeight": 12,
+      "color": "textHintGray",
       "horizontalAlign": "CENTER"
     },
     "action.popup.bg": {

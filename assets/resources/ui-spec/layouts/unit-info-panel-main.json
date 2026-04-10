@@ -29,6 +29,11 @@
       {
         "type": "panel",
         "name": "Header",
+        "widget": {
+          "top": 0,
+          "left": 0,
+          "right": 0
+        },
         "width": "100%",
         "height": 58,
         "skinSlot": "unitinfo.header.bg",
@@ -92,16 +97,27 @@
         ]
       },
       {
-        "type": "scroll-view",
+        "type": "panel",
         "name": "ScrollBody",
         "id": "scrollBody",
+        "widget": {
+          "top": 66,
+          "left": 0,
+          "right": 0,
+          "bottom": 0
+        },
         "width": "100%",
-        "flex": 1,
         "children": [
           {
             "type": "container",
             "name": "ContentRoot",
             "id": "contentRoot",
+            "widget": {
+              "top": 0,
+              "left": 0,
+              "right": 0,
+              "bottom": 0
+            },
             "width": "100%",
             "layout": {
               "type": "vertical",
@@ -116,6 +132,7 @@
                 "type": "panel",
                 "name": "StatsSection",
                 "width": "100%",
+                "height": 130,
                 "skinSlot": "unitinfo.section.bg",
                 "layout": {
                   "type": "vertical",
@@ -185,6 +202,7 @@
                 "type": "panel",
                 "name": "TraitSection",
                 "width": "100%",
+                "height": 72,
                 "skinSlot": "unitinfo.section.bg",
                 "layout": {
                   "type": "vertical",
@@ -220,6 +238,7 @@
                 "type": "panel",
                 "name": "AbilitySection",
                 "width": "100%",
+                "height": 72,
                 "skinSlot": "unitinfo.section.bg",
                 "layout": {
                   "type": "vertical",
@@ -255,6 +274,7 @@
                 "type": "panel",
                 "name": "DescSection",
                 "width": "100%",
+                "height": 118,
                 "skinSlot": "unitinfo.section.bg",
                 "layout": {
                   "type": "vertical",

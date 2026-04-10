@@ -1,0 +1,9 @@
+{
+  "$schema": "../../schemas/asset-task-manifest.schema.json",
+  "screenId": "SpiritTallyDetail",
+  "sourceFamilyMap": "SpiritTallyDetail",
+  "generatedAt": "2026-04-08T04:52:37.221Z",
+  "taskCount": 0,
+  "tasks": [],
+  "warnings": []
+}

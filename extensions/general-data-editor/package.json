@@ -1,0 +1,56 @@
+{
+  "name": "general-data-editor",
+  "version": "1.0.0",
+  "package_version": 2,
+  "description": "武將資料編輯器 — 直接讀寫 assets/resources/data/ 下的武將 JSON，含搜尋/篩選/驗證。",
+  "main": "src/main.js",
+  "author": "Agent1",
+  "editor": "^3.8.0",
+  "panels": {
+    "default": {
+      "title": "武將資料編輯器",
+      "type": "dockable",
+      "main": "panels/default/index.js",
+      "size": { "width": 900, "height": 640 },
+      "min-size": { "width": 600, "height": 400 }
+    }
+  },
+  "contributions": {
+    "menu": [
+      {
+        "path": "i18n:menu.extension/General Data/Open Editor",
+        "message": "open-panel"
+      },
+      {
+        "path": "i18n:menu.extension/General Data/Validate Data",
+        "message": "validate-data"
+      }
+    ],
+    "messages": {
+      "open-panel": {
+        "methods": ["openPanel"]
+      },
+      "validate-data": {
+        "methods": ["validateData"]
+      },
+      "validateData": {
+        "methods": ["validateData"]
+      },
+      "getGeneralsList": {
+        "methods": ["getGeneralsList"]
+      },
+      "searchGenerals": {
+        "methods": ["searchGenerals"]
+      },
+      "getGeneralDetail": {
+        "methods": ["getGeneralDetail"]
+      },
+      "updateGeneralField": {
+        "methods": ["updateGeneralField"]
+      },
+      "updateGeneralFields": {
+        "methods": ["updateGeneralFields"]
+      }
+    }
+  }
+}

@@ -27,12 +27,22 @@ interface ContentContractSchemaField {
     type: string;
     required?: boolean;
     bindPath?: string;
+    /** 允許的列舉值（當 type 為 string 時有效） */
+    enum?: string[];
+    /** 允許的數值範圍（當 type 為 number 時有效），[min, max] 含端點 */
+    range?: [number, number];
+    /** 正則模式驗證（當 type 為 string 時有效） */
+    pattern?: string;
 }
 
 interface ContentContractSchema {
     schemaId: string;
     familyId: string;
     fields: Record<string, ContentContractSchemaField>;
+}
+
+interface UIContentBinderBindOptions {
+    suppressUnresolvedWarnings?: boolean;
 }
 
 /** 驗證結果 */
@@ -66,6 +76,7 @@ export class UIContentBinder {
     validate(
         contractRef: ContentContractRef,
         data: Record<string, unknown>,
+        schema?: ContentContractSchema | null,
     ): ContentValidationResult {
         const missing: string[] = [];
         const warnings: string[] = [];
@@ -75,6 +86,50 @@ export class UIContentBinder {
             const value = data[field];
             if (value === undefined || value === null || value === '') {
                 missing.push(field);
+            }
+        }
+
+        // Schema 層級驗證：type / enum / range / pattern
+        if (schema?.fields) {
+            for (const [key, fieldSpec] of Object.entries(schema.fields)) {
+                const value = data[key];
+                if (value === undefined || value === null) continue;
+
+                // type 檢查
+                if (fieldSpec.type && typeof value !== fieldSpec.type) {
+                    warnings.push(
+                        `欄位 "${key}" 預期型別 ${fieldSpec.type}，實際為 ${typeof value}`,
+                    );
+                }
+
+                // enum 檢查
+                if (fieldSpec.enum && typeof value === 'string') {
+                    if (!fieldSpec.enum.includes(value)) {
+                        warnings.push(
+                            `欄位 "${key}" 的值 "${value}" 不在允許列舉 [${fieldSpec.enum.join(', ')}] 中`,
+                        );
+                    }
+                }
+
+                // range 檢查
+                if (fieldSpec.range && typeof value === 'number') {
+                    const [min, max] = fieldSpec.range;
+                    if (value < min || value > max) {
+                        warnings.push(
+                            `欄位 "${key}" 的值 ${value} 超出允許範圍 [${min}, ${max}]`,
+                        );
+                    }
+                }
+
+                // pattern 檢查
+                if (fieldSpec.pattern && typeof value === 'string') {
+                    const re = new RegExp(fieldSpec.pattern);
+                    if (!re.test(value)) {
+                        warnings.push(
+                            `欄位 "${key}" 的值 "${value}" 不符合模式 ${fieldSpec.pattern}`,
+                        );
+                    }
+                }
             }
         }
 
@@ -109,6 +164,7 @@ export class UIContentBinder {
         binder: UITemplateBinder,
         contractRef: ContentContractRef,
         data: Record<string, unknown>,
+        options: UIContentBinderBindOptions = {},
     ): Promise<void> {
         const schema = await this._loadSchema(contractRef.schemaId);
         const fallbackTextEntries: Record<string, string> = {};
@@ -148,7 +204,7 @@ export class UIContentBinder {
         }
 
         // 驗證並 warn 缺少必填欄位（不阻斷執行）
-        const result = this.validate(contractRef, data);
+        const result = this.validate(contractRef, data, schema);
         if (!result.valid) {
             console.warn(
                 `[UIContentBinder] family="${contractRef.familyId}" schema="${contractRef.schemaId}" ` +
@@ -156,7 +212,14 @@ export class UIContentBinder {
             );
         }
 
-        if (unresolved.length > 0) {
+        if (result.warnings.length > 0) {
+            console.warn(
+                `[UIContentBinder] family="${contractRef.familyId}" schema="${contractRef.schemaId}" ` +
+                `契約警告: ${result.warnings.join('; ')}`,
+            );
+        }
+
+        if (unresolved.length > 0 && !options.suppressUnresolvedWarnings) {
             console.warn(
                 `[UIContentBinder] family="${contractRef.familyId}" schema="${contractRef.schemaId}" ` +
                 `找不到 bindPath 對應節點: ${unresolved.join(', ')}`,

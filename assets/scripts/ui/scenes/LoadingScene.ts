@@ -17,6 +17,9 @@ import { UIScreenPreviewHost } from '../components/UIScreenPreviewHost';
 import { GeneralDetailPanel } from '../components/GeneralDetailPanel';
 import { GeneralDetailOverviewShell } from '../components/GeneralDetailOverviewShell';
 import { LobbyScene } from './LobbyScene';
+import type { GeneralConfig } from '../../core/models/GeneralUnit';
+import { getUIRarityMarkLabel } from '../core/UIRarityMark';
+import { applyUIPreviewBinderState, type UIPreviewBinderState } from '../core/UIPreviewStateApplicator';
 
 const { ccclass, property } = _decorator;
 
@@ -28,6 +31,7 @@ enum LoadingPreviewTarget {
     DuelChallenge = 4,
     BattleScene = 5,
     GeneralDetailOverview = 6,
+    SpiritTallyDetail = 7,
 }
 
 /**
@@ -52,6 +56,9 @@ export class LoadingScene extends Component {
         tooltip: '開發用：選擇要在 LoadingScene.scene 中預覽的 screen-driven UI。',
     })
     public previewTarget: LoadingPreviewTarget = LoadingPreviewTarget.Disabled;
+
+    @property({ tooltip: '開發用：preview 的子狀態，例如 gacha 使用 hero / support / limited。' })
+    public previewVariant = '';
 
     private _bgNode: Node | null = null;
     private _bgSpriteFrame: SpriteFrame | null = null;
@@ -83,6 +90,7 @@ export class LoadingScene extends Component {
         const query = new URLSearchParams(search);
         const mode = query.get('previewMode') ?? query.get('PREVIEW_MODE');
         const target = query.get('previewTarget') ?? query.get('PREVIEW_TARGET');
+        const variant = query.get('previewVariant') ?? query.get('PREVIEW_VARIANT');
 
         if (mode === 'true' || mode === '1') {
             this.previewMode = true;
@@ -92,6 +100,9 @@ export class LoadingScene extends Component {
             if (!Number.isNaN(targetValue)) {
                 this.previewTarget = targetValue;
             }
+        }
+        if (variant) {
+            this.previewVariant = variant.trim();
         }
     }
 
@@ -109,6 +120,8 @@ export class LoadingScene extends Component {
             return 'battle-scene';
         case LoadingPreviewTarget.GeneralDetailOverview:
             return 'general-detail-bloodline-v3-screen';
+        case LoadingPreviewTarget.SpiritTallyDetail:
+            return 'spirit-tally-detail-screen';
         case LoadingPreviewTarget.Disabled:
         default:
             return 'lobby-main-screen';
@@ -125,6 +138,10 @@ export class LoadingScene extends Component {
             const storedTarget = sys.localStorage.getItem('PREVIEW_TARGET');
             if (storedTarget) {
                 this.previewTarget = parseInt(storedTarget, 10);
+            }
+            const storedVariant = sys.localStorage.getItem('PREVIEW_VARIANT');
+            if (storedVariant) {
+                this.previewVariant = storedVariant.trim();
             }
         }
 
@@ -255,6 +272,10 @@ export class LoadingScene extends Component {
             case LoadingPreviewTarget.GeneralDetailOverview:
                 await this._previewGeneralDetailOverview();
                 return;
+            case LoadingPreviewTarget.SpiritTallyDetail:
+                await this._previewSpiritTallyDetail();
+                this._setCaptureState('ready', 'spirit-tally-detail-screen');
+                return;
             case LoadingPreviewTarget.Disabled:
             default:
                 console.warn('[LoadingScene] previewMode=true 但 previewTarget 未指定，預設載入 lobby-main-screen');
@@ -281,6 +302,10 @@ export class LoadingScene extends Component {
     private async _previewGacha(): Promise<void> {
         console.log('[LoadingScene] Preview target -> gacha-main-screen');
         await this._previewHost?.showScreen('gacha-main-screen');
+        const previewState = await this._loadGachaPreviewState();
+        if (previewState && this._previewHost?.binder) {
+            applyUIPreviewBinderState(this._previewHost.binder, previewState);
+        }
     }
 
     private async _previewDuelChallenge(): Promise<void> {
@@ -339,6 +364,73 @@ export class LoadingScene extends Component {
         }
         await this._delay(180);
         this._setCaptureState('ready', 'general-detail-bloodline-v3-screen');
+    }
+
+    private async _previewSpiritTallyDetail(): Promise<void> {
+        console.log('[LoadingScene] Preview target -> spirit-tally-detail-screen');
+        await this._previewHost?.showScreen('spirit-tally-detail-screen');
+        const previewState = await this._loadSpiritTallyDetailPreviewState();
+        if (previewState && this._previewHost?.binder) {
+            applyUIPreviewBinderState(this._previewHost.binder, previewState);
+        }
+        await this._delay(180);
+    }
+
+    private async _loadGachaPreviewState(): Promise<UIPreviewBinderState | null> {
+        try {
+            const content = await services().resource.loadJson<any>(
+                'ui-spec/content/gacha-preview-states-v1',
+                { tags: ['LoadingScenePreview'] },
+            );
+            const defaultState = typeof content?.defaultState === 'string' ? content.defaultState : 'hero';
+            const stateKey = this._resolveGachaPreviewStateKey(defaultState);
+            return content?.states?.[stateKey] ?? content?.states?.[defaultState] ?? null;
+        } catch (error) {
+            console.warn('[LoadingScene] 載入 Gacha preview state 失敗', error);
+            return null;
+        }
+    }
+
+    private _resolveGachaPreviewStateKey(defaultState: string): string {
+        const requested = this.previewVariant.trim().toLowerCase();
+        if (requested === 'hero' || requested === 'support' || requested === 'limited') {
+            return requested;
+        }
+        return defaultState;
+    }
+
+    private async _loadSpiritTallyDetailPreviewState(): Promise<UIPreviewBinderState | null> {
+        try {
+            const generals = await services().resource.loadJson<GeneralConfig[]>('data/generals', { tags: ['LoadingScenePreview'] });
+            const smokeGeneral = generals.find((item) => item.id === 'zhang-fei') ?? generals.find((item) => item.id === 'zhao-yun') ?? generals[0] ?? null;
+            if (!smokeGeneral) {
+                return null;
+            }
+
+            const rarityTier = smokeGeneral.rarityTier ?? 'rare';
+
+            return {
+                texts: {
+                    HeroName: smokeGeneral.name || '\u5c07\u9b42\u540d\u9304',
+                    TallyTitle: smokeGeneral.title || smokeGeneral.awakeningTitle || '\u5c07\u9b42\u547d\u93e1',
+                    SpiritRank: getUIRarityMarkLabel(rarityTier),
+                },
+                rarityDocks: [
+                    {
+                        tier: rarityTier,
+                        binding: {
+                            dockNodeName: 'SpiritRankDock',
+                            underlayNodeName: 'SpiritRankUnderlay',
+                            badgeNodeName: 'SpiritRankBadge',
+                            labelNodeName: 'SpiritRank',
+                        },
+                    },
+                ],
+            };
+        } catch (error) {
+            console.warn('[LoadingScene] 載入 SpiritTallyDetail preview state 失敗', error);
+            return null;
+        }
     }
 
     private _delay(ms: number): Promise<void> {

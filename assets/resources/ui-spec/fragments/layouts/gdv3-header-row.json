@@ -1,0 +1,58 @@
+{
+  "type": "container",
+  "name": "HeaderRow",
+  "widget": { "top": 24, "left": 40, "right": 40 },
+  "height": 88,
+  "layout": { "type": "horizontal", "spacing": 20 },
+  "children": [
+    {
+      "type": "container",
+      "name": "NameTitleColumn",
+      "width": "58%",
+      "height": 84,
+      "layout": { "type": "vertical", "spacing": 6 },
+      "children": [
+        { "type": "label", "name": "NameLabel", "width": "100%", "height": 52, "styleSlot": "gdv3.label.headerName" },
+        { "type": "label", "name": "TitleLabel", "width": "100%", "height": 24, "styleSlot": "gdv3.label.headerTitle" }
+      ]
+    },
+    {
+      "type": "container",
+      "name": "MetaColumn",
+      "width": "24%",
+      "height": 84,
+      "layout": { "type": "vertical", "spacing": 8 },
+      "children": [
+        {
+          "type": "container",
+          "name": "RarityBadgeDock",
+          "width": 164,
+          "height": 44,
+          "children": [
+            {
+              "type": "image",
+              "name": "RarityBadgeUnderlay",
+              "widget": { "hCenter": true, "vCenter": true },
+              "width": 164,
+              "height": 40,
+              "skinSlot": "gdv3.rarity.badge.underlay"
+            },
+            {
+              "type": "panel",
+              "name": "RarityBadge",
+              "widget": { "hCenter": true, "vCenter": true },
+              "width": 140,
+              "height": 32,
+              "skinSlot": "gdv3.rarity.badge",
+              "layout": { "type": "vertical", "paddingTop": 4, "paddingBottom": 4, "paddingLeft": 8, "paddingRight": 8 },
+              "children": [
+                { "type": "label", "name": "RarityBadgeLabel", "width": "100%", "height": 22, "styleSlot": "gdv3.label.rarityBadge" }
+              ]
+            }
+          ]
+        },
+        { "type": "label", "name": "MetaLabel", "width": "100%", "height": 26, "styleSlot": "gdv3.label.headerMeta" }
+      ]
+    }
+  ]
+}

@@ -16,6 +16,8 @@ const path = require('path');
 const os = require('os');
 const http = require('http');
 const https = require('https');
+const { execSync } = require('child_process');
+const { writeRuntimeVerdictCaptureResult } = require('./lib/ui-factory-manifest-validator');
 
 let puppeteer;
 try {
@@ -28,11 +30,16 @@ try {
 
 const targets = [
     { id: 'LobbyMain', screenId: 'lobby-main-screen', targetIndex: 1 },
-    { id: 'ShopMain', screenId: 'shop-main-screen', targetIndex: 2 },
-    { id: 'Gacha', screenId: 'gacha-main-screen', targetIndex: 3 },
+    { id: 'ShopMain', screenId: 'shop-main-screen', targetIndex: 2, uiSourceDir: 'shop-main', runtimeScreenId: 'ShopMain' },
+    { id: 'Gacha', screenId: 'gacha-main-screen', targetIndex: 3, uiSourceDir: 'gacha-main', runtimeScreenId: 'GachaMain' },
+    { id: 'GachaHero', screenId: 'gacha-main-screen', targetIndex: 3, previewVariant: 'hero' },
+    { id: 'GachaSupport', screenId: 'gacha-main-screen', targetIndex: 3, previewVariant: 'support' },
+    { id: 'GachaLimited', screenId: 'gacha-main-screen', targetIndex: 3, previewVariant: 'limited' },
     { id: 'DuelChallenge', screenId: 'duel-challenge-screen', targetIndex: 4 },
-    { id: 'BattleScene', screenId: 'battle-scene', targetIndex: 5 },
-    { id: 'GeneralDetailOverview', screenId: 'general-detail-bloodline-v3-screen', targetIndex: 6 },
+    { id: 'BattleScene', screenId: 'battle-scene', targetIndex: 5, uiSourceDir: 'battle-hud', runtimeScreenId: 'BattleHUD' },
+    { id: 'GeneralDetailOverview', screenId: 'general-detail-bloodline-v3-screen', targetIndex: 6, uiSourceDir: 'general-detail-overview', runtimeScreenId: 'GeneralDetailOverview' },
+    { id: 'GeneralDetailBloodlineV3', screenId: 'general-detail-bloodline-v3-screen', targetIndex: 6, uiSourceDir: 'general-detail-bloodline-v3', runtimeScreenId: 'GeneralDetailBloodlineV3', hiddenAlias: true },
+    { id: 'SpiritTallyDetail', screenId: 'spirit-tally-detail-screen', targetIndex: 7, uiSourceDir: 'spirit-tally-detail', runtimeScreenId: 'SpiritTallyDetail' },
 ];
 
 function resolveLoadingSceneUuid() {
@@ -122,7 +129,7 @@ function resolveBrowserExecutable(customPath) {
 
 function selectTargets(targetId) {
     if (!targetId) {
-        return targets;
+        return targets.filter(t => !t.hiddenAlias);
     }
     const selected = targets.find(t => t.id.toLowerCase() === targetId.toLowerCase());
     if (!selected) {
@@ -183,6 +190,38 @@ function summarizeBodyText(bodyText) {
         .slice(0, 300);
 }
 
+/**
+ * 這是 capture 階段的安全縮圖，不等於最終 view_image 讀圖尺寸。
+ * 使用 PowerShell System.Drawing，不需要額外 npm 依賴。
+ * maxWidth=0 代表跳過縮圖；capture 端預設仍可用 512px，但實際讀圖時仍應回到 `125 -> 250 -> 500` 的 progressive zoom 規則。
+ */
+function resizePng(filePath, maxWidth) {
+    if (!maxWidth || maxWidth <= 0) return;
+    const fp = filePath.replace(/'/g, "''"); // escape single quotes for PS string
+    const ps = [
+        'Add-Type -AssemblyName System.Drawing',
+        `$fp = '${fp}'`,
+        '$src = [System.Drawing.Image]::FromFile($fp)',
+        '$w = $src.Width; $h = $src.Height',
+        `if ($w -le ${maxWidth}) { $src.Dispose(); exit 0 }`,
+        `$scale = ${maxWidth} / [double]$w`,
+        `$nw = ${maxWidth}; $nh = [int]($h * $scale)`,
+        '$dst = New-Object System.Drawing.Bitmap $nw, $nh',
+        '$g = [System.Drawing.Graphics]::FromImage($dst)',
+        '$g.InterpolationMode = [System.Drawing.Drawing2D.InterpolationMode]::HighQualityBicubic',
+        '$g.DrawImage($src, 0, 0, $nw, $nh)',
+        '$g.Dispose(); $src.Dispose()',
+        '$dst.Save($fp, [System.Drawing.Imaging.ImageFormat]::Png)',
+        '$dst.Dispose()',
+    ].join('\n');
+    try {
+        execSync('powershell -NoProfile -NonInteractive -Command -', { input: ps, timeout: 15000 });
+        console.log(`[capture-ui-screens] resized to max ${maxWidth}px wide: ${path.basename(filePath)}`);
+    } catch (err) {
+        console.warn(`[capture-ui-screens] resize failed (non-fatal): ${err.message}`);
+    }
+}
+
 function isRetryableCaptureError(error, debugState) {
     const message = String(error);
     const bodyText = debugState?.state?.bodyText ?? '';
@@ -190,6 +229,90 @@ function isRetryableCaptureError(error, debugState) {
         || message.includes('Unable to resolve bare specifier')
         || bodyText.includes('Unable to resolve bare specifier')
         || bodyText.includes('Please open the console to see detailed errors');
+}
+
+function resolveUiSourceScreenDir(target) {
+    if (!target.uiSourceDir) {
+        return '';
+    }
+    return path.join(__dirname, '..', 'artifacts', 'ui-source', target.uiSourceDir);
+}
+
+function summarizeDiagnostics(diagnostics) {
+    const consoleEntries = Array.isArray(diagnostics?.console) ? diagnostics.console : [];
+    const pageErrors = Array.isArray(diagnostics?.pageErrors) ? diagnostics.pageErrors : [];
+    const requestFailures = Array.isArray(diagnostics?.requestFailures) ? diagnostics.requestFailures : [];
+    const consoleErrorCount = consoleEntries.filter((entry) => entry.type === 'error').length;
+    const consoleWarningCount = consoleEntries.filter((entry) => entry.type === 'warning' || entry.type === 'warn').length;
+
+    return {
+        consoleErrorCount,
+        consoleWarningCount,
+        pageErrorCount: pageErrors.length,
+        requestFailureCount: requestFailures.length,
+    };
+}
+
+function collectDiagnosticSamples(diagnostics) {
+    const consoleEntries = Array.isArray(diagnostics?.console) ? diagnostics.console : [];
+    const counts = new Map();
+
+    for (const entry of consoleEntries) {
+        if (!entry || (entry.type !== 'warning' && entry.type !== 'warn' && entry.type !== 'error')) {
+            continue;
+        }
+        const text = String(entry.text || '').replace(/\s+/g, ' ').trim();
+        const key = `${entry.type}:${text}`;
+        counts.set(key, {
+            type: entry.type,
+            text,
+            count: (counts.get(key)?.count || 0) + 1,
+        });
+    }
+
+    return Array.from(counts.values())
+        .sort((left, right) => right.count - left.count || left.text.localeCompare(right.text))
+        .slice(0, 20);
+}
+
+function buildRuntimeResiduals(summary, extraResiduals = []) {
+    const residuals = [];
+    if (summary.consoleErrorCount > 0) {
+        residuals.push(`console errors: ${summary.consoleErrorCount}`);
+    }
+    if (summary.consoleWarningCount > 0) {
+        residuals.push(`console warnings: ${summary.consoleWarningCount}`);
+    }
+    if (summary.pageErrorCount > 0) {
+        residuals.push(`page errors: ${summary.pageErrorCount}`);
+    }
+    if (summary.requestFailureCount > 0) {
+        residuals.push(`request failures: ${summary.requestFailureCount}`);
+    }
+    return residuals.concat(extraResiduals.filter(Boolean));
+}
+
+function buildRuntimeStatus(summary, failed) {
+    if (failed || summary.pageErrorCount > 0 || summary.requestFailureCount > 0) {
+        return 'fail';
+    }
+    if (summary.consoleErrorCount > 0 || summary.consoleWarningCount > 0) {
+        return 'pass-with-minor-residuals';
+    }
+    return 'pass';
+}
+
+function writeRuntimeVerdictForTarget(target, outDir, metadata) {
+    const screenDir = resolveUiSourceScreenDir(target);
+    if (!screenDir || !fs.existsSync(screenDir)) {
+        return;
+    }
+
+    writeRuntimeVerdictCaptureResult(screenDir, {
+        screenId: target.runtimeScreenId || metadata.screenId || target.id,
+        latestStage: 'runtimeCapture',
+        ...metadata,
+    });
 }
 
 async function captureOne(browser, baseUrl, outputDir, target, timeoutMs, sceneUuid) {
@@ -203,14 +326,30 @@ async function captureOne(browser, baseUrl, outputDir, target, timeoutMs, sceneU
         Expires: '0',
     });
 
-    await page.evaluateOnNewDocument((targetIndex) => {
+    await page.evaluateOnNewDocument((targetIndex, previewVariant, debugHidePaths) => {
         localStorage.setItem('PREVIEW_MODE', 'true');
         localStorage.setItem('PREVIEW_TARGET', String(targetIndex));
-    }, target.targetIndex);
+        if (previewVariant) {
+            localStorage.setItem('PREVIEW_VARIANT', previewVariant);
+        } else {
+            localStorage.removeItem('PREVIEW_VARIANT');
+        }
+        if (debugHidePaths) {
+            localStorage.setItem('GENERAL_DETAIL_OVERVIEW_HIDE_PATHS', debugHidePaths);
+        } else {
+            localStorage.removeItem('GENERAL_DETAIL_OVERVIEW_HIDE_PATHS');
+        }
+    }, target.targetIndex, target.previewVariant ?? '', target.debugHidePaths ?? '');
 
     const query = new URLSearchParams();
     query.set('previewMode', 'true');
     query.set('previewTarget', String(target.targetIndex));
+    if (target.previewVariant) {
+        query.set('previewVariant', target.previewVariant);
+    }
+    if (target.debugHidePaths) {
+        query.set('debugHidePaths', target.debugHidePaths);
+    }
     query.set('t', String(Date.now()));
     if (sceneUuid) {
         query.set('scene', sceneUuid);
@@ -390,6 +529,8 @@ async function main() {
     const sceneUuid = parseArg('sceneUuid', resolveLoadingSceneUuid());
     const retries = Number(parseArg('retries', '1'));
     const refreshBefore = parseArg('refreshBefore', 'true') !== 'false';
+    const maxWidth = Number(parseArg('maxWidth', '125'));
+    const hidePaths = parseArg('hidePaths', '').trim();
 
     const browserExecutable = resolveBrowserExecutable(browserArg);
     if (!browserExecutable) {
@@ -397,7 +538,10 @@ async function main() {
         process.exit(1);
     }
 
-    const selectedTargets = selectTargets(targetId);
+    const selectedTargets = selectTargets(targetId).map((target) => ({
+        ...target,
+        debugHidePaths: hidePaths,
+    }));
     fs.mkdirSync(outDir, { recursive: true });
 
     console.log('='.repeat(70));
@@ -429,6 +573,7 @@ async function main() {
     });
 
     const captured = [];
+    const runtimeUpdates = [];
 
     try {
         for (const target of selectedTargets) {
@@ -439,7 +584,34 @@ async function main() {
                 try {
                     console.log(`[capture-ui-screens] ${target.id} attempt ${attempt}/${retries + 1}`);
                     captureResult = await captureOne(browser, baseUrl, outDir, target, timeoutMs, sceneUuid);
-                    captured.push({ target: target.id, screenId: target.screenId, file: captureResult.filePath });
+                    resizePng(captureResult.filePath, maxWidth);
+                    const diagnosticsSummary = summarizeDiagnostics(captureResult.diagnostics);
+                    const diagnosticSamples = collectDiagnosticSamples(captureResult.diagnostics);
+                    const status = buildRuntimeStatus(diagnosticsSummary, false);
+                    const residuals = buildRuntimeResiduals(diagnosticsSummary);
+                    const relativeFile = path.relative(path.join(__dirname, '..'), captureResult.filePath).replace(/\\/g, '/');
+                    captured.push({
+                        target: target.id,
+                        screenId: target.runtimeScreenId || target.screenId,
+                        file: captureResult.filePath,
+                        diagnosticsSummary,
+                        diagnosticSamples,
+                        status,
+                    });
+                    writeRuntimeVerdictForTarget(target, outDir, {
+                        runId: path.basename(outDir),
+                        status,
+                        residuals,
+                        promoteable: status !== 'fail',
+                        diagnosticsSummary,
+                        captureArtifacts: {
+                            screenshotPath: relativeFile,
+                        },
+                        factoryLearnings: status === 'pass'
+                            ? ['runtime capture connected to capture-ui-screens.js']
+                            : [],
+                    });
+                    runtimeUpdates.push({ target: target.id, status });
                     console.log(`[capture-ui-screens] captured ${target.id} -> ${captureResult.filePath}`);
                     await captureResult.page.close();
                     lastError = null;
@@ -461,6 +633,23 @@ async function main() {
                     }
 
                     const retryable = attempt <= retries && isRetryableCaptureError(error, debugState.state);
+                    const diagnosticsSummary = summarizeDiagnostics(error.diagnostics);
+                    const diagnosticSamples = collectDiagnosticSamples(error.diagnostics);
+                    const residuals = buildRuntimeResiduals(diagnosticsSummary, [String(error)]);
+                    writeRuntimeVerdictForTarget(target, outDir, {
+                        runId: path.basename(outDir),
+                        status: retryable ? 'pass-with-minor-residuals' : 'fail',
+                        residuals,
+                        promoteable: false,
+                        diagnosticsSummary,
+                        factoryLearnings: ['runtime capture failure should be triaged before promoting the screen'],
+                        captureArtifacts: {
+                            debugScreenshotPath: path.relative(path.join(__dirname, '..'), path.join(outDir, `${target.id}-debug.png`)).replace(/\\/g, '/'),
+                            debugStatePath: path.relative(path.join(__dirname, '..'), path.join(outDir, `${target.id}-debug-state.json`)).replace(/\\/g, '/'),
+                        },
+                    });
+                    const debugSamplesPath = path.join(outDir, `${target.id}-diagnostic-samples.json`);
+                    fs.writeFileSync(debugSamplesPath, JSON.stringify({ diagnosticSamples }, null, 2), 'utf8');
                     console.warn(`[capture-ui-screens] ${target.id} attempt ${attempt} failed: ${error}`);
                     if (!retryable) {
                         throw error;
@@ -487,8 +676,23 @@ async function main() {
         host: baseUrl,
         machine: os.hostname(),
         captures: captured,
+        runtimeUpdates,
     };
-    fs.writeFileSync(path.join(outDir, 'capture-report.json'), JSON.stringify(report, null, 2), 'utf8');
+    const captureReportPath = path.join(outDir, 'capture-report.json');
+    fs.writeFileSync(captureReportPath, JSON.stringify(report, null, 2), 'utf8');
+
+    for (const target of selectedTargets) {
+        const matched = captured.find((entry) => entry.target === target.id);
+        if (!matched) {
+            continue;
+        }
+        writeRuntimeVerdictForTarget(target, outDir, {
+            runId: path.basename(outDir),
+            captureArtifacts: {
+                captureReportPath: path.relative(path.join(__dirname, '..'), captureReportPath).replace(/\\/g, '/'),
+            },
+        });
+    }
 
     console.log(`[capture-ui-screens] 完成，共 ${captured.length} 張。`);
 }

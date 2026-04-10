@@ -1,0 +1,117 @@
+{
+  "input": "C:\\Users\\User\\3KLife\\artifacts\\ui-library\\image_display\\decorative\\candidate_sets\\candidate_batch_2026_04_10_pictures_import\\raw",
+  "outDir": "C:\\Users\\User\\3KLife\\artifacts\\ui-library\\image_display\\decorative\\candidate_sets\\candidate_batch_2026_04_10_pictures_import\\sliced",
+  "tempRoot": "C:\\Users\\User\\3KLife\\artifacts\\ui-library\\image_display\\decorative\\candidate_sets\\candidate_batch_2026_04_10_pictures_import\\sliced\\temp",
+  "selectedRoot": "C:\\Users\\User\\3KLife\\artifacts\\ui-library\\image_display\\decorative\\candidate_sets\\candidate_batch_2026_04_10_pictures_import\\sliced\\selected",
+  "scanned": 6,
+  "options": {
+    "pad": 4,
+    "minAreaRatio": 0.0003,
+    "maxAreaRatio": 0.35,
+    "colorThreshold": 30,
+    "alphaFloor": 12,
+    "maxComponents": 80,
+    "minWidthRatio": 0.01,
+    "minHeightRatio": 0.01,
+    "mergeGap": -1,
+    "tempDirName": "temp",
+    "selectedDirName": "selected"
+  },
+  "completed": 6,
+  "results": [
+    {
+      "input": "C:\\Users\\User\\3KLife\\artifacts\\ui-library\\image_display\\decorative\\candidate_sets\\candidate_batch_2026_04_10_pictures_import\\raw\\001.jpeg",
+      "outDir": "C:\\Users\\User\\3KLife\\artifacts\\ui-library\\image_display\\decorative\\candidate_sets\\candidate_batch_2026_04_10_pictures_import\\sliced\\temp\\001",
+      "tempDir": "C:\\Users\\User\\3KLife\\artifacts\\ui-library\\image_display\\decorative\\candidate_sets\\candidate_batch_2026_04_10_pictures_import\\sliced\\temp\\001\\components",
+      "selectedDir": "C:\\Users\\User\\3KLife\\artifacts\\ui-library\\image_display\\decorative\\candidate_sets\\candidate_batch_2026_04_10_pictures_import\\sliced\\selected\\001",
+      "sourceSize": {
+        "width": 156,
+        "height": 148
+      },
+      "componentCount": 1,
+      "exportedCount": 1,
+      "countsByKind": {
+        "noise": 1
+      },
+      "pickedCount": 0
+    },
+    {
+      "input": "C:\\Users\\User\\3KLife\\artifacts\\ui-library\\image_display\\decorative\\candidate_sets\\candidate_batch_2026_04_10_pictures_import\\raw\\002.jpeg",
+      "outDir": "C:\\Users\\User\\3KLife\\artifacts\\ui-library\\image_display\\decorative\\candidate_sets\\candidate_batch_2026_04_10_pictures_import\\sliced\\temp\\002",
+      "tempDir": "C:\\Users\\User\\3KLife\\artifacts\\ui-library\\image_display\\decorative\\candidate_sets\\candidate_batch_2026_04_10_pictures_import\\sliced\\temp\\002\\components",
+      "selectedDir": "C:\\Users\\User\\3KLife\\artifacts\\ui-library\\image_display\\decorative\\candidate_sets\\candidate_batch_2026_04_10_pictures_import\\sliced\\selected\\002",
+      "sourceSize": {
+        "width": 1024,
+        "height": 1024
+      },
+      "componentCount": 1,
+      "exportedCount": 1,
+      "countsByKind": {
+        "badge": 1
+      },
+      "pickedCount": 1
+    },
+    {
+      "input": "C:\\Users\\User\\3KLife\\artifacts\\ui-library\\image_display\\decorative\\candidate_sets\\candidate_batch_2026_04_10_pictures_import\\raw\\003.jpeg",
+      "outDir": "C:\\Users\\User\\3KLife\\artifacts\\ui-library\\image_display\\decorative\\candidate_sets\\candidate_batch_2026_04_10_pictures_import\\sliced\\temp\\003",
+      "tempDir": "C:\\Users\\User\\3KLife\\artifacts\\ui-library\\image_display\\decorative\\candidate_sets\\candidate_batch_2026_04_10_pictures_import\\sliced\\temp\\003\\components",
+      "selectedDir": "C:\\Users\\User\\3KLife\\artifacts\\ui-library\\image_display\\decorative\\candidate_sets\\candidate_batch_2026_04_10_pictures_import\\sliced\\selected\\003",
+      "sourceSize": {
+        "width": 1024,
+        "height": 1024
+      },
+      "componentCount": 0,
+      "exportedCount": 0,
+      "countsByKind": {},
+      "pickedCount": 0
+    },
+    {
+      "input": "C:\\Users\\User\\3KLife\\artifacts\\ui-library\\image_display\\decorative\\candidate_sets\\candidate_batch_2026_04_10_pictures_import\\raw\\004.png",
+      "outDir": "C:\\Users\\User\\3KLife\\artifacts\\ui-library\\image_display\\decorative\\candidate_sets\\candidate_batch_2026_04_10_pictures_import\\sliced\\temp\\004",
+      "tempDir": "C:\\Users\\User\\3KLife\\artifacts\\ui-library\\image_display\\decorative\\candidate_sets\\candidate_batch_2026_04_10_pictures_import\\sliced\\temp\\004\\components",
+      "selectedDir": "C:\\Users\\User\\3KLife\\artifacts\\ui-library\\image_display\\decorative\\candidate_sets\\candidate_batch_2026_04_10_pictures_import\\sliced\\selected\\004",
+      "sourceSize": {
+        "width": 2048,
+        "height": 2048
+      },
+      "componentCount": 2,
+      "exportedCount": 2,
+      "countsByKind": {
+        "panel": 2
+      },
+      "pickedCount": 2
+    },
+    {
+      "input": "C:\\Users\\User\\3KLife\\artifacts\\ui-library\\image_display\\decorative\\candidate_sets\\candidate_batch_2026_04_10_pictures_import\\raw\\005.png",
+      "outDir": "C:\\Users\\User\\3KLife\\artifacts\\ui-library\\image_display\\decorative\\candidate_sets\\candidate_batch_2026_04_10_pictures_import\\sliced\\temp\\005",
+      "tempDir": "C:\\Users\\User\\3KLife\\artifacts\\ui-library\\image_display\\decorative\\candidate_sets\\candidate_batch_2026_04_10_pictures_import\\sliced\\temp\\005\\components",
+      "selectedDir": "C:\\Users\\User\\3KLife\\artifacts\\ui-library\\image_display\\decorative\\candidate_sets\\candidate_batch_2026_04_10_pictures_import\\sliced\\selected\\005",
+      "sourceSize": {
+        "width": 2048,
+        "height": 2048
+      },
+      "componentCount": 1,
+      "exportedCount": 1,
+      "countsByKind": {
+        "noise": 1
+      },
+      "pickedCount": 0
+    },
+    {
+      "input": "C:\\Users\\User\\3KLife\\artifacts\\ui-library\\image_display\\decorative\\candidate_sets\\candidate_batch_2026_04_10_pictures_import\\raw\\006.jpeg",
+      "outDir": "C:\\Users\\User\\3KLife\\artifacts\\ui-library\\image_display\\decorative\\candidate_sets\\candidate_batch_2026_04_10_pictures_import\\sliced\\temp\\006",
+      "tempDir": "C:\\Users\\User\\3KLife\\artifacts\\ui-library\\image_display\\decorative\\candidate_sets\\candidate_batch_2026_04_10_pictures_import\\sliced\\temp\\006\\components",
+      "selectedDir": "C:\\Users\\User\\3KLife\\artifacts\\ui-library\\image_display\\decorative\\candidate_sets\\candidate_batch_2026_04_10_pictures_import\\sliced\\selected\\006",
+      "sourceSize": {
+        "width": 1024,
+        "height": 1024
+      },
+      "componentCount": 1,
+      "exportedCount": 1,
+      "countsByKind": {
+        "noise": 1
+      },
+      "pickedCount": 0
+    }
+  ]
+}

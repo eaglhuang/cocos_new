@@ -14,7 +14,7 @@
  *
  * Unity 對照：CharacterInfoPanel（帶SlideIn動畫的 UGUI Panel）
  */
-import { _decorator, Button, Label, Node } from 'cc';
+import { _decorator, Button, Color, Label, Node, Sprite, SpriteFrame } from 'cc';
 import { services } from '../../core/managers/ServiceLoader';
 import { UIPreviewBuilder } from '../core/UIPreviewBuilder';
 import { UISpecLoader } from '../core/UISpecLoader';
@@ -22,6 +22,9 @@ import { UITemplateBinder } from '../core/UITemplateBinder';
 import { TallyCardData } from './TigerTallyPanel';
 
 const { ccclass } = _decorator;
+const UNITINFO_TYPE_ICON_FALLBACK_PATH = 'sprites/battle/unitinfo_type_icon';
+const TROOP_TYPE_SUITE_GLYPH_PREFIX = 'sprites/battle/battle_unit_type_glyph_';
+const WHITE = new Color(255, 255, 255, 255);
 
 @ccclass('UnitInfoPanel')
 export class UnitInfoPanel extends UIPreviewBuilder {
@@ -33,6 +36,7 @@ export class UnitInfoPanel extends UIPreviewBuilder {
     // ── 內容節點引用（由 onReady 填入） ────────────────
     private _unitName:  Label | null = null;
     private _unitSub:   Label | null = null;
+    private _typeIcon:  Sprite | null = null;
     private _atkRow:    Label | null = null;
     private _defRow:    Label | null = null;
     private _hpRow:     Label | null = null;
@@ -54,11 +58,12 @@ export class UnitInfoPanel extends UIPreviewBuilder {
     private async _initialize(): Promise<void> {
         if (this._initialized) return;
         try {
-            const [fullScreen, i18n] = await Promise.all([
+            const [fullScreen, i18n, tokens] = await Promise.all([
                 this._specLoader.loadFullScreen('unit-info-panel-screen'),
                 this._specLoader.loadI18n(services().i18n.currentLocale),
+                this._specLoader.loadDesignTokens(),
             ]);
-            await this.buildScreen(fullScreen.layout, fullScreen.skin, i18n);
+            await this.buildScreen(fullScreen.layout, fullScreen.skin, i18n, tokens);
             this._initialized = true;
         } catch (e) {
             console.warn('[UnitInfoPanel] 規格載入失敗，退回白模', e);
@@ -71,6 +76,7 @@ export class UnitInfoPanel extends UIPreviewBuilder {
     protected onReady(binder: UITemplateBinder): void {
         this._unitName    = binder.getLabel('UnitName');
         this._unitSub     = binder.getLabel('UnitSub');
+        this._typeIcon    = binder.getSprite('TypeIcon');
         this._atkRow      = binder.getLabel('AtkRow');
         this._defRow      = binder.getLabel('DefRow');
         this._hpRow       = binder.getLabel('HpRow');
@@ -129,6 +135,7 @@ export class UnitInfoPanel extends UIPreviewBuilder {
         if (this._spdRow)    this._spdRow.string     = `速度：${data.spd}`;
         if (this._costRow)   this._costRow.string    = `費用：${data.cost}`;
         if (this._descText)  this._descText.string   = data.desc;
+        void this._applyTypeIcon(data);
 
         // 特性標籤：每個 trait 建立一個 Label 子節點
         this._fillTraitTags(data.traits);
@@ -167,6 +174,67 @@ export class UnitInfoPanel extends UIPreviewBuilder {
             label.string   = `• ${ability}`;
             label.fontSize = 12;
         }
+    }
+
+    private async _applyTypeIcon(data: TallyCardData): Promise<void> {
+        if (!this._typeIcon) return;
+
+        const spriteFrame = await this._loadSpriteFrameWithFallback(
+            this._buildTypeIconCandidates(data),
+            UNITINFO_TYPE_ICON_FALLBACK_PATH,
+        );
+
+        if (!spriteFrame) {
+            this._typeIcon.node.active = false;
+            return;
+        }
+
+        this._typeIcon.spriteFrame = spriteFrame;
+        this._typeIcon.color = WHITE;
+        this._typeIcon.node.active = true;
+    }
+
+    private _buildTypeIconCandidates(data: TallyCardData): string[] {
+        const normalizedType = this._normalizeKey(data.unitType);
+        return this._uniquePaths([
+            data.typeIconResource,
+            normalizedType ? `${TROOP_TYPE_SUITE_GLYPH_PREFIX}${normalizedType}` : null,
+            normalizedType ? `sprites/battle/unitinfo_type_icon_${normalizedType}` : null,
+        ]);
+    }
+
+    private async _loadSpriteFrameWithFallback(
+        preferredPaths: string[],
+        fallbackPath: string,
+    ): Promise<SpriteFrame | null> {
+        for (const path of preferredPaths) {
+            const spriteFrame = await services().resource.loadSpriteFrame(path).catch(() => null);
+            if (spriteFrame) {
+                return spriteFrame;
+            }
+        }
+
+        return services().resource.loadSpriteFrame(fallbackPath).catch(() => null);
+    }
+
+    private _uniquePaths(paths: Array<string | null | undefined>): string[] {
+        const seen = new Set<string>();
+        const result: string[] = [];
+        for (const path of paths) {
+            const normalized = path?.trim();
+            if (!normalized || seen.has(normalized)) continue;
+            seen.add(normalized);
+            result.push(normalized);
+        }
+        return result;
+    }
+
+    private _normalizeKey(value: string): string {
+        return value
+            .trim()
+            .toLowerCase()
+            .replace(/[^a-z0-9]+/g, '_')
+            .replace(/^_+|_+$/g, '');
     }
 
 }

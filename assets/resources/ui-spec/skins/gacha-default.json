@@ -8,6 +8,15 @@
 
   "slots": {
 
+    "widget.header.plaque.base": { "kind": "color-rect", "color": "surfaceDeep", "alpha": 224 },
+    "widget.header.plaque.fill": { "kind": "sprite-frame", "path": "sprites/ui_families/general_detail/detail_header_fill", "spriteType": "simple", "allowAutoAtlas": true, "opacity": 0.92 },
+    "widget.header.plaque.band": { "kind": "sprite-frame", "path": "sprites/ui_families/general_detail/formal/header_band_formal", "spriteType": "sliced", "border": [20, 0, 20, 0], "allowAutoAtlas": true, "opacity": 0.42 },
+    "widget.header.plaque.title": { "kind": "label-style", "font": "fonts/newsreader/font", "fontSize": 28, "lineHeight": 30, "color": "colorWhite", "outlineWidth": 0, "horizontalAlign": "LEFT" },
+    "widget.header.plaque.subtitle": { "kind": "label-style", "fontSize": 16, "lineHeight": 18, "color": "secondary", "outlineWidth": 0, "horizontalAlign": "LEFT" },
+    "widget.header.plaque.badge.underlay": { "kind": "sprite-frame", "path": "sprites/ui_families/common/parchment/fill", "spriteType": "sliced", "border": [16, 16, 16, 16], "allowAutoAtlas": true, "opacity": 0.9 },
+    "widget.header.plaque.badge.fill": { "kind": "sprite-frame", "path": "sprites/ui_families/common/parchment/fill", "spriteType": "sliced", "border": [16, 16, 16, 16], "allowAutoAtlas": true, "opacity": 0.96 },
+    "widget.header.plaque.badge.label": { "kind": "label-style", "fontSize": 22, "lineHeight": 24, "color": "colorWhite", "outlineWidth": 1, "outlineColor": "outlineHeavy", "horizontalAlign": "CENTER" },
+
     "gacha.bg.pool": {
       "kind": "sprite-frame",
       "note": "按池子切換：hero=bg_pool_hero / support=bg_pool_support / limited=bg_pool_limited",
@@ -26,10 +35,13 @@
     },
 
     "gacha.btn.back": {
-      "kind": "sprite-button",
-      "normal":   "ui/common/btn_back_normal",
-      "pressed":  "ui/common/btn_back_pressed",
-      "border": [4,4,4,4]
+      "kind": "button-skin",
+      "normal":   "sprites/common/btn_secondary_normal/spriteFrame",
+      "pressed":  "sprites/common/btn_secondary_pressed/spriteFrame",
+      "disabled": "sprites/common/btn_secondary_disabled/spriteFrame",
+      "spriteType": "sliced",
+      "border": [20,20,20,20],
+      "allowAutoAtlas": true
     },
     "gacha.label.title": {
       "kind": "label-style",
@@ -40,12 +52,13 @@
       "overflow": "SHRINK"
     },
     "gacha.btn.destiny_shop": {
-      "kind": "sprite-button",
-      "normal":   "ui/gacha/btn_destiny_shop_normal",
-      "pressed":  "ui/gacha/btn_destiny_shop_pressed",
-      "labelColor": "#D4AF37",
-      "fontSize": 20,
-      "border": [12,12,12,12]
+      "kind": "button-skin",
+      "normal":   "sprites/ui_families/common/commerce/btn_primary_normal",
+      "pressed":  "sprites/ui_families/common/commerce/btn_primary_pressed",
+      "disabled": "sprites/ui_families/common/commerce/btn_primary_disabled",
+      "spriteType": "sliced",
+      "border": [20,20,20,20],
+      "allowAutoAtlas": true
     },
 
     "gacha.tab.toggle": {
@@ -95,12 +108,13 @@
     },
 
     "gacha.btn.rate_info": {
-      "kind": "sprite-button",
-      "normal":  "ui/gacha/btn_rate_info_normal",
-      "pressed": "ui/gacha/btn_rate_info_pressed",
-      "labelColor": "#99907C",
-      "fontSize": 18,
-      "border": [8,8,8,8]
+      "kind": "button-skin",
+      "normal":  "sprites/common/btn_secondary_normal/spriteFrame",
+      "pressed": "sprites/common/btn_secondary_pressed/spriteFrame",
+      "disabled": "sprites/common/btn_secondary_disabled/spriteFrame",
+      "spriteType": "sliced",
+      "border": [20,20,20,20],
+      "allowAutoAtlas": true
     },
 
     "currency.icon.spirit_jade": {
@@ -118,26 +132,34 @@
       "overflow": "SHRINK"
     },
     "gacha.btn.add_currency": {
-      "kind": "sprite-button",
-      "normal":  "ui/common/btn_add_normal",
-      "pressed": "ui/common/btn_add_pressed",
-      "border": [6,6,6,6]
+      "kind": "button-skin",
+      "normal":  "sprites/common/btn_secondary_normal/spriteFrame",
+      "pressed": "sprites/common/btn_secondary_pressed/spriteFrame",
+      "disabled": "sprites/common/btn_secondary_disabled/spriteFrame",
+      "spriteType": "sliced",
+      "border": [20,20,20,20],
+      "allowAutoAtlas": true,
+      "note": "舊 add button 專用圖已失效，先回落到 shared secondary family；若後續需要明確 plus glyph，應改成 icon + button 的組合，而不是回到舊 sprite-button。"
     },
 
     "gacha.btn.pull1": {
-      "kind": "sprite-button",
-      "normal":   "ui/gacha/btn_pull1_normal",
-      "pressed":  "ui/gacha/btn_pull1_pressed",
-      "disabled": "ui/gacha/btn_disabled",
-      "border": [20,20,20,20]
+      "kind": "button-skin",
+      "normal":   "sprites/ui_families/common/commerce/btn_primary_normal",
+      "pressed":  "sprites/ui_families/common/commerce/btn_primary_pressed",
+      "disabled": "sprites/ui_families/common/commerce/btn_primary_disabled",
+      "spriteType": "sliced",
+      "border": [20,20,20,20],
+      "allowAutoAtlas": true
     },
     "gacha.btn.pull10": {
-      "kind": "sprite-button",
-      "normal":   "ui/gacha/btn_pull10_normal",
-      "pressed":  "ui/gacha/btn_pull10_pressed",
-      "disabled": "ui/gacha/btn_disabled",
+      "kind": "button-skin",
+      "normal":   "sprites/ui_families/common/commerce/btn_primary_normal",
+      "pressed":  "sprites/ui_families/common/commerce/btn_primary_pressed",
+      "disabled": "sprites/ui_families/common/commerce/btn_primary_disabled",
+      "spriteType": "sliced",
       "border": [20,20,20,20],
-      "note": "btn_pull10_normal 帶有金色邊框發光效果，突出 10 連推薦"
+      "allowAutoAtlas": true,
+      "note": "先對齊 commerce family 消除缺圖 warning；若後續需要凸顯 10 連推薦，再回到 gold-cta / icon badge 流程做差異化。"
     },
     "gacha.label.pull_btn": {
       "kind": "label-style",
@@ -152,12 +174,13 @@
     },
 
     "gacha.btn.divination": {
-      "kind": "sprite-button",
-      "normal":  "ui/gacha/btn_divination_normal",
-      "pressed": "ui/gacha/btn_divination_pressed",
-      "labelColor": "#FFE088",
-      "fontSize": 22,
-      "border": [12,12,12,12]
+      "kind": "button-skin",
+      "normal":  "sprites/ui_families/common/commerce/btn_primary_normal",
+      "pressed": "sprites/ui_families/common/commerce/btn_primary_pressed",
+      "disabled": "sprites/ui_families/common/commerce/btn_primary_disabled",
+      "spriteType": "sliced",
+      "border": [20,20,20,20],
+      "allowAutoAtlas": true
     },
     "gacha.label.token_count": {
       "kind": "label-style",

@@ -10,7 +10,12 @@
 - **視角與構圖**: 遊戲採 **2.5D 俯視角** (Camera Pitch -52°, Yaw -32°)。UI 應配合棋盤「左下往右上延伸」的透視感，避免遮擋核心戰區。
 - **裝置目標**: **Mobile First** (手機優先)。按鈕尺寸需適合觸控 (Touch-friendly)，重要操作區避開螢幕邊緣誤觸區。
 - **美術風格**: 
-  - **核心**: 現代極簡 RPG 風格，帶有輕度數據化/科技感 (呼應 Data-Driven 架構)。
+  - **核心**: `deep-ink battlefield + cold tactical HUD + gold CTA`。
+  - **統一性**: Battle HUD 與大廳 / 人物頁 / 商店仍屬同一套全域 UI 美術系統；差異只在戰場場景下，HUD 必須更低存在感、更強調導視與操作層級。
+  - **主次**: 3D 棋盤與單位永遠是第一視覺主體，HUD 只負責框定資訊、指揮操作與戰況導視，不可把戰場蓋成 UI 桌面。
+  - **分層**: Top HUD / TigerTally / Action Command 屬於指揮層；BattleLog / ControlBar / utility button 屬於次級工具層，存在感必須更低。
+  - **限制**: 主戰場不主用人物頁的 jade-parchment 匾額語言，也不主用 collectible-card / reward-card 的商業框體；這些只在 reward、reveal、結算或特別彈窗層使用。
+  - **與地圖解耦**: 全景地圖可以是夜景、清晨、陰天或晴天；那屬於場景底圖氣氛。HUD 常態語言不跟著晨昏換風格，只允許針對可讀性做亮度、透明度、描邊與陰影微調。
   - **配色**: 
     - **我方 (Player)**: 藍色/青色系 (Blue/Cyan) — 代表友軍、安全、可操作。
     - **敵方 (Enemy)**: 紅色/橘色系 (Red/Orange) — 代表敵軍、威脅、目標。

@@ -1,1 +1,6821 @@
-{ "version": "1.0.0", "updatedAt": "2026-04-06", "data": [] }
+{
+  "version": "1.0.0",
+  "updatedAt": "2026-04-07T17:24:22.557Z",
+  "data": [
+    {
+      "id": "cao-cao",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "橋畔機鋒識人"
+        },
+        {
+          "slot": "faction",
+          "text": "奉天子號諸侯"
+        },
+        {
+          "slot": "role",
+          "text": "詭道裁局定勢"
+        },
+        {
+          "slot": "awakening",
+          "text": "官渡借火翻盤"
+        },
+        {
+          "slot": "bloodline",
+          "text": "銅雀夜夢聽潮"
+        },
+        {
+          "slot": "future",
+          "text": "墳前誰解孟德"
+        }
+      ]
+    },
+    {
+      "id": "liu-bei",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "織席少年聽風"
+        },
+        {
+          "slot": "faction",
+          "text": "桃園一誓成旗"
+        },
+        {
+          "slot": "role",
+          "text": "以仁心聚散兵"
+        },
+        {
+          "slot": "awakening",
+          "text": "長坂亂軍回首"
+        },
+        {
+          "slot": "bloodline",
+          "text": "漢枝殘火未熄"
+        },
+        {
+          "slot": "future",
+          "text": "白帝孤燈仍明"
+        }
+      ]
+    },
+    {
+      "id": "sun-quan",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "江東少年試虎"
+        },
+        {
+          "slot": "faction",
+          "text": "承兄志穩東南"
+        },
+        {
+          "slot": "role",
+          "text": "鎮江表藏鋒守"
+        },
+        {
+          "slot": "awakening",
+          "text": "赤壁一火定吳"
+        },
+        {
+          "slot": "bloodline",
+          "text": "紫髯映潮生紋"
+        },
+        {
+          "slot": "future",
+          "text": "建業鐘聲未歇"
+        }
+      ]
+    },
+    {
+      "id": "zhuge-liang",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "隆中草廬觀星"
+        },
+        {
+          "slot": "faction",
+          "text": "三顧門前雪靜"
+        },
+        {
+          "slot": "role",
+          "text": "羽扇落子驅兵"
+        },
+        {
+          "slot": "awakening",
+          "text": "空城琴聲壓敵"
+        },
+        {
+          "slot": "bloodline",
+          "text": "臥龍井底藏脈"
+        },
+        {
+          "slot": "future",
+          "text": "五丈原燈難滅"
+        }
+      ]
+    },
+    {
+      "id": "zhou-yu",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "吳郡少年校曲"
+        },
+        {
+          "slot": "faction",
+          "text": "孫郎席前定盟"
+        },
+        {
+          "slot": "role",
+          "text": "水火雙陣同調"
+        },
+        {
+          "slot": "awakening",
+          "text": "赤壁借勢封名"
+        },
+        {
+          "slot": "bloodline",
+          "text": "琴灰裡藏潮火"
+        },
+        {
+          "slot": "future",
+          "text": "江東仍念周郎"
+        }
+      ]
+    },
+    {
+      "id": "guan-yu",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "解縣冷月磨刀"
+        },
+        {
+          "slot": "faction",
+          "text": "桃園酒尚未冷"
+        },
+        {
+          "slot": "role",
+          "text": "青龍一線斷城"
+        },
+        {
+          "slot": "awakening",
+          "text": "樊城漢水成壁"
+        },
+        {
+          "slot": "bloodline",
+          "text": "義氣入骨成紋"
+        },
+        {
+          "slot": "future",
+          "text": "麥城夜馬無聲"
+        }
+      ]
+    },
+    {
+      "id": "zhang-fei",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "涿郡屠坊舉鼎"
+        },
+        {
+          "slot": "faction",
+          "text": "桃園怒笑同席"
+        },
+        {
+          "slot": "role",
+          "text": "一吼震散敵膽"
+        },
+        {
+          "slot": "awakening",
+          "text": "長坂橋頭獨立"
+        },
+        {
+          "slot": "bloodline",
+          "text": "燕地戰鼓入骨"
+        },
+        {
+          "slot": "future",
+          "text": "酒盞底仍有雷"
+        }
+      ]
+    },
+    {
+      "id": "zhao-yun",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "常山白馬出塵"
+        },
+        {
+          "slot": "faction",
+          "text": "轉身護主歸心"
+        },
+        {
+          "slot": "role",
+          "text": "七進七出如雪"
+        },
+        {
+          "slot": "awakening",
+          "text": "漢水回槍定軍"
+        },
+        {
+          "slot": "bloodline",
+          "text": "銀甲映出古紋"
+        },
+        {
+          "slot": "future",
+          "text": "老將猶能照夜"
+        }
+      ]
+    },
+    {
+      "id": "lu-bu",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "九原少年挽雕"
+        },
+        {
+          "slot": "faction",
+          "text": "三易其主如電"
+        },
+        {
+          "slot": "role",
+          "text": "方天畫戟裂陣"
+        },
+        {
+          "slot": "awakening",
+          "text": "虎牢門前封神"
+        },
+        {
+          "slot": "bloodline",
+          "text": "狼星夜照弓背"
+        },
+        {
+          "slot": "future",
+          "text": "下邳霜重難眠"
+        }
+      ]
+    },
+    {
+      "id": "sima-yi",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "河內鷹眼藏拙"
+        },
+        {
+          "slot": "faction",
+          "text": "曹帳深處養刃"
+        },
+        {
+          "slot": "role",
+          "text": "靜候人心反轉"
+        },
+        {
+          "slot": "awakening",
+          "text": "斷穀逼退蜀軍"
+        },
+        {
+          "slot": "bloodline",
+          "text": "宣王舊夢成霜"
+        },
+        {
+          "slot": "future",
+          "text": "高平陵雪未化"
+        }
+      ]
+    },
+    {
+      "id": "dian-wei",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "己吾徒手裂楊"
+        },
+        {
+          "slot": "faction",
+          "text": "追仇一怒成名"
+        },
+        {
+          "slot": "role",
+          "text": "巨戟守帳如牆"
+        },
+        {
+          "slot": "awakening",
+          "text": "宛城斷後殉主"
+        },
+        {
+          "slot": "bloodline",
+          "text": "惡來舊影附骨"
+        },
+        {
+          "slot": "future",
+          "text": "血戰聲仍未散"
+        }
+      ]
+    },
+    {
+      "id": "xu-zhu",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "譙里壯士護鄉"
+        },
+        {
+          "slot": "faction",
+          "text": "投曹帳作重盾"
+        },
+        {
+          "slot": "role",
+          "text": "虎癡立門鎮軍"
+        },
+        {
+          "slot": "awakening",
+          "text": "裸衣鏖戰成名"
+        },
+        {
+          "slot": "bloodline",
+          "text": "山魄混進筋骨"
+        },
+        {
+          "slot": "future",
+          "text": "醉後仍守主座"
+        }
+      ]
+    },
+    {
+      "id": "huang-zhong",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "南陽老弓未朽"
+        },
+        {
+          "slot": "faction",
+          "text": "長沙帳下藏名"
+        },
+        {
+          "slot": "role",
+          "text": "百步穿楊定膽"
+        },
+        {
+          "slot": "awakening",
+          "text": "定軍山頭斬夏"
+        },
+        {
+          "slot": "bloodline",
+          "text": "弓魂久伏不散"
+        },
+        {
+          "slot": "future",
+          "text": "白髮仍壓少年"
+        }
+      ]
+    },
+    {
+      "id": "ma-chao",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "涼州白袍出關"
+        },
+        {
+          "slot": "faction",
+          "text": "雪槍西風成名"
+        },
+        {
+          "slot": "role",
+          "text": "騎軍破陣如錐"
+        },
+        {
+          "slot": "awakening",
+          "text": "潼關殺氣貫日"
+        },
+        {
+          "slot": "bloodline",
+          "text": "伏波後裔猶熱"
+        },
+        {
+          "slot": "future",
+          "text": "蹄痕仍向蜀路"
+        }
+      ]
+    },
+    {
+      "id": "lu-xun",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "江東世族藏鋒"
+        },
+        {
+          "slot": "faction",
+          "text": "危局受命而起"
+        },
+        {
+          "slot": "role",
+          "text": "焚營一計翻盤"
+        },
+        {
+          "slot": "awakening",
+          "text": "夷陵火海成名"
+        },
+        {
+          "slot": "bloodline",
+          "text": "墨痕也會行軍"
+        },
+        {
+          "slot": "future",
+          "text": "木樓仍聞書氣"
+        }
+      ]
+    },
+    {
+      "id": "taishi-ci",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "東萊長弓映海"
+        },
+        {
+          "slot": "faction",
+          "text": "單騎報信救城"
+        },
+        {
+          "slot": "role",
+          "text": "勁弓先聲奪膽"
+        },
+        {
+          "slot": "awakening",
+          "text": "神亭鏖戰結義"
+        },
+        {
+          "slot": "bloodline",
+          "text": "箭影自會回家"
+        },
+        {
+          "slot": "future",
+          "text": "故土仍認其名"
+        }
+      ]
+    },
+    {
+      "id": "zhang-liao",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "并州悍卒起身"
+        },
+        {
+          "slot": "faction",
+          "text": "歸曹後磨鋒成"
+        },
+        {
+          "slot": "role",
+          "text": "突騎穿心奪勢"
+        },
+        {
+          "slot": "awakening",
+          "text": "合肥八百封膽"
+        },
+        {
+          "slot": "bloodline",
+          "text": "夜營靜得像刀"
+        },
+        {
+          "slot": "future",
+          "text": "江北童子止啼"
+        }
+      ]
+    },
+    {
+      "id": "xu-huang",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "河東鐵聲磨骨"
+        },
+        {
+          "slot": "faction",
+          "text": "轉戰諸軍不慢"
+        },
+        {
+          "slot": "role",
+          "text": "斧鋒重在破穩"
+        },
+        {
+          "slot": "awakening",
+          "text": "解樊援軍立威"
+        },
+        {
+          "slot": "bloodline",
+          "text": "舊鐵仍記寒鳴"
+        },
+        {
+          "slot": "future",
+          "text": "雪地也走正步"
+        }
+      ]
+    },
+    {
+      "id": "cao-ren",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "宗族悍將守門"
+        },
+        {
+          "slot": "faction",
+          "text": "曹營堅壁成名"
+        },
+        {
+          "slot": "role",
+          "text": "死守不退為先"
+        },
+        {
+          "slot": "awakening",
+          "text": "江陵硬扛周瑜"
+        },
+        {
+          "slot": "bloodline",
+          "text": "門閂壓著祖語"
+        },
+        {
+          "slot": "future",
+          "text": "殘城仍肯站直"
+        }
+      ]
+    },
+    {
+      "id": "pang-tong",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "襄陽酒肆聽局"
+        },
+        {
+          "slot": "faction",
+          "text": "離鳳換主西行"
+        },
+        {
+          "slot": "role",
+          "text": "奇計多從側出"
+        },
+        {
+          "slot": "awakening",
+          "text": "落鳳坡前折翼"
+        },
+        {
+          "slot": "bloodline",
+          "text": "屋脊常落黑羽"
+        },
+        {
+          "slot": "future",
+          "text": "遺策仍在轉彎"
+        }
+      ]
+    },
+    {
+      "id": "guo-jia",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "潁川病骨藏鋒"
+        },
+        {
+          "slot": "faction",
+          "text": "入曹幕後定機"
+        },
+        {
+          "slot": "role",
+          "text": "毒辣偏算人心"
+        },
+        {
+          "slot": "awakening",
+          "text": "北征南顧皆準"
+        },
+        {
+          "slot": "bloodline",
+          "text": "病夜窗上浮局"
+        },
+        {
+          "slot": "future",
+          "text": "早逝更添餘響"
+        }
+      ]
+    },
+    {
+      "id": "xun-yu",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "潁川清議成骨"
+        },
+        {
+          "slot": "faction",
+          "text": "奉漢室匡亂局"
+        },
+        {
+          "slot": "role",
+          "text": "王佐端坐中樞"
+        },
+        {
+          "slot": "awakening",
+          "text": "迎帝一議定名"
+        },
+        {
+          "slot": "bloodline",
+          "text": "香灰自結雲紋"
+        },
+        {
+          "slot": "future",
+          "text": "空案仍有正氣"
+        }
+      ]
+    },
+    {
+      "id": "jia-xu",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "涼州寒眼觀亂"
+        },
+        {
+          "slot": "faction",
+          "text": "數易其主自保"
+        },
+        {
+          "slot": "role",
+          "text": "毒計專挑死角"
+        },
+        {
+          "slot": "awakening",
+          "text": "一策便換天下"
+        },
+        {
+          "slot": "bloodline",
+          "text": "燈火總往內縮"
+        },
+        {
+          "slot": "future",
+          "text": "老狐仍留後手"
+        }
+      ]
+    },
+    {
+      "id": "zhang-he",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "河北宿將轉營"
+        },
+        {
+          "slot": "faction",
+          "text": "投魏後更見巧"
+        },
+        {
+          "slot": "role",
+          "text": "善變陣如換羽"
+        },
+        {
+          "slot": "awakening",
+          "text": "木門雪夜追敵"
+        },
+        {
+          "slot": "bloodline",
+          "text": "羽光藏在鐵裡"
+        },
+        {
+          "slot": "future",
+          "text": "老將亦能轉身"
+        }
+      ]
+    },
+    {
+      "id": "yu-jin",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "寒伍守規成性"
+        },
+        {
+          "slot": "faction",
+          "text": "入魏以法立身"
+        },
+        {
+          "slot": "role",
+          "text": "軍令比刀還硬"
+        },
+        {
+          "slot": "awakening",
+          "text": "水厄一役失聲"
+        },
+        {
+          "slot": "bloodline",
+          "text": "堤土壓進骨裡"
+        },
+        {
+          "slot": "future",
+          "text": "沉默比敗更重"
+        }
+      ]
+    },
+    {
+      "id": "cao-ang",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "曹昂生於亂世，早年便以才識與膽略嶄露頭角。"
+        },
+        {
+          "slot": "faction",
+          "text": "投身魏陣營後，逐步建立起自己的聲望。"
+        },
+        {
+          "slot": "role",
+          "text": "Support定位鮮明，是隊伍中不可忽視的一角。"
+        },
+        {
+          "slot": "awakening",
+          "text": "命運轉折之際，曹昂曾在關鍵戰局留下自己的印記。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "曹昂的祖脈線索仍待後續考據補完。"
+        },
+        {
+          "slot": "future",
+          "text": "曹昂後續仍有可延展的角色弧線與覺醒空間。"
+        }
+      ]
+    },
+    {
+      "id": "xiahou-dun",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "宿將少年性烈"
+        },
+        {
+          "slot": "faction",
+          "text": "宗盟起兵同進"
+        },
+        {
+          "slot": "role",
+          "text": "失目更添狠勁"
+        },
+        {
+          "slot": "awakening",
+          "text": "拔矢吞睛鎮眾"
+        },
+        {
+          "slot": "bloodline",
+          "text": "井底仍照單眼"
+        },
+        {
+          "slot": "future",
+          "text": "餘威還壓前軍"
+        }
+      ]
+    },
+    {
+      "id": "xiahou-yuan",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "箭疾勝過傳令"
+        },
+        {
+          "slot": "faction",
+          "text": "宗軍驟馬馳援"
+        },
+        {
+          "slot": "role",
+          "text": "快戰不給喘息"
+        },
+        {
+          "slot": "awakening",
+          "text": "西線奔襲成名"
+        },
+        {
+          "slot": "bloodline",
+          "text": "馬廄靜得可怕"
+        },
+        {
+          "slot": "future",
+          "text": "風聲總比旗早"
+        }
+      ]
+    },
+    {
+      "id": "wei-yan",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "漢中野骨難馴"
+        },
+        {
+          "slot": "faction",
+          "text": "從劉後屢建功"
+        },
+        {
+          "slot": "role",
+          "text": "奇兵專取險路"
+        },
+        {
+          "slot": "awakening",
+          "text": "子午一議成疤"
+        },
+        {
+          "slot": "bloodline",
+          "text": "鏡裡總缺半面"
+        },
+        {
+          "slot": "future",
+          "text": "背影仍朝北望"
+        }
+      ]
+    },
+    {
+      "id": "jiang-wei",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "天水寒槍初立"
+        },
+        {
+          "slot": "faction",
+          "text": "折入蜀營續志"
+        },
+        {
+          "slot": "role",
+          "text": "文武兩端都硬"
+        },
+        {
+          "slot": "awakening",
+          "text": "北伐孤身再舉"
+        },
+        {
+          "slot": "bloodline",
+          "text": "雪意纏在槍鋒"
+        },
+        {
+          "slot": "future",
+          "text": "遺志仍追孔明"
+        }
+      ]
+    },
+    {
+      "id": "deng-ai",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "寒門步算成路"
+        },
+        {
+          "slot": "faction",
+          "text": "魏廷終識其能"
+        },
+        {
+          "slot": "role",
+          "text": "地勢就是兵書"
+        },
+        {
+          "slot": "awakening",
+          "text": "陰平偷渡封局"
+        },
+        {
+          "slot": "bloodline",
+          "text": "泥地先畫蜀道"
+        },
+        {
+          "slot": "future",
+          "text": "山雨仍記腳痕"
+        }
+      ]
+    },
+    {
+      "id": "zhong-hui",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "神童落筆帶鋒"
+        },
+        {
+          "slot": "faction",
+          "text": "魏廷愛其機敏"
+        },
+        {
+          "slot": "role",
+          "text": "筆陣能改兵陣"
+        },
+        {
+          "slot": "awakening",
+          "text": "伐蜀功高生變"
+        },
+        {
+          "slot": "bloodline",
+          "text": "筆架夜敲三下"
+        },
+        {
+          "slot": "future",
+          "text": "才名終被心吞"
+        }
+      ]
+    },
+    {
+      "id": "huang-gai",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "老將忍氣藏鋒"
+        },
+        {
+          "slot": "faction",
+          "text": "江東帳下沉穩"
+        },
+        {
+          "slot": "role",
+          "text": "苦肉只是表層"
+        },
+        {
+          "slot": "awakening",
+          "text": "赤壁假降成火"
+        },
+        {
+          "slot": "bloodline",
+          "text": "鼓皮留著焦痕"
+        },
+        {
+          "slot": "future",
+          "text": "笑時仍像舊刀"
+        }
+      ]
+    },
+    {
+      "id": "cheng-pu",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "江東宿將壓艙"
+        },
+        {
+          "slot": "faction",
+          "text": "佐孫氏渡風浪"
+        },
+        {
+          "slot": "role",
+          "text": "老成最穩軍心"
+        },
+        {
+          "slot": "awakening",
+          "text": "數戰之後更重"
+        },
+        {
+          "slot": "bloodline",
+          "text": "盔裡還有海味"
+        },
+        {
+          "slot": "future",
+          "text": "老樹仍能擋風"
+        }
+      ]
+    },
+    {
+      "id": "han-dang",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "遼東勁卒南下"
+        },
+        {
+          "slot": "faction",
+          "text": "追隨孫氏起事"
+        },
+        {
+          "slot": "role",
+          "text": "沉弓冷箭制場"
+        },
+        {
+          "slot": "awakening",
+          "text": "江面雨夜伏敵"
+        },
+        {
+          "slot": "bloodline",
+          "text": "箭簍自數舊命"
+        },
+        {
+          "slot": "future",
+          "text": "靜的人最先中"
+        }
+      ]
+    },
+    {
+      "id": "gan-ning",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "錦帆賊笑入江"
+        },
+        {
+          "slot": "faction",
+          "text": "歸吳後改浪名"
+        },
+        {
+          "slot": "role",
+          "text": "快襲像夜魚翻"
+        },
+        {
+          "slot": "awakening",
+          "text": "百騎劫營成戲"
+        },
+        {
+          "slot": "bloodline",
+          "text": "刀柄夜露有鈴"
+        },
+        {
+          "slot": "future",
+          "text": "江面還記狂笑"
+        }
+      ]
+    },
+    {
+      "id": "ling-tong",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "少年披甲背恨"
+        },
+        {
+          "slot": "faction",
+          "text": "承父名入軍行"
+        },
+        {
+          "slot": "role",
+          "text": "衝鋒也懂分寸"
+        },
+        {
+          "slot": "awakening",
+          "text": "逍遙津後更穩"
+        },
+        {
+          "slot": "bloodline",
+          "text": "木柱留著舊痕"
+        },
+        {
+          "slot": "future",
+          "text": "終學放過自己"
+        }
+      ]
+    },
+    {
+      "id": "zhou-tai",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "寒卒以命換路"
+        },
+        {
+          "slot": "faction",
+          "text": "江東危局撐身"
+        },
+        {
+          "slot": "role",
+          "text": "肉身就是城牆"
+        },
+        {
+          "slot": "awakening",
+          "text": "護主遍體成甲"
+        },
+        {
+          "slot": "bloodline",
+          "text": "舊傷先替他醒"
+        },
+        {
+          "slot": "future",
+          "text": "疤痕比勳還重"
+        }
+      ]
+    },
+    {
+      "id": "xu-sheng",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "琅邪客居江東"
+        },
+        {
+          "slot": "faction",
+          "text": "入吳後穩紮營"
+        },
+        {
+          "slot": "role",
+          "text": "虛實最擅互換"
+        },
+        {
+          "slot": "awakening",
+          "text": "假城一役立威"
+        },
+        {
+          "slot": "bloodline",
+          "text": "濕沙不留真步"
+        },
+        {
+          "slot": "future",
+          "text": "敵至時才知晚"
+        }
+      ]
+    },
+    {
+      "id": "ding-feng",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "寒門老卒藏火"
+        },
+        {
+          "slot": "faction",
+          "text": "江東晚局撐梁"
+        },
+        {
+          "slot": "role",
+          "text": "寡兵也能翻桌"
+        },
+        {
+          "slot": "awakening",
+          "text": "雪中短兵封名"
+        },
+        {
+          "slot": "bloodline",
+          "text": "舊袍總比雪重"
+        },
+        {
+          "slot": "future",
+          "text": "老來更會出手"
+        }
+      ]
+    },
+    {
+      "id": "zhang-zhao",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "江東名士立骨"
+        },
+        {
+          "slot": "faction",
+          "text": "入吳後守典章"
+        },
+        {
+          "slot": "role",
+          "text": "諍臣專擋躁火"
+        },
+        {
+          "slot": "awakening",
+          "text": "殿上直言逆耳"
+        },
+        {
+          "slot": "bloodline",
+          "text": "竹簡在雨季喘"
+        },
+        {
+          "slot": "future",
+          "text": "老臣不替人甜"
+        }
+      ]
+    },
+    {
+      "id": "lu-meng",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "匹夫提刀入伍"
+        },
+        {
+          "slot": "faction",
+          "text": "受孫權逼讀書"
+        },
+        {
+          "slot": "role",
+          "text": "文武兩端都補"
+        },
+        {
+          "slot": "awakening",
+          "text": "白衣渡江封局"
+        },
+        {
+          "slot": "bloodline",
+          "text": "燈火愛鑽字縫"
+        },
+        {
+          "slot": "future",
+          "text": "病去仍留殺意"
+        }
+      ]
+    },
+    {
+      "id": "sun-ce",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "少年挾勇逐鹿"
+        },
+        {
+          "slot": "faction",
+          "text": "借父名起江東"
+        },
+        {
+          "slot": "role",
+          "text": "破城像擲短槍"
+        },
+        {
+          "slot": "awakening",
+          "text": "小霸王一戰定"
+        },
+        {
+          "slot": "bloodline",
+          "text": "風總先替他到"
+        },
+        {
+          "slot": "future",
+          "text": "英氣停在江面"
+        }
+      ]
+    },
+    {
+      "id": "sun-jian",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "吳地猛虎起身"
+        },
+        {
+          "slot": "faction",
+          "text": "討賊先鋒成名"
+        },
+        {
+          "slot": "role",
+          "text": "身先士卒壓陣"
+        },
+        {
+          "slot": "awakening",
+          "text": "汜水之前取勢"
+        },
+        {
+          "slot": "bloodline",
+          "text": "斷石伏著虎影"
+        },
+        {
+          "slot": "future",
+          "text": "江東家火由此"
+        }
+      ]
+    },
+    {
+      "id": "dong-zhuo",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "隴西肥火起灶"
+        },
+        {
+          "slot": "faction",
+          "text": "乘亂入京挾帝"
+        },
+        {
+          "slot": "role",
+          "text": "暴威先壓朝廷"
+        },
+        {
+          "slot": "awakening",
+          "text": "焚洛一舉留毒"
+        },
+        {
+          "slot": "bloodline",
+          "text": "鍋鼎夜裡自鳴"
+        },
+        {
+          "slot": "future",
+          "text": "長安灰仍帶腥"
+        }
+      ]
+    },
+    {
+      "id": "yuan-shao",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "四世三公堆勢"
+        },
+        {
+          "slot": "faction",
+          "text": "河北群望歸袁"
+        },
+        {
+          "slot": "role",
+          "text": "號令大於決斷"
+        },
+        {
+          "slot": "awakening",
+          "text": "官渡一敗成裂"
+        },
+        {
+          "slot": "bloodline",
+          "text": "鏡台照不全人"
+        },
+        {
+          "slot": "future",
+          "text": "家聲先被風散"
+        }
+      ]
+    },
+    {
+      "id": "liu-biao",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "名士終坐荊州"
+        },
+        {
+          "slot": "faction",
+          "text": "據長江而觀局"
+        },
+        {
+          "slot": "role",
+          "text": "善守卻少決斷"
+        },
+        {
+          "slot": "awakening",
+          "text": "江表安靜成病"
+        },
+        {
+          "slot": "bloodline",
+          "text": "鎮紙總壓不平"
+        },
+        {
+          "slot": "future",
+          "text": "門下仍各自盤"
+        }
+      ]
+    },
+    {
+      "id": "ma-teng",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "西涼老鷹繞帳"
+        },
+        {
+          "slot": "faction",
+          "text": "邊地豪氣結軍"
+        },
+        {
+          "slot": "role",
+          "text": "騎射把風撕開"
+        },
+        {
+          "slot": "awakening",
+          "text": "關中諸雄共局"
+        },
+        {
+          "slot": "bloodline",
+          "text": "伏波餘熱仍燙"
+        },
+        {
+          "slot": "future",
+          "text": "父影壓在孟起"
+        }
+      ]
+    },
+    {
+      "id": "gongsun-zan",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "白馬將軍出塞"
+        },
+        {
+          "slot": "faction",
+          "text": "北地豪氣成軍"
+        },
+        {
+          "slot": "role",
+          "text": "輕騎喜走直線"
+        },
+        {
+          "slot": "awakening",
+          "text": "界橋一役留痕"
+        },
+        {
+          "slot": "bloodline",
+          "text": "霜地不沾馬蹄"
+        },
+        {
+          "slot": "future",
+          "text": "燕北仍念白影"
+        }
+      ]
+    },
+    {
+      "id": "tao-qian",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "丹楊故吏成主"
+        },
+        {
+          "slot": "faction",
+          "text": "徐州倉廩為先"
+        },
+        {
+          "slot": "role",
+          "text": "善撫民不善爭"
+        },
+        {
+          "slot": "awakening",
+          "text": "讓州一念留名"
+        },
+        {
+          "slot": "bloodline",
+          "text": "木斗常帶餘溫"
+        },
+        {
+          "slot": "future",
+          "text": "仁厚也有代價"
+        }
+      ]
+    },
+    {
+      "id": "liu-zhang",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "劉璋年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "zhang-lu",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "張魯年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "han-sui",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "韓遂年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "yuan-shu",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "袁術年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "kong-rong",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "孔融年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "liu-yan",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "劉焉年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "cao-pi",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "曹丕生於亂世，早年便以才識與膽略嶄露頭角。"
+        },
+        {
+          "slot": "faction",
+          "text": "投身魏陣營後，逐步建立起自己的聲望。"
+        },
+        {
+          "slot": "role",
+          "text": "Commander定位鮮明，是隊伍中不可忽視的一角。"
+        },
+        {
+          "slot": "awakening",
+          "text": "命運轉折之際，曹丕曾在關鍵戰局留下自己的印記。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "曹丕的祖脈線索仍待後續考據補完。"
+        },
+        {
+          "slot": "future",
+          "text": "曹丕後續仍有可延展的角色弧線與覺醒空間。"
+        }
+      ]
+    },
+    {
+      "id": "cao-xiu",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "曹休生於亂世，早年便以才識與膽略嶄露頭角。"
+        },
+        {
+          "slot": "faction",
+          "text": "投身魏陣營後，逐步建立起自己的聲望。"
+        },
+        {
+          "slot": "role",
+          "text": "Combat定位鮮明，是隊伍中不可忽視的一角。"
+        },
+        {
+          "slot": "awakening",
+          "text": "命運轉折之際，曹休曾在關鍵戰局留下自己的印記。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "曹休的祖脈線索仍待後續考據補完。"
+        },
+        {
+          "slot": "future",
+          "text": "曹休後續仍有可延展的角色弧線與覺醒空間。"
+        }
+      ]
+    },
+    {
+      "id": "sima-zhao",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "司馬昭年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "sima-shi",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "司馬師年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "zhuge-jin",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "諸葛瑾年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "zhuge-ke",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "諸葛恪年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "bu-zhi",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "步騭年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "zhu-ran",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "朱然年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "pan-zhang",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "潘璋年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "ma-zhong",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "馬忠年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "liu-feng",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "劉封年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "meng-da",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "孟達年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "peng-yang",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "彭羕年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "fa-zheng",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "法正年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "huang-quan",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "黃權年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "li-yan",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "李嚴年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "wang-ping",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "王平年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "zhang-yi",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "張嶷年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "liao-hua",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "廖化年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "guan-xing",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "關興年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "zhang-bao",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "張苞年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "ma-dai",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "馬岱年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "cao-hong",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "曹洪年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "cao-zhang",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "曹璋年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "man-chong",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "滿寵年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "wang-shuang",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "王雙年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "guo-huai",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "郭淮年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "chen-tai",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "陳泰年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "wen-pin",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "文聘年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "le-jin",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "樂進年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "li-dian",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "李典年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "chen-qun",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "陳群年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "hua-xin",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "華歆年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "wang-lang",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "王朗年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "xun-you",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "荀攸年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "cheng-yu",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "程昱年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "liu-ye",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "劉曄年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "sun-shao",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "孫邵年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "gu-yong",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "顧雍年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "zhu-jun",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "朱治年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "lv-fan",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "呂範年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "sun-huan",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "孫桓年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "sun-jun",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "孫峻年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "he-qi",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "賀齊年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "lu-kang",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "陸抗生於亂世，早年便以才識與膽略嶄露頭角。"
+        },
+        {
+          "slot": "faction",
+          "text": "投身吳陣營後，逐步建立起自己的聲望。"
+        },
+        {
+          "slot": "role",
+          "text": "Combat定位鮮明，是隊伍中不可忽視的一角。"
+        },
+        {
+          "slot": "awakening",
+          "text": "命運轉折之際，陸抗曾在關鍵戰局留下自己的印記。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "陸抗的祖脈線索仍待後續考據補完。"
+        },
+        {
+          "slot": "future",
+          "text": "陸抗後續仍有可延展的角色弧線與覺醒空間。"
+        }
+      ]
+    },
+    {
+      "id": "zhu-huan",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "朱桓年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "lu-yin",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "陸胤生於亂世，早年便以才識與膽略嶄露頭角。"
+        },
+        {
+          "slot": "faction",
+          "text": "投身吳陣營後，逐步建立起自己的聲望。"
+        },
+        {
+          "slot": "role",
+          "text": "Support定位鮮明，是隊伍中不可忽視的一角。"
+        },
+        {
+          "slot": "awakening",
+          "text": "命運轉折之際，陸胤曾在關鍵戰局留下自己的印記。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "陸胤的祖脈線索仍待後續考據補完。"
+        },
+        {
+          "slot": "future",
+          "text": "陸胤後續仍有可延展的角色弧線與覺醒空間。"
+        }
+      ]
+    },
+    {
+      "id": "cheng-bing",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "程秉生於亂世，早年便以才識與膽略嶄露頭角。"
+        },
+        {
+          "slot": "faction",
+          "text": "投身吳陣營後，逐步建立起自己的聲望。"
+        },
+        {
+          "slot": "role",
+          "text": "Support定位鮮明，是隊伍中不可忽視的一角。"
+        },
+        {
+          "slot": "awakening",
+          "text": "命運轉折之際，程秉曾在關鍵戰局留下自己的印記。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "程秉的祖脈線索仍待後續考據補完。"
+        },
+        {
+          "slot": "future",
+          "text": "程秉後續仍有可延展的角色弧線與覺醒空間。"
+        }
+      ]
+    },
+    {
+      "id": "han-xuan",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "韓玄年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "jin-xuan",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "金旋年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "liu-du",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "劉度年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "zhao-fan",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "趙范年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "wen-chou",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "文醜年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "yan-liang",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "顏良年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "zhang-bao-enemy",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "張寶年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "zhang-jue",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "張角年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "zhang-liang-enemy",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "張梁年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "hua-tuo",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "華佗年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "mi-zhu",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "麋竺年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "jian-yong",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "簡雍年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "sun-qian",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "孫乾年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "yin-mo",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "尹默年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "deng-zhi",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "鄧芝年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "yang-yi",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "楊儀年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "fei-yi",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "費禕年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "dong-yun",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "董允年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "xu-shu",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "徐庶年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "pang-de",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "龐德年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "zhang-xiu",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "張繡年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "zhang-xian",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "張羨年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "liu-bao",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "劉豹年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "ke-bi-neng",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "軻比能年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "meng-huo",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "孟獲年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "zhu-rong",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "祝融年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "wu-tugu",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "兀突骨年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "ahui-nan",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "阿會喃年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "dong-tu-na",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "董荼那年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "jin-huan-san-jie",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "金環三結年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "yuan-tan",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "袁譚年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "yuan-shang",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "袁尚年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "yuan-xi",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "袁熙年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "gao-lan",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "高覽年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "gao-gan",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "高幹年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "tian-feng",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "田豐年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "ju-shou",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "沮授年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "guo-tu",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "郭圖年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "shen-pei",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "審配年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "dong-zhao",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "董昭年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "han-hao",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "韓浩年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "wang-yi",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "王異年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "xi-zhi-cai",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "戲志才年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "mao-jie",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "毛玠年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "lu-su",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "魯肅年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "huo-yi",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "霍弋生於亂世，早年便以才識與膽略嶄露頭角。"
+        },
+        {
+          "slot": "faction",
+          "text": "投身蜀陣營後，逐步建立起自己的聲望。"
+        },
+        {
+          "slot": "role",
+          "text": "Combat定位鮮明，是隊伍中不可忽視的一角。"
+        },
+        {
+          "slot": "awakening",
+          "text": "命運轉折之際，霍弋曾在關鍵戰局留下自己的印記。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "霍弋的祖脈線索仍待後續考據補完。"
+        },
+        {
+          "slot": "future",
+          "text": "霍弋後續仍有可延展的角色弧線與覺醒空間。"
+        }
+      ]
+    },
+    {
+      "id": "liao-li",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "廖立年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "du-qiong",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "杜瓊年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "fei-guan",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "費觀年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "luo-xian",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "羅憲年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "jiang-wan",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "蔣琬生於亂世，早年便以才識與膽略嶄露頭角。"
+        },
+        {
+          "slot": "faction",
+          "text": "投身蜀陣營後，逐步建立起自己的聲望。"
+        },
+        {
+          "slot": "role",
+          "text": "Support定位鮮明，是隊伍中不可忽視的一角。"
+        },
+        {
+          "slot": "awakening",
+          "text": "命運轉折之際，蔣琬曾在關鍵戰局留下自己的印記。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "蔣琬的祖脈線索仍待後續考據補完。"
+        },
+        {
+          "slot": "future",
+          "text": "蔣琬後續仍有可延展的角色弧線與覺醒空間。"
+        }
+      ]
+    },
+    {
+      "id": "gou-fu",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "句扶生於亂世，早年便以才識與膽略嶄露頭角。"
+        },
+        {
+          "slot": "faction",
+          "text": "投身蜀陣營後，逐步建立起自己的聲望。"
+        },
+        {
+          "slot": "role",
+          "text": "Combat定位鮮明，是隊伍中不可忽視的一角。"
+        },
+        {
+          "slot": "awakening",
+          "text": "命運轉折之際，句扶曾在關鍵戰局留下自己的印記。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "句扶的祖脈線索仍待後續考據補完。"
+        },
+        {
+          "slot": "future",
+          "text": "句扶後續仍有可延展的角色弧線與覺醒空間。"
+        }
+      ]
+    },
+    {
+      "id": "liu-chen",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "劉諶年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "zhu-bao",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "朱褒年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "li-hui",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "李恢年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "chen-zhi",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "陳祗年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "zhang-yi-shu",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "張翼（蜀）年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "fu-tong",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "傅彤年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "ma-liang",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "馬良生於亂世，早年便以才識與膽略嶄露頭角。"
+        },
+        {
+          "slot": "faction",
+          "text": "投身蜀陣營後，逐步建立起自己的聲望。"
+        },
+        {
+          "slot": "role",
+          "text": "Advisor定位鮮明，是隊伍中不可忽視的一角。"
+        },
+        {
+          "slot": "awakening",
+          "text": "命運轉折之際，馬良曾在關鍵戰局留下自己的印記。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "馬良的祖脈線索仍待後續考據補完。"
+        },
+        {
+          "slot": "future",
+          "text": "馬良後續仍有可延展的角色弧線與覺醒空間。"
+        }
+      ]
+    },
+    {
+      "id": "guan-suo",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "關索年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "yu-fan",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "虞翻年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "chen-wu",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "陳武年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "sun-yi",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "孫翊年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "zhu-ji",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "朱績年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "quan-cong",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "全琮年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "lv-dai",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "呂岱年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "hu-zun",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "胡遵年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "wang-ji",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "王基年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "sun-li",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "孫禮年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "wang-hun",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "王渾年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "wen-qin",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "文欽年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "gongsun-yuan",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "公孫淵年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "mu-lu-da-wang",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "木鹿大王年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "e-huan",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "鄂煥年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "sha-mo-ke",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "沙摩柯年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "mi-heng",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "禰衡年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "tian-chou",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "田疇年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "guan-ning",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "管寧年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "zuo-ci",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "左慈年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "yu-ji",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "于吉年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "liu-ba",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "劉巴年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "qin-mi",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "秦宓年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "yi-ji",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "伊籍年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "fei-shi",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "費詩年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "zhang-nan",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "張南年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "fu-shou",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "傅肜年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "sun-sheng",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "孫盛年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "wei-zhao",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "韋昭年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "xue-zong",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "薛綜年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "zhu-yi",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "朱異年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "pan-jun",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "潘浚生於亂世，早年便以才識與膽略嶄露頭角。"
+        },
+        {
+          "slot": "faction",
+          "text": "投身吳陣營後，逐步建立起自己的聲望。"
+        },
+        {
+          "slot": "role",
+          "text": "Support定位鮮明，是隊伍中不可忽視的一角。"
+        },
+        {
+          "slot": "awakening",
+          "text": "命運轉折之際，潘浚曾在關鍵戰局留下自己的印記。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "潘浚的祖脈線索仍待後續考據補完。"
+        },
+        {
+          "slot": "future",
+          "text": "潘浚後續仍有可延展的角色弧線與覺醒空間。"
+        }
+      ]
+    },
+    {
+      "id": "cao-zhi",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "曹植年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "lv-kai",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "呂凱生於亂世，早年便以才識與膽略嶄露頭角。"
+        },
+        {
+          "slot": "faction",
+          "text": "投身蜀陣營後，逐步建立起自己的聲望。"
+        },
+        {
+          "slot": "role",
+          "text": "Support定位鮮明，是隊伍中不可忽視的一角。"
+        },
+        {
+          "slot": "awakening",
+          "text": "命運轉折之際，呂凱曾在關鍵戰局留下自己的印記。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "呂凱的祖脈線索仍待後續考據補完。"
+        },
+        {
+          "slot": "future",
+          "text": "呂凱後續仍有可延展的角色弧線與覺醒空間。"
+        }
+      ]
+    },
+    {
+      "id": "chen-dao",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "陳到年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "wu-ban",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "吳班年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "sun-hao",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "孫皓年少時便展現過人才華，鄉里無不稱奇。"
+        },
+        {
+          "slot": "faction",
+          "text": "初入仕途，以一件奇事引起上位者注意，從此踏上征途。"
+        },
+        {
+          "slot": "role",
+          "text": "在一場關鍵之戰中，以智勇雙全之姿力挽狂瀾，奠定名聲。"
+        },
+        {
+          "slot": "awakening",
+          "text": "盛年之際，聲名遠播，四方豪傑紛紛前來投效。"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晚年回望一生，深感亂世之悲，留下「寧教天下人負我」之嘆。"
+        },
+        {
+          "slot": "future",
+          "text": "身後，人們以詩文紀念其偉業，功績永銘史冊。"
+        }
+      ]
+    },
+    {
+      "id": "diao-chan",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "歌樓幼習辨人心"
+        },
+        {
+          "slot": "faction",
+          "text": "王允密府受連環"
+        },
+        {
+          "slot": "role",
+          "text": "一舞一語裂權柄"
+        },
+        {
+          "slot": "awakening",
+          "text": "鳳儀亭前定生死"
+        },
+        {
+          "slot": "bloodline",
+          "text": "銅鈴夜響應危局"
+        },
+        {
+          "slot": "future",
+          "text": "長安月冷誰記名"
+        }
+      ]
+    },
+    {
+      "id": "da-qiao",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "皖城喬門養清華"
+        },
+        {
+          "slot": "faction",
+          "text": "嫁入江東繫兩門"
+        },
+        {
+          "slot": "role",
+          "text": "柔聲穩住新基業"
+        },
+        {
+          "slot": "awakening",
+          "text": "伯符定皖她定心"
+        },
+        {
+          "slot": "bloodline",
+          "text": "鏡面先映江潮色"
+        },
+        {
+          "slot": "future",
+          "text": "江東舊月照空樓"
+        }
+      ]
+    },
+    {
+      "id": "xiao-qiao",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "喬家次女長於雅音"
+        },
+        {
+          "slot": "faction",
+          "text": "一入都督府伴軍"
+        },
+        {
+          "slot": "role",
+          "text": "琴心暗合江上節"
+        },
+        {
+          "slot": "awakening",
+          "text": "赤壁前夜穩瑜鋒"
+        },
+        {
+          "slot": "bloodline",
+          "text": "一曲能招江風轉"
+        },
+        {
+          "slot": "future",
+          "text": "煙水長留二喬名"
+        }
+      ]
+    },
+    {
+      "id": "zhen-ji",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "中山名門出玉質"
+        },
+        {
+          "slot": "faction",
+          "text": "北地易主入魏宮"
+        },
+        {
+          "slot": "role",
+          "text": "深宮靜守觀人變"
+        },
+        {
+          "slot": "awakening",
+          "text": "流言難掩洛水色"
+        },
+        {
+          "slot": "bloodline",
+          "text": "玉簪映出雙重影"
+        },
+        {
+          "slot": "future",
+          "text": "千年仍被喚洛神"
+        }
+      ]
+    },
+    {
+      "id": "sun-shang-xiang",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "孫門幼女先習弓"
+        },
+        {
+          "slot": "faction",
+          "text": "宗室姻盟亦握刃"
+        },
+        {
+          "slot": "role",
+          "text": "弓馬成性不居後"
+        },
+        {
+          "slot": "awakening",
+          "text": "嫁蜀返吳仍帶風"
+        },
+        {
+          "slot": "bloodline",
+          "text": "弓弦先裂木紋線"
+        },
+        {
+          "slot": "future",
+          "text": "江姬名在浪頭行"
+        }
+      ]
+    },
+    {
+      "id": "cai-yan",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "名門書香兼通音"
+        },
+        {
+          "slot": "faction",
+          "text": "亂離塞外仍守文"
+        },
+        {
+          "slot": "role",
+          "text": "以詩以樂續殘經"
+        },
+        {
+          "slot": "awakening",
+          "text": "胡笳一拍驚故國"
+        },
+        {
+          "slot": "bloodline",
+          "text": "書樓夜半自生聲"
+        },
+        {
+          "slot": "future",
+          "text": "離歌盡處留文火"
+        }
+      ]
+    },
+    {
+      "id": "huang-yue-ying",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "黃家工坊伴星圖"
+        },
+        {
+          "slot": "faction",
+          "text": "嫁臥龍而議器政"
+        },
+        {
+          "slot": "role",
+          "text": "機巧能轉軍與農"
+        },
+        {
+          "slot": "awakening",
+          "text": "木牛流馬傳蜀道"
+        },
+        {
+          "slot": "bloodline",
+          "text": "木輪夜轉無人推"
+        },
+        {
+          "slot": "future",
+          "text": "圖紙殘頁待後生"
+        }
+      ]
+    },
+    {
+      "id": "zhang-chun-hua",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "河內張氏習家法"
+        },
+        {
+          "slot": "faction",
+          "text": "入司馬門先守口"
+        },
+        {
+          "slot": "role",
+          "text": "深宅先斷外洩線"
+        },
+        {
+          "slot": "awakening",
+          "text": "危局時刻敢先手"
+        },
+        {
+          "slot": "bloodline",
+          "text": "靜眼如先數退路"
+        },
+        {
+          "slot": "future",
+          "text": "晉室影裡有她名"
+        }
+      ]
+    },
+    {
+      "id": "xin-xian-ying",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "穎川辛門重識局"
+        },
+        {
+          "slot": "faction",
+          "text": "魏室風波先看透"
+        },
+        {
+          "slot": "role",
+          "text": "一語常早人三步"
+        },
+        {
+          "slot": "awakening",
+          "text": "曹爽未敗已知結"
+        },
+        {
+          "slot": "bloodline",
+          "text": "白鷺入夢示後勢"
+        },
+        {
+          "slot": "future",
+          "text": "亂局中仍留清判"
+        }
+      ]
+    },
+    {
+      "id": "bu-lian-shi",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "步氏家風尚清靜"
+        },
+        {
+          "slot": "faction",
+          "text": "入吳宮而不逐勢"
+        },
+        {
+          "slot": "role",
+          "text": "柔德能壓宮闈躁"
+        },
+        {
+          "slot": "awakening",
+          "text": "權門深處自成衡"
+        },
+        {
+          "slot": "bloodline",
+          "text": "青玉夜裡微生光"
+        },
+        {
+          "slot": "future",
+          "text": "吳宮餘溫留後評"
+        }
+      ]
+    },
+    {
+      "id": "guan-yin-ping",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "關門女兒先識義"
+        },
+        {
+          "slot": "faction",
+          "text": "蜀漢營中自請戰"
+        },
+        {
+          "slot": "role",
+          "text": "長槍守線亦能突"
+        },
+        {
+          "slot": "awakening",
+          "text": "家名壓肩仍向前"
+        },
+        {
+          "slot": "bloodline",
+          "text": "鐵柄餘溫認血脈"
+        },
+        {
+          "slot": "future",
+          "text": "青龍後裔待定名"
+        }
+      ]
+    },
+    {
+      "id": "lu-ling-qi",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "飛將帳下聞鐵聲"
+        },
+        {
+          "slot": "faction",
+          "text": "亂世孤女承父鋒"
+        },
+        {
+          "slot": "role",
+          "text": "快騎突陣不回首"
+        },
+        {
+          "slot": "awakening",
+          "text": "虎牢餘名壓肩行"
+        },
+        {
+          "slot": "bloodline",
+          "text": "殘鋒未散隨馬影"
+        },
+        {
+          "slot": "future",
+          "text": "誰能寫完她後篇"
+        }
+      ]
+    },
+    {
+      "id": "ma-yun-lu",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "西涼風裡學騎射"
+        },
+        {
+          "slot": "faction",
+          "text": "馬家軍陣見女鋒"
+        },
+        {
+          "slot": "role",
+          "text": "短槍快騎破側翼"
+        },
+        {
+          "slot": "awakening",
+          "text": "羌地風雪練膽骨"
+        },
+        {
+          "slot": "bloodline",
+          "text": "群馬先識馬氏血"
+        },
+        {
+          "slot": "future",
+          "text": "邊塞雲起仍喚名"
+        }
+      ]
+    },
+    {
+      "id": "dong-bai",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "權門深宅見火色"
+        },
+        {
+          "slot": "faction",
+          "text": "董氏餘脈被風推"
+        },
+        {
+          "slot": "role",
+          "text": "身在局中難自決"
+        },
+        {
+          "slot": "awakening",
+          "text": "長安失勢方知寒"
+        },
+        {
+          "slot": "bloodline",
+          "text": "殘樓不倒留怨影"
+        },
+        {
+          "slot": "future",
+          "text": "亂門孤影誰收束"
+        }
+      ]
+    },
+    {
+      "id": "fan-shi",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "荊南門第生柔影"
+        },
+        {
+          "slot": "faction",
+          "text": "婚盟流轉入兵塵"
+        },
+        {
+          "slot": "role",
+          "text": "身非主角仍牽局"
+        },
+        {
+          "slot": "awakening",
+          "text": "局勢換手難自主"
+        },
+        {
+          "slot": "bloodline",
+          "text": "井痕先退一寸深"
+        },
+        {
+          "slot": "future",
+          "text": "誰為亂世拾其名"
+        }
+      ]
+    },
+    {
+      "id": "bian-fu-ren",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "寒門出身識世情"
+        },
+        {
+          "slot": "faction",
+          "text": "入曹門而先守序"
+        },
+        {
+          "slot": "role",
+          "text": "內廷持衡定眾心"
+        },
+        {
+          "slot": "awakening",
+          "text": "征伐之外她守家"
+        },
+        {
+          "slot": "bloodline",
+          "text": "玉環夜轉平口舌"
+        },
+        {
+          "slot": "future",
+          "text": "魏宮秩序留其影"
+        }
+      ]
+    },
+    {
+      "id": "wu-guo-tai",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "吳門長輩識人情"
+        },
+        {
+          "slot": "faction",
+          "text": "孫氏內外皆敬之"
+        },
+        {
+          "slot": "role",
+          "text": "先安一家再安國"
+        },
+        {
+          "slot": "awakening",
+          "text": "婚盟多由她定調"
+        },
+        {
+          "slot": "bloodline",
+          "text": "一室先靜如受命"
+        },
+        {
+          "slot": "future",
+          "text": "江東舊府仍稱太"
+        }
+      ]
+    },
+    {
+      "id": "guo-nu-wang",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "寒門細讀人情紋"
+        },
+        {
+          "slot": "faction",
+          "text": "入魏宮先識風向"
+        },
+        {
+          "slot": "role",
+          "text": "以分寸收攏內廷"
+        },
+        {
+          "slot": "awakening",
+          "text": "后位之前已定局"
+        },
+        {
+          "slot": "bloodline",
+          "text": "竹簡自齊如成命"
+        },
+        {
+          "slot": "future",
+          "text": "文德留痕在曹魏"
+        }
+      ]
+    },
+    {
+      "id": "wang-yuan-ji",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "士族庭訓鍊成靜眼"
+        },
+        {
+          "slot": "faction",
+          "text": "入司馬門先識反心"
+        },
+        {
+          "slot": "role",
+          "text": "不居前台卻定後勢"
+        },
+        {
+          "slot": "awakening",
+          "text": "亂兆未形已知轉向"
+        },
+        {
+          "slot": "bloodline",
+          "text": "晨昏兩香常報家運"
+        },
+        {
+          "slot": "future",
+          "text": "晉室根系由她護穩"
+        }
+      ]
+    },
+    {
+      "id": "xiahou-shi",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "北地夏侯女入亂世"
+        },
+        {
+          "slot": "faction",
+          "text": "嫁入蜀門繫兩家線"
+        },
+        {
+          "slot": "role",
+          "text": "替猛將把家室縫穩"
+        },
+        {
+          "slot": "awakening",
+          "text": "宗親裂縫由她過橋"
+        },
+        {
+          "slot": "bloodline",
+          "text": "夜歌能暫息兩門鋒"
+        },
+        {
+          "slot": "future",
+          "text": "一人橫跨魏蜀兩脈"
+        }
+      ]
+    },
+    {
+      "id": "xiahou-ling-nv",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "宗門自幼重家法節"
+        },
+        {
+          "slot": "faction",
+          "text": "夫亡之後獨拒改命"
+        },
+        {
+          "slot": "role",
+          "text": "以一身守住舊誓約"
+        },
+        {
+          "slot": "awakening",
+          "text": "眾勸之下仍不回頭"
+        },
+        {
+          "slot": "bloodline",
+          "text": "夜讀舊頁不沾淚氣"
+        },
+        {
+          "slot": "future",
+          "text": "魏室節女名久不散"
+        }
+      ]
+    },
+    {
+      "id": "gan-shi",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "薄名之身先耐奔波"
+        },
+        {
+          "slot": "faction",
+          "text": "從劉備而不言苦楚"
+        },
+        {
+          "slot": "role",
+          "text": "亂軍中替家線續命"
+        },
+        {
+          "slot": "awakening",
+          "text": "顛沛之際仍能護嗣"
+        },
+        {
+          "slot": "bloodline",
+          "text": "搖籃一靜便知命硬"
+        },
+        {
+          "slot": "future",
+          "text": "昭烈之後仍有她影"
+        }
+      ]
+    },
+    {
+      "id": "mi-shi",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "徐州糜門知進退節"
+        },
+        {
+          "slot": "faction",
+          "text": "入蜀之前先經兵流"
+        },
+        {
+          "slot": "role",
+          "text": "亂陣中把家嗣讓先"
+        },
+        {
+          "slot": "awakening",
+          "text": "長坂一決成後世像"
+        },
+        {
+          "slot": "bloodline",
+          "text": "井底回音仍守幼主"
+        },
+        {
+          "slot": "future",
+          "text": "名字常與阿斗同提"
+        }
+      ]
+    },
+    {
+      "id": "cao-jie",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "曹門之女入漢宮牆"
+        },
+        {
+          "slot": "faction",
+          "text": "身在魏線心守漢名"
+        },
+        {
+          "slot": "role",
+          "text": "最後一握不讓名分"
+        },
+        {
+          "slot": "awakening",
+          "text": "抱璽斥人震許都廷"
+        },
+        {
+          "slot": "bloodline",
+          "text": "冷璽自知王朝將換"
+        },
+        {
+          "slot": "future",
+          "text": "漢魏交界留她一怒"
+        }
+      ]
+    },
+    {
+      "id": "sun-lu-ban",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "宗室公主自幼識局網"
+        },
+        {
+          "slot": "faction",
+          "text": "江東內廷全成棋盤"
+        },
+        {
+          "slot": "role",
+          "text": "以恩怨推動繼承傷口"
+        },
+        {
+          "slot": "awakening",
+          "text": "大虎之名從宮中起"
+        },
+        {
+          "slot": "bloodline",
+          "text": "孫門虎氣改成暗爪"
+        },
+        {
+          "slot": "future",
+          "text": "一網亂盡吳宮人心"
+        }
+      ]
+    },
+    {
+      "id": "sun-lu-yu",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "孫門小虎長於深宮"
+        },
+        {
+          "slot": "faction",
+          "text": "不願同流反更顯孤"
+        },
+        {
+          "slot": "role",
+          "text": "以克制抵住家門亂"
+        },
+        {
+          "slot": "awakening",
+          "text": "越守直越陷入猜忌"
+        },
+        {
+          "slot": "bloodline",
+          "text": "夜潮之性靜而難折"
+        },
+        {
+          "slot": "future",
+          "text": "吳宮月冷小虎先逝"
+        }
+      ]
+    },
+    {
+      "id": "zhao-e",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "酒泉邊地先學忍與刃"
+        },
+        {
+          "slot": "faction",
+          "text": "無主可依便自成戰意"
+        },
+        {
+          "slot": "role",
+          "text": "以一身替亡父雪讎名"
+        },
+        {
+          "slot": "awakening",
+          "text": "風沙夜裡先把刀磨冷"
+        },
+        {
+          "slot": "bloodline",
+          "text": "白霜上刃即是家仇令"
+        },
+        {
+          "slot": "future",
+          "text": "烈女之名比黃沙更久"
+        }
+      ]
+    },
+    {
+      "id": "yang-hui-yu",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "泰山羊門養成靜德骨"
+        },
+        {
+          "slot": "faction",
+          "text": "入司馬門先穩屋梁勢"
+        },
+        {
+          "slot": "role",
+          "text": "不出聲卻能壓家門波"
+        },
+        {
+          "slot": "awakening",
+          "text": "亂世越急她越沉著穩"
+        },
+        {
+          "slot": "bloodline",
+          "text": "雨前苦竹先報波瀾近"
+        },
+        {
+          "slot": "future",
+          "text": "魏晉過橋時她撐橋身"
+        }
+      ]
+    },
+    {
+      "id": "zhu-rong-furen",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "南中列泊生火焰"
+        },
+        {
+          "slot": "faction",
+          "text": "孟獲旗下最猛妻"
+        },
+        {
+          "slot": "role",
+          "text": "飛刀揮出三軍驚"
+        },
+        {
+          "slot": "awakening",
+          "text": "七擒不折仍並肩"
+        },
+        {
+          "slot": "bloodline",
+          "text": "火神血脈刀不冷"
+        },
+        {
+          "slot": "future",
+          "text": "歸心蜀漢護南疆"
+        }
+      ]
+    },
+    {
+      "id": "bao-san-niang",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "山寨刀法勝鬚眉"
+        },
+        {
+          "slot": "faction",
+          "text": "一敗關興定終身"
+        },
+        {
+          "slot": "role",
+          "text": "武穆夫人戰陣中"
+        },
+        {
+          "slot": "awakening",
+          "text": "三板刀舞自成陣"
+        },
+        {
+          "slot": "bloodline",
+          "text": "異人傳法西南來"
+        },
+        {
+          "slot": "future",
+          "text": "漢中英名不落伍"
+        }
+      ]
+    },
+    {
+      "id": "hua-man",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "洞主愛女雙刀秀"
+        },
+        {
+          "slot": "faction",
+          "text": "朵思麾下鎮南疆"
+        },
+        {
+          "slot": "role",
+          "text": "被縛不服仍英氣"
+        },
+        {
+          "slot": "awakening",
+          "text": "蜀漢仁義令人折"
+        },
+        {
+          "slot": "bloodline",
+          "text": "符咒護身猛獸怯"
+        },
+        {
+          "slot": "future",
+          "text": "南中歸附永無戰"
+        }
+      ]
+    },
+    {
+      "id": "cai-shi",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "蔡氏家族荊州根"
+        },
+        {
+          "slot": "faction",
+          "text": "繼室劉表握兵柄"
+        },
+        {
+          "slot": "role",
+          "text": "主降一書換太平"
+        },
+        {
+          "slot": "awakening",
+          "text": "亂世存族在謀早"
+        },
+        {
+          "slot": "bloodline",
+          "text": "讀心之術識忠奸"
+        },
+        {
+          "slot": "future",
+          "text": "荊州舊事入曹冊"
+        }
+      ]
+    },
+    {
+      "id": "cao-hua",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "魏武三女共宮廷"
+        },
+        {
+          "slot": "faction",
+          "text": "漢宮嬪妃深藏拙"
+        },
+        {
+          "slot": "role",
+          "text": "溫婉持家保宗門"
+        },
+        {
+          "slot": "awakening",
+          "text": "亂世靜觀風雲中"
+        },
+        {
+          "slot": "bloodline",
+          "text": "曹氏三姐缺一不可"
+        },
+        {
+          "slot": "future",
+          "text": "文書之間留細痕"
+        }
+      ]
+    },
+    {
+      "id": "cao-xian",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "曹氏次女善持重"
+        },
+        {
+          "slot": "faction",
+          "text": "三妹同入漢宮中"
+        },
+        {
+          "slot": "role",
+          "text": "一言化解宮中爭"
+        },
+        {
+          "slot": "awakening",
+          "text": "穩字當頭事事成"
+        },
+        {
+          "slot": "bloodline",
+          "text": "卜骨宮扇驅邪正"
+        },
+        {
+          "slot": "future",
+          "text": "謙遜之名傳魏冊"
+        }
+      ]
+    },
+    {
+      "id": "xu-shi",
+      "storyStripCells": [
+        {
+          "slot": "origin",
+          "text": "吳郡名族書香女"
+        },
+        {
+          "slot": "faction",
+          "text": "孫翊之妻烈婦名"
+        },
+        {
+          "slot": "role",
+          "text": "設宴誅凶報夫仇"
+        },
+        {
+          "slot": "awakening",
+          "text": "忍辱智謀勝蠻力"
+        },
+        {
+          "slot": "bloodline",
+          "text": "記仇之目不忘恩"
+        },
+        {
+          "slot": "future",
+          "text": "孫權盛禮贈烈婦"
+        }
+      ]
+    }
+  ]
+}

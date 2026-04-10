@@ -114,6 +114,7 @@ services().ui.open(UIID.BattleHUD);
 - 收斂 slot-map 匯出格式，讓它能直接轉成 scaffolder config JSON
 - 繼續校正 `cocos-log-bridge` 的 scene context
 - 持續擴充 template family，但遵守 template-first，而不是為單一畫面濫開新模板
+- **§2.6 長局生命周期**（2026-04-08）：DC-6-0007~0011 ✅ done；LineageSeedStore（DC-6-0012）P2 延後；UI spec 任務 `spirit-card-view` + `branch-summary-view` 待開立
 
 ---
 

@@ -1,0 +1,166 @@
+{
+  "$schema": "../../schemas/asset-task-manifest.schema.json",
+  "screenId": "GeneralDetailBloodlineV3",
+  "sourceFamilyMap": "GeneralDetailBloodlineV3",
+  "generatedAt": "2026-04-08T03:00:33.813Z",
+  "taskCount": 4,
+  "tasks": [
+    {
+      "taskId": "general-detail-bloodline-v3-header-cap-left",
+      "screenId": "GeneralDetailBloodlineV3",
+      "model": "nano-banana-2",
+      "zone": "header-plaque",
+      "slot": "capLeft",
+      "taskType": "generate-partial-asset",
+      "label": "Header 左端 ornament",
+      "family": "header-rarity-plaque",
+      "recipe": "jade-parchment-light",
+      "structureOwner": "UITemplateResolver+widget-compose",
+      "skinOwner": "UISkinResolver",
+      "contentOwner": "contentContract",
+      "widgetRefs": [
+        "header-title-block",
+        "rarity-badge-dock"
+      ],
+      "templateRefs": [
+        "detail-split"
+      ],
+      "targetStyle": "header-rarity-plaque / jade-parchment-light",
+      "mustKeep": [],
+      "mustAvoid": [],
+      "fitRules": {
+        "maxVisualOccupancy": 0.65,
+        "runtimeIntrusionForbidden": true
+      },
+      "postProcess": {
+        "trimByBackground": true,
+        "allowFadeSide": "right",
+        "fitPadding": 12,
+        "spriteType": "sliced",
+        "border": [20, 12, 20, 12]
+      },
+      "output": {
+        "preferredMime": "image/png",
+        "targetLongEdge": 512,
+        "transparentBackgroundPreferred": true,
+        "outputName": "header_cap_left"
+      }
+    },
+    {
+      "taskId": "general-detail-bloodline-v3-header-cap-right",
+      "screenId": "GeneralDetailBloodlineV3",
+      "model": "nano-banana-2",
+      "zone": "header-plaque",
+      "slot": "capRight",
+      "taskType": "generate-partial-asset",
+      "label": "Header 右端 ornament",
+      "family": "header-rarity-plaque",
+      "recipe": "jade-parchment-light",
+      "structureOwner": "UITemplateResolver+widget-compose",
+      "skinOwner": "UISkinResolver",
+      "contentOwner": "contentContract",
+      "widgetRefs": [
+        "header-title-block",
+        "rarity-badge-dock"
+      ],
+      "templateRefs": [
+        "detail-split"
+      ],
+      "targetStyle": "header-rarity-plaque / jade-parchment-light",
+      "mustKeep": [],
+      "mustAvoid": [],
+      "fitRules": {
+        "maxVisualOccupancy": 0.65,
+        "runtimeIntrusionForbidden": true
+      },
+      "postProcess": {
+        "trimByBackground": true,
+        "allowFadeSide": "left",
+        "fitPadding": 12,
+        "spriteType": "sliced",
+        "border": [20, 12, 20, 12]
+      },
+      "output": {
+        "preferredMime": "image/png",
+        "targetLongEdge": 512,
+        "transparentBackgroundPreferred": true,
+        "outputName": "header_cap_right"
+      }
+    },
+    {
+      "taskId": "general-detail-bloodline-v3-crest-face",
+      "screenId": "GeneralDetailBloodlineV3",
+      "model": "nano-banana-2",
+      "zone": "crest-medallion",
+      "slot": "crestFace",
+      "taskType": "generate-partial-asset",
+      "label": "命紋 face",
+      "family": "crest-medallion",
+      "recipe": "jade-ornate-medallion",
+      "structureOwner": "UITemplateResolver+widget-compose",
+      "skinOwner": "UISkinResolver",
+      "contentOwner": "contentContract",
+      "widgetRefs": [
+        "crest-carrier",
+        "crest-state-label"
+      ],
+      "templateRefs": [
+        "detail-split"
+      ],
+      "targetStyle": "crest-medallion / jade-ornate-medallion",
+      "mustKeep": [],
+      "mustAvoid": [],
+      "fitRules": {
+        "maxVisualOccupancy": 0.65,
+        "runtimeIntrusionForbidden": true
+      },
+      "postProcess": {
+        "trimByBackground": true
+      },
+      "output": {
+        "preferredMime": "image/png",
+        "targetLongEdge": 512,
+        "transparentBackgroundPreferred": true,
+        "outputName": "crest_face"
+      }
+    },
+    {
+      "taskId": "general-detail-bloodline-v3-crest-ring",
+      "screenId": "GeneralDetailBloodlineV3",
+      "model": "nano-banana-2",
+      "zone": "crest-medallion",
+      "slot": "crestRing",
+      "taskType": "generate-partial-asset",
+      "label": "命紋 ring",
+      "family": "crest-medallion",
+      "recipe": "jade-ornate-medallion",
+      "structureOwner": "UITemplateResolver+widget-compose",
+      "skinOwner": "UISkinResolver",
+      "contentOwner": "contentContract",
+      "widgetRefs": [
+        "crest-carrier",
+        "crest-state-label"
+      ],
+      "templateRefs": [
+        "detail-split"
+      ],
+      "targetStyle": "crest-medallion / jade-ornate-medallion",
+      "mustKeep": [],
+      "mustAvoid": [],
+      "fitRules": {
+        "maxVisualOccupancy": 0.65,
+        "runtimeIntrusionForbidden": true
+      },
+      "postProcess": {
+        "trimByBackground": true
+      },
+      "output": {
+        "preferredMime": "image/png",
+        "targetLongEdge": 512,
+        "transparentBackgroundPreferred": true,
+        "outputName": "crest_ring"
+      }
+    }
+  ],
+  "warnings": []
+}

@@ -127,4 +127,53 @@ export class FormulaSystem {
 
     return 1;
   }
+
+  // ─── 生產 / 政務公式（Phase 2，對應規格書 §3.3 公式層平衡設計原則）─────────────
+
+  /**
+   * 內政產出計算（政務）。
+   * 公式：floor( sqrt(pol) × multiplier × aptitudeBonus )
+   *
+   * 設計原則（§3.3）：使用開根號型曲線收斂頂端差距，避免高政值武將產出失衡。
+   * - pol=100 時 base ≈ 100；pol=50 時 base ≈ 70.7（差距 1.41×，而非線性 2×）
+   *
+   * @param pol           政治屬性值
+   * @param multiplier    基礎乘數（預設 10，可依建築等級等外部因素傳入）
+   * @param aptitudeBonus 適性加乘（S=1.2, A=1.1, B=1.0, C=0.9；預設 1.0）
+   */
+  public calculateAdminOutput(pol: number, multiplier = 10, aptitudeBonus = 1.0): number {
+    return Math.floor(Math.sqrt(Math.max(0, pol)) * multiplier * aptitudeBonus);
+  }
+
+  /**
+   * 外交 / 商業產出計算（魅力）。
+   * 公式：floor( sqrt(cha) × multiplier × aptitudeBonus )
+   *
+   * 設計原則（§3.3）：與 calculateAdminOutput 同邏輯；cha 用於外交、招募、市場收益等場合。
+   *
+   * @param cha           魅力屬性值
+   * @param multiplier    基礎乘數（預設 10）
+   * @param aptitudeBonus 適性加乘（S=1.2, A=1.1, B=1.0, C=0.9；預設 1.0）
+   */
+  public calculateDiplomacyOutput(cha: number, multiplier = 10, aptitudeBonus = 1.0): number {
+    return Math.floor(Math.sqrt(Math.max(0, cha)) * multiplier * aptitudeBonus);
+  }
+
+  /**
+   * 將兵種適性等級字串轉換為公式層乘數。
+   * 規格書 §3.3：S=1.2x, A=1.1x, B=1.0x, C=0.9x, D=0.8x
+   *
+   * @param grade 適性等級字串（'S'|'A'|'B'|'C'|'D'）
+   * @returns 乘數值（1.0 為無加減成）
+   */
+  public static aptitudeMultiplier(grade: string): number {
+    switch (grade?.toUpperCase()) {
+      case 'S': return 1.2;
+      case 'A': return 1.1;
+      case 'B': return 1.0;
+      case 'C': return 0.9;
+      case 'D': return 0.8;
+      default:  return 1.0;
+    }
+  }
 }

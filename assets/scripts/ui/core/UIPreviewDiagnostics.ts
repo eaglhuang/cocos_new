@@ -34,7 +34,7 @@ export class UIPreviewDiagnostics {
      * Label 無綁定來源的警告
      */
     static labelFallbackWarning(labelName: string): void {
-        console.warn('[UIPreviewBuilder] label "' + labelName + '" has no textKey/text/bind - defaulting to empty string');
+        console.log('[UIPreviewBuilder] label "' + labelName + '" has no textKey/text/bind - defaulting to empty string');
     }
 
     /**
@@ -48,7 +48,7 @@ export class UIPreviewDiagnostics {
      * Noise 混合模式不支援警告
      */
     static noiseBlendModeWarning(blendMode: string, slotId: string): void {
-        console.warn(`[UIPreviewBuilder] noise blend "${blendMode}" 回退至 alpha 混合: ${slotId}`);
+        console.log(`[UIPreviewBuilder] noise blend "${blendMode}" 回退至 alpha 混合: ${slotId}`);
     }
 
     /**

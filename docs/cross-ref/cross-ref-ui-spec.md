@@ -8,7 +8,13 @@
 > 三層合約：`layouts/` 節點樹 → `skins/` 外觀資源 → `screens/` 組裝+資料綁定  
 > Bundle: `lobby_ui`；Atlas 分組見各檔 `atlasPolicy` 欄位
 
-### C-1. 現有 Spec 檔案清單
+### C-0. UI 元件尺寸契約（新增 2026-04-09）
+
+| 文件 | 用途 |
+|------|------|
+| `docs/ui/component-sizing-contract.md` | **Repo 級唯一尺寸真相來源**：幾何行為六類（FX/SS/SR/TR/LC/DI）、Title A/B 二分規則、元件標準尺寸矩陣、Screen Sizing Table 格式規範 |
+
+**每份 screen spec / task card 必須有 Component Sizing Table 才算規格齊備。**
 
 | 檔案 | 類型 | 對應規格書 | Atlas | 備注 |
 |---|---|---|---|---|

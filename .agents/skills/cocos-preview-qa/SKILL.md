@@ -122,14 +122,15 @@ node tools_node/capture-ui-screens.js --target LobbyMain --outDir artifacts/ui-q
 
 ## Step 3 — 查看截圖（用 view_image）
 
-截圖完成後，**必須逐一呼叫 `view_image` 工具**：
+`capture-ui-screens.js` 的輸出在進 `view_image` 前，仍需遵守 thumbnail-first progressive zoom：先看 `125px`，不足才升到 `250px`、`500px`。
+
+截圖完成後，**一次只開 1 張主圖**；若需要比對，再額外開 **1 張對照圖**，不可整批開 4 張：
 
 ```
 view_image: artifacts/ui-qa/<taskId>/LobbyMain.png
-view_image: artifacts/ui-qa/<taskId>/ShopMain.png
-view_image: artifacts/ui-qa/<taskId>/Gacha.png
-view_image: artifacts/ui-qa/<taskId>/DuelChallenge.png
 ```
+
+> 圖片檢視硬規定：一次最多 `1` 張主圖 + `1` 張對照圖；先試 `125px`，不足才放大一倍；需要看 `>500px` 原圖時，必須先取得使用者明確同意。
 
 ---
 
@@ -144,8 +145,8 @@ view_image: artifacts/ui-qa/<taskId>/DuelChallenge.png
 
 ### 比對方法
 
-1. `view_image` 開啟新截圖
-2. `view_image` 開啟對應參考圖
+1. `view_image` 開啟新截圖前，先用 `prepare-view-image.js` 產出 `125px` 版本
+2. 若 `125px` 不足，再依序升到 `250px`、`500px`；參考圖也用同一套流程
 3. 逐點比較（見下方觀察點）
 
 ### QA 觀察點 Checklist

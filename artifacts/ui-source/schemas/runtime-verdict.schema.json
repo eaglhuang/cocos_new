@@ -1,0 +1,64 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "runtime-verdict.schema.json",
+  "title": "UIFactoryRuntimeVerdict",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "screenId",
+    "runId",
+    "status",
+    "residuals",
+    "promoteable",
+    "factoryLearnings",
+    "latestStage",
+    "updatedAt"
+  ],
+  "properties": {
+    "$schema": { "type": "string", "const": "../../schemas/runtime-verdict.schema.json" },
+    "screenId": { "type": "string", "minLength": 1 },
+    "runId": { "type": ["string", "null"] },
+    "status": { "type": "string", "enum": ["not-run", "pass", "pass-with-minor-residuals", "fail"] },
+    "residuals": { "type": "array", "items": { "type": "string" } },
+    "promoteable": { "type": "boolean" },
+    "factoryLearnings": { "type": "array", "items": { "type": "string" } },
+    "latestStage": { "type": ["string", "null"] },
+    "captureArtifacts": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "screenshotPath": { "type": "string" },
+        "debugScreenshotPath": { "type": "string" },
+        "debugStatePath": { "type": "string" },
+        "captureReportPath": { "type": "string" }
+      }
+    },
+    "diagnosticsSummary": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "consoleErrorCount": { "type": "integer", "minimum": 0 },
+        "consoleWarningCount": { "type": "integer", "minimum": 0 },
+        "pageErrorCount": { "type": "integer", "minimum": 0 },
+        "requestFailureCount": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "history": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["runId", "status", "updatedAt", "residualCount", "promoteable"],
+        "properties": {
+          "runId": { "type": ["string", "null"] },
+          "status": { "type": "string", "enum": ["not-run", "pass", "pass-with-minor-residuals", "fail"] },
+          "updatedAt": { "type": "string", "minLength": 1 },
+          "residualCount": { "type": "integer", "minimum": 0 },
+          "promoteable": { "type": "boolean" }
+        }
+      }
+    },
+    "updatedAt": { "type": "string", "minLength": 1 }
+  }
+}

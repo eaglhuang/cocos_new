@@ -1,0 +1,78 @@
+{
+  "$schema": "../../../assets/resources/ui-spec/proof/proof-contract.schema.json",
+  "version": "1.0",
+  "screenId": "GeneralDetailBloodlineV3",
+  "proofSource": "ref://artifacts/ui-source/general-detail-bloodline-v3/proof/general-detail-bloodline-v3.proof.json",
+  "capturedAt": "2026-04-08",
+  "capturedBy": "GitHubCopilot",
+  "confidence": 0.8,
+  "visualZones": [
+    {
+      "id": "portrait-stage",
+      "label": "左側人物舞台",
+      "family": "panel-light",
+      "bounds": { "x": 0, "y": 0, "w": 760, "h": 860 },
+      "notes": "立繪主舞台，延續 detail-split 左半邊構圖"
+    },
+    {
+      "id": "header-plaque",
+      "label": "右上血脈標題牌匾",
+      "family": "parchment",
+      "frameRecipeRef": "parchment-v1",
+      "bounds": { "x": 760, "y": 0, "w": 1160, "h": 180 },
+      "notes": "姓名、血脈稱號與稀有度所在 header plaque"
+    },
+    {
+      "id": "bloodline-summary",
+      "label": "血脈內容摘要區",
+      "family": "parchment",
+      "bounds": { "x": 820, "y": 180, "w": 820, "h": 260 },
+      "notes": "血脈名稱、說明、人格與覺醒摘要"
+    },
+    {
+      "id": "awakening-track",
+      "label": "覺醒進度列",
+      "family": "parchment",
+      "bounds": { "x": 820, "y": 440, "w": 820, "h": 160 },
+      "notes": "多段 awakening chip 與進度語意"
+    },
+    {
+      "id": "crest-medallion",
+      "label": "命紋 medallion 區",
+      "family": "parchment",
+      "bounds": { "x": 1640, "y": 250, "w": 280, "h": 360 },
+      "notes": "crest socket、face、ring 與狀態提示"
+    },
+    {
+      "id": "story-strip",
+      "label": "下方故事帶 rail",
+      "family": "parchment",
+      "bounds": { "x": 0, "y": 860, "w": 1920, "h": 220 },
+      "notes": "底部敘事 strip，沿用 detail-split story rail"
+    }
+  ],
+  "componentIntents": [
+    { "zone": "portrait-stage", "nodeHint": "image", "skinSlot": "gdv3.portrait.frame", "bind": "portraitResource" },
+    { "zone": "portrait-stage", "nodeHint": "overlay", "skinSlot": "gdv3.portrait.backdrop", "notes": "wash + shadow" },
+    { "zone": "header-plaque", "nodeHint": "panel", "skinSlot": "gdv3.rarity.band.fill", "notes": "header plaque" },
+    { "zone": "header-plaque", "nodeHint": "label", "bind": "headerName", "notes": "主標題" },
+    { "zone": "bloodline-summary", "nodeHint": "panel", "skinSlot": "gdv3.info.card.fill", "bind": "bloodlineBody" },
+    { "zone": "awakening-track", "nodeHint": "grid", "skinSlot": "gdv3.awakening.track", "bind": "awakeningProgress" },
+    { "zone": "crest-medallion", "nodeHint": "image", "bind": "crestFaceResource", "notes": "crest 主視覺" },
+    { "zone": "story-strip", "nodeHint": "scroll-list", "skinSlot": "gdv3.story.strip.card", "bind": "storyCells" }
+  ],
+  "spacingRecipe": {
+    "containerPadding": 24,
+    "itemSpacing": 16,
+    "sectionGap": 24,
+    "unitBasis": 8
+  },
+  "contentSlots": [
+    { "id": "headerName", "type": "label", "placeholder": "主標題" },
+    { "id": "bloodlineBody", "type": "label", "placeholder": "血脈說明" },
+    { "id": "awakeningProgress", "type": "label", "placeholder": "覺醒進度" },
+    { "id": "crestFaceResource", "type": "image", "placeholder": "crest face 資產" },
+    { "id": "storyCells", "type": "list", "placeholder": "故事條內容", "minCount": 6, "maxCount": 6 },
+    { "id": "portraitResource", "type": "image", "placeholder": "人物立繪" }
+  ]
+}

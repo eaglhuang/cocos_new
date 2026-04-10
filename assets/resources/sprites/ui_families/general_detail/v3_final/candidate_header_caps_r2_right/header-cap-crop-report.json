@@ -1,0 +1,259 @@
+{
+  "input": "c:\\Users\\User\\3KLife\\artifacts\\ui-qa\\UI-2-0094\\r2-candidates\\header_ornament_r_new.png",
+  "outDir": "c:\\Users\\User\\3KLife\\assets\\resources\\sprites\\ui_families\\general_detail\\v3_final\\candidate_header_caps_r2_right",
+  "sourceSize": {
+    "width": 1024,
+    "height": 1024
+  },
+  "mode": "auto-detect",
+  "analysis": {
+    "imageSize": {
+      "width": 1024,
+      "height": 1024
+    },
+    "background": {
+      "r": 216.68055555555557,
+      "g": 219.51041666666669,
+      "b": 222.18229166666666,
+      "a": 255
+    },
+    "candidateCount": 9,
+    "candidates": [
+      {
+        "bbox": {
+          "x": 144,
+          "y": 0,
+          "width": 80,
+          "height": 73
+        },
+        "area": 3195,
+        "areaRatio": 0.0030469894409179688,
+        "widthRatio": 0.078125,
+        "heightRatio": 0.0712890625,
+        "aspect": 1.095890410958904,
+        "solidity": 0.5470890410958904,
+        "centerX": 184,
+        "centerY": 36.5,
+        "leftScore": 0.8572152658866058,
+        "rightScore": 0.6644418283866058
+      },
+      {
+        "bbox": {
+          "x": 319,
+          "y": 0,
+          "width": 58,
+          "height": 47
+        },
+        "area": 1445,
+        "areaRatio": 0.0013780593872070312,
+        "widthRatio": 0.056640625,
+        "heightRatio": 0.0458984375,
+        "aspect": 1.2340425531914894,
+        "solidity": 0.5300807043286867,
+        "centerX": 348,
+        "centerY": 23.5,
+        "leftScore": 0.6805684920034442,
+        "rightScore": 0.6279317732534442
+      },
+      {
+        "bbox": {
+          "x": 375,
+          "y": 0,
+          "width": 110,
+          "height": 73
+        },
+        "area": 2424,
+        "areaRatio": 0.00231170654296875,
+        "widthRatio": 0.107421875,
+        "heightRatio": 0.0712890625,
+        "aspect": 1.5068493150684932,
+        "solidity": 0.30186799501867995,
+        "centerX": 430,
+        "centerY": 36.5,
+        "leftScore": 0.46072082122595825,
+        "rightScore": 0.46072082122595825
+      },
+      {
+        "bbox": {
+          "x": 624,
+          "y": 0,
+          "width": 58,
+          "height": 46
+        },
+        "area": 1538,
+        "areaRatio": 0.0014667510986328125,
+        "widthRatio": 0.056640625,
+        "heightRatio": 0.044921875,
+        "aspect": 1.2608695652173914,
+        "solidity": 0.5764617691154422,
+        "centerX": 653,
+        "centerY": 23,
+        "leftScore": 0.6300077825670498,
+        "rightScore": 0.6629911810045498
+      },
+      {
+        "bbox": {
+          "x": 966,
+          "y": 0,
+          "width": 33,
+          "height": 73
+        },
+        "area": 1778,
+        "areaRatio": 0.0016956329345703125,
+        "widthRatio": 0.0322265625,
+        "heightRatio": 0.0712890625,
+        "aspect": 0.4520547945205479,
+        "solidity": 0.7380655873806559,
+        "centerX": 982.5,
+        "centerY": 36.5,
+        "leftScore": 0.7357154053376228,
+        "rightScore": 1.0502539795563728
+      },
+      {
+        "bbox": {
+          "x": 6,
+          "y": 20,
+          "width": 85,
+          "height": 109
+        },
+        "area": 5194,
+        "areaRatio": 0.0049533843994140625,
+        "widthRatio": 0.0830078125,
+        "heightRatio": 0.1064453125,
+        "aspect": 0.7798165137614679,
+        "solidity": 0.560604425256341,
+        "centerX": 48.5,
+        "centerY": 74.5,
+        "leftScore": 1.0537375912383542,
+        "rightScore": 0.7451804623321041
+      },
+      {
+        "bbox": {
+          "x": 116,
+          "y": 20,
+          "width": 81,
+          "height": 80
+        },
+        "area": 3295,
+        "areaRatio": 0.0031423568725585938,
+        "widthRatio": 0.0791015625,
+        "heightRatio": 0.078125,
+        "aspect": 1.0125,
+        "solidity": 0.5084876543209876,
+        "centerX": 156.5,
+        "centerY": 60,
+        "leftScore": 0.8897142951871142,
+        "rightScore": 0.6734423225308642
+      },
+      {
+        "bbox": {
+          "x": 624,
+          "y": 74,
+          "width": 56,
+          "height": 55
+        },
+        "area": 2391,
+        "areaRatio": 0.0022802352905273438,
+        "widthRatio": 0.0546875,
+        "heightRatio": 0.0537109375,
+        "aspect": 1.018181818181818,
+        "solidity": 0.7762987012987013,
+        "centerX": 652,
+        "centerY": 101.5,
+        "leftScore": 0.6883523854617606,
+        "rightScore": 0.7204812917117606
+      },
+      {
+        "bbox": {
+          "x": 116,
+          "y": 129,
+          "width": 81,
+          "height": 54
+        },
+        "area": 2546,
+        "areaRatio": 0.0024280548095703125,
+        "widthRatio": 0.0791015625,
+        "heightRatio": 0.052734375,
+        "aspect": 1.5,
+        "solidity": 0.5820759030635574,
+        "centerX": 156.5,
+        "centerY": 156,
+        "leftScore": 0.7162157991022947,
+        "rightScore": 0.49994382644604474
+      }
+    ],
+    "bestLeft": {
+      "bbox": {
+        "x": 6,
+        "y": 20,
+        "width": 85,
+        "height": 109
+      },
+      "area": 5194,
+      "areaRatio": 0.0049533843994140625,
+      "widthRatio": 0.0830078125,
+      "heightRatio": 0.1064453125,
+      "aspect": 0.7798165137614679,
+      "solidity": 0.560604425256341,
+      "centerX": 48.5,
+      "centerY": 74.5,
+      "leftScore": 1.0537375912383542,
+      "rightScore": 0.7451804623321041
+    },
+    "bestRight": {
+      "bbox": {
+        "x": 966,
+        "y": 0,
+        "width": 33,
+        "height": 73
+      },
+      "area": 1778,
+      "areaRatio": 0.0016956329345703125,
+      "widthRatio": 0.0322265625,
+      "heightRatio": 0.0712890625,
+      "aspect": 0.4520547945205479,
+      "solidity": 0.7380655873806559,
+      "centerX": 982.5,
+      "centerY": 36.5,
+      "leftScore": 0.7357154053376228,
+      "rightScore": 1.0502539795563728
+    }
+  },
+  "detectedSides": [
+    "left",
+    "right"
+  ],
+  "outputs": {
+    "left": {
+      "detected": {
+        "x": 6,
+        "y": 20,
+        "width": 85,
+        "height": 109
+      },
+      "padded": {
+        "x": 2,
+        "y": 16,
+        "width": 93,
+        "height": 117
+      },
+      "output": "c:\\Users\\User\\3KLife\\assets\\resources\\sprites\\ui_families\\general_detail\\v3_final\\candidate_header_caps_r2_right\\header_cap_left.png"
+    },
+    "right": {
+      "detected": {
+        "x": 966,
+        "y": 0,
+        "width": 33,
+        "height": 73
+      },
+      "padded": {
+        "x": 962,
+        "y": 0,
+        "width": 41,
+        "height": 81
+      },
+      "output": "c:\\Users\\User\\3KLife\\assets\\resources\\sprites\\ui_families\\general_detail\\v3_final\\candidate_header_caps_r2_right\\panel_header_cap_r_sheet_r2.png"
+    }
+  },
+  "status": "matched"
+}

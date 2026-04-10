@@ -1,0 +1,85 @@
+{
+  "$schema": "../../schemas/family-map.schema.json",
+  "screenId": "ShopMain",
+  "templateFamilyCandidate": "",
+  "sourceProof": "ref://docs/UI品質參考圖/shop-main.png",
+  "generatedAt": "2026-04-08T03:21:37.690Z",
+  "zoneFamilyMap": [
+    {
+      "zone": "header",
+      "family": "dark-metal",
+      "recipe": "dark-metal-v1",
+      "structureOwner": "UITemplateResolver+widget-compose",
+      "skinOwner": "UISkinResolver",
+      "contentOwner": "contentContract",
+      "generationNeed": "param-tune",
+      "widgetRefs": [],
+      "templateRefs": [],
+      "sourceProofFamily": "dark-metal",
+      "sourceProofRecipe": "dark-metal-v1",
+      "notes": "深色金屬底，顯示商城標題與關閉按鈕"
+    },
+    {
+      "zone": "tab-bar",
+      "family": "tab-strip",
+      "recipe": "tab-v1",
+      "structureOwner": "UITemplateResolver+widget-compose",
+      "skinOwner": "UISkinResolver",
+      "contentOwner": "contentContract",
+      "generationNeed": "param-tune",
+      "widgetRefs": [
+        "tab-bar"
+      ],
+      "templateRefs": [],
+      "sourceProofFamily": "tab",
+      "sourceProofRecipe": null,
+      "notes": "武器 / 裝備 / 消耗品分頁切換"
+    },
+    {
+      "zone": "item-grid",
+      "family": "item-cell-grid",
+      "recipe": "item-cell-v1",
+      "structureOwner": "UITemplateResolver+widget-compose",
+      "skinOwner": "UISkinResolver",
+      "contentOwner": "contentContract",
+      "generationNeed": "reuse-only",
+      "widgetRefs": [
+        "item-cell"
+      ],
+      "templateRefs": [],
+      "sourceProofFamily": "item-cell",
+      "sourceProofRecipe": null,
+      "notes": "2 欄或 3 欄格子，每格含圖示、名稱、售價"
+    },
+    {
+      "zone": "currency-bar",
+      "family": "dark-metal",
+      "recipe": "dark-metal-v1",
+      "structureOwner": "UITemplateResolver+widget-compose",
+      "skinOwner": "UISkinResolver",
+      "contentOwner": "contentContract",
+      "generationNeed": "reuse-only",
+      "widgetRefs": [],
+      "templateRefs": [],
+      "sourceProofFamily": "dark-metal",
+      "sourceProofRecipe": null,
+      "notes": "顯示金錢 / 元寶餘額"
+    },
+    {
+      "zone": "purchase-panel",
+      "family": "parchment-panel",
+      "recipe": "parchment-v1",
+      "structureOwner": "UITemplateResolver+widget-compose",
+      "skinOwner": "UISkinResolver",
+      "contentOwner": "contentContract",
+      "generationNeed": "reuse-only",
+      "widgetRefs": [
+        "body-card"
+      ],
+      "templateRefs": [],
+      "sourceProofFamily": "parchment",
+      "sourceProofRecipe": null,
+      "notes": "羊皮紙底，含商品詳情 + 購買按鈕"
+    }
+  ]
+}

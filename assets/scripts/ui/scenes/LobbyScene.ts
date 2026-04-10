@@ -132,6 +132,7 @@ export class LobbyScene extends Component {
 
         await this._listPanel.show(this._generals);
         await this._listPanel.onSelectGeneral(this._generals[0]);
+        this._listPanel.node.active = false;
     }
 
     public onClickEnterBattle() {

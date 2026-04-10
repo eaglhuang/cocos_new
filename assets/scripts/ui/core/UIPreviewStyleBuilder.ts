@@ -14,7 +14,7 @@
  *
  * Unity 對照：相當於 UIStyleApplier + UILayoutHelper 的組合
  */
-import { Node, Sprite, UITransform, UIOpacity, Label, Button, Font } from 'cc';
+import { Node, Sprite, UITransform, Label, Button, Font } from 'cc';
 import { SolidBackground } from '../components/SolidBackground';
 import { UISkinResolver, ResolvedButtonSkin, ResolvedLabelStyle } from './UISkinResolver';
 import type { UILayoutNodeSpec } from './UISpecTypes';
@@ -43,12 +43,14 @@ export class UIPreviewStyleBuilder {
         // 純色背景
         if (slot && (slot.kind === 'color-rect' || (slot as any).kind === 'color')) {
             const bg = node.getComponent(SolidBackground) || node.addComponent(SolidBackground);
-            bg.color = this.skinResolver.resolveColor((slot as any).color);
+            const resolvedColor = this.skinResolver.resolveColor((slot as any).color);
             const alpha = (slot as any).alpha;
+            // alpha 直接寫入 SolidBackground 的 color.a，避免 UIOpacity cascade 影響子節點（Labels 等）
+            // Unity 對照：Image.color = new Color(r,g,b,a) 只影響自身 renderer，不 cascade
             if (alpha !== undefined) {
-                const opacity = node.getComponent(UIOpacity) || node.addComponent(UIOpacity);
-                opacity.opacity = alpha;
+                resolvedColor.a = alpha;
             }
+            bg.color = resolvedColor;
             return true;
         }
 
@@ -162,7 +164,11 @@ export class UIPreviewStyleBuilder {
         label.color           = style.color;
         label.horizontalAlign = style.horizontalAlign;
         label.verticalAlign   = style.verticalAlign;
-        label.overflow        = style.overflow;
+        // overflow floor：不允許 skin 將 overflow 設為 NONE（0），
+        // 強制最低保障為 SHRINK（2），確保文字永不溢出容器。
+        // CLAMP(1)、RESIZE_HEIGHT(3) 同樣安全，准許使用。
+        // Unity 對照：TextMeshPro 永遠啟用 AutoSize 作為底線
+        label.overflow = style.overflow === 0 ? 2 : style.overflow;
         if (style.isBold) label.isBold = true;
         if (style.fontPath) {
             const font = this.fontCache.get(style.fontPath);

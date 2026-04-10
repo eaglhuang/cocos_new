@@ -32,5 +32,92 @@
     "epic": "#2196F3",
     "legendary": "#A855F7",
     "mythic": "#FFD700"
+  },
+  "commercialRarity": {
+    "description": "商業化顯示稀有度，獨立於平衡 tier；用於轉蛋視覺分層與角色包裝驗算。女將魅力只在商業分層走曲線補正，不直接改原始 cha。",
+    "order": ["white", "green", "blue", "purple", "gold", "red", "rainbow"],
+    "labels": {
+      "white": "白 / 基礎",
+      "green": "綠 / 進階",
+      "blue": "藍 / 精良",
+      "purple": "紫 / 菁英",
+      "gold": "金 / 招牌",
+      "red": "紅 / 限定級",
+      "rainbow": "彩 / 旗艦級"
+    },
+    "colors": {
+      "white": "#D9D9D9",
+      "green": "#57B857",
+      "blue": "#3B82F6",
+      "purple": "#8B5CF6",
+      "gold": "#F5B301",
+      "red": "#E5484D",
+      "rainbow": "#FF6AD5"
+    },
+    "baseScoreByTier": {
+      "common": 0,
+      "rare": 2,
+      "epic": 4,
+      "legendary": 6,
+      "mythic": 8
+    },
+    "categoryBonus": {
+      "civilian": 0,
+      "general": 0,
+      "famed": 1,
+      "titled": 2,
+      "mythical": 3
+    },
+    "genderScoreBonus": {
+      "女": 1
+    },
+    "charismaTransform": {
+      "女": "sqrt10"
+    },
+    "thresholdBonus": {
+      "maxStat90": 0,
+      "maxStat95": 1,
+      "avg570": 0,
+      "avg580": 1,
+      "cha90": 1,
+      "cha95": 1
+    },
+    "aptitudeBonus": {
+      "aOrS2": 0,
+      "aOrS5": 0
+    },
+    "featuredBandIds": {
+      "gold": [
+        "cao-cao",
+        "liu-bei",
+        "sun-quan",
+        "zhuge-liang",
+        "zhou-yu",
+        "guan-yu",
+        "zhang-fei",
+        "zhao-yun",
+        "lu-bu",
+        "sima-yi"
+      ]
+    },
+    "premiumBandsRequireFeatured": ["gold", "red", "rainbow"],
+    "premiumBandFallback": "purple",
+    "maxBandByGender": {
+      "女": "purple"
+    },
+    "bandMinAvg5ByGender": {
+      "男": {
+        "purple": 69
+      }
+    },
+    "scoreBands": {
+      "white": 0,
+      "green": 2,
+      "blue": 4,
+      "purple": 5,
+      "gold": 9,
+      "red": 12,
+      "rainbow": 14
+    }
   }
 }

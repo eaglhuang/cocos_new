@@ -69,7 +69,10 @@ export class ActionCommandPanel extends UIPreviewBuilder {
             }
 
             // 1. 載入 UI 規格
-            const fullScreen = await loader.loadFullScreen('action-command-screen');
+            const [fullScreen, tokens] = await Promise.all([
+                loader.loadFullScreen('action-command-screen'),
+                loader.loadDesignTokens(),
+            ]);
             
             // 2. 載入 I18n 字串（優先使用系統已載入的，否則才手動載入）
             let i18nData: Record<string, string> = {};
@@ -80,7 +83,7 @@ export class ActionCommandPanel extends UIPreviewBuilder {
             }
             
             // 3. 構建畫面
-            await this.buildScreen(fullScreen.layout, fullScreen.skin, i18nData);
+            await this.buildScreen(fullScreen.layout, fullScreen.skin, i18nData, tokens);
             this._initialized = true;
         } catch (e) {
             console.warn('[ActionCommandPanel] 規格載入失敗，退回白模', e);

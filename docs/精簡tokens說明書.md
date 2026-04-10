@@ -215,6 +215,40 @@ node tools_node/shard-manager.js validate <shardDir>
 
 `check-context-budget.js` 就是在做這件事。
 
+### 原理 1b：看圖成本吃的是像素，不是檔案壓縮率
+
+這一條是最近補上的重點。
+
+Agent 用 `view_image` 看圖時，真正吃 token 的主因是**像素維度**，不是 PNG 檔案大小，也不是 Cocos / Unity build 時使用的 ASTC、ETC2 之類平台壓縮。
+
+也就是說：
+
+- 同樣一張圖，`1920 x 1080` 一定比 `512 x 288` 貴很多
+- 就算把貼圖做成平台壓縮格式，`view_image` 前仍會回到解碼後的像素資料，**不會**因此省 vision token
+- 真正有效的做法只有兩個：
+  - 先縮解析度
+  - 一次少看幾張
+
+目前專案硬規定是：
+
+- 所有讀圖流程都採 thumbnail-first progressive zoom：先試 `125px`，不夠才 `250px`，再不夠才 `500px`
+- `PrintWindow`、參考圖、compare board、editor/browser capture 在 `view_image` 前，必須先套這條 `125 -> 250 -> 500` 規則
+- 一次最多只看 `1` 張主圖 + `1` 張對照圖
+- 若要看 `>500px` 原圖，必須先取得使用者明確同意
+
+實務上，先從 `125px` thumbnail 開始，再依需求升到 `250px`、`500px`，通常比直接看 `512px` 或原圖更能穩定壓低 vision token 成本。這就是為什麼「縮圖階梯」比「只訂一個上限」更重要。
+
+### 原理 1c：方法要寫進工具，不只寫在規則裡
+
+如果只有文件寫「請縮圖」，但腳本和 skill 還是照舊輸出大圖，最後通常還是會有人直接拿原圖去看。
+
+所以這件事要做成兩層：
+
+1. **規則層**：`token-guard.instructions.md`、`AGENTS.md`、skills 明寫 `125 -> 250 -> 500` 與原圖需同意
+2. **工具層**：`capture-ui-screens.js`、`debug-capture.js` 這類腳本直接在輸出階段縮圖
+
+這樣 Agent 不需要每次靠記憶手動做對，工具本身就先把大部分風險擋掉。
+
 ### 原理 2：差異要看結構，不要看全文
 
 很多 token 浪費在：

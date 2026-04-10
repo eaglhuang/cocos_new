@@ -318,7 +318,12 @@ export class EffectSystem {
         const node = this.poolSystem?.acquire(blockId);
         if (!node) {
             // 輸出 renderMode 協助診斷（例：開發者忘記為 cpu-only 的 Trail 積木建立 Prefab）
-            console.error(`[EffectSystem] playBlock: "${blockId}" 未在 PoolSystem 中註冊（prefab 載入失敗？）。renderMode=${block.renderMode}, prefabPath=${block.prefabPath ?? '未設定'}`);
+            const message = `[EffectSystem] playBlock: "${blockId}" 未在 PoolSystem 中註冊（prefab 載入失敗？）。renderMode=${block.renderMode}, prefabPath=${block.prefabPath ?? '未設定'}`;
+            if (this._isPreviewMode()) {
+                console.log(`${message} [preview mode skip]`);
+            } else {
+                console.error(message);
+            }
             return null;
         }
 
@@ -371,6 +376,19 @@ export class EffectSystem {
         }
 
         return node;
+    }
+
+    private _isPreviewMode(): boolean {
+        try {
+            const globalScope = globalThis as any;
+            const search = globalScope?.window?.location?.search as string | undefined;
+            const query = new URLSearchParams(search ?? '');
+            const queryMode = query.get('previewMode') ?? query.get('PREVIEW_MODE');
+            const storedMode = globalScope?.window?.localStorage?.getItem('PREVIEW_MODE') ?? '';
+            return queryMode === 'true' || storedMode === 'true';
+        } catch {
+            return false;
+        }
     }
 
     // ──────────────────────────────────────────────────────────────────────────

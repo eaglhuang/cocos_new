@@ -1,0 +1,46 @@
+{
+  "inputWidth": 185,
+  "inputHeight": 557,
+  "background": {
+    "r": 97,
+    "g": 98,
+    "b": 94,
+    "a": 255,
+    "spread": 58.803,
+    "checkerboard": true,
+    "bgLight": {
+      "r": 106,
+      "g": 104,
+      "b": 103
+    },
+    "bgDark": {
+      "r": 71,
+      "g": 78,
+      "b": 67
+    }
+  },
+  "bounds": {
+    "minX": 5,
+    "minY": 6,
+    "maxX": 182,
+    "maxY": 552
+  },
+  "crop": {
+    "x": 0,
+    "y": 0,
+    "width": 185,
+    "height": 557
+  },
+  "output": {
+    "width": 185,
+    "height": 557
+  },
+  "foregroundCount": 30929,
+  "cleanup": {
+    "enabled": true,
+    "deterministicBackground": true,
+    "removedPixels": 62741,
+    "removedOuterRingPixels": 2952,
+    "removedEdgeFringePixels": 59789
+  }
+}

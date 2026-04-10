@@ -9,7 +9,7 @@
       "kind": "color-rect",
       "color": "surfaceTeal",
       "alpha": 236,
-      "_doc": "白模驗證期直接使用純色卡片底板，先確認四張虎符的固定位置、尺寸與文字資料。"
+      "_doc": "保留給 debug 白模使用的基礎色塊卡面；正式 BattleScene 會改掛 tally.card.bg.hard。"
     },
     "tally.card.shadow": {
       "kind": "sprite-frame",
@@ -34,6 +34,21 @@
       "spriteType": "simple",
       "allowAutoAtlas": true,
       "_fallback": "#2A3040"
+    },
+    "tally.card.topShade": {
+      "kind": "color-rect",
+      "color": "#09111BCC",
+      "_doc": "卡片頂部資訊遮罩，讓名稱與角標在大頭像上保持可讀。"
+    },
+    "tally.card.statBar": {
+      "kind": "color-rect",
+      "color": "#071018D9",
+      "_doc": "卡片底部數值條，參考戰場英雄卡的底部數值區。"
+    },
+    "tally.card.costPlate": {
+      "kind": "color-rect",
+      "color": "#0E1824E0",
+      "_doc": "右上糧草小角標，降低體積但保留一眼可讀。"
     },
     "tally.card.rarity.normal": {
       "kind": "sprite-frame",
@@ -79,33 +94,43 @@
     "tally.label.atk": {
       "kind": "label-style",
       "font": "fonts/manrope/font",
-      "fontSize": 22,
+      "fontSize": 24,
       "lineHeight": 26,
-      "color": "error",
+      "color": "#7EC4FF",
       "horizontalAlign": "LEFT",
       "isBold": true,
-      "_doc": "攻擊值；格式 ⚔N（白模驗證期放大至 22px）"
+      "_doc": "底部左側主數值，改成偏戰術藍，接近參考圖的側欄資訊節奏。"
     },
     "tally.label.hp": {
       "kind": "label-style",
       "font": "fonts/manrope/font",
-      "fontSize": 22,
+      "fontSize": 24,
       "lineHeight": 26,
-      "color": "textHpPositive",
+      "color": "#C4F7C3",
       "horizontalAlign": "RIGHT",
       "isBold": true,
-      "_doc": "生命值；格式 ❤N（白模驗證期放大至 22px）"
+      "_doc": "底部右側主數值，使用高亮薄荷綠提高生存資訊辨識。"
     },
     "tally.label.name": {
       "kind": "label-style",
       "font": "fonts/notosans_tc/font",
-      "fontSize": 24,
-      "lineHeight": 28,
-      "color": "textOffWhite",
-      "horizontalAlign": "CENTER",
+      "fontSize": 20,
+      "lineHeight": 22,
+      "color": "#F7FAFF",
+      "horizontalAlign": "LEFT",
       "isBold": true,
       "overflow": "truncate",
-      "_doc": "兵種名稱，白模驗證期放大至 24px 並置中"
+      "_doc": "名稱退成頂部輔助資訊，讓頭像與底部數值成為第一視線。"
+    },
+    "tally.label.sub": {
+      "kind": "label-style",
+      "font": "fonts/notosans_tc/font",
+      "fontSize": 12,
+      "lineHeight": 14,
+      "color": "#A6B8CA",
+      "horizontalAlign": "LEFT",
+      "overflow": "truncate",
+      "_doc": "特殊部隊副標，補足這是戰術單位卡而非武將卡的辨識。"
     },
     "tally.label.stats": {
       "kind": "label-style",
@@ -118,18 +143,18 @@
     "tally.label.cost": {
       "kind": "label-style",
       "font": "fonts/manrope/font",
-      "fontSize": 22,
-      "lineHeight": 26,
-      "color": "secondary",
+      "fontSize": 16,
+      "lineHeight": 18,
+      "color": "#F6D37A",
       "horizontalAlign": "CENTER",
       "isBold": true,
-      "_doc": "糧草費用數字，金色顯示（白模驗證期放大至 22px）"
+      "_doc": "糧草費用縮小成右上角標，避免跟卡片主體搶權重。"
     },
     "tally.label.badge": {
       "kind": "label-style",
       "font": "fonts/manrope/font",
-      "fontSize": 22,
-      "lineHeight": 28,
+      "fontSize": 16,
+      "lineHeight": 18,
       "color": "colorWhite",
       "horizontalAlign": "CENTER",
       "isBold": true,

@@ -11,7 +11,7 @@
  * Unity 對照：Prefab Variant Builder + EditorWindow 動態生成 UI 的組合
  */
 import { _decorator, Component, Label, Node, Sprite, UITransform,
-         UIOpacity, Color, tween, Font, Widget } from 'cc';
+         UIOpacity, Color, tween, Font, Widget, Layout } from 'cc';
 import { UISkinResolver, ResolvedButtonSkin } from './UISkinResolver';
 import { services } from '../../core/managers/ServiceLoader';
 import { resolveSize, DEFAULT_TRANSITION } from './UISpecTypes';
@@ -109,6 +109,23 @@ export class UIPreviewBuilder extends Component {
         //
         // Unity 對照：Canvas.ForceUpdateCanvases() — 強制更新所有 RectTransform
         // ─────────────────────────────────────────────────────────────────────
+        this._realignAllWidgets(rootNode);
+        this._updateAllLayouts(rootNode);
+        this._realignAllWidgets(rootNode);
+
+        // ─── Post-build 容器溢出自動修正 pass ────────────────────────────────
+        // 針對使用 Layout 的容器節點，檢查子節點總尺寸是否超出容器可用空間。
+        // 若超出，自動按比例縮減子節點尺寸（僅縮不擴），確保所有子節點不溢出。
+        //
+        // 這是防止「文字超框」的最後一道安全網：
+        //   Layer 1: Label.overflow ≥ SHRINK（_parseOverflow + applyLabelStyle）
+        //   Layer 2: 此 pass 自動收斂子節點幾何（_enforceContainerBounds）
+        //   Layer 3: UIValidationRunner 靜態驗證（開發期預警）
+        //
+        // Unity 對照：ContentSizeFitter + LayoutRebuilder 的邊界保護
+        // ─────────────────────────────────────────────────────────────────────
+        this._enforceContainerBounds(rootNode);
+        this._updateAllLayouts(rootNode);
         this._realignAllWidgets(rootNode);
 
         // 通用佔位符清除：所有 UIPreviewBuilder 子類在 onBuildComplete 鉤子前
@@ -271,7 +288,7 @@ export class UIPreviewBuilder extends Component {
         transform.setContentSize(w, h);
 
         // Widget 對齊（Unity 對照：RectTransform anchor / stretch）
-        if (spec.widget) this.layoutBuilder.applyWidget(node, spec.widget);
+        if (spec.widget) this.layoutBuilder.applyWidget(node, spec.widget, parentWidth, parentHeight);
 
         // Layout（Unity 對照：LayoutGroup 系列元件）
         this.layoutBuilder.setupLayout(node, spec);
@@ -330,6 +347,21 @@ export class UIPreviewBuilder extends Component {
     }
 
     /**
+     * Post-build Layout pass：子節點全數建立完成後，補跑 LayoutGroup 重新排版。
+     * Unity 對照：Instantiate 完整個 hierarchy 後，呼叫 LayoutRebuilder.ForceRebuildLayoutImmediate。
+     */
+    private _updateAllLayouts(node: Node): void {
+        for (const child of node.children) {
+            this._updateAllLayouts(child);
+        }
+
+        const layout = node.getComponent(Layout);
+        if (layout) {
+            layout.updateLayout(true);
+        }
+    }
+
+    /**
      * 預載 skin 裡所有 label-style slot 使用的字型到 _fontCache。
      * Unity 對照：Resources.Load<Font>() 預載字型
      */
@@ -350,5 +382,74 @@ export class UIPreviewBuilder extends Component {
                 this._fontCache.set(path, null);
             }
         }));
+    }
+
+    // ─── 容器溢出自動修正 ─────────────────────────────────────────────────────
+
+    /**
+     * Post-build 容器溢出保護 pass（bottom-up 遞迴）。
+     *
+     * 對每個使用 vertical / horizontal Layout 的容器：
+     *   1. 計算可用空間 = 容器尺寸 − padding
+     *   2. 計算子節點總需求 = Σ childSize + (n−1) × spacing
+     *   3. 若需求 > 可用空間 → 按比例縮減子節點尺寸使其剛好填滿
+     *   4. 同時確保被縮減的 label 子節點保持 overflow ≥ SHRINK
+     *
+     * 只縮不擴，不影響原本不溢出的容器。
+     *
+     * Unity 對照：ContentSizeFitter 配合 LayoutGroup.childForceExpand 的邊界保護邏輯
+     */
+    private _enforceContainerBounds(node: Node): void {
+        // bottom-up：先處理子節點，再處理本節點
+        for (const child of node.children) {
+            this._enforceContainerBounds(child);
+        }
+
+        const layout = node.getComponent(Layout);
+        if (!layout || layout.type === Layout.Type.NONE || layout.type === Layout.Type.GRID) return;
+
+        const containerT = node.getComponent(UITransform);
+        if (!containerT) return;
+
+        const isVertical = layout.type === Layout.Type.VERTICAL;
+        const containerSize = isVertical ? containerT.height : containerT.width;
+        const padStart = isVertical ? layout.paddingTop : layout.paddingLeft;
+        const padEnd   = isVertical ? layout.paddingBottom : layout.paddingRight;
+        const spacing  = isVertical ? layout.spacingY : layout.spacingX;
+
+        const activeChildren = node.children.filter(c => c.active && c.getComponent(UITransform));
+        if (activeChildren.length === 0) return;
+
+        const totalSpacing = Math.max(0, activeChildren.length - 1) * spacing;
+        const available = containerSize - padStart - padEnd - totalSpacing;
+
+        let totalChildSize = 0;
+        for (const child of activeChildren) {
+            const ct = child.getComponent(UITransform)!;
+            totalChildSize += isVertical ? ct.height : ct.width;
+        }
+
+        if (totalChildSize <= available || totalChildSize <= 0) return;
+
+        // 溢出偵測 → 按比例縮減
+        const scale = available / totalChildSize;
+        console.warn(
+            `[UIPreviewBuilder] 容器 "${node.name}" 子節點溢出` +
+            `（需 ${Math.round(totalChildSize)}px，可用 ${Math.round(available)}px）→ 自動縮減 ×${scale.toFixed(3)}`
+        );
+
+        for (const child of activeChildren) {
+            const ct = child.getComponent(UITransform)!;
+            if (isVertical) {
+                ct.setContentSize(ct.width, Math.floor(ct.height * scale));
+            } else {
+                ct.setContentSize(Math.floor(ct.width * scale), ct.height);
+            }
+            // 確保被縮減的 label 保持 SHRINK overflow
+            const lbl = child.getComponent(Label);
+            if (lbl && lbl.overflow === Label.Overflow.NONE) {
+                lbl.overflow = Label.Overflow.SHRINK;
+            }
+        }
     }
 }

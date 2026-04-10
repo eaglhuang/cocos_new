@@ -19,6 +19,14 @@ curl.exe http://localhost:7456/asset-db/refresh
   - `settings/v2/`
   - `.meta`
 
+### 3.1 Preview Hub Workflow（2026-04-08）
+
+- `LoadingScene.ts` 是正式 preview hub，screen-driven smoke route 優先走這裡，不再各畫面各自發明 preview 入口。
+- 同一個 `previewTarget` 若需要多個子狀態，統一使用 `previewVariant`（query / localStorage / capture target 都可注入），不要再為相近狀態複製多份 screen JSON。
+- `Gacha` 已落地三個 variant：`hero`、`support`、`limited`。
+- `tools_node/capture-ui-screens.js` 若要做 variant smoke，優先新增顯式 target，例如 `GachaHero` / `GachaSupport` / `GachaLimited`，讓 QA 不必手改 localStorage。
+- preview 文本與 rarity dock 的共用套用邏輯，一律走 `UIPreviewStateApplicator`；`LoadingScene` 只負責選 target、載入 state、呼叫 applicator。
+
 ---
 
 ## 4. 編碼防災

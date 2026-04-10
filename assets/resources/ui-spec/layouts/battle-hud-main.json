@@ -26,29 +26,73 @@
           "left": 0,
           "right": 0
         },
-        "height": 88,
+        "height": 112,
         "skinSlot": "hud.topbar.bg",
         "children": [
+          {
+            "type": "panel",
+            "name": "TopBarShadow",
+            "widget": {
+              "top": 4,
+              "left": 16,
+              "right": 16,
+              "bottom": 0
+            },
+            "skinSlot": "hud.topbar.shadow"
+          },
+          {
+            "type": "panel",
+            "name": "PlayerInfoPlate",
+            "widget": {
+              "top": 10,
+              "left": 18
+            },
+            "width": 468,
+            "height": 86,
+            "skinSlot": "hud.topbar.plate"
+          },
+          {
+            "type": "panel",
+            "name": "CenterInfoPlate",
+            "widget": {
+              "top": 10,
+              "hCenter": 0
+            },
+            "width": 452,
+            "height": 86,
+            "skinSlot": "hud.topbar.plate"
+          },
+          {
+            "type": "panel",
+            "name": "EnemyInfoPlate",
+            "widget": {
+              "top": 10,
+              "right": 18
+            },
+            "width": 468,
+            "height": 86,
+            "skinSlot": "hud.topbar.plate"
+          },
           {
             "type": "container",
             "name": "PlayerSide",
             "widget": {
-              "top": 12,
-              "left": 24
+              "top": 20,
+              "left": 30
             },
-            "width": 420,
-            "height": 64,
+            "width": 432,
+            "height": 72,
             "layout": {
               "type": "horizontal",
-              "spacing": 12
+              "spacing": 14
             },
             "children": [
               {
                 "type": "image",
                 "name": "PlayerPortrait",
                 "id": "playerPortrait",
-                "width": 64,
-                "height": 64,
+                "width": 72,
+                "height": 72,
                 "skinSlot": "hud.portrait.player",
                 "interactable": true
               },
@@ -56,8 +100,8 @@
                 "type": "label",
                 "name": "PlayerName",
                 "id": "playerName",
-                "width": 128,
-                "height": 28,
+                "width": 156,
+                "height": 32,
                 "styleSlot": "hud.label.name",
                 "bind": "battleState.playerName"
               },
@@ -65,7 +109,7 @@
                 "type": "label",
                 "name": "PlayerFortressLabel",
                 "id": "playerFortressLabel",
-                "width": 140,
+                "width": 168,
                 "height": 36,
                 "styleSlot": "hud.label.hp",
                 "bind": "battleState.playerFortressHp"
@@ -75,11 +119,15 @@
           {
             "type": "container",
             "name": "CenterInfo",
+            "widget": {
+              "top": 20,
+              "hCenter": 0
+            },
             "width": 360,
-            "height": 64,
+            "height": 72,
             "layout": {
               "type": "vertical",
-              "spacing": 4
+              "spacing": 6
             },
             "children": [
               {
@@ -118,21 +166,22 @@
             "type": "container",
             "name": "EnemySide",
             "widget": {
-              "top": 12,
-              "right": 24
+              "top": 20,
+              "right": 30
             },
-            "width": 420,
-            "height": 64,
+            "width": 432,
+            "height": 72,
             "layout": {
               "type": "horizontal",
-              "spacing": 12
+              "type": "horizontal",
+              "spacing": 14
             },
             "children": [
               {
                 "type": "label",
                 "name": "EnemyFortressLabel",
                 "id": "enemyFortressLabel",
-                "width": 140,
+                "width": 168,
                 "height": 36,
                 "styleSlot": "hud.label.hp.enemy",
                 "bind": "battleState.enemyFortressHp"
@@ -141,8 +190,8 @@
                 "type": "label",
                 "name": "EnemyName",
                 "id": "enemyName",
-                "width": 128,
-                "height": 28,
+                "width": 156,
+                "height": 32,
                 "styleSlot": "hud.label.name.enemy",
                 "bind": "battleState.enemyName"
               },
@@ -150,8 +199,8 @@
                 "type": "image",
                 "name": "EnemyPortrait",
                 "id": "enemyPortrait",
-                "width": 64,
-                "height": 64,
+                "width": 72,
+                "height": 72,
                 "skinSlot": "hud.portrait.enemy",
                 "interactable": true
               }
@@ -160,55 +209,66 @@
         ]
       },
       {
-        "type": "container",
-        "name": "ProgressBars",
+        "type": "panel",
+        "name": "FortressBarsPlate",
         "widget": {
-          "top": 88,
+          "top": 112,
           "left": 24,
           "right": 24
         },
-        "height": 32,
+        "height": 44,
+        "skinSlot": "hud.topbar.plate"
+      },
+      {
+        "type": "container",
+        "name": "ProgressBars",
+        "widget": {
+          "top": 118,
+          "left": 36,
+          "right": 36
+        },
+        "height": 34,
         "layout": {
           "type": "horizontal",
-          "spacing": 6
+          "spacing": 8
         },
         "children": [
           {
             "type": "label",
             "name": "PlayerFortressTitle",
             "text": "我軍陣地",
-            "width": "9%",
-            "height": 32,
+            "width": "12%",
+            "height": 34,
             "styleSlot": "hud.label.fortress.player"
           },
           {
             "type": "image",
             "name": "PlayerFortressBar",
             "id": "playerFortressBar",
-            "width": "36%",
+            "width": "31%",
             "skinSlot": "hud.bar.hp"
           },
           {
             "type": "label",
             "name": "VsLabel",
             "text": "VS",
-            "width": "10%",
-            "height": 32,
+            "width": "14%",
+            "height": 34,
             "styleSlot": "hud.label.vs"
           },
           {
             "type": "image",
             "name": "EnemyFortressBar",
             "id": "enemyFortressBar",
-            "width": "36%",
+            "width": "31%",
             "skinSlot": "hud.bar.hp.enemy"
           },
           {
             "type": "label",
             "name": "EnemyFortressTitle",
             "text": "敵軍陣地",
-            "width": "9%",
-            "height": 32,
+            "width": "12%",
+            "height": 34,
             "styleSlot": "hud.label.fortress.enemy"
           }
         ]

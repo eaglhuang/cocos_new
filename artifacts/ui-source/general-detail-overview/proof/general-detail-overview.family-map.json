@@ -1,0 +1,164 @@
+{
+  "$schema": "../../schemas/family-map.schema.json",
+  "screenId": "GeneralDetailOverview",
+  "templateFamilyCandidate": "detail-split",
+  "sourceProof": "artifacts/ui-qa/UI-2-0094/runtime-r19-header-final-weight-tune/GeneralDetailOverview.png",
+  "generatedAt": "2026-04-08T03:27:57.025Z",
+  "zoneFamilyMap": [
+    {
+      "zone": "portrait-stage",
+      "family": "portrait-stage",
+      "recipe": "ink-stage-standard",
+      "structureOwner": "UITemplateResolver+widget-compose",
+      "skinOwner": "UISkinResolver",
+      "contentOwner": "contentContract",
+      "generationNeed": "reuse-only",
+      "widgetRefs": [
+        "portrait-viewport",
+        "portrait-shadow",
+        "portrait-glow"
+      ],
+      "templateRefs": [
+        "detail-split"
+      ],
+      "sourceProofFamily": "panel-light",
+      "sourceProofRecipe": null,
+      "notes": "角色立繪、wash、frame 與 backdrop 的主舞台"
+    },
+    {
+      "zone": "header-plaque",
+      "family": "header-rarity-plaque",
+      "recipe": "jade-parchment-light",
+      "structureOwner": "UITemplateResolver+widget-compose",
+      "skinOwner": "UISkinResolver",
+      "contentOwner": "contentContract",
+      "generationNeed": "generate-partial-asset",
+      "widgetRefs": [
+        "header-title-block",
+        "rarity-badge-dock"
+      ],
+      "templateRefs": [
+        "detail-split"
+      ],
+      "assetTargets": [
+        {
+          "slot": "capLeft",
+          "taskIdSuffix": "header-cap-left",
+          "label": "Header 左端 ornament",
+          "outputName": "header_cap_left",
+          "postProcess": {
+            "allowFadeSide": "right",
+            "fitPadding": 12,
+            "spriteType": "sliced",
+            "border": [20, 12, 20, 12]
+          }
+        },
+        {
+          "slot": "capRight",
+          "taskIdSuffix": "header-cap-right",
+          "label": "Header 右端 ornament",
+          "outputName": "header_cap_right",
+          "postProcess": {
+            "allowFadeSide": "left",
+            "fitPadding": 12,
+            "spriteType": "sliced",
+            "border": [20, 12, 20, 12]
+          }
+        }
+      ],
+      "sourceProofFamily": "parchment",
+      "sourceProofRecipe": "parchment-v1",
+      "notes": "角色姓名、稀有度與 jade-parchment 牌匾語言"
+    },
+    {
+      "zone": "summary-cards",
+      "family": "summary-card-grid",
+      "recipe": "parchment-summary-standard",
+      "structureOwner": "UITemplateResolver+widget-compose",
+      "skinOwner": "UISkinResolver",
+      "contentOwner": "contentContract",
+      "generationNeed": "reuse-only",
+      "widgetRefs": [
+        "summary-card",
+        "metric-card"
+      ],
+      "templateRefs": [
+        "detail-split"
+      ],
+      "sourceProofFamily": "parchment",
+      "sourceProofRecipe": null,
+      "notes": "核心屬性、定位、特質三欄卡片"
+    },
+    {
+      "zone": "bloodline-summary",
+      "family": "parchment-body-card",
+      "recipe": "bloodline-summary-standard",
+      "structureOwner": "UITemplateResolver+widget-compose",
+      "skinOwner": "UISkinResolver",
+      "contentOwner": "contentContract",
+      "generationNeed": "reuse-only",
+      "widgetRefs": [
+        "body-card",
+        "awakening-bar"
+      ],
+      "templateRefs": [
+        "detail-split"
+      ],
+      "sourceProofFamily": "parchment",
+      "sourceProofRecipe": null,
+      "notes": "血脈標題、進度、內文與摘要欄位"
+    },
+    {
+      "zone": "crest-medallion",
+      "family": "crest-medallion",
+      "recipe": "jade-ornate-medallion",
+      "structureOwner": "UITemplateResolver+widget-compose",
+      "skinOwner": "UISkinResolver",
+      "contentOwner": "contentContract",
+      "generationNeed": "generate-partial-asset",
+      "widgetRefs": [
+        "crest-carrier",
+        "crest-state-label"
+      ],
+      "templateRefs": [
+        "detail-split"
+      ],
+      "assetTargets": [
+        {
+          "slot": "crestFace",
+          "taskIdSuffix": "crest-face",
+          "label": "命紋 face",
+          "outputName": "crest_face"
+        },
+        {
+          "slot": "crestRing",
+          "taskIdSuffix": "crest-ring",
+          "label": "命紋 ring",
+          "outputName": "crest_ring"
+        }
+      ],
+      "sourceProofFamily": "parchment",
+      "sourceProofRecipe": null,
+      "notes": "右側 socket 與 face/ring 命紋視覺承載區"
+    },
+    {
+      "zone": "story-strip",
+      "family": "story-strip-rail",
+      "recipe": "story-strip-standard",
+      "structureOwner": "UITemplateResolver+widget-compose",
+      "skinOwner": "UISkinResolver",
+      "contentOwner": "contentContract",
+      "generationNeed": "reuse-only",
+      "widgetRefs": [
+        "story-cell",
+        "story-caption"
+      ],
+      "templateRefs": [
+        "detail-split"
+      ],
+      "sourceProofFamily": "parchment",
+      "sourceProofRecipe": null,
+      "notes": "六格故事條與 caption rail"
+    }
+  ]
+}

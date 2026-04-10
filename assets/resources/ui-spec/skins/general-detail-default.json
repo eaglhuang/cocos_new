@@ -269,8 +269,16 @@
       "pressed": "sprites/ui_families/common/paper_utility/btn_primary_pressed",
       "disabled": "sprites/ui_families/common/paper_utility/btn_primary_disabled",
       "spriteType": "sliced",
-      "border": [16, 16, 16, 16],
+      "border": [20, 20, 20, 20],
       "allowAutoAtlas": true
+    },
+    "detail.close.btn": {
+      "kind": "button-skin",
+      "normal": "ui-spec/placeholders/btn_close_normal",
+      "pressed": "ui-spec/placeholders/btn_close_pressed",
+      "disabled": "ui-spec/placeholders/btn_close_disabled",
+      "spriteType": "sliced",
+      "border": [8, 8, 8, 8]
     },
     "detail.content.frame": {
       "kind": "sprite-frame",
@@ -550,6 +558,16 @@
       "outlineWidth": 0,
       "horizontalAlign": "CENTER",
       "verticalAlign": "CENTER"
+    },
+    "detail.close.label": {
+      "kind": "label-style",
+      "fontSize": 28,
+      "lineHeight": 32,
+      "color": "textOnParchment",
+      "outlineWidth": 0,
+      "horizontalAlign": "CENTER",
+      "verticalAlign": "CENTER",
+      "isBold": true
     },
     "ui-common-metal.equipment.primary": {
       "kind": "button-skin",

@@ -124,12 +124,14 @@
 | 代碼檔 | 對應規格書 | 引用類型 |
 |---|---|---|
 | UIPreviewBuilder.ts | UI技術規格書.md, keep.md §8 | 概: 所有 UI 面板的基類（Unity 對照：Prefab Variant Builder + EditorWindow）；`buildScreen()` 末尾呼叫 `_realignAllWidgets()` + 清空 bind 佔位符 + `onReady(binder)`；子類覆寫 `onReady(binder)` 取代舊 `onBuildComplete()` |
+| UIContentBinder.ts | UI技術規格書.md, keep-ui-arch.md §8.3 | 概: Content Contract 資料注入與 schema 驗證；`validate()` 支援 type / enum / range / pattern 四層進階驗證，以 warnings 回報不阻斷 runtime（Unity 對照：ViewModel 資料注入 + 欄位驗證器）|
 | UISpecTypes.ts | UI技術規格書.md | D: WidgetDef(hCenter/vCenter), UILayoutNodeSpec, UINodeType(scroll-view 新增), UIWidgetFragmentSpec, UITemplateParamDef, UITemplateComposeItem; F: resolveSize |
 | UITemplateBinder.ts | UI技術規格書.md, keep.md §8 | 概: 以 layout id/name 建立節點綁定表，供 `onReady(binder)` 查詢（Unity 對照：GetComponentInChildren 安全封裝）|
 | UIPreviewLayoutBuilder.ts | UI技術規格書.md | 概: UIPreviewBuilder 拆分出的佈局計算 helper，負責 Widget 對齊與尺寸套用 |
 | UIPreviewNodeFactory.ts | UI技術規格書.md | 概: 依 UILayoutNodeSpec 建立 Cocos 節點；bind path 節點顯示 {xxx.yyy} 佔位文字（buildScreen 後由 clearDynamic pass 清除）|
 | UIPreviewShadowManager.ts | UI技術規格書.md | 概: 陰影層（9-slice 偽陰影）管理 |
 | UIPreviewStyleBuilder.ts | UI技術規格書.md | 概: 字型/色彩/按鈕狀態渲染 helper |
+| UIPreviewStateApplicator.ts | UI技術規格書.md, 美術風格規格書.md | 概: 將 preview content state 套用到 binder（texts / actives / rarity docks），避免 LoadingScene 各 target 手寫注入 |
 | UIPreviewDiagnostics.ts | UI技術規格書.md | 概: 建立耗時、節點數量日誌工具 |
 | UISkinResolver.ts | UI技術規格書.md | 概: 皮膚 slot 解析（SpriteFrame/ LabelStyle/ ButtonSkin）；已加入 frame.texture null 防禦 |
 | UISpecLoader.ts | UI技術規格書.md | 概: ServiceLoader 單例，統一載入 layout/skin/screen/i18n/designTokens JSON |
@@ -146,7 +148,7 @@
 | 代碼檔 | 對應規格書 | 引用類型 |
 |---|---|---|
 | UILayer.ts | UI 規格書.md | 概: UI 面板基類（show/hide） |
-| LoadingScene.ts | 新手開場規格書.md, UI參考圖品質分析.md | 概: 過場載入場景，同時也是 D-1~D-3 的 screen-driven preview hub（`previewMode` + `previewTarget`） |
+| LoadingScene.ts | 新手開場規格書.md, UI參考圖品質分析.md, 美術風格規格書.md | 概: 過場載入場景，同時也是 screen-driven preview hub（`previewMode` + `previewTarget` + `previewVariant`）；以 content state + applicator 驅動 Gacha / SpiritTally preview 注入 |
 | LobbyScene.ts | 新手開場規格書.md, 武將系統.md, 武將人物介面規格書.md | 概: 大廳（武將列表+詳情）；含 `onClickGeneralDetailOverviewSmoke()` 最小 smoke route，可直接驗證 `GeneralListPanel -> GeneralDetailPanel(Basics -> overview shell)` |
 | LoginScene.ts | 新手開場規格書.md | 概: 登入畫面 |
 
@@ -178,6 +180,22 @@
 | general-quickview | general-quickview-main.json | general-quickview-default.json | general-quickview-screen.json | battle_ui | GeneralQuickViewPanel.ts |
 | battle-scene-main | — (複合)                | — (複合)                     | battle-scene-main.json      | battle_ui | BattleScenePanel.ts |
 
+#### UI Core Interfaces (`assets/scripts/ui/core/interfaces/`)
+
+| 代碼檔 | 對應規格書 | 引用類型 |
+|---|---|---|
+| INodeFactory.ts | UI技術規格書.md §7.5, keep-ui-arch.md §8.4 | D: `INodeFactory`, `NodeHandle`; 概: 引擎無關的 UI 節點建構介面（buildPanel/buildLabel/buildButton/buildImage/buildScrollList/createContainer）|
+| IStyleApplicator.ts | UI技術規格書.md §7.5, keep-ui-arch.md §8.4 | D: `IStyleApplicator`, `ButtonVisualState`; 概: 引擎無關的視覺樣式套用介面（applyBackgroundSkin/applyButtonSkin/applyLabelStyle/applySpriteType）|
+| ILayoutResolver.ts | UI技術規格書.md §7.5, keep-ui-arch.md §8.4 | D: `ILayoutResolver`, `Dimensions`, `WidgetConstraints`, `LayoutConfig`; 概: 引擎無關的佈局計算介面，回傳純資料 DTO（resolveSize/resolveWidget/resolveLayout）|
+| index.ts | — | 概: barrel export，統一匯出三個介面 |
+
+#### UI Platform Adapters (`assets/scripts/ui/platform/`)
+
+| 代碼檔 | 對應規格書 | 引用類型 |
+|---|---|---|
+| cocos/CocosNodeFactory.ts | UI技術規格書.md §7.5, keep-ui-arch.md §8.4 | 概: `INodeFactory` 的 Cocos Creator 3.x 實作；委派 `UIPreviewNodeFactory`；引擎耦合的單一聚合點（Unity 對照：UnityNodeFactory 同介面換 Unity API）|
+| unity/UnityNodeFactory.ts | — | 概: `INodeFactory` 的 Unity stub；所有方法 throw not-implemented，供跨引擎移植時填充 |
+
 #### Tools (`assets/scripts/tools/`)
 
 | 代碼檔 | 對應規格書 | 引用類型 |
@@ -189,6 +207,25 @@
 | VideoPlayerTest.ts | 美術素材規劃與使用說明.md | 概: 影片播放測試 |
 | UnityParticlePrefabParser.ts | — | 概: Unity 粒子遷移工具（無直接規格書對應） |
 | UnityParticleCompoundMapper.ts | — | 概: Unity 複合粒子映射（無直接規格書對應） |
+
+#### Build Tools (`tools_node/`)
+
+> 更新日期：2026-04-10。所有工具透過 `tools_node/lib/project-config.js` 取得集中路徑，禁止工具內部 `path.join(__dirname, '../assets/...')` 硬編碼。
+
+| 工具 | 功能 | 關鍵路徑 / 產出 |
+|------|------|----------------|
+| `validate-ui-specs.js` | UI spec 三層 JSON 靜態驗證器（R1–R18） | 輸入：layouts/skins/screens；輸出：errors / warnings |
+| `validate-widget-registry.js` | widget-registry.json ↔ 實際 widget 檔案一致性驗證 | `fragments/widget-registry.json` ↔ `fragments/widgets/*.json` |
+| `build-fragment-usage-map.js` | 掃 layouts 的 `$ref` 引用，輸出片段使用地圖 | `--query <ref>` 查單一 fragment 影響範圍 |
+| `task-lock.js` | Multi-Agent file-based task 鎖定 | `.task-locks/<id>.lock.json`；並確保 .gitignore 排除 |
+| `headless-snapshot-test.js` | UI spec JSON 結構 hash 快照測試（baseline 113 specs） | `tools_node/.ui-spec-snapshot.json`；`--update` 更新 baseline |
+| `layout-diff.js` | 兩份 layout JSON 人類可讀 diff 比對 | `--git <file>` 比對 HEAD vs 工作目錄 |
+| `i18n-overflow-check.js` | CJK 文字寬度估算 + 溢出風險報告 | `i18n/*.json`；目錄不存在 graceful exit |
+| `bootstrap-new-project.js` | 匯出 18 個可移植元件至新專案目錄 | `--name/--out/--list/--dry-run/--include/--exclude` |
+| `lib/project-config.js` | 集中路徑管理（30+ paths, scenes, locales, templateFamilies, ROOT） | 被 validate-ui-specs / validate-widget-registry / task-lock / build-fragment-usage-map 等引用 |
+| `skills-manager.js` | Agent Skills CLI（list / info / validate / export / sync-mirrors / status） | `.github/skills-manifest.json`（25 skills） |
+| `check-encoding-touched.js` | 修改後 UTF-8 BOM / mojibake 防護 | 傳入 `<changed-files>` 清單 |
+| `scaffold-ui-spec-family.js` | 以 config JSON 一鍵產出三層 UI spec 骨架 | `--config <json>`；輸出 layouts / skins / screens |
 
 ---
 

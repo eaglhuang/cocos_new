@@ -61,11 +61,15 @@ artifacts/ui-qa/{screenId}/preview-screenshot.png
 
 ### Step 3 — 查看截圖與參考圖
 
+預覽截圖請沿用 `cocos-screenshot` 的縮圖流程；參考圖同樣先走 `125 -> 250 -> 500` 的 progressive zoom。
+
 同時用 `view_image` 開啟兩張圖：
 ```
 view_image { filePath: "artifacts/ui-qa/{screenId}/preview-screenshot.png" }
 view_image { filePath: "{referenceImagePath}" }
 ```
+
+> 圖片檢視硬規定：一次最多 `1` 張主圖 + `1` 張對照圖；先試 `125px`，不足才放大一倍；需要看 `>500px` 原圖時，必須先取得使用者明確同意。
 
 ### Step 4 — 逐 zone 比對
 

@@ -12,6 +12,14 @@
       "bleed": 4,
       "allowAutoAtlas": true
     },
+    "hud.topbar.plate": {
+      "kind": "sprite-frame",
+      "path": "sprites/battle/topbar_bg/spriteFrame",
+      "spriteType": "sliced",
+      "border": [16, 16, 16, 16],
+      "bleed": 4,
+      "allowAutoAtlas": true
+    },
     "hud.topbar.shadow": {
       "kind": "sprite-frame",
       "path": "sprites/ui_families/common/shadow/shadow_01",
@@ -50,9 +58,9 @@
     "hud.label.name": {
       "kind": "label-style",
       "font": "fonts/notosans_tc/font",
-      "fontSize": 20,
-      "lineHeight": 26,
-      "color": "secondaryLight",
+      "fontSize": 22,
+      "lineHeight": 28,
+      "color": "textSteelLighter",
       "horizontalAlign": "LEFT",
       "outlineColor": "outlineHeavy",
       "outlineWidth": 2
@@ -60,9 +68,9 @@
     "hud.label.name.enemy": {
       "kind": "label-style",
       "font": "fonts/notosans_tc/font",
-      "fontSize": 20,
-      "lineHeight": 26,
-      "color": "textEnemyName",
+      "fontSize": 22,
+      "lineHeight": 28,
+      "color": "primaryLight",
       "horizontalAlign": "RIGHT",
       "outlineColor": "outlineHeavy",
       "outlineWidth": 2
@@ -70,9 +78,9 @@
     "hud.label.round": {
       "kind": "label-style",
       "font": "fonts/notosans_tc/font",
-      "fontSize": 24,
-      "lineHeight": 30,
-      "color": "secondary",
+      "fontSize": 26,
+      "lineHeight": 32,
+      "color": "secondaryLight",
       "horizontalAlign": "CENTER",
       "outlineColor": "outlineDark",
       "outlineWidth": 2
@@ -80,8 +88,8 @@
     "hud.label.food": {
       "kind": "label-style",
       "font": "fonts/notosans_tc/font",
-      "fontSize": 14,
-      "lineHeight": 18,
+      "fontSize": 16,
+      "lineHeight": 20,
       "color": "textWarmGold",
       "horizontalAlign": "CENTER",
       "outlineColor": "outlineHeavy",
@@ -90,29 +98,29 @@
     "hud.label.hp": {
       "kind": "label-style",
       "font": "fonts/notosans_tc/font",
-      "fontSize": 20,
-      "lineHeight": 26,
-      "color": "textPrimary",
+      "fontSize": 22,
+      "lineHeight": 28,
+      "color": "secondaryLight",
       "horizontalAlign": "LEFT",
       "outlineColor": "outlineHeavy",
-      "outlineWidth": 2
+      "outlineWidth": 3
     },
     "hud.label.hp.enemy": {
       "kind": "label-style",
       "font": "fonts/notosans_tc/font",
-      "fontSize": 20,
-      "lineHeight": 26,
-      "color": "textHpEnemy",
+      "fontSize": 22,
+      "lineHeight": 28,
+      "color": "primaryLight",
       "horizontalAlign": "RIGHT",
       "outlineColor": "outlineHeavy",
-      "outlineWidth": 2
+      "outlineWidth": 3
     },
     "hud.label.status": {
       "kind": "label-style",
       "font": "fonts/notosans_tc/font",
-      "fontSize": 20,
-      "lineHeight": 26,
-      "color": "secondaryLight",
+      "fontSize": 18,
+      "lineHeight": 24,
+      "color": "textCyanLight",
       "horizontalAlign": "CENTER",
       "overflow": "SHRINK",
       "outlineColor": "outlineHeavy",
@@ -121,8 +129,8 @@
     "hud.label.fortress.player": {
       "kind": "label-style",
       "font": "fonts/notosans_tc/font",
-      "fontSize": 13,
-      "lineHeight": 18,
+      "fontSize": 14,
+      "lineHeight": 20,
       "color": "textCyan",
       "horizontalAlign": "CENTER",
       "outlineColor": "outlineHeavy",
@@ -131,9 +139,9 @@
     "hud.label.vs": {
       "kind": "label-style",
       "font": "fonts/notosans_tc/font",
-      "fontSize": 16,
-      "lineHeight": 22,
-      "color": "secondary",
+      "fontSize": 18,
+      "lineHeight": 24,
+      "color": "secondaryLight",
       "horizontalAlign": "CENTER",
       "outlineColor": "outlineDark",
       "outlineWidth": 2
@@ -141,9 +149,9 @@
     "hud.label.fortress.enemy": {
       "kind": "label-style",
       "font": "fonts/notosans_tc/font",
-      "fontSize": 13,
-      "lineHeight": 18,
-      "color": "textHpEnemy",
+      "fontSize": 14,
+      "lineHeight": 20,
+      "color": "primaryLight",
       "horizontalAlign": "CENTER",
       "outlineColor": "outlineHeavy",
       "outlineWidth": 2

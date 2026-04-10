@@ -4,12 +4,13 @@
 
 # Keep Consensus
 
-## P0. Agent Context Budget（2026-04-06）
+## P0. Agent Context Budget（2026-04-08）
 
 - 這件事列為目前第一最高優先級：任何會讓 Agent 對話上下文暴增的流程，都要先收斂再繼續。
 - 真正高風險來源不是一般程式碼，而是整份 `keep.md` / `ui-quality-todo.json`、QA compare board、screenshot、AI 原圖、binary diff、以及同一輪重複貼入相同背景。
 - 強制規則：Agent handoff 改用「摘要卡」，只傳任務目標、1~3 個必要檔案、3 點已知結論、3 點未決策項目、1 條驗證方式；禁止把整份 manifest、長篇 notes、成批圖片直接塞進對話。
 - 圖片節流：單次對話最多 2 張圖；只允許 1 張主圖 + 1 張對照圖，其餘只保留路徑、尺寸、用途與 QA 結論。
+- 圖片讀取預設改為 thumbnail-first progressive zoom：`125px -> 250px -> 500px`。規則是先試 `125px`，足夠就停止；只有前一級不足時才可放大一倍。這條規則屬於高層共識，不依賴 hook，所有 Agent 都必須遵守。
 - 文件節流：`keep.md` 只留最高層共識與 P0 警戒；長分析搬去 `docs/agent-context-budget.md`，在 keep 只留索引。
 - 警戒線：單檔文字估算超過 `6000 tokens` 禁止整份讀入；單輪估算超過 `18000 tokens` 必須提出警告；超過 `30000 tokens` 視為 `hard-stop`，必須先縮成摘要卡。
 - 工具：handoff 前先跑 `node tools_node/check-context-budget.js --changed --emit-keep-note`；若出現 `warn` 或 `hard-stop`，要先警告，再把原因寫回 keep。
@@ -60,6 +61,9 @@ Unity 對照:
 6. 補遺只允許作為短期工作底稿、compare note 或跨功能整理；若不是全新功能規格，結案前必須併回正式規格書。
 7. 只要正式規格書有新增、刪改或重定位，必須同步更新 `docs/cross-reference-index.md`。
 8. 若內容同時影響系統規格與 UI 呈現，至少要同步更新主要系統規格書、`docs/UI 規格書.md` 與交叉索引。
+9. 核心 `rarityTier` 與商業 `commercial band` 必須分離：前者是戰力平衡真相，後者是卡面 / 活動 / 招牌包裝的衍生結果；禁止把商業包裝回寫成核心戰力。
+10. 女將商業補正只能作用於商業層，不得直接改原始五維；招牌金卡、限定卡、旗艦卡亦同。
+11. **遊戲平衡不應直接截斷基本屬性**，應透過公式層（戰鬥公式 / 生產公式 / 政務公式）實現差距收斂：基本屬性保持歷史詮釋的語意正確性，公式層負責遊戲體驗的平衡性，兩者職責分離。具體做法：使用指數曲線（如 `stat^0.7`）或加權組合（如 `str*0.7 + lea*0.3`）在公式層壓縮頂端差距，而非直接調低史書名將的數值。
 
 ---
 

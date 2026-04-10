@@ -2514,6 +2514,181 @@
         "capture-ui-screens.js --target GeneralDetailOverview 可得到可比較結果"
       ],
       "notes": "2026-04-06 | 狀態: in-progress | 處理: r16-layout-polish 收斂中；crest 模組與 header area 仍有空白 offset | 驗證: smoke-capture 待確認 | 阻塞: 依賴 DALL-E 3 資產最終交付\n2026-04-06 | 狀態: in-progress | 處理: GeneralDetailOverviewShell 修補完成（mythic tier + story strip 文字繫結 + PortraitRarityFrame 連線）；LobbyScene.waitForReady() 修正 headless 時序問題 | 驗證: capture-ui-screens.js --target GeneralDetailOverview 執行成功，截圖位於 artifacts/ui-qa/UI-2-0093/r16-layout-polish/GeneralDetailOverview.png | 阻塞: 無"
+    },
+    {
+      "id": "UI-2-0098",
+      "priority": "P1",
+      "phase": "G",
+      "owner": "Agent3",
+      "status": "open",
+      "created": "2026-04-08",
+      "created_by_agent": "Agent3",
+      "type": "factory-onboarding",
+      "title": "BattleScene 非 HUD slice factory onboarding / runtime triage",
+      "description": "接手 BattleScene 內 BattleHUD 以外的 UI 與互動殘差，先把 battle-scene-main 已拆出的非 HUD 子面板邊界定清楚，判斷哪些可沿用既有 screen、哪些需要新增 onboarding 或 residual triage，且不回頭重做已 clean-pass 的 BattleHUD。",
+      "related": [
+        "UI-2-0034",
+        "UI-2-0046",
+        "UI-2-0053"
+      ],
+      "depends": [
+        "UI-2-0046"
+      ],
+      "template_family": "battle-scene-composite",
+      "content_contract": [
+        "battleLogEntries",
+        "tallyCards",
+        "ultimateSkills",
+        "unitInfoSelection",
+        "nonHudResidualTriage"
+      ],
+      "skin_fragments": [
+        "battle_log/*",
+        "tiger_tally/*",
+        "action_command/*",
+        "unit_info_panel/*"
+      ],
+      "smoke_route": "node tools_node/capture-ui-screens.js --target BattleScene --outDir artifacts/ui-qa/UI-2-0098/runtime-baseline",
+      "docs_backwritten": [
+        "docs/keep.md",
+        "docs/UI-factory-agent-entry.md",
+        "docs/cross-reference-index.md"
+      ],
+      "acceptance": [
+        "明確切出 BattleScene 非 HUD slice 邊界，至少覆蓋 BattleLogPanel、ActionCommandPanel、TigerTallyPanel、UnitInfoPanel 與戰場非 HUD residual",
+        "明確標記 battle-scene-main 內哪些可 reuse、哪些只到 scene-level param-tune、哪些仍屬 new-family-required 或 dedicated residual QA",
+        "建立 artifacts/ui-source/battle-scene-non-hud/ intake、family-map、generated-review、runtime-verdict 基線",
+        "不修改 BattleHUD 既有 layout、skin、warning close-out，保持 2026-04-08 clean pass 邊界",
+        "後續若拆新 screen，至少能從本卡延伸到獨立 onboarding stage"
+      ],
+      "notes": "2026-04-08 | 狀態: open | 驗證: 直接沿用 BattleHUD clean-pass 的 BattleScene capture 與 UI-2-0053 style zone audit 作為非 HUD slice 基線 | 變更: Agent3 接手 BattleScene 非 HUD orchestration slice；明確排除 BattleHUD 既有 warning、layout、skin 回頭重做 | 阻塞: 目前 clean capture 仍是整張 BattleScene，尚未把非 HUD 區塊做獨立 runtime review 或 residual pack"
+    },
+    {
+      "id": "UI-2-0099",
+      "priority": "P1",
+      "phase": "F",
+      "owner": "Agent3",
+      "status": "open",
+      "created": "2026-04-08",
+      "created_by_agent": "Agent3",
+      "type": "icon-suite",
+      "title": "BattleScene troop type icon suite onboarding",
+      "description": "為 BattleScene non-HUD 建立正式的兵種符號 suite，供 TigerTally type badge 與 UnitInfo type icon 共用，採 underlay-glyph 結構，不把整塊框體烘進 glyph PNG。",
+      "related": [
+        "UI-2-0098"
+      ],
+      "depends": [
+        "UI-2-0098"
+      ],
+      "template_family": "battle-badge-icon-v1",
+      "content_contract": [
+        "troopTypeGlyph",
+        "troopTypeBadgeUnderlay",
+        "unitInfoTypeIcon",
+        "tigerTallyTypeBadge"
+      ],
+      "skin_fragments": [
+        "tiger_tally/type_badge/*",
+        "unit_info_panel/type_icon/*"
+      ],
+      "smoke_route": "node tools_node/capture-ui-screens.js --target BattleScene --outDir artifacts/ui-qa/UI-2-0099/runtime-baseline",
+      "docs_backwritten": [
+        "docs/UI-icon-factory-workflow.md",
+        "docs/UI-icon-family-registry.md",
+        "docs/美術風格規格書.md",
+        "docs/UI-factory-agent-entry.md"
+      ],
+      "acceptance": [
+        "cavalry / infantry / shield / archer 至少有正式 troop-type suite 成員可用於 TigerTally 與 UnitInfoPanel",
+        "suite 具備明確 family id / structure mode / suite id / member key",
+        "icon 服從背景層、暗色蒙版、框體層、內容層分工，不把 badge frame 烘進 glyph",
+        "BattleScene runtime capture 可驗證 type badge 與 type icon 可讀性"
+      ],
+      "notes": "2026-04-08 | open | 與 UI-2-0098 並行，但獨立作為 icon suite 單。風格需遵守 BattleScene deep-ink tactical 語言與美術風格規格書。"
+    },
+    {
+      "id": "UI-2-0100",
+      "priority": "P1",
+      "phase": "F",
+      "owner": "Agent3",
+      "status": "open",
+      "created": "2026-04-08",
+      "created_by_agent": "Agent3",
+      "type": "asset-suite",
+      "title": "TigerTally troop card art suite",
+      "description": "為 TigerTally 卡片內容層建立兵種主圖/剪影資產，與兵種 badge glyph 分單處理，補齊卡面識別度但不把卡框、badge、數值列烘進圖像。",
+      "related": [
+        "UI-2-0098",
+        "UI-2-0099"
+      ],
+      "depends": [
+        "UI-2-0098"
+      ],
+      "template_family": "tiger-tally-unit-art",
+      "content_contract": [
+        "tallyTroopPortrait",
+        "unitTypeSemantic",
+        "cardArtReadability"
+      ],
+      "skin_fragments": [
+        "tiger_tally/card_art/*"
+      ],
+      "smoke_route": "node tools_node/capture-ui-screens.js --target BattleScene --outDir artifacts/ui-qa/UI-2-0100/runtime-baseline",
+      "docs_backwritten": [
+        "docs/美術風格規格書.md",
+        "docs/UI-factory-agent-entry.md",
+        "docs/UI-reference-source-workflow.md"
+      ],
+      "acceptance": [
+        "TigerTally 四張卡的兵種主圖不再依賴 placeholder/fallback",
+        "卡圖只屬於內容層，不烘入框體、badge、cost 或 rarity border",
+        "runtime capture 可清楚區分各兵種，不與 badge 與數值元件互相打架",
+        "資產保持透明背景並服從 BattleScene 深墨戰場語言"
+      ],
+      "notes": "2026-04-08 | open | 此單處理 TigerTally 卡面主圖，不與 troop-type glyph 或 stat micro glyph 混 scope。"
+    },
+    {
+      "id": "UI-2-0101",
+      "priority": "P1",
+      "phase": "F",
+      "owner": "Agent3",
+      "status": "open",
+      "created": "2026-04-08",
+      "created_by_agent": "Agent3",
+      "type": "icon-suite",
+      "title": "Battle stat micro glyph suite for ATK HP Cost",
+      "description": "為 BattleScene non-HUD 建立 ATK / HP / Cost 微型 glyph suite，優先服務 TigerTally 數值列，必要時延伸至 UnitInfoPanel。以同 family、同尺寸規格管理，不拆成零碎單。",
+      "related": [
+        "UI-2-0098",
+        "UI-2-0100"
+      ],
+      "depends": [
+        "UI-2-0098"
+      ],
+      "template_family": "battle-status-icon-v1",
+      "content_contract": [
+        "statGlyphAtk",
+        "statGlyphHp",
+        "statGlyphCost",
+        "statGlyphDocking"
+      ],
+      "skin_fragments": [
+        "tiger_tally/stat_micro_icon/*",
+        "unit_info_panel/stat_micro_icon/*"
+      ],
+      "smoke_route": "node tools_node/capture-ui-screens.js --target BattleScene --outDir artifacts/ui-qa/UI-2-0101/runtime-baseline",
+      "docs_backwritten": [
+        "docs/UI-icon-factory-workflow.md",
+        "docs/UI-icon-family-registry.md",
+        "docs/美術風格規格書.md"
+      ],
+      "acceptance": [
+        "ATK / HP / Cost 三個 micro glyph 形成同一 suite，供 TigerTally 先落地",
+        "glyph 在 16~24px 級距仍可讀，且與數字搭配後一眼可辨",
+        "若需要底片，只能使用輕量 tactical chip，不做厚重 ornate underlay",
+        "BattleScene runtime capture 可驗證 glyph 在暗底上仍清楚"
+      ],
+      "notes": "2026-04-08 | open | 建議以 suite 粒度處理，不拆成三張小單。DEF / SPD 是否追加，視 runtime 空間與可讀性再決定。"
     }
   ]
 }

@@ -102,6 +102,11 @@ function calcMaxStat(config: GeneralConfig): number {
  * Unity 對照：類似 ScriptableObject 中讀取外部 config 表的評分系統（如英雄品質自動計算）。
  */
 export function resolveRarityTier(config: GeneralConfig): GeneralDetailRarityTier {
+  // 若 rarityTier 已明確設定，直接採用（最高優先）
+  if (config.rarityTier) {
+    return config.rarityTier;
+  }
+
   // 若有 characterCategory override，直接回傳
   const cat = config.characterCategory as CharacterCategory | undefined;
   if (cat && _thresholds.categoryOverrides[cat]) {

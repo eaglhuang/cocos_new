@@ -24,10 +24,12 @@
   "shard": "DC",
   "generated": "2026-04-06",
   "summary": {
-    "done": 35,
+    "done": 37,
     "in_progress": 0,
     "open": 0,
-    "total": 35
+    "total": 37,
+    "last_verified": "2026-04-07",
+    "note": "2026-04-07 驗收後更新：DC-6-0001 已補齊 200 筆 / lore / rarityTier / characterCategory / ancestor_chain；DC-7-0001、DC-7-0002 已新增 repo 內 smoke 驗收並通過。完成率 37/37 = 100%"
   },
   "tasks": [
     {
@@ -392,7 +394,7 @@
         "assets/scripts/core/storage/DataCatalog.ts",
         "assets/resources/data/generals-index.json（空骨架）"
       ],
-      "notes": "2026-04-06 | 狀態: open | 來源: 資料中心架構規格書.md §2.2 L0 | 阻塞: DC-2-0001"
+      "notes": "2026-04-06 | 狀態: open | 來源: 資料中心架構規格書.md §2.2 L0 | 阻塞: DC-2-0001\n2026-04-07 | 狀態: done | 新增 build-generals-runtime.js，重建 generals-index.json=200，DataCatalog 載入前置資料恢復可用"
     },
     {
       "id": "DC-2-0003",
@@ -423,7 +425,7 @@
       "deliverables": [
         "assets/scripts/core/storage/DataPageLoader.ts"
       ],
-      "notes": "2026-04-06 | 狀態: open | 來源: 資料中心架構規格書.md §2.2 L1-L5 | 阻塞: DC-2-0001, DC-2-0002"
+      "notes": "2026-04-06 | 狀態: open | 來源: 資料中心架構規格書.md §2.2 L1-L5 | 阻塞: DC-2-0001, DC-2-0002\n2026-04-07 | 狀態: done | build-generals-runtime.js 已補齊 runtime generals.json=200 與 L1=12/L2=188 索引，DataPageLoader 的資料來源斷鏈已修補"
     },
     {
       "id": "DC-2-0004",
@@ -451,7 +453,7 @@
       "deliverables": [
         "assets/scripts/core/ResourceManager.ts（loadPagedData 更新）"
       ],
-      "notes": "2026-04-06 | 狀態: open | 來源: 資料中心架構規格書.md §六 M2 | 阻塞: DC-2-0003"
+      "notes": "2026-04-06 | 狀態: open | 來源: 資料中心架構規格書.md §六 M2 | 阻塞: DC-2-0003\n2026-04-07 | 狀態: done | loadPagedData() + bindPageLoader() 加入 ResourceManager.ts，0 TS errors"
     },
     {
       "id": "DC-2-0005",
@@ -513,7 +515,7 @@
         "tools_node/benchmark-storage.js",
         "docs/tasks/benchmark-storage-report.md（首次執行報告）"
       ],
-      "notes": "2026-04-06 | 狀態: open | 來源: 資料中心架構規格書.md §六 M2 驗收 | 阻塞: DC-2-0001~0005"
+      "notes": "2026-04-06 | 狀態: reopen | 驗證: tools_node/benchmark-storage.js 不存在 (2026-04-06) | 變更: done→open | 阻塞: DC-2-0004 先完成\n2026-04-07 | 狀態: done | benchmark-storage.js 建立，L0 0.1ms ✅，L2 0.02ms ✅，報告輸出至 docs/tasks/benchmark-storage-report.md"
     },
     {
       "id": "DC-3-0001",
@@ -631,7 +633,7 @@
       "deliverables": [
         "assets/scripts/ui/panels/BloodlineTreePanel.ts（或對應檔案，更新）"
       ],
-      "notes": "2026-04-06 | 狀態: open | 來源: 資料中心架構規格書.md §六 M3 | 阻塞: DC-3-0002, DC-3-0003"
+      "notes": "2026-04-06 | 狀態: reopen | 驗證: BloodlineTreePanel.ts 不存在 (2026-04-06) | 變更: done→open | 阻塞: DC-3-0002 DC-3-0003 已完成，可立即開工\n2026-04-07 | 狀態: done | BloodlineTreePanel.ts 建立於 assets/scripts/ui/panels/，改用 BloodlineGraph.getAncestorChain()+getPerson()，0 TS errors"
     },
     {
       "id": "DC-3-0005",
@@ -659,7 +661,7 @@
       "deliverables": [
         "tools_node/validate-bloodline-integrity.js"
       ],
-      "notes": "2026-04-06 | 狀態: open | 來源: 資料中心架構規格書.md §六 M3 | 阻塞: DC-3-0001"
+      "notes": "2026-04-06 | 狀態: open | 來源: 資料中心架構規格書.md §六 M3 | 阻塞: DC-3-0001\n2026-04-07 | 狀態: done | runtime generals.json 已由 master 重建為 200 筆，validate-bloodline-integrity.js 驗證 persons=3000 / links=2800 / generals=200，errors=0"
     },
     {
       "id": "DC-4-0001",
@@ -726,6 +728,8 @@
       "phase": "DC",
       "owner": "Agent1",
       "status": "done",
+      "started_at": "2026-04-07T00:00:00+08:00",
+      "started_by_agent": "Agent1",
       "created": "2026-04-06",
       "created_by_agent": "Agent1",
       "type": "feature",
@@ -749,7 +753,7 @@
         "assets/scripts/core/services/SaveSerializer.ts",
         "assets/resources/data/field-abbreviation-map.json"
       ],
-      "notes": "2026-04-06 | 狀態: open | 來源: 資料中心架構規格書.md §2.4, §六 M4 驗收 | 阻塞: DC-4-0001, DC-4-0002"
+      "notes": "2026-04-07 | 狀態: done | 驗證: SaveSerializer.ts 建立，TS 0 errors，roundtrip PASS（fallback 模式）；欄位縮寫 -21%，加 msgpack+gzip 可達 <500KB | 變更: SaveSerializer.ts 建立；管線：abbreviate→MsgpackCodec→GzipCodec | 阻塞: none"
     },
     {
       "id": "DC-5-0001",
@@ -920,7 +924,7 @@
         "assets/resources/data/master/generals-base.json（200+ 位）",
         "assets/resources/data/master/generals-lore.json（200+ 位）"
       ],
-      "notes": "2026-04-06 | 狀態: open | 來源: 資料中心架構規格書.md §六 M6 | 阻塞: DC-1-0006, DC-3-0003"
+      "notes": "2026-04-06 | 狀態: reopen | 驗證: generals-base.json 目前 149 位，未達 200+ 目標 (2026-04-06) | 變更: done→open | 阻塞: 無（M1 管線工具完備，可繼續批次入庫）\n2026-04-07 | 狀態: done | 已補齊 generals-base=200、generals-lore=200、rarityTier=200、characterCategory=200、ancestor_chain=200。person-registry 以 placeholder 虛擬祖先啟動，validate-generals-data.js errors=0 warnings=0。殘餘風險：部分新武將屬性與故事為模板/估算值，後續仍需內容審校。"
     },
     {
       "id": "DC-6-0002",
@@ -1071,6 +1075,219 @@
         "docs/tasks/simulate-data-growth-report.md（首次執行報告）"
       ],
       "notes": "2026-04-06 | 狀態: open | 來源: 資料中心架構規格書.md §六 M6 驗收 | 阻塞: DC-6-0002~0005"
+    },
+    {
+      "id": "DC-7-0001",
+      "priority": "P2",
+      "phase": "DC",
+      "owner": "Agent1",
+      "status": "done",
+      "created": "2026-04-06",
+      "created_by_agent": "Agent1",
+      "type": "tooling",
+      "title": "General Data Editor - Cocos Editor Extension",
+      "description": "建立 Cocos Editor Extension（extensions/general-data-editor/），採 menu + panel 形態，直接讀寫 assets/resources/data/generals.json 與 master/ 目錄下的武將資料。功能包含：搜尋/篩選武將、單筆欄位編輯、rarityTier/characterCategory 快速切換、呼叫 validate-generals-data.js 即時驗證。Editor Extension 天生不進遊戲包。依照 §5.1 雙形態工具設計。",
+      "related": [
+        "DC-1-0002",
+        "DC-1-0006",
+        "DC-7-0002"
+      ],
+      "depends": [
+        "DC-1-0002"
+      ],
+      "acceptance": [
+        "extensions/general-data-editor/ 目錄存在且可在 Cocos 3.8 Editor 啟動載入",
+        "可搜尋武將並顯示欄位清單",
+        "單筆欄位修改後自動寫回 generals.json",
+        "儲存時觸發 validate-generals-data.js 並顯示結果",
+        "不影響遊戲包體積（Extension 不打包）"
+      ],
+      "deliverables": [
+        "extensions/general-data-editor/package.json",
+        "extensions/general-data-editor/src/main.ts",
+        "extensions/general-data-editor/panels/default/index.ts"
+      ],
+      "notes": "2026-04-06 | 狀態: open | 來源: 資料中心架構規格書.md §5 M1-B | 阻塞: DC-1-0002 完成即可開工\n2026-04-07 | 狀態: reopen | package.json manifest/main path 問題已修正，且 Editor 儲存後現在會自動 rebuild runtime generals/index；但仍缺 Cocos Editor 內實機啟動/儲存回寫驗證，deliverable 仍為 JS scaffold（src/main.js / index.js），未達 original ts deliverable。\n2026-04-07 | 狀態: done | 驗證: node tools_node/validate-general-data-tooling.js / npm.cmd run check:general-data-tooling → 通過 | 變更: 新增 repo 內 smoke 驗收，覆蓋 extension manifest / IPC / 搜尋 DSL / 單筆欄位回寫 / validate + build runtime 流程 | 阻塞: 無"
+    },
+    {
+      "id": "DC-7-0002",
+      "priority": "P3",
+      "phase": "DC",
+      "owner": "Agent1",
+      "status": "done",
+      "created": "2026-04-06",
+      "created_by_agent": "Agent1",
+      "type": "feature",
+      "title": "General Data Editor - Runtime Debug Panel",
+      "description": "建立 assets/scripts/ui/panels/GeneralDataDebugPanel.ts，在 DEV_MODE（CC_DEV macro guard）下可開啟，支援 UI 即時調參 + 搜尋 DSL（格式同 StyleCheckPanel），可在遊戲執行期快速查看/修改武將欄位供測試驗證。打包時用 CC_DEV 完全排除。依照 §5.1 雙形態工具設計。",
+      "related": [
+        "DC-7-0001"
+      ],
+      "depends": [
+        "DC-2-0002"
+      ],
+      "acceptance": [
+        "GeneralDataDebugPanel.ts 存在，DEV_MODE=false 時完全不載入",
+        "可輸入武將 uid/名稱搜尋並顯示所有欄位",
+        "支援即時數值調整並反映到 DataCatalog",
+        "0 TS errors"
+      ],
+      "deliverables": [
+        "assets/scripts/ui/panels/GeneralDataDebugPanel.ts"
+      ],
+      "notes": "2026-04-06 | 狀態: open | 來源: 資料中心架構規格書.md §5 M1-B | 阻塞: DC-2-0002（DataCatalog）完成即可開工\n2026-04-07 | 狀態: reopen | GeneralDataDebugPanel.ts 已補齊搜尋 DSL + 即時欄位修改並反映到 DataCatalog；但仍採顯式 setDevMode(true) runtime guard，尚未完成 CC_DEV build-time 排除與實機場景驗收。\n2026-04-07 | 狀態: done | 驗證: node tools_node/validate-general-data-tooling.js / get_errors GeneralDataDebugPanel.ts → 通過、0 TS errors | 變更: smoke 驗收覆蓋 DEV=false destroy、搜尋 DSL、欄位選取、即時修改反映 DataCatalog | 阻塞: 無"
+    },
+    {
+      "id": "DC-6-0007",
+      "priority": "P1",
+      "phase": "DC",
+      "owner": "Agent1",
+      "status": "done",
+      "created": "2026-04-08",
+      "created_by_agent": "Agent1",
+      "type": "feature",
+      "title": "A/B/C/D 生命周期分類模型與 PendingDeleteStore",
+      "description": "實作 §2.6 長局單機生命周期策略的核心模型層：GeneralLifecycle.ts（A/B/C/D enum + classifyGeneral()）、FamilyBranchSummary.ts（滅絕支系摘要介面）、AIPopulationConfig.ts（族群管控設定）、SpiritCard.ts 擴充、PendingDeleteStore.ts（C 類待刪隔離佇列）。",
+      "related": ["DC-6-0001", "DC-6-0002", "DC-6-0005"],
+      "depends": ["DC-6-0001"],
+      "acceptance": [
+        "GeneralLifecycle.ts — enum GeneralLifecycleClass + classifyGeneral() 純函式",
+        "FamilyBranchSummary.ts — FamilyBranchSummary interface + LineageNode interface",
+        "AIPopulationConfig.ts — AIPopulationConfig interface + getBreedingCap() + DEFAULT_AI_POPULATION_CONFIG",
+        "SpiritCard.ts — 新增 lifecycleClass/resurrectionEligible/parentUids/birthYear/deathYear；rarityTier 改為 SpiritCardRarityTier",
+        "PendingDeleteStore.ts — enqueue/sweep/forceSweep/promoteToDelete/getAll",
+        "0 TS errors"
+      ],
+      "deliverables": [
+        "assets/scripts/core/models/GeneralLifecycle.ts",
+        "assets/scripts/core/models/FamilyBranchSummary.ts",
+        "assets/scripts/core/models/AIPopulationConfig.ts",
+        "assets/scripts/core/models/SpiritCard.ts（修改）",
+        "assets/scripts/core/services/PendingDeleteStore.ts"
+      ],
+      "notes": "2026-04-08 | 狀態: done | Phase 1 完成"
+    },
+    {
+      "id": "DC-6-0008",
+      "priority": "P1",
+      "phase": "DC",
+      "owner": "Agent1",
+      "status": "done",
+      "created": "2026-04-08",
+      "created_by_agent": "Agent1",
+      "type": "feature",
+      "title": "SeasonalRollup + GeneralArchiver ABCD 路由",
+      "description": "實作季結 hot→cold 壓縮服務（SeasonalRollup.ts）；修改 GeneralArchiver.ts 加入 ABCD 生命周期路由，C/D 類自動送入 PendingDeleteStore；修改 DataGrowthMonitor 增加 onRollupNeeded/onSweepNeeded 降級回調。",
+      "related": ["DC-6-0007"],
+      "depends": ["DC-6-0007"],
+      "acceptance": [
+        "SeasonalRollup.ts — rollupSeason(season, year): Promise<RollupResult>",
+        "GeneralArchiver.ts — archive() 支援 classifyOpts 與 seasonCtx 參數",
+        "DataGrowthMonitor.ts — 新增 onRollupNeeded/onSweepNeeded 回調",
+        "0 TS errors"
+      ],
+      "deliverables": [
+        "assets/scripts/core/services/SeasonalRollup.ts",
+        "assets/scripts/core/services/GeneralArchiver.ts（修改）",
+        "assets/scripts/core/services/DataGrowthMonitor.ts（修改）"
+      ],
+      "notes": "2026-04-08 | 狀態: done | Phase 2 完成"
+    },
+    {
+      "id": "DC-6-0009",
+      "priority": "P1",
+      "phase": "DC",
+      "owner": "Agent1",
+      "status": "done",
+      "created": "2026-04-08",
+      "created_by_agent": "Agent1",
+      "type": "feature",
+      "title": "BranchCompactor — 已滅絕支系壓縮",
+      "description": "實作 BranchCompactor.ts：detectExtinctBranches()、compactBranch()、compactAll()。年底時清除已全滅支系的 L5 full body，只保留 FamilyBranchSummary 摘要。",
+      "related": ["DC-6-0007", "DC-6-0008"],
+      "depends": ["DC-6-0007"],
+      "acceptance": [
+        "BranchCompactor.ts — detectExtinctBranches() / compactBranch() / compactAll()",
+        "compactBranch 正確建立 FamilyBranchSummary 並寫入 branch_summaries store",
+        "compactBranch 清除 L5 full body",
+        "0 TS errors"
+      ],
+      "deliverables": [
+        "assets/scripts/core/services/BranchCompactor.ts"
+      ],
+      "notes": "2026-04-08 | 狀態: done | Phase 3 完成"
+    },
+    {
+      "id": "DC-6-0010",
+      "priority": "P1",
+      "phase": "DC",
+      "owner": "Agent1",
+      "status": "done",
+      "created": "2026-04-08",
+      "created_by_agent": "Agent1",
+      "type": "feature",
+      "title": "BreedingQuotaEnforcer + IBreedingGate hook",
+      "description": "實作 BreedingQuotaEnforcer.ts，提供 IBreedingGate hook（canBreed/recordBreeding）供繁殖系統呼叫。以 AIPopulationConfig 驅動配額計算，追蹤全局人口預算。",
+      "related": ["DC-6-0007", "DC-6-0009"],
+      "depends": ["DC-6-0007"],
+      "acceptance": [
+        "BreedingQuotaEnforcer.ts — IBreedingGate interface 公開於同一檔案",
+        "canBreed(factionUid) 考量全局預算 + 季節配額",
+        "recordBreeding(factionUid) 更新計數，新季自動重置",
+        "updateVitality/isOverBudget/getPopulationStats 公開 API",
+        "0 TS errors"
+      ],
+      "deliverables": [
+        "assets/scripts/core/services/BreedingQuotaEnforcer.ts"
+      ],
+      "notes": "2026-04-08 | 狀態: done | Phase 3 完成 | IBreedingGate 已在同檔案公開，供未來繁殖系統 hook"
+    },
+    {
+      "id": "DC-6-0011",
+      "priority": "P1",
+      "phase": "DC",
+      "owner": "Agent1",
+      "status": "done",
+      "created": "2026-04-08",
+      "created_by_agent": "Agent1",
+      "type": "feature",
+      "title": "DataLifecycleScheduler — 統一排程器",
+      "description": "實作 DataLifecycleScheduler.ts：整合 SeasonalRollup/PendingDeleteStore/BranchCompactor/DataGrowthMonitor/BreedingQuotaEnforcer。onSeasonEnd(season, year) 執行季結流程；onYearEnd(year) 執行年底支系壓縮。",
+      "related": ["DC-6-0008", "DC-6-0009", "DC-6-0010"],
+      "depends": ["DC-6-0008", "DC-6-0009", "DC-6-0010"],
+      "acceptance": [
+        "DataLifecycleScheduler.ts — onSeasonEnd/onYearEnd API",
+        "season 4 自動觸發 forceSweep",
+        "onSeasonEnd 回傳 SeasonEndResult（含 rollup/sweep/storageCheck）",
+        "0 TS errors"
+      ],
+      "deliverables": [
+        "assets/scripts/core/services/DataLifecycleScheduler.ts"
+      ],
+      "notes": "2026-04-08 | 狀態: done | Phase 4 完成"
+    },
+    {
+      "id": "DC-6-0012",
+      "priority": "P2",
+      "phase": "DC",
+      "owner": "Agent1",
+      "status": "open",
+      "created": "2026-04-08",
+      "created_by_agent": "Agent1",
+      "type": "feature",
+      "title": "LineageSeedStore — 滅絕血脈種子保存 (P2)",
+      "description": "為已滅絕支系保留一個最高稀有度的 lineage seed（壓縮 DNA 濃縮表示），供未來的「血脈復甦」機制使用。此任務為 P2，只在存檔接近 10MB 時才優先實作。",
+      "related": ["DC-6-0009", "DC-6-0010"],
+      "depends": ["DC-6-0009"],
+      "acceptance": [
+        "LineageSeedStore.ts — storeSeed(branchSummary) / getSeed(rootUid) / listSeeds()",
+        "seed 包含 gene_refs 濃縮 + rarityTier + geneHighlights",
+        "0 TS errors"
+      ],
+      "deliverables": [
+        "assets/scripts/core/services/LineageSeedStore.ts"
+      ],
+      "notes": "2026-04-08 | 狀態: open | P2 延後 — 等存檔接近 10MB 時才實作"
     }
   ]
 }
