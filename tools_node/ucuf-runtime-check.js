@@ -448,6 +448,15 @@ function checkScreen(screen, indexes) {
     const screenId = screen.screenId;
     const s = screen.json || {};
 
+    // Composite screens (type:'composite' with panels[]) and multi-screen grouping files
+    // (screens[] with sub-screen definitions) do not carry their own layout/skin — skip
+    // layout checks entirely to avoid false RT-03 errors.
+    const isCompositeScreen = s.type === 'composite' || Array.isArray(s.panels);
+    const isMultiScreenFile = Array.isArray(s.screens);
+    if (isCompositeScreen || isMultiScreenFile) {
+        return violations;
+    }
+
     const layoutRef = s.layoutId || s.layout || s.layoutRef;
     const skinRef = s.skinId || s.skin || s.skinRef;
 
