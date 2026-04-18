@@ -67,6 +67,82 @@ const VALID_FACTIONS = ['player', 'enemy', 'neutral', 'wei', 'shu', 'wu', 'other
 const VALID_RARITY = ['common', 'rare', 'epic', 'legendary', 'mythic'];
 const VALID_CATEGORY = ['civilian', 'general', 'famed', 'mythical', 'titled'];
 
+function validateTacticSlot(file, ctx, slot, index) {
+  const sub = `${ctx}.tacticSlots[${index}]`;
+  if (!slot || typeof slot !== 'object') {
+    err(file, sub, 'slot 必須是物件');
+    return;
+  }
+  if (!slot.slotId) err(file, sub, '缺少 slotId');
+  if (!slot.tacticId) err(file, sub, '缺少 tacticId');
+}
+
+function validateUltimateSlot(file, ctx, slot, index) {
+  const sub = `${ctx}.ultimateSlots[${index}]`;
+  if (!slot || typeof slot !== 'object') {
+    err(file, sub, 'slot 必須是物件');
+    return;
+  }
+  if (typeof slot.slot !== 'number' || slot.slot < 1 || slot.slot > 5) err(file, sub, 'slot 必須是 1-5 的數字');
+  if (!slot.ultimateId) err(file, sub, '缺少 ultimateId');
+  if (typeof slot.unlockReincarnation !== 'number' || slot.unlockReincarnation < 1 || slot.unlockReincarnation > 5) {
+    err(file, sub, 'unlockReincarnation 必須是 1-5 的數字');
+  }
+}
+
+function validateStringArray(file, ctx, field, value) {
+  if (!Array.isArray(value)) {
+    err(file, ctx, `${field} 必須是字串陣列`);
+    return;
+  }
+  value.forEach((item, index) => {
+    if (typeof item !== 'string' || item.trim() === '') err(file, `${ctx}.${field}[${index}]`, '必須是非空字串');
+  });
+}
+
+function validateTacticLibrary(file, raw) {
+  raw.data.forEach((item, index) => {
+    const ctx = `[${index}] id=${item.id ?? '?'}`;
+    if (!item.id) err(file, ctx, '缺少 id');
+    if (!item.displayName) err(file, ctx, '缺少 displayName');
+    if (!item.category) err(file, ctx, '缺少 category');
+    if (!Array.isArray(item.rarityAccess)) err(file, ctx, 'rarityAccess 必須是陣列');
+    if (!Array.isArray(item.aptitudeRules)) err(file, ctx, 'aptitudeRules 必須是陣列');
+  });
+}
+
+function validateUltimateDefinitions(file, raw) {
+  raw.data.forEach((item, index) => {
+    const ctx = `[${index}] id=${item.id ?? '?'}`;
+    if (!item.id) err(file, ctx, '缺少 id');
+    if (!item.templateId) err(file, ctx, '缺少 templateId');
+    if (typeof item.slot !== 'number' || item.slot < 1 || item.slot > 5) err(file, ctx, 'slot 必須是 1-5 的數字');
+    if (!item.name) err(file, ctx, '缺少 name');
+    if (typeof item.unlockReincarnation !== 'number' || item.unlockReincarnation < 1 || item.unlockReincarnation > 5) {
+      err(file, ctx, 'unlockReincarnation 必須是 1-5 的數字');
+    }
+  });
+}
+
+function validateGeneDictionary(file, raw) {
+  raw.data.forEach((item, index) => {
+    const ctx = `[${index}] id=${item.id ?? '?'}`;
+    if (!item.id) err(file, ctx, '缺少 id');
+    if (!item.displayName) err(file, ctx, '缺少 displayName');
+    if (!item.color) err(file, ctx, '缺少 color');
+    if (!item.category) err(file, ctx, '缺少 category');
+    if (typeof item.maxLevel !== 'number' || item.maxLevel <= 0) err(file, ctx, 'maxLevel 必須是正數');
+  });
+}
+
+function validateBloodlineTemplates(file, raw) {
+  raw.data.forEach((item, index) => {
+    const ctx = `[${index}] id=${item.id ?? '?'}`;
+    if (!item.id) err(file, ctx, '缺少 id');
+    if (!item.templateType) err(file, ctx, '缺少 templateType');
+  });
+}
+
 function validateGeneral(file, g, index) {
   const ctx = `[${index}] id=${g.id ?? '?'}`;
 
@@ -121,6 +197,28 @@ function validateGeneral(file, g, index) {
     });
   }
 
+  if ('coreTags' in g) {
+    validateStringArray(file, ctx, 'coreTags', g.coreTags);
+  }
+
+  if ('ancestor_chain' in g) {
+    if (!Array.isArray(g.ancestor_chain)) err(file, ctx, 'ancestor_chain 必須是陣列');
+    else if (g.ancestor_chain.length !== 14) warn(file, ctx, `ancestor_chain 建議固定 14 位，現為 ${g.ancestor_chain.length}`);
+  }
+
+  // null is allowed (no skill assigned yet); only reject non-string, non-null values
+  if (g.battlePrimarySkillId != null && typeof g.battlePrimarySkillId !== 'string') {
+    err(file, ctx, 'battlePrimarySkillId 必須是字串或 null');
+  }
+
+  if (Array.isArray(g.tacticSlots)) {
+    g.tacticSlots.forEach((slot, ti) => validateTacticSlot(file, ctx, slot, ti));
+  }
+
+  if (Array.isArray(g.ultimateSlots)) {
+    g.ultimateSlots.forEach((slot, ui) => validateUltimateSlot(file, ctx, slot, ui));
+  }
+
   // storyStripCells: 若有，需有 slot + text
   if (Array.isArray(g.storyStripCells)) {
     g.storyStripCells.forEach((cell, ci) => {
@@ -135,6 +233,8 @@ const SKELETON_FILES = [
   'generals-base.json',
   'generals-lore.json',
   'generals-stories.json',
+  'tactic-library.json',
+  'ultimate-definitions.json',
   'gene-dictionary.json',
   'bloodline-templates.json',
   'troop-definitions.json',
@@ -162,6 +262,10 @@ function validateMasterDir(dirPath) {
       if (fname === 'generals-base.json' && raw.data.length > 0) {
         raw.data.forEach((g, i) => validateGeneral(fpath, g, i));
       }
+      if (fname === 'tactic-library.json') validateTacticLibrary(fpath, raw);
+      if (fname === 'ultimate-definitions.json') validateUltimateDefinitions(fpath, raw);
+      if (fname === 'gene-dictionary.json') validateGeneDictionary(fpath, raw);
+      if (fname === 'bloodline-templates.json') validateBloodlineTemplates(fpath, raw);
       ok(fpath, `${raw.data.length} 筆資料`);
     } catch (e) {
       err(fpath, 'parse', `JSON 解析失敗：${e.message}`);

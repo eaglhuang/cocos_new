@@ -22,6 +22,11 @@
       "name": "cross-ref-ui-spec",
       "title": "UI 規格索引（Sec C）",
       "pattern": "^C\\."
+    },
+    {
+      "name": "cross-ref-進度",
+      "title": "實作進度（Sec D）",
+      "pattern": "^D\\."
     }
   ]
 }

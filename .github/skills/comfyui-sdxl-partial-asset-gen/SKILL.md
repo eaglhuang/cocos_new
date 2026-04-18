@@ -1,7 +1,8 @@
 ---
+doc_id: doc_agentskill_0013
 name: comfyui-sdxl-partial-asset-gen
-description: 'Local ComfyUI / Stable Diffusion SDXL partial-asset generation workflow. Use for ComfyUI, stable diffusion, SDXL, LoRA, badge, cap, plaque, panel fragment, local UI asset exploration, and saving generated PNGs from the local backend.'
-argument-hint: 'Describe the target asset type, prompt goal, output path, checkpoint, and whether you want the default ink + engraving dual-LoRA stack.'
+description: 'Local ComfyUI / Stable Diffusion SDXL partial-asset generation workflow. Use for ComfyUI, stable diffusion, SDXL, LoRA, badge, cap, plaque, panel fragment, UCUF partial asset exploration, and saving generated PNGs from the local backend.'
+argument-hint: 'Describe the target asset type, prompt goal, output path, checkpoint, and whether this is UCUF reference exploration or a partial asset task using the default ink + engraving dual-LoRA stack.'
 ---
 
 # ComfyUI SDXL Partial Asset Gen
@@ -162,3 +163,7 @@ node .github/skills/comfyui-sdxl-partial-asset-gen/scripts/generate-comfyui-sdxl
 - 這個 skill 走的是本機 `ComfyUI` HTTP API，不依賴額外 MCP tool。
 - 若想改成單 LoRA，只要把其中一顆 strength 調到 `0`。
 - 若之後 `inpaint checkpoint` 完成，可再擴充第二支 wrapper 做局部修補，不要把 txt2img 與 inpaint 混在同一支腳本裡。
+
+## Image View Guard 提醒
+
+生成圖片後，若需要 `view_image` 檢視，必須先跑 `node tools_node/prepare-view-image-progressive.js --input <path> --level thumb` 再送入 `view_image`（見 image-view-guard）。

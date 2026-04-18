@@ -1,0 +1,24 @@
+{
+  "id": "battle-hud-overlay-screen",
+  "version": 1,
+  "uiId": "BattleHudOverlay",
+  "layer": "HUD",
+  "bundle": "battle_ui",
+  "layout": "battle-hud-overlay-main",
+  "skin": "battle-hud-overlay-default",
+  "contentRequirements": {
+    "schemaId": "battle-hud-overlay-content",
+    "familyId": "hud-overlay",
+    "requiredFields": [
+      "topBar"
+    ]
+  },
+  "validation": {
+    "devices": [
+      "phone-16-9",
+      "phone-19_5-9",
+      "tablet-4-3"
+    ],
+    "allowMissingSkin": true
+  }
+}

@@ -1,10 +1,11 @@
 ---
+doc_id: doc_agentskill_0009
 name: cocos-bug-triage
-description: 'COMPLETE BUG INVESTIGATION WORKFLOW — Combines screenshot + log reading into a full triage pipeline. USE FOR: any bug report that has both visual symptoms AND runtime errors. This is the master debugging workflow that orchestrates cocos-screenshot and cocos-log-reader together. Load this skill when user reports any battle scene / UI crash / abnormal behavior with both visual and runtime aspects.'
-argument-hint: 'Describe the bug symptom briefly. The skill will guide screenshot → log → root cause → fix.'
+description: 'COMPLETE BUG INVESTIGATION WORKFLOW — Combines screenshot + log reading into a full triage pipeline. USE FOR: any bug report that has both visual symptoms AND runtime errors, especially CompositePanel / ChildPanel mount failures, screen spec wiring breaks, or battle scene UI crashes. This is the master debugging workflow that orchestrates cocos-screenshot and cocos-log-reader together.'
+argument-hint: 'Describe the bug symptom briefly. Examples: GeneralDetailComposite mount fail, tab switch blank, BattleHUD crash. The skill will guide screenshot → log → root cause → fix.'
 ---
 
-<!-- 此檔案為 .agents/skills/cocos-bug-triage/SKILL.md 的鏡像副本，供 GitHub Copilot 技能載入使用 -->
+<!-- 此檔案為 .agents/skills/cocos-bug-triage/SKILL.md (doc_agentskill_0002) 的鏡像副本，供 GitHub Copilot 技能載入使用 -->
 <!-- 主版本位於 c:\Users\User\3KLife\.agents\skills\cocos-bug-triage\SKILL.md -->
 
 # Cocos Bug Triage（鏡像索引）
@@ -89,6 +90,8 @@ Write-Host "=== WARN ===" -ForegroundColor Yellow
 $log | Where-Object { $_ -match "^\d{4}" -and $_ -match " - warn:" } | Select-Object -Last 10
 Write-Host "=== LOG（最後執行到哪）===" -ForegroundColor Cyan
 $log | Where-Object { $_ -match "^\d{4}" -and $_ -match " - log:" } | Select-Object -Last 10
+Write-Host "=== GeneralDetail 相關 ===" -ForegroundColor Magenta
+$log | Where-Object { $_ -match "GeneralDetailPanel|GeneralDetailComposite" } | Select-Object -Last 10
 ```
 
 ---
@@ -119,11 +122,18 @@ Stack trace 格式：`at ClassName.method (file:///...OriginalFile.ts:LINE:COL)`
 | Tag | 組件 | 關鍵訊息 |
 |-----|------|---------|
 | `[BattleHUD]` | 戰鬥 HUD | `_initialize: 開始載入` / `buildScreen 完成` |
-| `[UIPreviewBuilder]` | UI 建構器 | `buildScreen 開始` / `buildScreen 完成` |
+| `[CompositePanel]` | UI 頁級宿主 | `buildScreen 開始` / `buildScreen 完成` / `mountChildPanel` |
+| `[ChildPanel]` | slot 內容區 | `onDataUpdate` / `onRouteEnter` |
 | `[UISpecLoader]` | JSON 載入器 | `loadLayout: 開始載入` / `載入失敗` |
 | `[BoardRenderer]` | 棋盤渲染 | `棋盤建立完成 size=NxN` |
 | `[BattleScene]` | 戰鬥場景 | `start() 開始執行` / `✅ start() 全部完成` |
 
 ---
 
-完整 SOP 請讀取主版：`.agents/skills/cocos-bug-triage/SKILL.md`
+## UCUFLogger 提醒
+
+`assets/scripts/` 內**禁用裸 `console.log`**，統一使用 `UCUFLogger`（`assets/scripts/ui/core/UCUFLogger.ts`）。新增 debug 功能前先確認目標 `LogCategory` 存在或補 enum；不得自建平行 log 模組。
+
+---
+
+完整 SOP 請讀取主版：`.agents/skills/cocos-bug-triage/SKILL.md` (doc_agentskill_0002)

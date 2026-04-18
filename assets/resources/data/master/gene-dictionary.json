@@ -1,6 +1,172 @@
 {
   "version": "1.0.0",
-  "updatedAt": "2026-04-06",
-  "description": "六色因子共用字典。每個因子定義 id、顏色、屬性、最高等級。",
-  "data": []
+  "updatedAt": "2026-04-15",
+  "description": "六色因子共用字典。供 M1-E 戰法/奧義與 M1-F 虛擬祖先生成器共用。",
+  "data": [
+    {
+      "id": "gene_strategy",
+      "displayName": "權謀",
+      "color": "green",
+      "category": "tactic-seed",
+      "maxLevel": 5,
+      "defaultTags": ["scheme", "command", "control"]
+    },
+    {
+      "id": "gene_command",
+      "displayName": "號令",
+      "color": "blue",
+      "category": "leadership",
+      "maxLevel": 5,
+      "defaultTags": ["command", "morale", "formation"]
+    },
+    {
+      "id": "gene_politics",
+      "displayName": "治世",
+      "color": "white",
+      "category": "governance",
+      "maxLevel": 5,
+      "defaultTags": ["politics", "resource", "stability"]
+    },
+    {
+      "id": "gene_halberd",
+      "displayName": "刀鋒傳承",
+      "color": "red",
+      "category": "weapon-proficiency",
+      "maxLevel": 5,
+      "defaultTags": ["blade", "burst", "duel"]
+    },
+    {
+      "id": "gene_discipline",
+      "displayName": "軍紀",
+      "color": "blue",
+      "category": "leadership",
+      "maxLevel": 5,
+      "defaultTags": ["formation", "defense", "morale"]
+    },
+    {
+      "id": "gene_honor",
+      "displayName": "義勇",
+      "color": "white",
+      "category": "personality",
+      "maxLevel": 4,
+      "defaultTags": ["loyalty", "duel", "support"]
+    },
+    {
+      "id": "gene_bravery",
+      "displayName": "勇烈",
+      "color": "red",
+      "category": "attribute",
+      "maxLevel": 5,
+      "defaultTags": ["str", "frontline", "burst"]
+    },
+    {
+      "id": "gene_cavalry",
+      "displayName": "騎軍適性",
+      "color": "blue",
+      "category": "aptitude",
+      "maxLevel": 5,
+      "defaultTags": ["cavalry", "charge", "plain"]
+    },
+    {
+      "id": "gene_shout",
+      "displayName": "喝陣",
+      "color": "green",
+      "category": "tactic-seed",
+      "maxLevel": 4,
+      "defaultTags": ["control", "morale-break", "aoe"]
+    },
+    {
+      "id": "gene_courage",
+      "displayName": "膽魄",
+      "color": "red",
+      "category": "attribute",
+      "maxLevel": 5,
+      "defaultTags": ["charge", "survival", "counter"]
+    },
+    {
+      "id": "gene_dash",
+      "displayName": "神速",
+      "color": "blue",
+      "category": "mobility",
+      "maxLevel": 5,
+      "defaultTags": ["mobility", "cavalry", "pursuit"]
+    },
+    {
+      "id": "gene_guard",
+      "displayName": "護主",
+      "color": "white",
+      "category": "personality",
+      "maxLevel": 4,
+      "defaultTags": ["rescue", "guard", "loyalty"]
+    },
+    {
+      "id": "gene_overpower",
+      "displayName": "霸威",
+      "color": "red",
+      "category": "attribute",
+      "maxLevel": 5,
+      "defaultTags": ["intimidate", "aoe", "frontline"]
+    },
+    {
+      "id": "gene_charge",
+      "displayName": "突陣",
+      "color": "green",
+      "category": "tactic-seed",
+      "maxLevel": 5,
+      "defaultTags": ["charge", "pierce", "cavalry"]
+    },
+    {
+      "id": "gene_frenzy",
+      "displayName": "狂戰",
+      "color": "green",
+      "category": "tactic-seed",
+      "maxLevel": 4,
+      "defaultTags": ["berserk", "burst", "aoe"]
+    },
+    {
+      "id": "gene_hidden_01",
+      "displayName": "咆哮覺醒因子",
+      "color": "gold",
+      "category": "hidden",
+      "maxLevel": 1,
+      "defaultTags": ["exclusive", "awakening", "zhang-fei"],
+      "isHidden": true
+    },
+    {
+      "id": "gene_hidden_02",
+      "displayName": "烈膽覺醒因子",
+      "color": "gold",
+      "category": "hidden",
+      "maxLevel": 1,
+      "defaultTags": ["exclusive", "awakening", "zhang-fei"],
+      "isHidden": true
+    },
+    {
+      "id": "gene_hidden_03",
+      "displayName": "義絕覺醒因子",
+      "color": "gold",
+      "category": "hidden",
+      "maxLevel": 1,
+      "defaultTags": ["exclusive", "awakening", "guan-yu"],
+      "isHidden": true
+    },
+    {
+      "id": "gene_hidden_04",
+      "displayName": "天下無雙因子",
+      "color": "gold",
+      "category": "hidden",
+      "maxLevel": 1,
+      "defaultTags": ["exclusive", "awakening", "lu-bu"],
+      "isHidden": true
+    },
+    {
+      "id": "gene_hidden_05",
+      "displayName": "霸道因子",
+      "color": "gold",
+      "category": "hidden",
+      "maxLevel": 1,
+      "defaultTags": ["exclusive", "awakening", "cao-cao"],
+      "isHidden": true
+    }
+  ]
 }

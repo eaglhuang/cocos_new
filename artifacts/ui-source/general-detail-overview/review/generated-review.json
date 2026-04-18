@@ -1,7 +1,7 @@
 {
   "screenId": "GeneralDetailOverview",
-  "updatedAt": "2026-04-08T03:27:57.084Z",
-  "latestStage": "assetTaskManifest",
+  "updatedAt": "2026-04-11T12:15:12.827Z",
+  "latestStage": "runtimeCapture",
   "overallVerdict": "pass",
   "stages": {
     "intake": {
@@ -78,6 +78,45 @@
         "screenId": "GeneralDetailOverview",
         "output": "manifests/asset-task-manifest.json",
         "taskCount": 4
+      }
+    },
+    "runtimeCapture": {
+      "verdict": "pass",
+      "validatedAt": "2026-04-11T12:15:12.827Z",
+      "fileCount": 4,
+      "failureCount": 0,
+      "files": [
+        {
+          "kind": "intake",
+          "filePath": "artifacts\\ui-source\\general-detail-overview\\manifests\\intake.json",
+          "ok": true,
+          "failReasons": []
+        },
+        {
+          "kind": "familyMap",
+          "filePath": "artifacts\\ui-source\\general-detail-overview\\proof\\general-detail-overview.family-map.json",
+          "ok": true,
+          "failReasons": []
+        },
+        {
+          "kind": "generatedReview",
+          "filePath": "artifacts\\ui-source\\general-detail-overview\\review\\generated-review.json",
+          "ok": true,
+          "failReasons": []
+        },
+        {
+          "kind": "runtimeVerdict",
+          "filePath": "artifacts\\ui-source\\general-detail-overview\\review\\runtime-verdict.json",
+          "ok": true,
+          "failReasons": []
+        }
+      ],
+      "crossFileFailReasons": [],
+      "metadata": {
+        "screenId": "GeneralDetailOverview",
+        "output": "review\\runtime-verdict.json",
+        "runId": "general-detail-overview-board-geometry-r7-full",
+        "captureReport": "artifacts\\ui-qa\\general-detail-overview-board-geometry-r7-full\\capture-report.json"
       }
     }
   }

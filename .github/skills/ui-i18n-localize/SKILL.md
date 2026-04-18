@@ -1,4 +1,5 @@
 ---
+doc_id: doc_agentskill_0026
 name: ui-i18n-localize
 description: 'UI 多語在地化 SKILL — 從 zh-TW 基礎語系延伸 zh-CN / en / ja 語系 JSON，保留變數格式並輸出寬度風險摘要。USE FOR: 新 UI 鍵值落地後補多語、批次更新某個畫面的翻譯、先做文字長度風險盤點。DO NOT USE FOR: 純 runtime layout polish、直接修改非 i18n 的顯示文案。'
 argument-hint: '提供鍵值範圍、目標語系與畫面名稱，並說明要翻譯草稿、補檔、還是產出 overflow 風險摘要。'

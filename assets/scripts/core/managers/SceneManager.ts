@@ -23,6 +23,14 @@ export class SceneManager {
         return { name: this.targetScene, data: this.sceneData };
     }
 
+    /**
+     * 直接設定下一場景（不觸發 LoadingScene 橋接），供 QA preview 工作流使用
+     */
+    public setNextScene(name: string, data?: any): void {
+        this.targetScene = name;
+        this.sceneData = data ?? null;
+    }
+
     // ─── View Bridge ────────────────────────────────────────────────────────
     private boardRenderer: any = null;
 

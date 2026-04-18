@@ -173,7 +173,9 @@ export class UISkinResolver {
         
         // 確保 hex 是有效色碼
         if (!hex.startsWith('#')) {
-            hex = '#' + hex;
+            // token 名稱無法解析（tokens 未初始化或 key 不存在），回傳透明 fallback 而非誤解析為怪色
+            console.warn(`[UISkinResolver] resolveColor: token "${hex}" 未找到（tokens loaded: ${!!this._tokens}），使用透明 fallback`);
+            return new Color(0, 0, 0, 0);
         }
 
         const cleanHex = hex.replace('#', '');
@@ -255,5 +257,18 @@ export class UISkinResolver {
     /** 清除 sprite 快取 */
     clearCache(): void {
         this._spriteCache.clear();
+    }
+
+    /**
+     * 並行預載一批 slot 的 SpriteFrame，填入 _spriteCache。
+     * 應在 buildScreen() 前呼叫（如 CompositePanel.mount()），
+     * 讓後續 getSpriteFrame() 直接命中快取而不阻塞節點建構。
+     *
+     * @param slotIds 要預載的 slot id 清單（通常是 Object.keys(skin.slots)）
+     *
+     * Unity 對照：AssetBundle.LoadAllAssetsAsync<Sprite>()
+     */
+    async preloadSlots(slotIds: string[]): Promise<void> {
+        await Promise.all(slotIds.map(id => this.getSpriteFrame(id)));
     }
 }

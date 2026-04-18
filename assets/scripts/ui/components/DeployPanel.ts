@@ -1,4 +1,29 @@
 // @spec-source → 見 docs/cross-reference-index.md
+
+/**
+ * DeployDragState — 虎符拖曳部署的顯式狀態機
+ *
+ * [P3-R3] 以此 enum 取代原本的 `isDragging: boolean` 布爾旗標，
+ * 消除 processDragEnd() 中脆弱的 `scheduleOnce(0.1)` 時間假設。
+ *
+ * 狀態轉換圖：
+ *   Idle ──TOUCH_START──► Dragging ──TOUCH_END──► Validating
+ *                                                      ├── raycast 成功 → selectLane() → Deployed → Idle
+ *                                                      └── raycast 失敗 → Cancelled → Idle
+ */
+export enum DeployDragState {
+  /** 初始狀態：無拖曳進行中 */
+  Idle,
+  /** 卡片被拖離、幽靈節點跟手移動中 */
+  Dragging,
+  /** 放手後等待射線偵測結果（同步，回調返回即可判斷） */
+  Validating,
+  /** 射線成功、部署已確認 */
+  Deployed,
+  /** 射線失敗（無效格子）或主動取消 */
+  Cancelled,
+}
+
 import {
   _decorator,
   Button,
@@ -20,13 +45,28 @@ import {
   resources,
 } from "cc";
 import { GAME_CONFIG, TroopType, TROOP_DEPLOY_COST } from "../../core/config/Constants";
+import { services } from "../../core/managers/ServiceLoader";
 import { UIPreviewBuilder } from '../core/UIPreviewBuilder';
 import { BattleController, DeployFailReason } from "../../battle/controllers/BattleController";
-import { ToastMessage, ToastOptions } from "./ToastMessage";
+import { UI_EVENTS } from "../core/UIEvents";
+import type { TallyCardData } from "./TigerTallyComposite";
+import type { DeployRuntimeApi } from './DeployRuntimeApi';
+import type { ToastOptions } from "./ToastMessage";
+import { emitDeployDragDebug, shouldLogDeployDragMove } from "./DeployDragDebug";
+import { UCUFLogger, LogLevel } from '../core/UCUFLogger';
 
 const { ccclass, property } = _decorator;
 
+interface ToastMessageLike {
+  node: Node;
+  show: (message: string, duration?: number, options?: ToastOptions) => void | Promise<void>;
+  hide?: (key?: string) => void;
+}
+
+export type DeployPanelBattleRuntimeApi = DeployRuntimeApi;
+
 /**
+ * @deprecated [2026-05-13] Use DeployComposite instead. UCUF migration complete.
  * DeployPanel — 玩家部署操作面板。
  *
  * 【隨機兵種池】每次成功部署後，從 5 個兵種中隨機抽出 4 個槽位，最多允許一個兵種重複。
@@ -41,7 +81,7 @@ const { ccclass, property } = _decorator;
  *   2. 必須是武將前方第一排（BattleScene.onTouchEnd 限制 depth === 0 才呼叫 selectLane）。
  */
 @ccclass("DeployPanel")
-export class DeployPanel extends UIPreviewBuilder {
+export class DeployPanel extends UIPreviewBuilder implements DeployRuntimeApi {
   // ─── 兵種按鈕（5 個對應 Inspector 綁定，實際只顯示 4 個隨機槽位） ──────────
   @property(Button)
   btnCavalry: Button = null!;
@@ -79,15 +119,18 @@ export class DeployPanel extends UIPreviewBuilder {
   @property(Label)
   selectionLabel: Label = null!;
 
-  @property(ToastMessage)
-  toast: ToastMessage = null!;
+  @property(Node)
+  toastHost: Node | null = null;
+
+  toast: ToastMessageLike | null = null;
 
   // ─── 運行時狀態 ───────────────────────────────────────────────────────────
   private ctrl: BattleController | null = null;
   private selectedType: TroopType = TroopType.Infantry;
   private selectedSlotIndex = 0;
   private selectedLane: number = 0;
-  private currentDp = GAME_CONFIG.INITIAL_DP;
+  /** [P2-N6] 當前糧草（原 currentDp，與 TurnSnapshot.playerFood 同步） */
+  private currentDp = GAME_CONFIG.INITIAL_FOOD;
 
   // ─── 隨機兵種槽位 ─────────────────────────────────────────────────────────
   /** 目前 4 個槽位各自對應的兵種（每次成功部署後重新抽） */
@@ -99,14 +142,18 @@ export class DeployPanel extends UIPreviewBuilder {
    */
   private slotButtons: Array<Button | null> = [];
 
-  // ─── 拖曳狀態 ─────────────────────────────────────────────────────────────
-  private isDragging = false;
+  // ─── 拖曳狀態機 ──────────────────────────────────────────────────────────
+  /** [P3-R3] 以顯式狀態機取代 isDragging 布爾旗標 */
+  private _dragState: DeployDragState = DeployDragState.Idle;
   private ghostNode: Node | null = null;
   /** BattleScene 登記的回調：當拖曳放手時，通知 BattleScene 用放手座標做射線偵測 */
   private dragDropCallback: ((screenX: number, screenY: number) => void) | null = null;
+  private _cardSelectedUnsub: (() => void) | null = null;
+  private _cardDragUnsub: (() => void) | null = null;
+  private _lastDragMoveLogAt = 0;
 
-  /** 公開 isDragging 狀態，供 BattleScene 判斷是否正在拖曳 */
-  public get dragging(): boolean { return this.isDragging; }
+  /** 公開拖曳中狀態，供 BattleScene 判斷是否正在拖曳 */
+  public get dragging(): boolean { return this._dragState !== DeployDragState.Idle; }
 
   // ─── Tween 狀態 ──────────────────────────────────────────────────────────
   private skillTween: Tween<Node> | null = null;
@@ -128,6 +175,31 @@ export class DeployPanel extends UIPreviewBuilder {
   public updateDp(dp: number): void {
     this.currentDp = dp;
     this.refreshButtonStates();
+  }
+
+  /**
+   * 切換 DeployPanel 內建兵種槽位可見性。
+   * TigerTallyComposite 接手左側主視覺後，DeployPanel 只保留部署控制與右側功能按鈕。
+   */
+  public setTroopSlotButtonsVisible(visible: boolean): void {
+    for (const btn of this.slotButtons) {
+      if (!btn?.node) continue;
+      btn.node.active = visible;
+    }
+
+    if (this.btnPikeman?.node) {
+      this.btnPikeman.node.active = false;
+    }
+
+    if (this.selectionLabel?.node) {
+      this.selectionLabel.node.active = visible;
+    }
+
+    if (!visible && this.activeSelectionFrame) {
+      this.troopSelectTween?.stop();
+      this.troopSelectTween = null;
+      this.activeSelectionFrame = null;
+    }
   }
 
   public updateSkillStatus(isReady: boolean): void {
@@ -178,6 +250,8 @@ export class DeployPanel extends UIPreviewBuilder {
 
   onLoad(): void {
     console.log("[DeployPanel] onLoad 開始");
+    services().initialize(this.node);
+    emitDeployDragDebug("DeployPanel", "on-load", { node: this.node.name });
     this.ensureBindings();
 
     // 設定 4 個槽位按鈕（使用前 4 個既有按鈕作為顯示容器）
@@ -219,14 +293,88 @@ export class DeployPanel extends UIPreviewBuilder {
     input.on(Input.EventType.TOUCH_END, this.onGlobalTouchEnd, this);
     input.on(Input.EventType.TOUCH_CANCEL, this.onGlobalTouchEnd, this);
     input.on(Input.EventType.MOUSE_UP, this.onGlobalMouseUp, this);
+
+    this._bindTallyEvents();
+    emitDeployDragDebug("DeployPanel", "drag-input-bound");
   }
 
   onDestroy(): void {
+    emitDeployDragDebug("DeployPanel", "on-destroy");
     input.off(Input.EventType.TOUCH_MOVE, this.onGlobalTouchMove, this);
     input.off(Input.EventType.TOUCH_END, this.onGlobalTouchEnd, this);
     input.off(Input.EventType.TOUCH_CANCEL, this.onGlobalTouchEnd, this);
     input.off(Input.EventType.MOUSE_UP, this.onGlobalMouseUp, this);
+    this._cardSelectedUnsub?.();
+    this._cardSelectedUnsub = null;
+    this._cardDragUnsub?.();
+    this._cardDragUnsub = null;
     this.endDrag();
+  }
+
+  /**
+   * 接上 TigerTallyComposite 的事件流，讓虎符卡可直接選取與拖曳部署。
+   * Unity 對照：從 HandCardView 發送 OnBeginDrag，DeployPanel 直接接手。
+   */
+  private _bindTallyEvents(): void {
+    emitDeployDragDebug("DeployPanel", "bind-tally-events");
+    this._cardSelectedUnsub?.();
+    this._cardSelectedUnsub = services().event.on(
+      UI_EVENTS.CardSelected,
+      (payload: { index: number; data: TallyCardData }) => {
+        emitDeployDragDebug("DeployPanel", "event-card-selected", {
+          index: payload.index,
+          unitType: payload.data.unitType,
+        });
+        const type = this._resolveTroopType(payload.data.unitType);
+        if (!type) {
+          emitDeployDragDebug("DeployPanel", "event-card-selected-invalid-type", {
+            raw: payload.data.unitType,
+          });
+          return;
+        }
+        this.selectedType = type;
+        this.selectedSlotIndex = payload.index;
+        this.updateSelectionLabel();
+        this.refreshButtonStates();
+      },
+    );
+
+    this._cardDragUnsub?.();
+    this._cardDragUnsub = services().event.on(
+      UI_EVENTS.CardDragStart,
+      (payload: { ev: EventTouch; data: TallyCardData }) => {
+        emitDeployDragDebug("DeployPanel", "event-card-drag-start", {
+          unitType: payload.data.unitType,
+          dragState: this._dragState,
+        });
+        const type = this._resolveTroopType(payload.data.unitType);
+        if (!type) {
+          emitDeployDragDebug("DeployPanel", "event-card-drag-invalid-type", {
+            raw: payload.data.unitType,
+          });
+          return;
+        }
+        if (this.currentDp < TROOP_DEPLOY_COST[type]) {
+          emitDeployDragDebug("DeployPanel", "event-card-drag-blocked-dp", {
+            currentDp: this.currentDp,
+            required: TROOP_DEPLOY_COST[type],
+            type,
+          });
+          this.showToast("糧草不足，無法拖曳部署");
+          return;
+        }
+        this.selectedType = type;
+        this.updateSelectionLabel();
+        this.refreshButtonStates();
+        this.beginDrag(payload.ev, type);
+      },
+    );
+  }
+
+  private _resolveTroopType(raw: string): TroopType | null {
+    if (!raw) return null;
+    const normalized = raw.toLowerCase() as TroopType;
+    return TROOP_DEPLOY_COST[normalized] !== undefined ? normalized : null;
   }
 
   // ─── 隨機兵種池 ───────────────────────────────────────────────────────────
@@ -339,7 +487,7 @@ export class DeployPanel extends UIPreviewBuilder {
         const type = this.deploySlots[idx];
         if (!type) return;
         if (this.currentDp < TROOP_DEPLOY_COST[type]) {
-          this.showToast("DP 不足，無法拖曳部署");
+          this.showToast("糧草不足，無法拖曳部署");
           return;
         }
         this.selectTroop(type, idx);
@@ -355,8 +503,12 @@ export class DeployPanel extends UIPreviewBuilder {
    * 對照 Unity：類似 CanvasGroup + 拖曳時 monoBehaviour.OnDrag。
    */
   private beginDrag(ev: EventTouch, type: TroopType): void {
-    if (this.isDragging) this.endDrag(); // 避免重複
-    this.isDragging = true;
+    if (this._dragState !== DeployDragState.Idle) this.endDrag(); // 避免重複
+    this._dragState = DeployDragState.Dragging;
+    emitDeployDragDebug("DeployPanel", "begin-drag", {
+      type,
+      state: this._dragState,
+    });
 
     // 把幽靈加到 Canvas（this.node.parent）
     const canvas = this.node.parent;
@@ -408,8 +560,12 @@ export class DeployPanel extends UIPreviewBuilder {
   }
 
   private endDrag(): void {
-    if (!this.isDragging) return;
-    this.isDragging = false;
+    if (this._dragState === DeployDragState.Idle) return;
+    emitDeployDragDebug("DeployPanel", "end-drag", {
+      state: this._dragState,
+      hadGhost: !!this.ghostNode,
+    });
+    this._dragState = DeployDragState.Idle;
     if (this.ghostNode) {
       this.ghostNode.destroy();
       this.ghostNode = null;
@@ -417,33 +573,71 @@ export class DeployPanel extends UIPreviewBuilder {
   }
 
   private onGlobalTouchMove(ev: EventTouch): void {
-    if (this.isDragging) this.moveGhostToTouch(ev);
+    if (this._dragState === DeployDragState.Dragging) {
+      this.moveGhostToTouch(ev);
+      if (UCUFLogger.getLevel() <= LogLevel.DEBUG) {
+        const now = Date.now();
+        if (shouldLogDeployDragMove(now, this._lastDragMoveLogAt, 120)) {
+          this._lastDragMoveLogAt = now;
+          const loc = ev.getLocation();
+          emitDeployDragDebug("DeployPanel", "touch-move", { x: loc.x, y: loc.y });
+        }
+      }
+    }
   }
 
   private onGlobalTouchEnd(ev: EventTouch): void {
-    if (!this.isDragging) return;
+    if (this._dragState === DeployDragState.Idle) return;
     const loc = ev.getLocation();
+    emitDeployDragDebug("DeployPanel", "touch-end", { x: loc.x, y: loc.y, state: this._dragState });
     this.processDragEnd(loc.x, loc.y);
   }
 
   private onGlobalMouseUp(ev: EventMouse): void {
-    if (!this.isDragging) return;
+    if (this._dragState === DeployDragState.Idle) return;
     const loc = ev.getLocation();
+    emitDeployDragDebug("DeployPanel", "mouse-up", { x: loc.x, y: loc.y, state: this._dragState });
     this.processDragEnd(loc.x, loc.y);
   }
 
-  /** 放手後的共用邏輯：通知 BattleScene 做 Raycast，0.1s 後若未成功則顯示失敗提示 */
+  /**
+   * [P3-R3] 放手後共用邏輯：通知 BattleScene 做射線偵測。
+   *
+   * 原先使用 scheduleOnce(0.1) 延遲判斷是否成功，已改為同步狀態機：
+   * - 轉至 Validating，呼叫 dragDropCallback（BattleScene.doDeployRaycast 同步執行）
+   * - 若 doDeployRaycast 成功 → 呼叫 selectLane() → endDrag() → _dragState = Idle
+   * - 回調返回後 _dragState 仍為 Validating → 表示無有效格子 → 顯示提示 → Cancelled → Idle
+   *
+   * Unity 對照：DragHandler.OnEndDrag → ValidateDropTarget → transition(Deployed | Cancelled)
+   */
   private processDragEnd(screenX: number, screenY: number): void {
+    // 進入驗證狀態
+    this._dragState = DeployDragState.Validating;
+    emitDeployDragDebug("DeployPanel", "process-drag-end", {
+      x: screenX,
+      y: screenY,
+      hasCallback: !!this.dragDropCallback,
+    });
+
+    // dragDropCallback 是同步的（doDeployRaycast 無 await），回調期間若成功部署，
+    // selectLane() → endDrag() 會將 _dragState 設回 Idle。
     if (this.dragDropCallback) {
       this.dragDropCallback(screenX, screenY);
     }
+    emitDeployDragDebug("DeployPanel", "process-drag-end-after-callback", {
+      state: this._dragState,
+    });
 
-    // 若 0.1 秒後 isDragging 仍為 true，表示未落在有效格子，顯示提示
-    this.scheduleOnce(() => {
-      if (!this.isDragging) return; // 已由 selectLane → endDrag 處理完畢
+    // 回調返回後：若仍為 Validating，表示未落在有效部署格
+    if (this._dragState === DeployDragState.Validating) {
+      this._dragState = DeployDragState.Cancelled;
+      emitDeployDragDebug("DeployPanel", "process-drag-end-cancelled", {
+        x: screenX,
+        y: screenY,
+      });
       this.showToast("請拖曳到最前排（第一列）部署");
-      this.endDrag();
-    }, 0.1);
+      this.endDrag(); // 清理幽靈節點，回到 Idle
+    }
   }
 
   // ─── 兵種選擇 ─────────────────────────────────────────────────────────────
@@ -463,7 +657,7 @@ export class DeployPanel extends UIPreviewBuilder {
     this.selectionLabel.string = [
       `兵種：${this.toTroopDisplayName(this.selectedType)}`,
       `路線：${this.selectedLane + 1}`,
-      `費用：${cost} DP`,
+      `費用：${cost} 糧草`,
     ].join("\n");
 
     const button = this.getButtonBySlotIndex(this.selectedSlotIndex);
@@ -526,8 +720,20 @@ export class DeployPanel extends UIPreviewBuilder {
   // ─── 按鈕事件 ─────────────────────────────────────────────────────────────
 
   private onDeployClick(): void {
-    if (!this.ctrl) return;
+    if (!this.ctrl) {
+      emitDeployDragDebug("DeployPanel", "deploy-click-without-controller", {
+        type: this.selectedType,
+        lane: this.selectedLane,
+      });
+      return;
+    }
     const outcome = this.ctrl.tryDeployTroop(this.selectedType, this.selectedLane);
+    emitDeployDragDebug("DeployPanel", "deploy-click-result", {
+      ok: outcome.ok,
+      reason: outcome.reason,
+      type: this.selectedType,
+      lane: this.selectedLane,
+    });
     if (outcome.ok) {
       this.endDrag();
       this.refillDeploySlot(this.selectedSlotIndex);
@@ -726,7 +932,7 @@ export class DeployPanel extends UIPreviewBuilder {
 
   /**
    * Inspector 若漏綁時，自動從子節點名稱補綁，降低場景搭建失誤成本。
-   * 若節點完全不存在，則動態建立以避免 crash。
+   * 僅核心部署按鈕允許動態建立；舊功能鍵已由 ActionCommandComposite 取代。
    */
   private ensureBindings(): void {
     const getBtn = (name: string): Button | null => {
@@ -763,10 +969,14 @@ export class DeployPanel extends UIPreviewBuilder {
     if (!this.btnShield)   this.btnShield   = getBtn("BtnShield")   ?? createBtn("BtnShield",   "盾兵");
     if (!this.btnArcher)   this.btnArcher   = getBtn("BtnArcher")   ?? createBtn("BtnArcher",   "弓兵");
     if (!this.btnPikeman)  this.btnPikeman  = getBtn("BtnPikeman")  ?? createBtn("BtnPikeman",  "槍兵");
-    if (!this.btnSkill)    this.btnSkill    = getBtn("BtnSkill")    ?? createBtn("BtnSkill",    "發動技能");
-    if (!this.btnDuel)     this.btnDuel     = getBtn("BtnDuel")     ?? createBtn("BtnDuel",     "武將單挑");
-    if (!this.btnTactics)  this.btnTactics  = getBtn("BtnTactics")  ?? createBtn("BtnTactics",  "計謀策略");
-    if (!this.btnEndTurn)  this.btnEndTurn  = getBtn("BtnEndTurn")  ?? createBtn("BtnEndTurn",  "結束回合");
+    if (!this.btnSkill)    this.btnSkill    = getBtn("BtnSkill");
+    if (!this.btnDuel)     this.btnDuel     = getBtn("BtnDuel");
+    if (!this.btnTactics)  this.btnTactics  = getBtn("BtnTactics");
+    if (!this.btnEndTurn)  this.btnEndTurn  = getBtn("BtnEndTurn");
+
+    for (const legacyButton of [this.btnSkill, this.btnDuel, this.btnTactics, this.btnEndTurn]) {
+      if (legacyButton) legacyButton.node.active = false;
+    }
 
     if (!this.selectionLabel) {
       const n = this.node.getChildByName("SelectionLabel");
@@ -774,13 +984,18 @@ export class DeployPanel extends UIPreviewBuilder {
     }
 
     if (!this.toast) {
-      const toastNode = this.node.getChildByName("Toast");
+      const toastNode = this.toastHost ?? this.node.getChildByName("Toast");
       if (toastNode) {
-        this.toast = toastNode.getComponent(ToastMessage) ?? toastNode.addComponent(ToastMessage);
+        this.toast = (
+          toastNode.getComponent('ToastMessageComposite')
+          ?? toastNode.getComponent('ToastMessage')
+          ?? toastNode.addComponent('ToastMessageComposite')
+        ) as ToastMessageLike | null;
       } else {
         const n = new Node("Toast");
         this.node.addChild(n);
-        this.toast = n.addComponent(ToastMessage);
+        this.toastHost = n;
+        this.toast = n.addComponent('ToastMessageComposite') as unknown as ToastMessageLike;
       }
     }
 
@@ -827,7 +1042,7 @@ export class DeployPanel extends UIPreviewBuilder {
   private getDeployFailMessage(reason?: DeployFailReason): string {
     if (reason === "limit")    return "本回合已部署，請等待下一回合";
     if (reason === "occupied") return "目標格已有單位，請改放其他格子";
-    return "DP 不足，無法部署";
+    return "糧草不足，無法部署";
   }
 }
 

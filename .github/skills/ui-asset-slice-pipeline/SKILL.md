@@ -1,4 +1,5 @@
 ---
+doc_id: doc_agentskill_0023
 name: ui-asset-slice-pipeline
 description: 'UI 資產切件與候選收斂 SKILL — 從使用者提供的整頁 UI、2K 母圖、panel sheet 或單張素材，自動執行全切、auto-classify、auto-pick、temp/selected 分流、背景裁切、透明化與 post-process。USE FOR: 切出 panel / cap / badge / glyph / noise 候選、把未挑選切片集中到 temp 可一次清掃、把高信心候選升到 selected、再接 trim-png-by-background.js / postprocess-ui-asset.js。DO NOT USE FOR: runtime 畫面驗收（用 ui-runtime-verify）、純 icon 規格設計（用 UI-icon workflow）、單純修改 layout/skin JSON。'
 argument-hint: '提供 input 圖檔或資料夾、希望走 full-slice 還是 targeted crop、是否需要 auto-pick、以及後續要不要直接接 postprocess/task runner。'

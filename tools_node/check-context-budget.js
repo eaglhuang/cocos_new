@@ -53,6 +53,7 @@ function parseArgs(argv) {
     files: [],
     dirs: [],
     changed: false,
+    staged: false,
     scanDefault: false,
     top: 20,
     emitKeepNote: false,
@@ -88,6 +89,10 @@ function parseArgs(argv) {
       args.changed = true;
       continue;
     }
+    if (arg === '--staged') {
+      args.staged = true;
+      continue;
+    }
     if (arg === '--scan-default') {
       args.scanDefault = true;
       continue;
@@ -101,7 +106,7 @@ function parseArgs(argv) {
     }
   }
 
-  if (!args.changed && !args.scanDefault && args.files.length === 0 && args.dirs.length === 0) {
+  if (!args.changed && !args.staged && !args.scanDefault && args.files.length === 0 && args.dirs.length === 0) {
     args.scanDefault = true;
   }
 
@@ -156,9 +161,29 @@ function collectChangedFiles() {
     });
     return output
       .split(/\r?\n/)
-      .map((line) => line.trim())
+      .map((line) => line.replace(/\r/g, ''))
       .filter(Boolean)
-      .map((line) => line.slice(3).trim().replace(/\\/g, '/'))
+      .map((line) => {
+        const body = line.length > 3 ? line.slice(3).trim() : '';
+        const renamed = body.includes(' -> ') ? body.split(' -> ').pop() : body;
+        return String(renamed || '').replace(/\\/g, '/');
+      })
+      .filter(Boolean);
+  } catch {
+    return [];
+  }
+}
+
+function collectStagedFiles() {
+  try {
+    const output = cp.execSync('git diff --cached --name-only --diff-filter=ACMR', {
+      cwd: ROOT,
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'ignore'],
+    });
+    return output
+      .split(/\r?\n/)
+      .map((line) => line.replace(/\r/g, '').trim().replace(/\\/g, '/'))
       .filter(Boolean);
   } catch {
     return [];
@@ -341,6 +366,11 @@ function main() {
   }
   if (args.changed) {
     for (const file of collectChangedFiles()) {
+      relFiles.add(file);
+    }
+  }
+  if (args.staged) {
+    for (const file of collectStagedFiles()) {
       relFiles.add(file);
     }
   }

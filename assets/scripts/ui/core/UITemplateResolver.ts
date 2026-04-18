@@ -127,7 +127,7 @@ export class UITemplateResolver {
         const widget = await this._loadWidget(item.widget);
 
         // 深拷貝 widget layout（避免修改快取）
-        const node = JSON.parse(JSON.stringify(widget.layout)) as UILayoutNodeSpec;
+        const node = this._cloneLayoutSpec(widget.layout);
 
         // 合併 Widget 自身參數與 compose item 傳入的參數
         const widgetParams = { ...params };
@@ -255,6 +255,62 @@ export class UITemplateResolver {
         };
         walk(items);
         return Array.from(ids);
+    }
+
+    /**
+     * 具型結構深拷貝 UILayoutNodeSpec（取代 JSON.parse/stringify，避免序列化開銷）
+     * shallow-clone：widget / layout / transition / skinLayers 等物件欄位
+     * deep-clone（遞迴）：children[] / itemTemplate
+     */
+    private _cloneLayoutSpec(spec: UILayoutNodeSpec): UILayoutNodeSpec {
+        const clone: UILayoutNodeSpec = {
+            type: spec.type,
+            name: spec.name,
+        };
+
+        // 純量欄位
+        if (spec.width !== undefined)           clone.width          = spec.width;
+        if (spec.height !== undefined)          clone.height         = spec.height;
+        if (spec.skinSlot !== undefined)        clone.skinSlot       = spec.skinSlot;
+        if (spec.styleSlot !== undefined)       clone.styleSlot      = spec.styleSlot;
+        if (spec.iconSlot !== undefined)        clone.iconSlot       = spec.iconSlot;
+        if (spec.text !== undefined)            clone.text           = spec.text;
+        if (spec.textKey !== undefined)         clone.textKey        = spec.textKey;
+        if (spec.bind !== undefined)            clone.bind           = spec.bind;
+        if (spec.onClick !== undefined)         clone.onClick        = spec.onClick;
+        if (spec.active !== undefined)          clone.active         = spec.active;
+        if (spec.id !== undefined)              clone.id             = spec.id;
+        if (spec.interactable !== undefined)    clone.interactable   = spec.interactable;
+        if (spec.lazySlot !== undefined)        clone.lazySlot       = spec.lazySlot;
+        if (spec.defaultFragment !== undefined) clone.defaultFragment = spec.defaultFragment;
+        if (spec.childType !== undefined)       clone.childType      = spec.childType;
+        if (spec.gridColumns !== undefined)     clone.gridColumns    = spec.gridColumns;
+        if (spec.cellFragmentRef !== undefined) clone.cellFragmentRef = spec.cellFragmentRef;
+        if (spec.itemFragmentRef !== undefined) clone.itemFragmentRef = spec.itemFragmentRef;
+        if (spec.itemHeight !== undefined)      clone.itemHeight     = spec.itemHeight;
+        if (spec.bufferCount !== undefined)     clone.bufferCount    = spec.bufferCount;
+        if (spec.$ref !== undefined)            clone.$ref           = spec.$ref;
+
+        // 淺拷貝物件欄位（WidgetDef / LayoutDef / TransitionDef 不含嵌套 UILayoutNodeSpec）
+        if (spec.widget !== undefined)     clone.widget     = { ...spec.widget };
+        if (spec.layout !== undefined)     clone.layout     = { ...spec.layout };
+        if (spec.transition !== undefined) clone.transition = { ...spec.transition };
+
+        // 淺拷貝陣列欄位（元素是 plain object，無 UILayoutNodeSpec 嵌套）
+        if (spec.skinLayers !== undefined)
+            clone.skinLayers = spec.skinLayers.map(l => ({ ...l }));
+        if (spec.compositeImageLayers !== undefined)
+            clone.compositeImageLayers = spec.compositeImageLayers.map(l => ({ ...l }));
+        if (spec.items !== undefined)
+            clone.items = spec.items.map(i => ({ ...i }));
+
+        // 遞迴欄位
+        if (spec.children !== undefined)
+            clone.children = spec.children.map(c => this._cloneLayoutSpec(c));
+        if (spec.itemTemplate !== undefined)
+            clone.itemTemplate = this._cloneLayoutSpec(spec.itemTemplate);
+
+        return clone;
     }
 
     /** 清除快取 */

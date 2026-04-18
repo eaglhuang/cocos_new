@@ -4,6 +4,7 @@ import {
   GAME_CONFIG,
   TroopType,
   TROOP_COUNTER_MAP,
+  TROOP_DEPLOY_COST,
 } from "../../core/config/Constants";
 import { BattleState } from "../models/BattleState";
 
@@ -29,13 +30,18 @@ export class EnemyAI {
   public decideDeploy(state: BattleState, availableDp: number): DeployDecision[] {
     const decisions: DeployDecision[] = [];
     const deployDepth = GAME_CONFIG.GRID_DEPTH - 1;
+    let remaining = availableDp;
 
     for (let i = 0; i < GAME_CONFIG.MAX_ENEMY_DEPLOY_PER_TURN; i++) {
       const freeLanes = this.getFreeLanes(state, deployDepth);
       if (freeLanes.length === 0) break;
 
-      const type = this.pickCounterType(state, availableDp);
+      const type = this.pickCounterType(state, remaining);
       if (!type) break;
+
+      const cost = TROOP_DEPLOY_COST[type];
+      if (remaining < cost) break;
+      remaining -= cost;
 
       const lane = freeLanes[Math.floor(Math.random() * freeLanes.length)];
       decisions.push({ type, lane });
@@ -46,7 +52,7 @@ export class EnemyAI {
 
   /** 找出對玩家最多兵種有剋制優勢的兵種 */
   private pickCounterType(state: BattleState, availableDp: number): TroopType | null {
-    const affordable = AI_USABLE_TYPES;
+    const affordable = AI_USABLE_TYPES.filter((t) => TROOP_DEPLOY_COST[t] <= availableDp);
     if (affordable.length === 0) return null;
 
     // 統計玩家各兵種數量

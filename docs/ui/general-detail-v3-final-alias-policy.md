@@ -1,3 +1,4 @@
+<!-- doc_id: doc_ui_0043 -->
 # GeneralDetail V3 Final Alias Policy
 
 日期: 2026-04-09

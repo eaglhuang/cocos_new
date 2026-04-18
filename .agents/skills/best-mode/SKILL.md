@@ -1,4 +1,5 @@
 ---
+doc_id: doc_agentskill_0001
 name: best-mode
 description: Strict routing mode for prompts prefixed with `(best)`. USE FOR: any turn where the user explicitly wants the safest, smallest-context, highest-discipline execution path. This skill must route into context-budget-guard first, then continue into the task-specific workflow.
 ---
@@ -22,7 +23,7 @@ description: Strict routing mode for prompts prefixed with `(best)`. USE FOR: an
 
 先看：
 
-- `.agents/skills/context-budget-guard/SKILL.md`
+- `.agents/skills/context-budget-guard/SKILL.md` (doc_agentskill_0006)
 
 然後至少跑：
 

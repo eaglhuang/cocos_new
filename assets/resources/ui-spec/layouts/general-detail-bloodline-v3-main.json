@@ -1,11 +1,6 @@
 {
   "id": "general-detail-bloodline-v3-main",
   "version": 18,
-  "validation": {
-    "exceptions": {
-      "no-empty-container": "StoryStrip 六格為 master art overlay slot，故意保留空容器供後續 overlay / runtime 對位使用。"
-    }
-  },
   "canvas": {
     "fitWidth": true,
     "fitHeight": true,
@@ -24,34 +19,79 @@
         "widget": { "top": 0, "bottom": 0, "left": 0, "right": 0 },
         "skinSlot": "gdv3.bg.scene"
       },
+      {
+        "type": "image",
+        "name": "StageLeftShade",
+        "widget": { "top": 0, "bottom": 0, "left": 0 },
+        "width": "57.5%",
+        "skinSlot": "gdv3.stage.leftShade"
+      },
       { "$ref": "fragments/layouts/gdv3-portrait-carrier" },
       {
         "type": "container",
         "name": "OverviewStateChrome",
-        "widget": { "top": 82, "left": 82 },
-        "width": 184,
-        "height": 28,
+        "widget": { "top": 68, "left": 70 },
+        "width": 252,
+        "height": 114,
         "children": [
+          {
+            "type": "image",
+            "name": "IdentityBand",
+            "widget": { "top": 14, "bottom": 0, "left": 0, "right": 0 },
+            "skinSlot": "gdv3.identity.band"
+          },
+          {
+            "type": "image",
+            "name": "IdentityRule",
+            "widget": { "top": 24, "left": 12 },
+            "width": 3,
+            "height": 76,
+            "skinSlot": "gdv3.identity.rule"
+          },
+          {
+            "type": "image",
+            "name": "IdentityChip",
+            "widget": { "top": 0, "left": 18 },
+            "width": 102,
+            "height": 26,
+            "skinSlot": "gdv3.identity.chip"
+          },
+          {
+            "type": "label",
+            "name": "IdentityChipLabel",
+            "widget": { "top": 3, "left": 30 },
+            "width": 78,
+            "height": 18,
+            "styleSlot": "gdv3.label.identityChip",
+            "text": "人物識別"
+          },
           {
             "type": "label",
             "name": "PortraitModeHint",
-            "width": 184,
-            "height": 28,
-            "styleSlot": "gdv3.label.mode"
+            "widget": { "top": 36, "left": 28, "right": 18 },
+            "height": 46,
+            "styleSlot": "gdv3.label.identityMode"
+          },
+          {
+            "type": "label",
+            "name": "IdentitySubLabel",
+            "widget": { "top": 84, "left": 28, "right": 18 },
+            "height": 18,
+            "styleSlot": "gdv3.label.identitySub",
+            "text": "GENERAL DOSSIER"
           }
         ]
       },
       {
         "type": "container",
         "name": "InfoCardChrome",
-        "widget": { "top": 40, "right": 114 },
-        "width": "48.6%",
-        "height": "70.2%",
+        "widget": { "top": 20, "right": 136, "bottom": 42 },
+        "width": "42.2%",
         "children": [
           {
             "type": "image",
             "name": "InfoCardFill",
-            "widget": { "top": 10, "bottom": 10, "left": 10, "right": 10 },
+            "widget": { "top": 0, "bottom": 0, "left": 0, "right": 0 },
             "skinSlot": "gdv3.info.card.fill"
           }
         ]
@@ -59,63 +99,272 @@
       {
         "type": "container",
         "name": "InfoContent",
-        "widget": { "top": 42, "right": 136 },
-        "width": "44.8%",
-        "height": "65.8%",
+        "widget": { "top": 30, "right": 154, "bottom": 54 },
+        "width": "38.6%",
         "children": [
           {
             "type": "container",
             "name": "HeaderUnderlay",
-            "widget": { "top": 14, "left": 18, "right": 18 },
-            "height": 104,
+            "widget": { "top": 0, "left": 0, "right": 0 },
+            "height": 92,
             "children": [
               {
                 "type": "image",
                 "name": "HeaderUnderlayFill",
                 "widget": { "top": 0, "bottom": 0, "left": 0, "right": 0 },
-                "skinSlot": "gdv3.header.band"
+                "skinSlot": "gdv3.header.plaque"
+              },
+              {
+                "type": "image",
+                "name": "HeaderOrnamentLeft",
+                "widget": { "left": 8, "vCenter": true },
+                "width": 58,
+                "height": 24,
+                "skinSlot": "gdv3.header.ornament.left"
+              },
+              {
+                "type": "image",
+                "name": "HeaderOrnamentRight",
+                "widget": { "right": 8, "vCenter": true },
+                "width": 58,
+                "height": 24,
+                "skinSlot": "gdv3.header.ornament.right"
               }
             ]
           },
           { "$ref": "fragments/layouts/gdv3-header-row" },
           { "$ref": "fragments/layouts/gdv3-overview-summary-modules" },
-          { "$ref": "fragments/layouts/gdv3-bloodline-overview-modules" }
-        ]
-      },
-      {
-        "type": "container",
-        "name": "StoryStripRail",
-        "widget": { "left": 0, "right": 0, "bottom": 0 },
-        "height": 182,
-        "children": [
           {
-            "type": "image",
-            "name": "StoryStripBleed",
-            "widget": { "top": -4, "bottom": -4, "left": -4, "right": -4 },
-            "skinSlot": "gdv3.story.rail.bleed"
-          },
-          {
-            "type": "image",
-            "name": "StoryStripFill",
-            "widget": { "top": 0, "bottom": 0, "left": 0, "right": 0 },
-            "skinSlot": "gdv3.story.rail"
-          },
-          {
-            "type": "image",
-            "name": "StoryStripFrame",
-            "widget": { "top": 0, "bottom": 0, "left": 0, "right": 0 },
-            "skinSlot": "gdv3.story.rail.frame"
+            "type": "container",
+            "name": "BloodlineOverviewModules",
+            "widget": { "top": 340, "left": 0, "right": 0, "bottom": 0 },
+            "children": [
+              {
+                "type": "container",
+                "name": "BloodlineRow",
+                "widget": { "top": 0, "left": 0, "right": 0 },
+                "height": "100%",
+                "children": [
+                  {
+                    "type": "panel",
+                    "name": "BloodlineUnifiedCard",
+                    "widget": { "top": 0, "left": 0, "right": 0, "bottom": 0 },
+                    "skinSlot": "gdv3.bloodline.unified.card",
+                    "children": [
+                      {
+                        "type": "image",
+                        "name": "BloodlineUnifiedBand",
+                        "widget": { "top": 16, "left": 16, "right": 16 },
+                        "height": 36,
+                        "skinSlot": "gdv3.bloodline.header.band"
+                      },
+                      {
+                        "type": "label",
+                        "name": "BloodlineCardTitle",
+                        "widget": { "top": 20, "left": 28, "right": 28 },
+                        "height": 30,
+                        "styleSlot": "gdv3.label.sectionBand"
+                      },
+                      {
+                        "type": "panel",
+                        "name": "BloodlineCrestCard",
+                        "widget": { "top": 68, "left": 24, "bottom": 22 },
+                        "width": 206,
+                        "skinSlot": "gdv3.bloodline.crest.card",
+                        "children": [
+                          {
+                            "type": "image",
+                            "name": "BloodlineSealBand",
+                            "widget": { "top": 12, "left": 20, "right": 20 },
+                            "height": 28,
+                            "skinSlot": "gdv3.bloodline.seal.band"
+                          },
+                          {
+                            "type": "container",
+                            "name": "BloodlineCrestCarrier",
+                            "widget": { "top": 42, "bottom": 74, "left": 0, "right": 0 },
+                            "children": [
+                              {
+                                "type": "image",
+                                "name": "BloodlineSealInset",
+                                "widget": { "hCenter": true, "vCenter": 6 },
+                                "width": 164,
+                                "height": 164,
+                                "skinSlot": "gdv3.bloodline.seal.inset"
+                              },
+                              {
+                                "type": "image",
+                                "name": "BloodlineSealInsetFrame",
+                                "widget": { "hCenter": true, "vCenter": 6 },
+                                "width": 174,
+                                "height": 174,
+                                "skinSlot": "gdv3.bloodline.seal.frame"
+                              },
+                              {
+                                "type": "image",
+                                "name": "BloodlineCrestGlow",
+                                "widget": { "hCenter": true, "vCenter": 4 },
+                                "width": 172,
+                                "height": 172,
+                                "skinSlot": "gdv3.bloodline.crest.glow"
+                              },
+                              {
+                                "type": "image",
+                                "name": "BloodlineCrestFill",
+                                "widget": { "hCenter": true, "vCenter": 4 },
+                                "width": 150,
+                                "height": 150,
+                                "skinSlot": "gdv3.bloodline.crest.fill"
+                              },
+                              {
+                                "type": "image",
+                                "name": "BloodlineCrestInnerRing",
+                                "widget": { "hCenter": true, "vCenter": 4 },
+                                "width": 160,
+                                "height": 160,
+                                "skinSlot": "gdv3.bloodline.crest.inner"
+                              },
+                              {
+                                "type": "image",
+                                "name": "BloodlineCrest",
+                                "widget": { "hCenter": true, "vCenter": 4 },
+                                "width": 134,
+                                "height": 134,
+                                "skinSlot": "gdv3.bloodline.crest"
+                              },
+                              {
+                                "type": "label",
+                                "name": "CrestGlyphSecondary",
+                                "widget": { "top": 22, "left": 34, "right": 34 },
+                                "height": 18,
+                                "styleSlot": "gdv3.label.crestGlyphSecondary"
+                              },
+                              {
+                                "type": "label",
+                                "name": "CrestGlyphPrimary",
+                                "widget": { "top": 40, "bottom": 48, "left": 30, "right": 30 },
+                                "styleSlot": "gdv3.label.crestGlyphPrimary"
+                              },
+                              {
+                                "type": "image",
+                                "name": "BloodlineCrestFrame",
+                                "widget": { "hCenter": true, "vCenter": 4 },
+                                "width": 176,
+                                "height": 176,
+                                "skinSlot": "gdv3.bloodline.crest.frame"
+                              },
+                              {
+                                "type": "image",
+                                "name": "BloodlineCrestFace",
+                                "widget": { "hCenter": true, "vCenter": 4 },
+                                "width": 122,
+                                "height": 122,
+                                "skinSlot": "gdv3.bloodline.crest.face"
+                              },
+                              {
+                                "type": "label",
+                                "name": "CrestStateLabel",
+                                "widget": { "left": 18, "right": 18, "bottom": 8 },
+                                "height": 22,
+                                "styleSlot": "gdv3.label.crestState"
+                              }
+                            ]
+                          },
+                          { "type": "label", "name": "CrestTitle", "widget": { "top": 206, "left": 18, "right": 18 }, "height": 28, "styleSlot": "gdv3.label.sectionBand" },
+                          { "type": "label", "name": "CrestHint", "widget": { "top": 238, "left": 18, "right": 18, "bottom": 18 }, "styleSlot": "gdv3.label.note" }
+                        ]
+                      },
+                      {
+                        "type": "panel",
+                        "name": "BloodlineDivider",
+                        "widget": { "top": 82, "bottom": 28, "left": 244 },
+                        "width": 2,
+                        "skinSlot": "gdv3.bloodline.divider"
+                      },
+                      {
+                        "type": "panel",
+                        "name": "BloodlineSummaryCard",
+                        "widget": { "top": 68, "left": 260, "bottom": 22, "right": 24 },
+                        "skinSlot": "gdv3.bloodline.document.card",
+                        "children": [
+                          {
+                            "type": "image",
+                            "name": "BloodlineTitleStrip",
+                            "widget": { "top": 16, "left": 18, "right": 96 },
+                            "height": 20,
+                            "skinSlot": "gdv3.bloodline.field.strip"
+                          },
+                          {
+                            "type": "image",
+                            "name": "AwakeningTitleStrip",
+                            "widget": { "top": 72, "left": 18, "right": 112 },
+                            "height": 20,
+                            "skinSlot": "gdv3.bloodline.field.strip"
+                          },
+                          {
+                            "type": "image",
+                            "name": "PersonalityTitleStrip",
+                            "widget": { "top": 116, "left": 18, "right": 104 },
+                            "height": 20,
+                            "skinSlot": "gdv3.bloodline.field.strip"
+                          },
+                          {
+                            "type": "container",
+                            "name": "BloodlineSummaryFields",
+                            "widget": { "top": 16, "left": 18, "right": 18 },
+                            "height": 140,
+                            "layout": { "type": "vertical", "spacing": 4 },
+                            "children": [
+                              { "type": "label", "name": "BloodlineTitle", "widget": { "left": 0, "right": 0 }, "width": "100%", "height": 18, "styleSlot": "gdv3.label.dossierSection" },
+                              { "type": "label", "name": "BloodlineName", "widget": { "left": 0, "right": 0 }, "width": "100%", "height": 30, "styleSlot": "gdv3.label.value" },
+                              {
+                                "type": "container",
+                                "name": "AwakeningProgressGroup",
+                                "widget": { "left": 0, "right": 0 },
+                                "width": "100%",
+                                "height": 40,
+                                "layout": { "type": "vertical", "spacing": 4 },
+                                "children": [
+                                  { "type": "label", "name": "AwakeningLabel", "widget": { "left": 0, "right": 0 }, "width": "100%", "height": 18, "styleSlot": "gdv3.label.dossierSection" },
+                                  {
+                                    "type": "panel",
+                                    "name": "AwakeningBarTrack",
+                                    "width": "72%",
+                                    "height": 12,
+                                    "skinSlot": "gdv3.progress.track",
+                                    "children": [
+                                      {
+                                        "type": "image",
+                                        "name": "AwakeningBarFill",
+                                        "widget": { "top": 0, "bottom": 0, "left": 0 },
+                                        "width": "100%",
+                                        "skinSlot": "gdv3.progress.fill"
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              { "type": "label", "name": "PersonalityLabel", "widget": { "left": 0, "right": 0 }, "width": "100%", "height": 18, "styleSlot": "gdv3.label.dossierSection" },
+                              { "type": "label", "name": "PersonalityValue", "widget": { "left": 0, "right": 0 }, "width": "100%", "height": 18, "styleSlot": "gdv3.label.note" }
+                            ]
+                          },
+                          {
+                            "type": "image",
+                            "name": "BloodlineDocumentPlate",
+                            "widget": { "top": 164, "bottom": 16, "left": 16, "right": 16 },
+                            "skinSlot": "gdv3.bloodline.document.plate"
+                          },
+                          { "type": "label", "name": "BloodlineBody", "widget": { "top": 176, "bottom": 24, "left": 28, "right": 24 }, "styleSlot": "gdv3.label.cardBody" }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
           }
         ]
-      },
-      {
-        "type": "image",
-        "name": "StoryStripArt",
-        "widget": { "left": 24, "right": 24, "bottom": 16 },
-        "height": 148,
-        "skinSlot": "gdv3.story.art"
-      },
-      { "$ref": "fragments/layouts/gdv3-story-strip" }
+      }
     ]
   }
 }

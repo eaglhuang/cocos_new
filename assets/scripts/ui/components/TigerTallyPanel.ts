@@ -1,20 +1,25 @@
 // @spec-source → 見 docs/cross-reference-index.md
 /**
- * TigerTallyPanel — Zone 3: 虎符卡片區
+ * @deprecated
+ * TigerTallyPanel — Zone 3: 虎符卡片區（已廢止，請使用 TigerTallyComposite）
  *
- * 職責：
- *   1. 顯示最多 4 張兵種卡片（固定 160px 高）
- *   2. 每張卡片填入名稱、攻血、糧草費用、稀有度框、冷卻遮罩
- *   3. 點擊卡片 → 呼叫 onCardSelect 回呼（由 BattleScenePanel 注入）
- *   4. 冷卻卡片只顯示遮罩，點擊仍可查看資訊（isDisabled 不阻擋查看）
+ * 職責（已遷移至 CompositePanel）：
+ *   1. 顯示最多 4 張兵種卡片（固定 160px 高）已遷移
+ *   2. 卡片資料綁定已遷移
+ *   3. 點擊卡片事件已遷移
+ *   4. 冷卻遮罩邏輯已遷移
  *
- * Unity 對照：HandCardManager（卡片對應 Prefab 池，資料綁定到 UGUI Image/Text）
+ * 遷移完成時間：2026-04-13 (Wave 3)
+ * 預計刪除：2026-05-13 (Wave 3 全部遷移後)
+ *
+ * Unity 對照：HandCardManager
  */
 import { _decorator, Button, Color, Label, Node, Sprite, SpriteFrame } from 'cc';
 import { services } from '../../core/managers/ServiceLoader';
 import { UIPreviewBuilder } from '../core/UIPreviewBuilder';
 import { UISpecLoader } from '../core/UISpecLoader';
 import { UITemplateBinder } from '../core/UITemplateBinder';
+import { UI_EVENTS } from '../core/UIEvents';
 
 const { ccclass } = _decorator;
 
@@ -97,10 +102,11 @@ export class TigerTallyPanel extends UIPreviewBuilder {
     private readonly _warnedFallbacks = new Set<string>();
 
     /**
-     * 卡片選中回呼，由 BattleScenePanel 注入。
-     * 冷卻卡片仍可觸發（允許查看資訊），由 UnitInfoPanel 顯示時決定互動行為。
+     * [P3-R1b] 卡片點擊現改由 UI Event Bus (UI_EVENTS.CardSelected) 廣播，
+     * 不再需要由 BattleScenePanel 注入函式指標，消除初始化時序競爭。
      *
-     * Unity 對照：public Action<int, TallyCardData> onCardSelect;
+     * 保留此欄位為 @deprecated — 舊有注入點，不再有功能作用，後續可移除。
+     * @deprecated 請改訂閱 services().event.on(UI_EVENTS.CardSelected, handler)
      */
     public onCardSelect: ((index: number, data: TallyCardData) => void) | null = null;
 
@@ -260,9 +266,19 @@ export class TigerTallyPanel extends UIPreviewBuilder {
 
     // ── 事件：卡片點擊 ───────────────────────────────────────
 
+    /**
+     * [P3-R1b] 卡片點擊處理：以 UI Event Bus 廣播，取代函式指標注入。
+     * 訂閱方（BattleScenePanel）收到 UI_EVENTS.CardSelected 後執行業務邏輯，
+     * 面板本身無需知道誰在監聽，徹底消除時序依賴。
+     *
+     * Unity 對照：button.onClick.Invoke() → MessageBus.Publish<CardSelectedMessage>()
+     */
     private _onCardClick(index: number): void {
         const data = this._cards[index];
         if (!data) return;
+        // 優先使用事件總線廣播
+        services().event.emit(UI_EVENTS.CardSelected, { index, data });
+        // 向後相容：若外部仍設定了舊式回呼，一併呼叫（deprecated）
         this.onCardSelect?.(index, data);
     }
 

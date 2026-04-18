@@ -1,0 +1,118 @@
+CCEffect %{
+  techniques:
+  - name: transparent
+    passes:
+    - vert: lightning-arc-vs:vert
+      frag: lightning-arc-fs:frag
+      rasterizerState:
+        cullMode: none
+      depthStencilState:
+        depthTest: false
+        depthWrite: false
+      blendState:
+        targets:
+        - blend: true
+          blendSrc: src_alpha
+          blendDst: one_minus_src_alpha
+          blendSrcAlpha: src_alpha
+          blendDstAlpha: one_minus_src_alpha
+      properties:
+        mainTexture:  { value: white }
+        noiseTexture: { value: white }
+        arcColor:     { value: [0.62, 0.86, 1.0, 0.9], linear: true, editor: { type: color } }
+        uvTiling:     { value: [1.35, 1.35, 0.0, 0.0] }
+        arcParams:    { value: [0.26, 9.0, 0.1, 1.0] }
+        pulseParams:  { value: [1.8, 0.4, 0.45, 0.68] }
+        worldParams:  { value: [0.14, 0.14, 0.9, 0.75] }
+}%
+
+CCProgram lightning-arc-vs %{
+  precision highp float;
+
+  #include <builtin/uniforms/cc-global>
+  #include <builtin/uniforms/cc-local>
+
+  in vec3 a_position;
+  in vec2 a_texCoord;
+
+  out vec2 uv0;
+  out vec2 worldUv;
+
+  uniform Constant {
+    vec4 arcColor;
+    vec4 uvTiling;
+    vec4 arcParams;
+    vec4 pulseParams;
+    vec4 worldParams;
+  };
+
+  vec4 vert () {
+    vec4 worldPos = cc_matWorld * vec4(a_position, 1.0);
+    uv0 = a_texCoord * uvTiling.xy + uvTiling.zw;
+    worldUv = worldPos.xz * worldParams.xy + uvTiling.zw;
+    return cc_matViewProj * worldPos;
+  }
+}%
+
+CCProgram lightning-arc-fs %{
+  precision highp float;
+
+  #include <output>
+
+  in vec2 uv0;
+  in vec2 worldUv;
+
+  uniform sampler2D mainTexture;
+  uniform sampler2D noiseTexture;
+
+  uniform Constant {
+    vec4 arcColor;
+    vec4 uvTiling;
+    vec4 arcParams;
+    vec4 pulseParams;
+    vec4 worldParams;
+  };
+
+  vec4 frag () {
+    float t = cc_time.x;
+
+    float worldBlend = clamp(worldParams.z, 0.0, 1.0);
+    vec2 baseUv = mix(uv0, worldUv, worldBlend);
+
+    vec2 jitterUvA = baseUv * 2.2 + vec2(t * arcParams.x, -t * arcParams.x * 0.7);
+    vec2 jitterUvB = baseUv * 3.4 + vec2(-t * arcParams.x * 0.45, t * arcParams.x * 1.1);
+    float noiseA = texture(noiseTexture, jitterUvA).r * 2.0 - 1.0;
+    float noiseB = texture(noiseTexture, jitterUvB).r * 2.0 - 1.0;
+    float jitter = (noiseA * 0.6 + noiseB * 0.4) * worldParams.w;
+
+    float centerLineA = 0.5 + jitter * 0.22;
+    float centerLineB = 0.5 - jitter * 0.18;
+    float distA = abs(baseUv.y - centerLineA);
+    float distB = abs(baseUv.y - centerLineB);
+
+    float arcBandA = smoothstep(arcParams.z + 0.16, arcParams.z, distA);
+    float arcBandB = smoothstep(arcParams.z + 0.24, arcParams.z * 1.35, distB);
+    float wave = abs(sin((baseUv.x + jitter * 0.35) * arcParams.y + t * arcParams.x * 17.0));
+
+    vec2 lineUv = vec2(
+      fract(baseUv.x * 2.8 + t * arcParams.x * 2.4 + jitter * 0.6),
+      baseUv.y * 1.4 + jitter * 0.2
+    );
+    float lineTex = texture(mainTexture, lineUv).r;
+
+    float flicker = 1.0 - pulseParams.z + pulseParams.z * (0.5 + 0.5 * sin(t * 38.0 + jitter * 9.0));
+    float pulse = mix(pulseParams.y, 1.0, 0.5 + 0.5 * sin(t * pulseParams.x * 6.2831853));
+
+    float edgeMask = smoothstep(1.0, pulseParams.w, abs(uv0.y * 2.0 - 1.0));
+
+    float intensity = (arcBandA * 1.1 + arcBandB * 0.85 + wave * 0.5 + lineTex * 0.9);
+    intensity *= arcParams.w * flicker * pulse * edgeMask;
+    intensity = clamp(intensity, 0.0, 1.0);
+
+    vec3 rgb = arcColor.rgb * (0.28 + intensity * 1.35);
+    rgb += vec3(0.45, 0.68, 1.0) * pow(intensity, 2.0) * 0.55;
+
+    float alpha = intensity * arcColor.a;
+    return CCFragOutput(vec4(rgb, alpha));
+  }
+}%

@@ -1,23 +1,23 @@
 {
   "type": "container",
   "name": "StoryStrip",
-  "widget": { "left": 24, "right": 24, "bottom": 16 },
-  "height": 148,
+  "widget": { "left": 24, "right": 24, "bottom": 20 },
+  "height": 116,
   "layout": { "type": "horizontal", "spacing": 8 },
   "children": [
     {
       "type": "container",
       "name": "StoryCellOrigin",
-      "width": "16.2%",
-      "height": 148,
+      "width": "15.8%",
+      "height": 116,
       "children": [
         {
           "type": "panel",
           "name": "StoryCaption",
-          "widget": { "left": 8, "right": 8, "bottom": 8 },
-          "height": 36,
+          "widget": { "left": 8, "right": 8, "bottom": 6 },
+          "height": 30,
           "skinSlot": "gdv3.story.caption",
-          "layout": { "type": "vertical", "paddingTop": 8, "paddingBottom": 8, "paddingLeft": 12, "paddingRight": 12 },
+          "layout": { "type": "vertical", "paddingTop": 6, "paddingBottom": 6, "paddingLeft": 12, "paddingRight": 12 },
           "children": [
             { "type": "label", "name": "StoryCaptionLabel", "width": "100%", "height": 18, "styleSlot": "gdv3.label.storyCaption" }
           ]
@@ -27,16 +27,16 @@
     {
       "type": "container",
       "name": "StoryCellFaction",
-      "width": "16.2%",
-      "height": 148,
+      "width": "15.8%",
+      "height": 116,
       "children": [
         {
           "type": "panel",
           "name": "StoryCaption",
-          "widget": { "left": 8, "right": 8, "bottom": 8 },
-          "height": 36,
+          "widget": { "left": 8, "right": 8, "bottom": 6 },
+          "height": 30,
           "skinSlot": "gdv3.story.caption",
-          "layout": { "type": "vertical", "paddingTop": 8, "paddingBottom": 8, "paddingLeft": 12, "paddingRight": 12 },
+          "layout": { "type": "vertical", "paddingTop": 6, "paddingBottom": 6, "paddingLeft": 12, "paddingRight": 12 },
           "children": [
             { "type": "label", "name": "StoryCaptionLabel", "width": "100%", "height": 18, "styleSlot": "gdv3.label.storyCaption" }
           ]
@@ -46,16 +46,16 @@
     {
       "type": "container",
       "name": "StoryCellRole",
-      "width": "16.2%",
-      "height": 148,
+      "width": "15.8%",
+      "height": 116,
       "children": [
         {
           "type": "panel",
           "name": "StoryCaption",
-          "widget": { "left": 8, "right": 8, "bottom": 8 },
-          "height": 36,
+          "widget": { "left": 8, "right": 8, "bottom": 6 },
+          "height": 30,
           "skinSlot": "gdv3.story.caption",
-          "layout": { "type": "vertical", "paddingTop": 8, "paddingBottom": 8, "paddingLeft": 12, "paddingRight": 12 },
+          "layout": { "type": "vertical", "paddingTop": 6, "paddingBottom": 6, "paddingLeft": 12, "paddingRight": 12 },
           "children": [
             { "type": "label", "name": "StoryCaptionLabel", "width": "100%", "height": 18, "styleSlot": "gdv3.label.storyCaption" }
           ]
@@ -65,16 +65,16 @@
     {
       "type": "container",
       "name": "StoryCellAwakening",
-      "width": "16.2%",
-      "height": 148,
+      "width": "15.8%",
+      "height": 116,
       "children": [
         {
           "type": "panel",
           "name": "StoryCaption",
-          "widget": { "left": 8, "right": 8, "bottom": 8 },
-          "height": 36,
+          "widget": { "left": 8, "right": 8, "bottom": 6 },
+          "height": 30,
           "skinSlot": "gdv3.story.caption.turn",
-          "layout": { "type": "vertical", "paddingTop": 8, "paddingBottom": 8, "paddingLeft": 12, "paddingRight": 12 },
+          "layout": { "type": "vertical", "paddingTop": 6, "paddingBottom": 6, "paddingLeft": 12, "paddingRight": 12 },
           "children": [
             { "type": "label", "name": "StoryCaptionLabel", "width": "100%", "height": 18, "styleSlot": "gdv3.label.storyCaption" }
           ]
@@ -84,16 +84,16 @@
     {
       "type": "container",
       "name": "StoryCellBloodline",
-      "width": "16.2%",
-      "height": 148,
+      "width": "15.8%",
+      "height": 116,
       "children": [
         {
           "type": "panel",
           "name": "StoryCaption",
-          "widget": { "left": 8, "right": 8, "bottom": 8 },
-          "height": 36,
+          "widget": { "left": 8, "right": 8, "bottom": 6 },
+          "height": 30,
           "skinSlot": "gdv3.story.caption.bloodline",
-          "layout": { "type": "vertical", "paddingTop": 8, "paddingBottom": 8, "paddingLeft": 12, "paddingRight": 12 },
+          "layout": { "type": "vertical", "paddingTop": 6, "paddingBottom": 6, "paddingLeft": 12, "paddingRight": 12 },
           "children": [
             { "type": "label", "name": "StoryCaptionLabel", "width": "100%", "height": 18, "styleSlot": "gdv3.label.storyCaption" }
           ]
@@ -103,16 +103,16 @@
     {
       "type": "container",
       "name": "StoryCellFuture",
-      "width": "16.2%",
-      "height": 148,
+      "width": "15.8%",
+      "height": 116,
       "children": [
         {
           "type": "panel",
           "name": "StoryCaption",
-          "widget": { "left": 8, "right": 8, "bottom": 8 },
-          "height": 36,
+          "widget": { "left": 8, "right": 8, "bottom": 6 },
+          "height": 30,
           "skinSlot": "gdv3.story.caption.future",
-          "layout": { "type": "vertical", "paddingTop": 8, "paddingBottom": 8, "paddingLeft": 12, "paddingRight": 12 },
+          "layout": { "type": "vertical", "paddingTop": 6, "paddingBottom": 6, "paddingLeft": 12, "paddingRight": 12 },
           "children": [
             { "type": "label", "name": "StoryCaptionLabel", "width": "100%", "height": 18, "styleSlot": "gdv3.label.storyCaption" }
           ]

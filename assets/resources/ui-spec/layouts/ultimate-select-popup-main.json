@@ -1,0 +1,103 @@
+{
+  "id": "ultimate-select-popup-main",
+  "version": 1,
+  "canvas": {
+    "fitWidth": true,
+    "fitHeight": true,
+    "safeArea": true,
+    "designWidth": 1920,
+    "designHeight": 1080
+  },
+  "root": {
+    "type": "container",
+    "name": "UltimateSelectPopupRoot",
+    "widget": { "top": 0, "left": 0, "right": 0, "bottom": 0 },
+    "children": [
+      {
+        "type": "panel",
+        "name": "OverlayMask",
+        "id": "OverlayMask",
+        "widget": { "top": 0, "left": 0, "right": 0, "bottom": 0 },
+        "skinSlot": "popup.overlay"
+      },
+      {
+        "type": "panel",
+        "name": "Card",
+        "id": "Card",
+        "width": 360,
+        "height": 420,
+        "skinSlot": "popup.card.bg",
+        "layout": {
+          "type": "vertical",
+          "spacing": 12,
+          "paddingTop": 20,
+          "paddingBottom": 20,
+          "paddingLeft": 20,
+          "paddingRight": 20
+        },
+        "children": [
+          {
+            "type": "panel",
+            "name": "Header",
+            "width": "100%",
+            "height": 44,
+            "layout": { "type": "horizontal", "spacing": 12 },
+            "children": [
+              {
+                "type": "label",
+                "name": "TitleLabel",
+                "id": "titleLabel",
+                "width": 268,
+                "height": 44,
+                "text": "選擇奧義",
+                "styleSlot": "popup.label.title"
+              },
+              {
+                "type": "button",
+                "name": "CloseBtn",
+                "id": "closeBtn",
+                "width": 32,
+                "height": 32,
+                "skinSlot": "popup.button.close",
+                "text": "X",
+                "styleSlot": "popup.label.close"
+              }
+            ]
+          },
+          {
+            "type": "scroll-view",
+            "name": "ScrollView",
+            "id": "scrollView",
+            "width": "100%",
+            "height": 324,
+            "skinSlot": "popup.list.bg",
+            "children": [
+              {
+                "type": "container",
+                "name": "SkillItems",
+                "id": "SkillItems",
+                "width": "100%",
+                "height": 324,
+                "layout": {
+                  "type": "vertical",
+                  "spacing": 8,
+                  "paddingTop": 8,
+                  "paddingBottom": 8,
+                  "paddingLeft": 8,
+                  "paddingRight": 8
+                },
+                "children": [
+                  {
+                    "type": "spacer",
+                    "name": "SkillItemsPlaceholder",
+                    "height": 1
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "path": "docs/遊戲規格文件/討論來源/更舊的討論/遊戲視覺構圖與攝影機規格.md",
+  "hash": "8baa4ce024f6",
+  "paragraphCount": 6,
+  "topics": [
+    "兵種",
+    "戰場",
+    "AI",
+    "視覺"
+  ],
+  "paragraphs": [
+    {
+      "index": 0,
+      "heading": "---",
+      "preview": "**📐 《三國傳承》視覺構圖與攝影機參數規格書**"
+    },
+    {
+      "index": 1,
+      "heading": "**1\\. 攝影機坐標與透視 (Camera & Perspective)**",
+      "preview": "* **攝影機類型**：固定視角透視投影 (Perspective Projection)。 * **俯視角度 (Pitch)**：**35° \\- 45°**。這能確保棋盤格呈現明顯的縱深拉長感，同時能清楚看到立牌正面。 * **水平旋轉 (Yaw)**：**\\-30°** (由左下往右上延伸)。"
+    },
+    {
+      "index": 2,
+      "heading": "**2\\. 棋盤空間佔位 (Grid Spatial Layout)**",
+      "preview": "* **畫面佔比**：棋盤格中心點位於畫布 **(x=50%, y=45%)** 處。 * **棋盤尺寸**：5x8 棋盤佔據畫面約 **65%** 的空間。 * **左下起點**：(x=15%, y=80%) 附近。 * **右下頂點**：(x=85%, y=15%) 附近。 * **融合邊界**"
+    },
+    {
+      "index": 3,
+      "heading": "**3\\. 單位比例與相對位置 (Unit Scale & Spacing)**",
+      "preview": "* **將軍立牌比例**：高度佔畫面垂直高度的 **18% \\- 22%**。 * **位置**：我方主將佔據左下起點格；敵方大將佔據右上頂點格。 * **小兵立牌比例**：高度約為將軍的 **60% \\- 70%** (約 12% 畫面高度)。 * **相對距離**：每個立牌底部圓盤中心點對準棋盤"
+    },
+    {
+      "index": 4,
+      "heading": "**4\\. UI 佔位與比例清單 (UI Overlay Mapping)**",
+      "preview": "所有 UI 以「畫布邊緣 5%」作為安全區 (Safe Area)。 | UI 元素 | 螢幕坐標位置 (中心點) | 佔比規模 | | :---- | :---- | :---- | | **左上：玩家 Profile** | (x=12%, y=8%) | 寬 15% 畫面寬度 | | **中上"
+    },
+    {
+      "index": 5,
+      "heading": "---",
+      "preview": "**🎨 給繪圖 AI 的「構圖強化」指令 (AI Meta-Prompt)** **Composition Constraint**: Screen-space UI layout. 5x8 tactical grid oriented from bottom-left to top-right "
+    }
+  ],
+  "stats": {
+    "charCount": 2351,
+    "wordCount": 324
+  }
+}

@@ -281,7 +281,7 @@
       "created_by_agent": "Agent1",
       "type": "documentation",
       "title": "武將資料管線規格書建立",
-      "description": "建立 docs/系統規格書/武將資料管線規格書.md，說明 M1 工具鏈（ingest-wiki / ingest-ai / merge / validate 的流程、欄位映射規則、執行順序、手動審核步驟、品質標準）。",
+      "description": "建立 docs/遊戲規格文件/系統規格書/武將資料管線規格書.md，說明 M1 工具鏈（ingest-wiki / ingest-ai / merge / validate 的流程、欄位映射規則、執行順序、手動審核步驟、品質標準）。",
       "related": [
         "DC-1-0001",
         "DC-1-0002",
@@ -293,13 +293,13 @@
         "DC-1-0002"
       ],
       "acceptance": [
-        "docs/系統規格書/武將資料管線規格書.md 存在",
+        "docs/遊戲規格文件/系統規格書/武將資料管線規格書.md 存在",
         "包含工具鏈流程圖（文字圖也可）",
         "包含欄位映射表（25 核心欄位）",
         "包含人工審核 checklist"
       ],
       "deliverables": [
-        "docs/系統規格書/武將資料管線規格書.md"
+        "docs/遊戲規格文件/系統規格書/武將資料管線規格書.md"
       ],
       "notes": "2026-04-06 | 狀態: open | 來源: 資料中心架構規格書.md §六 M1 | 阻塞: DC-1-0002"
     },
@@ -791,7 +791,7 @@
       "created_by_agent": "Agent1",
       "type": "documentation",
       "title": "Server API spec 文件（/sync/delta + /sync/full）",
-      "description": "建立 docs/系統規格書/同步API規格書.md，定義 POST /sync/delta（request: DeltaPatch, response: ConfirmOrConflict）與 POST /sync/full（request: FullSave, response: ConfirmOrConflict）的 schema、錯誤碼、HTTP status 碼。",
+      "description": "建立 docs/遊戲規格文件/系統規格書/同步API規格書.md，定義 POST /sync/delta（request: DeltaPatch, response: ConfirmOrConflict）與 POST /sync/full（request: FullSave, response: ConfirmOrConflict）的 schema、錯誤碼、HTTP status 碼。",
       "related": [
         "DC-5-0002"
       ],
@@ -799,12 +799,12 @@
         "DC-5-0001"
       ],
       "acceptance": [
-        "docs/系統規格書/同步API規格書.md 存在",
+        "docs/遊戲規格文件/系統規格書/同步API規格書.md 存在",
         "含兩個 API endpoint 的 request/response schema",
         "含 HTTP status 碼與錯誤碼表"
       ],
       "deliverables": [
-        "docs/系統規格書/同步API規格書.md"
+        "docs/遊戲規格文件/系統規格書/同步API規格書.md"
       ],
       "notes": "2026-04-06 | 狀態: open | 來源: 資料中心架構規格書.md §六 M5 | 阻塞: DC-5-0001"
     },

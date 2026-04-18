@@ -1,4 +1,5 @@
 ---
+doc_id: doc_agentskill_0006
 name: context-budget-guard
 description: Agent context budget guard and artifact compression workflow. USE FOR: image-heavy QA, compare board review, screenshot batches, large keep/todo/task manifests, long notes handoff, and md/json diff summarization. Trigger this before reading or forwarding heavy artifacts when token growth is a risk.
 ---
@@ -10,7 +11,7 @@ description: Agent context budget guard and artifact compression workflow. USE F
 ## 什麼時候一定要用
 
 - UI QA 需要看多張 `png`、`compare-board`、`screenshot`
-- handoff 會碰到 `docs/keep.md`、`docs/ui-quality-todo.json`、大型 notes、task manifest
+- handoff 會碰到 `docs/keep.md (doc_index_0011)` (doc_index_0011)、`docs/ui-quality-todo.json`、大型 notes、task manifest
 - 需要比較大型 `.md` 或 `.json` 變更
 - 你懷疑某一輪對話量會突然暴增
 
@@ -61,7 +62,7 @@ handoff 一律壓成這 6 欄：
 - `need`
 - `avoid`
 
-不要把完整 `keep.md`、`ui-quality-todo.json`、長 notes、整批 QA 圖片直接帶進下一輪。
+不要把完整 `keep.md` (doc_index_0011)、`ui-quality-todo.json`、長 notes、整批 QA 圖片直接帶進下一輪。
 
 ### 3. md/json diff 一律先做結構化摘要
 
@@ -69,7 +70,7 @@ handoff 一律壓成這 6 欄：
 
 ```bash
 node tools_node/summarize-structured-diff.js --git docs/keep.md
-node tools_node/summarize-structured-diff.js --git docs/ui-quality-todo.json
+node tools_node/summarize-structured-diff.js --git docs/ui-quality-tasks/
 ```
 
 比較兩個檔案版本：
@@ -97,7 +98,7 @@ node tools_node/summarize-structured-diff.js --base old.json --head new.json
 建議描述格式：
 
 ```text
-artifact: artifacts/ui-qa/UI-2-0032/v2-compare-board.png
+artifact: artifacts/ui-source/shop-main/review/v2-compare-board.png
 role: compare board
 decision: QA selection only; do not inline into handoff
 pick: one hero image + one comparison crop at most
@@ -107,7 +108,7 @@ pick: one hero image + one comparison crop at most
 
 只要 `check-context-budget.js` 出現 `warn` 或 `hard-stop`：
 
-- 在 `keep.md` 記一筆原因摘要
+- 在 `keep.md` (doc_index_0011) 記一筆原因摘要
 - 列成第一優先級風險
 - 寫出可能來源，例如：
   - `compare board / screenshot / QA image batch`
@@ -152,7 +153,7 @@ node tools_node/report-turn-usage.js --changed --emit-final-line
 
 ## 推薦搭配
 
-- 如果使用者以 `(best)` 開頭，先進 `.agents/skills/best-mode/SKILL.md`
+- 如果使用者以 `(best)` 開頭，先進 `.agents/skills/best-mode/SKILL.md` (doc_agentskill_0001)
 - 圖片 QA：先用這個 skill，再進 `cocos-preview-qa` 或 `cocos-screenshot`
 - UI pipeline：先用這個 skill，再進 `ui-vibe-pipeline`
 - 任何會改文字檔的工作：最後再跑 `encoding-touched-guard`

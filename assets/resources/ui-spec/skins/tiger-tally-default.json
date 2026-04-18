@@ -11,28 +11,78 @@
       "alpha": 236,
       "_doc": "保留給 debug 白模使用的基礎色塊卡面；正式 BattleScene 會改掛 tally.card.bg.hard。"
     },
-    "tally.card.shadow": {
-      "kind": "sprite-frame",
-      "path": "sprites/ui_families/common/shadow/shadow_01",
-      "spriteType": "sliced",
-      "border": [20, 20, 20, 20],
-      "allowAutoAtlas": true
-    },
     "tally.card.bg.hard": {
       "kind": "sprite-frame",
-      "path": "sprites/battle/tally_card_bg_hard/spriteFrame",
+      "path": "ui/tiger-tally/frame-parts/ssr/tally_frame_core_ssr/spriteFrame",
       "spriteType": "sliced",
-      "border": [8, 8, 8, 8],
+      "border": [40, 40, 40, 40],
       "bleed": 2,
       "allowAutoAtlas": true,
       "_fallback": "#1A1208",
-      "_doc": "虎符卡面硬版：暖鐵棕底板 + 金色邊框，更貼近實體軍牌質感"
+      "_doc": "虎符卡面硬版主框核心（SSR 母框拆件）。先以可拉伸外框核心做 9-slice，估值 border=[40,40,28,24]；title plaque / chip / rail / bottom band 走獨立 overlay。"
+    },
+    "tally.card.frame.full": {
+      "kind": "sprite-frame",
+      "path": "ui/tiger-tally/frame-parts/ssr/tally_frame_full_ssr/spriteFrame",
+      "spriteType": "simple",
+      "allowAutoAtlas": true,
+      "_doc": "SSR 母框完整參考版。主要用於對位與美術檢查，不建議直接作為 runtime 拉伸件。"
+    },
+    "tally.card.frame.core": {
+      "kind": "sprite-frame",
+      "path": "ui/tiger-tally/frame-parts/ssr/tally_frame_core_ssr/spriteFrame",
+      "spriteType": "sliced",
+      "border": [40, 40, 40, 40],
+      "allowAutoAtlas": true,
+      "_doc": "SSR 母框的 stretch-safe 外框核心。Battle card 321x188 先用此 slot 做 9-slice。"
+    },
+    "tally.card.frame.titlePlaque": {
+      "kind": "sprite-frame",
+      "path": "ui/tiger-tally/frame-parts/ssr/tally_frame_title_plaque_ssr/spriteFrame",
+      "spriteType": "simple",
+      "allowAutoAtlas": true,
+      "_doc": "上方標題牌匾 overlay，獨立回貼，避免跟外框一起拉伸。"
+    },
+    "tally.card.frame.leftChip": {
+      "kind": "sprite-frame",
+      "path": "ui/tiger-tally/frame-parts/ssr/tally_frame_left_chip_ssr/spriteFrame",
+      "spriteType": "simple",
+      "allowAutoAtlas": true,
+      "_doc": "左側小 chip / cost 承載件，獨立 overlay。"
+    },
+    "tally.card.frame.rarityBadgePlaque": {
+      "kind": "sprite-frame",
+      "path": "ui/tiger-tally/frame-parts/ssr/tally_frame_rarity_badge_plaque_ssr/spriteFrame",
+      "spriteType": "simple",
+      "allowAutoAtlas": true,
+      "_doc": "稀有度 badge / crest 承載牌。可供 rarity / star 視覺模組掛載。"
+    },
+    "tally.card.frame.sideRail.dark": {
+      "kind": "sprite-frame",
+      "path": "ui/tiger-tally/frame-parts/ssr/tally_frame_side_rail_dark_ssr/spriteFrame",
+      "spriteType": "simple",
+      "allowAutoAtlas": true,
+      "_doc": "右側暗色 rail overlay。"
+    },
+    "tally.card.frame.sideRail.amber": {
+      "kind": "sprite-frame",
+      "path": "ui/tiger-tally/frame-parts/ssr/tally_frame_side_rail_amber_ssr/spriteFrame",
+      "spriteType": "simple",
+      "allowAutoAtlas": true,
+      "_doc": "右側暖金 amber rail overlay。可用於強調態或高稀有度版本。"
+    },
+    "tally.card.frame.bottomBand": {
+      "kind": "sprite-frame",
+      "path": "ui/tiger-tally/frame-parts/ssr/tally_frame_bottom_band_ssr/spriteFrame",
+      "spriteType": "simple",
+      "allowAutoAtlas": true,
+      "_doc": "底部中央 band overlay，承接 grain cost / set / status 小圖。"
     },
     "tally.card.art": {
       "kind": "sprite-frame",
-      "path": "sprites/battle/tally_card_art_placeholder/spriteFrame",
+      "path": "ui/tiger-tally/card-art/troops/spriteFrame",
       "spriteType": "simple",
-      "allowAutoAtlas": true,
+      "allowAutoAtlas": false,
       "_fallback": "#2A3040"
     },
     "tally.card.topShade": {
@@ -90,6 +140,26 @@
       "spriteType": "simple",
       "allowAutoAtlas": true,
       "_doc": "兵種符頭像：cavalry/infantry/archer/pike/shield/engineer。TS 依 TroopType 切換不同 spriteFrame。"
+    },
+    "tally.label.rarity": {
+      "kind": "label-style",
+      "font": "fonts/manrope/font",
+      "fontSize": 13,
+      "lineHeight": 15,
+      "color": "#FFE28A",
+      "horizontalAlign": "CENTER",
+      "isBold": true,
+      "_doc": "稀有度標籤，顯示於左上角六角形牌匾（SSR/SR/R/N）。TS 在 _populateCards 中將 rarity enum 映射為顯示文字。"
+    },
+    "tally.label.stars": {
+      "kind": "label-style",
+      "font": "fonts/manrope/font",
+      "fontSize": 14,
+      "lineHeight": 16,
+      "color": "#FFD36A",
+      "horizontalAlign": "CENTER",
+      "isBold": false,
+      "_doc": "星數顯示，放在底部 band 中心（★★★）。bind tally[i].stars，TS 需填入對應 rarity 的星字串。"
     },
     "tally.label.atk": {
       "kind": "label-style",

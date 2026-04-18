@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "updatedAt": "2026-04-07T17:24:22.557Z",
+  "updatedAt": "2026-04-15T07:52:10.742Z",
   "description": "L0 武將索引層 — 只含輕量查詢欄位，不含 lore/stats 詳細資料",
   "data": [
     {
@@ -68,7 +68,7 @@
       "pol": 97,
       "cha": 92,
       "luk": 90,
-      "ep": 88,
+      "ep": 89,
       "gender": "男"
     },
     {
@@ -180,14 +180,14 @@
       "rarityTier": "epic",
       "layerKey": "L1",
       "role": "Combat",
-      "characterCategory": "general",
+      "characterCategory": "famed",
       "str": 94,
       "int": 52,
       "lea": 82,
       "pol": 46,
       "cha": 78,
       "luk": 60,
-      "ep": 69,
+      "ep": 75,
       "gender": "男"
     },
     {
@@ -197,14 +197,14 @@
       "rarityTier": "epic",
       "layerKey": "L1",
       "role": "Combat",
-      "characterCategory": "general",
+      "characterCategory": "famed",
       "str": 90,
       "int": 55,
       "lea": 80,
       "pol": 46,
       "cha": 74,
       "luk": 63,
-      "ep": 68,
+      "ep": 73,
       "gender": "男"
     },
     {
@@ -214,14 +214,14 @@
       "rarityTier": "epic",
       "layerKey": "L2",
       "role": "Combat",
-      "characterCategory": "general",
+      "characterCategory": "famed",
       "str": 86,
       "int": 64,
       "lea": 82,
       "pol": 60,
       "cha": 74,
       "luk": 66,
-      "ep": 72,
+      "ep": 76,
       "gender": "男"
     },
     {
@@ -231,14 +231,14 @@
       "rarityTier": "epic",
       "layerKey": "L2",
       "role": "Combat",
-      "characterCategory": "general",
+      "characterCategory": "famed",
       "str": 89,
       "int": 68,
       "lea": 84,
       "pol": 62,
       "cha": 80,
       "luk": 58,
-      "ep": 74,
+      "ep": 79,
       "gender": "男"
     },
     {
@@ -248,14 +248,14 @@
       "rarityTier": "epic",
       "layerKey": "L2",
       "role": "Support",
-      "characterCategory": "general",
+      "characterCategory": "famed",
       "str": 55,
       "int": 86,
       "lea": 92,
       "pol": 78,
       "cha": 76,
       "luk": 64,
-      "ep": 75,
+      "ep": 80,
       "gender": "男"
     },
     {
@@ -265,14 +265,14 @@
       "rarityTier": "epic",
       "layerKey": "L2",
       "role": "Combat",
-      "characterCategory": "general",
+      "characterCategory": "famed",
       "str": 86,
       "int": 66,
       "lea": 82,
       "pol": 60,
       "cha": 76,
       "luk": 60,
-      "ep": 72,
+      "ep": 76,
       "gender": "男"
     },
     {
@@ -282,14 +282,14 @@
       "rarityTier": "epic",
       "layerKey": "L2",
       "role": "Combat",
-      "characterCategory": "general",
+      "characterCategory": "famed",
       "str": 78,
       "int": 70,
       "lea": 84,
       "pol": 66,
       "cha": 74,
       "luk": 64,
-      "ep": 73,
+      "ep": 76,
       "gender": "男"
     },
     {
@@ -306,7 +306,7 @@
       "pol": 70,
       "cha": 68,
       "luk": 63,
-      "ep": 68,
+      "ep": 70,
       "gender": "男"
     },
     {
@@ -316,14 +316,14 @@
       "rarityTier": "epic",
       "layerKey": "L2",
       "role": "Combat",
-      "characterCategory": "general",
+      "characterCategory": "famed",
       "str": 78,
       "int": 68,
       "lea": 84,
       "pol": 74,
       "cha": 72,
       "luk": 59,
-      "ep": 73,
+      "ep": 77,
       "gender": "男"
     },
     {
@@ -333,31 +333,31 @@
       "rarityTier": "epic",
       "layerKey": "L2",
       "role": "Support",
-      "characterCategory": "general",
+      "characterCategory": "famed",
       "str": 32,
       "int": 92,
       "lea": 72,
       "pol": 84,
       "cha": 82,
       "luk": 61,
-      "ep": 71,
+      "ep": 76,
       "gender": "男"
     },
     {
       "uid": "guo-jia",
       "name": "郭嘉",
       "faction": "wei",
-      "rarityTier": "epic",
+      "rarityTier": "legendary",
       "layerKey": "L2",
       "role": "Support",
-      "characterCategory": "general",
+      "characterCategory": "famed",
       "str": 26,
       "int": 96,
       "lea": 84,
       "pol": 82,
       "cha": 80,
       "luk": 56,
-      "ep": 71,
+      "ep": 78,
       "gender": "男"
     },
     {
@@ -367,14 +367,14 @@
       "rarityTier": "epic",
       "layerKey": "L2",
       "role": "Support",
-      "characterCategory": "general",
+      "characterCategory": "famed",
       "str": 32,
       "int": 92,
       "lea": 76,
       "pol": 88,
       "cha": 82,
       "luk": 56,
-      "ep": 71,
+      "ep": 78,
       "gender": "男"
     },
     {
@@ -384,14 +384,14 @@
       "rarityTier": "epic",
       "layerKey": "L2",
       "role": "Support",
-      "characterCategory": "general",
+      "characterCategory": "famed",
       "str": 30,
       "int": 94,
       "lea": 76,
       "pol": 82,
       "cha": 72,
       "luk": 59,
-      "ep": 69,
+      "ep": 75,
       "gender": "男"
     },
     {
@@ -401,14 +401,14 @@
       "rarityTier": "epic",
       "layerKey": "L2",
       "role": "Combat",
-      "characterCategory": "general",
+      "characterCategory": "famed",
       "str": 76,
       "int": 70,
       "lea": 82,
       "pol": 72,
       "cha": 74,
       "luk": 58,
-      "ep": 72,
+      "ep": 76,
       "gender": "男"
     },
     {
@@ -425,7 +425,7 @@
       "pol": 72,
       "cha": 68,
       "luk": 64,
-      "ep": 68,
+      "ep": 70,
       "gender": "男"
     },
     {
@@ -435,14 +435,14 @@
       "rarityTier": "epic",
       "layerKey": "L2",
       "role": "Support",
-      "characterCategory": "civilian",
+      "characterCategory": "general",
       "str": 62,
       "int": 68,
       "lea": 64,
       "pol": 72,
       "cha": 75,
       "luk": 58,
-      "ep": 67,
+      "ep": 70,
       "gender": "男"
     },
     {
@@ -452,14 +452,14 @@
       "rarityTier": "epic",
       "layerKey": "L2",
       "role": "Combat",
-      "characterCategory": "general",
+      "characterCategory": "famed",
       "str": 74,
       "int": 66,
       "lea": 80,
       "pol": 70,
       "cha": 72,
       "luk": 58,
-      "ep": 70,
+      "ep": 74,
       "gender": "男"
     },
     {
@@ -469,14 +469,14 @@
       "rarityTier": "epic",
       "layerKey": "L2",
       "role": "Combat",
-      "characterCategory": "general",
+      "characterCategory": "famed",
       "str": 78,
       "int": 66,
       "lea": 81,
       "pol": 66,
       "cha": 74,
       "luk": 64,
-      "ep": 72,
+      "ep": 75,
       "gender": "男"
     },
     {
@@ -486,14 +486,14 @@
       "rarityTier": "epic",
       "layerKey": "L2",
       "role": "Combat",
-      "characterCategory": "general",
+      "characterCategory": "famed",
       "str": 78,
       "int": 70,
       "lea": 82,
       "pol": 58,
       "cha": 72,
       "luk": 59,
-      "ep": 70,
+      "ep": 74,
       "gender": "男"
     },
     {
@@ -503,14 +503,14 @@
       "rarityTier": "epic",
       "layerKey": "L2",
       "role": "Combat",
-      "characterCategory": "general",
+      "characterCategory": "famed",
       "str": 78,
       "int": 84,
       "lea": 82,
       "pol": 66,
       "cha": 76,
       "luk": 65,
-      "ep": 75,
+      "ep": 79,
       "gender": "男"
     },
     {
@@ -527,7 +527,7 @@
       "pol": 72,
       "cha": 68,
       "luk": 58,
-      "ep": 66,
+      "ep": 69,
       "gender": "男"
     },
     {
@@ -537,14 +537,14 @@
       "rarityTier": "epic",
       "layerKey": "L2",
       "role": "Support",
-      "characterCategory": "general",
+      "characterCategory": "famed",
       "str": 52,
       "int": 88,
       "lea": 79,
       "pol": 76,
       "cha": 72,
       "luk": 64,
-      "ep": 72,
+      "ep": 76,
       "gender": "男"
     },
     {
@@ -561,7 +561,7 @@
       "pol": 68,
       "cha": 74,
       "luk": 66,
-      "ep": 71,
+      "ep": 73,
       "gender": "男"
     },
     {
@@ -578,7 +578,7 @@
       "pol": 68,
       "cha": 72,
       "luk": 58,
-      "ep": 70,
+      "ep": 74,
       "gender": "男"
     },
     {
@@ -595,7 +595,7 @@
       "pol": 61,
       "cha": 71,
       "luk": 61,
-      "ep": 66,
+      "ep": 68,
       "gender": "男"
     },
     {
@@ -605,14 +605,14 @@
       "rarityTier": "epic",
       "layerKey": "L2",
       "role": "Combat",
-      "characterCategory": "general",
+      "characterCategory": "famed",
       "str": 84,
       "int": 62,
       "lea": 78,
       "pol": 60,
       "cha": 76,
       "luk": 67,
-      "ep": 71,
+      "ep": 74,
       "gender": "男"
     },
     {
@@ -639,14 +639,14 @@
       "rarityTier": "epic",
       "layerKey": "L2",
       "role": "Combat",
-      "characterCategory": "general",
+      "characterCategory": "famed",
       "str": 82,
       "int": 58,
       "lea": 78,
       "pol": 54,
       "cha": 72,
       "luk": 65,
-      "ep": 68,
+      "ep": 71,
       "gender": "男"
     },
     {
@@ -663,7 +663,7 @@
       "pol": 60,
       "cha": 67,
       "luk": 58,
-      "ep": 63,
+      "ep": 64,
       "gender": "男"
     },
     {
@@ -680,7 +680,7 @@
       "pol": 66,
       "cha": 70,
       "luk": 60,
-      "ep": 64,
+      "ep": 66,
       "gender": "男"
     },
     {
@@ -697,7 +697,7 @@
       "pol": 60,
       "cha": 70,
       "luk": 61,
-      "ep": 65,
+      "ep": 67,
       "gender": "男"
     },
     {
@@ -707,14 +707,14 @@
       "rarityTier": "epic",
       "layerKey": "L2",
       "role": "Combat",
-      "characterCategory": "general",
+      "characterCategory": "famed",
       "str": 70,
       "int": 82,
       "lea": 80,
       "pol": 74,
       "cha": 76,
       "luk": 67,
-      "ep": 75,
+      "ep": 78,
       "gender": "男"
     },
     {
@@ -724,14 +724,14 @@
       "rarityTier": "epic",
       "layerKey": "L2",
       "role": "Combat",
-      "characterCategory": "general",
+      "characterCategory": "famed",
       "str": 86,
       "int": 72,
       "lea": 82,
       "pol": 68,
       "cha": 84,
       "luk": 64,
-      "ep": 76,
+      "ep": 80,
       "gender": "男"
     },
     {
@@ -741,14 +741,14 @@
       "rarityTier": "epic",
       "layerKey": "L2",
       "role": "Combat",
-      "characterCategory": "general",
+      "characterCategory": "famed",
       "str": 80,
       "int": 70,
       "lea": 78,
       "pol": 66,
       "cha": 78,
       "luk": 63,
-      "ep": 73,
+      "ep": 76,
       "gender": "男"
     },
     {
@@ -765,7 +765,7 @@
       "pol": 29,
       "cha": 54,
       "luk": 57,
-      "ep": 55,
+      "ep": 59,
       "gender": "男"
     },
     {
@@ -782,7 +782,7 @@
       "pol": 25,
       "cha": 51,
       "luk": 53,
-      "ep": 55,
+      "ep": 61,
       "gender": "男"
     },
     {
@@ -792,14 +792,14 @@
       "rarityTier": "epic",
       "layerKey": "L2",
       "role": "Support",
-      "characterCategory": "general",
+      "characterCategory": "famed",
       "str": 44,
       "int": 74,
       "lea": 69,
       "pol": 78,
       "cha": 80,
       "luk": 64,
-      "ep": 68,
+      "ep": 71,
       "gender": "男"
     },
     {
@@ -816,7 +816,7 @@
       "pol": 63,
       "cha": 66,
       "luk": 60,
-      "ep": 66,
+      "ep": 67,
       "gender": "男"
     },
     {
@@ -833,7 +833,7 @@
       "pol": 27,
       "cha": 58,
       "luk": 57,
-      "ep": 57,
+      "ep": 61,
       "gender": "男"
     },
     {
@@ -850,7 +850,7 @@
       "pol": 68,
       "cha": 68,
       "luk": 59,
-      "ep": 67,
+      "ep": 68,
       "gender": "男"
     },
     {
@@ -867,7 +867,7 @@
       "pol": 71,
       "cha": 68,
       "luk": 60,
-      "ep": 67,
+      "ep": 68,
       "gender": "男"
     },
     {
@@ -884,7 +884,7 @@
       "pol": 71,
       "cha": 64,
       "luk": 57,
-      "ep": 65,
+      "ep": 67,
       "gender": "男"
     },
     {
@@ -901,7 +901,7 @@
       "pol": 31,
       "cha": 52,
       "luk": 51,
-      "ep": 55,
+      "ep": 60,
       "gender": "男"
     },
     {
@@ -918,7 +918,7 @@
       "pol": 34,
       "cha": 55,
       "luk": 53,
-      "ep": 57,
+      "ep": 62,
       "gender": "男"
     },
     {
@@ -928,14 +928,14 @@
       "rarityTier": "epic",
       "layerKey": "L2",
       "role": "Support",
-      "characterCategory": "general",
+      "characterCategory": "famed",
       "str": 26,
       "int": 79,
       "lea": 48,
       "pol": 82,
       "cha": 76,
       "luk": 55,
-      "ep": 61,
+      "ep": 66,
       "gender": "男"
     },
     {
@@ -952,7 +952,7 @@
       "pol": 67,
       "cha": 66,
       "luk": 63,
-      "ep": 67,
+      "ep": 69,
       "gender": "男"
     },
     {
@@ -969,7 +969,7 @@
       "pol": 65,
       "cha": 64,
       "luk": 62,
-      "ep": 65,
+      "ep": 66,
       "gender": "男"
     },
     {
@@ -986,7 +986,7 @@
       "pol": 62,
       "cha": 67,
       "luk": 55,
-      "ep": 66,
+      "ep": 69,
       "gender": "男"
     },
     {
@@ -1003,7 +1003,7 @@
       "pol": 68,
       "cha": 62,
       "luk": 58,
-      "ep": 65,
+      "ep": 67,
       "gender": "男"
     },
     {
@@ -1020,7 +1020,7 @@
       "pol": 66,
       "cha": 68,
       "luk": 56,
-      "ep": 67,
+      "ep": 70,
       "gender": "男"
     },
     {
@@ -1037,7 +1037,7 @@
       "pol": 63,
       "cha": 69,
       "luk": 64,
-      "ep": 67,
+      "ep": 68,
       "gender": "男"
     },
     {
@@ -1054,7 +1054,7 @@
       "pol": 66,
       "cha": 67,
       "luk": 58,
-      "ep": 63,
+      "ep": 64,
       "gender": "男"
     },
     {
@@ -1071,7 +1071,7 @@
       "pol": 63,
       "cha": 71,
       "luk": 61,
-      "ep": 65,
+      "ep": 66,
       "gender": "男"
     },
     {
@@ -1088,7 +1088,7 @@
       "pol": 62,
       "cha": 65,
       "luk": 66,
-      "ep": 65,
+      "ep": 66,
       "gender": "男"
     },
     {
@@ -1105,7 +1105,7 @@
       "pol": 68,
       "cha": 69,
       "luk": 62,
-      "ep": 67,
+      "ep": 69,
       "gender": "男"
     },
     {
@@ -1122,14 +1122,14 @@
       "pol": 68,
       "cha": 69,
       "luk": 63,
-      "ep": 66,
+      "ep": 67,
       "gender": "男"
     },
     {
       "uid": "liu-feng",
       "name": "劉封",
       "faction": "shu",
-      "rarityTier": "epic",
+      "rarityTier": "rare",
       "layerKey": "L2",
       "role": "Combat",
       "characterCategory": "general",
@@ -1156,14 +1156,14 @@
       "pol": 68,
       "cha": 65,
       "luk": 60,
-      "ep": 67,
+      "ep": 69,
       "gender": "男"
     },
     {
       "uid": "peng-yang",
       "name": "彭羕",
       "faction": "shu",
-      "rarityTier": "epic",
+      "rarityTier": "rare",
       "layerKey": "L2",
       "role": "Support",
       "characterCategory": "general",
@@ -1173,7 +1173,7 @@
       "pol": 68,
       "cha": 74,
       "luk": 63,
-      "ep": 63,
+      "ep": 65,
       "gender": "男"
     },
     {
@@ -1190,7 +1190,7 @@
       "pol": 66,
       "cha": 70,
       "luk": 57,
-      "ep": 65,
+      "ep": 67,
       "gender": "男"
     },
     {
@@ -1207,7 +1207,7 @@
       "pol": 74,
       "cha": 70,
       "luk": 57,
-      "ep": 67,
+      "ep": 70,
       "gender": "男"
     },
     {
@@ -1224,7 +1224,7 @@
       "pol": 57,
       "cha": 73,
       "luk": 61,
-      "ep": 66,
+      "ep": 68,
       "gender": "男"
     },
     {
@@ -1241,7 +1241,7 @@
       "pol": 58,
       "cha": 66,
       "luk": 65,
-      "ep": 66,
+      "ep": 67,
       "gender": "男"
     },
     {
@@ -1258,7 +1258,7 @@
       "pol": 59,
       "cha": 71,
       "luk": 61,
-      "ep": 66,
+      "ep": 68,
       "gender": "男"
     },
     {
@@ -1275,7 +1275,7 @@
       "pol": 60,
       "cha": 65,
       "luk": 62,
-      "ep": 66,
+      "ep": 67,
       "gender": "男"
     },
     {
@@ -1292,14 +1292,14 @@
       "pol": 63,
       "cha": 66,
       "luk": 66,
-      "ep": 68,
+      "ep": 69,
       "gender": "男"
     },
     {
       "uid": "zhang-bao",
       "name": "張苞",
       "faction": "shu",
-      "rarityTier": "epic",
+      "rarityTier": "rare",
       "layerKey": "L2",
       "role": "Combat",
       "characterCategory": "general",
@@ -1309,7 +1309,7 @@
       "pol": 56,
       "cha": 68,
       "luk": 61,
-      "ep": 64,
+      "ep": 66,
       "gender": "男"
     },
     {
@@ -1326,7 +1326,7 @@
       "pol": 62,
       "cha": 70,
       "luk": 60,
-      "ep": 66,
+      "ep": 68,
       "gender": "男"
     },
     {
@@ -1343,7 +1343,7 @@
       "pol": 68,
       "cha": 64,
       "luk": 58,
-      "ep": 65,
+      "ep": 67,
       "gender": "男"
     },
     {
@@ -1360,7 +1360,7 @@
       "pol": 68,
       "cha": 64,
       "luk": 60,
-      "ep": 67,
+      "ep": 69,
       "gender": "男"
     },
     {
@@ -1377,14 +1377,14 @@
       "pol": 67,
       "cha": 66,
       "luk": 61,
-      "ep": 67,
+      "ep": 69,
       "gender": "男"
     },
     {
       "uid": "wang-shuang",
       "name": "王雙",
       "faction": "wei",
-      "rarityTier": "epic",
+      "rarityTier": "rare",
       "layerKey": "L2",
       "role": "Combat",
       "characterCategory": "general",
@@ -1394,7 +1394,7 @@
       "pol": 56,
       "cha": 64,
       "luk": 62,
-      "ep": 64,
+      "ep": 67,
       "gender": "男"
     },
     {
@@ -1411,7 +1411,7 @@
       "pol": 63,
       "cha": 64,
       "luk": 58,
-      "ep": 66,
+      "ep": 68,
       "gender": "男"
     },
     {
@@ -1428,7 +1428,7 @@
       "pol": 63,
       "cha": 69,
       "luk": 57,
-      "ep": 65,
+      "ep": 68,
       "gender": "男"
     },
     {
@@ -1445,7 +1445,7 @@
       "pol": 65,
       "cha": 61,
       "luk": 61,
-      "ep": 65,
+      "ep": 66,
       "gender": "男"
     },
     {
@@ -1462,7 +1462,7 @@
       "pol": 70,
       "cha": 62,
       "luk": 60,
-      "ep": 67,
+      "ep": 68,
       "gender": "男"
     },
     {
@@ -1479,7 +1479,7 @@
       "pol": 66,
       "cha": 66,
       "luk": 61,
-      "ep": 68,
+      "ep": 71,
       "gender": "男"
     },
     {
@@ -1489,14 +1489,14 @@
       "rarityTier": "epic",
       "layerKey": "L2",
       "role": "Support",
-      "characterCategory": "general",
+      "characterCategory": "famed",
       "str": 30,
       "int": 80,
       "lea": 62,
       "pol": 90,
       "cha": 76,
       "luk": 61,
-      "ep": 67,
+      "ep": 72,
       "gender": "男"
     },
     {
@@ -1513,7 +1513,7 @@
       "pol": 72,
       "cha": 65,
       "luk": 60,
-      "ep": 67,
+      "ep": 69,
       "gender": "男"
     },
     {
@@ -1523,14 +1523,14 @@
       "rarityTier": "epic",
       "layerKey": "L2",
       "role": "Support",
-      "characterCategory": "general",
+      "characterCategory": "famed",
       "str": 28,
       "int": 78,
       "lea": 52,
       "pol": 84,
       "cha": 70,
       "luk": 58,
-      "ep": 62,
+      "ep": 67,
       "gender": "男"
     },
     {
@@ -1540,14 +1540,14 @@
       "rarityTier": "epic",
       "layerKey": "L2",
       "role": "Support",
-      "characterCategory": "general",
+      "characterCategory": "famed",
       "str": 28,
       "int": 90,
       "lea": 74,
       "pol": 83,
       "cha": 72,
       "luk": 64,
-      "ep": 69,
+      "ep": 74,
       "gender": "男"
     },
     {
@@ -1564,7 +1564,7 @@
       "pol": 71,
       "cha": 67,
       "luk": 61,
-      "ep": 67,
+      "ep": 70,
       "gender": "男"
     },
     {
@@ -1574,14 +1574,14 @@
       "rarityTier": "epic",
       "layerKey": "L2",
       "role": "Support",
-      "characterCategory": "general",
+      "characterCategory": "famed",
       "str": 36,
       "int": 86,
       "lea": 78,
       "pol": 78,
       "cha": 68,
       "luk": 55,
-      "ep": 67,
+      "ep": 73,
       "gender": "男"
     },
     {
@@ -1615,7 +1615,7 @@
       "pol": 68,
       "cha": 69,
       "luk": 64,
-      "ep": 67,
+      "ep": 68,
       "gender": "男"
     },
     {
@@ -1632,7 +1632,7 @@
       "pol": 69,
       "cha": 64,
       "luk": 64,
-      "ep": 66,
+      "ep": 67,
       "gender": "男"
     },
     {
@@ -1649,14 +1649,14 @@
       "pol": 64,
       "cha": 69,
       "luk": 62,
-      "ep": 67,
+      "ep": 68,
       "gender": "男"
     },
     {
       "uid": "sun-huan",
       "name": "孫桓",
       "faction": "wu",
-      "rarityTier": "epic",
+      "rarityTier": "rare",
       "layerKey": "L2",
       "role": "Combat",
       "characterCategory": "general",
@@ -1683,7 +1683,7 @@
       "pol": 64,
       "cha": 65,
       "luk": 63,
-      "ep": 65,
+      "ep": 66,
       "gender": "男"
     },
     {
@@ -1700,24 +1700,24 @@
       "pol": 64,
       "cha": 70,
       "luk": 61,
-      "ep": 67,
+      "ep": 69,
       "gender": "男"
     },
     {
       "uid": "lu-kang",
       "name": "陸抗",
       "faction": "wu",
-      "rarityTier": "legendary",
+      "rarityTier": "epic",
       "layerKey": "L2",
       "role": "Combat",
-      "characterCategory": "general",
+      "characterCategory": "famed",
       "str": 72,
       "int": 82,
       "lea": 80,
       "pol": 72,
       "cha": 74,
       "luk": 70,
-      "ep": 75,
+      "ep": 77,
       "gender": "男"
     },
     {
@@ -1758,17 +1758,17 @@
       "uid": "cheng-bing",
       "name": "程秉",
       "faction": "wu",
-      "rarityTier": "rare",
+      "rarityTier": "epic",
       "layerKey": "L2",
       "role": "Support",
-      "characterCategory": "civilian",
+      "characterCategory": "famed",
       "str": 24,
       "int": 82,
       "lea": 52,
       "pol": 80,
       "cha": 68,
       "luk": 62,
-      "ep": 61,
+      "ep": 65,
       "gender": "男"
     },
     {
@@ -1785,7 +1785,7 @@
       "pol": 63,
       "cha": 62,
       "luk": 57,
-      "ep": 65,
+      "ep": 68,
       "gender": "男"
     },
     {
@@ -1802,7 +1802,7 @@
       "pol": 64,
       "cha": 60,
       "luk": 56,
-      "ep": 66,
+      "ep": 69,
       "gender": "男"
     },
     {
@@ -1819,7 +1819,7 @@
       "pol": 68,
       "cha": 60,
       "luk": 59,
-      "ep": 64,
+      "ep": 66,
       "gender": "男"
     },
     {
@@ -1836,7 +1836,7 @@
       "pol": 70,
       "cha": 69,
       "luk": 62,
-      "ep": 67,
+      "ep": 69,
       "gender": "男"
     },
     {
@@ -1853,7 +1853,7 @@
       "pol": 27,
       "cha": 57,
       "luk": 52,
-      "ep": 55,
+      "ep": 59,
       "gender": "男"
     },
     {
@@ -1870,7 +1870,7 @@
       "pol": 29,
       "cha": 53,
       "luk": 50,
-      "ep": 53,
+      "ep": 58,
       "gender": "男"
     },
     {
@@ -1887,24 +1887,24 @@
       "pol": 27,
       "cha": 52,
       "luk": 59,
-      "ep": 55,
+      "ep": 59,
       "gender": "男"
     },
     {
       "uid": "zhang-jue",
       "name": "張角",
       "faction": "enemy",
-      "rarityTier": "rare",
+      "rarityTier": "epic",
       "layerKey": "L2",
       "role": "Support",
-      "characterCategory": "general",
+      "characterCategory": "famed",
       "str": 42,
       "int": 84,
       "lea": 72,
       "pol": 60,
       "cha": 74,
       "luk": 53,
-      "ep": 64,
+      "ep": 70,
       "gender": "男"
     },
     {
@@ -1921,7 +1921,7 @@
       "pol": 33,
       "cha": 53,
       "luk": 55,
-      "ep": 56,
+      "ep": 62,
       "gender": "男"
     },
     {
@@ -1938,7 +1938,7 @@
       "pol": 70,
       "cha": 69,
       "luk": 60,
-      "ep": 68,
+      "ep": 71,
       "gender": "男"
     },
     {
@@ -1955,7 +1955,7 @@
       "pol": 58,
       "cha": 71,
       "luk": 58,
-      "ep": 65,
+      "ep": 68,
       "gender": "男"
     },
     {
@@ -1972,7 +1972,7 @@
       "pol": 57,
       "cha": 65,
       "luk": 65,
-      "ep": 64,
+      "ep": 65,
       "gender": "男"
     },
     {
@@ -1982,14 +1982,14 @@
       "rarityTier": "epic",
       "layerKey": "L2",
       "role": "Support",
-      "characterCategory": "general",
+      "characterCategory": "famed",
       "str": 32,
       "int": 78,
       "lea": 65,
       "pol": 76,
       "cha": 80,
       "luk": 60,
-      "ep": 65,
+      "ep": 69,
       "gender": "男"
     },
     {
@@ -1999,14 +1999,14 @@
       "rarityTier": "epic",
       "layerKey": "L2",
       "role": "Support",
-      "characterCategory": "general",
+      "characterCategory": "famed",
       "str": 22,
       "int": 82,
       "lea": 52,
       "pol": 80,
       "cha": 68,
       "luk": 57,
-      "ep": 60,
+      "ep": 65,
       "gender": "男"
     },
     {
@@ -2023,7 +2023,7 @@
       "pol": 62,
       "cha": 72,
       "luk": 63,
-      "ep": 66,
+      "ep": 68,
       "gender": "男"
     },
     {
@@ -2040,7 +2040,7 @@
       "pol": 59,
       "cha": 67,
       "luk": 59,
-      "ep": 65,
+      "ep": 68,
       "gender": "男"
     },
     {
@@ -2050,14 +2050,14 @@
       "rarityTier": "epic",
       "layerKey": "L2",
       "role": "Support",
-      "characterCategory": "general",
+      "characterCategory": "famed",
       "str": 34,
       "int": 85,
       "lea": 76,
       "pol": 84,
       "cha": 82,
       "luk": 57,
-      "ep": 70,
+      "ep": 75,
       "gender": "男"
     },
     {
@@ -2074,7 +2074,7 @@
       "pol": 64,
       "cha": 69,
       "luk": 62,
-      "ep": 66,
+      "ep": 67,
       "gender": "男"
     },
     {
@@ -2091,7 +2091,7 @@
       "pol": 58,
       "cha": 66,
       "luk": 63,
-      "ep": 65,
+      "ep": 67,
       "gender": "男"
     },
     {
@@ -2108,7 +2108,7 @@
       "pol": 33,
       "cha": 52,
       "luk": 52,
-      "ep": 56,
+      "ep": 62,
       "gender": "男"
     },
     {
@@ -2125,7 +2125,7 @@
       "pol": 30,
       "cha": 54,
       "luk": 57,
-      "ep": 55,
+      "ep": 60,
       "gender": "男"
     },
     {
@@ -2142,7 +2142,7 @@
       "pol": 68,
       "cha": 68,
       "luk": 59,
-      "ep": 67,
+      "ep": 70,
       "gender": "男"
     },
     {
@@ -2159,7 +2159,7 @@
       "pol": 34,
       "cha": 52,
       "luk": 51,
-      "ep": 56,
+      "ep": 63,
       "gender": "男"
     },
     {
@@ -2176,7 +2176,7 @@
       "pol": 32,
       "cha": 52,
       "luk": 53,
-      "ep": 56,
+      "ep": 62,
       "gender": "男"
     },
     {
@@ -2193,7 +2193,7 @@
       "pol": 28,
       "cha": 52,
       "luk": 55,
-      "ep": 55,
+      "ep": 60,
       "gender": "男"
     },
     {
@@ -2210,7 +2210,7 @@
       "pol": 26,
       "cha": 56,
       "luk": 59,
-      "ep": 55,
+      "ep": 60,
       "gender": "男"
     },
     {
@@ -2227,7 +2227,7 @@
       "pol": 28,
       "cha": 55,
       "luk": 57,
-      "ep": 57,
+      "ep": 62,
       "gender": "男"
     },
     {
@@ -2244,7 +2244,7 @@
       "pol": 33,
       "cha": 54,
       "luk": 52,
-      "ep": 54,
+      "ep": 59,
       "gender": "男"
     },
     {
@@ -2261,7 +2261,7 @@
       "pol": 27,
       "cha": 50,
       "luk": 57,
-      "ep": 55,
+      "ep": 60,
       "gender": "男"
     },
     {
@@ -2278,7 +2278,7 @@
       "pol": 33,
       "cha": 52,
       "luk": 58,
-      "ep": 56,
+      "ep": 60,
       "gender": "男"
     },
     {
@@ -2295,7 +2295,7 @@
       "pol": 32,
       "cha": 50,
       "luk": 52,
-      "ep": 55,
+      "ep": 59,
       "gender": "男"
     },
     {
@@ -2312,7 +2312,7 @@
       "pol": 25,
       "cha": 51,
       "luk": 55,
-      "ep": 54,
+      "ep": 60,
       "gender": "男"
     },
     {
@@ -2329,7 +2329,7 @@
       "pol": 27,
       "cha": 59,
       "luk": 57,
-      "ep": 58,
+      "ep": 63,
       "gender": "男"
     },
     {
@@ -2346,7 +2346,7 @@
       "pol": 26,
       "cha": 59,
       "luk": 58,
-      "ep": 55,
+      "ep": 60,
       "gender": "男"
     },
     {
@@ -2363,24 +2363,24 @@
       "pol": 31,
       "cha": 58,
       "luk": 51,
-      "ep": 57,
+      "ep": 62,
       "gender": "男"
     },
     {
       "uid": "tian-feng",
       "name": "田豐",
       "faction": "enemy",
-      "rarityTier": "rare",
+      "rarityTier": "epic",
       "layerKey": "L2",
       "role": "Support",
-      "characterCategory": "general",
+      "characterCategory": "famed",
       "str": 24,
       "int": 86,
       "lea": 70,
       "pol": 80,
       "cha": 66,
       "luk": 52,
-      "ep": 63,
+      "ep": 69,
       "gender": "男"
     },
     {
@@ -2397,7 +2397,7 @@
       "pol": 84,
       "cha": 68,
       "luk": 53,
-      "ep": 65,
+      "ep": 71,
       "gender": "男"
     },
     {
@@ -2414,7 +2414,7 @@
       "pol": 68,
       "cha": 58,
       "luk": 56,
-      "ep": 56,
+      "ep": 60,
       "gender": "男"
     },
     {
@@ -2431,7 +2431,7 @@
       "pol": 75,
       "cha": 62,
       "luk": 55,
-      "ep": 62,
+      "ep": 66,
       "gender": "男"
     },
     {
@@ -2441,14 +2441,14 @@
       "rarityTier": "epic",
       "layerKey": "L2",
       "role": "Support",
-      "characterCategory": "general",
+      "characterCategory": "famed",
       "str": 31,
       "int": 84,
       "lea": 70,
       "pol": 80,
       "cha": 68,
       "luk": 60,
-      "ep": 66,
+      "ep": 70,
       "gender": "男"
     },
     {
@@ -2465,7 +2465,7 @@
       "pol": 64,
       "cha": 67,
       "luk": 59,
-      "ep": 66,
+      "ep": 68,
       "gender": "男"
     },
     {
@@ -2482,7 +2482,7 @@
       "pol": 63,
       "cha": 66,
       "luk": 58,
-      "ep": 67,
+      "ep": 69,
       "gender": "男"
     },
     {
@@ -2492,14 +2492,14 @@
       "rarityTier": "epic",
       "layerKey": "L2",
       "role": "Support",
-      "characterCategory": "general",
+      "characterCategory": "famed",
       "str": 27,
       "int": 88,
       "lea": 74,
       "pol": 80,
       "cha": 66,
       "luk": 62,
-      "ep": 66,
+      "ep": 71,
       "gender": "男"
     },
     {
@@ -2516,7 +2516,7 @@
       "pol": 68,
       "cha": 66,
       "luk": 58,
-      "ep": 66,
+      "ep": 68,
       "gender": "男"
     },
     {
@@ -2526,21 +2526,21 @@
       "rarityTier": "epic",
       "layerKey": "L2",
       "role": "Support",
-      "characterCategory": "general",
+      "characterCategory": "famed",
       "str": 40,
       "int": 88,
       "lea": 80,
       "pol": 84,
       "cha": 84,
       "luk": 60,
-      "ep": 73,
+      "ep": 78,
       "gender": "男"
     },
     {
       "uid": "huo-yi",
       "name": "霍弋",
       "faction": "shu",
-      "rarityTier": "rare",
+      "rarityTier": "epic",
       "layerKey": "L2",
       "role": "Combat",
       "characterCategory": "general",
@@ -2550,7 +2550,7 @@
       "pol": 62,
       "cha": 64,
       "luk": 66,
-      "ep": 65,
+      "ep": 66,
       "gender": "男"
     },
     {
@@ -2567,7 +2567,7 @@
       "pol": 65,
       "cha": 48,
       "luk": 38,
-      "ep": 54,
+      "ep": 62,
       "gender": "男"
     },
     {
@@ -2584,7 +2584,7 @@
       "pol": 75,
       "cha": 70,
       "luk": 55,
-      "ep": 58,
+      "ep": 63,
       "gender": "男"
     },
     {
@@ -2601,7 +2601,7 @@
       "pol": 72,
       "cha": 65,
       "luk": 52,
-      "ep": 60,
+      "ep": 64,
       "gender": "男"
     },
     {
@@ -2618,7 +2618,7 @@
       "pol": 58,
       "cha": 60,
       "luk": 55,
-      "ep": 65,
+      "ep": 70,
       "gender": "男"
     },
     {
@@ -2635,7 +2635,7 @@
       "pol": 92,
       "cha": 84,
       "luk": 70,
-      "ep": 74,
+      "ep": 78,
       "gender": "男"
     },
     {
@@ -2652,7 +2652,7 @@
       "pol": 50,
       "cha": 55,
       "luk": 58,
-      "ep": 62,
+      "ep": 66,
       "gender": "男"
     },
     {
@@ -2669,7 +2669,7 @@
       "pol": 55,
       "cha": 70,
       "luk": 40,
-      "ep": 59,
+      "ep": 64,
       "gender": "男"
     },
     {
@@ -2686,7 +2686,7 @@
       "pol": 48,
       "cha": 40,
       "luk": 35,
-      "ep": 46,
+      "ep": 49,
       "gender": "男"
     },
     {
@@ -2703,7 +2703,7 @@
       "pol": 65,
       "cha": 58,
       "luk": 55,
-      "ep": 63,
+      "ep": 66,
       "gender": "男"
     },
     {
@@ -2720,7 +2720,7 @@
       "pol": 80,
       "cha": 68,
       "luk": 55,
-      "ep": 59,
+      "ep": 64,
       "gender": "男"
     },
     {
@@ -2737,7 +2737,7 @@
       "pol": 48,
       "cha": 52,
       "luk": 55,
-      "ep": 60,
+      "ep": 63,
       "gender": "男"
     },
     {
@@ -2754,7 +2754,7 @@
       "pol": 42,
       "cha": 60,
       "luk": 48,
-      "ep": 57,
+      "ep": 61,
       "gender": "男"
     },
     {
@@ -2771,7 +2771,7 @@
       "pol": 78,
       "cha": 76,
       "luk": 60,
-      "ep": 68,
+      "ep": 72,
       "gender": "男"
     },
     {
@@ -2788,7 +2788,7 @@
       "pol": 40,
       "cha": 62,
       "luk": 52,
-      "ep": 58,
+      "ep": 63,
       "gender": "男"
     },
     {
@@ -2805,7 +2805,7 @@
       "pol": 75,
       "cha": 62,
       "luk": 50,
-      "ep": 60,
+      "ep": 66,
       "gender": "男"
     },
     {
@@ -2822,7 +2822,7 @@
       "pol": 45,
       "cha": 60,
       "luk": 55,
-      "ep": 61,
+      "ep": 66,
       "gender": "男"
     },
     {
@@ -2839,7 +2839,7 @@
       "pol": 50,
       "cha": 62,
       "luk": 48,
-      "ep": 59,
+      "ep": 63,
       "gender": "男"
     },
     {
@@ -2856,7 +2856,7 @@
       "pol": 55,
       "cha": 58,
       "luk": 55,
-      "ep": 62,
+      "ep": 65,
       "gender": "男"
     },
     {
@@ -2873,7 +2873,7 @@
       "pol": 60,
       "cha": 60,
       "luk": 55,
-      "ep": 64,
+      "ep": 67,
       "gender": "男"
     },
     {
@@ -2890,7 +2890,7 @@
       "pol": 65,
       "cha": 58,
       "luk": 58,
-      "ep": 65,
+      "ep": 68,
       "gender": "男"
     },
     {
@@ -2907,7 +2907,7 @@
       "pol": 55,
       "cha": 52,
       "luk": 55,
-      "ep": 61,
+      "ep": 64,
       "gender": "男"
     },
     {
@@ -2924,7 +2924,7 @@
       "pol": 65,
       "cha": 60,
       "luk": 58,
-      "ep": 67,
+      "ep": 70,
       "gender": "男"
     },
     {
@@ -2941,7 +2941,7 @@
       "pol": 60,
       "cha": 58,
       "luk": 55,
-      "ep": 63,
+      "ep": 66,
       "gender": "男"
     },
     {
@@ -2958,7 +2958,7 @@
       "pol": 58,
       "cha": 55,
       "luk": 52,
-      "ep": 60,
+      "ep": 63,
       "gender": "男"
     },
     {
@@ -2975,7 +2975,7 @@
       "pol": 45,
       "cha": 50,
       "luk": 45,
-      "ep": 57,
+      "ep": 62,
       "gender": "男"
     },
     {
@@ -2992,7 +2992,7 @@
       "pol": 55,
       "cha": 50,
       "luk": 38,
-      "ep": 56,
+      "ep": 61,
       "gender": "男"
     },
     {
@@ -3009,7 +3009,7 @@
       "pol": 35,
       "cha": 50,
       "luk": 48,
-      "ep": 52,
+      "ep": 56,
       "gender": "男"
     },
     {
@@ -3026,7 +3026,7 @@
       "pol": 30,
       "cha": 42,
       "luk": 45,
-      "ep": 50,
+      "ep": 53,
       "gender": "男"
     },
     {
@@ -3043,7 +3043,7 @@
       "pol": 28,
       "cha": 48,
       "luk": 50,
-      "ep": 52,
+      "ep": 55,
       "gender": "男"
     },
     {
@@ -3060,7 +3060,7 @@
       "pol": 55,
       "cha": 78,
       "luk": 25,
-      "ep": 51,
+      "ep": 63,
       "gender": "男"
     },
     {
@@ -3077,7 +3077,7 @@
       "pol": 68,
       "cha": 65,
       "luk": 52,
-      "ep": 62,
+      "ep": 67,
       "gender": "男"
     },
     {
@@ -3094,7 +3094,7 @@
       "pol": 72,
       "cha": 86,
       "luk": 65,
-      "ep": 61,
+      "ep": 66,
       "gender": "男"
     },
     {
@@ -3111,7 +3111,7 @@
       "pol": 55,
       "cha": 75,
       "luk": 80,
-      "ep": 58,
+      "ep": 61,
       "gender": "男"
     },
     {
@@ -3128,7 +3128,7 @@
       "pol": 50,
       "cha": 80,
       "luk": 82,
-      "ep": 57,
+      "ep": 59,
       "gender": "男"
     },
     {
@@ -3145,7 +3145,7 @@
       "pol": 85,
       "cha": 72,
       "luk": 55,
-      "ep": 62,
+      "ep": 67,
       "gender": "男"
     },
     {
@@ -3162,7 +3162,7 @@
       "pol": 80,
       "cha": 75,
       "luk": 52,
-      "ep": 59,
+      "ep": 64,
       "gender": "男"
     },
     {
@@ -3179,7 +3179,7 @@
       "pol": 75,
       "cha": 70,
       "luk": 55,
-      "ep": 61,
+      "ep": 65,
       "gender": "男"
     },
     {
@@ -3196,7 +3196,7 @@
       "pol": 72,
       "cha": 68,
       "luk": 50,
-      "ep": 58,
+      "ep": 61,
       "gender": "男"
     },
     {
@@ -3213,7 +3213,7 @@
       "pol": 45,
       "cha": 52,
       "luk": 48,
-      "ep": 57,
+      "ep": 60,
       "gender": "男"
     },
     {
@@ -3230,7 +3230,7 @@
       "pol": 40,
       "cha": 55,
       "luk": 45,
-      "ep": 55,
+      "ep": 59,
       "gender": "男"
     },
     {
@@ -3247,7 +3247,7 @@
       "pol": 72,
       "cha": 65,
       "luk": 55,
-      "ep": 61,
+      "ep": 66,
       "gender": "男"
     },
     {
@@ -3264,7 +3264,7 @@
       "pol": 75,
       "cha": 70,
       "luk": 58,
-      "ep": 59,
+      "ep": 63,
       "gender": "男"
     },
     {
@@ -3281,7 +3281,7 @@
       "pol": 78,
       "cha": 68,
       "luk": 52,
-      "ep": 58,
+      "ep": 63,
       "gender": "男"
     },
     {
@@ -3298,24 +3298,24 @@
       "pol": 50,
       "cha": 52,
       "luk": 45,
-      "ep": 58,
+      "ep": 62,
       "gender": "男"
     },
     {
       "uid": "pan-jun",
       "name": "潘浚",
       "faction": "wu",
-      "rarityTier": "rare",
+      "rarityTier": "epic",
       "layerKey": "L2",
       "role": "Support",
-      "characterCategory": "civilian",
+      "characterCategory": "general",
       "str": 64,
       "int": 72,
       "lea": 68,
       "pol": 76,
       "cha": 64,
       "luk": 62,
-      "ep": 68,
+      "ep": 70,
       "gender": "男"
     },
     {
@@ -3332,24 +3332,24 @@
       "pol": 65,
       "cha": 92,
       "luk": 50,
-      "ep": 62,
+      "ep": 69,
       "gender": "男"
     },
     {
       "uid": "lv-kai",
       "name": "呂凱",
       "faction": "shu",
-      "rarityTier": "rare",
+      "rarityTier": "epic",
       "layerKey": "L2",
       "role": "Support",
-      "characterCategory": "civilian",
+      "characterCategory": "famed",
       "str": 42,
       "int": 76,
       "lea": 66,
       "pol": 80,
       "cha": 74,
       "luk": 62,
-      "ep": 67,
+      "ep": 70,
       "gender": "男"
     },
     {
@@ -3366,7 +3366,7 @@
       "pol": 50,
       "cha": 60,
       "luk": 58,
-      "ep": 65,
+      "ep": 68,
       "gender": "男"
     },
     {
@@ -3383,7 +3383,7 @@
       "pol": 45,
       "cha": 52,
       "luk": 50,
-      "ep": 58,
+      "ep": 61,
       "gender": "男"
     },
     {
@@ -3400,7 +3400,7 @@
       "pol": 65,
       "cha": 52,
       "luk": 35,
-      "ep": 54,
+      "ep": 59,
       "gender": "男"
     },
     {
@@ -3434,7 +3434,7 @@
       "pol": 72,
       "cha": 90,
       "luk": 82,
-      "ep": 63,
+      "ep": 61,
       "gender": "女"
     },
     {
@@ -3451,7 +3451,7 @@
       "pol": 68,
       "cha": 94,
       "luk": 83,
-      "ep": 62,
+      "ep": 61,
       "gender": "女"
     },
     {

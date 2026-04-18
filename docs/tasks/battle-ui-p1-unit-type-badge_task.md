@@ -1,3 +1,4 @@
+<!-- doc_id: doc_task_0148 -->
 # 任務卡 — battle-ui-p1-unit-type-badge
 
 ## frontmatter
@@ -62,8 +63,8 @@ TigerTallyCard
 
 ## 規格來源
 
-- `docs/主戰場UI規格補充_v3.md` §Zone 3（v3-3）
-- `docs/主戰場UI規格書.md` §2.2（虎符卡片列）
+- `docs/主戰場UI規格補充_v3.md (doc_ui_0003)` (doc_ui_0003) §Zone 3（v3-3）
+- `docs/主戰場UI規格書.md (doc_ui_0001)` (doc_ui_0001) §2.2（虎符卡片列）
 
 ## 修法方向
 

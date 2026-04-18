@@ -1,3 +1,4 @@
+<!-- doc_id: doc_task_0138 -->
 # 任務卡 — battle-ui-p0-battle-hud-timing-fix
 
 ## frontmatter
@@ -48,8 +49,8 @@ Log 中有對應 warning：
 
 ## 規格來源
 
-- `docs/主戰場UI規格書.md` §2.1（頂部資訊 HUD）
-- `docs/主戰場UI規格補充_v3.md` Zone 1
+- `docs/主戰場UI規格書.md (doc_ui_0001)` (doc_ui_0001) §2.1（頂部資訊 HUD）
+- `docs/主戰場UI規格補充_v3.md (doc_ui_0003)` (doc_ui_0003) Zone 1
 
 ## 修法方向
 

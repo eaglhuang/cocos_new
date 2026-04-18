@@ -1,10 +1,11 @@
 ---
+doc_id: doc_ai_0003
 description: 根據系統規格書自動產生 UI 設計簡報（design-brief.md），供後續截圖產生或 AI 佈局分析使用
 ---
 
 ## Context Budget Guard
 
-- 進 workflow 前先看 `.agents/skills/context-budget-guard/SKILL.md`
+- 進 workflow 前先看 `.agents/skills/context-budget-guard/SKILL.md` (doc_agentskill_0006)
 - 先跑 `node tools_node/check-context-budget.js --changed --emit-keep-note`
 - 大型 `.md` / `.json` 變更先跑 `node tools_node/summarize-structured-diff.js --git <file>`
 - 收工前跑 `node tools_node/report-turn-usage.js --changed --emit-final-line`，並在 final answer 補上 `Token 量級：少 / 中 / 大（估算）`
@@ -19,7 +20,7 @@ description: 根據系統規格書自動產生 UI 設計簡報（design-brief.md
 - 已有系統規格書但尚未開始 UI 工作時
 
 ## 前提條件
-- 系統規格書存在於 `docs/` 目錄下（如 `docs/經濟系統.md`、`docs/戰場部署系統.md`）
+- 系統規格書存在於 `docs/` 目錄下（如 `docs/經濟系統.md (doc_spec_0032)` (doc_spec_0032)、`docs/戰場部署系統.md (doc_spec_0040)` (doc_spec_0040)）
 - UI 規格書存在於 `docs/ui/` 目錄下（選用）
 - 設計風格參數存在於 `assets/resources/ui-spec/ui-design-tokens.json`
 

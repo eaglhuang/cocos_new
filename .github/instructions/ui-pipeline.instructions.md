@@ -1,4 +1,5 @@
 ---
+doc_id: doc_ai_0017
 applyTo: "assets/prefabs/**,assets/scripts/ui/**,docs/ui/**,docs/ui-quality-tasks/**"
 ---
 

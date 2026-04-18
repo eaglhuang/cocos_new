@@ -15,13 +15,16 @@ import { _decorator, Component, Label, Node, Sprite, UITransform,
 import { UISkinResolver, ResolvedButtonSkin } from './UISkinResolver';
 import { services } from '../../core/managers/ServiceLoader';
 import { resolveSize, DEFAULT_TRANSITION } from './UISpecTypes';
-import type { UILayoutNodeSpec, UILayoutSpec, UISkinManifest, TransitionDef } from './UISpecTypes';
+import type { UILayoutNodeSpec, UILayoutSpec, UISkinManifest, TransitionDef,
+               SkinLayerDef, CompositeImageLayerDef } from './UISpecTypes';
 import { UIPreviewDiagnostics } from './UIPreviewDiagnostics';
 import { UIPreviewStyleBuilder, ButtonVisualState } from './UIPreviewStyleBuilder';
-import { UIPreviewShadowManager } from './UIPreviewShadowManager';
+// TODO: UIPreviewShadowManager 已移至 _pending-delete/，待所有面板遷移至 CompositePanel 後可一併刪除
+import { UIPreviewShadowManager } from './_pending-delete/UIPreviewShadowManager';
 import { UIPreviewNodeFactory } from './UIPreviewNodeFactory';
 import { UIPreviewLayoutBuilder } from './UIPreviewLayoutBuilder';
 import { UITemplateBinder } from './UITemplateBinder';
+import { UCUFLogger, LogCategory } from './UCUFLogger';
 
 const { ccclass } = _decorator;
 
@@ -82,6 +85,9 @@ export class UIPreviewBuilder extends Component {
         if (skin) {
             this.skinResolver.setManifest(skin, tokens);
             await this._preloadFonts(skin);
+            // G3: 並行預載所有 sprite slot，避免 buildScreen 內逐一等待（160ms → 30ms）
+            // Unity 對照：Resources.LoadAll<Sprite>() 批載
+            await this.skinResolver.preloadSlots(Object.keys(skin.slots));
         }
         if (i18n)   { this.i18nStrings = i18n; }
         if (tokens) { this.tokens = tokens; this.shadowManager.tokens = tokens; }
@@ -91,6 +97,7 @@ export class UIPreviewBuilder extends Component {
 
         const designWidth  = layout.canvas.designWidth  ?? 1920;
         const designHeight = layout.canvas.designHeight ?? 1080;
+        const _tBuildScreen = UCUFLogger.perfBegin('UIPreviewBuilder.buildScreen');
 
         let rootNode: Node;
         try {
@@ -109,24 +116,8 @@ export class UIPreviewBuilder extends Component {
         //
         // Unity 對照：Canvas.ForceUpdateCanvases() — 強制更新所有 RectTransform
         // ─────────────────────────────────────────────────────────────────────
-        this._realignAllWidgets(rootNode);
-        this._updateAllLayouts(rootNode);
-        this._realignAllWidgets(rootNode);
-
-        // ─── Post-build 容器溢出自動修正 pass ────────────────────────────────
-        // 針對使用 Layout 的容器節點，檢查子節點總尺寸是否超出容器可用空間。
-        // 若超出，自動按比例縮減子節點尺寸（僅縮不擴），確保所有子節點不溢出。
-        //
-        // 這是防止「文字超框」的最後一道安全網：
-        //   Layer 1: Label.overflow ≥ SHRINK（_parseOverflow + applyLabelStyle）
-        //   Layer 2: 此 pass 自動收斂子節點幾何（_enforceContainerBounds）
-        //   Layer 3: UIValidationRunner 靜態驗證（開發期預警）
-        //
-        // Unity 對照：ContentSizeFitter + LayoutRebuilder 的邊界保護
-        // ─────────────────────────────────────────────────────────────────────
-        this._enforceContainerBounds(rootNode);
-        this._updateAllLayouts(rootNode);
-        this._realignAllWidgets(rootNode);
+        this._postBuildPass(rootNode);
+        UCUFLogger.perfEnd('UIPreviewBuilder.buildScreen', _tBuildScreen);
 
         // 通用佔位符清除：所有 UIPreviewBuilder 子類在 onBuildComplete 鉤子前
         // 清除任何 {xxx} 格式的 bind 暫存佔位文字（包含 {dynamic}、{name}、{title} …）。
@@ -245,7 +236,8 @@ export class UIPreviewBuilder extends Component {
             UIPreviewDiagnostics.populateListTemplateNotFound(listPath, listNode.children.map(c => c.name));
             return;
         }
-        const content = listNode.getChildByName('Content');
+        // Content 可能在 view/Content（新架構）或直接在 listNode/Content（舊架構）
+        const content = listNode.getChildByPath('view/Content') ?? listNode.getChildByName('Content');
         if (!content) {
             UIPreviewDiagnostics.populateListContentNotFound(listPath, listNode.children.map(c => c.name));
             return;
@@ -253,7 +245,18 @@ export class UIPreviewBuilder extends Component {
 
         UIPreviewDiagnostics.populateListStart(listPath, data.length);
         const contentT = content.getComponent(UITransform);
-        const parentW  = contentT?.width  ?? 800;
+        // Row 子欄位的百分比間距應相對於 Row 內容區（扣掉 Row 自身的 paddingLeft/paddingRight）。
+        // Content.width は Layout.CONTAINER+no-children pass で paddingL+R だけに縮んでしまう。
+        // viewPort (view) は Widget(all=0) で DataList 全体を埋めるため post-Widget 後も正確。
+        const rowPaddingLeft  = (template.layout as any)?.paddingLeft  ?? 0;
+        const rowPaddingRight = (template.layout as any)?.paddingRight ?? 0;
+        const viewNode = listNode.getChildByName('view');
+        const viewT    = viewNode?.getComponent(UITransform);
+        const listT    = listNode.getComponent(UITransform);
+        const availableW = (viewT?.width ?? 0) > 0 ? viewT!.width
+                         : (listT?.width ?? 0) > 0 ? listT!.width
+                         : 800;
+        const parentW  = Math.max(availableW - rowPaddingLeft - rowPaddingRight, 100);
         const parentH  = template.height  ?? 50;
 
         for (let i = 0; i < data.length; i++) {
@@ -269,7 +272,7 @@ export class UIPreviewBuilder extends Component {
 
     // ─── 節點建構核心 ─────────────────────────────────────────────────────────
 
-    private async _buildNode(
+    protected async _buildNode(
         spec: UILayoutNodeSpec,
         parent: Node,
         parentWidth: number,
@@ -291,7 +294,10 @@ export class UIPreviewBuilder extends Component {
         if (spec.widget) this.layoutBuilder.applyWidget(node, spec.widget, parentWidth, parentHeight);
 
         // Layout（Unity 對照：LayoutGroup 系列元件）
-        this.layoutBuilder.setupLayout(node, spec);
+        const isScrollListRoot = spec.type === 'scroll-list' || spec.type === 'scroll-view';
+        if (!isScrollListRoot) {
+            this.layoutBuilder.setupLayout(node, spec);
+        }
 
         // 依類型建立元件（委派給 UIPreviewNodeFactory）
         switch (spec.type) {
@@ -302,20 +308,41 @@ export class UIPreviewBuilder extends Component {
             case 'label':           await this.nodeFactory.buildLabel(node, spec);        break;
             case 'button':          await this.nodeFactory.buildButton(node, spec);       break;
             case 'scroll-list':
-            case 'scroll-view':     await this.nodeFactory.buildScrollList(node, spec, w, h); break;
+            case 'scroll-view': {
+                // Widget が applyWidget 内で UITransform を実際のサイズに更新済みのため
+                // post-Widget サイズを buildScrollList に渡し viewPort/Content を正しく初期化する
+                const nodeT = node.getComponent(UITransform)!;
+                await this.nodeFactory.buildScrollList(node, spec, nodeT.width || w, nodeT.height || h);
+                break;
+            }
             case 'image':           await this.nodeFactory.buildImage(node, spec);        break;
             case 'resource-counter': await this.nodeFactory.buildLabel(node, spec);       break;
             case 'spacer': break;  // 空白佔位，無需掛載元件
+            case 'composite-image': await this._buildCompositeImage(node, spec); break;
+        }
+
+        // 附加 skinLayers（UCUF 圖層疊合）
+        if (spec.skinLayers && spec.skinLayers.length > 0) {
+            await this._applySkinLayers(node, spec.skinLayers);
+        }
+
+        // lazySlot：延遲載入插槽 — 建立空容器後停止遞迴（由 CompositePanel._onLazySlotCreated 接管）
+        if (spec.lazySlot === true) {
+            this._onLazySlotCreated(spec, node, w, h);
+            return node;
         }
 
         // 附加 shadow / noise 層（委派給 UIPreviewShadowManager）
         await this.shadowManager.attachShadowLayer(node, spec, parent, w, h);
         await this.shadowManager.attachNoiseLayer(node, spec, parent, w, h);
 
-        // 遞迴建立子節點
+        // 遞迴建立子節點（Widget 對齊後的實際尺寸作為 parentWidth/Height，確保百分比子節點正確計算）
         if (spec.children) {
+            const nodeT      = node.getComponent(UITransform);
+            const effectiveW = nodeT && nodeT.width  > 0 ? nodeT.width  : w;
+            const effectiveH = nodeT && nodeT.height > 0 ? nodeT.height : h;
             for (const child of spec.children) {
-                await this._buildNode(child, node, w, h);
+                await this._buildNode(child, node, effectiveW, effectiveH);
             }
         }
 
@@ -323,6 +350,113 @@ export class UIPreviewBuilder extends Component {
     }
 
     // ─── 私有工具 ─────────────────────────────────────────────────────────────
+
+    /**
+     * lazySlot 鉤子（UCUF M2）。
+     * 基類為空實作；CompositePanel 覆寫此方法以記錄插槽 entry。
+     * Unity 對照：Component.OnEnable() 虛函式鉤子模式。
+     */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    protected _onLazySlotCreated(_spec: UILayoutNodeSpec, _node: Node, _w: number, _h: number): void { /* no-op */ }
+
+    /**
+     * composite-image 節點：將 compositeImageLayers 依 zOrder 排序後，
+     * 逐層建立子 Sprite 節點疊合。
+     * Unity 對照：多層 RawImage 手動疊合的 Composite Image 元件。
+     */
+    private async _buildCompositeImage(node: Node, spec: UILayoutNodeSpec): Promise<void> {
+        const layers = spec.compositeImageLayers;
+        if (!layers || layers.length === 0) return;
+
+        const sorted = [...layers].sort((a, b) => a.zOrder - b.zOrder);
+        const ut = node.getComponent(UITransform)!;
+
+        for (const layer of sorted) {
+            const frame = await this.skinResolver.getSpriteFrame(layer.spriteSlotId);
+            if (!frame) continue;
+
+            const child = new Node(`composite_${layer.spriteSlotId}`);
+            node.addChild(child);
+
+            const childT = child.addComponent(UITransform);
+            childT.width  = ut.width;
+            childT.height = ut.height;
+
+            const sprite       = child.addComponent(Sprite);
+            sprite.sizeMode    = Sprite.SizeMode.CUSTOM;
+            sprite.spriteFrame = frame;
+
+            if (layer.opacity !== undefined && layer.opacity < 1) {
+                const op = child.addComponent(UIOpacity);
+                op.opacity = Math.round(layer.opacity * 255);
+            }
+            if (layer.tint) {
+                sprite.color = this.skinResolver.resolveColor(layer.tint);
+            }
+        }
+    }
+
+    /**
+     * UCUF skinLayers：在任意節點上疊加額外圖層（texture / pattern / overlay）。
+     * 各層依 zOrder 排序後建立為子 Sprite 節點。
+     * Unity 對照：CanvasRenderer 的 additionalMaterial stack。
+     */
+    private async _applySkinLayers(node: Node, skinLayers: SkinLayerDef[]): Promise<void> {
+        if (skinLayers.length > 12) {
+            console.warn(`[UIPreviewBuilder] skinLayers count (${skinLayers.length}) exceeds recommended max 12`);
+        }
+
+        const sorted = [...skinLayers].sort((a, b) => a.zOrder - b.zOrder);
+        const ut = node.getComponent(UITransform);
+
+        for (const layer of sorted) {
+            const frame = await this.skinResolver.getSpriteFrame(layer.slotId);
+            if (!frame) continue;
+
+            const child = new Node(`skinLayer_${layer.layerId}`);
+            node.addChild(child);
+
+            const childT = child.addComponent(UITransform);
+            if (layer.expand && ut) {
+                childT.width  = ut.width;
+                childT.height = ut.height;
+            } else {
+                childT.width  = frame.width;
+                childT.height = frame.height;
+            }
+
+            const sprite       = child.addComponent(Sprite);
+            sprite.sizeMode    = Sprite.SizeMode.CUSTOM;
+            sprite.spriteFrame = frame;
+
+            if (layer.opacity !== undefined && layer.opacity < 1) {
+                const op = child.addComponent(UIOpacity);
+                op.opacity = Math.round(layer.opacity * 255);
+            }
+        }
+    }
+
+    /**
+     * Post-build 收斂階段（M8 效能優化）。
+     * 整棵樹建完後依序執行：
+     *   1. realign → layout（初步穩定 Widget + LayoutGroup）
+     *   2. realign（以穩定後父尺寸再對齊）
+     *   3. enforceContainerBounds（溢出保護）
+     *   4. layout → realign（bounds 修正後再收斂）
+     *
+     * 統一以 perfBegin/perfEnd 包裹供 UCUFLogger 監控。
+     * Unity 對照：Canvas.ForceUpdateCanvases() + LayoutRebuilder 組合
+     */
+    protected _postBuildPass(root: Node): void {
+        const t = UCUFLogger.perfBegin('UIPreviewBuilder._postBuildPass');
+        this._realignAllWidgets(root);
+        this._updateAllLayouts(root);
+        this._realignAllWidgets(root);
+        this._enforceContainerBounds(root);
+        this._updateAllLayouts(root);
+        this._realignAllWidgets(root);
+        UCUFLogger.perfEnd('UIPreviewBuilder._postBuildPass', t);
+    }
 
     /**
      * Post-build Widget realignment pass：遞迴遍歷整棵節點樹，
@@ -417,7 +551,12 @@ export class UIPreviewBuilder extends Component {
         const padEnd   = isVertical ? layout.paddingBottom : layout.paddingRight;
         const spacing  = isVertical ? layout.spacingY : layout.spacingX;
 
-        const activeChildren = node.children.filter(c => c.active && c.getComponent(UITransform));
+        // skinLayer_ 前置詞的子節點是 decorative overlay（expand:true），不參與 Layout 計算
+        const activeChildren = node.children.filter(c =>
+            c.active &&
+            c.getComponent(UITransform) &&
+            !c.name.startsWith('skinLayer_')
+        );
         if (activeChildren.length === 0) return;
 
         const totalSpacing = Math.max(0, activeChildren.length - 1) * spacing;

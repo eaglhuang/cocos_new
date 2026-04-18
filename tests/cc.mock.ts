@@ -112,7 +112,11 @@ export function instantiate(noP: any): Node {
 }
 
 export function tween(_target: any) {
-    return { to: () => tween(_target), call: () => tween(_target), start: () => {} };
+    return {
+        to: (_duration?: number, _props?: Record<string, unknown>) => tween(_target),
+        call: (_fn?: () => void) => tween(_target),
+        start: () => {},
+    };
 }
 
 // ─── 系統 ───────────────────────────────────────────────────────────────────
@@ -144,7 +148,15 @@ export class Animation { play(): void {} }
 export class Camera {}
 export class Graphics {}
 export class ParticleSystem { startColor: any; play(): void {} }
-export class AudioSource { play(): void {} }
+export class AudioSource {
+    loop = false;
+    volume = 1;
+    clip: AudioClip | null = null;
+    play(): void {}
+    pause(): void {}
+    stop(): void {}
+    playOneShot(_clip: AudioClip, _volumeScale?: number): void {}
+}
 export class AudioClip {}
 export class CurveRange { constant = 0; }
 export class GradientRange { color = new Color(); }

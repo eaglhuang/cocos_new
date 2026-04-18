@@ -1,13 +1,60 @@
 {
   "id": "lobby-main-screen",
-  "version": 1,
+  "version": 2,
   "uiId": "LobbyMain",
   "layer": "UI2D",
   "bundle": "lobby_ui",
   "layout": "lobby-main-main",
   "skin": "lobby-main-default",
+  "contentRequirements": {
+    "schemaId": "lobby-main-content",
+    "familyId": "lobby-main",
+    "requiredFields": [
+      "playerName",
+      "seasonLabel",
+      "resourceGold",
+      "resourceGem",
+      "morningReportTitle",
+      "morningReportBody",
+      "morningReportUnreadLabel",
+      "heroWallTitle",
+      "heroWallUrgentTitle",
+      "heroWallUrgentBody",
+      "heroWallDailyTitle",
+      "heroWallDailyBody",
+      "dispatchBoardTitle",
+      "dispatchBoardBody",
+      "dispatchBoardActionLabel",
+      "officerRankTitle",
+      "officerAuthorityHint",
+      "officerUnlockHint",
+      "officerLockBadgeVisible",
+      "officerPrimaryActionLabel",
+      "worldMapTitle",
+      "worldMapPhase",
+      "worldMapFrontierBody",
+      "worldMapCoalitionBody",
+      "tournamentSeasonTitle",
+      "tournamentSeasonBody",
+      "worldCoalitionBadgeVisible",
+      "worldPrimaryActionLabel",
+      "wishTitle",
+      "wishBody",
+      "economySubsidyLabel",
+      "wishAlertVisible",
+      "wishPrimaryActionLabel",
+      "intelTitle",
+      "intelScoutBody",
+      "intelChainBreakBody",
+      "intelGridBody"
+    ]
+  },
+  "content": {
+    "source": "lobby-main-states-v1",
+    "state": "smoke-default"
+  },
   "validation": {
-    "devices": ["phone-16-9", "phone-19_5-9"],
+    "devices": ["phone-16-9", "phone-19_5-9", "tablet-4-3"],
     "allowMissingSkin": true
   }
 }

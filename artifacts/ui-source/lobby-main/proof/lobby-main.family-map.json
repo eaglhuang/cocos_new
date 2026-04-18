@@ -1,0 +1,79 @@
+{
+  "$schema": "../../schemas/family-map.schema.json",
+  "screenId": "LobbyMain",
+  "templateFamilyCandidate": "rail-list",
+  "sourceProof": "ref://docs/UI 規格補遺_2026-04-11_培育戰場轉蛋pending.md",
+  "generatedAt": "2026-04-11T12:31:00.000Z",
+  "zoneFamilyMap": [
+    {
+      "zone": "morning-report-strip",
+      "family": "parchment",
+      "recipe": "parchment-v1",
+      "structureOwner": "UITemplateResolver+widget-compose",
+      "skinOwner": "UISkinResolver",
+      "contentOwner": "contentContract",
+      "generationNeed": "reuse-only",
+      "widgetRefs": ["banner-strip"],
+      "templateRefs": ["rail-list"],
+      "sourceProofFamily": "parchment",
+      "sourceProofRecipe": "parchment-v1",
+      "notes": "晨報摘要帶，承載未讀 badge 與大廳狀態速報。"
+    },
+    {
+      "zone": "dispatch-board-peek",
+      "family": "parchment",
+      "recipe": "parchment-v1",
+      "structureOwner": "UITemplateResolver+widget-compose",
+      "skinOwner": "UISkinResolver",
+      "contentOwner": "contentContract",
+      "generationNeed": "reuse-only",
+      "widgetRefs": ["card-inline-action"],
+      "templateRefs": ["rail-list"],
+      "sourceProofFamily": "parchment",
+      "sourceProofRecipe": "parchment-v1",
+      "notes": "任務牆下方的派遣預覽卡，右側保留單一 CTA。"
+    },
+    {
+      "zone": "battle-intel-card",
+      "family": "dark-metal",
+      "recipe": "dark-metal-v1",
+      "structureOwner": "UITemplateResolver+widget-compose",
+      "skinOwner": "UISkinResolver",
+      "contentOwner": "contentContract",
+      "generationNeed": "reuse-only",
+      "widgetRefs": ["intel-card"],
+      "templateRefs": ["rail-list"],
+      "sourceProofFamily": "dark-metal",
+      "sourceProofRecipe": "dark-metal-v1",
+      "notes": "戰報與推薦配置摘要卡，不直洩 AI 解答。"
+    },
+    {
+      "zone": "world-sandtable-card",
+      "family": "parchment",
+      "recipe": "parchment-v1",
+      "structureOwner": "UITemplateResolver+widget-compose",
+      "skinOwner": "UISkinResolver",
+      "contentOwner": "contentContract",
+      "generationNeed": "reuse-only",
+      "widgetRefs": ["world-card", "tournament-season-card"],
+      "templateRefs": ["rail-list"],
+      "sourceProofFamily": "parchment",
+      "sourceProofRecipe": "parchment-v1",
+      "notes": "沙盤主卡含賽季卡插槽，承接全球局勢與挑戰賽入口。"
+    },
+    {
+      "zone": "economy-subsidy-banner",
+      "family": "parchment",
+      "recipe": "parchment-v1",
+      "structureOwner": "UITemplateResolver+widget-compose",
+      "skinOwner": "UISkinResolver",
+      "contentOwner": "contentContract",
+      "generationNeed": "reuse-only",
+      "widgetRefs": ["status-band"],
+      "templateRefs": ["rail-list"],
+      "sourceProofFamily": "parchment",
+      "sourceProofRecipe": "parchment-v1",
+      "notes": "祭壇卡底部的經濟保底摘要帶，只呈現保護線與補貼狀態。"
+    }
+  ]
+}

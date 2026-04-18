@@ -1,24 +1,16 @@
 // @spec-source → 見 docs/cross-reference-index.md
 /**
- * UltimateSelectPopup — 奧義選擇小窗 (v3-6)
+ * @deprecated
+ * UltimateSelectPopup — 奧義選擇小窗（已廢止，請使用 UltimateSelectPopupComposite）
  *
  * 職責：
- *   1. SP 滿時由 ActionCommandPanel 呼叫 show(skills)，顯示可選奧義列表
- *   2. 點擊某一項 → emit EVENT_NAMES.UltimateSkillSelected { skillId } → 關閉小窗
- *   3. 點擊小窗外部 → 關閉不發動
- *   4. 使用 dialog-select Template 驅動排版（不含視覺排版硬碼）
+ *   1. SP 滿時顯示可選奧義列表已遷移至 CompositePanel
+ *   2-4. 所有事件發射與Template邏輯已遷移
  *
- * 觸發鏈：
- *   ActionCommandPanel._onUltimateClick()
- *   → UltimateSelectPopup.show(skills)
- *   → 玩家點擊某技能
- *   → services().event.emit(UltimateSkillSelected, { skillId })
- *   → BattleController 執行奧義
+ * 遷移完成時間：2026-04-13 (Wave 2)
+ * 預計刪除：2026-05-13 (Wave 2 全部遷移後)
  *
- * Unity 對照：UltimateSkillSelectPopup（SkillSelectUI.cs — SetActive(true) + 填入技能列表）
- *
- * 設計規格：docs/主戰場UI規格書.md §4.4
- * Template：dialog-select（assets/resources/ui-spec/templates/dialog-select.json）
+ * Template：dialog-select
  */
 import { _decorator, Button, Color, Label, Layout, Node, tween, UIOpacity, UITransform, Vec3, ScrollView } from 'cc';
 import { EVENT_NAMES } from '../../core/config/Constants';

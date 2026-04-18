@@ -1,7 +1,8 @@
 ---
+doc_id: doc_agentskill_0003
 name: cocos-log-reader
-description: 'DEBUGGING SKILL — Read and analyze Cocos Creator project.log for runtime errors, warnings, and stack traces. USE FOR: any bug report, crash, UI glitch, TypeError, null reference, missing asset. Load this skill FIRST before any runtime debugging session. DO NOT USE FOR: compile errors (use get_errors tool instead).'
-argument-hint: 'Describe the symptom or error message to filter. Examples: "TypeError null root", "BattleHUD init fail", "label no textKey"'
+description: 'DEBUGGING SKILL — Read and analyze Cocos Creator project.log for runtime errors, warnings, and stack traces. USE FOR: any bug report, crash, UI glitch, TypeError, null reference, missing asset, CompositePanel mount fail, ChildPanel route fail, or screen spec wiring error. Load this skill FIRST before any runtime debugging session. DO NOT USE FOR: compile errors (use get_errors tool instead).'
+argument-hint: 'Describe the symptom or error message to filter. Examples: "TypeError null root", "BattleHUD init fail", "GeneralDetailComposite mount fail", "label no textKey"'
 ---
 
 # Cocos Log Reader（運行期日誌分析）
@@ -13,7 +14,7 @@ argument-hint: 'Describe the symptom or error message to filter. Examples: "Type
 - 使用者回報 crash / TypeError / 畫面異常
 - 使用者貼出錯誤截圖（Cocos Editor 彈出 Error 對話框）
 - 任何「一團亂」、「看起來有問題」、「行為不對」的描述
-- 分析 UIPreviewBuilder / BattleScene / 任何組件初始化失敗
+- 分析 CompositePanel / ChildPanel / BattleScene / 任何組件初始化失敗
 
 **不適用：**
 - TypeScript 編譯錯誤 → 改用 `get_errors` 工具

@@ -1,3 +1,4 @@
+<!-- doc_id: doc_task_0147 -->
 # 任務卡 — battle-ui-p1-ultimate-select-popup
 
 ## frontmatter
@@ -61,8 +62,8 @@ SP 未滿時：奧義按鈕不可點擊（disabled 狀態，暗環色 #3A8FD9）
 
 ## 規格來源
 
-- `docs/主戰場UI規格書.md` §2.4（右下角：核心操作區）、§4.4（UltimateSelectPopup）
-- `docs/主戰場UI規格補充_v3.md` §v3-1、§v3-6、Zone 7
+- `docs/主戰場UI規格書.md (doc_ui_0001)` (doc_ui_0001) §2.4（右下角：核心操作區）、§4.4（UltimateSelectPopup）
+- `docs/主戰場UI規格補充_v3.md (doc_ui_0003)` (doc_ui_0003) §v3-1、§v3-6、Zone 7
 
 ## 修法方向
 

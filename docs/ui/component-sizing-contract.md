@@ -1,8 +1,9 @@
+<!-- doc_id: doc_ui_0038 -->
 # UI 元件尺寸契約 (Component Sizing Contract)
 
 > **文件目的**: 定義所有 UI 元件的「幾何行為分類 (Geometry Behavior)」與標準尺寸矩陣，作為 repo 級的唯一尺寸真相來源。
 > **設計基準**: 1920 × 1080 px 橫向。所有數值以此解析度為準，除非另有標記。
-> **上游依據**: `docs/UI技術規格書.md` / `docs/UI品質檢核表.md` / `docs/keep-shards/keep-ui-arch.md`
+> **上游依據**: `docs/UI技術規格書.md (doc_ui_0049)` (doc_ui_0049) / `docs/UI品質檢核表.md (doc_ui_0050)` (doc_ui_0050) / `docs/keep-shards/keep-ui-arch.md (doc_index_0008)` (doc_index_0008)
 > **最後更新**: 2026-04-09
 
 ---
@@ -211,8 +212,8 @@ Title（標題）元件必須明確區分兩種類型，不可混用：
 - 若新增元件類別，先補此文件的 §3 矩陣，再更新相關 screen spec。
 - 若某畫面的 standard size 與此表不一致，必須在 screen spec 中明確標記「例外」並說明原因。
 - 此文件超過 400 行時，依 `docs/keep-shards/` shard policy 分片。
-- 交叉索引：見 `docs/cross-ref/cross-ref-ui-spec.md`
+- 交叉索引：見 `docs/cross-ref/cross-ref-ui-spec.md (doc_index_0003)` (doc_index_0003)
 
 ---
 
-*參考*: `docs/UI技術規格書.md` / `docs/UI品質檢核表.md` / `docs/ui/UI-factory-baseline-and-gates.md` / `docs/keep-shards/keep-ui-arch.md` / `docs/agent-briefs/tasks/UI-2-0096.md`
+*參考*: `docs/UI技術規格書.md (doc_ui_0049)` (doc_ui_0049) / `docs/UI品質檢核表.md (doc_ui_0050)` (doc_ui_0050) / `docs/ui/UI-factory-baseline-and-gates.md (doc_ui_0047)` (doc_ui_0047) / `docs/keep-shards/keep-ui-arch.md (doc_index_0008)` (doc_index_0008) / `docs/agent-briefs/tasks/UI-2-0096.md (doc_task_0119)` (doc_task_0119)

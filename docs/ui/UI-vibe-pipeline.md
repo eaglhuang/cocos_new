@@ -1,8 +1,9 @@
+<!-- doc_id: doc_ui_0048 -->
 # UI Vibe Coding 自動化生產藍圖
 
 ## TL;DR
 
-本文件定義一條適用於 Cocos Creator 3.8 的 UI 量產工作流，目標是用 `JSON layout spec + skin asset manifest + Cocos 預覽生成器 + Auto Atlas policy + Agent Skill`，把 UI 生產流程從「手工拖節點 + 手工換圖」改造成「資料驅動 + 可預覽 + 可驗證 + 可批量替換美術 Atlas」的模式。
+本文件定義一條適用於 Cocos Creator 3.8 的 UI 自動化生產工作流，目標是用 `UI 示意圖 / proof draft + UCUF 藍圖 + JSON layout spec + skin asset manifest + Cocos 預覽生成器 + Browser QA + Agent Skill`，把 UI 生產流程從「手工拖節點 + 手工換圖」改造成「圖驅動啟動 + 資料驅動組裝 + 可預覽 + 可驗證 + 可自動迭代 + 可批量替換美術 Atlas」的模式。
 
 Unity 對照：
 - `ui-layout.json` 類似 Prefab 結構描述 + Layout 規則
@@ -64,12 +65,73 @@ UI 量產流程的真實來源不是 Prefab，而是三層資料契約：
 
 ## 3. 端到端工作流
 
-### Phase A: UI 設計輸入
+### Phase A: UI 示意圖入口
 
-1. 規格文件提供畫面需求
-2. AI 先草擬 `ui-layout.json`
-3. AI 或美術根據 layout 需要產出貼圖需求單
-4. 美術或 AI 產圖輸出到原始素材區
+1. 人工提供 `reference.png`、Figma snapshot、既有頁面截圖，或其他 proofSource
+2. `ui-vibe-pipeline` 先將圖面送入 proof draft 分解，而不是先要求人手填完整 recipe
+3. 若已有正式規格或既有 runtime sample，再把它們作為補充真相接入
+
+目前 v0 已有 proof 起點的 orchestration 命令：
+
+```bash
+node tools_node/run-ui-vibe-workflow.js --proof assets/resources/ui-spec/proof/screens/shop-main.proof.json --use-recommended --write
+```
+
+若只有 UI 示意圖 / 截圖，現在也可直接從 proofSource 啟動：
+
+```bash
+node tools_node/run-ui-vibe-workflow.js --proof-source docs/戰場示意圖.png --screen-id BattleHudOverlay --family hud-overlay --use-recommended --write
+```
+
+這支命令會串接：
+
+1. `compile-proof-to-mcq.js`
+2. `compile-mcq-answer-to-recipe.js`
+3. `compile-recipe-to-screen-spec.js`
+4. `compile-recipe-to-task-card.js`
+5. `compile-recipe-to-panel-scaffold.js`
+
+### Phase B: Proof / Family / MCQ 收斂
+
+1. 先拆成 `proof draft`
+2. 根據 UCUF family 與既有頁面經驗推 family recommendation
+3. 把無法直接推斷的欄位轉成 MCQ
+4. 由 MCQ answers 產出 normalized recipe 與 design brief
+
+### Phase C: 任務卡與文件自動化
+
+1. 透過 `task-card-opener` skill 產出 task card / task shard，卡號命名依 `docs/遊戲規格文件/系統規格書/名詞定義文件.md (doc_spec_0008)`
+2. 回寫 design brief / review skeleton / runtime skeleton
+3. 把 generator、驗證與 smoke route 一起寫進文件，而不是留待人工補齊
+
+### Phase D: UI 框架產生
+
+1. 產出或更新 `layout / skin / screen` 三層 JSON
+2. 產出 Composite / Child Panel scaffold
+3. 補 mapper / bind path / content requirements
+
+### Phase E: 靜態驗證與 runtime wiring 驗證
+
+1. strict validate
+2. asset-db refresh
+3. contract / bind path / content requirements 檢查
+4. 框架到齊後才准進畫面 QA
+
+### Phase F: Browser QA 與自動調整
+
+1. 在 Browser Review 環境截圖
+2. 參考 proof 與既有 family 經驗自動調整 screen
+3. 反覆驗證直到只剩 residual polish
+
+### Phase G: 人類驗收
+
+1. 輸出 handoff 摘要
+2. 標示 residual polish / blocker
+3. 等待人類最終視覺驗收
+
+## 3.1 補充：素材與匯入子流程
+
+以下子流程仍保留，但它們現在屬於上述主流程中的 supporting pipeline，而不再是另一條平行主幹。
 
 建議原始素材區：
 
@@ -81,7 +143,7 @@ artifacts/
     popup-common/
 ```
 
-### Phase B: 切片與貼圖 metadata
+### Subflow B1: 切片與貼圖 metadata
 
 原始貼圖不能直接丟進 Cocos，要先產生切片 metadata。
 
@@ -94,7 +156,7 @@ artifacts/
 5. 是否為 9-slice
 6. 是否屬於 hover/pressed/disabled 等狀態圖
 
-### Phase C: Cocos 匯入
+### Subflow B2: Cocos 匯入
 
 1. 貼圖匯入指定 bundle 或 resources 路徑
 2. 依 manifest 套用 9-slice 設定
@@ -102,14 +164,14 @@ artifacts/
 4. 如果 skin 未就緒，退回白模
 5. 由 `UIManager` / `ResourceManager` 接入執行期流程
 
-### Phase D: 預覽與調整
+### Subflow B3: 預覽與調整
 
 1. 產生預覽畫面
 2. 檢查多種螢幕比例
 3. 重新調整 layout json 或 skin manifest
 4. 再生成一次預覽
 
-### Phase E: 驗證與打包
+### Subflow B4: 驗證與打包
 
 1. 檢查命名規範
 2. 檢查 9-slice 整數 border
@@ -332,6 +394,8 @@ assets/scripts/ui/spec/
   UISpecLoader.ts
   UISkinResolver.ts
   UIPreviewBuilder.ts
+  CompositePanel.ts
+  ChildPanelBase.ts
   UIValidationRunner.ts
 ```
 
@@ -340,13 +404,15 @@ assets/scripts/ui/spec/
 1. `UISpecTypes.ts` — 定義 layout / skin / screen 的 TypeScript 型別
 2. `UISpecLoader.ts` — 透過現有 `assets/scripts/core/systems/ResourceManager.ts` 載入 JSON
 3. `UISkinResolver.ts` — 將 skin slot 解析成 SpriteFrame / LabelStyle / Button 狀態圖
-4. `UIPreviewBuilder.ts` — 根據 layout spec 生成節點樹並套皮
-5. `UIValidationRunner.ts` — 檢查缺圖、九宮格、比例、文字溢出與熱區
+4. `UIPreviewBuilder.ts` — 底層根據 layout spec 生成節點樹並套皮
+5. `CompositePanel.ts` — 頁級宿主，負責 slot routing、child panel mount 與 screen orchestration
+6. `ChildPanelBase.ts` — 子內容區基類，負責單一 data source 更新與 fragment 綁定
+7. `UIValidationRunner.ts` — 檢查缺圖、九宮格、比例、文字溢出與熱區
 
 ### 6.2 TypeScript 型別範例
 
 ```ts
-// @spec-source → 見 docs/cross-reference-index.md
+// @spec-source → 見 docs/cross-reference-index.md (doc_index_0005)
 export interface UIScreenSpec {
     id: string;
     version: number;
@@ -401,85 +467,33 @@ export interface UISkinSpriteSlot {
 }
 ```
 
-### 6.3 預覽生成器範例
+### 6.3 頁級宿主範例
 
 ```ts
-// @spec-source → 見 docs/cross-reference-index.md
-import { _decorator, Component, Node, Label, Sprite, UITransform, Widget, Layout } from 'cc';
-import { SolidBackground } from '../components/SolidBackground';
-import type { UILayoutNodeSpec } from './UISpecTypes';
+// @spec-source → 見 docs/cross-reference-index.md (doc_index_0005)
+import { _decorator } from 'cc';
+import { CompositePanel } from '../core/CompositePanel';
 
 const { ccclass } = _decorator;
 
-@ccclass('UIPreviewBuilder')
-export class UIPreviewBuilder extends Component {
-    public buildNodeTree(spec: UILayoutNodeSpec, parent: Node): Node {
-        const node = new Node(spec.name);
-        node.parent = parent;
+@ccclass('ExampleComposite')
+export class ExampleComposite extends CompositePanel {
+  protected override getSlotRouteKey(): string {
+    return 'Overview';
+  }
 
-        const transform = node.addComponent(UITransform);
-        if (spec.width) transform.setContentSize(spec.width, transform.height);
-        if (spec.height) transform.setContentSize(transform.width, spec.height);
-
-        if (spec.widget) {
-            const widget = node.addComponent(Widget);
-            if (spec.widget.top !== undefined) {
-                widget.isAlignTop = true;
-                widget.top = spec.widget.top;
-            }
-            if (spec.widget.bottom !== undefined) {
-                widget.isAlignBottom = true;
-                widget.bottom = spec.widget.bottom;
-            }
-            if (spec.widget.left !== undefined) {
-                widget.isAlignLeft = true;
-                widget.left = spec.widget.left;
-            }
-            if (spec.widget.right !== undefined) {
-                widget.isAlignRight = true;
-                widget.right = spec.widget.right;
-            }
-        }
-
-        switch (spec.type) {
-            case 'panel': {
-                node.addComponent(Sprite);
-                node.addComponent(SolidBackground);
-                break;
-            }
-            case 'label': {
-                const label = node.addComponent(Label);
-                label.string = spec.textKey ?? spec.name;
-                break;
-            }
-        }
-
-        if (spec.layout) {
-            const layout = node.addComponent(Layout);
-            layout.spacingX = spec.layout.spacing ?? 0;
-            layout.spacingY = spec.layout.spacing ?? 0;
-            if (spec.layout.type === 'horizontal') {
-                layout.type = Layout.Type.HORIZONTAL;
-            } else if (spec.layout.type === 'vertical') {
-                layout.type = Layout.Type.VERTICAL;
-            } else {
-                layout.type = Layout.Type.GRID;
-            }
-        }
-
-        for (const child of spec.children ?? []) {
-            this.buildNodeTree(child, node);
-        }
-
-        return node;
-    }
+  protected override getContentState(): unknown {
+    return this._contentState;
+  }
 }
 ```
+
+補充：`CompositePanel` 是頁級 orchestration 層；它底層仍透過 `UIPreviewBuilder` 建立節點樹，所以正式文件應描述為「CompositePanel / ChildPanel 建立在 UIPreviewBuilder runtime 之上」，而不是把 `UIPreviewBuilder` 當成所有新 screen 的直接開發入口。
 
 ### 6.4 Skin 套用器範例
 
 ```ts
-// @spec-source → 見 docs/cross-reference-index.md
+// @spec-source → 見 docs/cross-reference-index.md (doc_index_0005)
 import { Label, Sprite, SpriteFrame } from 'cc';
 
 interface SkinSlotResolver {
@@ -518,7 +532,7 @@ export async function applySkinToNode(node: any, skinSlot: string | undefined, s
 ### 6.5 Runtime 掛接範例
 
 ```ts
-// @spec-source → 見 docs/cross-reference-index.md
+// @spec-source → 見 docs/cross-reference-index.md (doc_index_0005)
 import { UIID, UIConfig } from '../../core/config/UIConfig';
 
 export function buildRuntimeScreenMap() {
@@ -559,8 +573,8 @@ export function buildRuntimeScreenMap() {
 ```md
 ---
 name: ui-vibe-pipeline
-description: 'Use for Cocos UI, JSON layout, skin manifest, atlas planning, 9-slice validation, Auto Atlas policy, preview generation, vibe coding workflow, and mass-producing UI screens with consistent structure.'
-argument-hint: 'Describe the target screen, visual style, and whether you need layout spec, skin manifest, preview workflow, or validation.'
+description: 'UI 自動化生產總控 SKILL — 從 UI 示意圖、參考圖、Figma snapshot 或既有頁面經驗啟動，串接參考圖分解、UCUF family/recipe 收斂、任務卡與文件產出、ui-spec 與 Panel scaffold、靜態驗證、Browser QA 自動調整，直到交付人類驗收。'
+argument-hint: '提供 proofSource 或 screenId，說明風格、參考頁面，以及是否要自動產 task card / 文件 / scaffold / Browser QA。'
 user-invocable: true
 disable-model-invocation: false
 ---
@@ -568,19 +582,17 @@ disable-model-invocation: false
 # UI Vibe Pipeline
 
 ## When to Use
-- Build a new Cocos UI screen from spec
-- Convert an art direction into layout json and skin manifest
-- Review atlas grouping and 9-slice correctness
-- Generate a preview workflow for mass production
-- Prevent UI drift between placeholder and final art
+- Start a new UI screen directly from a reference image or Figma snapshot
+- Orchestrate proof decomposition, UCUF convergence, task card/docs generation, scaffold, validation, and browser QA
+- Mass-produce UI screens while keeping the workflow image-first and verification-first
 
 ## Procedure
-1. Read the relevant UI spec documents and keep consensus.
-2. Inspect current UIManager, UIConfig, ResourceManager, and fallback UI components.
-3. Produce or update `ui-layout`, `ui-skin`, and `ui-screen` contracts.
-4. Validate 9-slice borders, bleed, atlas grouping, and state sprite completeness.
-5. Plan preview generation and runtime integration.
-6. Produce implementation-ready code examples and verification checklist.
+1. Ingest a proof source and decompose it into a proof draft.
+2. Use UCUF family rules and unresolved notes to generate MCQ only where needed.
+3. Produce normalized recipe, task card, brief, and review/runtime skeletons.
+4. Scaffold `layout / skin / screen` plus Panel framework.
+5. Run strict validation before any visual QA.
+6. Capture Browser QA, adjust the screen, and stop at human acceptance handoff.
 
 ## References
 - [Pipeline](./references/pipeline.md)
@@ -790,8 +802,8 @@ stitch MCP 可以有幫助，但應視為前處理工具，而不是核心流程
 2. 延用 `assets/scripts/core/config/UIConfig.ts` 作為畫面對映入口
 3. 延用 `assets/scripts/core/systems/ResourceManager.ts` 載入 JSON 與 SpriteFrame
 4. 延用 `assets/scripts/ui/components/SolidBackground.ts` 作為 fallback 底板
-5. 用 `docs/UI技術規格書.md` 當流程母規格
-6. 後續把本文件中的決策補寫進 `docs/keep.md`
+5. 用 `docs/UI技術規格書.md (doc_ui_0049)` (doc_ui_0049) 當流程母規格
+6. 後續把本文件中的決策補寫進 `docs/keep.md (doc_index_0011)` (doc_index_0011)
 
 ---
 

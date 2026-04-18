@@ -30,6 +30,7 @@ function parseArgs(argv) {
   const args = {
     files: [],
     changed: false,
+    staged: false,
     json: false,
     emitFinalLine: false,
     top: 3,
@@ -50,6 +51,10 @@ function parseArgs(argv) {
       args.changed = true;
       continue;
     }
+    if (arg === '--staged') {
+      args.staged = true;
+      continue;
+    }
     if (arg === '--top') {
       args.top = Number(argv[i + 1] || args.top);
       i += 1;
@@ -64,7 +69,7 @@ function parseArgs(argv) {
     }
   }
 
-  if (!args.changed && args.files.length === 0) {
+  if (!args.changed && !args.staged && args.files.length === 0) {
     args.changed = true;
   }
 
@@ -84,9 +89,29 @@ function changedFiles() {
     });
     return output
       .split(/\r?\n/)
-      .map((line) => line.trim())
+      .map((line) => line.replace(/\r/g, ''))
       .filter(Boolean)
-      .map((line) => line.slice(3).trim().replace(/\\/g, '/'))
+      .map((line) => {
+        const body = line.length > 3 ? line.slice(3).trim() : '';
+        const renamed = body.includes(' -> ') ? body.split(' -> ').pop() : body;
+        return String(renamed || '').replace(/\\/g, '/');
+      })
+      .filter(Boolean);
+  } catch {
+    return [];
+  }
+}
+
+function stagedFiles() {
+  try {
+    const output = cp.execSync('git diff --cached --name-only --diff-filter=ACMR', {
+      cwd: ROOT,
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'ignore'],
+    });
+    return output
+      .split(/\r?\n/)
+      .map((line) => line.replace(/\r/g, '').trim().replace(/\\/g, '/'))
       .filter(Boolean);
   } catch {
     return [];
@@ -225,6 +250,9 @@ function main() {
 
   if (args.changed) {
     for (const file of changedFiles()) fileSet.add(file);
+  }
+  if (args.staged) {
+    for (const file of stagedFiles()) fileSet.add(file);
   }
   for (const file of args.files) {
     fileSet.add(normalizeRel(file));

@@ -5,18 +5,21 @@ import {
     director,
     sys,
     Enum,
+    Label,
     SpriteFrame,
     Sprite,
     Node,
+    UIOpacity,
     UITransform,
     Widget,
     resources,
 } from 'cc';
 import { services } from '../../core/managers/ServiceLoader';
 import { UIScreenPreviewHost } from '../components/UIScreenPreviewHost';
-import { GeneralDetailPanel } from '../components/GeneralDetailPanel';
-import { GeneralDetailOverviewShell } from '../components/GeneralDetailOverviewShell';
+import { GeneralDetailComposite } from '../components/GeneralDetailComposite';
 import { LobbyScene } from './LobbyScene';
+import { BattleTactic } from '../../core/config/Constants';
+import { DEFAULT_BATTLE_ENTRY_PARAMS, type BattleEntryParams } from '../../battle/models/BattleEntryParams';
 import type { GeneralConfig } from '../../core/models/GeneralUnit';
 import { getUIRarityMarkLabel } from '../core/UIRarityMark';
 import { applyUIPreviewBinderState, type UIPreviewBinderState } from '../core/UIPreviewStateApplicator';
@@ -32,6 +35,7 @@ enum LoadingPreviewTarget {
     BattleScene = 5,
     GeneralDetailOverview = 6,
     SpiritTallyDetail = 7,
+    GeneralDetailSkills = 12,
 }
 
 /**
@@ -119,12 +123,41 @@ export class LoadingScene extends Component {
         case LoadingPreviewTarget.BattleScene:
             return 'battle-scene';
         case LoadingPreviewTarget.GeneralDetailOverview:
-            return 'general-detail-bloodline-v3-screen';
+            return 'general-detail-unified-screen';
+        case LoadingPreviewTarget.GeneralDetailSkills:
+            return 'general-detail-unified-screen';
         case LoadingPreviewTarget.SpiritTallyDetail:
             return 'spirit-tally-detail-screen';
         case LoadingPreviewTarget.Disabled:
         default:
             return 'lobby-main-screen';
+        }
+    }
+
+    private _resolvePreviewBattleParams(): BattleEntryParams {
+        const query = new URLSearchParams(globalThis?.window?.location?.search ?? '');
+        const battleTactic = this._parseBattleTactic(query.get('battleTactic') ?? query.get('BATTLE_TACTIC'));
+
+        return {
+            ...DEFAULT_BATTLE_ENTRY_PARAMS,
+            battleTactic,
+        };
+    }
+
+    private _parseBattleTactic(rawValue: string | null): BattleTactic {
+        switch ((rawValue ?? '').trim()) {
+        case 'fire-attack':
+            return BattleTactic.FireAttack;
+        case 'flood-attack':
+            return BattleTactic.FloodAttack;
+        case 'rock-slide':
+            return BattleTactic.RockSlide;
+        case 'ambush-attack':
+            return BattleTactic.AmbushAttack;
+        case 'night-raid':
+            return BattleTactic.NightRaid;
+        default:
+            return BattleTactic.Normal;
         }
     }
 
@@ -272,6 +305,9 @@ export class LoadingScene extends Component {
             case LoadingPreviewTarget.GeneralDetailOverview:
                 await this._previewGeneralDetailOverview();
                 return;
+            case LoadingPreviewTarget.GeneralDetailSkills:
+                await this._previewGeneralDetailSkills();
+                return;
             case LoadingPreviewTarget.SpiritTallyDetail:
                 await this._previewSpiritTallyDetail();
                 this._setCaptureState('ready', 'spirit-tally-detail-screen');
@@ -315,6 +351,7 @@ export class LoadingScene extends Component {
 
     private async _previewBattleScene(): Promise<void> {
         console.log('[LoadingScene] Preview target -> BattleScene.scene');
+        services().scene.setNextScene('BattleScene', this._resolvePreviewBattleParams());
         await new Promise<void>((resolve, reject) => {
             director.loadScene('BattleScene', (error) => {
                 if (error) {
@@ -328,6 +365,17 @@ export class LoadingScene extends Component {
 
     private async _previewGeneralDetailOverview(): Promise<void> {
         console.log('[LoadingScene] Preview target -> LobbyScene GeneralDetailOverview smoke route');
+        await this._previewGeneralDetailByTab('Overview');
+    }
+
+    private async _previewGeneralDetailSkills(): Promise<void> {
+        console.log('[LoadingScene] Preview target -> LobbyScene GeneralDetailSkills smoke route');
+        await this._previewGeneralDetailByTab('Skills');
+    }
+
+    private async _previewGeneralDetailByTab(tab: 'Overview' | 'Skills'): Promise<void> {
+        const previewVariant = this.previewVariant.trim();
+
         await new Promise<void>((resolve, reject) => {
             director.loadScene('LobbyScene', (error) => {
                 if (error) {
@@ -349,21 +397,48 @@ export class LoadingScene extends Component {
             throw new Error('[LoadingScene] LobbyScene 未能在 10 秒內完成初始化（generals 尚未載入）');
         }
 
-        await lobbyScene.onClickGeneralDetailOverviewSmoke();
-        await this._delay(420);
-        const previewState = await this._loadGeneralDetailOverviewPreviewState();
-        const overviewShell = await this._waitForOverviewShell(6500);
-        if (overviewShell && previewState) {
-            await overviewShell.showContentState(previewState);
+        if (tab === 'Skills') {
+            await lobbyScene.onClickGeneralDetailSkillsSmoke(previewVariant);
+        } else {
+            await lobbyScene.onClickGeneralDetailOverviewSmoke(previewVariant);
         }
-        if (!overviewShell) {
-            const detailPanel = director.getScene()?.getComponentInChildren(GeneralDetailPanel) ?? null;
-            throw new Error(
-                `[LoadingScene] GeneralDetailOverview preview 未找到 overview shell; detailPanelActive=${detailPanel?.node?.active ?? false}`,
-            );
-        }
+
+        await this._waitForGeneralDetailVisualReady(tab);
         await this._delay(180);
-        this._setCaptureState('ready', 'general-detail-bloodline-v3-screen');
+
+        this._setCaptureState('ready', 'general-detail-unified-screen');
+    }
+
+    private async _waitForGeneralDetailVisualReady(tab: 'Overview' | 'Skills'): Promise<void> {
+        const startedAt = Date.now();
+        let lastError: Error | null = null;
+
+        while (Date.now() - startedAt < 2500) {
+            const detailPanel = director.getScene()?.getComponentInChildren(GeneralDetailComposite) ?? null;
+            if (!detailPanel || !detailPanel.node.active) {
+                lastError = new Error(
+                    `[LoadingScene] GeneralDetail preview missing active GeneralDetailComposite; tab=${tab} active=${detailPanel?.node?.active ?? false}`,
+                );
+                await this._delay(120);
+                continue;
+            }
+
+            try {
+                if (tab === 'Skills') {
+                    this._assertGeneralDetailSkillsVisualReady(detailPanel);
+                } else {
+                    this._assertGeneralDetailOverviewVisualReady(detailPanel);
+                }
+                return;
+            } catch (error) {
+                lastError = error instanceof Error
+                    ? error
+                    : new Error(String(error));
+                await this._delay(120);
+            }
+        }
+
+        throw lastError ?? new Error(`[LoadingScene] GeneralDetail preview readiness timed out: tab=${tab}`);
     }
 
     private async _previewSpiritTallyDetail(): Promise<void> {
@@ -433,35 +508,119 @@ export class LoadingScene extends Component {
         }
     }
 
+    private _assertGeneralDetailOverviewVisualReady(detailPanel: GeneralDetailComposite): void {
+        const root = detailPanel.node.getChildByPath('__safeArea/GeneralDetailRoot')
+            ?? detailPanel.node.getChildByName('GeneralDetailRoot');
+        if (!root) {
+            throw new Error('[LoadingScene] GeneralDetailOverview preview missing GeneralDetailRoot');
+        }
+
+        const overviewSlot = root.getChildByName('OverviewSlot')
+            ?? root.getChildByPath('RightContentArea/OverviewSlot');
+        const overviewContent = overviewSlot?.activeInHierarchy
+            ? overviewSlot.getChildByName('OverviewTabContent')
+            : null;
+
+        if (!overviewContent?.activeInHierarchy) {
+            throw new Error('[LoadingScene] GeneralDetailOverview preview missing active OverviewSlot/OverviewTabContent');
+        }
+
+        this._requireNonEmptyLabel(overviewContent, 'HeaderRow/NameTitleColumn/NameLabel');
+        this._requireActiveNode(overviewContent, 'OverviewSummaryModules/CoreStatsCard');
+        this._requireActiveNode(
+            overviewContent,
+            'BloodlineOverviewModules/BloodlineUnifiedCard/BloodlineSummaryCard',
+        );
+        this._assertGeneralDetailOverviewPortraitReady(root);
+    }
+
+    private _requireActiveNode(root: Node, path: string): Node {
+        const node = root.getChildByPath(path);
+        if (!node || !node.activeInHierarchy) {
+            throw new Error(`[LoadingScene] GeneralDetailOverview preview missing active node: ${path}`);
+        }
+        return node;
+    }
+
+    private _requireNonEmptyLabel(root: Node, path: string): void {
+        const node = this._requireActiveNode(root, path);
+        const label = node.getComponent(Label);
+        if (!label || !label.string.trim()) {
+            throw new Error(`[LoadingScene] GeneralDetailOverview preview missing label content: ${path}`);
+        }
+    }
+
+    private _assertGeneralDetailOverviewPortraitReady(root: Node): void {
+        const portraitNode = this._requireActiveNode(root, 'PortraitImage');
+        const sprite = portraitNode.getComponent(Sprite);
+        if (!sprite?.spriteFrame) {
+            throw new Error('[LoadingScene] GeneralDetailOverview preview missing portrait spriteFrame: PortraitImage');
+        }
+
+        const opacity = portraitNode.getComponent(UIOpacity);
+        if (opacity && opacity.opacity <= 0) {
+            throw new Error('[LoadingScene] GeneralDetailOverview preview portrait opacity is zero: PortraitImage');
+        }
+
+        const transform = portraitNode.getComponent(UITransform);
+        if (!transform || transform.width < 64 || transform.height < 64) {
+            throw new Error(
+                `[LoadingScene] GeneralDetailOverview preview portrait collapsed: PortraitImage size=${transform?.width ?? 'null'}x${transform?.height ?? 'null'}`,
+            );
+        }
+    }
+
+    private _assertGeneralDetailSkillsVisualReady(detailPanel: GeneralDetailComposite): void {
+        const root = detailPanel.node.getChildByPath('__safeArea/GeneralDetailRoot')
+            ?? detailPanel.node.getChildByName('GeneralDetailRoot');
+        if (!root) {
+            throw new Error('[LoadingScene] GeneralDetailSkills preview missing GeneralDetailRoot');
+        }
+
+        this._requireActiveDescendant(root, 'PrimarySkillCard');
+        this._requireNonEmptyDescendantLabel(root, 'PrimarySkillValue');
+        this._requireActiveDescendant(root, 'LearnedSkillsCard');
+        this._requireNonEmptyDescendantLabel(root, 'LearnedSkillsValue');
+        this._requireActiveDescendant(root, 'LockedSkillsCard');
+        this._requireNonEmptyDescendantLabel(root, 'LockedSkillsValue');
+        this._requireNonEmptyDescendantLabel(root, 'SkillNoteValue');
+    }
+
+    private _requireActiveDescendant(root: Node, nodeName: string): Node {
+        const node = this._findDescendantByName(root, nodeName);
+        if (!node || !node.activeInHierarchy) {
+            throw new Error(`[LoadingScene] GeneralDetail preview missing active descendant: ${nodeName}`);
+        }
+        return node;
+    }
+
+    private _requireNonEmptyDescendantLabel(root: Node, nodeName: string): void {
+        const node = this._requireActiveDescendant(root, nodeName);
+        const label = node.getComponent(Label);
+        if (!label || !label.string.trim()) {
+            throw new Error(`[LoadingScene] GeneralDetail preview missing label content: ${nodeName}`);
+        }
+    }
+
+    private _findDescendantByName(root: Node, nodeName: string): Node | null {
+        if (root.name === nodeName) {
+            return root;
+        }
+
+        for (const child of root.children) {
+            const match = this._findDescendantByName(child, nodeName);
+            if (match) {
+                return match;
+            }
+        }
+
+        return null;
+    }
+
     private _delay(ms: number): Promise<void> {
         return new Promise((resolve) => {
             setTimeout(resolve, ms);
         });
-    }
-
-    private async _waitForOverviewShell(timeoutMs: number): Promise<GeneralDetailOverviewShell | null> {
-        const startedAt = Date.now();
-        while (Date.now() - startedAt < timeoutMs) {
-            const shell = director.getScene()?.getComponentInChildren(GeneralDetailOverviewShell) ?? null;
-            if (shell && shell.node.activeInHierarchy) {
-                return shell;
-            }
-            await this._delay(80);
-        }
-        return null;
-    }
-
-    private async _loadGeneralDetailOverviewPreviewState(): Promise<any | null> {
-        try {
-            const content = await services().resource.loadJson<any>(
-                'ui-spec/content/general-detail-overview-states-v1',
-                { tags: ['LoadingScenePreview'] },
-            );
-            return content?.states?.['smoke-zhang-fei'] ?? null;
-        } catch (error) {
-            console.warn('[LoadingScene] 載入 GeneralDetailOverview preview state 失敗', error);
-            return null;
-        }
     }
 
     private async _startTransition() {

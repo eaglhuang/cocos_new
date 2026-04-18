@@ -1,0 +1,41 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "schemaId": "battle-hud-content",
+  "familyId": "battle-hud",
+  "version": 1,
+  "description": "BattleHUD pending contract，補軍師摘要與戰後回收提示。",
+  "fields": {
+    "battleState": {
+      "type": "object",
+      "required": true,
+      "bindPath": "battleState"
+    },
+    "strategistSummaryTitle": {
+      "type": "string",
+      "required": true,
+      "bindPath": "StrategistSummaryBand/StrategistSummaryTitle"
+    },
+    "strategistSummaryBody": {
+      "type": "string",
+      "required": true,
+      "bindPath": "StrategistSummaryBand/StrategistSummaryBody"
+    },
+    "stageSalvageTitle": {
+      "type": "string",
+      "required": true,
+      "bindPath": "StrategistSummaryBand/StageSalvageTitle"
+    },
+    "stageSalvageBody": {
+      "type": "string",
+      "required": true,
+      "bindPath": "StrategistSummaryBand/StageSalvageBody"
+    }
+  },
+  "requiredFields": [
+    "battleState",
+    "strategistSummaryTitle",
+    "strategistSummaryBody",
+    "stageSalvageTitle",
+    "stageSalvageBody"
+  ]
+}

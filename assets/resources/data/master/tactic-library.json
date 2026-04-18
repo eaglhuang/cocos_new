@@ -1,0 +1,263 @@
+{
+  "version": "1.0.0",
+  "updatedAt": "2026-04-15",
+  "description": "M1-E 天賦戰法 canonical library。供 generate-general-tactics.js 依稀有度、適性與屬性挑選。",
+  "data": [
+    {
+      "id": "tactic-cavalry-shock",
+      "displayName": "騎軍衝鋒",
+      "category": "charge",
+      "rarityAccess": [
+        "rare",
+        "epic",
+        "legendary",
+        "mythic"
+      ],
+      "preferredStats": [
+        "str",
+        "lea"
+      ],
+      "aptitudeRules": [
+        {
+          "scope": "troop",
+          "key": "CAVALRY",
+          "minGrade": "A"
+        }
+      ],
+      "sourceGeneIds": [
+        "gene_cavalry",
+        "gene_charge"
+      ],
+      "battleSkillId": "zhao-yun-pierce",
+      "sourceType": "seed-tactic",
+      "targetMode": "line",
+      "timing": "active-cast",
+      "manualTargeting": false,
+      "autoAimMode": "densest-line"
+    },
+    {
+      "id": "tactic-spear-phalanx",
+      "displayName": "長槍列陣",
+      "category": "formation",
+      "rarityAccess": [
+        "common",
+        "rare",
+        "epic",
+        "legendary"
+      ],
+      "preferredStats": [
+        "lea",
+        "str"
+      ],
+      "aptitudeRules": [
+        {
+          "scope": "troop",
+          "key": "INFANTRY",
+          "minGrade": "B"
+        }
+      ],
+      "sourceGeneIds": [
+        "gene_command",
+        "gene_guard"
+      ],
+      "battleSkillId": "sun-quan-tide",
+      "sourceType": "seed-tactic",
+      "targetMode": "adjacent-tiles",
+      "timing": "active-cast",
+      "manualTargeting": false,
+      "autoAimMode": "adjacent-ring"
+    },
+    {
+      "id": "tactic-archer-volley",
+      "displayName": "箭雨齊發",
+      "category": "ranged",
+      "rarityAccess": [
+        "common",
+        "rare",
+        "epic",
+        "legendary"
+      ],
+      "preferredStats": [
+        "int",
+        "lea"
+      ],
+      "aptitudeRules": [
+        {
+          "scope": "troop",
+          "key": "ARCHER",
+          "minGrade": "A"
+        }
+      ],
+      "sourceGeneIds": [
+        "gene_strategy"
+      ],
+      "battleSkillId": "guan-yu-slash",
+      "sourceType": "seed-tactic",
+      "targetMode": "line",
+      "timing": "active-cast",
+      "manualTargeting": false,
+      "autoAimMode": "densest-line"
+    },
+    {
+      "id": "tactic-fire-scheme",
+      "displayName": "火計佈陣",
+      "category": "scheme",
+      "rarityAccess": [
+        "rare",
+        "epic",
+        "legendary",
+        "mythic"
+      ],
+      "preferredStats": [
+        "int",
+        "pol"
+      ],
+      "aptitudeRules": [
+        {
+          "scope": "weather",
+          "key": "WINDY",
+          "minGrade": "B"
+        },
+        {
+          "scope": "terrain",
+          "key": "PLAIN",
+          "minGrade": "B"
+        }
+      ],
+      "sourceGeneIds": [
+        "gene_strategy"
+      ],
+      "battleSkillId": "zhou-yu-inferno",
+      "sourceType": "seed-tactic",
+      "targetMode": "tile",
+      "timing": "active-cast",
+      "manualTargeting": false,
+      "autoAimMode": "occupied-tile"
+    },
+    {
+      "id": "tactic-morale-rally",
+      "displayName": "軍心鼓舞",
+      "category": "support",
+      "rarityAccess": [
+        "common",
+        "rare",
+        "epic",
+        "legendary",
+        "mythic"
+      ],
+      "preferredStats": [
+        "lea",
+        "cha"
+      ],
+      "aptitudeRules": [
+        {
+          "scope": "troop",
+          "key": "INFANTRY",
+          "minGrade": "C"
+        }
+      ],
+      "sourceGeneIds": [
+        "gene_command",
+        "gene_honor"
+      ],
+      "battleSkillId": "liu-bei-rally",
+      "sourceType": "seed-tactic",
+      "targetMode": "ally-all",
+      "timing": "active-cast",
+      "manualTargeting": false,
+      "autoAimMode": "all-allies"
+    },
+    {
+      "id": "tactic-river-ambush",
+      "displayName": "水路伏擊",
+      "category": "ambush",
+      "rarityAccess": [
+        "rare",
+        "epic",
+        "legendary"
+      ],
+      "preferredStats": [
+        "int",
+        "lea"
+      ],
+      "aptitudeRules": [
+        {
+          "scope": "terrain",
+          "key": "WATER",
+          "minGrade": "A"
+        }
+      ],
+      "sourceGeneIds": [
+        "gene_strategy",
+        "gene_dash"
+      ],
+      "battleSkillId": "sun-quan-tide",
+      "sourceType": "seed-tactic",
+      "targetMode": "adjacent-tiles",
+      "timing": "active-cast",
+      "manualTargeting": false,
+      "autoAimMode": "adjacent-ring"
+    },
+    {
+      "id": "tactic-battle-roar",
+      "displayName": "震軍怒喝",
+      "category": "control",
+      "rarityAccess": [
+        "epic",
+        "legendary",
+        "mythic"
+      ],
+      "preferredStats": [
+        "str",
+        "cha"
+      ],
+      "aptitudeRules": [
+        {
+          "scope": "troop",
+          "key": "INFANTRY",
+          "minGrade": "B"
+        }
+      ],
+      "sourceGeneIds": [
+        "gene_shout",
+        "gene_bravery"
+      ],
+      "battleSkillId": "zhang-fei-roar",
+      "sourceType": "seed-tactic",
+      "targetMode": "enemy-all",
+      "timing": "active-cast",
+      "manualTargeting": false,
+      "autoAimMode": "all-enemies"
+    },
+    {
+      "id": "tactic-dragon-pierce",
+      "displayName": "龍魂突刺",
+      "category": "duel",
+      "rarityAccess": [
+        "legendary",
+        "mythic"
+      ],
+      "preferredStats": [
+        "str",
+        "luk"
+      ],
+      "aptitudeRules": [
+        {
+          "scope": "troop",
+          "key": "CAVALRY",
+          "minGrade": "A"
+        }
+      ],
+      "sourceGeneIds": [
+        "gene_courage",
+        "gene_dash"
+      ],
+      "battleSkillId": "zhao-yun-pierce",
+      "sourceType": "seed-tactic",
+      "targetMode": "line",
+      "timing": "active-cast",
+      "manualTargeting": false,
+      "autoAimMode": "densest-line"
+    }
+  ]
+}

@@ -1,0 +1,121 @@
+CCEffect %{
+  techniques:
+  - name: transparent
+    passes:
+    - vert: poison-fog-vs:vert
+      frag: poison-fog-fs:frag
+      rasterizerState:
+        cullMode: none
+      depthStencilState:
+        depthTest: false
+        depthWrite: false
+      blendState:
+        targets:
+        - blend: true
+          blendSrc: src_alpha
+          blendDst: one_minus_src_alpha
+          blendSrcAlpha: src_alpha
+          blendDstAlpha: one_minus_src_alpha
+      properties:
+        mainTexture:    { value: white }
+        noiseTexture:   { value: white }
+        fogColor:       { value: [0.44, 0.82, 0.54, 0.86], linear: true, editor: { type: color } }
+        uvTiling:       { value: [1.18, 1.18, 0.0, 0.0] }
+        flowParams:     { value: [0.085, 0.035, 2.6, 0.72] }
+        densityParams:  { value: [0.4, 0.8, 0.56, 0.18] }
+        pulseParams:    { value: [0.58, 0.38, 0.24, 0.68] }
+        worldParams:    { value: [0.12, 0.12, 0.9, 0.82] }
+}%
+
+CCProgram poison-fog-vs %{
+  precision highp float;
+
+  #include <builtin/uniforms/cc-global>
+  #include <builtin/uniforms/cc-local>
+
+  in vec3 a_position;
+  in vec2 a_texCoord;
+
+  out vec2 uv0;
+  out vec2 worldUv;
+
+  uniform Constant {
+    vec4 fogColor;
+    vec4 uvTiling;
+    vec4 flowParams;
+    vec4 densityParams;
+    vec4 pulseParams;
+    vec4 worldParams;
+  };
+
+  vec4 vert () {
+    vec4 worldPos = cc_matWorld * vec4(a_position, 1.0);
+    uv0 = a_texCoord * uvTiling.xy + uvTiling.zw;
+    worldUv = worldPos.xz * worldParams.xy + uvTiling.zw;
+    return cc_matViewProj * worldPos;
+  }
+}%
+
+CCProgram poison-fog-fs %{
+  precision highp float;
+
+  #include <output>
+
+  in vec2 uv0;
+  in vec2 worldUv;
+
+  uniform sampler2D mainTexture;
+  uniform sampler2D noiseTexture;
+
+  uniform Constant {
+    vec4 fogColor;
+    vec4 uvTiling;
+    vec4 flowParams;
+    vec4 densityParams;
+    vec4 pulseParams;
+    vec4 worldParams;
+  };
+
+  vec4 frag () {
+    float t = cc_time.x;
+
+    float worldBlend = clamp(worldParams.z, 0.0, 1.0);
+    vec2 baseUv = mix(uv0, worldUv, worldBlend);
+
+    vec2 noiseUvA = baseUv * 1.65 + vec2(t * flowParams.x, -t * flowParams.y * 1.7);
+    vec2 noiseUvB = baseUv * 2.85 + vec2(-t * flowParams.y * 1.3, t * flowParams.x * 2.1);
+    vec2 noiseA = texture(noiseTexture, noiseUvA).rg * 2.0 - 1.0;
+    vec2 noiseB = texture(noiseTexture, noiseUvB).rg * 2.0 - 1.0;
+    vec2 drift = noiseA * 0.65 + noiseB * 0.35;
+
+    vec2 fogUv = baseUv + drift * (flowParams.z * 0.08) + vec2(0.0, t * flowParams.x * 0.22);
+    float fogShape = texture(mainTexture, fogUv).r;
+
+    float bodyMask = smoothstep(
+      densityParams.x - densityParams.w,
+      densityParams.x + densityParams.w,
+      fogShape + drift.x * 0.18
+    );
+
+    float edgeMask = smoothstep(1.0, pulseParams.w, abs(uv0.y * 2.0 - 1.0));
+    float breath = 0.5 + 0.5 * sin(t * pulseParams.x * 6.2831853 + drift.y * 4.0);
+
+    float wisps = texture(
+      noiseTexture,
+      baseUv * 4.8 + drift * 0.85 + vec2(t * flowParams.y * 2.2, -t * flowParams.x * 1.45)
+    ).r;
+    float wispMask = smoothstep(pulseParams.z, 1.0, wisps) * pulseParams.y;
+
+    float density = (bodyMask * 0.72 + wispMask * 0.58) * edgeMask * (0.75 + breath * 0.45);
+    density = clamp(density, 0.0, 1.0);
+
+    vec3 rgb = fogColor.rgb * (0.42 + density * 1.1);
+    rgb += vec3(0.32, 0.74, 0.45) * pow(density, 2.0) * 0.38;
+
+    float alpha = density * fogColor.a;
+    alpha *= (0.65 + flowParams.w * 0.5);
+    alpha = clamp(alpha, 0.0, 1.0);
+
+    return CCFragOutput(vec4(rgb, alpha));
+  }
+}%

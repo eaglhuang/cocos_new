@@ -1,10 +1,11 @@
 ---
+doc_id: doc_ai_0006
 description: 從 UILayoutConfig JSON 自動產生 Cocos 3.8 UI 組件代碼
 ---
 
 ## Context Budget Guard
 
-- 進 workflow 前先看 `.agents/skills/context-budget-guard/SKILL.md`
+- 進 workflow 前先看 `.agents/skills/context-budget-guard/SKILL.md` (doc_agentskill_0006)
 - 先跑 `node tools_node/check-context-budget.js --changed --emit-keep-note`
 - 大型 `.md` / `.json` 變更先跑 `node tools_node/summarize-structured-diff.js --git <file>`
 - 收工前跑 `node tools_node/report-turn-usage.js --changed --emit-final-line`，並在 final answer 補上 `Token 量級：少 / 中 / 大（估算）`
@@ -44,7 +45,7 @@ description: 從 UILayoutConfig JSON 自動產生 Cocos 3.8 UI 組件代碼
 // 4. 繼承 UIScaffold
 // 5. 覆寫 getLayoutPath() 回傳 JSON 路徑
 // 6. 覆寫 onConfigLoaded() 掛載業務邏輯
-// 7. 檔案頂部加上 // @spec-source → 見 docs/cross-reference-index.md
+// 7. 檔案頂部加上 // @spec-source → 見 docs/cross-reference-index.md (doc_index_0005)
 ```
 
 ### 3. 產生 UnitTest

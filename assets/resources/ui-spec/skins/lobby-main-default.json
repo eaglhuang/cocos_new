@@ -1,6 +1,6 @@
 {
   "id": "lobby-main-default",
-  "version": 2,
+  "version": 3,
   "bundle": "lobby_ui",
   "atlasPolicy": "lobby_ui",
   "slots": {
@@ -11,23 +11,17 @@
       "allowAutoAtlas": false,
       "comment": "大面積背景圖，不進 Auto Atlas"
     },
-    "lobby.topbar.bg": {
-      "kind": "color",
-      "color": "backgroundDeep",
-      "alpha": 220
-    },
-    "lobby.navbar.bg": {
-      "kind": "color",
-      "color": "background",
-      "alpha": 240
-    },
-    "lobby.navbar.shadow": {
-      "kind": "sprite-frame",
-      "path": "sprites/ui_families/common/shadow/shadow_01",
-      "spriteType": "sliced",
-      "border": [20, 20, 20, 20],
-      "allowAutoAtlas": true
-    },
+    "lobby.topbar.bg": { "kind": "color", "color": "backgroundDeep", "alpha": 228 },
+    "lobby.navbar.bg": { "kind": "color", "color": "background", "alpha": 242 },
+    "lobby.card.primary": { "kind": "color", "color": "backgroundDeep", "alpha": 210 },
+    "lobby.card.secondary": { "kind": "color", "color": "background", "alpha": 196 },
+    "lobby.card.urgent": { "kind": "color", "color": "error", "alpha": 86 },
+    "lobby.band.section": { "kind": "color", "color": "primary", "alpha": 72 },
+    "lobby.chip.season": { "kind": "color", "color": "secondary", "alpha": 80 },
+    "lobby.chip.network": { "kind": "color", "color": "success", "alpha": 96 },
+    "lobby.badge.lock": { "kind": "color", "color": "warning", "alpha": 92 },
+    "lobby.badge.coalition": { "kind": "color", "color": "error", "alpha": 100 },
+    "lobby.badge.alert": { "kind": "color", "color": "secondary", "alpha": 100 },
     "ui-common-ink.nav.primary": {
       "kind": "button-skin",
       "normal": "sprites/ui_families/common/nav_ink/btn_primary_normal",
@@ -46,23 +40,26 @@
       "border": [20, 20, 20, 20],
       "allowAutoAtlas": true
     },
+    "lobby.action.btn": {
+      "kind": "button-skin",
+      "normal": "sprites/ui_families/common/nav_ink/btn_primary_normal",
+      "pressed": "sprites/ui_families/common/nav_ink/btn_primary_pressed",
+      "disabled": "sprites/ui_families/common/nav_ink/btn_primary_disabled",
+      "spriteType": "sliced",
+      "border": [20, 20, 20, 20],
+      "allowAutoAtlas": true
+    },
     "lobby.avatar": {
       "kind": "sprite-frame",
       "path": "sprites/lobby/icon_avatar_default/spriteFrame",
       "spriteType": "simple",
       "allowAutoAtlas": true
     },
-    "lobby.icon.network": {
-      "kind": "sprite-frame",
-      "path": "sprites/common/icon_network/spriteFrame",
-      "spriteType": "simple",
-      "allowAutoAtlas": true
-    },
     "lobby.label.name": {
       "kind": "label-style",
       "font": "fonts/notosans_tc/font",
-      "fontSize": 20,
-      "lineHeight": 26,
+      "fontSize": 22,
+      "lineHeight": 28,
       "color": "secondaryLight",
       "isBold": true,
       "overflow": "CLAMP"
@@ -83,6 +80,75 @@
       "color": "secondary",
       "overflow": "CLAMP",
       "horizontalAlign": "CENTER"
+    },
+    "lobby.label.section": {
+      "kind": "label-style",
+      "font": "fonts/notosans_tc/font",
+      "fontSize": 24,
+      "lineHeight": 28,
+      "color": "secondaryLight",
+      "isBold": true,
+      "overflow": "CLAMP"
+    },
+    "lobby.label.cardTitle": {
+      "kind": "label-style",
+      "font": "fonts/notosans_tc/font",
+      "fontSize": 18,
+      "lineHeight": 22,
+      "color": "secondaryLight",
+      "isBold": true,
+      "overflow": "SHRINK"
+    },
+    "lobby.label.body": {
+      "kind": "label-style",
+      "font": "fonts/notosans_tc/font",
+      "fontSize": 16,
+      "lineHeight": 22,
+      "color": "textPrimary",
+      "overflow": "RESIZE_HEIGHT"
+    },
+    "lobby.label.bodyMuted": {
+      "kind": "label-style",
+      "font": "fonts/notosans_tc/font",
+      "fontSize": 14,
+      "lineHeight": 20,
+      "color": "secondary",
+      "overflow": "RESIZE_HEIGHT"
+    },
+    "lobby.label.meta": {
+      "kind": "label-style",
+      "font": "fonts/manrope/font",
+      "fontSize": 13,
+      "lineHeight": 17,
+      "color": "secondary",
+      "overflow": "CLAMP"
+    },
+    "lobby.label.chip": {
+      "kind": "label-style",
+      "font": "fonts/manrope/font",
+      "fontSize": 13,
+      "lineHeight": 18,
+      "color": "secondaryLight",
+      "horizontalAlign": "CENTER",
+      "overflow": "CLAMP"
+    },
+    "lobby.label.badge": {
+      "kind": "label-style",
+      "font": "fonts/manrope/font",
+      "fontSize": 11,
+      "lineHeight": 14,
+      "color": "secondaryLight",
+      "horizontalAlign": "CENTER",
+      "overflow": "CLAMP"
+    },
+    "lobby.label.button": {
+      "kind": "label-style",
+      "font": "fonts/notosans_tc/font",
+      "fontSize": 15,
+      "lineHeight": 20,
+      "color": "secondaryLight",
+      "horizontalAlign": "CENTER",
+      "overflow": "CLAMP"
     }
   }
 }

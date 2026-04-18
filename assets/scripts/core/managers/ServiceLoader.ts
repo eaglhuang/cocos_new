@@ -96,6 +96,11 @@ export class ServiceLoader {
         this.effect.setup(this.pool);
         // ResourceManager 連動 MemoryManager，使所有資源載入/釋放都通報記憶體管理器
         this.resource.bindMemoryManager(this.memory);
+        // M8 P3: LRU 逐出時通知 ResourceManager 強制釋放快取，避免記憶體洩漏
+        // Unity 對照：Addressables.Release(handle) 在 OnAssetUnloaded 回呼中執行
+        this.memory.onAssetEvicted = (key: string) => {
+            this.resource.forceRelease(key);
+        };
         // AudioSystem 需要 Node 才能掛 AudioSource，僅在有宿主節點時初始化
         if (hostNode) {
             this.audio.setup(hostNode);

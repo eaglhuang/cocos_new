@@ -2,7 +2,7 @@
 
 > **畫面 ID**: `GeneralDetailBloodlineV3`
 > **設計基準**: 1920 × 1080 px 橫向
-> **sizing contract 參考**: `docs/ui/component-sizing-contract.md`
+> **sizing contract 參考**: `docs/ui/component-sizing-contract.md (doc_ui_0038)` (doc_ui_0038)
 > **數字來源**: `artifacts/ui-source/general-detail-bloodline-v3/proof/general-detail-bloodline-v3.proof.json` + `general-detail-main.json` (v8) 共用骨架
 > **最後更新**: 2026-04-09
 >
@@ -57,4 +57,4 @@
 
 ---
 
-*參考*: `docs/ui/component-sizing-contract.md` / `artifacts/ui-source/general-detail-overview/component-sizing-table.md` / `artifacts/ui-source/general-detail-bloodline-v3/proof/general-detail-bloodline-v3.proof.json`
+*參考*: `docs/ui/component-sizing-contract.md (doc_ui_0038)` (doc_ui_0038) / `artifacts/ui-source/general-detail-overview/component-sizing-table.md` / `artifacts/ui-source/general-detail-bloodline-v3/proof/general-detail-bloodline-v3.proof.json`

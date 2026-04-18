@@ -1,4 +1,5 @@
 ---
+doc_id: doc_ai_0016
 applyTo: "assets/resources/ui-spec/**,assets/scripts/ui/**,artifacts/ui-source/**,docs/ui/**,docs/UI*.md"
 ---
 
@@ -6,10 +7,10 @@ applyTo: "assets/resources/ui-spec/**,assets/scripts/ui/**,artifacts/ui-source/*
 
 當任務涉及 UI 畫面量產、proof / family-map / task manifest、layout / skin / screen、或 UI runtime 驗證時：
 
-1. 先讀 `docs/keep.summary.md`。
-2. 再讀 `docs/UI-factory-agent-entry.md`，依其中「必讀順序」建立上下文。
-3. 若任務還沒有 canonical reference，或需要與使用者一起探索 AI 參考圖，讀 `docs/UI-reference-source-workflow.md`。
-4. 需要統一 UI 基準（解析度 / 平台 / 自適應 / 驗收 gate）時，讀 `docs/ui/UI-factory-baseline-and-gates.md`。
+1. 先讀 `docs/keep.summary.md (doc_index_0012)` (doc_index_0012)。
+2. 再讀 `docs/UI-factory-agent-entry.md` (doc_ui_0032)，依其中「必讀順序」建立上下文。
+3. 若任務還沒有 canonical reference，或需要與使用者一起探索 AI 參考圖，讀 `docs/UI-reference-source-workflow.md (doc_ui_0036)` (doc_ui_0036)。
+4. 需要統一 UI 基準（解析度 / 平台 / 自適應 / 驗收 gate）時，讀 `docs/ui/UI-factory-baseline-and-gates.md (doc_ui_0047)` (doc_ui_0047)。
 5. 需要實作流程細節時，讀 `artifacts/ui-source/general-detail-overview/decomposition-pipeline-ops-guide.md`。
 6. 若任務修改 `layout / skin / screen / content / panel` 或任何 UI 資產，收尾必須補 runtime 驗證思路，至少更新 `review/generated-review.json` / `review/runtime-verdict.json` 其中之一。
 

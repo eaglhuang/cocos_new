@@ -1,7 +1,8 @@
 ---
+doc_id: doc_agentskill_0014
 name: dalle3-image-gen
-description: 'DALL-E 3 image generation workflow for this repo MCP server. Use for dalle3, DALL-E 3, OpenAI image generation, concept art, UI icon, badge, card art, prompt drafting, and saving generated images to local files.'
-argument-hint: 'Describe the image goal, prompt, output path, size, style, and whether you need raw concept art or UI asset exploration.'
+description: 'DALL-E 3 image generation workflow for this repo MCP server. Use for dalle3, DALL-E 3, OpenAI image generation, concept art, UCUF reference exploration, UI icon, badge, card art, prompt drafting, and saving generated images to local files under artifacts/ui-source or other workspace paths.'
+argument-hint: 'Describe the image goal, prompt, output path, size, style, and whether you need raw concept art, UCUF reference exploration, or partial UI asset exploration.'
 ---
 
 # DALL-E 3 Image Generation
@@ -35,13 +36,13 @@ Unity 對照：這比較像把「外部美術生成服務」包成一個固定�
 短 prompt 直接跑：
 
 ```powershell
-node .github/skills/dalle3-image-gen/scripts/generate-dalle3.js --prompt "old military badge for spear troop type, worn antique gold rim, dark gunmetal blue inner disk, bold crossed spear silhouette, readable at 32x32, transparent background" --style natural --output artifacts/ui-qa/UI-2-0032/dalle3-spear-v2a-1024.png
+node .github/skills/dalle3-image-gen/scripts/generate-dalle3.js --prompt "old military badge for spear troop type, worn antique gold rim, dark gunmetal blue inner disk, bold crossed spear silhouette, readable at 32x32, transparent background" --style natural --output artifacts/ui-source/battle-hud/reference/generated/dalle3-spear-v2a-1024.png
 ```
 
 長 prompt 建議走文字檔：
 
 ```powershell
-node .github/skills/dalle3-image-gen/scripts/generate-dalle3.js --prompt-file artifacts/ui-qa/UI-2-0032/prompt-v2a.txt --size 1024x1024 --style natural --output artifacts/ui-qa/UI-2-0032/dalle3-spear-v2a-1024.png --json
+node .github/skills/dalle3-image-gen/scripts/generate-dalle3.js --prompt-file artifacts/ui-source/battle-hud/reference/prompts/prompt-v2a.txt --size 1024x1024 --style natural --output artifacts/ui-source/battle-hud/reference/generated/dalle3-spear-v2a-1024.png --json
 ```
 
 先驗 MCP server 與 tool 是否正常，不生圖：
@@ -53,7 +54,7 @@ node .github/skills/dalle3-image-gen/scripts/generate-dalle3.js --self-test --js
 只要 URL 與 revised prompt，不下載：
 
 ```powershell
-node .github/skills/dalle3-image-gen/scripts/generate-dalle3.js --prompt-file artifacts/ui-qa/UI-2-0032/prompt-v2b.txt --json
+node .github/skills/dalle3-image-gen/scripts/generate-dalle3.js --prompt-file artifacts/ui-source/battle-hud/reference/prompts/prompt-v2b.txt --json
 ```
 
 ## Prompt Guidance
@@ -77,3 +78,7 @@ node .github/skills/dalle3-image-gen/scripts/generate-dalle3.js --prompt-file ar
 - MCP server 位置：`tools_mcp/dalle3-mcp/`
 - API Key 仍由 server 自己讀 `.env`，wrapper 不處理金鑰
 - 若要批次生多張，重複呼叫腳本即可；目前 skill 不額外包批次佇列
+
+## Image View Guard 提醒
+
+生成圖片後，若需要 `view_image` 檢視，必須先跑 `node tools_node/prepare-view-image-progressive.js --input <path> --level thumb` 再送入 `view_image`（見 image-view-guard）。

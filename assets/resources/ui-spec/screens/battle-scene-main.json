@@ -37,6 +37,13 @@
       "zOrder": 20,
       "initialActive": false,
       "_doc": "Zone 3 延伸：點擊虎符卡片後滑入，zOrder較高確保覆蓋其他面板"
+    },
+    {
+      "id": "tigerTallyDetail",
+      "screen": "tiger-tally-detail-panel-screen",
+      "zOrder": 21,
+      "initialActive": false,
+      "_doc": "Zone 3 延伸：右側虎符詳情抽屜（第一版），顯示完整 item-card 摘要。"
     }
   ],
   "validation": {

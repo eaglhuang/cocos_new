@@ -1,6 +1,7 @@
 ---
+doc_id: doc_agentskill_0029
 name: ui-runtime-verify
-description: 'UI runtime 驗證 SKILL — 刷新 Cocos asset-db、執行 validate-ui-specs.js、capture-ui-screens.js，並依環境選用 cocos-screenshot 或 cocos-preview-qa 檢查實際畫面殘差。USE FOR: 修改 layout / skin / screen / content / Panel / UI 資產後的驗證收尾。DO NOT USE FOR: 純資產生成、無 target 的整專案大範圍探索。'
+description: 'UI runtime 驗證 SKILL — 刷新 Cocos asset-db、執行 validate-ui-specs.js、headless-snapshot-test.js、capture-ui-screens.js，並依環境選用 cocos-screenshot 或 cocos-preview-qa 檢查實際畫面殘差，回寫 generated-review / runtime-verdict。USE FOR: 修改 layout / skin / screen / content / Panel / UI 資產後的驗證收尾。DO NOT USE FOR: 純資產生成、無 target 的整專案大範圍探索。'
 argument-hint: '提供 target screen、驗證路徑或 capture target，並說明需要 strict 驗證、截圖輸出、或殘差分析。'
 ---
 
@@ -13,7 +14,7 @@ Unity 對照：相當於做完 Prefab / Script 修改後，不只跑靜態檢查
 ## 何時使用
 
 - 修改任何 `layout / skin / screen / content` JSON 後
-- 修改 UI Panel / shell / mapper 後
+- 修改 UI Panel / CompositePanel / ChildPanel / mapper 後
 - 替換 `proof` 或 `final` UI 資產後
 
 ## 驗證前置
@@ -23,6 +24,7 @@ Unity 對照：相當於做完 Prefab / Script 修改後，不只跑靜態檢查
 ```bash
 curl.exe http://localhost:7456/asset-db/refresh
 node tools_node/validate-ui-specs.js --strict --check-content-contract
+node tools_node/headless-snapshot-test.js
 ```
 
 若有 touched 高風險檔，收工前補：
@@ -38,17 +40,15 @@ node tools_node/check-encoding-touched.js --files <file...>
 優先使用：
 
 ```bash
-node tools_node/capture-ui-screens.js --target <Target> --outDir artifacts/ui-qa/<task>/<run>
+node tools_node/capture-ui-screens.js --target <Target> --outDir artifacts/ui-source/<screen-id>/review
 ```
 
-目前 script 內建 target 包含：
+目前 script 內建 target（完整清單見 `tools_node/capture-ui-screens.js` 的 `targets` 陣列）：
 
-- `LobbyMain`
-- `ShopMain`
-- `Gacha`
-- `DuelChallenge`
-- `BattleScene`
-- `GeneralDetailOverview`
+- `LobbyMain`, `ShopMain`, `Gacha`, `GachaHero`, `GachaSupport`, `GachaLimited`
+- `DuelChallenge`, `BattleScene`, `BattleSceneFromLobby`
+- `GeneralDetailOverview`, `GeneralDetailSkills`, `GeneralDetailOverviewZhenJi`, `GeneralDetailBloodlineV3`
+- `SpiritTallyDetail`, `GeneralList`, `NurtureSession`
 
 ### 路徑 B：使用者已把畫面開在 Cocos Editor / Editor Preview
 
@@ -88,6 +88,11 @@ node tools_node/capture-ui-screens.js --target <Target> --outDir artifacts/ui-qa
 - 通過 / 未通過
 - 最大殘差 1 到 3 點
 - 下一步修正優先順序
+
+並同步更新：
+
+- `artifacts/ui-source/<screen-id>/review/generated-review.json`
+- `artifacts/ui-source/<screen-id>/review/runtime-verdict.json`
 
 ## 與其他 skills 的銜接
 

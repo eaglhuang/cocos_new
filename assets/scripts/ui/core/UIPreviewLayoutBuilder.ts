@@ -49,8 +49,10 @@ export class UIPreviewLayoutBuilder {
             widget.verticalCenter = typeof vc === 'number' ? vc : 0;
         }
 
-        // 強制更新一次以確保佈局正確
-        widget.updateAlignment();
+        // 注意：此處不呼叫 updateAlignment()。
+        // 整棵樹建完後由 UIPreviewBuilder._postBuildPass() 統一重算對齊，
+        // 可避免建樹期間父容器尺寸尚未穩定時的冀示計算對齊寬魯。
+        // Unity 對照：Canvas.ForceUpdateCanvases() 在整樹 Instantiate 完成後才呼叫。
     }
 
     /**

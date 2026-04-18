@@ -1,0 +1,322 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "schemaId": "general-detail-content",
+  "familyId": "general-detail-unified",
+  "description": "Unified content contract for GeneralDetailComposite — covers all 7 tabs (Overview, Basics, Stats, Bloodline, Skills, Aptitude, Extended).",
+  "fields": {
+    "generalId": {
+      "type": "string",
+      "required": true,
+      "description": "Unique identifier for the general config",
+      "bindPath": "config.id"
+    },
+    "overview": {
+      "type": "object",
+      "required": true,
+      "description": "Pre-computed overview content state for the Overview tab",
+      "bindPath": "overviewState"
+    },
+    "headerName": {
+      "type": "string",
+      "required": false,
+      "fieldGroup": "overview",
+      "description": "Overview header name string",
+      "bindPath": "headerName"
+    },
+    "uid": {
+      "type": "string",
+      "required": false,
+      "fieldGroup": "basics",
+      "description": "Internal UID string",
+      "bindPath": "config.uid"
+    },
+    "name": {
+      "type": "string",
+      "required": true,
+      "fieldGroup": "basics",
+      "description": "Display name of the general",
+      "bindPath": "config.name"
+    },
+    "title": {
+      "type": "string",
+      "required": false,
+      "fieldGroup": "basics",
+      "description": "Honorific title e.g. 武聖",
+      "bindPath": "config.title"
+    },
+    "template": {
+      "type": "string",
+      "required": false,
+      "fieldGroup": "basics",
+      "description": "Template/role archetype key",
+      "bindPath": "config.template"
+    },
+    "faction": {
+      "type": "string",
+      "required": false,
+      "fieldGroup": "basics",
+      "description": "Faction affiliation key",
+      "bindPath": "config.faction"
+    },
+    "gender": {
+      "type": "string",
+      "required": false,
+      "fieldGroup": "basics",
+      "description": "Gender key (male|female|other)",
+      "bindPath": "config.gender"
+    },
+    "age": {
+      "type": "number",
+      "required": false,
+      "fieldGroup": "basics",
+      "description": "Age in years",
+      "bindPath": "config.age"
+    },
+    "role": {
+      "type": "string",
+      "required": false,
+      "fieldGroup": "basics",
+      "description": "Role classification key",
+      "bindPath": "config.role"
+    },
+    "status": {
+      "type": "string",
+      "required": false,
+      "fieldGroup": "basics",
+      "description": "Alive / dead / unknown etc.",
+      "bindPath": "config.status"
+    },
+    "lifespan": {
+      "type": "string",
+      "required": false,
+      "fieldGroup": "basics",
+      "description": "Formatted lifespan string",
+      "bindPath": "config.lifespanDisplay"
+    },
+    "vitality": {
+      "type": "number",
+      "required": false,
+      "fieldGroup": "basics",
+      "description": "Base vitality",
+      "bindPath": "config.vitality"
+    },
+    "source": {
+      "type": "string",
+      "required": false,
+      "fieldGroup": "basics",
+      "description": "Data source / lore book reference",
+      "bindPath": "config.source"
+    },
+    "str": {
+      "type": "number",
+      "required": false,
+      "fieldGroup": "stats",
+      "description": "Strength stat",
+      "bindPath": "config.stats.str"
+    },
+    "int": {
+      "type": "number",
+      "required": false,
+      "fieldGroup": "stats",
+      "description": "Intelligence stat",
+      "bindPath": "config.stats.int"
+    },
+    "lea": {
+      "type": "number",
+      "required": false,
+      "fieldGroup": "stats",
+      "description": "Leadership stat",
+      "bindPath": "config.stats.lea"
+    },
+    "pol": {
+      "type": "number",
+      "required": false,
+      "fieldGroup": "stats",
+      "description": "Politics stat",
+      "bindPath": "config.stats.pol"
+    },
+    "cha": {
+      "type": "number",
+      "required": false,
+      "fieldGroup": "stats",
+      "description": "Charisma stat",
+      "bindPath": "config.stats.cha"
+    },
+    "luk": {
+      "type": "number",
+      "required": false,
+      "fieldGroup": "stats",
+      "description": "Luck stat",
+      "bindPath": "config.stats.luk"
+    },
+    "statsRole": {
+      "type": "string",
+      "required": false,
+      "fieldGroup": "stats",
+      "description": "Derived role description based on stat distribution",
+      "bindPath": "config.statsRole"
+    },
+    "bloodlineId": {
+      "type": "string",
+      "required": false,
+      "fieldGroup": "bloodline",
+      "description": "Bloodline identifier",
+      "bindPath": "config.bloodlineId"
+    },
+    "bloodlineName": {
+      "type": "string",
+      "required": false,
+      "fieldGroup": "bloodline",
+      "description": "Display name of the bloodline",
+      "bindPath": "config.bloodlineName"
+    },
+    "epRating": {
+      "type": "string",
+      "required": false,
+      "fieldGroup": "bloodline",
+      "description": "EP rating label (S/A/B/C/D)",
+      "bindPath": "config.epRating"
+    },
+    "parents": {
+      "type": "string",
+      "required": false,
+      "fieldGroup": "bloodline",
+      "description": "Formatted parents string",
+      "bindPath": "config.parentsDisplay"
+    },
+    "ancestors": {
+      "type": "string",
+      "required": false,
+      "fieldGroup": "bloodline",
+      "description": "Formatted ancestors list",
+      "bindPath": "config.ancestorsDisplay"
+    },
+    "genes": {
+      "type": "array",
+      "required": false,
+      "fieldGroup": "bloodline",
+      "description": "Gene trait keys (up to 5)",
+      "bindPath": "config.genes"
+    },
+    "awakeningStage": {
+      "type": "number",
+      "required": false,
+      "fieldGroup": "bloodline",
+      "description": "Current awakening stage 0-5",
+      "bindPath": "config.awakeningStage"
+    },
+    "primarySkill": {
+      "type": "string",
+      "required": false,
+      "fieldGroup": "skills",
+      "description": "Primary innate skill key",
+      "bindPath": "config.primarySkill"
+    },
+    "learnedSkills": {
+      "type": "array",
+      "required": false,
+      "fieldGroup": "skills",
+      "description": "List of learned skill keys",
+      "bindPath": "config.learnedSkills"
+    },
+    "inspiredSkills": {
+      "type": "array",
+      "required": false,
+      "fieldGroup": "skills",
+      "description": "List of inspired (passive) skill keys",
+      "bindPath": "config.inspiredSkills"
+    },
+    "lockedSkills": {
+      "type": "array",
+      "required": false,
+      "fieldGroup": "skills",
+      "description": "List of locked/inaccessible skill keys",
+      "bindPath": "config.lockedSkills"
+    },
+    "skillNote": {
+      "type": "string",
+      "required": false,
+      "fieldGroup": "skills",
+      "description": "Freeform skill note or lore text",
+      "bindPath": "config.skillNote"
+    },
+    "troopAptitude": {
+      "type": "string",
+      "required": false,
+      "fieldGroup": "aptitude",
+      "description": "Troop type aptitude formatted string",
+      "bindPath": "config.aptitude.troop"
+    },
+    "terrainAptitude": {
+      "type": "string",
+      "required": false,
+      "fieldGroup": "aptitude",
+      "description": "Terrain type aptitude formatted string",
+      "bindPath": "config.aptitude.terrain"
+    },
+    "weatherAptitude": {
+      "type": "string",
+      "required": false,
+      "fieldGroup": "aptitude",
+      "description": "Weather condition aptitude formatted string",
+      "bindPath": "config.aptitude.weather"
+    },
+    "preferredTerrain": {
+      "type": "string",
+      "required": false,
+      "fieldGroup": "aptitude",
+      "description": "Highest-rated terrain key",
+      "bindPath": "config.aptitude.preferredTerrain"
+    },
+    "terrainBonus": {
+      "type": "string",
+      "required": false,
+      "fieldGroup": "aptitude",
+      "description": "Formatted terrain bonus string",
+      "bindPath": "config.aptitude.terrainBonus"
+    },
+    "currentHp": {
+      "type": "number",
+      "required": false,
+      "fieldGroup": "extended",
+      "description": "Current HP at time of display",
+      "bindPath": "config.currentHp"
+    },
+    "currentSp": {
+      "type": "number",
+      "required": false,
+      "fieldGroup": "extended",
+      "description": "Current SP at time of display",
+      "bindPath": "config.currentSp"
+    },
+    "attackBonus": {
+      "type": "number",
+      "required": false,
+      "fieldGroup": "extended",
+      "description": "Active attack bonus value",
+      "bindPath": "config.attackBonus"
+    },
+    "hiddenFlags": {
+      "type": "string",
+      "required": false,
+      "fieldGroup": "extended",
+      "description": "Debug-visible hidden flag string",
+      "bindPath": "config.hiddenFlags"
+    },
+    "notes": {
+      "type": "string",
+      "required": false,
+      "fieldGroup": "extended",
+      "description": "Player or system notes",
+      "bindPath": "config.notes"
+    },
+    "devNote": {
+      "type": "string",
+      "required": false,
+      "fieldGroup": "extended",
+      "description": "Developer annotation (visible in debug mode only)",
+      "bindPath": "config.devNote"
+    }
+  },
+  "requiredFields": []
+}

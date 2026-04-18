@@ -1,0 +1,54 @@
+{
+  "path": "docs/遊戲規格文件/討論來源/更舊的討論/策略遊戲視覺與系統設計.md",
+  "hash": "07cd40ef23c0",
+  "paragraphCount": 6,
+  "topics": [
+    "教官",
+    "大廳",
+    "戰場",
+    "數值",
+    "官職",
+    "AI",
+    "美術",
+    "視覺",
+    "時間",
+    "軍師",
+    "智力"
+  ],
+  "paragraphs": [
+    {
+      "index": 0,
+      "heading": "---",
+      "preview": "**🗺️ 《三國傳承：全球遠征》最終視覺規格書：智謀遠征與全圖征服系統 (Ultimate Conquest System)**"
+    },
+    {
+      "index": 1,
+      "heading": "**1\\. 核心玩法戰略：智謀遠征系統 (The Strategist's Gambit)**",
+      "preview": "不同於「正面會戰」（冷色調歷史質感） 與「夜襲戰」（冷色調電影光影+敵營物資），特殊的**軍事任務戰場**將具有獨特的 AAA 級視覺質感與動態效果，以突顯其智謀特性： | 特殊戰役 | 美術風格與視覺細節 (Visual Vibe) | 關鍵粒子與動態特效 (Active FX) | | :---"
+    },
+    {
+      "index": 2,
+      "heading": "**2\\. 征服與傳承系統 (Conquest & Heritage)**",
+      "preview": "您所規劃的逐步佔領、提升官職與世界征戰目標，將透過以下 AAA 級視覺介面呈現： ### **A. 決戰太守與佔領 UI** * **佔領戰棋盤格**：佔領太守所在的郡，棋盤格格線將被數位擴散煙霧包裹的金色粒子鎖定，格子上懸浮「決戰中」粒子文字。 * **佔領與官職介面 (AAA)**: 佔領一個郡"
+    },
+    {
+      "index": 3,
+      "heading": "**3\\. 單位比例與立牌系統 (Unit Scale & Scale Ratio)**",
+      "preview": "在所有特殊戰場與佔領戰棋盤格中，必須嚴格執行以下比例： * **精確比例 (Important\\!):** * **主將規模**：雙方主將（左下張飛、右上曹操）立牌的大小為**一般小兵的 2 倍高度**。 * **小兵規模**：小兵與營帳（Sprite/Papers）的大小持平。"
+    },
+    {
+      "index": 4,
+      "heading": "---",
+      "preview": "**💡 AI 繪圖建議咒語 (Midjourney / SDXL):** AAA mobile game UI screenshot, Three Kingdoms special tactical battle (e.g., Fire Raid battle), 2.5D isometric, "
+    },
+    {
+      "index": 5,
+      "heading": "🗳 MCQ 決策記錄（Q34）",
+      "preview": "- **問題**：技能能量與官職條邏輯 - **衝突說明**：技能能量條充能邏輯未定，三種方案對戰場節奏影響截然不同，不拍板則UI動畫觸發條件與戰場代碼無法對齊。 - **裁決**：**選項 D** — 選項 D - **回寫時間**：2026-04-12 11:28 - **來源**：由 `con"
+    }
+  ],
+  "stats": {
+    "charCount": 3210,
+    "wordCount": 314
+  }
+}

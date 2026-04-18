@@ -1,0 +1,185 @@
+{
+  "screenId": "battle-hud-overlay-screen",
+  "updatedAt": "2026-04-15T15:42:09.413Z",
+  "latestStage": "assetTaskManifest",
+  "overallVerdict": "pass",
+  "stages": {
+    "recipe-screen-spec": {
+      "verdict": "pass",
+      "validatedAt": "2026-04-15T15:42:09.407Z",
+      "fileCount": 1,
+      "failureCount": 0,
+      "files": [
+        {
+          "kind": "screenSpec",
+          "filePath": "C:\\Users\\User\\3KLife\\artifacts\\ui-source\\battle-hud-overlay\\workflow-v1\\generated\\battle-hud-overlay-screen.json",
+          "ok": true,
+          "failReasons": []
+        }
+      ],
+      "crossFileFailReasons": [],
+      "metadata": {
+        "screenId": "battle-hud-overlay-screen",
+        "familyId": "hud-overlay",
+        "generationPolicy": "param-tune",
+        "validationProfile": "hud-overlay-strict",
+        "contentSchemaId": "battle-hud-overlay-content",
+        "controllerClass": "BattleHudOverlayComposite",
+        "recipePath": "artifacts\\ui-source\\battle-hud-overlay\\workflow-v1\\generated\\battle-hud-overlay-screen.recipe.json",
+        "source": "compile-recipe-to-screen-spec",
+        "targetPath": "artifacts\\ui-source\\battle-hud-overlay\\workflow-v1\\generated\\battle-hud-overlay-screen.json",
+        "screenDir": "artifacts\\ui-source\\battle-hud-overlay\\workflow-v1",
+        "slotCount": 3,
+        "dataSourceCount": 3,
+        "slotIds": [
+          "TopBar",
+          "LeftOverlay",
+          "RightOverlay"
+        ],
+        "requiredDataSources": [
+          "topBar"
+        ],
+        "optionalDataSources": [
+          "left",
+          "right"
+        ],
+        "deliverables": [
+          "artifacts\\ui-source\\battle-hud-overlay\\workflow-v1\\generated\\battle-hud-overlay-screen.json",
+          "assets/resources/ui-spec/layouts/battle-hud-overlay-main.json",
+          "assets/resources/ui-spec/skins/battle-hud-overlay-default.json",
+          "assets/resources/ui-spec/contracts/battle-hud-overlay-content.schema.json",
+          "assets/scripts/ui/components/BattleHudOverlayComposite.ts"
+        ],
+        "smokeRoute": "BattleScene -> attach BattleHudOverlay HUD"
+      },
+      "history": [
+        {
+          "verdict": "pass",
+          "validatedAt": "2026-04-15T15:42:09.407Z",
+          "fileCount": 1,
+          "failureCount": 0,
+          "metadata": {
+            "screenId": "battle-hud-overlay-screen",
+            "familyId": "hud-overlay",
+            "generationPolicy": "param-tune",
+            "validationProfile": "hud-overlay-strict",
+            "contentSchemaId": "battle-hud-overlay-content",
+            "controllerClass": "BattleHudOverlayComposite",
+            "recipePath": "artifacts\\ui-source\\battle-hud-overlay\\workflow-v1\\generated\\battle-hud-overlay-screen.recipe.json",
+            "source": "compile-recipe-to-screen-spec",
+            "targetPath": "artifacts\\ui-source\\battle-hud-overlay\\workflow-v1\\generated\\battle-hud-overlay-screen.json",
+            "screenDir": "artifacts\\ui-source\\battle-hud-overlay\\workflow-v1",
+            "slotCount": 3,
+            "dataSourceCount": 3,
+            "slotIds": [
+              "TopBar",
+              "LeftOverlay",
+              "RightOverlay"
+            ],
+            "requiredDataSources": [
+              "topBar"
+            ],
+            "optionalDataSources": [
+              "left",
+              "right"
+            ],
+            "deliverables": [
+              "artifacts\\ui-source\\battle-hud-overlay\\workflow-v1\\generated\\battle-hud-overlay-screen.json",
+              "assets/resources/ui-spec/layouts/battle-hud-overlay-main.json",
+              "assets/resources/ui-spec/skins/battle-hud-overlay-default.json",
+              "assets/resources/ui-spec/contracts/battle-hud-overlay-content.schema.json",
+              "assets/scripts/ui/components/BattleHudOverlayComposite.ts"
+            ],
+            "smokeRoute": "BattleScene -> attach BattleHudOverlay HUD"
+          }
+        }
+      ]
+    },
+    "intake": {
+      "verdict": "pass",
+      "validatedAt": "2026-04-15T15:42:09.412Z",
+      "fileCount": 1,
+      "failureCount": 0,
+      "files": [
+        {
+          "kind": "intake",
+          "filePath": "artifacts\\ui-source\\battle-hud-overlay\\workflow-v1\\manifests\\intake.json",
+          "ok": true,
+          "failReasons": []
+        }
+      ],
+      "crossFileFailReasons": [],
+      "metadata": {
+        "screenId": "battle-hud-overlay-screen",
+        "recipePath": "artifacts\\ui-source\\battle-hud-overlay\\workflow-v1\\generated\\battle-hud-overlay-screen.recipe.json",
+        "source": "compile-recipe-to-screen-spec",
+        "intakePath": "artifacts\\ui-source\\battle-hud-overlay\\workflow-v1\\manifests\\intake.json",
+        "intakeTier": "C",
+        "familyId": "hud-overlay"
+      },
+      "history": [
+        {
+          "verdict": "pass",
+          "validatedAt": "2026-04-15T15:42:09.412Z",
+          "fileCount": 1,
+          "failureCount": 0,
+          "metadata": {
+            "screenId": "battle-hud-overlay-screen",
+            "recipePath": "artifacts\\ui-source\\battle-hud-overlay\\workflow-v1\\generated\\battle-hud-overlay-screen.recipe.json",
+            "source": "compile-recipe-to-screen-spec",
+            "intakePath": "artifacts\\ui-source\\battle-hud-overlay\\workflow-v1\\manifests\\intake.json",
+            "intakeTier": "C",
+            "familyId": "hud-overlay"
+          }
+        }
+      ]
+    },
+    "assetTaskManifest": {
+      "verdict": "pass",
+      "validatedAt": "2026-04-15T15:42:09.413Z",
+      "fileCount": 2,
+      "failureCount": 0,
+      "files": [
+        {
+          "kind": "intake",
+          "filePath": "artifacts\\ui-source\\battle-hud-overlay\\workflow-v1\\manifests\\intake.json",
+          "ok": true,
+          "failReasons": []
+        },
+        {
+          "kind": "assetTaskManifest",
+          "filePath": "artifacts\\ui-source\\battle-hud-overlay\\workflow-v1\\manifests\\asset-task-manifest.json",
+          "ok": true,
+          "failReasons": []
+        }
+      ],
+      "crossFileFailReasons": [],
+      "metadata": {
+        "screenId": "battle-hud-overlay-screen",
+        "recipePath": "artifacts\\ui-source\\battle-hud-overlay\\workflow-v1\\generated\\battle-hud-overlay-screen.recipe.json",
+        "source": "compile-recipe-to-screen-spec",
+        "assetTaskManifestPath": "artifacts\\ui-source\\battle-hud-overlay\\workflow-v1\\manifests\\asset-task-manifest.json",
+        "inferredTaskCount": 0,
+        "familyId": "hud-overlay",
+        "sourceFamilyMap": "battle-hud-overlay-screen"
+      },
+      "history": [
+        {
+          "verdict": "pass",
+          "validatedAt": "2026-04-15T15:42:09.413Z",
+          "fileCount": 2,
+          "failureCount": 0,
+          "metadata": {
+            "screenId": "battle-hud-overlay-screen",
+            "recipePath": "artifacts\\ui-source\\battle-hud-overlay\\workflow-v1\\generated\\battle-hud-overlay-screen.recipe.json",
+            "source": "compile-recipe-to-screen-spec",
+            "assetTaskManifestPath": "artifacts\\ui-source\\battle-hud-overlay\\workflow-v1\\manifests\\asset-task-manifest.json",
+            "inferredTaskCount": 0,
+            "familyId": "hud-overlay",
+            "sourceFamilyMap": "battle-hud-overlay-screen"
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "$schema": "../../schemas/asset-task-manifest.schema.json",
+  "screenId": "battle-hud-overlay-screen",
+  "sourceFamilyMap": "battle-hud-overlay-screen",
+  "generatedAt": "2026-04-15T15:42:09.411Z",
+  "taskCount": 0,
+  "tasks": [],
+  "warnings": [
+    "Auto-generated skeleton: no partial asset tasks were inferred from recipe slots; fill tasks manually if this screen needs asset generation."
+  ]
+}

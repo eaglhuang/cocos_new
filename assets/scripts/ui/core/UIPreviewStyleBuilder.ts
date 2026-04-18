@@ -14,7 +14,7 @@
  *
  * Unity 對照：相當於 UIStyleApplier + UILayoutHelper 的組合
  */
-import { Node, Sprite, UITransform, Label, Button, Font } from 'cc';
+import { Node, Sprite, UITransform, Label, Button, Font, Color } from 'cc';
 import { SolidBackground } from '../components/SolidBackground';
 import { UISkinResolver, ResolvedButtonSkin, ResolvedLabelStyle } from './UISkinResolver';
 import type { UILayoutNodeSpec } from './UISpecTypes';
@@ -39,15 +39,22 @@ export class UIPreviewStyleBuilder {
      */
     async applyBackgroundSkin(node: Node, skinSlot: string): Promise<boolean> {
         const slot = this.skinResolver.getSlot(skinSlot);
+        const resolveOpacity = (rawOpacity: unknown): number | null => {
+            if (typeof rawOpacity !== 'number' || Number.isNaN(rawOpacity)) {
+                return null;
+            }
+            const opacityValue = rawOpacity <= 1 ? Math.round(rawOpacity * 255) : Math.round(rawOpacity);
+            return Math.max(0, Math.min(255, opacityValue));
+        };
 
         // 純色背景
         if (slot && (slot.kind === 'color-rect' || (slot as any).kind === 'color')) {
             const bg = node.getComponent(SolidBackground) || node.addComponent(SolidBackground);
             const resolvedColor = this.skinResolver.resolveColor((slot as any).color);
-            const alpha = (slot as any).alpha;
-            // alpha 直接寫入 SolidBackground 的 color.a，避免 UIOpacity cascade 影響子節點（Labels 等）
+            const alpha = resolveOpacity((slot as any).alpha ?? (slot as any).opacity);
+            // alpha / opacity 直接寫入 SolidBackground 的 color.a，避免 UIOpacity cascade 影響子節點（Labels 等）
             // Unity 對照：Image.color = new Color(r,g,b,a) 只影響自身 renderer，不 cascade
-            if (alpha !== undefined) {
+            if (alpha !== null) {
                 resolvedColor.a = alpha;
             }
             bg.color = resolvedColor;
@@ -61,6 +68,10 @@ export class UIPreviewStyleBuilder {
         const sprite = node.getComponent(Sprite) || node.addComponent(Sprite);
         sprite.sizeMode = Sprite.SizeMode.CUSTOM;
         sprite.spriteFrame = frame;
+        const alpha = resolveOpacity((slot as any)?.opacity ?? (slot as any)?.alpha);
+        if (alpha !== null) {
+            sprite.color = new Color(sprite.color.r, sprite.color.g, sprite.color.b, alpha);
+        }
         if (slot?.kind === 'sprite-frame') {
             this.applySpriteSkin(sprite, slot.spriteType, slot.border);
         } else if (slot?.kind === 'button-skin') {

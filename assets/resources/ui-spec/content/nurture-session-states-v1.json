@@ -1,0 +1,115 @@
+{
+  "id": "nurture-session-states-v1",
+  "version": 2,
+  "defaultState": "smoke-default",
+  "states": {
+    "smoke-default": {
+      "sessionTitle": "培育行程",
+      "sessionSubtitle": "第三學年 / 中盤磨合",
+      "turnLabel": "第 13 回合",
+      "sessionSummary": "本學年以中盤磨合為主，揭露規則以區間與標籤為主，不在中盤提前開精確值，並為守成 / 教學線偏好做準備。",
+      "phaseBlockTitle": "Phase_Block：中盤磨合",
+      "phaseBlockBody": "本階段重點是沙盤推演 + 校場操練與隊伍磨合。揭露規則以區間與標籤為主，不在中盤提前開精確值。",
+      "mentorModeLabel": "教官模式：TeachingOnly",
+      "mainCourseTitle": "本回合主修",
+      "mainCourseBody": "沙盤推演 + 校場操練，優先拉高武力 / 統率的穩定表現，暫不以畫面預告精確收益。",
+      "supportWindowTitle": "支援窗口",
+      "supportWindowBody": "黃月英教官 / 諸葛亮英靈提供訓練線加成；英靈傳道屬教學支援，不會轉回血脈親傳。",
+      "riskWindowTitle": "風險提醒",
+      "riskWindowBody": "高壓事件 / 疲勞累積 / 資源消耗可能疊加戰術壓力；畫面只以戰術標籤與恢復提示呈現，不提前洩露精確收益。",
+      "graduationTagsTitle": "Graduation_Tags",
+      "graduationTagsBody": "候選標籤：守成 / 教學線偏好 / 山地適性強化。正式標籤於畢業前後摘要帶顯示。",
+      "sessionInfo": {
+        "title": "培育行程",
+        "subtitle": "第三學年 / 中盤磨合",
+        "turnLabel": "第 13 回合"
+      },
+      "dualLayerStats": {
+        "str": {
+          "talent": {
+            "base": 91,
+            "current": 94,
+            "maxPotential": 103,
+            "revelationLevel": "EXACT"
+          },
+          "prowess": 1486
+        },
+        "int": {
+          "talent": {
+            "base": 72,
+            "current": 76,
+            "maxPotential": 90,
+            "revelationLevel": "RANGE"
+          },
+          "prowess": 1188
+        },
+        "lea": {
+          "talent": {
+            "base": 84,
+            "current": 88,
+            "maxPotential": 98,
+            "revelationLevel": "EXACT"
+          },
+          "prowess": 1392
+        },
+        "pol": {
+          "talent": {
+            "base": 48,
+            "current": 48,
+            "maxPotential": 70,
+            "revelationLevel": "TENDENCY"
+          },
+          "prowess": 740
+        },
+        "cha": {
+          "talent": {
+            "base": 68,
+            "current": 71,
+            "maxPotential": 84,
+            "revelationLevel": "RANGE"
+          },
+          "prowess": 1102
+        },
+        "luk": {
+          "talent": {
+            "base": 63,
+            "current": 63,
+            "maxPotential": 78,
+            "revelationLevel": "TENDENCY"
+          },
+          "prowess": 968
+        }
+      },
+      "profilePresentation": {
+        "defaultTab": "Overview",
+        "crestState": "revealed",
+        "storyStripCells": {
+          "origin": "常山白馬出塵",
+          "faction": "轉身護主歸心",
+          "role": "七進七出如雪",
+          "awakening": "漢水回槍定軍",
+          "bloodline": "銀甲映出古紋",
+          "future": "老將猶能照夜"
+        }
+      },
+      "trainingProfile": {
+        "sourceSessionId": "NS_SMOKE_DEFAULT_013",
+        "phaseBlock": "MID",
+        "mentorModeLabel": "TeachingOnly",
+        "recommendedFocus": ["沙盤推演", "校場操練"],
+        "graduationTags": ["守成", "教學線偏好", "山地適性強化"]
+      },
+      "supportPlan": {
+        "title": "支援窗口",
+        "mentors": ["黃月英教官", "諸葛亮英靈"],
+        "lineageBoundary": "英靈傳道屬教學支援，不會轉回血脈親傳"
+      },
+      "riskPlan": {
+        "title": "風險提醒",
+        "pressureTags": ["高壓事件", "疲勞累積", "資源消耗"],
+        "recoveryHint": "畫面只以戰術標籤與恢復提示呈現",
+        "concealExactYield": true
+      }
+    }
+  }
+}

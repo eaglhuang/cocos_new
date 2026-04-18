@@ -1,3 +1,4 @@
+<!-- doc_id: doc_ui_0051 -->
 # UI 參考圖品質分析 — 九宮格框體與視覺層次拆解
 
 > **目的**：拆解 4 張參考截圖（武將詳情、裝備介面、戰令商城、信件系統）中的九宮格框體手法，歸納深淺框體使用規則、融合背景的技法、以及文字配色策略，作為本專案 UI 開發的**落地品質目標**。
@@ -438,7 +439,7 @@
 
 > **2026-03-31 v3 中期估算（Agent2 Session 5）**：反映 Phase 0/A 全完成（29 tasks）＋Phase B 3/5 完成（UI-2-0013~0015 shadow rollout、B-1/B-3 tokens/label-style）＋C-1 shadow runtime 70%。
 > **2026-03-31 v3.1 文件校正（Agent1）**：`UI-2-0018` 已補齊真實預覽入口，`UI-2-0019` 已把 D-2 收斂為 `common-parchment / light-surface carrier consistency`。目前待辦不再是「有沒有 preview」，而是 `UI-2-0020` 是否把 `shop-main` / `gacha` 接上真正可驗的 shared carrier；D-1 / D-3 已可進入正式截圖驗收。
-> *(前版備註：已新增 3 個 button family preview、完成 19 畫面 button family 盤點 CSV、keep.md §4.1 已納入 5-family 分類)*
+> *(前版備註：已新增 3 個 button family preview、完成 19 畫面 button family 盤點 CSV、keep.md (doc_index_0011) §4.1 已納入 5-family 分類)*
 
 | 維度 | 參考圖標準 (10/10) | 目前得分 | 前次得分 | 說明 |
 |---|---|---|---|---|
@@ -471,7 +472,7 @@
 
 > 本章節取代舊版抽象建議，改為**可直接執行的 task-level 行動方案**。每個 task 包含驗收條件、所有者標記與依賴關係。
 > 所有者標記：`[SPR]` = Sprite 生產 Agent、`[SKN]` = Skin/JSON 架構 Agent、`[RND]` = Renderer/程式 Agent、`[QA]` = 視覺 QA（人工）。
-> 完整 To-Do 追蹤計畫見 `docs/ui-quality-todo.md`。
+> 完整 To-Do 追蹤計畫見 `docs/ui-quality-todo.md (doc_ui_0035)` (doc_ui_0035)。
 
 ### Phase 0：立即落地（已有 preview，可直接接入）
 
@@ -521,7 +522,7 @@
 | D-3 | duel-challenge paper.utility + equipment 混搭驗證 | `[SKN]` + `[QA]` | P0-4, UI-2-0012, UI-2-0018 | 使用 `LoadingScene.previewTarget=DuelChallenge` 截圖，確認 reject 用 paper.utility、accept 用 equipment.primary 的語意區分清晰 |
 | D-4 | 產出「品質評分 v2」更新至本文件 § 7.3 | `[QA]` | D-1~3 | 至少 3 個維度提升 ≥ 1 分 |
 
-> 2026-03-31 補充：Agent2 已補開 `UI-1-0014 ~ UI-1-0016` 三張對應 QA 卡，並建立 `docs/agent-briefs/agent2-visual-qa-playbook.md` 作為 D-1~D-3 的共用截圖與評分模板。
+> 2026-03-31 補充：Agent2 已補開 `UI-1-0014 ~ UI-1-0016` 三張對應 QA 卡，並建立 `docs/agent-briefs/agent2-visual-qa-playbook.md (doc_ai_0021)` (doc_ai_0021) 作為 D-1~D-3 的共用截圖與評分模板。
 >
 > 2026-03-31 再補充：`UI-2-0018` 已完成，正式預覽入口統一為 `assets/scenes/LoadingScene.scene` → root `LoadingScene` 元件 → `previewMode=true` → `previewTarget={LobbyMain,ShopMain,Gacha,DuelChallenge}`；D-1 與 D-3 已解除 blocked。
 >
@@ -551,7 +552,7 @@
 
 ### 9.2 框體家族 vs 按鈕家族的交叉映射
 
-本文件 § 2 定義了 7 種**框體家族**（dark-metal, parchment, overlay, gold-cta, red-destructive, tab, item-cell），keep.md § 4.1 定義了 5 種**按鈕家族**（commerce, equipment, nav.ink, paper.utility, warning.destructive）。它們不是兩套獨立系統，而是同一材質語言的不同面向：
+本文件 § 2 定義了 7 種**框體家族**（dark-metal, parchment, overlay, gold-cta, red-destructive, tab, item-cell），keep.md (doc_index_0011) § 4.1 定義了 5 種**按鈕家族**（commerce, equipment, nav.ink, paper.utility, warning.destructive）。它們不是兩套獨立系統，而是同一材質語言的不同面向：
 
 | 按鈕家族 (keep.md § 4.1) | 對應框體載體 (本文件 § 2) | 落地關係 |
 |---|---|---|
@@ -634,9 +635,9 @@ Agent2（視覺資產 Agent）                Agent1（架構接線 Agent）
 | **修改 design-tokens.json** | ❌ 不碰 | ✅ 執行 | 無 |
 | **修改 gen-ui-layered-frames.ps1** | ✅ 執行 | ❌ 不碰 | 無 |
 | **修改 UIPreviewBuilder.ts** | ❌ 不碰 | ✅ 執行 | 無 |
-| **修改 keep.md § 4.1** | 提議 → 人工確認 | 提議 → 人工確認 | ⚠️ 兩者都可能要改；用 PR 審核 |
+| **修改 keep.md (doc_index_0011) § 4.1** | 提議 → 人工確認 | 提議 → 人工確認 | ⚠️ 兩者都可能要改；用 PR 審核 |
 | **修改本文件（品質分析.md）** | 更新 § 6 逐圖拆解 / § 7 差距 | 更新 § 8 Task / § 9 架構分析 | ⚠️ 各自負責不同章節 |
-| **修改 cross-reference-index.md** | 不碰 | ✅ 執行 | 無 |
+| **修改 cross-reference-index.md (doc_index_0005)** | 不碰 | ✅ 執行 | 無 |
 | **產出 preview 截圖** | ✅ 執行 | ❌ 不碰 | 無 |
 | **視覺 QA 驗收** | ✅ 初檢 | ❌ | 最終由人工覆核 |
 
@@ -644,10 +645,10 @@ Agent2（視覺資產 Agent）                Agent1（架構接線 Agent）
 
 | 共用文件 | Agent2 可改章節 | Agent1 可改章節 | 絕不可同時改 |
 |---|---|---|---|
-| `docs/keep.md` | 無（只可提議） | § 4.1 按鈕家族 rollout 狀態 | § 4.1 主體規範 |
-| `docs/UI參考圖品質分析.md` | § 6, § 7.1, § 7.2, § 11 | § 8, § 9, § 10 | § 7.3 評分（需協調） |
-| `docs/美術素材規劃與使用說明.md` | § 4.4 family workflow | § 4.4 以外 | § 4.4 本體 |
-| `docs/cross-reference-index.md` | 不碰 | 統一由一個 Agent 維護 | — |
+| `docs/keep.md (doc_index_0011)` (doc_index_0011) | 無（只可提議） | § 4.1 按鈕家族 rollout 狀態 | § 4.1 主體規範 |
+| `docs/UI參考圖品質分析.md (doc_ui_0051)` (doc_ui_0051) | § 6, § 7.1, § 7.2, § 11 | § 8, § 9, § 10 | § 7.3 評分（需協調） |
+| `docs/美術素材規劃與使用說明.md (doc_art_0003)` (doc_art_0003) | § 4.4 family workflow | § 4.4 以外 | § 4.4 本體 |
+| `docs/cross-reference-index.md (doc_index_0005)` (doc_index_0005) | 不碰 | 統一由一個 Agent 維護 | — |
 
 ### 10.4 推薦的工作序列（避免阻塞）
 
@@ -669,7 +670,7 @@ Agent2                              Agent1
 
 ### 10.5 To-Do 文件作為協調中心
 
-- 所有可分配的 task 統一在 `docs/ui-quality-todo.md` 中追蹤
+- 所有可分配的 task 統一在 `docs/ui-quality-todo.md (doc_ui_0035)` (doc_ui_0035) 中追蹤
 - 每個 task 標記 `owner: Agent2 / Agent1 / 待分配`
 - Agent 開始工作前先讀 To-Do 文件，確認目前進度
 - Agent 完成 task 後立即更新 To-Do 文件的狀態
@@ -680,9 +681,9 @@ Agent2                              Agent1
 > 「如果 Agent 被中斷，如何恢復？」
 
 1. 新 Agent 啟動時，**必讀三份文件**：
-   - `docs/keep.md`（最高準則）
-   - `docs/ui-quality-todo.md`（當前進度）
-   - `docs/UI參考圖品質分析.md`（品質目標）
+   - `docs/keep.md (doc_index_0011)` (doc_index_0011)（最高準則）
+   - `docs/ui-quality-todo.md (doc_ui_0035)` (doc_ui_0035)（當前進度）
+   - `docs/UI參考圖品質分析.md (doc_ui_0051)` (doc_ui_0051)（品質目標）
 2. To-Do 文件中 `status: in-progress` 的項目就是上一個 Agent 被中斷的點
 3. 新 Agent 應先完成 `in-progress` 項目，再按優先序推進 `not-started` 項目
 4. 若 `in-progress` 項目的產出物不完整（例如 sprite 生成到一半），新 Agent 應重做該項目而非嘗試續接半成品
@@ -710,7 +711,7 @@ Agent2                              Agent1
 | 盤點 CSV | `artifacts/ui-source/button-family-screen-audit-2026-03-31.csv` | 19 畫面 × 8 欄位：screen_id, layout, skin, current state, recommended dominant, secondary, status, notes |
 | 摘要 TXT | `artifacts/ui-source/button-family-summary-2026-03-31.txt` | 按 dominant family 分群 + 下一步優先序 |
 | Preview Skin Manifest | `temp_workspace/button-family-preview.json` | 3 個 button-skin slot 定義（nav.ink / paper.utility / warning.destructive） |
-| Agent2 Visual QA Playbook | `docs/agent-briefs/agent2-visual-qa-playbook.md` | D-1~D-3 共用的截圖路徑、人工驗收欄位與 notes 模板 |
+| Agent2 Visual QA Playbook | `docs/agent-briefs/agent2-visual-qa-playbook.md (doc_ai_0021)` (doc_ai_0021) | D-1~D-3 共用的截圖路徑、人工驗收欄位與 notes 模板 |
 
 ### 11.3 Equipment Ink Preview（歷史留存）
 
@@ -727,7 +728,7 @@ Agent2                              Agent1
 
 ---
 
-> **本文件的定位**：作為 UI 框體品質目標的**可執行基準**，所有後續 skin JSON 設計、sprite 製作、UI 驗收、Agent 分工均需參考此文件。相關規格連結：`docs/UI技術規格書.md`、`docs/UI 規格書.md`、`assets/resources/ui-spec/ui-design-tokens.json`、`docs/ui-quality-todo.md`。
+> **本文件的定位**：作為 UI 框體品質目標的**可執行基準**，所有後續 skin JSON 設計、sprite 製作、UI 驗收、Agent 分工均需參考此文件。相關規格連結：`docs/UI技術規格書.md (doc_ui_0049)` (doc_ui_0049)、`docs/UI 規格書.md (doc_ui_0027)` (doc_ui_0027)、`assets/resources/ui-spec/ui-design-tokens.json`、`docs/ui-quality-todo.md (doc_ui_0035)` (doc_ui_0035)。
 
 
 ---
@@ -1007,7 +1008,7 @@ Agent2                              Agent1
 
 ### UI 規格書層級的 family 使用條件
 
-若把 `UI 規格書.md`、`主戰場UI規格書.md`、`主戰場UI規格補充_v3.md` 一起看，就能更明確地知道 family 不是憑感覺挑，而是被畫面情境決定：
+若把 `UI 規格書.md` (doc_ui_0027)、`主戰場UI規格書.md` (doc_ui_0001)、`主戰場UI規格補充_v3.md` (doc_ui_0003) 一起看，就能更明確地知道 family 不是憑感覺挑，而是被畫面情境決定：
 
 | 規格書情境 | 建議 family | 條件判讀 |
 |---|---|---|

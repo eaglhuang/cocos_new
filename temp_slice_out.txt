@@ -1,3 +1,0 @@
-✓ source_nobg_ff.png -> temp 9/9
-✓ summary -> C:\Users\User\3KLife\artifacts\ui-generated\UI-2-0105-cap-candidates\sliced-ff\slice-components-report.json
-✓ cleanup root -> C:\Users\User\3KLife\artifacts\ui-generated\UI-2-0105-cap-candidates\sliced-ff\temp

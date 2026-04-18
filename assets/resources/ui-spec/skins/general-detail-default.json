@@ -19,13 +19,6 @@
       "kind": "color-rect",
       "color": "transparent"
     },
-     "detail.summary.card.bleed": {
-       "kind": "sprite-frame",
-       "path": "sprites/ui_families/general_detail/detail_summary_bleed",
-       "spriteType": "sliced",
-       "border": [40, 40, 40, 40],
-       "allowAutoAtlas": true
-     },
     "detail.tab.idle.bleed": {
       "kind": "sprite-frame",
       "path": "sprites/ui_families/general_detail/detail_tabbar_rail_bleed",
@@ -46,7 +39,7 @@
     },
     "detail.bg.fullscreen": {
       "kind": "sprite-frame",
-      "path": "ui-spec/placeholders/bg_ink_main",
+      "path": "sprites/ui_families/general_detail/detail_content_bg",
       "spriteType": "sliced",
       "border": [96, 360, 96, 420],
       "allowAutoAtlas": false
@@ -82,19 +75,19 @@
       "color": "background",
       "alpha": 221
     },
+    "detail.header.bg": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/user_ref/panel_small_gold_ref_012",
+      "spriteType": "sliced",
+      "border": [24, 24, 24, 24],
+      "allowAutoAtlas": false
+    },
     "detail.header.frame": {
       "kind": "sprite-frame",
       "path": "sprites/ui_families/general_detail/detail_header_frame",
       "spriteType": "sliced",
       "border": [40, 40, 40, 40],
       "bleed": 4,
-      "allowAutoAtlas": true
-    },
-    "detail.header.bleed": {
-      "kind": "sprite-frame",
-      "path": "sprites/ui_families/general_detail/detail_header_bleed",
-      "spriteType": "sliced",
-      "border": [40, 40, 40, 40],
       "allowAutoAtlas": true
     },
     "detail.header.fill": {
@@ -104,21 +97,12 @@
       "border": [40, 40, 40, 40],
       "allowAutoAtlas": true
     },
-    "detail.header.noise": {
+    "detail.summary.bg": {
       "kind": "sprite-frame",
-      "path": "sprites/ui_families/common/noise/metal_noise_256",
-      "spriteType": "tiled",
-      "opacity": 24,
-      "blendMode": "overlay",
-      "allowAutoAtlas": true
-    },
-    "detail.header.bg": {
-      "kind": "sprite-frame",
-      "path": "sprites/ui_families/general_detail/detail_header_bg",
+      "path": "sprites/ui_families/general_detail/user_ref/panel_small_gold_ref_012",
       "spriteType": "sliced",
-      "border": [40, 40, 40, 40],
-      "bleed": 4,
-      "allowAutoAtlas": true
+      "border": [24, 24, 24, 24],
+      "allowAutoAtlas": false
     },
     "detail.summary.frame": {
       "kind": "sprite-frame",
@@ -128,13 +112,6 @@
       "bleed": 4,
       "allowAutoAtlas": true
     },
-    "detail.summary.bleed": {
-      "kind": "sprite-frame",
-      "path": "sprites/ui_families/general_detail/detail_summary_bleed",
-      "spriteType": "sliced",
-      "border": [40, 40, 40, 40],
-      "allowAutoAtlas": true
-    },
     "detail.summary.fill": {
       "kind": "sprite-frame",
       "path": "sprites/ui_families/general_detail/detail_summary_fill",
@@ -142,51 +119,12 @@
       "border": [40, 40, 40, 40],
       "allowAutoAtlas": true
     },
-    "detail.summary.noise": {
-      "kind": "sprite-frame",
-      "path": "sprites/ui_families/common/noise/metal_noise_256",
-      "spriteType": "tiled",
-      "opacity": 22,
-      "blendMode": "overlay",
-      "allowAutoAtlas": true
-    },
-    "detail.summary.bg": {
-      "kind": "sprite-frame",
-      "path": "sprites/ui_families/general_detail/detail_summary_bg",
-      "spriteType": "sliced",
-      "border": [40, 40, 40, 40],
-      "bleed": 4,
-      "allowAutoAtlas": true
-    },
-    "detail.summary.card.frame": {
-      "kind": "sprite-frame",
-      "path": "sprites/ui_families/general_detail/detail_summary_card_frame",
-      "spriteType": "sliced",
-      "border": [40, 40, 40, 40],
-      "bleed": 4,
-      "allowAutoAtlas": true
-    },
-    "detail.summary.card.fill": {
-      "kind": "sprite-frame",
-      "path": "sprites/ui_families/general_detail/detail_summary_card_fill",
-      "spriteType": "sliced",
-      "border": [40, 40, 40, 40],
-      "allowAutoAtlas": true
-    },
-    "detail.summary.card.accent": {
-      "kind": "sprite-frame",
-      "path": "sprites/ui_families/general_detail/detail_summary_card_accent",
-      "spriteType": "sliced",
-      "border": [40, 40, 40, 40],
-      "allowAutoAtlas": true
-    },
     "detail.summary.card": {
       "kind": "sprite-frame",
-      "path": "sprites/ui_families/general_detail/detail_summary_card_bg",
+      "path": "sprites/ui_families/general_detail/user_ref/panel_small_gold_ref_012",
       "spriteType": "sliced",
-      "border": [40, 40, 40, 40],
-      "bleed": 4,
-      "allowAutoAtlas": true
+      "border": [24, 24, 24, 24],
+      "allowAutoAtlas": false
     },
     "detail.tabbar.rail.frame": {
       "kind": "sprite-frame",
@@ -272,6 +210,165 @@
       "border": [20, 20, 20, 20],
       "allowAutoAtlas": true
     },
+    "detail.tab.circle": {
+      "kind": "button-skin",
+      "normal": "sprites/ui_families/common/circle_icon/circle_normal",
+      "pressed": "sprites/ui_families/common/circle_icon/circle_normal",
+      "disabled": "sprites/ui_families/common/circle_icon/circle_normal",
+      "spriteType": "simple",
+      "allowAutoAtlas": true
+    },
+    "detail.tab.circle.basics": {
+      "kind": "button-skin",
+      "normal": "sprites/ui_families/general_detail/user_ref/tab_circle_ref_003",
+      "pressed": "sprites/ui_families/general_detail/user_ref/tab_circle_ref_003",
+      "disabled": "sprites/ui_families/general_detail/user_ref/tab_circle_ref_003",
+      "spriteType": "simple",
+      "allowAutoAtlas": true
+    },
+    "detail.tab.circle.stats": {
+      "kind": "button-skin",
+      "normal": "sprites/ui_families/general_detail/user_ref/tab_circle_ref_003",
+      "pressed": "sprites/ui_families/general_detail/user_ref/tab_circle_ref_003",
+      "disabled": "sprites/ui_families/general_detail/user_ref/tab_circle_ref_003",
+      "spriteType": "simple",
+      "allowAutoAtlas": true
+    },
+    "detail.tab.circle.bloodline": {
+      "kind": "button-skin",
+      "normal": "sprites/ui_families/general_detail/user_ref/tab_circle_ref_003",
+      "pressed": "sprites/ui_families/general_detail/user_ref/tab_circle_ref_003",
+      "disabled": "sprites/ui_families/general_detail/user_ref/tab_circle_ref_003",
+      "spriteType": "simple",
+      "allowAutoAtlas": true
+    },
+    "detail.tab.circle.skills": {
+      "kind": "button-skin",
+      "normal": "sprites/ui_families/general_detail/user_ref/tab_circle_ref_003",
+      "pressed": "sprites/ui_families/general_detail/user_ref/tab_circle_ref_003",
+      "disabled": "sprites/ui_families/general_detail/user_ref/tab_circle_ref_003",
+      "spriteType": "simple",
+      "allowAutoAtlas": true
+    },
+    "detail.tab.circle.aptitude": {
+      "kind": "button-skin",
+      "normal": "sprites/ui_families/general_detail/user_ref/tab_circle_ref_003",
+      "pressed": "sprites/ui_families/general_detail/user_ref/tab_circle_ref_003",
+      "disabled": "sprites/ui_families/general_detail/user_ref/tab_circle_ref_003",
+      "spriteType": "simple",
+      "allowAutoAtlas": true
+    },
+    "detail.tab.circle.extended": {
+      "kind": "button-skin",
+      "normal": "sprites/ui_families/general_detail/user_ref/tab_circle_ref_003",
+      "pressed": "sprites/ui_families/general_detail/user_ref/tab_circle_ref_003",
+      "disabled": "sprites/ui_families/general_detail/user_ref/tab_circle_ref_003",
+      "spriteType": "simple",
+      "allowAutoAtlas": true
+    },
+    "detail.tab.circle.badge": {
+      "kind": "color-rect",
+      "color": "#C8A25E",
+      "alpha": 242
+    },
+    "detail.tab.icon.active": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/icons/tab_family_icon_active",
+      "spriteType": "simple",
+      "allowAutoAtlas": true,
+      "opacity": 1
+    },
+    "detail.tab.icon.inactive": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/icons/tab_family_icon_inactive",
+      "spriteType": "simple",
+      "allowAutoAtlas": true,
+      "opacity": 0.96
+    },
+    "detail.tab.icon.basics.active": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/icons/tab_overview_active",
+      "spriteType": "simple",
+      "allowAutoAtlas": true,
+      "opacity": 1
+    },
+    "detail.tab.icon.basics.inactive": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/icons/tab_overview_inactive",
+      "spriteType": "simple",
+      "allowAutoAtlas": true,
+      "opacity": 0.96
+    },
+    "detail.tab.icon.stats.active": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/icons/tab_stats_active",
+      "spriteType": "simple",
+      "allowAutoAtlas": true,
+      "opacity": 1
+    },
+    "detail.tab.icon.stats.inactive": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/icons/tab_stats_inactive",
+      "spriteType": "simple",
+      "allowAutoAtlas": true,
+      "opacity": 0.96
+    },
+    "detail.tab.icon.bloodline.active": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/icons/tab_bloodline_active",
+      "spriteType": "simple",
+      "allowAutoAtlas": true,
+      "opacity": 1
+    },
+    "detail.tab.icon.bloodline.inactive": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/icons/tab_bloodline_inactive",
+      "spriteType": "simple",
+      "allowAutoAtlas": true,
+      "opacity": 0.96
+    },
+    "detail.tab.icon.skills.active": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/icons/tab_skills_active",
+      "spriteType": "simple",
+      "allowAutoAtlas": true,
+      "opacity": 1
+    },
+    "detail.tab.icon.skills.inactive": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/icons/tab_skills_inactive",
+      "spriteType": "simple",
+      "allowAutoAtlas": true,
+      "opacity": 0.96
+    },
+    "detail.tab.icon.aptitude.active": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/icons/tab_aptitude_active",
+      "spriteType": "simple",
+      "allowAutoAtlas": true,
+      "opacity": 1
+    },
+    "detail.tab.icon.aptitude.inactive": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/icons/tab_aptitude_inactive",
+      "spriteType": "simple",
+      "allowAutoAtlas": true,
+      "opacity": 0.96
+    },
+    "detail.tab.icon.extended.active": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/icons/tab_extended_active",
+      "spriteType": "simple",
+      "allowAutoAtlas": true,
+      "opacity": 1
+    },
+    "detail.tab.icon.extended.inactive": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/icons/tab_extended_inactive",
+      "spriteType": "simple",
+      "allowAutoAtlas": true,
+      "opacity": 0.96
+    },
     "detail.close.btn": {
       "kind": "button-skin",
       "normal": "ui-spec/placeholders/btn_close_normal",
@@ -280,11 +377,19 @@
       "spriteType": "sliced",
       "border": [8, 8, 8, 8]
     },
-    "detail.content.frame": {
+    "detail.back.circle": {
+      "kind": "button-skin",
+      "normal": "sprites/ui_families/common/circle_icon/circle_normal",
+      "pressed": "sprites/ui_families/common/circle_icon/circle_normal",
+      "disabled": "sprites/ui_families/common/circle_icon/circle_normal",
+      "spriteType": "simple",
+      "allowAutoAtlas": true
+    },
+    "detail.content.fill": {
       "kind": "sprite-frame",
-      "path": "sprites/ui_families/general_detail/detail_content_frame",
+      "path": "sprites/ui_families/general_detail/user_ref/panel_large_gold_ref_013",
       "spriteType": "sliced",
-      "border": [96, 96, 96, 96],
+      "border": [40, 40, 40, 40],
       "allowAutoAtlas": false
     },
     "detail.content.bleed": {
@@ -294,9 +399,9 @@
       "border": [96, 96, 96, 96],
       "allowAutoAtlas": false
     },
-    "detail.content.fill": {
+    "detail.content.frame": {
       "kind": "sprite-frame",
-      "path": "sprites/ui_families/general_detail/detail_content_fill",
+      "path": "sprites/ui_families/general_detail/detail_content_frame",
       "spriteType": "sliced",
       "border": [96, 96, 96, 96],
       "allowAutoAtlas": false
@@ -559,10 +664,57 @@
       "horizontalAlign": "CENTER",
       "verticalAlign": "CENTER"
     },
+    "detail.label.circleTab": {
+      "kind": "label-style",
+      "font": "fonts/notosans_tc/font",
+      "fontSize": 16,
+      "lineHeight": 20,
+      "color": "textOnParchment",
+      "outlineWidth": 0,
+      "horizontalAlign": "CENTER",
+      "verticalAlign": "CENTER",
+      "overflow": "SHRINK",
+      "isBold": true
+    },
+    "detail.label.circleTabLabel": {
+      "kind": "label-style",
+      "font": "fonts/notosans_tc/font",
+      "fontSize": 12,
+      "lineHeight": 15,
+      "color": "#F1E3C5",
+      "outlineWidth": 0,
+      "horizontalAlign": "CENTER",
+      "verticalAlign": "CENTER",
+      "overflow": "SHRINK",
+      "isBold": true
+    },
+    "detail.label.circleTabBadge": {
+      "kind": "label-style",
+      "font": "fonts/manrope/font",
+      "fontSize": 9,
+      "lineHeight": 11,
+      "color": "#342819",
+      "outlineWidth": 0,
+      "horizontalAlign": "CENTER",
+      "verticalAlign": "CENTER",
+      "overflow": "SHRINK",
+      "isBold": true
+    },
     "detail.close.label": {
       "kind": "label-style",
       "fontSize": 28,
       "lineHeight": 32,
+      "color": "textOnParchment",
+      "outlineWidth": 0,
+      "horizontalAlign": "CENTER",
+      "verticalAlign": "CENTER",
+      "isBold": true
+    },
+    "detail.label.circleBack": {
+      "kind": "label-style",
+      "font": "fonts/manrope/font",
+      "fontSize": 30,
+      "lineHeight": 34,
       "color": "textOnParchment",
       "outlineWidth": 0,
       "horizontalAlign": "CENTER",

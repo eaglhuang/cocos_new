@@ -1,0 +1,11 @@
+{
+  "kind": "ui-mcq-answer-set",
+  "version": 1,
+  "screenId": "ShopMain",
+  "recipeScreenId": "shop-main-screen",
+  "answers": {
+    "familyId": "rail-list",
+    "generationPolicy": "reuse-only",
+    "smokeRoute": "LobbyScene -> open ShopMain"
+  }
+}

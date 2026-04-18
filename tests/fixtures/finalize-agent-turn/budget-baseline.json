@@ -1,0 +1,8 @@
+{
+  "version": 1,
+  "ignore": [
+    "docs/asset-audit.json",
+    "docs/universal-composite-ui-framework-plan.md",
+    "docs/doc-id-registry.json"
+  ]
+}

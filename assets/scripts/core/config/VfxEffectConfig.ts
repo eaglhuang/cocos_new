@@ -5,11 +5,48 @@ export interface VfxEffectNotifyDef {
     readonly color?: string;
 }
 
+/**
+ * 多層積木序列中的單個 Block 條目（v2）
+ * 允許在一個技能特效中疊加多個積木，各自帶延遲與獨立參數。
+ */
+export interface VfxBlockEntry {
+    /** 對應 VFX_BLOCK_REGISTRY 中的 id */
+    readonly blockId: string;
+    /** 相對於特效起始的延遲秒數（0 = 立即播放） */
+    readonly delay: number;
+    /** 此 Block 的持續秒數；省略時沿用父 effect 的 lifetime */
+    readonly duration?: number;
+    /** 色調覆寫（hex，例如 '#FF0000'）；省略時不套用 */
+    readonly tintHex?: string;
+    /** 縮放倍率（1.0 = 不縮放）；省略時不覆寫 */
+    readonly scale?: number;
+    /** 位置偏移 [x, y, z]（世界單位）；省略時與父 effect 同座標 */
+    readonly offset?: [number, number, number];
+}
+
+/**
+ * 鏡頭震動參數（v2）
+ */
+export interface VfxCameraShakeDef {
+    /** 震動振幅（世界單位） */
+    readonly strength: number;
+    /** 震動持續秒數 */
+    readonly duration: number;
+}
+
 export interface VfxEffectDef {
     readonly blockId: string;
     readonly audio?: string;
     readonly notify?: VfxEffectNotifyDef;
     readonly lifetime?: number;
+    /**
+     * 多層積木序列（v2）。
+     * 若存在且不為空，則 playFullEffect 改用 playComposite() 依序播放，
+     * 並忽略頂層的 blockId（blockId 僅作 fallback 保留）。
+     */
+    readonly blocks?: readonly VfxBlockEntry[];
+    /** 鏡頭震動（v2）；省略時不震動 */
+    readonly cameraShake?: VfxCameraShakeDef;
 }
 
 export interface VfxEffectTable {
@@ -17,7 +54,7 @@ export interface VfxEffectTable {
     effects: Record<string, VfxEffectDef>;
 }
 
-export const CURRENT_VFX_EFFECT_TABLE_VERSION = 1;
+export const CURRENT_VFX_EFFECT_TABLE_VERSION = 2;
 
 export const DEFAULT_VFX_EFFECTS: Record<string, VfxEffectDef> = {
     hit_enemy: {
@@ -132,9 +169,16 @@ function migrateToLatestSchema(raw: unknown): VfxEffectTable {
     }
 
     if (sourceVersion <= 0) {
+        // v0：effects 直接掛在 root，無 version 欄位
         return migrateV0ToV1(root);
     }
 
+    if (sourceVersion === 1) {
+        // v1→v2：結構相容，blocks[] 與 cameraShake 為新增可選欄位，直接升版
+        return migrateV1ToV2(root);
+    }
+
+    // v2（或更高但已在上方截斷）：直接使用
     return {
         version: CURRENT_VFX_EFFECT_TABLE_VERSION,
         effects: asRecord(root.effects) as Record<string, VfxEffectDef>,
@@ -145,6 +189,17 @@ function migrateV0ToV1(root: Record<string, unknown>): VfxEffectTable {
     return {
         version: CURRENT_VFX_EFFECT_TABLE_VERSION,
         effects: root as Record<string, unknown> as Record<string, VfxEffectDef>,
+    };
+}
+
+/**
+ * v1 → v2：blocks[] 與 cameraShake 為新增可選欄位，現有 v1 資料結構完全相容。
+ * 升版後 normalizeEffectDef 會自動將 blocks/cameraShake 納入正規化流程。
+ */
+function migrateV1ToV2(root: Record<string, unknown>): VfxEffectTable {
+    return {
+        version: CURRENT_VFX_EFFECT_TABLE_VERSION,
+        effects: asRecord(root.effects) as Record<string, VfxEffectDef>,
     };
 }
 
@@ -174,12 +229,65 @@ function normalizeEffectDef(
     const lifetime = toPositiveNumber(raw.lifetime, fallback?.lifetime ?? 2.0);
     const audio = pickString(raw.audio, fallback?.audio);
 
+    // v2：正規化 blocks[] 多層積木
+    const blocks = normalizeBlockEntries(raw.blocks);
+
+    // v2：正規化 cameraShake
+    const cameraShake = normalizeCameraShake(asRecord(raw.cameraShake));
+
     return {
         blockId,
         ...(audio ? { audio } : {}),
         ...(notify ? { notify } : {}),
         lifetime,
+        ...(blocks.length > 0 ? { blocks } : {}),
+        ...(cameraShake ? { cameraShake } : {}),
     };
+}
+
+function normalizeBlockEntries(raw: unknown): VfxBlockEntry[] {
+    if (!Array.isArray(raw)) return [];
+    const result: VfxBlockEntry[] = [];
+    for (const item of raw) {
+        const entry = asRecord(item);
+        const blockId = pickString(entry.blockId);
+        if (!blockId) continue;
+        const delay = toNonNegativeNumber(entry.delay, 0);
+        const duration = typeof entry.duration === 'number' && entry.duration > 0
+            ? entry.duration : undefined;
+        const tintHex = pickString(entry.tintHex);
+        const scale = typeof entry.scale === 'number' && entry.scale > 0
+            ? entry.scale : undefined;
+        const offset = normalizeOffset(entry.offset);
+        result.push({
+            blockId,
+            delay,
+            ...(duration !== undefined ? { duration } : {}),
+            ...(tintHex ? { tintHex } : {}),
+            ...(scale !== undefined ? { scale } : {}),
+            ...(offset ? { offset } : {}),
+        });
+    }
+    return result;
+}
+
+function normalizeOffset(raw: unknown): [number, number, number] | undefined {
+    if (!Array.isArray(raw) || raw.length < 3) return undefined;
+    const [x, y, z] = raw;
+    if (typeof x !== 'number' || typeof y !== 'number' || typeof z !== 'number') return undefined;
+    return [x, y, z];
+}
+
+function normalizeCameraShake(raw: Record<string, unknown>): VfxCameraShakeDef | undefined {
+    const strength = toPositiveNumber(raw.strength, 0);
+    const duration = toPositiveNumber(raw.duration, 0);
+    if (strength <= 0 || duration <= 0) return undefined;
+    return { strength, duration };
+}
+
+function toNonNegativeNumber(value: unknown, fallback: number): number {
+    const n = toFiniteNumber(value, fallback);
+    return n >= 0 ? n : fallback;
 }
 
 function normalizeNotify(

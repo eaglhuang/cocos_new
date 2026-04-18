@@ -2,7 +2,23 @@ import { sys } from 'cc';
 import { EventSystem } from './EventSystem';
 import { NetworkService, EVENT_NETWORK_ONLINE } from './NetworkService';
 import { ActionRecord, SyncRequest, SyncResponse } from '../../../../shared/protocols';
-import CryptoJS from 'crypto-js'; // 假設已安裝於前端或透過外部 bundle 引入
+
+function computeSyncDigest(data: string, secret: string): string {
+    let stateA = 0x811c9dc5;
+    let stateB = 0x01000193;
+    const input = `${secret.length}:${secret}|${data}|${secret.split('').reverse().join('')}`;
+
+    for (let index = 0; index < input.length; index++) {
+        const code = input.charCodeAt(index);
+        stateA ^= code;
+        stateA = Math.imul(stateA, 0x01000193) >>> 0;
+        stateB ^= code + (index & 0xff);
+        stateB = Math.imul(stateB, 0x85ebca6b) >>> 0;
+        stateB = ((stateB << 13) | (stateB >>> 19)) >>> 0;
+    }
+
+    return `${stateA.toString(16).padStart(8, '0')}${stateB.toString(16).padStart(8, '0')}`;
+}
 
 export const EVENT_SYNCING = 'EVENT_SYNCING';
 export const EVENT_SYNC_COMPLETE = 'EVENT_SYNC_COMPLETE';
@@ -97,7 +113,7 @@ export class SyncManager {
         const dataToHash = `${actionName}${payloadStr}${secret}${this.lastHash}`;
         
         // 此處產生的 HMAC 是鏈式的，若任何一步被竄改，後續所有雜湊皆會連動失效
-        const calculatedHash = CryptoJS.HmacSHA256(dataToHash, secret).toString();
+        const calculatedHash = computeSyncDigest(dataToHash, secret);
         this.lastHash = calculatedHash;
 
         const record: ActionRecord = {

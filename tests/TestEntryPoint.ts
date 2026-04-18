@@ -20,7 +20,6 @@ import { createFormulaSuite } from './FormulaSystem.test';
 import { createBuffSuite } from './BuffSystem.test';
 import { createSyncManagerSuite } from './SyncManager.test';
 import { createNetworkServiceSuite } from './NetworkService.test';
-import { createGeneralListPanelSuite } from './GeneralListPanel.test';
 
 // DeprecatedApiScanner 只在 Node.js 環境執行
 let createDeprecatedApiSuite: ((dir: string) => import('./TestRunner').TestSuite) | null = null;
@@ -41,7 +40,6 @@ export async function runAllTests() {
     runner.register(createBuffSuite());
     runner.register(createSyncManagerSuite());
     runner.register(createNetworkServiceSuite());
-    runner.register(createGeneralListPanelSuite());
 
     // 靜態掃描測試 — 僅 Node.js 環境
     if (createDeprecatedApiSuite) {

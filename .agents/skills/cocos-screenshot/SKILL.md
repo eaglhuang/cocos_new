@@ -1,4 +1,5 @@
 ---
+doc_id: doc_agentskill_0005
 name: cocos-screenshot
 description: 'EDITOR PREVIEW SCREENSHOT SKILL — Capture the current Cocos Creator Editor window to a PNG file and inspect exactly what is already visible inside the Editor. USE FOR: visual symptoms when the user already has the target screen open in Cocos Editor / Editor Preview. DO NOT USE FOR: browser-driven QA, automatic browser target switching, reference-image comparison pipelines, compile errors, or pure log analysis. If the user wants browser screenshots, remind them to prepare the Browser Review environment and use cocos-preview-qa instead.'
 argument-hint: 'No arguments needed. Use only after confirming the user has already opened the target content inside the Cocos Editor window.'

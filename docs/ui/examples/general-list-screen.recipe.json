@@ -1,0 +1,68 @@
+{
+  "$schema": "../ucuf-screen-recipe.schema.json",
+  "recipeType": "screen-recipe",
+  "recipeVersion": 1,
+  "screenId": "general-list-screen",
+  "uiId": "GeneralList",
+  "familyId": "rail-list",
+  "variantId": "general-list-v1",
+  "bundle": "lobby_ui",
+  "layer": "Game",
+  "controllerKind": "composite-panel",
+  "controllerClass": "GeneralListComposite",
+  "layoutId": "general-list-main",
+  "skinId": "general-list-default",
+  "contentSchemaId": "general-list-content",
+  "dataSources": [
+    {
+      "sourceId": "generals",
+      "kind": "collection",
+      "required": true,
+      "bindPath": "generals",
+      "owner": "GeneralListComposite",
+      "description": "General roster collection consumed by the existing composite show(generals) API."
+    }
+  ],
+  "slots": [
+    {
+      "slotId": "HeaderBar",
+      "zoneId": "rail-list.header",
+      "mode": "toolbar-host",
+      "widgetPath": "GeneralListRoot/MainContainer/HeaderBar"
+    },
+    {
+      "slotId": "ListSlot",
+      "zoneId": "rail-list.list",
+      "mode": "list-host",
+      "widgetPath": "GeneralListRoot/MainContainer/DataList",
+      "dataSource": "generals"
+    },
+    {
+      "slotId": "BackAction",
+      "zoneId": "rail-list.footer.back",
+      "mode": "footer-host",
+      "widgetPath": "GeneralListRoot/BtnBack"
+    }
+  ],
+  "chromeFlags": {
+    "hasPortrait": false,
+    "hasTopMeta": false,
+    "hasBottomSummary": false,
+    "hasTabRail": false,
+    "hasFooterActions": true,
+    "hasOverviewSpecialSlot": false,
+    "hasSearchBar": false,
+    "hasSortHeader": true,
+    "hasLeftRail": false,
+    "hasRightPreview": false
+  },
+  "visualTheme": {
+    "skinFamily": "general-list-default",
+    "frameRecipe": "rail-list-basic-sheet",
+    "tokenTheme": "lobby-ink-gold",
+    "ornamentPolicy": "reuse-only"
+  },
+  "generationPolicy": "reuse-only",
+  "validationProfile": "rail-list-game-standard",
+  "smokeRoute": "LobbyScene -> onClickGeneralList() -> GeneralListComposite.show(generals)"
+}

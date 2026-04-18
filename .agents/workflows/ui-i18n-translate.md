@@ -1,10 +1,11 @@
 ---
+doc_id: doc_ai_0005
 description: 利用 AI 將 i18n 字串翻譯為多國語系版本，考慮字型寬度與 UI 空間限制
 ---
 
 ## Context Budget Guard
 
-- 進 workflow 前先看 `.agents/skills/context-budget-guard/SKILL.md`
+- 進 workflow 前先看 `.agents/skills/context-budget-guard/SKILL.md` (doc_agentskill_0006)
 - 先跑 `node tools_node/check-context-budget.js --changed --emit-keep-note`
 - 大型 `.md` / `.json` 變更先跑 `node tools_node/summarize-structured-diff.js --git <file>`
 - 收工前跑 `node tools_node/report-turn-usage.js --changed --emit-final-line`，並在 final answer 補上 `Token 量級：少 / 中 / 大（估算）`

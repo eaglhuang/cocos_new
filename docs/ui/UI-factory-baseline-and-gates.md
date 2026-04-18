@@ -1,3 +1,4 @@
+<!-- doc_id: doc_ui_0047 -->
 # UI Factory Baseline And Gates
 
 這份文件把目前分散在 `UI技術規格書`、`UI品質檢核表`、`ui-vibe-pipeline` skill、以及實際量產流程中的共通規則收斂成一份 baseline。
@@ -30,7 +31,7 @@
 
 ### 1.4 元件尺寸與幾何行為基準（2026-04-09 新增）
 
-> 完整規則見 → **`docs/ui/component-sizing-contract.md`**
+> 完整規則見 → **`docs/ui/component-sizing-contract.md (doc_ui_0038)` (doc_ui_0038)**
 
 1. **每份 screen spec / task card 必須包含 Component Sizing Table**，才算規格齊備；缺少 sizing table 的規格不可進入 asset 委託或量產流程。
 2. 每個元件必須標記幾何行為代號（FX / SS / SR / TR / LC / DI）。
@@ -42,11 +43,11 @@
 
 如果要讓其他 Agent 按照這條 UI factory 流程推動畫面，最少要讓它們讀：
 
-1. `docs/keep.summary.md`
-2. `docs/UI技術規格書.md`
-3. `docs/UI品質檢核表.md`
-4. `docs/UI-factory-agent-entry.md`
-5. `docs/UI-reference-source-workflow.md`
+1. `docs/keep.summary.md (doc_index_0012)` (doc_index_0012)
+2. `docs/UI技術規格書.md (doc_ui_0049)` (doc_ui_0049)
+3. `docs/UI品質檢核表.md (doc_ui_0050)` (doc_ui_0050)
+4. `docs/UI-factory-agent-entry.md` (doc_ui_0032)
+5. `docs/UI-reference-source-workflow.md (doc_ui_0036)` (doc_ui_0036)
 6. `artifacts/ui-source/general-detail-overview/decomposition-pipeline-ops-guide.md`
 
 其中：
@@ -57,7 +58,7 @@
 4. `UI-factory-agent-entry` 負責告訴 Agent 讀取順序與路由。
 5. `UI-reference-source-workflow` 負責決定 canonical reference 從哪裡來，以及 AI prompt 如何與使用者共同討論。
 6. `ops-guide` 負責告訴 Agent 真正的量產流程怎麼走。
-7. 若畫面含 icon / badge / currency family，需再讀 `docs/UI-icon-factory-workflow.md`。
+7. 若畫面含 icon / badge / currency family，需再讀 `docs/UI-icon-factory-workflow.md (doc_ui_0033)` (doc_ui_0033)。
 
 ## 3. 何時能驗證量產工程進度
 

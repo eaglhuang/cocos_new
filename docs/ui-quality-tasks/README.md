@@ -1,3 +1,4 @@
+<!-- doc_id: doc_index_0014 -->
 # UI Quality Task Shards
 
 這裡是 `UI` 任務機器可讀資料的可編輯來源。
@@ -6,7 +7,8 @@
 
 - `docs/ui-quality-tasks/*.json` 是可編輯的小 shard。
 - `docs/ui-quality-todo.json` 是由 shard 合併後生成的 aggregate manifest。
-- `docs/agent-briefs/tasks_index.md` 是由 aggregate manifest 再生成的人類可讀索引。
+- `docs/agent-briefs/tasks_index.md (doc_task_0002)` (doc_task_0002) 是由 aggregate manifest 再生成的人類可讀索引。
+- shard 內的任務 `id` / 卡號格式仍以 [名詞定義文件](C:\Users\User\3KLife\docs\遊戲規格文件\系統規格書\名詞定義文件.md (doc_spec_0008)) (doc_spec_0008) 為準；本文件只規範 UI shard 的結構與生成流程。
 
 ## 為什麼要拆
 
@@ -42,7 +44,7 @@ node tools_node/build-ui-task-manifest.js
 生成後會同步更新：
 
 1. `docs/ui-quality-todo.json`
-2. `docs/agent-briefs/tasks_index.md`
+2. `docs/agent-briefs/tasks_index.md (doc_task_0002)` (doc_task_0002)
 
 ## 過渡期規則
 

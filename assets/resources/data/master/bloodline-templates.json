@@ -1,6 +1,77 @@
 {
   "version": "1.0.0",
-  "updatedAt": "2026-04-06",
-  "description": "虛擬祖先模板庫。當武將血統樹缺乏特定祖先時，從這裡自動補齊。",
-  "data": []
+  "updatedAt": "2026-04-15",
+  "description": "虛擬祖先模板庫。定義 14 位祖先 slot、權重配置與母系姓氏池。",
+  "data": [
+    {
+      "id": "ancestor-slot-template-standard-14",
+      "templateType": "ancestor-slot-template",
+      "slotRules": [
+        { "slot": 1, "generation": 1, "relation": "F", "gender": "男", "weightProfileId": "g1-paternal-core" },
+        { "slot": 2, "generation": 1, "relation": "M", "gender": "女", "weightProfileId": "g1-maternal-support" },
+        { "slot": 3, "generation": 2, "relation": "F", "gender": "男", "weightProfileId": "g2-paternal-line" },
+        { "slot": 4, "generation": 2, "relation": "M", "gender": "女", "weightProfileId": "g2-maternal-line" },
+        { "slot": 5, "generation": 2, "relation": "F", "gender": "男", "weightProfileId": "g2-paternal-line" },
+        { "slot": 6, "generation": 2, "relation": "M", "gender": "女", "weightProfileId": "g2-maternal-line" },
+        { "slot": 7, "generation": 3, "relation": "F", "gender": "男", "weightProfileId": "g3-diffuse" },
+        { "slot": 8, "generation": 3, "relation": "M", "gender": "女", "weightProfileId": "g3-diffuse" },
+        { "slot": 9, "generation": 3, "relation": "F", "gender": "男", "weightProfileId": "g3-diffuse" },
+        { "slot": 10, "generation": 3, "relation": "M", "gender": "女", "weightProfileId": "g3-diffuse" },
+        { "slot": 11, "generation": 3, "relation": "F", "gender": "男", "weightProfileId": "g3-diffuse" },
+        { "slot": 12, "generation": 3, "relation": "M", "gender": "女", "weightProfileId": "g3-diffuse" },
+        { "slot": 13, "generation": 3, "relation": "F", "gender": "男", "weightProfileId": "g3-diffuse" },
+        { "slot": 14, "generation": 3, "relation": "M", "gender": "女", "weightProfileId": "g3-diffuse" }
+      ],
+      "mutationPolicy": {
+        "minMutations": 1,
+        "maxMutations": 2,
+        "allowedCategories": ["hidden", "heritage", "aptitude"]
+      }
+    },
+    {
+      "id": "g1-paternal-core",
+      "templateType": "weight-profile",
+      "coreTagWeight": 0.7,
+      "secondaryTagWeight": 0.2,
+      "regionalTagWeight": 0.1,
+      "familyTacticBonus": 0.2
+    },
+    {
+      "id": "g1-maternal-support",
+      "templateType": "weight-profile",
+      "coreTagWeight": 0.35,
+      "secondaryTagWeight": 0.4,
+      "regionalTagWeight": 0.25,
+      "familyTacticBonus": 0.05
+    },
+    {
+      "id": "g2-paternal-line",
+      "templateType": "weight-profile",
+      "coreTagWeight": 0.4,
+      "secondaryTagWeight": 0.3,
+      "regionalTagWeight": 0.3,
+      "familyTacticBonus": 0.1
+    },
+    {
+      "id": "g2-maternal-line",
+      "templateType": "weight-profile",
+      "coreTagWeight": 0.2,
+      "secondaryTagWeight": 0.35,
+      "regionalTagWeight": 0.45,
+      "familyTacticBonus": 0.05
+    },
+    {
+      "id": "g3-diffuse",
+      "templateType": "weight-profile",
+      "coreTagWeight": 0.2,
+      "secondaryTagWeight": 0.2,
+      "regionalTagWeight": 0.6,
+      "familyTacticBonus": 0.02
+    },
+    {
+      "id": "hundred-surnames-default",
+      "templateType": "maternal-surname-pool",
+      "surnames": ["王", "李", "張", "劉", "陳", "楊", "趙", "黃", "周", "吳"]
+    }
+  ]
 }

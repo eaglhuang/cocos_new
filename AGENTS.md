@@ -1,3 +1,4 @@
+<!-- doc_id: doc_ai_0018 -->
 # 3KLife Agent Overrides
 
 本檔補充專案內的高優先級 Agent 行為規則。
@@ -30,9 +31,9 @@
 
 ### 強制行為
 
-1. 先讀 `docs/keep.summary.md`（需修改共識時才讀 `docs/keep.md` 全文）。
-2. 立刻套用 `.agents/skills/best-mode/SKILL.md` 的路由規則。
-3. 在讀取大型檔案、compare board、QA 圖片、長篇 notes、`docs/ui-quality-todo.json`、`docs/keep.md` 之前，先跑：
+1. 先讀 `docs/keep.summary.md (doc_index_0012)` (doc_index_0012)（需修改共識時才讀 `docs/keep.md (doc_index_0011)` (doc_index_0011) 全文）。
+2. 立刻套用 `.agents/skills/best-mode/SKILL.md` (doc_agentskill_0001) 的路由規則。
+3. 在讀取大型檔案、compare board、QA 圖片、長篇 notes、`docs/ui-quality-todo.json`、`docs/keep.md (doc_index_0011)` (doc_index_0011) 之前，先跑：
    ```bash
    node tools_node/check-context-budget.js --changed --emit-keep-note
    ```
@@ -66,11 +67,11 @@
 
 ### 額外限制
 
-- 禁止直接把整份 `keep.md`、`ui-quality-todo.json`、大型 notes、compare board、批次 screenshot 塞進對話。
+- 禁止直接把整份 `keep.md` (doc_index_0011)、`ui-quality-todo.json`、大型 notes、compare board、批次 screenshot 塞進對話。
 - 圖片一次最多 `1` 張主圖 + `1` 張對照圖。
 - 若 `check-context-budget.js` 回傳 `warn` 或 `hard-stop`，必須先縮摘要，再繼續工作。
 - 若已使用 wrapper，wrapper 的 block 結果優先，不能繞過。
-- 若要替換 `assets/resources/sprites/ui_families/general_detail/v3_final/*` 的 alias，必須先讀 `docs/ui/general-detail-v3-final-alias-policy.md`，只能照白名單或 provisional-allow 執行；黑名單替換一律先開 task，再跑新的 `formal-pass-rX`。
+- 若要替換 `assets/resources/sprites/ui_families/general_detail/v3_final/*` 的 alias，必須先讀 `docs/ui/general-detail-v3-final-alias-policy.md (doc_ui_0043)` (doc_ui_0043)，只能照白名單或 provisional-allow 執行；黑名單替換一律先開 task，再跑新的 `formal-pass-rX`。
 - 若要處理框體資產，必須先判斷它是不是 `non-9-slice ornate frame`：凡是四角完整花角 + 四邊連續 ornament 的整框，禁止直接九宮拉伸；只能固定尺寸、拆角邊件，或改畫 stretch-safe 中段版本。
 
 ## Skill 指名

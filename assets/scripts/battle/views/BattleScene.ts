@@ -1,43 +1,50 @@
 // @spec-source → 見 docs/cross-reference-index.md
-import { _decorator, Component, Color, Label, Node, UITransform, Vec3, Button, Sprite, Prefab, Widget } from "cc";
+import { _decorator, Component, Color, EventKeyboard, EventMouse, EventTouch, Input, KeyCode, Label, Node, Vec3, geometry, input } from "cc";
 import {
   EVENT_NAMES,
   Faction,
   GAME_CONFIG,
   TroopType,
-  TROOP_DEPLOY_COST,
   SP_PER_KILL,
+  Weather,
+  BattleTactic,
 } from "../../core/config/Constants";
 import { services } from "../../core/managers/ServiceLoader";
+import { BattleEntryParams, DEFAULT_BATTLE_ENTRY_PARAMS, formatBattleEntryLog } from '../models/BattleEntryParams';
 import { GeneralUnit, GeneralConfig } from "../../core/models/GeneralUnit";
 import { BattleController } from "../controllers/BattleController";
 import { TerrainGrid } from "../models/BattleState";
-import { BattleHUD } from "../../ui/components/BattleHUD";
-import { DeployPanel } from "../../ui/components/DeployPanel";
-import { ResultPopup } from "../../ui/components/ResultPopup";
-import { BattleLogPanel } from "../../ui/components/BattleLogPanel";
+import { BattleHUDComposite } from "../../ui/components/BattleHUDComposite";
+import type { DeployRuntimeApi } from "../../ui/components/DeployRuntimeApi";
+import { ResultPopupComposite } from "../../ui/components/ResultPopupComposite";
+import { BattleLogComposite } from "../../ui/components/BattleLogComposite";
 import { BattleScenePanel } from "../../ui/components/BattleScenePanel";
-import { TallyCardData } from "../../ui/components/TigerTallyPanel";
 import { DuelChallengePanel } from "../../ui/components/DuelChallengePanel";
-import { GeneralQuickViewData } from "../../ui/components/GeneralQuickViewPanel";
-import { UltimateSkillItem } from "../../ui/components/UltimateSelectPopup";
 import { BoardRenderer } from "./BoardRenderer";
 import { UnitRenderer } from "./UnitRenderer";
 import { SceneBackground } from "./SceneBackground";
-import { Camera, Layers, geometry, Graphics } from "cc";
-import { VFX_BLOCK_REGISTRY } from "../../tools/vfx-block-registry";
+import { Camera, Layers, view } from "cc";
+import { EncounterConfig, loadDamageFonts, prewarmVfxPools, loadEncounter, createGeneral, buildTallyCards, buildUltimateSkills, buildTacticSummary, loadBattleSkillMetadata } from './BattleSceneLoader';
+import { setupCameraForBoard, initSceneBackground, troopName, addBackgroundSwitchUI, resolveSceneBackgroundId } from './BattleSceneSetup';
+import { ensureDeployPanelRuntime, ensureHUD, ensureBattleLogPanel, ensureBattleScenePanel, ensureBoardRenderer, ensureUnitRenderer } from './BattleUIInitializer';
+import {
+  requiresBattleSkillManualTargeting,
+  resolveBattleSkillProfile,
+  resolveBattleSkillTargetMode,
+} from '../skills/BattleSkillProfiles';
+import {
+  buildBattleSkillAimingMessage,
+  buildBattleSkillUsedMessage,
+  getBattleSkillPresentation,
+} from '../skills/BattleSkillPresentation';
+import { BattleSkillTargetMode, SkillSourceType } from '../../shared/SkillRuntimeContract';
 
 const { ccclass, property } = _decorator;
 
-/** encounters.json 中單一遭遇戰的設定結構 */
-interface EncounterConfig {
-  id: string;
-  name: string;
-  playerGeneralId: string;
-  enemyGeneralId: string;
-  terrain?: TerrainGrid;
-  /** 對應 scene-backgrounds.json 中的 id，決定要顯示的背景圖 */
-  backgroundId?: string;
+interface PendingSkillTargeting {
+  skillId: string;
+  sourceType: SkillSourceType;
+  targetMode: BattleSkillTargetMode;
 }
 
 /**
@@ -47,7 +54,7 @@ interface EncounterConfig {
  *   1. 初始化 ServiceLoader（DI 容器）
  *   2. 從 JSON 載入武將設定並建立 GeneralUnit
  *   3. 建立 BattleController 並啟動戰鬥
- *   4. 連結 BattleHUD、DeployPanel、ResultPopup
+ *   4. 連結 BattleHUDComposite、Deploy runtime、ResultPopupComposite
  *   5. 維護簡易文字化的棋盤格狀態（作為 Demo 視覺佔位）
  *
  * 使用方式：掛載於場景根節點，並在 Inspector 中綁定各 UI 元件。
@@ -55,21 +62,21 @@ interface EncounterConfig {
 @ccclass("BattleScene")
 export class BattleScene extends Component {
   // ─── UI 元件綁定 ──────────────────────────────────────────────────────────
-  @property(BattleHUD)
-  hud: BattleHUD = null!;
+  @property(BattleHUDComposite)
+  hud: BattleHUDComposite = null!;
 
-  @property(DeployPanel)
-  deployPanel: DeployPanel = null!;
+  @property(Node)
+  deployHost: Node = null!;
 
-  @property(ResultPopup)
-  resultPopup: ResultPopup = null!;
+  @property(ResultPopupComposite)
+  resultPopup: ResultPopupComposite = null!;
 
   /** 棋盤文字輸出節點（Debug 用 Label，可在 Inspector 中可選綁定） */
   @property(Label)
   gridDebugLabel: Label = null!;
 
-  @property(BattleLogPanel)
-  battleLogPanel: BattleLogPanel = null!;
+  @property(BattleLogComposite)
+  battleLogPanel: BattleLogComposite = null!;
 
   /** 戰場UI總調度器：統一管理 TigerTallyPanel / ActionCommandPanel / UnitInfoPanel */
   @property(BattleScenePanel)
@@ -119,15 +126,23 @@ export class BattleScene extends Component {
   private _eg: GeneralUnit | null = null;
   private readonly unsubs: Array<() => void> = [];
   private isAdvancingTurn = false;
-  /** 單挑面板開啟中，暫停回合解鎖，直到玩家做出決定 */
   private isDuelPanelActive = false;
-  private enemyThinkingPanel: Node | null = null;
+  /** 每次呼叫 _onEndTurn 時遞增；用於 safety-timeout 比對，防止舊超時誤觸發 */
+  private _advanceTurnGeneration = 0;
   private readonly combatVisualQueue: Array<() => void> = [];
   private isDrainingCombatVisual = false;
   /** 當前遭遇戰 ID（用於重開時保持同一關卡） */
   private currentEncounterId = "encounter-001";
+  /** 本次戰場入口參數（啟動後不變） */
+  private _battleParams: BattleEntryParams | null = null;
   /** 場景背景管理元件 */
   private sceneBackground: SceneBackground | null = null;
+  private deployRuntime: DeployRuntimeApi | null = null;
+  private pendingSkillTargeting: PendingSkillTargeting | null = null;
+
+  private get _deployPanelRuntime(): DeployRuntimeApi | null {
+    return this.deployRuntime;
+  }
 
   // ─── 生命週期 ─────────────────────────────────────────────────────────────
 
@@ -137,15 +152,6 @@ export class BattleScene extends Component {
     // [UI-2-0026] 預設隱藏 gridDebugLabel，避免場景預設 active=true 時顯示 "label" 佔位符
     if (this.gridDebugLabel && !this.showGridDebug) {
       this.gridDebugLabel.node.active = false;
-    } else if (!this.gridDebugLabel) {
-      // fallback: 如果在 Inspector 未綁定，嘗試在 Canvas 下尋找並隱藏該節點，避免 designer 留下測試節點顯示
-      const canvas = this.getCanvasNode();
-      try {
-        const maybe = canvas?.getChildByName('gridDebugLabel') ?? canvas?.getChildByName('GridDebugLabel');
-        if (maybe) maybe.active = false;
-      } catch (e) {
-        // 忽略任何尋找錯誤
-      }
     }
     try {
       // 1. 初始化服務容器（必須在所有 services() 呼叫之前）
@@ -163,6 +169,7 @@ export class BattleScene extends Component {
       await Promise.all([
           services().loadSkills(),
           services().loadVfxEffects(),
+          loadBattleSkillMetadata(),
       ]);
       console.log("[BattleScene] ActionSystem + VFX 效果表載入完成");
 
@@ -170,42 +177,54 @@ export class BattleScene extends Component {
       // capture mode 只做靜態 UI / HUD 驗證，不需要把整批可選特效池都預熱進來，
       // 否則不存在的可選 prefab 會把 UI residual 報表洗成假噪音。
       if (!isBattleCaptureMode) {
-        await this.prewarmVfxPools();
+        await prewarmVfxPools();
         console.log("[BattleScene] VFX 池預熱完成");
       } else {
         console.log("[BattleScene] capture mode 略過 VFX 池預熱");
       }
 
+      // 2.7 解析戰場入口參數（統一 Lobby / Preview / Replay 路徑）
+      const battleParams = this._resolveBattleParams();
+      this._battleParams = battleParams;
+      this.currentEncounterId = battleParams.encounterId;
+
       // 3. 從 encounters.json 讀取遭遇戰設定
-      const encounter = await this.loadEncounter(this.currentEncounterId);
-      const pgId = encounter?.playerGeneralId ?? "zhang-fei";
-      const egId = encounter?.enemyGeneralId  ?? "lu-bu";
+      const encounter = await loadEncounter(this.currentEncounterId);
+      const pgId = battleParams.playerGeneralId;
+      const egId = battleParams.enemyGeneralId;
       const terrain: TerrainGrid | undefined = encounter?.terrain;
-      const backgroundId = encounter?.backgroundId ?? "bg_normal_day";
+      const backgroundId = resolveSceneBackgroundId(
+        battleParams.backgroundId,
+        encounter?.backgroundId,
+        battleParams.battleTactic ?? encounter?.battleTactic ?? BattleTactic.Normal,
+      );
 
       // 4. 從 JSON 讀取武將設定（失敗時使用預設值）
-      const pg = await this.createGeneral(pgId, Faction.Player);
-      const eg = await this.createGeneral(egId, Faction.Enemy);
+      const pg = await createGeneral(pgId, Faction.Player);
+      const eg = await createGeneral(egId, Faction.Enemy);
       // 存為類別欄位，供 RequestGeneralQuickView 事件轉接層查詢
       this._pg = pg;
       this._eg = eg;
 
       // 4.5 載入 BMFont 傷害數字與登錄 Shader
-      await this.loadDamageFonts();
+      await loadDamageFonts();
       services().material.registerShader('unit-base', 'effect:unit-base', 'critical');
       services().material.registerShader('heroine-toon', 'effect:heroine-toon', 'critical');
       await services().material.warmupCritical(this.node);
 
-      // 5. 開始第一場戰鬥（含地形）
-      this.ctrl.initBattle(pg, eg, terrain);
+      // 5. 開始第一場戰鬥（含地形、天氣、戰法）
+      this.ctrl.initBattle(pg, eg, terrain, battleParams.weather, battleParams.battleTactic);
       console.log("[BattleScene] 戰鬥已初始化");
 
       // 6. 連結 UI 元件（自動尋找，不依賴 Inspector 綁定）
-      this.ensureDeployPanel();
-      this.ensureHUD();
-      this.ensureBattleLogPanel();
-      this.ensureBattleScenePanel();
-      this.ensureBoardRenderer();
+      const canvas = this.getCanvasNode();
+      this.deployRuntime = await ensureDeployPanelRuntime(this.deployHost);
+      const hudResult    = ensureHUD(this.hud, this.resultPopup, canvas);
+      this.hud           = (hudResult.hud          ?? this.hud)         as BattleHUDComposite;
+      this.resultPopup   = (hudResult.resultPopup  ?? this.resultPopup) as ResultPopupComposite;
+      this.battleLogPanel   = (ensureBattleLogPanel(this.battleLogPanel, canvas) ?? this.battleLogPanel) as BattleLogComposite;
+      this.battleScenePanel = (ensureBattleScenePanel(this.battleScenePanel, canvas) ?? this.battleScenePanel) as BattleScenePanel;
+      this.boardRenderer    = (ensureBoardRenderer(this.boardRenderer, this.node.scene, this.boardGapRatio, this.boardTargetDepth) ?? this.boardRenderer) as BoardRenderer;
       if (this.boardRenderer) {
           services().scene.registerBoardRenderer(this.boardRenderer);
       }
@@ -217,31 +236,41 @@ export class BattleScene extends Component {
       });
 
       // 6-2. 填入虎符卡片初始資料（手牌卡組）
-      const initialCards = this._buildTallyCards();
+      const initialCards = buildTallyCards(battleParams.selectedCardIds);
       this.battleScenePanel?.setCards(initialCards);
-      this.battleScenePanel?.setUltimateSkills(this._buildUltimateSkills(pg));
+      this.battleScenePanel?.setUltimateSkills(buildUltimateSkills(pg));
+      this.battleScenePanel?.setTacticSummary(buildTacticSummary(pg).label);
+
+      // 6-3. 印出正式入口 log（統一格式）
+      const cardNames = initialCards.map(c => c.unitName);
+      console.log(formatBattleEntryLog(battleParams, {
+        playerName: pg.name,
+        enemyName: eg.name,
+        encounterName: encounter?.name ?? battleParams.encounterId,
+        cardNames,
+      }));
+      this._deployPanelRuntime?.setTroopSlotButtonsVisible(false);
       console.log(`[BattleScene] 虎符卡片已設置：${initialCards.length} 張`);
 
       this.boardRenderer?.setDeployHintFaction(Faction.Player);
-      this.setupCameraForBoard();
-      this.ensureUnitRenderer();
+      setupCameraForBoard(this.node.scene!, this.getCanvasNode());
+      this.unitRenderer = (ensureUnitRenderer(this.unitRenderer, this.node.scene, this.boardRenderer, this.getMainCamera(), canvas) ?? this.unitRenderer) as UnitRenderer;
 
-      this.deployPanel?.setController(this.ctrl);
-      // 登記拖曳放手回調：由 DeployPanel 在放手時主動傳座標給 BattleScene，確保射線座標正確
-      this.deployPanel?.registerDragDropCallback((sx, sy) => this.doDeployRaycast(sx, sy));
-      console.log(`[BattleScene] deployPanel 已連結: ${!!this.deployPanel}`);
+      this._deployPanelRuntime?.setController(this.ctrl);
+      this._deployPanelRuntime?.registerDragDropCallback((screenX, screenY) => this._doDeployRaycast(screenX, screenY));
+      console.log(`[BattleScene] deployRuntime 已連結: ${!!this._deployPanelRuntime}`);
 
       const snap = services().battle.getSnapshot();
-      // 初始化 DP 顯示（確保 DeployPanel 顯示正確的初始 DP）
-      this.deployPanel?.updateDp(snap.playerDp);
+      // 初始化 DP 顯示（確保 deploy runtime 顯示正確的初始 DP）
+      this._deployPanelRuntime?.updateDp(snap.playerFood);
       this.hud?.setPlayerGeneralId(pgId);
       this.hud?.setEnemyGeneralId(egId);
       this.hud?.setPlayerName(pg.name);
       this.hud?.setEnemyName(eg.name);
       this.hud?.refresh(
         snap.turn,
-        snap.playerDp,
-        GAME_CONFIG.MAX_DP,
+        snap.playerFood,
+        GAME_CONFIG.MAX_FOOD,
         pg.currentHp,
         pg.maxHp,
         eg.currentHp,
@@ -254,8 +283,8 @@ export class BattleScene extends Component {
         }
 
         const [tallyReady, actionReady, logReady] = await Promise.all([
-          this.battleScenePanel?.tigerTallyPanel?.waitUntilReady?.(5000) ?? Promise.resolve(true),
-          this.battleScenePanel?.actionCommandPanel?.waitUntilReady?.(5000) ?? Promise.resolve(true),
+          Promise.resolve(true),
+          Promise.resolve(true),
           this.battleLogPanel?.waitUntilReady?.(5000) ?? Promise.resolve(true),
         ]);
 
@@ -265,15 +294,15 @@ export class BattleScene extends Component {
           );
         }
 
-        const latestSnap = services().battle.getSnapshot();
-  this.hud.setPlayerGeneralId(pgId);
-  this.hud.setEnemyGeneralId(egId);
+          const latestSnap = services().battle.getSnapshot();
+          this.hud.setPlayerGeneralId(pgId);
+          this.hud.setEnemyGeneralId(egId);
         this.hud.setPlayerName(pg.name);
         this.hud.setEnemyName(eg.name);
         this.hud.refresh(
           latestSnap.turn,
-          latestSnap.playerDp,
-          GAME_CONFIG.MAX_DP,
+          latestSnap.playerFood,
+          GAME_CONFIG.MAX_FOOD,
           pg.currentHp,
           pg.maxHp,
           eg.currentHp,
@@ -282,33 +311,45 @@ export class BattleScene extends Component {
       }
       console.log(`[BattleScene] HUD 已刷新: ${!!this.hud}`);
       this.battleLogPanel?.clear();
-      this.battleLogPanel?.append(`第 ${snap.turn} 回合開始，糧草 ${snap.playerDp}`);
+      this.battleLogPanel?.append(`第 ${snap.turn} 回合開始，糧草 ${snap.playerFood}`);
+      this.presentSceneGambitFeedback();
       this.playTurnBanner(Faction.Player);
 
       // 8. 初始背景與切換功能（Debug UI）
-      await this.initSceneBackground(backgroundId);
+      this.sceneBackground = await initSceneBackground(this.node.scene!, backgroundId);
       if (!isBattleCaptureMode) {
-        this.addBackgroundSwitchUI();
+        addBackgroundSwitchUI(canvas, this.sceneBackground, this._deployPanelRuntime);
       }
 
       // 7. 訂閱事件，驅動 UI 更新
-      this.subscribeEvents();
+      const svc = services();
+      this.unsubs.push(
+        svc.event.on(EVENT_NAMES.TurnPhaseChanged, this.onTurnPhaseChanged.bind(this)),
+        svc.event.on(EVENT_NAMES.UnitDeployed,     this.onUnitDeployed.bind(this)),
+        svc.event.on(EVENT_NAMES.UnitDamaged,      this.onUnitDamaged.bind(this)),
+        svc.event.on(EVENT_NAMES.UnitHealed,       this.onUnitHealed.bind(this)),
+        svc.event.on(EVENT_NAMES.UnitMoved,        this.onUnitMoved.bind(this)),
+        svc.event.on(EVENT_NAMES.UnitDied,         this.onUnitDied.bind(this)),
+        svc.event.on(EVENT_NAMES.GeneralDamaged,   this.onGeneralDamaged.bind(this)),
+        svc.event.on(EVENT_NAMES.GeneralSkillUsed, this.onGeneralSkillUsed.bind(this)),
+        svc.event.on(EVENT_NAMES.TileBuffSpawned,  this.onTileBuffSpawned.bind(this)),
+        svc.event.on(EVENT_NAMES.TileBuffConsumed, this.onTileBuffConsumed.bind(this)),
+        svc.event.on(EVENT_NAMES.BattleEnded,      this.onBattleEnded.bind(this)),
+        svc.event.on(EVENT_NAMES.UltimateSkillSelected, this._onUltimateSkillSelected.bind(this)),
+      );
       this.refreshBattleViews();
 
-      // 8. 監聽 DeployPanel 的「結束回合」訊號
-      this.deployPanel?.node.on("endTurn", this.onEndTurn, this);
-      this.deployPanel?.node.on("playerDeployed", this.onPlayerDeployed, this);
-      this.deployPanel?.node.on("generalDuel", this.onGeneralDuelRequest, this);
-
-      // 8-1. 監聽 BattleLogPanel 的工具按鈕訊號（endTurn / tactics）
-      this.battleLogPanel?.node.on("endTurn", this.onEndTurn, this);
-      this.battleLogPanel?.node.on("tactics", this.onTactics, this);
-
-      // 8.5 射線偵測改由 DeployPanel.dragDropCallback 驅動（承接放手座標）
-      // 不再對同一個 TOUCH_END 注冊兩個監聽器，減少跡件相互影響
-
-      // 9. 監聯 ResultPopup 的「再來一場」訊號
+      // 9. 監聯 ResultPopupComposite 的「再來一場」訊號
       this.resultPopup?.node.on("replay", this.onReplay, this);
+
+      // 10. 監聽 deploy runtime / BattleLogPanel 的 UI 回合事件（驅動回合推進）
+      this._deployPanelRuntime?.node.on('playerDeployed', this._onPlayerDeployed, this);
+      this._deployPanelRuntime?.node.on('endTurn',        this._onEndTurn,        this);
+      this.battleLogPanel?.node.on('endTurn',     this._onEndTurn,        this);
+      this.battleScenePanel?.actionCommandComposite?.node.on('tactics', this._onTactics, this);
+      input.on(Input.EventType.TOUCH_END, this._onGlobalBoardTouchEnd, this);
+      input.on(Input.EventType.MOUSE_UP, this._onGlobalBoardMouseUp, this);
+      input.on(Input.EventType.KEY_UP, this._onGlobalKeyUp, this);
 
       await this._signalCaptureReadyIfNeeded();
 
@@ -322,13 +363,16 @@ export class BattleScene extends Component {
   onDestroy(): void {
     this.combatVisualQueue.length = 0;
     this.isDrainingCombatVisual = false;
-    this.deployPanel?.node.off("endTurn", this.onEndTurn, this);
-    this.deployPanel?.node.off("playerDeployed", this.onPlayerDeployed, this);
-    this.deployPanel?.node.off("generalDuel", this.onGeneralDuelRequest, this);
-    this.battleLogPanel?.node.off("endTurn", this.onEndTurn, this);
-    this.battleLogPanel?.node.off("tactics", this.onTactics, this);
     this.resultPopup?.node.off("replay", this.onReplay, this);
-    this.unsubscribeEvents();
+    this._deployPanelRuntime?.node.off('playerDeployed', this._onPlayerDeployed, this);
+    this._deployPanelRuntime?.node.off('endTurn',        this._onEndTurn,        this);
+    this.battleLogPanel?.node.off('endTurn',     this._onEndTurn,        this);
+    this.battleScenePanel?.actionCommandComposite?.node.off('tactics', this._onTactics, this);
+    input.off(Input.EventType.TOUCH_END, this._onGlobalBoardTouchEnd, this);
+    input.off(Input.EventType.MOUSE_UP, this._onGlobalBoardMouseUp, this);
+    input.off(Input.EventType.KEY_UP, this._onGlobalKeyUp, this);
+    this.unsubs.forEach(fn => fn());
+    this.unsubs.length = 0;
   }
 
   private _isBattleCaptureMode(): boolean {
@@ -350,10 +394,28 @@ export class BattleScene extends Component {
 
       const previewMode = queryMode === 'true' || queryMode === '1' || storedMode === 'true';
       const previewTarget = queryTarget ?? storedTarget;
-      return previewMode && previewTarget === '5';
+      // target 5 = 直接 BattleScene preview；target 11 = BattleSceneFromLobby preview
+      return previewMode && (previewTarget === '5' || previewTarget === '11');
     } catch {
       return false;
     }
+  }
+
+  /**
+   * 統一解析戰場入口參數。
+   * 優先讀 SceneManager 透傳的 data（Lobby 正式入口），
+   * 若為空（Preview / capture / replay）則使用 DEFAULT_BATTLE_ENTRY_PARAMS。
+   */
+  private _resolveBattleParams(): BattleEntryParams {
+    try {
+      const sceneData = services().scene.getTargetScene()?.data;
+      if (sceneData && typeof sceneData === 'object' && 'entrySource' in sceneData) {
+        return sceneData as BattleEntryParams;
+      }
+    } catch {
+      // SceneManager 可能尚未初始化（preview 直接 loadScene 場景時）
+    }
+    return { ...DEFAULT_BATTLE_ENTRY_PARAMS };
   }
 
   private _setBattleCaptureState(status: 'ready' | 'error', error?: unknown): void {
@@ -390,218 +452,29 @@ export class BattleScene extends Component {
     this._setBattleCaptureState('error', error);
   }
 
-  /** 由 DeployPanel 拖曳放手回調驅動：將螢幕座標轉為 3D 格子並部署 */
-  private doDeployRaycast(screenX: number, screenY: number): void {
-    if (this.isAdvancingTurn) return;
-
-    const cam = this.getMainCamera();
-    if (!cam) return;
-
-    // 產生射線（使用 DeployPanel 傳來的準確放手座標）
-    const ray = new geometry.Ray();
-    cam.screenPointToRay(screenX, screenY, ray);
-
-    // 因為地板在 Y = 0，平面法線為 Y 軸 (0, 1, 0)
-    if (Math.abs(ray.d.y) < 0.0001) return;
-    const t = -ray.o.y / ray.d.y;
-    if (t < 0) return;
-    
-    const hitPoint = new Vec3();
-    Vec3.scaleAndAdd(hitPoint, ray.o, ray.d, t);
-
-    // 檢查點擊落在哪個格子
-    const cell = this.boardRenderer?.getCellFromWorldPos(hitPoint);
-    if (!cell) return;
-
-    // ── 武將單挑模式：等待玩家點擊空格放置武將 ──────────────────────────
-    if (this.ctrl?.isWaitingDuelPlacement) {
-      if (cell.depth < 0 || cell.depth >= GAME_CONFIG.GRID_DEPTH) return;
-      const stateCell = this.ctrl.state.getCell(cell.lane, cell.depth);
-      if (stateCell?.occupantId) {
-        this.deployPanel?.showToast("無法在後方部署", 1.2);
-        return;
-      }
-      const unit = this.ctrl.placeGeneralOnBoard(cell.lane, cell.depth);
-      if (unit) {
-        this.deployPanel?.showToast("武將出陣！全軍攻擊力加倍！");
-        this.battleLogPanel?.append(`我方武將出陣至 L${cell.lane + 1} D${cell.depth}`);
-        this.refreshBattleViews();
-        this.unitRenderer?.playDeploy(unit);
-      }
-      return;
-    }
-
-    // 如果是玩家的部署列 (depth = 0)
-    if (cell.depth === 0) {
-      if (this.deployPanel) {
-        // 通知面板選取這個路線並執行部署
-        this.deployPanel.selectLane(cell.lane);
-      }
-    }
-  }
-
-  // ─── 傷害數字字型載入 ────────────────────────────────────────────────────────
-  private async loadDamageFonts(): Promise<void> {
-    try {
-      const res = services().resource;
-      const [fontBao, fontJia, fontMiss, fontPu] = await Promise.all([
-        res.loadFont("dmgFont/bmfont/bao"),
-        res.loadFont("dmgFont/bmfont/jia"),
-        res.loadFont("dmgFont/bmfont/miss"),
-        res.loadFont("dmgFont/bmfont/pu")
-        // ji.fnt 視需求可後續擴充
-      ]);
-      
-      const floatText = services().floatText;
-      if (floatText) {
-        floatText.registerFont('dmg_crit', fontBao);
-        floatText.registerFont('heal', fontJia);
-        floatText.registerFont('dmg_player', fontPu);
-        floatText.registerFont('dmg_enemy', fontPu);
-        floatText.registerFont('dmg_miss', fontMiss);
-      }
-      console.log("[BattleScene] BMFonts 載入並註冊完成");
-    } catch (e) {
-      console.warn("[BattleScene] BMFonts 載入失敗, 退回使用預設字型:", e);
-    }
-  }
-
-  /**
-   * 根據 VFX_BLOCK_REGISTRY 的定義，預先載入所有的 VFX Prefab 並註冊至 PoolSystem。
-   * 確保 EffectSystem.playBlock 呼叫時資源已就緒，避免即時載入導致的卡頓或物件池缺失錯誤。
-   */
-  private async prewarmVfxPools(): Promise<void> {
-    const registry = VFX_BLOCK_REGISTRY.filter(block => !!block.prefabPath);
-    if (registry.length === 0) return;
-
-    const res = services().resource;
-    const pool = services().pool;
-
-    const promises = registry.map(async (block) => {
-      try {
-        const prefab = await res.loadPrefab(block.prefabPath!);
-        if (prefab) {
-          // 註冊至物件池，預熱 1 個實例
-          pool.register(block.id, prefab, 1);
-        }
-      } catch (e) {
-        console.warn(`[BattleScene] 預熱特效池失敗: ${block.id} (path: ${block.prefabPath})`, e);
-      }
-    });
-
-    await Promise.all(promises);
-  }
-
-  // ─── 遭遇戰讀取 ───────────────────────────────────────────────────────────
-
-  private async loadEncounter(encounterId: string): Promise<EncounterConfig | null> {
-    try {
-      const data = await services().resource.loadJson<{ encounters: EncounterConfig[] }>("data/encounters");
-      return data.encounters.find(e => e.id === encounterId) ?? null;
-    } catch {
-      return null;
-    }
-  }
-
-  // ─── 武將建立 ─────────────────────────────────────────────────────────────
-
-  private async createGeneral(id: string, faction: Faction): Promise<GeneralUnit> {
-    // str/int/lea 對應 E-12 規則：物理型 STR×0.7+LEA×0.3；謀略型 INT×0.7+LEA×0.3
-    const DEFAULT: Record<string, GeneralConfig> = {
-      "zhang-fei": { id: "zhang-fei", name: "張飛", faction: Faction.Player, hp: 1000, maxSp: 100, str:  90, lea: 85, luk: 40, attackBonus: 0.10, skillId: "zhang-fei-roar" },
-      "guan-yu":   { id: "guan-yu",   name: "關羽", faction: Faction.Player, hp: 1200, maxSp: 100, str: 100, lea: 90, luk: 50, attackBonus: 0.15, skillId: "guan-yu-slash"  },
-      "lu-bu":     { id: "lu-bu",     name: "呂布", faction: Faction.Enemy,  hp: 1500, maxSp: 100, str: 130, lea: 95, luk: 30, attackBonus: 0.20, skillId: "lu-bu-rampage"  },
-      "cao-cao":   { id: "cao-cao",   name: "曹操", faction: Faction.Enemy,  hp: 1000, maxSp: 80,  int: 110, lea: 80, luk: 70, attackBonus: 0.08, skillId: "cao-cao-tactics" },
-    };
-
-    try {
-      type GeneralsJson = GeneralConfig[];
-      const list = await services().resource.loadJson<GeneralsJson>("data/generals");
-      const cfg  = list.find(g => g.id === id);
-      if (cfg) {
-        // JSON 讀出的陣營是字串，需對應到 Faction enum
-        return new GeneralUnit({ ...cfg, faction });
-      }
-    } catch {
-      // 靜默失敗，使用預設值
-    }
-
-    return new GeneralUnit(DEFAULT[id]);
-  }
-
-  // ─── 事件訂閱 ─────────────────────────────────────────────────────────────
-
-  private subscribeEvents(): void {
-    const svc = services();
-    this.unsubs.push(
-      svc.event.on(EVENT_NAMES.TurnPhaseChanged, this.onTurnPhaseChanged.bind(this)),
-      svc.event.on(EVENT_NAMES.UnitDeployed,     this.onUnitDeployed.bind(this)),
-      svc.event.on(EVENT_NAMES.UnitDamaged,      this.onUnitDamaged.bind(this)),
-      svc.event.on(EVENT_NAMES.UnitHealed,       this.onUnitHealed.bind(this)),
-      svc.event.on(EVENT_NAMES.UnitMoved,        this.onUnitMoved.bind(this)),
-      svc.event.on(EVENT_NAMES.UnitDied,         this.onUnitDied.bind(this)),
-      svc.event.on(EVENT_NAMES.GeneralDamaged,   this.onGeneralDamaged.bind(this)),
-      svc.event.on(EVENT_NAMES.TileBuffSpawned,  this.onTileBuffSpawned.bind(this)),
-      svc.event.on(EVENT_NAMES.TileBuffConsumed, this.onTileBuffConsumed.bind(this)),
-      svc.event.on(EVENT_NAMES.BattleEnded,      this.onBattleEnded.bind(this)),
-      // GeneralQuickView 事件轉接：BattleHUD 只廣播意圖，BattleScene 補齊武將資料後再廣播
-      svc.event.on(EVENT_NAMES.RequestGeneralQuickView, this._onRequestGeneralQuickView.bind(this)),
-    );
-  }
-
-  /**
-   * RequestGeneralQuickView 事件轉接層。
-   * 接收 { side, isEnemy } 意圖，從 _pg/_eg 建立完整 GeneralQuickViewData，
-   * 再廣播 ShowGeneralQuickView，由 GeneralQuickViewPanel 接收並顯示彈窗。
-   *
-   * Unity 對照：EventBridge.OnRequestGeneralInfo → EventManager.TriggerEvent<GeneralInfoReadyEvent>(data)
-   */
-  private _onRequestGeneralQuickView(req: { side: 'player' | 'enemy'; isEnemy: boolean }): void {
-    const unit = req.side === 'player' ? this._pg : this._eg;
-    if (!unit) {
-      console.warn('[BattleScene] _onRequestGeneralQuickView: 武將資料尚未備妥');
-      return;
-    }
-    const data = {
-      name:    unit.name,
-      title:   req.isEnemy ? '敵方主將' : '我方主將',
-      faction: req.isEnemy ? '敵方' : '玩家',
-      hp:      unit.currentHp,
-      maxHp:   unit.maxHp,
-      atk:     Math.round(unit.str * 10),
-      def:     Math.round(unit.lea * 10),
-      spd:     unit.luk,
-      int:     unit.int,
-      skills:  unit.skillId ? [`技能：${unit.skillId}`] : [],
-      isEnemy: req.isEnemy,
-    };
-    services().event.emit(EVENT_NAMES.ShowGeneralQuickView, data);
-  }
-
-  private unsubscribeEvents(): void {
-    this.unsubs.forEach(fn => fn());
-    this.unsubs.length = 0;
-  }
-
   // ─── 事件處理 ─────────────────────────────────────────────────────────────
 
-  private onTurnPhaseChanged(snap: { turn: number; playerDp: number }): void {
-    this.deployPanel?.updateDp(snap.playerDp);
-    this.battleLogPanel?.append(`回合更新：第 ${snap.turn} 回合，糧草 ${snap.playerDp}`);
-    this.boardRenderer?.setDeployHintFaction(Faction.Player);
-    this.playTurnBanner(Faction.Player);
+  private onTurnPhaseChanged(snap: { turn: number; playerFood: number }): void {
+    this._deployPanelRuntime?.updateDp(snap.playerFood);
+    this.battleLogPanel?.append(`回合更新：第 ${snap.turn} 回合，糧草 ${snap.playerFood}`);
+    // 回合推進期間（敵方行動尚在播放）先不要切回玩家提示，避免「提早跳回合」體感。
+    if (!this.isAdvancingTurn && !this.isDuelPanelActive) {
+      this.boardRenderer?.setDeployHintFaction(Faction.Player);
+      this.playTurnBanner(Faction.Player);
+    }
+    this._syncSceneGambitStatus();
     this.refreshBattleViews();
   }
 
   private onUnitDeployed(data: { unitId: string; faction: Faction; type: TroopType; lane: number }): void {
     // 部署後即時更新糧草顯示
     const snap = services().battle.getSnapshot();
-    this.hud?.setFood(snap.playerDp, GAME_CONFIG.MAX_DP);
-    this.deployPanel?.updateDp(snap.playerDp);
+    this.hud?.setFood(snap.playerFood, GAME_CONFIG.MAX_FOOD);
+    this._deployPanelRuntime?.updateDp(snap.playerFood);
     const side = data.faction === Faction.Player ? "我方" : "敵方";
-    this.battleLogPanel?.append(`${side}部署 ${this.toTroopName(data.type)}（路線 ${data.lane + 1}）`);
+    this.battleLogPanel?.append(`${side}部署 ${troopName(data.type)}（路線 ${data.lane + 1}）`);
     if (data.faction === Faction.Player) {
-      this.deployPanel?.showToast(`我方已部署 ${this.toTroopName(data.type)}（路線 ${data.lane + 1}）`);
+      this._deployPanelRuntime?.showToast(`我方已部署 ${troopName(data.type)}（路線 ${data.lane + 1}）`);
     }
     this.refreshBattleViews();
     const unit = this.ctrl?.state.units.get(data.unitId) ?? null;
@@ -618,11 +491,17 @@ export class BattleScene extends Component {
     defenderLane: number | null;
     defenderDepth: number | null;
     attackerFaction: Faction | null;
+    damageSource?: string;
   }): void {
     const unit = this.ctrl?.state.units.get(data.unitId);
     if (unit) {
       const side = unit.faction === Faction.Player ? "我方" : "敵方";
-      this.battleLogPanel?.append(`${side}${this.toTroopName(unit.type)} 受到 ${data.damage} 傷害，剩餘 HP ${Math.max(0, data.hp)}`);
+      const suffix = data.damageSource === 'night-raid-opening-strike'
+        ? '（夜襲先制）'
+        : data.damageSource
+          ? `（${data.damageSource}）`
+          : '';
+      this.battleLogPanel?.append(`${side}${troopName(unit.type)} 受到 ${data.damage} 傷害${suffix}，剩餘 HP ${Math.max(0, data.hp)}`);
 
       this.enqueueCombatVisual(() => {
         this.unitRenderer?.playValueChange(unit, data.damage, "damage");
@@ -640,7 +519,7 @@ export class BattleScene extends Component {
     const unit = this.ctrl?.state.units.get(data.unitId);
     if (unit) {
       const side = unit.faction === Faction.Player ? "我方" : "敵方";
-      this.battleLogPanel?.append(`${side}${this.toTroopName(unit.type)} 回復 ${data.amount}，目前 HP ${Math.max(0, data.hp)}`);
+      this.battleLogPanel?.append(`${side}${troopName(unit.type)} 回復 ${data.amount}，目前 HP ${Math.max(0, data.hp)}`);
     }
     this.refreshBattleViews();
   }
@@ -659,12 +538,14 @@ export class BattleScene extends Component {
     swapPassengerFromDepth?: number;
     swapPassengerToLane?: number;
     swapPassengerToDepth?: number;
+    forcedMove?: boolean;
+    forcedMoveReason?: string;
   }): void {
     const unit = this.ctrl?.state.units.get(data.unitId);
     if (unit) {
       const side = unit.faction === Faction.Player ? "我方" : "敵方";
       if (data.swapWithUnitId) {
-        this.battleLogPanel?.append(`${side}${this.toTroopName(unit.type)} 與友軍換位後推進到 L${data.lane + 1} D${data.depth}`);
+        this.battleLogPanel?.append(`${side}${troopName(unit.type)} 與友軍換位後推進到 L${data.lane + 1} D${data.depth}`);
         this.unitRenderer?.playSwapAdvanceAnimation(
           unit,
           data.swapWithUnitId,
@@ -676,8 +557,11 @@ export class BattleScene extends Component {
           data.swapPassengerToLane,
           data.swapPassengerToDepth,
         );
+      } else if (data.forcedMove) {
+        this.battleLogPanel?.append(`${side}${troopName(unit.type)} 受地格影響位移到 L${data.lane + 1} D${data.depth}`);
+        this.unitRenderer?.animateMove(unit, data.fromLane, data.fromDepth);
       } else if (!data.isSwapPassenger) {
-        this.battleLogPanel?.append(`${side}${this.toTroopName(unit.type)} 前進到 L${data.lane + 1} D${data.depth}`);
+        this.battleLogPanel?.append(`${side}${troopName(unit.type)} 前進到 L${data.lane + 1} D${data.depth}`);
         this.unitRenderer?.animateMove(unit, data.fromLane, data.fromDepth);
       }
     }
@@ -724,6 +608,12 @@ export class BattleScene extends Component {
 
       this.unitRenderer?.playGeneralHitAnimation(data.faction, data.attackerId || null);
     });
+  }
+
+  private onGeneralSkillUsed(data: { faction: Faction; skillId?: string; skillName?: string; sourceType?: SkillSourceType }): void {
+    const skillId = data.skillId ?? data.skillName ?? null;
+    if (!skillId) return;
+    this.battleLogPanel?.append(buildBattleSkillUsedMessage(skillId, data.faction, data.sourceType));
   }
 
   private onTileBuffSpawned(): void {
@@ -781,278 +671,95 @@ export class BattleScene extends Component {
     this.resultPopup?.showResult(data.result as any);
     this.battleLogPanel?.append(`戰鬥結束：${data.result}`);
     this.boardRenderer?.clearDeployHint();
+    this.hud?.clearPersistentStatus();
+    this.hud?.clearSceneGambitBadge();
     this.refreshBattleViews();
     this.combatVisualQueue.length = 0;
     this.isDrainingCombatVisual = false;
     // 禁用操作按鈕
-    if (this.deployPanel) this.deployPanel.node.active = false;
-  }
-
-  private onEndTurn(): void {
-    if (!this.ctrl || this.isAdvancingTurn) return;
-
-    this.battleLogPanel?.append("執行回合推進");
-    this.isAdvancingTurn = true;
-    this.boardRenderer?.setDeployHintFaction(Faction.Enemy);
-    this.refreshBattleViews();
-
-    // 顯示「敵軍思考中...」面板，2 秒後执行敵軍行動
-    this.showEnemyThinkingPanel();
-    this.scheduleOnce(() => {
-      this.hideEnemyThinkingPanel();
-      try {
-        const result = this.ctrl?.advanceTurn();
-        if (result === "ongoing") {
-          // 回合結束後檢查單挑條件
-          this.checkDuelChallenge();
-        }
-      } finally {
-        // 小兵移動動畫為 2s，加緩衝後解鎖玩家操作
-        this.scheduleOnce(() => {
-          // 若單挑面板開啟中，延後解鎖（由面板決策回調負責解鎖）
-          if (this.isDuelPanelActive) return;
-          this.isAdvancingTurn = false;
-          this.playTurnBanner(Faction.Player);
-          this.boardRenderer?.setDeployHintFaction(Faction.Player);
-        }, 2.3);
-      }
-    }, 2.0);
-  }
-
-  private onPlayerDeployed(): void {
-    this.deployPanel?.showToast("部署完成，等待敵軍行動...", 1.8);
-    // 展示小兵落樣後等2秒再切入敵軍回合，避免節奏太快
-    this.scheduleOnce(() => this.onEndTurn(), 2.0);
-  }
-
-  /**
-   * 計謀按鈕 handler（placeholder）。
-   * 未來將開啟計謀選擇 PopUp，目前先顯示 Toast 提示。
-   */
-  private onTactics(): void {
-    this.deployPanel?.showToast("計謀系統開發中…", 1.5);
-  }
-
-  private onGeneralDuelRequest(): void {
-    if (!this.ctrl) return;
-    const result = this.ctrl.startGeneralDuel();
-    switch (result) {
-      case "ok":
-        this.deployPanel?.showToast("請點擊棋盤上的空格放置武將");
-        this.battleLogPanel?.append("武將準備出陣，等待選擇位置...");
-        break;
-      case "already-deployed":
-        this.deployPanel?.showToast("武將已在戰場上！");
-        break;
-      case "front-blocked":
-        this.deployPanel?.showToast("前排有我方小兵，武將無法出陣！");
-        break;
-      case "general-dead":
-        this.deployPanel?.showToast("武將已陣亡，無法出陣！");
-        break;
-    }
-  }
-
-  /**
-   * 回合結束後檢查雙方武將是否到達敵將面前，觸發對稱單挑挑戰。
-   *
-   * 當敵方發起挑戰（challengerFaction === Enemy）：
-   *   → 顯示 DuelChallengePanel，由玩家決定接受或拒絕（互動式）
-   *
-   * 當我方發起挑戰（challengerFaction === Player）：
-   *   → 敵方 AI 依「血量/兵力/總戰力」評分自動決策（同原邏輯）
-   */
-  private checkDuelChallenge(): void {
-    if (!this.ctrl) return;
-    if (this.ctrl.isDuelChallengeResolved()) return;
-
-    let challengerFaction: Faction | null = null;
-    if (this.ctrl.isGeneralFacingEnemyGeneral(Faction.Player)) {
-      challengerFaction = Faction.Player;
-      this.battleLogPanel?.append("我方武將已推進到敵將面前，發起單挑邀請！");
-    } else if (this.ctrl.isGeneralFacingEnemyGeneral(Faction.Enemy)) {
-      challengerFaction = Faction.Enemy;
-      this.battleLogPanel?.append("敵方武將已推進到我將面前，發起單挑邀請！");
-    }
-
-    if (challengerFaction === null) return;
-
-    if (challengerFaction === Faction.Enemy) {
-      // 敵將挑戰玩家 → 顯示確認面板，由玩家決定
-      this.showDuelChallengePanel();
-    } else {
-      // 我將挑戰敵將 → AI 自動決策
-      this.resolveEnemyDuelDecision(challengerFaction);
-    }
-  }
-
-  /**
-   * 顯示武將單挑確認面板，等待玩家做出決定。
-   * 玩家決定後透過 node 事件回調觸發最終結算。
-   */
-  private showDuelChallengePanel(): void {
-    if (!this.ctrl) return;
-
-    // 取得武將名稱用於顯示
-    const state = this.ctrl.state;
-    const playerGeneralName = state.playerGeneral?.name ?? "我方武將";
-    const enemyGeneralName  = state.enemyGeneral?.name  ?? "敵方武將";
-
-    // 計算我方防守評分（讓玩家知道勝算）
-    const decision = this.ctrl.evaluateDuelAcceptance(Faction.Enemy);
-    const playerScore = 1.0 - decision.score;  // decision.score 是挑戰方優勢，取反為防守方勝算
-
-    this.isDuelPanelActive = true;
-
-    if (this.duelChallengePanel) {
-      this.duelChallengePanel.show(enemyGeneralName, playerGeneralName, playerScore);
-
-      this.duelChallengePanel.node.once("duelAccepted", () => {
-        this.onPlayerDuelDecision(true);
-      }, this);
-
-      this.duelChallengePanel.node.once("duelRejected", () => {
-        this.onPlayerDuelDecision(false);
-      }, this);
-    } else {
-      // 面板未掛載時（編輯器未設定），自動接受（不卡住遊戲流程）
-      console.warn("[BattleScene] duelChallengePanel 未綁定，自動接受單挑");
-      this.onPlayerDuelDecision(true);
-    }
-  }
-
-  /**
-   * 玩家在單挑面板中做出決定後的處理。
-   * @param accepted 玩家是否接受單挑
-   */
-  private onPlayerDuelDecision(accepted: boolean): void {
-    if (!this.ctrl) return;
-
-    const duelResult = this.ctrl.resolveDuelChallenge(Faction.Enemy, accepted);
-    this.showDuelResultToast(duelResult, accepted, Faction.Enemy);
-
-    // 面板決定完成後，解鎖玩家回合
-    this.isDuelPanelActive = false;
-    this.isAdvancingTurn = false;
-    this.playTurnBanner(Faction.Player);
-    this.boardRenderer?.setDeployHintFaction(Faction.Player);
-    this.refreshBattleViews();
-  }
-
-  /**
-   * 我方武將挑戰敵將時，敵方 AI 自動決策。
-   */
-  private resolveEnemyDuelDecision(challengerFaction: Faction): void {
-    if (!this.ctrl) return;
-
-    const decision = this.ctrl.evaluateDuelAcceptance(challengerFaction);
-    const defenderName = decision.defenderFaction === Faction.Player ? "我將" : "敵將";
-    this.battleLogPanel?.append(
-      `${defenderName} 單挑評估分數：${decision.score.toFixed(2)}（${decision.accepted ? "接受" : "拒絕"}）`
-    );
-
-    const duelResult = this.ctrl.resolveDuelChallenge(challengerFaction, decision.accepted);
-    this.showDuelResultToast(duelResult, decision.accepted, decision.defenderFaction);
-    this.refreshBattleViews();
-  }
-
-  /**
-   * 根據單挑結果顯示對應提示訊息。
-   */
-  private showDuelResultToast(
-    duelResult: string,
-    accepted: boolean,
-    defenderFaction: Faction,
-  ): void {
-    if (accepted) {
-      if (duelResult === "player-win") {
-        this.deployPanel?.showToast("單挑成立！我方武將獲勝！", 1.3, {
-          color: new Color(90, 190, 255, 255),
-        });
-        this.battleLogPanel?.append("單挑成立！我方武將於單挑中獲勝！");
-      } else if (duelResult === "enemy-win") {
-        this.deployPanel?.showToast("單挑成立！敵方武將獲勝！", 1.3, {
-          color: new Color(255, 110, 110, 255),
-        });
-        this.battleLogPanel?.append("單挑成立！敵方武將於單挑中獲勝！");
-      } else {
-        this.deployPanel?.showToast("單挑成立！雙方武將交鋒！");
-        this.battleLogPanel?.append("單挑成立！雙方武將正面對決！");
-      }
-    } else {
-      if (defenderFaction === Faction.Player) {
-        this.deployPanel?.showToast("我將拒絕單挑！我方全軍攻防減半！");
-        this.battleLogPanel?.append("我將拒絕單挑！我方全體攻擊力與生命力減半！");
-      } else {
-        this.deployPanel?.showToast("敵將拒絕單挑！敵方全軍攻防減半！");
-        this.battleLogPanel?.append("敵將拒絕單挑！敵方全體攻擊力與生命力減半！");
-      }
-    }
+    if (this._deployPanelRuntime) this._deployPanelRuntime.node.active = false;
   }
 
   private onReplay(): void {
     this.restartBattle();
   }
 
+  private presentSceneGambitFeedback(): void {
+    const ctrl = this.ctrl;
+    if (!ctrl) return;
+
+    const summary = this._buildSceneGambitSummary(ctrl.state.battleTactic);
+    if (!summary) {
+      this.hud?.clearPersistentStatus();
+      this.hud?.clearSceneGambitBadge();
+      return;
+    }
+
+    this.hud?.showPersistentStatus(`【${summary.label}】${summary.description}`);
+    this.hud?.showSceneGambitBadge(summary.label);
+    this.boardRenderer?.playSceneGambitPulse(ctrl.state, ctrl.state.battleTactic);
+    const { label, description } = summary;
+    this.battleLogPanel?.append(`【${label}】${description}`);
+    this._deployPanelRuntime?.showToast(`${label}已生效`, 1.8);
+  }
+
+  private _syncSceneGambitStatus(): void {
+    const ctrl = this.ctrl;
+    if (!ctrl) return;
+
+    const summary = this._buildSceneGambitSummary(ctrl.state.battleTactic);
+    if (!summary) {
+      this.hud?.clearPersistentStatus();
+      this.hud?.clearSceneGambitBadge();
+      return;
+    }
+
+    this.hud?.showPersistentStatus(`【${summary.label}】${summary.description}`);
+    this.hud?.showSceneGambitBadge(summary.label);
+  }
+
+  private _buildSceneGambitSummary(battleTactic: BattleTactic): { label: string; description: string } | null {
+    if (battleTactic === BattleTactic.Normal) {
+      return null;
+    }
+
+    const labels: Record<string, string> = {
+      [BattleTactic.FireAttack]: '火攻場勢',
+      [BattleTactic.FloodAttack]: '水淹場勢',
+      [BattleTactic.RockSlide]: '落石封路',
+      [BattleTactic.AmbushAttack]: '森林伏兵',
+      [BattleTactic.NightRaid]: '夜襲奇襲',
+    };
+
+    const descriptions: Record<string, string> = {
+      [BattleTactic.FireAttack]: '中線火海已展開，停留其中的部隊會持續受傷。',
+      [BattleTactic.FloodAttack]: '河道激流已成形，進入水域的部隊會被順流推移。',
+      [BattleTactic.RockSlide]: '前方落石封鎖部分路線，部隊將被迫繞行。',
+      [BattleTactic.AmbushAttack]: '前 2 回合我方伏兵隱匿，敵軍索敵會忽略我方潛伏單位。',
+      [BattleTactic.NightRaid]: '前 2 回合夜襲生效：我方先制增傷，敵軍遠程視野受限。',
+    };
+
+    return {
+      label: labels[battleTactic] ?? '場景戰法',
+      description: descriptions[battleTactic] ?? '場景戰法已生效',
+    };
+  }
+
   private playTurnBanner(faction: Faction): void {
+    // 全域去抖：避免短時間內被多個元件重複呼叫而導致重複提示
+    const now = Date.now();
+    const last = (globalThis as any).__lastTurnBannerTime ?? 0;
+    if (now - last < 2500) return;
+    (globalThis as any).__lastTurnBannerTime = now;
+
     const message = faction === Faction.Player ? "我方回合開始" : "敵方回合開始";
     const color = faction === Faction.Player
       ? new Color(90, 190, 255, 255)
       : new Color(255, 110, 110, 255);
 
-    this.deployPanel?.showToast(message, 1.0, {
+    this._deployPanelRuntime?.showToast(message, 1.0, {
       color,
     });
-  }
-
-  /** 在畫面正中央顯示「敵軍思考中...」遮罩面板 */
-  private showEnemyThinkingPanel(): void {
-    const canvas = this.getCanvasNode();
-    if (!canvas) return;
-
-    if (!this.enemyThinkingPanel) {
-      const panel = new Node("EnemyThinkingPanel");
-      panel.layer = Layers.Enum.UI_2D;
-
-      const tf = panel.addComponent(UITransform);
-      tf.setContentSize(460, 100);
-
-      // 圓角矩形半透明背景
-      const gfx = panel.addComponent(Graphics);
-      gfx.fillColor = new Color(20, 10, 10, 210);
-      gfx.roundRect(-230, -50, 460, 100, 14);
-      gfx.fill();
-
-      // 邊框描線
-      gfx.lineWidth = 2;
-      gfx.strokeColor = new Color(200, 80, 80, 200);
-      gfx.roundRect(-230, -50, 460, 100, 14);
-      gfx.stroke();
-
-      // 文字
-      const lblNode = new Node("ThinkingLabel");
-      lblNode.layer = Layers.Enum.UI_2D;
-      panel.addChild(lblNode);
-      lblNode.addComponent(UITransform).setContentSize(460, 100);
-      const lbl = lblNode.addComponent(Label);
-      lbl.string = "敵軍思考中...";
-      lbl.fontSize = 40;
-      lbl.isBold = true;
-      lbl.color = new Color(255, 120, 120, 255);
-
-      canvas.addChild(panel);
-      this.enemyThinkingPanel = panel;
-    }
-
-    this.enemyThinkingPanel.setPosition(0, 0, 0);
-    this.enemyThinkingPanel.active = true;
-  }
-
-  /** 隱藏「敵軍思考中...」面板 */
-  private hideEnemyThinkingPanel(): void {
-    if (this.enemyThinkingPanel) {
-      this.enemyThinkingPanel.active = false;
-    }
   }
 
   // ─── 重新開局 ─────────────────────────────────────────────────────────────
@@ -1063,341 +770,385 @@ export class BattleScene extends Component {
     this.combatVisualQueue.length = 0;
     this.isDrainingCombatVisual = false;
 
-    const encounter = await this.loadEncounter(this.currentEncounterId);
+    const encounter = await loadEncounter(this.currentEncounterId);
     const pgId = encounter?.playerGeneralId ?? "zhang-fei";
     const egId = encounter?.enemyGeneralId  ?? "lu-bu";
     const terrain: TerrainGrid | undefined = encounter?.terrain;
 
-    const pg = await this.createGeneral(pgId, Faction.Player);
-    const eg = await this.createGeneral(egId, Faction.Enemy);
+    const pg = await createGeneral(pgId, Faction.Player);
+    const eg = await createGeneral(egId, Faction.Enemy);
 
-    this.ctrl.initBattle(pg, eg, terrain);
+    this.ctrl.initBattle(pg, eg, terrain, this._battleParams?.weather, this._battleParams?.battleTactic);
 
-    this.deployPanel!.node.active = true;
-    this.deployPanel?.updateDp(GAME_CONFIG.INITIAL_DP);
+    if (this._deployPanelRuntime) {
+      this._deployPanelRuntime.node.active = true;
+    }
+    this._deployPanelRuntime?.updateDp(GAME_CONFIG.INITIAL_FOOD);
 
     const snap = services().battle.getSnapshot();
-    this.playTurnBanner(Faction.Player);
     this.hud?.setPlayerGeneralId(pgId);
     this.hud?.setEnemyGeneralId(egId);
     this.hud?.setPlayerName(pg.name);
     this.hud?.setEnemyName(eg.name);
     this.hud?.refresh(
       snap.turn,
-      snap.playerDp,
-      GAME_CONFIG.MAX_DP,
+      snap.playerFood,
+      GAME_CONFIG.MAX_FOOD,
       pg.currentHp,
       pg.maxHp,
       eg.currentHp,
       eg.maxHp,
     );
     this.battleLogPanel?.clear();
-    this.battleLogPanel?.append(`重新開始：第 ${snap.turn} 回合，糧草 ${snap.playerDp}`);
+    this.battleLogPanel?.append(`重新開始：第 ${snap.turn} 回合，糧草 ${snap.playerFood}`);
+    this.presentSceneGambitFeedback();
     this.boardRenderer?.setDeployHintFaction(Faction.Player);
 
     this.refreshBattleViews();
   }
 
-  /**
-   * 初始化場景背景系統：在場景根節點下建立 SceneBackground 元件，
-   * 然後依遭遇戰設定的 backgroundId 載入對應底圖。
-   */
-  private async initSceneBackground(backgroundId: string): Promise<void> {
-    const scene = this.node.scene;
-    if (!scene) return;
-
-    let bgNode = scene.getChildByName("SceneBackground");
-    if (!bgNode) {
-      bgNode = new Node("SceneBackground");
-      scene.addChild(bgNode);
-    }
-
-    this.sceneBackground = bgNode.getComponent(SceneBackground) ?? bgNode.addComponent(SceneBackground);
-    await this.sceneBackground.loadBackground(backgroundId);
-  }
-
-  private ensureDeployPanel(): void {
-    if (!this.deployPanel) {
-      // Inspector 未綁定時，自動在 Canvas 下尋找 Panel 節點並掛載 DeployPanel
-      const canvas = this.getCanvasNode();
-      const panelNode = canvas?.getChildByName("Panel");
-      if (panelNode) {
-        this.deployPanel = panelNode.getComponent(DeployPanel) ?? panelNode.addComponent(DeployPanel);
-        console.log("[BattleScene] ensureDeployPanel: 自動找到/建立 DeployPanel");
-      } else {
-        console.warn("[BattleScene] ensureDeployPanel: 找不到 Canvas/Panel 節點");
-      }
-    }
-  }
-
-  private ensureHUD(): void {
-    if (!this.hud) {
-      // Inspector 未綁定時，自動在 Canvas 下尋找 HUD 節點並掛載 BattleHUD
-      const canvas = this.getCanvasNode();
-      const hudNode = canvas?.getChildByName("HUD");
-      if (hudNode) {
-        this.hud = hudNode.getComponent(BattleHUD) ?? hudNode.addComponent(BattleHUD);
-        console.log("[BattleScene] ensureHUD: 自動找到/建立 BattleHUD");
-      } else {
-        console.warn("[BattleScene] ensureHUD: 找不到 Canvas/HUD 節點");
-      }
-    }
-    // 確保 ResultPopup 也被找到
-    if (!this.resultPopup) {
-      const canvas = this.getCanvasNode();
-      const popupNode = canvas?.getChildByName("Popup");
-      if (popupNode) {
-        this.resultPopup = popupNode.getComponent(ResultPopup) ?? popupNode.addComponent(ResultPopup);
-        console.log("[BattleScene] ensureHUD: 自動找到/建立 ResultPopup");
-      }
-    }
-  }
-
-  private ensureBattleLogPanel(): void {
-    if (this.battleLogPanel) return;
-
-    const canvas = this.getCanvasNode(); // 其他 ensure* 方法跟此一致
-    if (!canvas) return;
-
-    let node = canvas.getChildByName("BattleLogPanel");
-    if (!node) {
-      node = new Node("BattleLogPanel");
-      canvas.addChild(node);
-      // [UI-2-0023] 必須在 addComponent(BattleLogPanel) 前設定正確 Canvas 尺寸。
-      // buildScreen 在 onLoad 中執行，widget.updateAlignment() 用 UITransform 計算，
-      // 若 UITransform 為預設 (100,40)，Widget top:88 會造成 height=-48，節點跑出螢幕外。
-      const uiT = node.addComponent(UITransform);
-      uiT.setContentSize(1920, 1080);
-    }
-
-    // Fallback host 必須拉滿 Canvas，避免子面板 widget 以錯誤父尺寸計算導致錯位。
-    const widget = node.getComponent(Widget) ?? node.addComponent(Widget);
-    widget.isAlignTop = true;
-    widget.isAlignBottom = true;
-    widget.isAlignLeft = true;
-    widget.isAlignRight = true;
-    widget.top = 0;
-    widget.bottom = 0;
-    widget.left = 0;
-    widget.right = 0;
-    widget.alignMode = Widget.AlignMode.ALWAYS;
-    widget.updateAlignment();
-
-    this.battleLogPanel = node.getComponent(BattleLogPanel) ?? node.addComponent(BattleLogPanel);
-  }
-
-  /**
-   * 確保 BattleScenePanel 組件存在。
-   * Inspector 未綁定時，在 Canvas 根節點下尋找或新建 "BattleScenePanel" 節點。
-   * BattleScenePanel 是新版 UI 總調度器，串聯 TigerTallyPanel、ActionCommandPanel、UnitInfoPanel。
-   */
-  private ensureBattleScenePanel(): void {
-    if (this.battleScenePanel) return;
-
-    const canvas = this.getCanvasNode();
-    if (!canvas) {
-      console.warn('[BattleScene] ensureBattleScenePanel: 找不到 Canvas 節點');
-      return;
-    }
-
-    let node = canvas.getChildByName('BattleScenePanel');
-    if (!node) {
-      node = new Node('BattleScenePanel');
-      canvas.addChild(node);
-      // [UI-2-0023] 繼承 Canvas 的 UI_2D layer，確保被 2D UI Camera 渲染
-      node.layer = canvas.layer;
-      // 同 ensureBattleLogPanel：先設 Canvas 尺寸，確保子面板 Widget 計算正確。
-      const uiT = node.addComponent(UITransform);
-      uiT.setContentSize(1920, 1080);
-    }
-
-    // 協調器 host 拉滿 Canvas，讓其下自動建立的子面板根節點對齊一致。
-    const widget = node.getComponent(Widget) ?? node.addComponent(Widget);
-    widget.isAlignTop = true;
-    widget.isAlignBottom = true;
-    widget.isAlignLeft = true;
-    widget.isAlignRight = true;
-    widget.top = 0;
-    widget.bottom = 0;
-    widget.left = 0;
-    widget.right = 0;
-    widget.alignMode = Widget.AlignMode.ALWAYS;
-    widget.updateAlignment();
-
-    this.battleScenePanel = node.getComponent(BattleScenePanel) ?? node.addComponent(BattleScenePanel);
-    console.log('[BattleScene] ensureBattleScenePanel: BattleScenePanel 已就緒');
-  }
-
-  /**
-   * 根據兵種資料（troops.json + Constants）建立虎符卡片初始資料。
-   * 固定提供 4 張手牌：虎豹騎、陷陣營、大戟士、連弩手。
-   *
-   * Unity 對照：BattleHandManager.BuildInitialHand() → List<CardData>
-   */
-  private _buildTallyCards(): TallyCardData[] {
-    // 各兵種的顯示資訊（對應 troops.json 中的 key）
-    const slots: Array<{
-        type: TroopType;
-        name: string;
-        sub: string;
-        rarity: 'normal' | 'rare' | 'epic';
-      artResource: string;
-        traits: string[];
-        desc: string;
-    }> = [
-      { type: TroopType.Cavalry,  name: '虎豹騎', sub: '重騎兵',  rarity: 'rare',   artResource: 'sprites/battle/tally_card_art_cavalry_formal',  traits: ['衝鋒', '剋步兵'], desc: '機動性最強的精銳鐵騎，能快速突破敵陣。' },
-      { type: TroopType.Infantry, name: '陷陣營', sub: '重步兵',  rarity: 'normal', artResource: 'sprites/battle/tally_card_art_infantry_formal', traits: ['盾牆', '韌性'],   desc: '堅若磐石的步兵方陣，擅長穩守要地。' },
-      { type: TroopType.Shield,   name: '大戟士', sub: '防禦盾兵', rarity: 'normal', artResource: 'sprites/battle/tally_card_art_shield_formal',   traits: ['重甲', '剋弓兵'], desc: '以大盾與重甲著稱的防禦核心。' },
-      { type: TroopType.Archer,   name: '連弩手', sub: '遠程弓兵', rarity: 'normal', artResource: 'sprites/battle/tally_card_art_archer_formal',   traits: ['穿透', '遠程'],   desc: '善用強弩齊射的遠程打擊兵種。' },
-    ];
-
-    // troops.json 靜態預設值（ctrl.state.getTroopConfig() 尚未實作時作為 fallback）
-    const TROOP_DEFAULTS: Record<string, { hp: number; attack: number; defense: number; moveRange: number }> = {
-        cavalry:  { hp: 100, attack: 40, defense: 20, moveRange: 2 },
-        infantry: { hp: 120, attack: 35, defense: 25, moveRange: 1 },
-        shield:   { hp: 150, attack: 20, defense: 35, moveRange: 1 },
-        archer:   { hp:  80, attack: 30, defense: 15, moveRange: 1 },
-    };
-    const troopData: Record<string, any> = TROOP_DEFAULTS;
-
-    return slots.map(s => {
-        const stats = troopData[s.type as string] || {};
-        return {
-            unitType: s.type as string,
-            unitName: s.name,
-            unitSub: s.sub,
-            atk:  stats.attack   ?? 0,
-            def:  stats.defense  ?? 0,
-            hp:   stats.hp       ?? 0,
-            spd:  stats.moveRange ?? 1,
-            cost: TROOP_DEPLOY_COST[s.type],
-            rarity: s.rarity,
-            artResource: s.artResource,
-            traits: s.traits,
-            abilities: [],
-            desc: s.desc,
-            isDisabled: false,
-        } as TallyCardData;
-    });
-  }
-
-  private _buildUltimateSkills(general: GeneralUnit): UltimateSkillItem[] {
-    if (!general.skillId) {
-      return [];
-    }
-
-    const skillDef = services().action.getSkill(general.skillId);
-    return [{
-      skillId: general.skillId,
-      label: skillDef?.label ?? general.skillId,
-      costSp: skillDef?.costSp ?? general.maxSp,
-    }];
-  }
-
-  private ensureBoardRenderer(): void {
-    if (!this.boardRenderer) {
-      // 將棋盤放在場景最外層，不需要依附在 UI Canvas 下
-      let node = this.node.scene?.getChildByName("BoardRenderer");
-      if (!node) {
-        node = new Node("BoardRenderer");
-        this.node.scene?.addChild(node);
-      }
-
-      this.boardRenderer = node.getComponent(BoardRenderer) ?? node.addComponent(BoardRenderer);
-    }
-
-    // 與邏輯棋盤同步，避免渲染層寫死 5x8
-    this.boardRenderer.cols = GAME_CONFIG.GRID_LANES;
-    this.boardRenderer.rows = GAME_CONFIG.GRID_DEPTH;
-    const totalCellFactor = this.boardRenderer.rows + Math.max(0, this.boardRenderer.rows - 1) * this.boardGapRatio;
-    this.boardRenderer.cellSize = this.boardTargetDepth / totalCellFactor;
-    this.boardRenderer.cellGap = this.boardRenderer.cellSize * this.boardGapRatio;
-    this.boardRenderer.rebuildBoard();
-  }
-
-  private ensureUnitRenderer(): void {
-    if (!this.unitRenderer) {
-      let node = this.node.scene?.getChildByName("UnitRenderer");
-      if (!node) {
-        node = new Node("UnitRenderer");
-        this.node.scene?.addChild(node);
-      }
-
-      this.unitRenderer = node.getComponent(UnitRenderer) ?? node.addComponent(UnitRenderer);
-    }
-
-    this.unitRenderer.initialize(this.boardRenderer, this.getMainCamera(), this.getCanvasNode());
-  }
-
-  private setupCameraForBoard(): void {
-    const scene = this.node.scene;
-    if (!scene) {
-      console.warn("[BattleScene] setupCameraForBoard: 無法取得 scene");
-      return;
-    }
-
-    // ── 尋找場景中預設的 Main Camera 來作為 3D 棋盤攝影機 ──────────────
-    // 對照 Unity：直接調整預設的 Main Camera，不要再額外建新的 Camera 避免重複。
-    let cam3dNode = scene.getChildByName("Main Camera");
-    if (!cam3dNode) {
-      console.warn("[BattleScene] 找不到 Main Camera，將回退建立新的 Camera");
-      cam3dNode = new Node("Main Camera");
-      scene.addChild(cam3dNode);
-    }
-
-    // 確保它在 DEFAULT layer
-    cam3dNode.layer = Layers.Enum.DEFAULT;
-
-    const cam = cam3dNode.getComponent(Camera) ?? cam3dNode.addComponent(Camera);
-
-    // 透視投影，固定使用對齊示意圖後的相機參數
-    cam.projection = Camera.ProjectionType.PERSPECTIVE;
-    cam.fov        = 30;
-    cam.near       = 0.5;
-    cam.far        = 500;
-
-    // 只渲染 DEFAULT layer 的節點（包含場景與棋盤 MeshRenderer）；
-    // UI 會由 Canvas 下的 UI Camera 負責。
-    cam.visibility = Layers.Enum.DEFAULT;
-    cam.targetTexture = null;
-
-    // DEPTH_ONLY：只清深度緩衝，讓 BGCamera（priority=-1）所畫的背景底圖透出來。
-    // 對照 Unity：Main Camera ClearFlags = Depth only（背景已由 Background Camera 負責）。
-    cam.clearFlags = Camera.ClearFlag.DEPTH_ONLY;
-
-    // 註解掉代碼鎖死，讓你可以直接在編輯器 Scene 面板中移動 Main Camera
-    // 等你微調出完美角度後，可以直接讓 Scene 的 Main Camera 保持著，或者再寫死回來
-    /*
-    const fixedCameraPosition = new Vec3(-3.80528, 7.598808, -7.911689);
-    const fixedCameraEuler = new Vec3(-44.111815, -143.244049, 5.5);
-    cam3dNode.setPosition(fixedCameraPosition);
-    cam3dNode.setRotationFromEuler(fixedCameraEuler);
-    */
-
-    // ── 讓 Canvas 相機改用 DEPTH_ONLY，才能讓 3D 底層透出來 ──────────────────
-    // 注意：Cocos 3.x UI 預設是由獨立的 Canvas Camera 渲染
-    const canvas = this.getCanvasNode();
-    if (canvas) {
-      // 也有可能 UI Camera 直接是 Canvas 的子節點 "Camera"
-      let uiCamNode = canvas.getChildByName("Camera");
-      let uiCam = uiCamNode ? uiCamNode.getComponent(Camera) : canvas.getComponentInChildren(Camera);
-      
-      if (uiCam) {
-        uiCam.clearFlags = Camera.ClearFlag.DEPTH_ONLY;
-        uiCam.targetTexture = null;
-      }
-    }
-
-    console.log(
-      `[BattleScene] Main Camera 目前參數` +
-      ` pos=(${cam3dNode.position.x.toFixed(3)}, ${cam3dNode.position.y.toFixed(3)}, ${cam3dNode.position.z.toFixed(3)})` +
-      ` rot=(${cam3dNode.eulerAngles.x.toFixed(3)}, ${cam3dNode.eulerAngles.y.toFixed(3)}, ${cam3dNode.eulerAngles.z.toFixed(3)})` +
-      ` fov=${cam.fov}°`
-    );
-  }
-
   private getCanvasNode(): Node | null {
     return this.node.scene?.getChildByName("Canvas") ?? this.node.parent ?? null;
+  }
+
+  // ─── 回合推進（UI 事件驅動）──────────────────────────────────────────────
+
+  private _onPlayerDeployed(): void {
+    this._deployPanelRuntime?.showToast('部署完成，等待敵軍行動...', 1.8);
+    this.scheduleOnce(() => this._onEndTurn(), 2.0);
+  }
+
+  private _onEndTurn(): void {
+    if (!this.ctrl || this.isAdvancingTurn) return;
+    this._cancelPendingSkillTargeting(false);
+
+    this.battleLogPanel?.append('執行回合推進');
+    this.isAdvancingTurn = true;
+    this.boardRenderer?.setDeployHintFaction(Faction.Enemy);
+    this.refreshBattleViews();
+
+    // 安全保護：無論任何情況，20s 後強制解鎖（防止 scheduleOnce 衣喪失或其他意外）
+    const gen = ++this._advanceTurnGeneration;
+    this.scheduleOnce(() => {
+      if (this.isAdvancingTurn && this._advanceTurnGeneration === gen) {
+        console.warn('[BattleScene] isAdvancingTurn safety-reset（超時 20s），強制解鎖');
+        this._doFinalizeAdvance();
+      }
+    }, 20);
+
+    this._deployPanelRuntime?.showToast('敵軍思考中...', 2.0);
+    this.scheduleOnce(() => {
+      try {
+        this.ctrl?.advanceTurn();
+      } finally {
+        // 原先的 2.3s 延遲仍保留作為最小等待時間，再進入排空輪詢
+        this.scheduleOnce(() => this._pollFinalizeAdvance(0), 2.3);
+      }
+    }, 2.0);
+  }
+
+  private _onTactics(): void {
+    if (!this.ctrl || this.isAdvancingTurn) return;
+
+    const descriptor = this.ctrl.getPlayerSeedTacticDescriptor();
+    if (!descriptor) {
+      this._deployPanelRuntime?.showToast('尚未載入我方主將戰法', 1.5);
+      return;
+    }
+
+    this._beginPlayerSkillFlow(descriptor.skillId, SkillSourceType.SeedTactic, '戰法');
+  }
+
+  private _onUltimateSkillSelected(data: { skillId?: string | null }): void {
+    if (!this.ctrl || this.isAdvancingTurn) return;
+    const skillId = data.skillId ?? null;
+    if (!skillId) {
+      this._deployPanelRuntime?.showToast('尚未配置可施放奧義', 1.5);
+      return;
+    }
+
+    this._beginPlayerSkillFlow(skillId, SkillSourceType.Ultimate, '奧義');
+  }
+
+  /** 結束回合推進保護，切換回玩家回合 */
+  private _doFinalizeAdvance(): void {
+    this.isAdvancingTurn = false;
+    this.playTurnBanner(Faction.Player);
+    this.boardRenderer?.setDeployHintFaction(Faction.Player);
+    this._syncSceneGambitStatus();
+  }
+
+  private _onGlobalBoardTouchEnd(ev: EventTouch): void {
+    if (!this.pendingSkillTargeting) return;
+    const loc = ev.getLocation();
+    this._handleSkillTargetClick(loc.x, loc.y);
+  }
+
+  private _onGlobalBoardMouseUp(ev: EventMouse): void {
+    if (!this.pendingSkillTargeting) return;
+    const loc = ev.getLocation();
+    this._handleSkillTargetClick(loc.x, loc.y);
+  }
+
+  private _onGlobalKeyUp(ev: EventKeyboard): void {
+    if (!this.pendingSkillTargeting) return;
+    if (ev.keyCode !== KeyCode.ESCAPE) return;
+    this._cancelPendingSkillTargeting(true);
+  }
+
+  private _handleSkillTargetClick(screenX: number, screenY: number): void {
+    if (!this.pendingSkillTargeting || !this.ctrl) return;
+    const sourceLabel = this.pendingSkillTargeting.sourceType === SkillSourceType.Ultimate ? '奧義' : '戰法';
+
+    const cell = this._raycastBoardCell(screenX, screenY);
+    if (!cell) return;
+
+    const stateCell = this.ctrl.state.getCell(cell.lane, cell.depth);
+    const targetUnitId = stateCell?.occupantId ?? null;
+    const targetUnit = targetUnitId ? this.ctrl.state.units.get(targetUnitId) ?? null : null;
+    const targetMode = this.pendingSkillTargeting.targetMode;
+
+    if (this._requiresEnemyUnitTarget(targetMode)) {
+      if (!targetUnit || targetUnit.faction !== Faction.Enemy) {
+        this._deployPanelRuntime?.showToast(`請點選敵方單位作為${sourceLabel}目標`, 1.5);
+        return;
+      }
+
+      const didCast = this.ctrl.triggerPlayerBattleSkill(
+        this.pendingSkillTargeting.skillId,
+        this.pendingSkillTargeting.sourceType,
+        {
+          targetMode,
+          targetUnitUid: targetUnit.id,
+        },
+      );
+      if (!didCast) {
+        this._deployPanelRuntime?.showToast(`${sourceLabel}發動失敗，請重新選擇目標`, 1.5);
+        return;
+      }
+
+      this._deployPanelRuntime?.showToast(`${sourceLabel}已發動`, 1.2);
+      this._cancelPendingSkillTargeting(false);
+      this.refreshBattleViews();
+      return;
+    }
+
+    const didCast = this.ctrl.triggerPlayerBattleSkill(
+      this.pendingSkillTargeting.skillId,
+      this.pendingSkillTargeting.sourceType,
+      {
+        targetMode,
+        targetTileId: `${cell.lane},${cell.depth}`,
+      },
+    );
+    if (!didCast) {
+      this._deployPanelRuntime?.showToast(`${sourceLabel}發動失敗，請重新選擇格位`, 1.5);
+      return;
+    }
+
+    this._deployPanelRuntime?.showToast(`${sourceLabel}已發動`, 1.2);
+    this._cancelPendingSkillTargeting(false);
+    this.refreshBattleViews();
+  }
+
+  private _requiresExplicitTarget(skillId: string, targetMode: BattleSkillTargetMode): boolean {
+    if (!requiresBattleSkillManualTargeting(skillId)) {
+      return false;
+    }
+
+    return [
+      BattleSkillTargetMode.EnemySingle,
+      BattleSkillTargetMode.Line,
+      BattleSkillTargetMode.Fan,
+      BattleSkillTargetMode.Area,
+      BattleSkillTargetMode.Tile,
+      BattleSkillTargetMode.AdjacentTiles,
+    ].includes(targetMode);
+  }
+
+  private _requiresEnemyUnitTarget(targetMode: BattleSkillTargetMode): boolean {
+    return [
+      BattleSkillTargetMode.EnemySingle,
+      BattleSkillTargetMode.Line,
+      BattleSkillTargetMode.Fan,
+    ].includes(targetMode);
+  }
+
+  private _buildTargetingPrompt(skillId: string, targetMode: BattleSkillTargetMode): string {
+    const baseName = getBattleSkillPresentation(skillId).name;
+    switch (targetMode) {
+      case BattleSkillTargetMode.EnemySingle:
+        return `請點選敵方單位施放 ${baseName}，按 Esc 取消`;
+      case BattleSkillTargetMode.Line:
+        return `請點選直線錨點敵軍施放 ${baseName}，按 Esc 取消`;
+      case BattleSkillTargetMode.Fan:
+        return `請點選扇形中心敵軍施放 ${baseName}，按 Esc 取消`;
+      case BattleSkillTargetMode.Area:
+        return `請點選範圍中心格位施放 ${baseName}，按 Esc 取消`;
+      case BattleSkillTargetMode.Tile:
+        return `請點選目標格位施放 ${baseName}，按 Esc 取消`;
+      case BattleSkillTargetMode.AdjacentTiles:
+        return `請點選相鄰範圍中心格位施放 ${baseName}，按 Esc 取消`;
+      default:
+        return `請點選目標格位施放 ${baseName}，按 Esc 取消`;
+    }
+  }
+
+  private _cancelPendingSkillTargeting(showToast: boolean): void {
+    if (!this.pendingSkillTargeting) return;
+    this.pendingSkillTargeting = null;
+    this.boardRenderer?.clearSkillPreview();
+    this.refreshBattleViews();
+    if (showToast) {
+      this._deployPanelRuntime?.showToast('已取消技能選目標', 1.2);
+    }
+  }
+
+  private _beginPlayerSkillFlow(skillId: string, sourceType: SkillSourceType, sourceLabel: string): void {
+    if (!this.ctrl) return;
+    const general = this.ctrl.state.playerGeneral;
+    if (!general?.canUseSkill()) {
+      this._deployPanelRuntime?.showToast(`${sourceLabel}蓄力中，SP 不足`, 1.5);
+      return;
+    }
+
+    if (this.pendingSkillTargeting?.skillId === skillId && this.pendingSkillTargeting.sourceType === sourceType) {
+      this._cancelPendingSkillTargeting(true);
+      return;
+    }
+
+    const targetMode = resolveBattleSkillTargetMode(skillId, BattleSkillTargetMode.EnemyAll);
+    if (!this._requiresExplicitTarget(skillId, targetMode)) {
+      const didCast = this.ctrl.triggerPlayerBattleSkill(skillId, sourceType, { targetMode });
+      if (didCast) {
+        this._deployPanelRuntime?.showToast(`${sourceLabel}已發動`, 1.2);
+        this.refreshBattleViews();
+      } else {
+        this._deployPanelRuntime?.showToast(`${sourceLabel}發動失敗`, 1.5);
+      }
+      return;
+    }
+
+    this.pendingSkillTargeting = { skillId, sourceType, targetMode };
+    this._syncPendingSkillPreview();
+    this._deployPanelRuntime?.showToast(this._buildTargetingPrompt(skillId, targetMode), 2.4);
+    this.battleLogPanel?.append(buildBattleSkillAimingMessage(skillId, sourceType));
+  }
+
+  private _syncPendingSkillPreview(): void {
+    if (!this.pendingSkillTargeting || !this.ctrl) {
+      this.boardRenderer?.clearSkillPreview();
+      return;
+    }
+
+    const previewCells = this._requiresEnemyUnitTarget(this.pendingSkillTargeting.targetMode)
+      ? this.ctrl.state.units
+          ? Array.from(this.ctrl.state.units.values())
+              .filter((unit) => unit.faction === Faction.Enemy && !unit.isDead())
+              .map((unit) => ({ lane: unit.lane, depth: unit.depth }))
+          : []
+      : this._getAllBoardCells();
+    this.boardRenderer?.setSkillPreviewCells(previewCells);
+    this.refreshBattleViews();
+  }
+
+  private _getAllBoardCells(): Array<{ lane: number; depth: number }> {
+    const cells: Array<{ lane: number; depth: number }> = [];
+    for (let lane = 0; lane < GAME_CONFIG.GRID_LANES; lane++) {
+      for (let depth = 0; depth < GAME_CONFIG.GRID_DEPTH; depth++) {
+        cells.push({ lane, depth });
+      }
+    }
+    return cells;
+  }
+
+  /**
+   * 輪詢等待戰鬥視覺佇列排空，再解除 isAdvancingTurn。
+   * 若決鬥面板尚開著，延後重試而非直接 return（修復原本 isDuelPanelActive 鎖死的 bug）。
+   */
+  private _pollFinalizeAdvance(attempts: number): void {
+    // 決鬥面板開著時排隊等待，而非直接 return 造成旗標永久卡死
+    if (this.isDuelPanelActive) {
+      this.scheduleOnce(() => this._pollFinalizeAdvance(attempts), 0.5);
+      return;
+    }
+
+    const maxAttempts = 12; // 最多等待 12 × 0.5s = 6s
+    if (!this.isDrainingCombatVisual || attempts >= maxAttempts) {
+      // 視覺排空，或已達上限強制解鎖（避免長時間鎖死互動）
+      this._doFinalizeAdvance();
+      return;
+    }
+
+    this.scheduleOnce(() => this._pollFinalizeAdvance(attempts + 1), 0.5);
+  }
+
+  // ─── 拖曳部署射線偵測 ────────────────────────────────────────────────────
+
+  /**
+   * DeployPanel 拖曳放手後呼叫：螢幕座標 → 3D 射線 → 格子部署。
+   * 映射自 TurnFlowManager.doDeployRaycast，使用 BattleScene 自身欄位。
+   */
+  private _doDeployRaycast(screenX: number, screenY: number): void {
+    if (this.isAdvancingTurn) return;
+
+    if (this.pendingSkillTargeting) {
+      this._handleSkillTargetClick(screenX, screenY);
+      return;
+    }
+
+    const firstCell = this._raycastBoardCell(screenX, screenY);
+    if (!firstCell) return;
+
+    if (this.ctrl?.isWaitingDuelPlacement) {
+      const cell = firstCell;
+      if (cell.depth < 0 || cell.depth >= GAME_CONFIG.GRID_DEPTH) return;
+      const stateCell = this.ctrl.state.getCell(cell.lane, cell.depth);
+      if (stateCell?.occupantId) { this._deployPanelRuntime?.showToast('無法在後方部署', 1.2); return; }
+      const unit = this.ctrl.placeGeneralOnBoard(cell.lane, cell.depth);
+      if (unit) {
+        this._deployPanelRuntime?.showToast('武將出陣！全軍攻擊力加倍！');
+        this.battleLogPanel?.append(`我方武將出陣至 L${cell.lane + 1} D${cell.depth}`);
+        this.refreshBattleViews();
+        this.unitRenderer?.playDeploy(unit);
+      }
+      return;
+    }
+
+    if (firstCell.depth === 0) {
+      this._deployPanelRuntime?.selectLane(firstCell.lane);
+    }
+  }
+
+  private _raycastBoardCell(screenX: number, screenY: number): { lane: number; depth: number } | null {
+
+    const cam = this.getMainCamera();
+    if (!cam) {
+      console.warn('[BattleScene] _doDeployRaycast: boardCamera 為 null，請確認 setupCameraForBoard() 已執行');
+      return;
+    }
+
+    const corrected = this.normalizeGameCanvasPoint(screenX, screenY);
+    const ray = new geometry.Ray();
+    const raycastCell = (x: number, y: number): { lane: number; depth: number } | null => {
+      cam.screenPointToRay(x, y, ray);
+
+      if (Math.abs(ray.d.y) < 0.0001) return null;
+      const t = -ray.o.y / ray.d.y;
+      if (t < 0) return null;
+
+      const hitPoint = new Vec3();
+      Vec3.scaleAndAdd(hitPoint, ray.o, ray.d, t);
+      return (this.boardRenderer as any)?.getCellFromWorldPos?.(hitPoint) ?? null;
+    };
+
+    const candidates: Array<{ lane: number; depth: number } | null> = [];
+    candidates.push(raycastCell(screenX, screenY));
+    if (Math.abs(corrected.x - screenX) > 0.01 || Math.abs(corrected.y - screenY) > 0.01) {
+      candidates.push(raycastCell(corrected.x, corrected.y));
+    }
+
+    return candidates.find((cell) => !!cell) ?? null;
   }
 
   private getMainCamera(): Camera | null {
@@ -1405,15 +1156,40 @@ export class BattleScene extends Component {
     return camNode?.getComponent(Camera) ?? null;
   }
 
-  private toTroopName(type: TroopType): string {
-    if (type === TroopType.Cavalry) return "騎兵";
-    if (type === TroopType.Infantry) return "步兵";
-    if (type === TroopType.Shield) return "盾兵";
-    if (type === TroopType.Archer) return "弓兵";
-    if (type === TroopType.Pikeman) return "長槍兵";
-    if (type === TroopType.Engineer) return "工兵";
-    if (type === TroopType.Medic) return "醫護兵";
-    return "水軍";
+  private normalizeGameCanvasPoint(screenX: number, screenY: number): { x: number; y: number } {
+    if (typeof window === 'undefined' || typeof document === 'undefined') {
+      return { x: screenX, y: screenY };
+    }
+
+    const canvas = document.getElementById('GameCanvas') as HTMLCanvasElement | null;
+    if (!canvas) {
+      return { x: screenX, y: screenY };
+    }
+
+    const rect = canvas.getBoundingClientRect();
+    if (rect.width <= 0 || rect.height <= 0) {
+      return { x: screenX, y: screenY };
+    }
+
+    const isCropped = rect.left < -0.5 || rect.top < -0.5;
+    const isScaled = Math.abs(rect.width - canvas.width) > 0.5 || Math.abs(rect.height - canvas.height) > 0.5;
+    if (!isCropped && !isScaled) {
+      return { x: screenX, y: screenY };
+    }
+
+    const localX = (screenX - rect.left);
+    const localY = (screenY - rect.top);
+    const clampedX = Math.max(0, Math.min(localX, rect.width));
+    const clampedY = Math.max(0, Math.min(localY, rect.height));
+
+    const scaleX = rect.width > 0 ? (canvas.width / rect.width) : 1;
+    const scaleY = rect.height > 0 ? (canvas.height / rect.height) : 1;
+    const vp = view.getViewportRect();
+
+    return {
+      x: vp.x + clampedX * scaleX,
+      y: vp.y + clampedY * scaleY,
+    };
   }
 
   // ─── Debug 棋盤文字視覺化 ─────────────────────────────────────────────────
@@ -1433,8 +1209,8 @@ export class BattleScene extends Component {
     
     // 更新 DeployPanel 的技能可發動狀態
     const pg = this.ctrl.state.playerGeneral;
-    if (pg && this.deployPanel) {
-      this.deployPanel.updateSkillStatus(pg.canUseSkill());
+    if (pg && this._deployPanelRuntime) {
+      this._deployPanelRuntime?.updateSkillStatus(pg.canUseSkill());
     }
   }
 
@@ -1495,45 +1271,4 @@ export class BattleScene extends Component {
    * 新增背景切換 Debug UI 按鈕。
    * 點擊時會在「白天平原」與「夜晚平原」之間切換，用於測試 SceneBackground。
    */
-  private addBackgroundSwitchUI(): void {
-    const canvas = this.getCanvasNode();
-    if (!canvas) return;
-
-    let debugRoot = canvas.getChildByName("DebugUI");
-    if (!debugRoot) {
-      debugRoot = new Node("DebugUI");
-      debugRoot.layer = Layers.Enum.UI_2D;
-      canvas.addChild(debugRoot);
-    }
-
-    const btnNode = new Node("BtnSwitchBG");
-    btnNode.layer = Layers.Enum.UI_2D;
-    debugRoot.addChild(btnNode);
-    btnNode.setPosition(800, 480, 0); // 右上角
-
-    const tf = btnNode.addComponent(UITransform);
-    tf.setContentSize(160, 50);
-
-    const sprite = btnNode.addComponent(Sprite);
-    sprite.type = Sprite.Type.SIMPLE;
-    sprite.sizeMode = Sprite.SizeMode.CUSTOM;
-    sprite.color = new Color(40, 40, 40, 200);
-
-    const labelNode = new Node("Label");
-    labelNode.layer = Layers.Enum.UI_2D;
-    btnNode.addChild(labelNode);
-    const lbl = labelNode.addComponent(Label);
-    lbl.string = "切換背景";
-    lbl.fontSize = 20;
-
-    const btn = btnNode.addComponent(Button);
-    let isNight = false;
-    btn.node.on(Button.EventType.CLICK, () => {
-      isNight = !isNight;
-      const bgId = isNight ? "bg_normal_night" : "bg_normal_day";
-      this.sceneBackground?.loadBackground(bgId).then(() => {
-        this.deployPanel?.showToast(`背景已切換為：${isNight ? "夜晚" : "白天"}`);
-      });
-    }, this);
-  }
 }

@@ -1,12 +1,13 @@
 ---
+doc_id: doc_agentskill_0028
 name: ui-reference-decompose
-description: '參考圖解析 SKILL — 從截圖、Figma 連結或參考 PNG 中，分解出 proof-contract-v1 草稿（visualZones + componentIntents + spacingRecipe + contentSlots）。USE FOR: 拿到新畫面設計稿或截圖時，作為 UI production pipeline 第 1 步。DO NOT USE FOR: 直接生成 screen.json（需先完成此步再進 ui-family-architect）。'
-argument-hint: '提供參考圖路徑（ref://docs/UI品質參考圖/xxx.png 或 figma://）以及目標 screenId（CamelCase）。'
+description: '參考圖解析 SKILL — 從截圖、Figma 連結或參考 PNG 中，分解出 proof draft（visualZones + componentIntents + spacingRecipe + contentSlots + unresolved notes）。USE FOR: 拿到新畫面設計稿或截圖時，作為 UI production pipeline 第 1 步。DO NOT USE FOR: 直接生成 normalized recipe 或 screen package（需先完成此步再進 family / MCQ 收斂）。'
+argument-hint: '提供參考圖路徑（ref://docs/UI品質參考圖/xxx.png 或 figma://）以及目標 screenId（建議 kebab-case，例如 shop-main、battle-hud）。'
 ---
 
 # UI Reference Decompose
 
-這是 UI production pipeline 的**第 1 步**：把視覺輸入轉成結構化 proof contract 草稿。
+這是 UI production pipeline 的**第 1 步**：把視覺輸入轉成結構化 proof draft。
 
 Unity 對照：相當於 Art Director 審圖後給技術美術的「元素清單 + 語意分區 metadata」。
 
@@ -17,12 +18,12 @@ Unity 對照：相當於 Art Director 審圖後給技術美術的「元素清單
 | 項目 | 說明 |
 |---|---|
 | `proofSource` | `ref://docs/UI品質參考圖/<filename>` 或 `figma://file/<id>?node=<nodeId>` |
-| `screenId` | CamelCase，例如 `ShopMain`、`BattleHUD` |
+| `screenId` | 建議 kebab-case，例如 `shop-main`、`battle-hud` |
 | （可選）`existingScreenJson` | 若已有 screen spec，提供以對齊 contentSlots |
 
 ## 輸出
 
-`assets/resources/ui-spec/proof/screens/{screenId}.proof.json`（proof-contract-v1 草稿）
+`assets/resources/ui-spec/proof/screens/{screenId}.proof.json`（proof draft）
 
 ---
 
@@ -48,7 +49,7 @@ view_image { filePath: "c:\Users\User\3KLife\<path-after-ref://>" }
 
 > 一次最多只開 1 張主圖；若需要對照圖，另加 1 張即可。
 
-若 proofSource 為 `figma://`，讀取 sync-figma-proof-mapping.js 輸出的快照（`artifacts/ui-qa/`）。
+若 proofSource 為 `figma://`，讀取 sync-figma-proof-mapping.js 或 workflow 產出的快照（優先看 `artifacts/ui-source/{screenId}/...` 相關輸入包）。
 
 ### Step 2 — 語意區域分解（VisualZones）
 
@@ -92,7 +93,7 @@ view_image { filePath: "c:\Users\User\3KLife\<path-after-ref://>" }
 使用 `create_file` 輸出至 `assets/resources/ui-spec/proof/screens/{screenId}.proof.json`，
 格式依 `assets/resources/ui-spec/proof/proof-contract.schema.json`。
 
-**草稿必須設定 `"_draft": true` 及 `"confidence": 0.5`**，提醒後續 Agent 補齊細節。
+**草稿必須設定 `"_draft": true` 及 `"confidence": 0.5`**，提醒後續 Agent 補齊細節與 unresolved notes。
 
 ### Step 7 — 或使用 sync-figma 工具自動生成草稿
 
@@ -117,4 +118,11 @@ node tools_node/sync-figma-proof-mapping.js \
 
 ## 下一步
 
-完成後進入 **ui-family-architect** skill（Step 2）。
+若要走完整自動化生產流程，完成後直接進入 **ui-vibe-pipeline**，由它編排 family 收斂、brief / task card、recipe、scaffold、驗證與 Browser QA。
+
+若只想維持手動分步流程，才進入 **ui-family-architect** skill（Step 2），再由 `compile-proof-to-mcq.js` / `compile-mcq-answer-to-recipe.js` 收斂。
+
+> **完整編排指令**：若要一鍵啟動完整 orchestrated workflow：
+> ```
+> node tools_node/run-ui-vibe-workflow.js --proof-source <image> --screen-id <screen-id>
+> ```

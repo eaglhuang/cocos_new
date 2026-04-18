@@ -34,6 +34,7 @@ const FAMILY_TO_LAYER = {
     'dialog-card':       'Dialog',
     'rail-list':         'UI',
     'fullscreen-result': 'UI',
+    'composite-panel':   'PopUp', // M10: UCUF CompositePanel mode
 };
 
 // ─── 工具函數 ─────────────────────────────────────────────────────────────────
@@ -49,6 +50,7 @@ function printHelp() {
         '常用選項：',
         '  --family       template family（detail-split / dialog-card / rail-list / fullscreen-result）',
         '                 若省略，從 screen spec 的 layout 名稱自動推斷',
+        '  --ucuf         [M10] 使用 CompositePanel 骨架模板，同時自動生成 Content Contract JSON',
         '  --out          產出 Panel .ts 的目錄，預設 assets/scripts/ui/components',
         '  --name         類別名稱，預設由 screenId 轉 PascalCase + Panel 後綴',
         '  --no-uiconfig  不自動修改 UIConfig.ts',
@@ -140,8 +142,10 @@ function inferFamily(screenSpec) {
 // ─── Panel TypeScript 生成 ────────────────────────────────────────────────────
 
 function generatePanelTs(options) {
-    const { screenId, className, family, uiId } = options;
-    const templateFile = path.join(TEMPLATES_DIR, `${family}-panel.template.ts`);
+    const { screenId, className, family, uiId, ucufMode, contractFamily } = options;
+    // M10: --ucuf モード は composite-panel.template.ts を使用
+    const templateName = ucufMode ? 'composite-panel' : `${family}-panel`;
+    const templateFile = path.join(TEMPLATES_DIR, `${templateName}.template.ts`);
     if (!fs.existsSync(templateFile)) {
         console.error(`[scaffold-ui-component] 找不到 template 檔案：${templateFile}`);
         return null;
@@ -149,8 +153,55 @@ function generatePanelTs(options) {
     let tpl = fs.readFileSync(templateFile, 'utf8');
     tpl = tpl.replace(/\{\{PanelClassName\}\}/g, className);
     tpl = tpl.replace(/\{\{screenId\}\}/g, screenId);
+    tpl = tpl.replace(/\{\{familyId\}\}/g, contractFamily || family);
     tpl = tpl.replace(/\{\{uiId\}\}/g, uiId);
     return tpl;
+}
+
+// ─── Content Contract 自動生成（M10 --ucuf 模式）─────────────────────────────
+
+/**
+ * 掃描 Layout JSON 中的 dataSource 欄位，產出 Content Contract schema。
+ * 輸出路徑：assets/resources/ui-spec/contracts/{screenId}-content.schema.json
+ */
+function generateContentContract(screenId, family, dryRun) {
+    const layoutFile = path.join(UI_SPEC_ROOT, 'layouts', `${screenId}-layout.json`);
+    const requiredFields = [];
+
+    if (fs.existsSync(layoutFile)) {
+        try {
+            const layoutJson = JSON.parse(fs.readFileSync(layoutFile, 'utf8'));
+            // 遞歸掃描節點，收集所有 dataSource 欄位
+            function collectDataSources(node) {
+                if (!node || typeof node !== 'object') return;
+                if (node.dataSource && typeof node.dataSource === 'string') {
+                    const field = node.dataSource.replace(/^data\./, '');
+                    if (!requiredFields.includes(field)) requiredFields.push(field);
+                }
+                if (Array.isArray(node.children)) {
+                    node.children.forEach(collectDataSources);
+                }
+            }
+            collectDataSources(layoutJson.root ?? layoutJson);
+        } catch (e) {
+            console.warn(`[scaffold-ui-component] 無法解析 layout JSON，Contract 使用空 requiredFields：${e.message}`);
+        }
+    } else {
+        console.warn(`[scaffold-ui-component] 找不到 layout 檔案 ${layoutFile}，Content Contract 使用空 requiredFields`);
+    }
+
+    const contractPath = path.join(CONTRACT_DIR, `${screenId}-content.schema.json`);
+    const contractJson = JSON.stringify({
+        schemaId: `${family}-content`,
+        familyId: family,
+        screenId: screenId,
+        requiredFields,
+        generatedBy: 'scaffold-ui-component --ucuf',
+        generatedAt: new Date().toISOString().slice(0, 10),
+    }, null, 2);
+
+    writeFile(contractPath, contractJson, dryRun);
+    return contractPath;
 }
 
 // ─── UIConfig.ts UIID stub 注入 ───────────────────────────────────────────────
@@ -215,6 +266,7 @@ function main() {
     const screenId   = getArg('screen');
     const dryRun     = hasFlag('dry-run');
     const noUiConfig = hasFlag('no-uiconfig');
+    const ucufMode   = hasFlag('ucuf'); // M10: CompositePanel 骨架模式
     const outDir     = getArg('out', DEFAULT_OUT_DIR);
 
     if (!screenId) {
@@ -229,13 +281,18 @@ function main() {
         console.warn(`[scaffold-ui-component] 找不到 screen spec：${screenId}，以 stub 模式繼續`);
     }
 
-    // 2. 推斷 family
+    // 2. 推斷 family（--ucuf 模式保留 recipe family，僅模板切到 composite-panel）
     let family = getArg('family');
     if (!family) {
-        family = inferFamily(screenSpec) ?? 'detail-split';
-        console.log(`[scaffold-ui-component] 自動推斷 family：${family}`);
+        if (ucufMode) {
+            family = 'detail-split';
+            console.log('[scaffold-ui-component] --ucuf 模式：未指定 family，預設 detail-split');
+        } else {
+            family = inferFamily(screenSpec) ?? 'detail-split';
+            console.log(`[scaffold-ui-component] 自動推斷 family：${family}`);
+        }
     }
-    if (!FAMILY_TO_LAYER[family]) {
+    if (!FAMILY_TO_LAYER[family] && !ucufMode) {
         console.error(`[scaffold-ui-component] 不支援的 family：${family}`);
         console.error(`  支援清單：${Object.keys(FAMILY_TO_LAYER).join(', ')}`);
         process.exit(1);
@@ -249,7 +306,7 @@ function main() {
     console.log(`[scaffold-ui-component] screen="${screenId}" family="${family}" class="${className}" uiId="${uiId}"`);
 
     // 4. 生成 Panel TypeScript
-    const panelTs = generatePanelTs({ screenId, className, family, uiId });
+    const panelTs = generatePanelTs({ screenId, className, family, uiId, ucufMode, contractFamily: family });
     if (!panelTs) {
         process.exit(1);
     }
@@ -263,9 +320,18 @@ function main() {
 
     writeFile(outPath, panelTs, dryRun);
 
+    // 4b. [M10] --ucuf 模式：同時生成 Content Contract JSON schema
+    if (ucufMode) {
+        const contractPath = generateContentContract(screenId, family, dryRun);
+        if (!dryRun) {
+            console.log(`[scaffold-ui-component] Content Contract 已生成：${path.relative(PROJECT_ROOT, contractPath)}`);
+        }
+    }
+
     // 5. 注入 UIConfig UIID stub
     if (!noUiConfig) {
-        injectUiConfigEntry(uiId, family, dryRun);
+        const layerFamily = family;
+        injectUiConfigEntry(uiId, layerFamily, dryRun);
     }
 
     // 6. 編碼檢查提示
@@ -279,6 +345,14 @@ function main() {
         console.log('  npx tsc --noEmit');
     } else {
         console.log('\n[scaffold-ui-component] DRY-RUN 完成，無檔案寫入。');
+        if (ucufMode) {
+            const contractRelPath = path.relative(PROJECT_ROOT, path.join(CONTRACT_DIR, `${screenId}-content.schema.json`));
+            console.log(`\n[scaffold-ui-component] --ucuf 模式骨架列表（dry-run）：`);
+            console.log(`  Panel.ts       → ${path.relative(PROJECT_ROOT, path.join(path.isAbsolute(outDir) ? outDir : path.join(PROJECT_ROOT, outDir), `${className}.ts`))}`);
+            console.log(`  Screen spec    → assets/resources/ui-spec/screens/${screenId}.json （請手動建立或已存在）`);
+            console.log(`  Layout spec    → assets/resources/ui-spec/layouts/${screenId}-layout.json （請手動建立或已存在）`);
+            console.log(`  Content Schema → ${contractRelPath}`);
+        }
     }
 }
 

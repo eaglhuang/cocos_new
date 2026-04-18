@@ -1,0 +1,3 @@
+interface:
+  display_name: "Cocos VFX Browser QA"
+  short_description: "自動驗收 VFX 積木與組合特效"

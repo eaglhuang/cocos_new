@@ -1,3 +1,4 @@
+<!-- doc_id: doc_ui_0045 -->
 # UI Asset Slice Pipeline Quickstart
 
 這份是一頁版操作手冊，給要快速判斷「現在該不該走切件流程」的 Agent。
@@ -13,7 +14,7 @@
 
 若來源不是使用者提供的整頁母圖，而是先由 `ComfyUI` 產生單一 `partial asset`，先讀：
 
-- `docs/ui/ComfyUI-Cocos-partial-asset-minimal-flow.md`
+- `docs/ui/ComfyUI-Cocos-partial-asset-minimal-flow.md (doc_ui_0037)` (doc_ui_0037)
 
 ## 什麼時候不要走這條線
 

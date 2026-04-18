@@ -6,6 +6,10 @@
       "playerGeneralId": "zhang-fei",
       "enemyGeneralId": "lu-bu",
       "backgroundId": "bg_normal_day",
+      "weather": "clear",
+      "battleTactic": "normal",
+      "playerEquipment": [],
+      "enemyEquipment": [],
       "terrain": [
         ["plain", "plain", "plain", "plain", "river", "river", "plain", "plain"],
         ["plain", "mountain", "mountain", "plain", "plain", "plain", "plain", "plain"],
@@ -25,6 +29,10 @@
       "playerGeneralId": "zhang-fei",
       "enemyGeneralId": "cao-cao",
       "backgroundId": "bg_normal_night",
+      "weather": "fog",
+      "battleTactic": "ambush-attack",
+      "playerEquipment": [],
+      "enemyEquipment": [],
       "terrain": [
         ["plain", "plain", "forest", "forest", "plain", "plain", "plain", "plain"],
         ["plain", "plain", "plain", "plain", "plain", "plain", "plain", "plain"],

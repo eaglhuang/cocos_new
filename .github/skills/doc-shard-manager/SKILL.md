@@ -1,4 +1,5 @@
 ---
+doc_id: doc_agentskill_0015
 name: doc-shard-manager
 description: >
   文件分片管理 SKILL — 管理「大型文件 → shard 目錄群」的生命週期。
@@ -28,9 +29,9 @@ argument-hint: >
 
 | 索引 stub | Shard 目錄 | 分片數 | 類型 | 備註 |
 |-----------|-----------|--------|------|------|
-| `docs/keep.md` | `docs/keep-shards/` | 4 | `markdown-h2` | 主共識文件 |
+| `docs/keep.md (doc_index_0011)` (doc_index_0011) | `docs/keep-shards/` | 4 | `markdown-h2` | 主共識文件 |
 | `docs/ui-quality-todo.json` | `docs/tasks/` | 4 | `json-array` | 按 id 前綴分 |
-| `docs/cross-reference-index.md` | `docs/cross-ref/` | 3 | `markdown-h2` | A/B/C 節 |
+| `docs/cross-reference-index.md (doc_index_0005)` (doc_index_0005) | `docs/cross-ref/` | 3 | `markdown-h2` | A/B/C 節 |
 | `docs/tasks/tasks-ui.json` | `docs/tasks-ui-shards/` | 2 | `json-array` | 按 status 細拆（子分片，`keepSourceIntact`） |
 | `docs/tasks/tasks-ui.json` | `docs/tasks/tasks-ui/` | 4 | `auto-parts` | auto-split 從 112 KB 等分為 4 parts |
 | `docs/tasks/tasks-dc.json` | `docs/tasks/tasks-dc/` | 2 | `auto-parts` | auto-split 從 41 KB 等分為 2 parts |
@@ -179,8 +180,8 @@ node tools_node/shard-manager.js validate docs/my-new-shards
 ### Step 5 — 更新相關 Guard 文件
 
 若新的 shard group 對應本專案的重要参考文件，請同步更新：
-- `docs/keep.summary.md` — 新增分片路徑提示
-- `.github/instructions/token-guard.instructions.md` — 新增禁止整份讀入的規則
+- `docs/keep.summary.md (doc_index_0012)` (doc_index_0012) — 新增分片路徑提示
+- `.github/instructions/token-guard.instructions.md (doc_ai_0015)` (doc_ai_0015) — 新增禁止整份讀入的規則
 
 ---
 
@@ -191,7 +192,7 @@ node tools_node/shard-manager.js validate docs/my-new-shards
 ```bash
 # 1. 先確認大檔有原始內容（不是 stub）
 # 2. 若已是 stub，從 git 恢復原版或手動合併分片
-git show HEAD:docs/keep.md > docs/keep.md   # 範例
+git show HEAD:docs/keep.md (doc_index_0011) > docs/keep.md (doc_index_0011)   # 範例
 
 # 3. 重新分片
 node tools_node/shard-manager.js shard docs/keep-shards
@@ -309,7 +310,7 @@ auto-split 為冪等操作，每次都從當前 shard 檔重新等分。
 
 ### ✅ 可以直接修改
 
-- 直接編輯分片檔內容（`docs/tasks/tasks-ui.json`、`docs/keep-shards/keep-workflow.md`…）
+- 直接編輯分片檔內容（`docs/tasks/tasks-ui.json`、`docs/keep-shards/keep-workflow.md (doc_index_0009)` (doc_index_0009)…）
 - 新增 JSON 任務 item（末端 append，preserve id 前綴路由）
 - 更新任務的 `status`、`notes`、`completed-date` 等業務欄位
 - 在 Markdown 分片的既有 section 內增加段落（不跨 `##` 邊界）
@@ -334,7 +335,7 @@ node tools_node/shard-manager.js validate <shardDir>
 
 | 情境 | 命令 |
 |------|------|
-| keep.md 新增整個 `##` section | `shard docs/keep-shards` |
+| keep.md (doc_index_0011) 新增整個 `##` section | `shard docs/keep-shards` |
 | tasks-ui.json 新增 >10 筆後接近/超過 40 KB | `validate docs/tasks` → 出現 WARN 則 `auto-split docs/tasks` |
 | 某分片已超過 40 KB（validate 警告） | `auto-split <shardDir> --threshold 30` |
 
@@ -360,7 +361,7 @@ node tools_node/shard-manager.js scan docs
 - 有明確結構（章節 / id 欄位）可以切的文件
 
 跳過：
-- `docs/討論來源/` — 歷史討論，不常讀
+- `docs/遊戲規格文件/討論來源/` — 歷史討論，不常讀
 - 一次性參考圖說明文件
 
 ### Step 3 — 建立 shard group（參考 Workflow B）

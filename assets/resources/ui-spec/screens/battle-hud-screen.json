@@ -6,6 +6,21 @@
   "bundle": "battle_ui",
   "layout": "battle-hud-main",
   "skin": "battle-hud-default",
+  "contentRequirements": {
+    "schemaId": "battle-hud-content",
+    "familyId": "battle-hud",
+    "requiredFields": [
+      "battleState",
+      "strategistSummaryTitle",
+      "strategistSummaryBody",
+      "stageSalvageTitle",
+      "stageSalvageBody"
+    ]
+  },
+  "content": {
+    "source": "battle-hud-states-v1",
+    "state": "smoke-default"
+  },
   "validation": {
     "devices": ["phone-16-9", "phone-19_5-9"],
     "allowMissingSkin": true

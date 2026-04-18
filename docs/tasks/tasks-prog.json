@@ -24,10 +24,10 @@
   "shard": "PROG",
   "generated": "2026-04-06",
   "summary": {
-    "done": 0,
+    "done": 1,
     "in_progress": 0,
     "open": 16,
-    "total": 16
+    "total": 17
   },
   "tasks": [
     {
@@ -485,6 +485,76 @@
         "artifacts/ui-qa/PROG-1-0016/commercial-entry-audit.md"
       ],
       "notes": "2026-04-06 | 狀態: open | 來源: 程式規格書.md §4 §5.5 | 阻塞: PROG-1-0007/0008/0009"
+    },
+    {
+      "id": "PROG-1-0017",
+      "priority": "P1",
+      "phase": "P",
+      "owner": "Agent1",
+      "status": "done",
+      "started_at": "2026-04-17T00:00:00+08:00",
+      "started_by_agent": "Agent1",
+      "completed_at": "2026-04-17T12:00:00+08:00",
+      "completed_by_agent": "Agent1",
+      "created": "2026-04-17",
+      "created_by_agent": "Agent1",
+      "type": "refactoring",
+      "title": "BattleController 架構收斂：BattleTypes 去重 + 狀態所有權 + 技能資料驅動",
+      "description": "針對 upbeat-spence worktree 的 BattleController refactor 後半段。上一 session 已完成 BattleGeneralDuelFlow / BattleTileBuffLifecycleManager 抽出與 thin-delegate 接線，本任務補完六個已識別問題：重複型別/常數去重、void svc 清理、checkVictory 雙重 emit 修正、duel 狀態所有權從 BattleController 移入 BattleGeneralDuelFlow、以及 dispatchGeneralSkill 改為資料驅動的 SkillEffectRegistry。",
+      "scope": ".claude/worktrees/upbeat-spence/assets/scripts/battle/",
+      "milestones": {
+        "M1": {
+          "title": "架構基礎（上一 session 完成）",
+          "checklist": [
+            "[x] 抽出 BattleGeneralDuelFlow.ts",
+            "[x] 抽出 BattleTileBuffLifecycleManager.ts",
+            "[x] BattleController 改為 thin delegate",
+            "[x] TypeScript 0 error 驗證",
+            "[x] Cocos asset-db refresh 成功"
+          ]
+        },
+        "M2": {
+          "title": "P1 正確性修復",
+          "checklist": [
+            "[x] P1.1: 建立 BattleTypes.ts，移除 BattleResult / FRONT_DEPTH 重複定義（兩份 → 一份共用）",
+            "[x] P1.2: 移除 void svc code smell，清理 onGeneralUnitKilled / tryConsumeTileBuff 方法簽名",
+            "[x] P1.3: 修復 checkVictory 雙重 emit：BattleGeneralDuelFlow.checkVictory() 不再 emit BattleEnded；BattleController 為唯一 emit 點"
+          ]
+        },
+        "M3": {
+          "title": "P2 狀態所有權完成",
+          "checklist": [
+            "[x] P2.1: playerGeneralUnitId / enemyGeneralUnitId / isWaitingDuelPlacement / duelRejectedFaction / duelChallengeResolved / generalSwapUsedThisTurn 移入 BattleGeneralDuelFlow 作為 field",
+            "[x] P2.2: BattleGeneralDuelFlowContext 介面精簡（移除已不需要的 getter/setter closures）",
+            "[x] P2.3: BattleController.spawnUnit() / runBattleResolve() / stepMoveUnit() / advanceTurn() 改用 this.duelFlow.* 查詢",
+            "[x] P2.4: BattleScene.ts 相容：isWaitingDuelPlacement 以 getter property 保持公開 API"
+          ]
+        },
+        "M4": {
+          "title": "P3 技能資料驅動",
+          "checklist": [
+            "[x] P3.1: 建立 SkillEffectRegistry（battle/skills/SkillEffectRegistry.ts），以資料表驅動 effectType + params",
+            "[x] P3.2: BattleController.dispatchGeneralSkill() switch-case 改為從 registry 查找並呼叫 handler；applyZhangFeiRoar 泛化為 applyStunAll"
+          ]
+        }
+      },
+      "related": [],
+      "depends": [],
+      "acceptance": [
+        "get_errors 在三個 battle/runtime/ 檔案均回傳 0 error",
+        "BattleResult 型別只在 BattleTypes.ts 定義一次",
+        "FRONT_DEPTH 常數只在 BattleTypes.ts 定義一次",
+        "BattleController 中 duel 狀態欄位（playerGeneralUnitId 等）全部移入 BattleGeneralDuelFlow",
+        "dispatchGeneralSkill switch-case 被 SkillEffectRegistry 資料表取代",
+        "Cocos asset-db refresh 成功"
+      ],
+      "deliverables": [
+        ".claude/worktrees/upbeat-spence/assets/scripts/battle/BattleTypes.ts（新建）",
+        ".claude/worktrees/upbeat-spence/assets/scripts/battle/skills/SkillEffectRegistry.ts（新建）",
+        ".claude/worktrees/upbeat-spence/assets/scripts/battle/controllers/BattleController.ts（修改）",
+        ".claude/worktrees/upbeat-spence/assets/scripts/battle/runtime/BattleGeneralDuelFlow.ts（修改）"
+      ],
+      "notes": "2026-04-17 | 狀態: done | 完成: Agent1 | 全部 checklist [x] | TypeScript 0 error 驗證通過"
     }
   ]
 }

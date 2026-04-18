@@ -1,7 +1,8 @@
 ---
+doc_id: doc_agentskill_0002
 name: cocos-bug-triage
-description: 'COMPLETE BUG INVESTIGATION WORKFLOW — Combines screenshot + log reading into a full triage pipeline. USE FOR: any bug report that has both visual symptoms AND runtime errors. This is the master debugging workflow that orchestrates cocos-screenshot and cocos-log-reader together. Load this skill when user reports any battle scene / UI crash / abnormal behavior with both visual and runtime aspects.'
-argument-hint: 'Describe the bug symptom briefly. The skill will guide screenshot → log → root cause → fix.'
+description: 'COMPLETE BUG INVESTIGATION WORKFLOW — Combines screenshot + log reading into a full triage pipeline. USE FOR: any bug report that has both visual symptoms AND runtime errors, especially CompositePanel / ChildPanel mount failures, screen spec wiring breaks, or battle scene UI crashes. This is the master debugging workflow that orchestrates cocos-screenshot and cocos-log-reader together.'
+argument-hint: 'Describe the bug symptom briefly. Examples: GeneralDetailComposite mount fail, tab switch blank, BattleHUD crash. The skill will guide screenshot → log → root cause → fix.'
 ---
 
 # Cocos Bug Triage（完整 Bug 調查工作流）
@@ -127,7 +128,7 @@ $log | Where-Object { $_ -match "^\d{4}" -and $_ -match " - log:" } | Select-Obj
 範例（替換為實際組件名）：
 ```powershell
 Get-Content "c:\Users\User\3KLife\temp\logs\project.log" -Tail 400 -Encoding UTF8 |
-  Where-Object { $_ -match "BattleHUD|BattleScene|TigerTally|UIPreviewBuilder" } |
+    Where-Object { $_ -match "BattleHUD|BattleScene|TigerTally|CompositePanel|ChildPanel|GeneralDetailComposite|general-detail-unified" } |
   Select-Object -Last 50
 ```
 
@@ -179,7 +180,7 @@ Test-Path "c:\Users\User\3KLife\assets\resources\ui-spec\skins\{skinId}.json"
 ```powershell
 Get-ChildItem "c:\Users\User\3KLife\assets\resources\ui-spec\layouts\" -Filter "*.json" | Select-Object Name
 ```
-→ 確認 `screen.json` 中的 `layout` 欄位對應到實際存在的檔案
+→ 確認 screen spec（`assets/resources/ui-spec/screens/*.json`）中的 `layout` 欄位對應到實際存在的檔案
 
 **B. 程式碼 null 存取**  
 → 用 `replace_string_in_file` 加 null guard + 詳細 log
@@ -220,7 +221,8 @@ Get-ChildItem "c:\Users\User\3KLife\assets\resources\ui-spec\layouts\" -Filter "
 |-----|------|--------------|
 | `[BattleScene]` | 戰鬥場景入口 | `start() 開始執行` / `✅ start() 全部完成` |
 | `[BattleHUD]` | 戰鬥 HUD | `_initialize: 開始載入` / `buildScreen 完成` / `onBuildComplete 完成` |
-| `[UIPreviewBuilder]` | UI 建構器基類 | `buildScreen 開始` / `buildScreen 完成` |
+| `[CompositePanel]` | UI 頁級宿主 | `buildScreen 開始` / `buildScreen 完成` / `mountChildPanel` |
+| `[ChildPanel]` | slot 內容區 | `onDataUpdate` / `onRouteEnter` |
 | `[UISpecLoader]` | JSON 載入器 | `loadLayout: 開始載入` / `載入失敗 — loadJson 回傳 null` |
 | `[BoardRenderer]` | 棋盤渲染 | `棋盤建立完成 size=NxN` |
 | `[BattleScenePanel]` | UI 總調度 | `BattleScenePanel 已就緒` |

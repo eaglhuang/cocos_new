@@ -54,6 +54,8 @@ export enum UIID {
     GeneralQuickView = "GeneralQuickView",
     /** 兵種資訊面板彈窗 */
     UnitInfoPanel = "UnitInfoPanel",
+    /** 虎符詳情抽屜（戰場右側） */
+    TigerTallyDetailPanel = "TigerTallyDetailPanel",
     /** 援助武將詳情彈窗 */
     SupportCard = "SupportCard",
     /** 靈符詳情彈窗 */
@@ -136,6 +138,7 @@ export const UIConfig: Record<UIID, UIConfigEntry> = {
     [UIID.GeneralPortrait]:        { layer: LayerType.PopUp, prefab: "ui/general-portrait" },
     [UIID.GeneralQuickView]:       { layer: LayerType.PopUp, prefab: "ui/general-quickview" },
     [UIID.UnitInfoPanel]:          { layer: LayerType.PopUp, prefab: "ui/unit-info-panel" },
+    [UIID.TigerTallyDetailPanel]:  { layer: LayerType.PopUp, prefab: "ui/tiger-tally-detail-panel" },
     [UIID.SupportCard]:            { layer: LayerType.PopUp, prefab: "ui/support-card" },
     [UIID.SpiritTallyDetail]:      { layer: LayerType.PopUp, prefab: "ui/spirit-tally-detail" },
     [UIID.EliteTroopCodex]:        { layer: LayerType.PopUp, prefab: "ui/elite-troop-codex" },

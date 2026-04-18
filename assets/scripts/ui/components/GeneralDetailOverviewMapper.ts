@@ -1,11 +1,12 @@
 import type {
     GeneralConfig,
     GeneralDetailCrestState,
+    GeneralDetailDefaultTab,
     GeneralDetailRarityTier,
     GeneralDetailStoryCellConfig,
     GeneralDetailStorySlot,
+    GeneralTalentRevealLevel,
     GeneralStatsConfig,
-    CharacterCategory,
 } from '../../core/models/GeneralUnit';
 import { getUIRarityMarkLabel, normalizeUIRarityMarkLabel } from '../core/UIRarityMark';
 import { resolveRarityTier } from '../../core/utils/RarityResolver';
@@ -43,6 +44,8 @@ export interface GeneralDetailOverviewContentState {
     headerMeta: string;
     rarityLabel: string;
     rarityTier: GeneralDetailRarityTier;
+    backgroundResource: string;
+    overviewModeBadgeLabel: string;
     portraitModeHint: string;
     coreStatsTitle: string;
     coreStatsValue: string;
@@ -65,8 +68,31 @@ export interface GeneralDetailOverviewContentState {
     crestGlyphPrimary: string;
     crestGlyphSecondary: string;
     storyCells: Record<GeneralDetailStorySlot, string>;
+    dualLayerStats: Record<keyof GeneralStatsConfig, {
+        talent: {
+            base: number | null;
+            current: number | null;
+            maxPotential: number | null;
+            revelationLevel: GeneralTalentRevealLevel;
+        };
+        prowess: number | null;
+    }>;
+    profilePresentation: {
+        defaultTab: GeneralDetailDefaultTab;
+        crestState: GeneralDetailCrestState;
+        storyStripCells: Record<GeneralDetailStorySlot, string>;
+    };
+    trainingProfile?: {
+        sourceSessionId?: string;
+        phaseBlock?: string;
+        mentorModeLabel?: string;
+        recommendedFocus: string[];
+        graduationTags: string[];
+    };
     portraitResource: string;
 }
+
+const OVERVIEW_STAT_KEYS: Array<keyof GeneralStatsConfig> = ['str', 'int', 'lea', 'pol', 'cha', 'luk'];
 
 const STORY_SLOT_ORDER: GeneralDetailStorySlot[] = [
     'origin',
@@ -173,12 +199,16 @@ export function buildGeneralDetailOverview(config: GeneralConfig): GeneralDetail
 
 export function buildGeneralDetailOverviewContentState(config: GeneralConfig): GeneralDetailOverviewContentState {
     const overview = buildGeneralDetailOverview(config);
+    const storyCells = storyCellsToRecord(overview.cards.storyCells);
+    const crestState = config.profilePresentation?.crestState ?? overview.cards.crestState;
     return {
         headerTitle: overview.header.title,
         headerName: overview.header.name,
         headerMeta: overview.header.meta,
+        backgroundResource: resolveGeneralDetailBackgroundResource(config),
         rarityLabel: resolveRarityLabel(config),
         rarityTier: resolveRarityTier(config),
+        overviewModeBadgeLabel: '血脈總覽',
         portraitModeHint: '總覽模式 / 血脈命鏡',
         coreStatsTitle: '核心屬性',
         coreStatsValue: overview.cards.coreStatsSummary,
@@ -196,13 +226,131 @@ export function buildGeneralDetailOverviewContentState(config: GeneralConfig): G
         bloodlineBody: overview.cards.bloodlineBody,
         crestTitle: overview.cards.crestTitle,
         crestHint: overview.cards.crestHint,
-        crestState: overview.cards.crestState,
+        crestState,
         crestFaceResource: 'sprites/ui_families/general_detail/formal/crest_face_formal',
         crestGlyphPrimary: buildCrestGlyphPrimary(config),
         crestGlyphSecondary: buildCrestGlyphSecondary(config),
-        storyCells: storyCellsToRecord(overview.cards.storyCells),
+        storyCells,
+        dualLayerStats: buildDualLayerStats(config),
+        profilePresentation: {
+            defaultTab: config.profilePresentation?.defaultTab ?? 'Overview',
+            crestState,
+            storyStripCells: config.profilePresentation?.storyStripCells
+                ? storyCellsToRecord(config.profilePresentation.storyStripCells)
+                : storyCells,
+        },
+        trainingProfile: buildTrainingProfile(config),
         portraitResource: `sprites/generals/${config.id.replace(/-/g, '_')}_portrait`,
     };
+}
+
+function buildDualLayerStats(
+    config: GeneralConfig,
+): Record<keyof GeneralStatsConfig, {
+    talent: {
+        base: number | null;
+        current: number | null;
+        maxPotential: number | null;
+        revelationLevel: GeneralTalentRevealLevel;
+    };
+    prowess: number | null;
+}> {
+    const entries = OVERVIEW_STAT_KEYS.map((key) => {
+        const explicit = config.dualLayerStats?.[key];
+        const base = explicit?.base ?? resolveStat(config, key) ?? null;
+        const current = explicit?.current ?? base;
+        const maxPotential = explicit?.maxPotential ?? inferMaxPotential(base);
+        const revelationLevel = explicit?.revelationLevel ?? (base !== null ? 'EXACT' : 'HIDDEN');
+        const prowess = explicit?.prowess ?? inferProwess(base);
+
+        return [
+            key,
+            {
+                talent: {
+                    base,
+                    current,
+                    maxPotential,
+                    revelationLevel,
+                },
+                prowess,
+            },
+        ] as const;
+    });
+
+    return Object.fromEntries(entries) as Record<keyof GeneralStatsConfig, {
+        talent: {
+            base: number | null;
+            current: number | null;
+            maxPotential: number | null;
+            revelationLevel: GeneralTalentRevealLevel;
+        };
+        prowess: number | null;
+    }>;
+}
+
+function inferMaxPotential(base: number | null): number | null {
+    if (base === null) {
+        return null;
+    }
+    return Math.min(120, base + 8);
+}
+
+function inferProwess(base: number | null): number | null {
+    return base;
+}
+function buildTrainingProfile(config: GeneralConfig): GeneralDetailOverviewContentState['trainingProfile'] {
+    const profile = config.trainingProfile;
+    if (!profile && !config.role && !config.status) {
+        return undefined;
+    }
+
+    return {
+        sourceSessionId: profile?.sourceSessionId,
+        phaseBlock: profile?.phaseBlock,
+        mentorModeLabel: profile?.mentorModeLabel,
+        recommendedFocus: profile?.recommendedFocus ?? buildRecommendedFocus(config),
+        graduationTags: profile?.graduationTags ?? [],
+    };
+}
+
+function buildRecommendedFocus(config: GeneralConfig): string[] {
+    const values = [
+        { label: '校場操練', value: resolveStat(config, 'str') ?? -1 },
+        { label: '講武堂研經', value: resolveStat(config, 'int') ?? -1 },
+        { label: '沙盤推演', value: resolveStat(config, 'lea') ?? -1 },
+        { label: '市集巡視', value: resolveStat(config, 'pol') ?? -1 },
+        { label: '名士清談', value: resolveStat(config, 'cha') ?? -1 },
+    ].sort((left, right) => right.value - left.value);
+
+    return values
+        .filter((item) => item.value >= 0)
+        .slice(0, 2)
+        .map((item) => item.label);
+}
+
+function resolveGeneralDetailBackgroundResource(config: GeneralConfig): string {
+    if (isCivilDetailProfile(config)) {
+        return 'sprites/ui_families/general_detail/generated/general_detail_bg_v5_civil';
+    }
+
+    return 'sprites/ui_families/general_detail/generated/general_detail_bg_v10_martial';
+}
+
+function isCivilDetailProfile(config: GeneralConfig): boolean {
+    const gender = (config.gender ?? '').trim().toLowerCase();
+    if (gender === '女' || gender === 'female') {
+        return true;
+    }
+
+    if (config.characterCategory === 'civilian') {
+        return true;
+    }
+
+    const str = resolveStat(config, 'str') ?? 0;
+    const lea = resolveStat(config, 'lea') ?? 0;
+    const int = resolveStat(config, 'int') ?? 0;
+    const pol = resolveStat(config, 'pol') ?? 0;
+    return (int + pol) >= (str + lea);
 }
 
 function resolveStat(config: GeneralConfig, key: keyof GeneralStatsConfig): number | undefined {
@@ -429,7 +577,8 @@ function shortenText(value: string | undefined, maxLength: number): string {
 }
 
 function buildCrestGlyphPrimary(config: GeneralConfig): string {
-    const token = extractBloodlineTokens(config).at(-1);
+    const tokens = extractBloodlineTokens(config);
+    const token = tokens.length > 0 ? tokens[tokens.length - 1] : undefined;
     return token ? translateBloodlineToken(token) : config.name.slice(0, 1);
 }
 

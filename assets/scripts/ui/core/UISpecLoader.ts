@@ -10,6 +10,7 @@
 import { _decorator } from 'cc';
 import { ResourceManager } from '../../core/systems/ResourceManager';
 import type { UILayoutSpec, UISkinManifest, UIScreenSpec, UISkinFragment, UILayoutNodeSpec, UITemplateSpec, UIWidgetFragmentSpec, FrameRecipe, SkinSlot } from './UISpecTypes';
+import { CURRENT_SPEC_VERSION } from './UISpecTypes';
 
 const { ccclass } = _decorator;
 
@@ -38,14 +39,37 @@ export class UISpecLoader {
             return this._layoutCache.get(layoutId)!;
         }
         console.log(`[UISpecLoader] loadLayout: 開始載入 "${layoutId}"`);
-        const spec = await this._rm.loadJson<UILayoutSpec>(
-            `ui-spec/layouts/${layoutId}`, { tags: ['UISpec'] }
+        const layoutResourcePath = layoutId.startsWith('fragments/')
+            ? `ui-spec/${layoutId}`
+            : `ui-spec/layouts/${layoutId}`;
+        const rawSpec = await this._rm.loadJson<any>(
+            layoutResourcePath, { tags: ['UISpec'] }
         );
+
+        let spec: UILayoutSpec | null = null;
+        if (rawSpec && rawSpec.root) {
+            spec = rawSpec as UILayoutSpec;
+        } else if (rawSpec && typeof rawSpec === 'object') {
+            // fragments/layouts/*.json 可能直接是 root node spec（無 canvas/root 外層）
+            // 這裡寬鬆正規化，避免不同 fragment 形狀導致 runtime 直接中斷。
+            spec = {
+                id: (rawSpec as any).id ?? layoutId,
+                version: (rawSpec as any).version ?? 1,
+                canvas: {
+                    fitWidth: true,
+                    fitHeight: true,
+                    safeArea: true,
+                    designWidth: 1920,
+                    designHeight: 1080,
+                },
+                root: rawSpec as UILayoutNodeSpec,
+            };
+        }
 
         // ⚠️ null guard：loadJson 在資源不存在時可能回傳 null
         // 這是造成 "Cannot read properties of null (reading 'root')" 的根源
         if (!spec) {
-            console.error(`[UISpecLoader] loadLayout: 載入 "${layoutId}" 失敗 — loadJson 回傳 null/undefined，請確認 Resources/ui-spec/layouts/${layoutId}.json 是否存在`);
+            console.error(`[UISpecLoader] loadLayout: 載入 "${layoutId}" 失敗 — loadJson 回傳 null/undefined，請確認 Resources/${layoutResourcePath}.json 是否存在`);
             throw new Error(`[UISpecLoader] layout "${layoutId}" 不存在或載入失敗`);
         }
         if (!spec.root) {
@@ -54,6 +78,10 @@ export class UISpecLoader {
         }
 
         console.log(`[UISpecLoader] loadLayout: "${layoutId}" 載入成功，開始解析 $ref 引用`);
+        // M9: specVersion forward-compat guard
+        if (typeof (spec as any).specVersion === 'number' && (spec as any).specVersion > CURRENT_SPEC_VERSION) {
+            console.warn(`[UISpecLoader] loadLayout: "${layoutId}" specVersion=${(spec as any).specVersion} 超過引擎支援上限 ${CURRENT_SPEC_VERSION}，部分功能可能無法正常運作`);
+        }
         // 遞迴處理佈局碎片引用 ($ref)
         await this._resolveLayoutRefs(spec.root);
 
@@ -250,6 +278,10 @@ export class UISpecLoader {
         );
         if (!spec) {
             throw new Error(`[UISpecLoader] loadScreen: 找不到 screen "${screenId}"，請確認 assets/resources/ui-spec/screens/${screenId}.json 是否存在`);
+        }
+        // M9: specVersion forward-compat guard
+        if (typeof (spec as any).specVersion === 'number' && (spec as any).specVersion > CURRENT_SPEC_VERSION) {
+            console.warn(`[UISpecLoader] loadScreen: "${screenId}" specVersion=${(spec as any).specVersion} 超過引擎支援上限 ${CURRENT_SPEC_VERSION}，部分功能可能無法正常運作`);
         }
         this._screenCache.set(screenId, spec);
         return spec;

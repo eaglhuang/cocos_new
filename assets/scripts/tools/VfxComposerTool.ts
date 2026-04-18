@@ -21,7 +21,7 @@
 import {
     _decorator, Component, Node, Label, Button, Color, UITransform, Widget,
     Graphics, Vec3, Vec4, assetManager, AssetManager, Material, MeshRenderer,
-    Texture2D, ImageAsset, AudioClip, gfx, utils, primitives, Layers,
+    Texture2D, ImageAsset, AudioClip, EffectAsset, gfx, utils, primitives, Layers,
     Canvas, director, Enum, Sprite, SpriteFrame, Prefab, instantiate,
     ParticleSystem, resources, EditBox, ScrollView, Mask, Layout, Animation,
     tween, Tween,
@@ -79,6 +79,69 @@ const DEFAULT_PARTICLE_PREFAB_PATHS: Record<string, string> = {
     icon_subatk: 'fx/buff/buff_debuff_3d',
     ring_sublife: 'fx/buff/buff_debuff_3d',
     icon_sublife: 'fx/buff/buff_debuff_3d',
+};
+
+interface ProceduralShaderProfile {
+    readonly effectPath: string;
+    readonly noiseTexPath?: string;
+    readonly flowMapTexPath?: string;
+    readonly foamMapTexPath?: string;
+    readonly mainColor?: Vec4;
+    readonly uvTiling?: Vec4;
+    readonly flowParams?: Vec4;
+    readonly rippleParams?: Vec4;
+    readonly worldFlowParams?: Vec4;
+    readonly riverDir?: Vec4;
+    readonly foamParams?: Vec4;
+}
+
+interface ProceduralShaderBlock extends VfxBlockDef {
+    readonly proceduralShader: string;
+}
+
+const PROCEDURAL_VFX_CATEGORIES: Array<{ id: string; label: string }> = [
+    { id: 'shaderfx', label: 'ShaderFX' },
+];
+
+const PROCEDURAL_VFX_BLOCKS: ProceduralShaderBlock[] = [
+    {
+        id: 'shader_water_ripple',
+        label: 'Water Ripple',
+        category: 'shaderfx',
+        texPath: 'shaders/tex_shader_line',
+        blendMode: 'transparent',
+        audio: 'wave',
+        scale: 2.2,
+        renderMode: 'auto',
+        space: 'both',
+        proceduralShader: 'water-ripple',
+    },
+];
+
+const ALL_VFX_CATEGORIES: Array<{ id: string; label: string }> = [
+    ...VFX_CATEGORIES,
+    ...PROCEDURAL_VFX_CATEGORIES,
+];
+
+const ALL_VFX_BLOCKS: VfxBlockDef[] = [
+    ...VFX_BLOCK_REGISTRY,
+    ...PROCEDURAL_VFX_BLOCKS,
+];
+
+const PROCEDURAL_SHADER_PROFILES: Record<string, ProceduralShaderProfile> = {
+    shader_water_ripple: {
+        effectPath: 'shaders/water-ripple',
+        noiseTexPath: 'shaders/tex_noise_perlin',
+        flowMapTexPath: 'shaders/tex_noise_perlin',
+        foamMapTexPath: 'shaders/tex_shader_line',
+        mainColor: new Vec4(0.48, 0.82, 1.0, 0.82),
+        uvTiling: new Vec4(1.25, 1.25, 0, 0),
+        flowParams: new Vec4(0.18, 0.085, 4.2, 0.08),
+        rippleParams: new Vec4(1.2, 1.0, 0.48, 0),
+        worldFlowParams: new Vec4(0.12, 0.12, 0.75, 0.7),
+        riverDir: new Vec4(0.92, 0.38, 1.05, 0.78),
+        foamParams: new Vec4(0.56, 0.2, 2.1, 0.42),
+    },
 };
 
 /**
@@ -290,10 +353,10 @@ export class VfxComposerTool extends Component {
 
         // ── Category tabs（兩行排列，確保每個 tab 有足夠點擊面積）──
         const tabRowTopY = PANEL_H / 2 - 260;
-        const tabRows = Math.ceil(VFX_CATEGORIES.length / TAB_COLS);
+        const tabRows = Math.ceil(ALL_VFX_CATEGORIES.length / TAB_COLS);
         const tabW = (PANEL_W - 10) / TAB_COLS;
         this.tabNodes = [];
-        VFX_CATEGORIES.forEach((cat, i) => {
+        ALL_VFX_CATEGORIES.forEach((cat, i) => {
             const col = i % TAB_COLS;
             const row = Math.floor(i / TAB_COLS);
             const x = -PANEL_W / 2 + 5 + tabW * col + tabW / 2;
@@ -434,7 +497,7 @@ export class VfxComposerTool extends Component {
         this.blockListContainer.removeAllChildren();
 
         const query = this.searchQuery.trim().toLowerCase();
-        const blocks = VFX_BLOCK_REGISTRY.filter(b => b.category === catId)
+        const blocks = ALL_VFX_BLOCKS.filter(b => b.category === catId)
             .filter(block => query.length === 0
                 || block.id.toLowerCase().includes(query)
                 || block.label.toLowerCase().includes(query));
@@ -644,124 +707,53 @@ export class VfxComposerTool extends Component {
         this.unscheduleAllCallbacks();
     }
 
-    // ─── World-space quad creation ────────────────────────────────────────────
-    /**
-     * 在世界空間建立一個平放的 Quad Mesh，貼上指定貼圖。
-     * Unity 對照：類似 Graphics.DrawMesh() 在世界空間某點繪製一個帶材質的 Plane Mesh。
-     *
-     * 資源生命周期說明：
-     *   - texture.addRef()  → 由此方法呼叫，讓 Cocos 知道這張貼圖正在被使用
-     *   - texture.decRef()  → 由 clearPreview() 呼叫，相當於 Unity 的 Addressables.Release()
-     *   - notifyLoaded()    → 通報 MemoryManager 記帳
-     *
-     * @param block      積木定義
-     * @param stackIndex 堆疊索引（微量 y-offset 避免 Z-fighting）
-     * @returns          追蹤頻目筆錄，null 表示載入失敗
-     */
-    private createWorldQuad(
+    private async createWorldQuad(
         block: VfxBlockDef,
         stackIndex: number
     ): Promise<PreviewEntry | null> {
         if (!this.vfxBundle) {
             console.warn(`[VfxComposerTool] vfx_core bundle 未載入，無法建立 Quad 預覽 (${block.id})`);
-            return Promise.resolve(null);
+            return null;
         }
         if (!block.texPath) {
             console.warn(`[VfxComposerTool] 積木 ${block.id} 無 texPath，無法建立 Quad 預覽`);
-            return Promise.resolve(null);
+            return null;
         }
 
-        return new Promise((resolve) => {
-            this.loadVfxTexture(block.texPath).then(texture => {
-                if (!texture) {
-                    resolve(null);
-                    return;
-                }
-                if (!this.worldPreviewRoot?.isValid) {
-                    resolve(null);
-                    return;
-                }
+        const texture = await this.loadVfxTexture(block.texPath);
+        if (!texture || !this.worldPreviewRoot?.isValid) {
+            return null;
+        }
 
-                // addRef: 宣告我們手上持有這張貼圖的引用
-                // Unity 對照： Addressables.LoadAssetAsync<Texture2D> 取得 handle
-                texture.addRef();
+        texture.addRef();
 
-                const node = new Node(`VfxQuad_${block.id}`);
-                node.parent = this.worldPreviewRoot;
-                node.layer   = Layers.Enum.DEFAULT;
+        const node = new Node(`VfxQuad_${block.id}`);
+        node.parent = this.worldPreviewRoot;
+        node.layer = Layers.Enum.DEFAULT;
+        node.setPosition(0, stackIndex * 0.005, 0);
+        node.eulerAngles = new Vec3(-90, 0, 0);
+        node.setScale(0.01, 0.01, 0.01);
 
-                // 平躺在地面上（繞 X 軸旋轉 -90 度），微量 y-offset 防止 Z-fighting
-                node.setPosition(0, stackIndex * 0.005, 0);
-                node.eulerAngles = new Vec3(-90, 0, 0);
-                // 初始縮放極小，tween pop-in 會動畫至 block.scale（見下方）
-                node.setScale(0.01, 0.01, 0.01);
+        const mr = node.addComponent(MeshRenderer);
+        mr.mesh = utils.MeshUtils.createMesh(primitives.quad());
 
-                // 建立 Quad Mesh
-                const mr = node.addComponent(MeshRenderer);
-                mr.mesh = utils.MeshUtils.createMesh(primitives.quad());
+        const mat = await this.createBlockPreviewMaterial(block, texture);
+        setMaterialSafe(mr, mat, 0);
 
-                // 建立材質
-                // 注意：builtin-unlit 需要 defines: { USE_TEXTURE: true } 才會取樣 mainTexture
-                // 否則 shader 只會輸出 mainColor（純白），這是之前「白紙」的根因。
-                const mat = new Material();
-                if (block.blendMode === 'additive') {
-                    mat.initialize({
-                        effectName: 'builtin-unlit',
-                        defines: { USE_TEXTURE: true },
-                        states: {
-                            blendState: {
-                                targets: [{
-                                    blend:        true,
-                                    blendSrc:     gfx.BlendFactor.ONE,
-                                    blendDst:     gfx.BlendFactor.ONE,
-                                    blendSrcAlpha: gfx.BlendFactor.ONE,
-                                    blendDstAlpha: gfx.BlendFactor.ZERO,
-                                }],
-                            },
-                            depthStencilState: { depthTest: false, depthWrite: false },
-                        },
-                    });
-                } else {
-                    mat.initialize({
-                        effectName: 'builtin-unlit',
-                        defines: { USE_TEXTURE: true },
-                        states: {
-                            blendState: {
-                                targets: [{
-                                    blend:    true,
-                                    blendSrc: gfx.BlendFactor.SRC_ALPHA,
-                                    blendDst: gfx.BlendFactor.ONE_MINUS_SRC_ALPHA,
-                                }],
-                            },
-                            depthStencilState: { depthTest: false, depthWrite: false },
-                        },
-                    });
-                }
+        if (!this.getProceduralShaderProfile(block.id)) {
+            const flipbookGrid = this.parseFlipbookGrid(block.texPath);
+            if (flipbookGrid) {
+                this.startFlipbookAnimation(mat, flipbookGrid.cols, flipbookGrid.rows);
+            }
+        }
 
-                mat.setProperty('mainTexture', texture);
-                mat.setProperty('mainColor', new Color(255, 255, 255, 255));
-                setMaterialSafe(mr, mat, 0);
+        const s = block.scale;
+        tween(node)
+            .to(0.25, { scale: new Vec3(s, s, s) }, { easing: 'backOut' })
+            .start();
 
-                // Quad 模式下也為 flipbook 貼圖啟用 UV 序列幀動畫
-                // 讓 _sheet / _flipbook 類貼圖在靜態 Quad 預覽時就能看到動態序列
-                const flipbookGrid = this.parseFlipbookGrid(block.texPath);
-                if (flipbookGrid) {
-                    this.startFlipbookAnimation(mat, flipbookGrid.cols, flipbookGrid.rows);
-                }
-
-                // tween pop-in：從幾乎零 → block.scale（backOut 帶輕微彈性）
-                // Unity 對照：DOTween.To(() => t.localScale, x => t.localScale = x, Vector3.one * s, 0.25f).SetEase(Ease.OutBack)
-                const s = block.scale;
-                tween(node)
-                    .to(0.25, { scale: new Vec3(s, s, s) }, { easing: 'backOut' })
-                    .start();
-
-                // 通報 MemoryManager 記帳→ 相當於 Unity Addressables handle.Completed 事件追蹤
-                services().memory.notifyLoaded(block.texPath, 'vfx_core', 'Texture2D');
-
-                resolve({ node, texture, blockPath: block.texPath });
-            });
-        });
+        services().memory.notifyLoaded(block.texPath, 'vfx_core', 'Texture2D');
+        return { node, texture, blockPath: block.texPath };
     }
 
     private async createParticlePrefabPreview(block: VfxBlockDef, stackIndex: number): Promise<PreviewEntry | null> {
@@ -787,7 +779,7 @@ export class VfxComposerTool extends Component {
         node.name = `VfxPrefab_${block.id}`;
         node.parent = this.worldPreviewRoot;
         node.layer = Layers.Enum.DEFAULT;
-    node.setPosition(0, stackIndex * 0.01, 0);
+        node.setPosition(0, stackIndex * 0.01, 0);
 
         // ArtProject 3D 粒子 prefab 自帶完整尺寸，使用 block.scale（預設 1.0）；
         // 舊有 buff prefab 維持原本的縮小比例。
@@ -989,6 +981,115 @@ export class VfxComposerTool extends Component {
                 });
             });
         });
+    }
+
+    private getProceduralShaderProfile(blockId: string): ProceduralShaderProfile | null {
+        return PROCEDURAL_SHADER_PROFILES[blockId] ?? null;
+    }
+
+    private loadVfxEffect(effectPath: string): Promise<EffectAsset | null> {
+        if (!this.vfxBundle) return Promise.resolve(null);
+        return new Promise(resolve => {
+            this.vfxBundle!.load(effectPath, EffectAsset, (err, effectAsset) => {
+                if (err || !effectAsset) {
+                    console.warn(`[VfxComposerTool] effect 載入失敗 (${effectPath}):`, err?.message);
+                    resolve(null);
+                    return;
+                }
+                resolve(effectAsset);
+            });
+        });
+    }
+
+    private createBuiltinPreviewMaterial(blendMode: 'additive' | 'transparent', texture: Texture2D): Material {
+        const mat = new Material();
+        if (blendMode === 'additive') {
+            mat.initialize({
+                effectName: 'builtin-unlit',
+                defines: { USE_TEXTURE: true },
+                states: {
+                    blendState: {
+                        targets: [{
+                            blend: true,
+                            blendSrc: gfx.BlendFactor.ONE,
+                            blendDst: gfx.BlendFactor.ONE,
+                            blendSrcAlpha: gfx.BlendFactor.ONE,
+                            blendDstAlpha: gfx.BlendFactor.ZERO,
+                        }],
+                    },
+                    depthStencilState: { depthTest: false, depthWrite: false },
+                },
+            });
+        } else {
+            mat.initialize({
+                effectName: 'builtin-unlit',
+                defines: { USE_TEXTURE: true },
+                states: {
+                    blendState: {
+                        targets: [{
+                            blend: true,
+                            blendSrc: gfx.BlendFactor.SRC_ALPHA,
+                            blendDst: gfx.BlendFactor.ONE_MINUS_SRC_ALPHA,
+                        }],
+                    },
+                    depthStencilState: { depthTest: false, depthWrite: false },
+                },
+            });
+        }
+        mat.setProperty('mainTexture', texture);
+        mat.setProperty('mainColor', new Color(255, 255, 255, 255));
+        return mat;
+    }
+
+    private async createBlockPreviewMaterial(block: VfxBlockDef, texture: Texture2D): Promise<Material> {
+        const profile = this.getProceduralShaderProfile(block.id);
+        if (!profile) {
+            return this.createBuiltinPreviewMaterial(block.blendMode, texture);
+        }
+
+        const effectAsset = await this.loadVfxEffect(profile.effectPath);
+        if (!effectAsset) {
+            return this.createBuiltinPreviewMaterial(block.blendMode, texture);
+        }
+
+        const mat = new Material();
+        const technique = block.blendMode === 'additive' ? 1 : 0;
+        mat.initialize({ effectAsset, technique });
+        mat.setProperty('mainTexture', texture);
+        if (profile.mainColor) mat.setProperty('mainColor', profile.mainColor);
+        if (profile.uvTiling) mat.setProperty('uvTiling', profile.uvTiling);
+        if (profile.flowParams) mat.setProperty('flowParams', profile.flowParams);
+        if (profile.rippleParams) mat.setProperty('rippleParams', profile.rippleParams);
+        if (profile.worldFlowParams) mat.setProperty('worldFlowParams', profile.worldFlowParams);
+        if (profile.riverDir) mat.setProperty('riverDir', profile.riverDir);
+        if (profile.foamParams) mat.setProperty('foamParams', profile.foamParams);
+
+        const noiseTex = profile.noiseTexPath
+            ? await this.loadVfxTexture(profile.noiseTexPath)
+            : null;
+        if (noiseTex) {
+            mat.setProperty('noiseTexture', noiseTex);
+        }
+
+        const flowTex = profile.flowMapTexPath
+            ? await this.loadVfxTexture(profile.flowMapTexPath)
+            : null;
+        if (flowTex) {
+            mat.setProperty('flowMap', flowTex);
+        } else if (noiseTex) {
+            mat.setProperty('flowMap', noiseTex);
+        }
+
+        const foamTex = profile.foamMapTexPath
+            ? await this.loadVfxTexture(profile.foamMapTexPath)
+            : null;
+        if (foamTex) {
+            mat.setProperty('foamMap', foamTex);
+        } else if (noiseTex) {
+            mat.setProperty('foamMap', noiseTex);
+        }
+
+        return mat;
     }
 
     private ensureAudioBundle(): Promise<AssetManager.Bundle | null> {
@@ -1423,42 +1524,14 @@ export class VfxComposerTool extends Component {
         const mr = node.addComponent(MeshRenderer);
         mr.mesh = utils.MeshUtils.createMesh(primitives.quad());
 
-        const mat = new Material();
-        if (block.blendMode === 'additive') {
-            mat.initialize({
-                effectName: 'builtin-unlit',
-                defines: { USE_TEXTURE: true },
-                states: {
-                    blendState: {
-                        targets: [{ blend: true, blendSrc: gfx.BlendFactor.ONE, blendDst: gfx.BlendFactor.ONE,
-                            blendSrcAlpha: gfx.BlendFactor.ONE, blendDstAlpha: gfx.BlendFactor.ZERO }],
-                    },
-                    depthStencilState: { depthTest: false, depthWrite: false },
-                },
-            });
-        } else {
-            mat.initialize({
-                effectName: 'builtin-unlit',
-                defines: { USE_TEXTURE: true },
-                states: {
-                    blendState: {
-                        targets: [{ blend: true, blendSrc: gfx.BlendFactor.SRC_ALPHA,
-                            blendDst: gfx.BlendFactor.ONE_MINUS_SRC_ALPHA }],
-                    },
-                    depthStencilState: { depthTest: false, depthWrite: false },
-                },
-            });
-        }
-        mat.setProperty('mainTexture', texture);
-        mat.setProperty('mainColor', new Color(255, 255, 255, 255));
+        const mat = await this.createBlockPreviewMaterial(block, texture);
         setMaterialSafe(mr, mat, 0);
 
         // 動畫選擇：flipbook 序列幀 or 重複脈衝縮放（均先做彈性 pop-in）
         // Unity 對照：backOut easing = Unity Animator 的 BounceOut curve；repeatForever = DOTween.SetLoops(-1)
-        const grid = this.parseFlipbookGrid(block.texPath);
-        if (grid) {
-            this.startFlipbookAnimation(mat, grid.cols, grid.rows);
-        }
+        const procedural = !!this.getProceduralShaderProfile(block.id);
+        const grid = procedural ? null : this.parseFlipbookGrid(block.texPath);
+        if (grid) this.startFlipbookAnimation(mat, grid.cols, grid.rows);
         const s = block.scale;
         tween(node)
             .to(0.25, { scale: new Vec3(s * 1.15, s * 1.15, s * 1.15) }, { easing: 'backOut' })

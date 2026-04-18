@@ -1,0 +1,68 @@
+{
+  "path": "docs/遊戲規格文件/討論來源/武將數據結構規範與 AI 使用.md",
+  "hash": "3936dd2a4489",
+  "paragraphCount": 7,
+  "topics": [
+    "血統",
+    "轉蛋",
+    "壽命",
+    "名將",
+    "結緣",
+    "因子",
+    "爆發",
+    "數值",
+    "治理",
+    "武將",
+    "子嗣",
+    "奧義",
+    "資源",
+    "運氣",
+    "AI",
+    "精力",
+    "武力",
+    "智力",
+    "政治",
+    "魅力"
+  ],
+  "paragraphs": [
+    {
+      "index": 0,
+      "heading": "---",
+      "preview": "**📑 《三國傳承》武將數據結構規範 (v1.0)**"
+    },
+    {
+      "index": 1,
+      "heading": "**一、 武將基礎欄位 (Basic Information)**",
+      "preview": "定義武將的身分與生命狀態。 | 欄位名稱 (Key) | 定義 (Definition) | 數據類型 | 備註 | | :---- | :---- | :---- | :---- | | UID | 唯一識別碼 | String | 如 G001 (一代), C102 (子嗣) | | Name "
+    },
+    {
+      "index": 2,
+      "heading": "---",
+      "preview": "**二、 六色屬性與因子 (Six-Color Hex-Attributes)** 定義武將的核心戰力與遺傳種子。 ### **1\\. 基礎屬性 (六色數值)** | 屬性 | 顏色標籤 | 作用 | | :---- | :---- | :---- | | **武力 (STR)** | 🔵 藍色 "
+    },
+    {
+      "index": 3,
+      "heading": "---",
+      "preview": "**三、 血統與家族樹 (Pedigree & Family Tree)** 這是計算「爆發力」的核心區塊。 | 欄位名稱 | 定義 | 數據類型 | 邏輯 | | :---- | :---- | :---- | :---- | | Father\\_ID | 父親 UID | String | 若為"
+    },
+    {
+      "index": 4,
+      "heading": "---",
+      "preview": "**四、 虛擬祖先矩陣結構 (Ancestor Matrix JSON)** 當武將為初代名將時，AI 將依照此結構填充 Ancestors\\_JSON。 JSON { \"Generation\\_1\": { \"Father\": {\"Name\": \"趙氏族長\", \"Genes\": \\[{\"Type\":"
+    },
+    {
+      "index": 5,
+      "heading": "---",
+      "preview": "**五、 邏輯與運算規則 (System Logic)** ### **1\\. 爆發力公式 (Explosive Power Formula)** $$EP \\= 50 \\+ (Matching\\\\\\_Tags \\\\times 5\\) \\+ (Outcross\\\\\\_Bonus) \\+ (Affin"
+    },
+    {
+      "index": 6,
+      "heading": "---",
+      "preview": "**六、 轉蛋與支援卡來源 (Gacha Source)** * **武將池 (Hero Pool)**：產出帶有 Generation: 1 且已補足 Ancestors\\_JSON 的名將。 * **支援卡池 (Support Pool)**：產出 Support\\_Object，包含 Skil"
+    }
+  ],
+  "stats": {
+    "charCount": 3295,
+    "wordCount": 494
+  }
+}

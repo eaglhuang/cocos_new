@@ -2,9 +2,12 @@
 export const GAME_CONFIG = {
   GRID_LANES: 5,
   GRID_DEPTH: 8,
-  INITIAL_DP: 30,
-  DP_PER_TURN: 10,
-  MAX_DP: 50,
+  /** [P2-N1] 糧草初始值（原 INITIAL_DP） */
+  INITIAL_FOOD: 30,
+  /** [P2-N1] 每回合補充糧草量（原 DP_PER_TURN） */
+  FOOD_PER_TURN: 10,
+  /** [P2-N1] 糧草上限（原 MAX_DP） */
+  MAX_FOOD: 50,
   MAX_PLAYER_DEPLOY_PER_TURN: 1,
   MAX_ENEMY_DEPLOY_PER_TURN: 1,
   TURN_LIMIT: 50,
@@ -94,10 +97,14 @@ export const TROOP_DEPLOY_COST: Record<TroopType, number> = {
 /** 每擊殺一個敵方單位，武將獲得的能量 */
 export const SP_PER_KILL = 20;
 
+export const WEAK_ATTACK_MULTIPLIER = 0.7;
+
 /** 狀態效果類型 */
 export enum StatusEffect {
   Stun = "stun",     // 暈眩：跳過移動與攻擊，並解除盾牆
-  // 未來可擴充：Burn, Freeze, Weaken...
+  Rooted = "rooted", // 定身：可攻擊但不可移動
+  Slow = "slow",     // 緩速：移動力降低 1
+  Weak = "weak",     // 虛弱：下次攻擊傷害降低
 }
 
 export const EVENT_NAMES = {
@@ -138,6 +145,26 @@ export const EVENT_NAMES = {
   /** 彈出系統通知 (Toast)：{ text: string } */
   ShowToast:            "show-toast",
 };
+
+/** 天氣條件（影響戰場修正；目前純定義 + log 用，後續由 BattleController 消費） */
+export enum Weather {
+  Clear     = "clear",
+  Rain      = "rain",
+  Fog       = "fog",
+  Snow      = "snow",
+  Sandstorm = "sandstorm",
+  Night     = "night",
+}
+
+/** 場景戰法（特殊戰場規則；目前純定義 + log 用，後續由 BattleController 消費） */
+export enum BattleTactic {
+  Normal       = "normal",
+  FireAttack   = "fire-attack",
+  FloodAttack  = "flood-attack",
+  RockSlide    = "rock-slide",
+  AmbushAttack = "ambush-attack",
+  NightRaid    = "night-raid",
+}
 
 export enum SceneName {
   Login   = "LoginScene",

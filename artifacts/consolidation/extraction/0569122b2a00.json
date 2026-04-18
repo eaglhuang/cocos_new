@@ -1,0 +1,51 @@
+{
+  "path": "docs/遊戲規格文件/討論來源/更舊的討論/AI 繪圖指令：三國冷色調戰場.md",
+  "hash": "0569122b2a00",
+  "paragraphCount": 6,
+  "topics": [
+    "兵種",
+    "戰場",
+    "數值",
+    "官職",
+    "武將",
+    "AI",
+    "美術",
+    "視覺"
+  ],
+  "paragraphs": [
+    {
+      "index": 0,
+      "heading": "---",
+      "preview": "**📜 《三國傳承》陳舊冷色調戰場：AAA 級最終繪圖指令 (AI-friendly v2.0)**"
+    },
+    {
+      "index": 1,
+      "heading": "**1\\. 核心視覺與陳舊氛圍 (Visual Style & Antique Vibe)**",
+      "preview": "* **畫質等級**：AAA 級單機遊戲品質，Unreal Engine 5 渲染，電影級調色。 * **大氣氛圍**：**極致的「陳舊歷史感」與「冷色調」**。畫面色調鎖定在青灰色（Cold Grey-Blue）與暗棕色（Sepia Brown）。環境光為 pale cold daylight，天"
+    },
+    {
+      "index": 2,
+      "heading": "**2\\. 攝影機與精確構圖比例 (Camera & Composition Constraints)**",
+      "preview": "此指令適用於 **1920 x 1080 (16:9)** 畫布規格。 * **攝影機**：固定 2.5D Isometric 視角，向下俯視角度為 **40 度**。 * **5x8 棋盤格佔位**： * 棋盤格（5 列 8 行）位於畫布中心。 * 棋盤格的寬度約佔畫布寬度的 **65%**（\\~"
+    },
+    {
+      "index": 3,
+      "heading": "**3\\. 單位比例與立牌系統 (Unit Scale & Proportion)**",
+      "preview": "* **質感**：所有單位呈現為厚度約 2cm 的高級壓克力或玉石質感「立牌」，底座為沉穩的圓形石盤/金屬盤。 * **精確比例 (Important\\!)**： * **主將規模**：雙方主將（左下張飛、右上曹操）的立牌高度（不含底座）設定為一般小兵立牌高度的 **2 倍**。嚴格禁止超過 3 倍"
+    },
+    {
+      "index": 4,
+      "heading": "**4\\. UI 佔位與質感 (AAA Screen-Space UI)**",
+      "preview": "所有 UI 採扁平化、正面對鏡頭設計，不干擾視覺。 * **A. Top Left (玩家 Profile)**：位於坐標 (x=12%, y=8%)。Icon 為書寫體「傳」，姓名標註玩家姓名「 張飛」與官職。 * **B. Top Center (戰力比較條)**：位於坐標 (x=50%, y="
+    },
+    {
+      "index": 5,
+      "heading": "**5\\. 特效與色彩濃縮 (FX & Sanitization)**",
+      "preview": "* **清理**：畫面嚴禁出現任何 A.1, B.1, C, D 輔助技術文字。 * \\*\\* Buff特效\\*\\*：棋盤格格子上懸浮綠色粒子「攻 X 2」與紅色粒子「攻 / 2」螢光文字，帶有數位擴散煙霧。 --- 主公，這份描述已經精確鎖定了所有視覺參數與氛圍要求。不論是 AI 代碼生成還是美術"
+    }
+  ],
+  "stats": {
+    "charCount": 2559,
+    "wordCount": 243
+  }
+}

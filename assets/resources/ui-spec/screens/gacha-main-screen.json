@@ -6,6 +6,18 @@
   "bundle": "lobby_ui",
   "layout": "gacha-preview-main",
   "skin": "gacha-default",
+  "contentRequirements": {
+    "schemaId": "gacha-main-content",
+    "familyId": "gacha-main",
+    "requiredFields": [
+      "poolPositioningTitle",
+      "poolPositioningBrief"
+    ]
+  },
+  "content": {
+    "source": "gacha-main-states-v1",
+    "state": "bloodline-seed"
+  },
   "validation": {
     "devices": ["phone-16-9", "phone-19_5-9"],
     "allowMissingSkin": true

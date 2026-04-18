@@ -8,4 +8,34 @@ if [ $RESULT -ne 0 ]; then
   exit $RESULT
 fi
 
+STAGED_UI_SPEC=$(git diff --cached --name-only --diff-filter=ACMR | grep '^assets/resources/ui-spec/.*\.json$')
+
+if [ -n "$STAGED_UI_SPEC" ]; then
+  echo "[pre-commit] staged ui-spec changes detected; running validate-ui-specs"
+  node tools_node/validate-ui-specs.js
+  RESULT=$?
+
+  if [ $RESULT -ne 0 ]; then
+    echo "pre-commit blocked: ui-spec validation failed."
+    exit $RESULT
+  fi
+fi
+
+# Architecture governance: run when Overview-related source files change
+STAGED_GOVERNANCE=$(git diff --cached --name-only --diff-filter=ACMR | grep -E \
+  '^assets/scripts/ui/(components/GeneralDetail|components/GeneralDetailOverviewShell|scenes/LoadingScene)\.ts$')
+
+if [ -n "$STAGED_GOVERNANCE" ]; then
+  echo "[pre-commit] GeneralDetail/LoadingScene changes detected; running architecture governance test"
+  node node_modules/ts-node/dist/bin.js --project tsconfig.test.json tests/run-ucuf-only.ts --suite governance
+  RESULT=$?
+
+  if [ $RESULT -ne 0 ]; then
+    echo "pre-commit blocked: architecture governance test failed."
+    echo "  Fix: update tests/ucuf/architectureGovernance.test.ts to match current architecture,"
+    echo "       or fix the broken invariant in the source files."
+    exit $RESULT
+  fi
+fi
+
 exit 0

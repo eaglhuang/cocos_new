@@ -15,7 +15,7 @@
  *
  * Unity 對照：相當於 UI 元件工廠（UIFactory / UIComponentBuilder helper class）
  */
-import { Node, Label, Sprite, UITransform, Widget, Layout, ScrollView, Color, Button } from 'cc';
+import { Node, Label, Sprite, UITransform, Widget, Layout, ScrollView, Color, Button, Mask } from 'cc';
 import { SolidBackground } from '../components/SolidBackground';
 import { UISkinResolver } from './UISkinResolver';
 import { UIPreviewStyleBuilder } from './UIPreviewStyleBuilder';
@@ -145,7 +145,11 @@ export class UIPreviewNodeFactory {
 
     /**
      * 建構捲動列表（ScrollView + Content + 可選 VerticalLayout）。
-     * Unity 對照：ScrollRect + Content RectTransform + VerticalLayoutGroup
+     *
+     * 層次：DataList(Sprite背景 + ScrollView) → view(Mask) → Content(Layout)
+     * 不能把 Mask 加在 DataList 節點上：buildPanel 已先掛 Sprite（UIRenderer）derivate，
+     * cc.Graphics（Mask 內部使用）與 cc.Sprite 同節點會衝突。
+     * Unity 對照：ScrollRect + viewport(Mask) + Content RectTransform + VerticalLayoutGroup
      */
     async buildScrollList(
         node: Node,
@@ -153,16 +157,31 @@ export class UIPreviewNodeFactory {
         width: number,
         height: number,
     ): Promise<void> {
+        // 背景 skin 掛在 DataList 節點本身
         await this.buildPanel(node, spec);
 
         const sv      = node.addComponent(ScrollView);
         sv.horizontal = false;
         sv.vertical   = true;
 
-        // 建立 Content 容器（Unity 對照：ScrollRect.content RectTransform）
+        // viewport 子節點：放 Mask（避免與 DataList 上的 Sprite 衝突）
+        // Unity 對照：ScrollRect.viewport RectTransform with Mask component
+        const viewPort        = new Node('view');
+        viewPort.layer        = node.layer;
+        viewPort.parent       = node;
+        const viewPortT       = viewPort.addComponent(UITransform);
+        viewPortT.setContentSize(width, height);
+        viewPortT.setAnchorPoint(0.5, 1);
+        const viewW           = viewPort.addComponent(Widget);
+        viewW.isAlignTop      = viewW.isAlignBottom = viewW.isAlignLeft = viewW.isAlignRight = true;
+        viewW.top             = viewW.bottom = viewW.left = viewW.right = 0;
+        const mask            = viewPort.addComponent(Mask);
+        mask.type             = Mask.Type.GRAPHICS_RECT;
+
+        // Content 容器在 viewport 下（Unity 對照：ScrollRect.content RectTransform）
         const content  = new Node('Content');
-        content.layer  = node.layer;
-        content.parent = node;
+        content.layer  = viewPort.layer;
+        content.parent = viewPort;
         const contentT = content.addComponent(UITransform);
         contentT.setContentSize(width, height);
         contentT.setAnchorPoint(0.5, 1);  // 對齊頂部，往下擴展
@@ -189,6 +208,13 @@ export class UIPreviewNodeFactory {
         if (!spec.skinSlot) return;
 
         const slot  = this.skinResolver.getSlot(spec.skinSlot);
+        const resolveOpacity = (rawOpacity: unknown): number | null => {
+            if (typeof rawOpacity !== 'number' || Number.isNaN(rawOpacity)) {
+                return null;
+            }
+            const opacityValue = rawOpacity <= 1 ? Math.round(rawOpacity * 255) : Math.round(rawOpacity);
+            return Math.max(0, Math.min(255, opacityValue));
+        };
 
         if (slot && (slot.kind === 'color-rect' || (slot as any).kind === 'color')) {
             await this.styleBuilder.applyBackgroundSkin(node, spec.skinSlot);
@@ -221,6 +247,10 @@ export class UIPreviewNodeFactory {
         const sprite       = node.addComponent(Sprite);
         sprite.sizeMode    = Sprite.SizeMode.CUSTOM;
         sprite.spriteFrame = frame;
+        const alpha = resolveOpacity((slot as any)?.opacity ?? (slot as any)?.alpha);
+        if (alpha !== null) {
+            sprite.color = new Color(sprite.color.r, sprite.color.g, sprite.color.b, alpha);
+        }
         if (slot?.kind === 'sprite-frame') {
             this.styleBuilder.applySpriteSkin(sprite, slot.spriteType, slot.border);
         }

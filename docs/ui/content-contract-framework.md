@@ -1,3 +1,4 @@
+<!-- doc_id: doc_ui_0039 -->
 # Content Contract Framework — Phase F 架構草案
 
 **版本**: v1.0  
@@ -238,10 +239,10 @@ protected async onReady(binder: UITemplateBinder): Promise<void> {
 
 ## 7. 相關文件
 
-- [docs/keep.md §20](../keep.md) — Content Contract 強制規則
-- [docs/keep.md §21](../keep.md) — Screen → Component Scaffold 流程
+- [docs/keep.md (doc_index_0011) §20](../keep.md (doc_index_0011)) (doc_index_0011) — Content Contract 強制規則
+- [docs/keep.md (doc_index_0011) §21](../keep.md (doc_index_0011)) (doc_index_0011) — Screen → Component Scaffold 流程
 - [assets/scripts/ui/core/UISpecTypes.ts](../../assets/scripts/ui/core/UISpecTypes.ts) — ContentContractRef 介面
 - [assets/scripts/ui/core/UIContentBinder.ts](../../assets/scripts/ui/core/UIContentBinder.ts) — ContentBinder 實作
 - [assets/resources/ui-spec/contracts/](../../assets/resources/ui-spec/contracts/) — Schema 定義
-- [docs/agent-briefs/tasks/UI-2-0080.md](../agent-briefs/tasks/UI-2-0080.md) — 實作任務
-- [docs/agent-briefs/tasks/UI-2-0081.md](../agent-briefs/tasks/UI-2-0081.md) — Scaffold 任務
+- [docs/agent-briefs/tasks/UI-2-0080.md (doc_task_0103)](../agent-briefs/tasks/UI-2-0080.md (doc_task_0103)) (doc_task_0103) — 實作任務
+- [docs/agent-briefs/tasks/UI-2-0081.md (doc_task_0104)](../agent-briefs/tasks/UI-2-0081.md (doc_task_0104)) (doc_task_0104) — Scaffold 任務

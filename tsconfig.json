@@ -12,6 +12,7 @@
   "include": [
     "assets/**/*.ts",
     "extensions/**/*.ts",
+    "shared/**/*.ts",
     "./@cocos/creator-types/engine.d.ts",
     "./@cocos/creator-types/editor.d.ts"
   ]

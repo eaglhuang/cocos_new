@@ -45,3 +45,6 @@ artifacts/_view_image/
 #//////////////////////////
 tests/*.meta
 tools/**/*.meta
+
+# Agent task locks
+.task-locks/

@@ -1,9 +1,10 @@
+<!-- doc_id: doc_ui_0035 -->
 # UI 品質落地 To-Do 追蹤計畫
 
 > **目的**：追蹤「UI 參考圖品質分析」中所有 task 的分配、狀態與依賴關係。任何 Agent 或開發者在開始 UI 品質相關工作前，必須先讀取此文件以了解當前進度。
 >
-> **品質目標文件**：`docs/UI參考圖品質分析.md`
-> **共識準則**：`docs/keep.md`
+> **品質目標文件**：`docs/UI參考圖品質分析.md (doc_ui_0051)` (doc_ui_0051)
+> **共識準則**：`docs/keep.md (doc_index_0011)` (doc_index_0011)
 >
 > **最後更新**：2026-04-02（Agent2 已將 `日常人物頁 v2` 與 `血脈命鏡過場 v2` 正式同步回系統規格與 UI 規格書；同步補開 `UI-2-0055` Loading tips 文案池與 `UI-2-0056` 未持有武將標記規則追蹤單，等待 v3 視覺 proof 後續收斂）
 
@@ -11,7 +12,7 @@
 
 ## 使用規則
 
-1. **Agent 啟動 3 必讀**：`docs/keep.md` → `docs/ui-quality-todo.md`（本檔）→ `docs/UI參考圖品質分析.md`
+1. **Agent 啟動 3 必讀**：`docs/keep.md (doc_index_0011)` (doc_index_0011) → `docs/ui-quality-todo.md (doc_ui_0035)` (doc_ui_0035)（本檔）→ `docs/UI參考圖品質分析.md (doc_ui_0051)` (doc_ui_0051)
 2. **開工前**：確認你的 task 的上游依賴全部 `done`；把 status 改為 `in-progress`
 3. **完工後**：把 status 改為 `done`，填入 `completed-date`，並在 notes 附上產出路徑或 PR 號
 4. **被中斷**：新 Agent 應接手所有 `in-progress` 項目；若產出不完整則重做
@@ -25,7 +26,7 @@
 |---|---|---|
 | `Agent2` | 視覺資產 Agent | 負責 sprite 生成、PowerShell 渲染、preview 截圖、品質目檢 |
 | `Agent1` | 架構接線 Agent | 負責 skin/layout JSON 接線、design token、UIPreviewBuilder 程式、契約驗證 |
-| `human` | 開發者 / 美術 | 最終 QA 審核、keep.md 規範變更確認、Cocos Editor 操作 |
+| `human` | 開發者 / 美術 | 最終 QA 審核、keep.md (doc_index_0011) 規範變更確認、Cocos Editor 操作 |
 | `待分配` | — | 尚未指派 |
 
 ---
@@ -37,7 +38,7 @@
 | P0-1 | nav.ink preview → runtime sprite 搬遷 | `Agent2` | done | — | 🔴 最高 | completed 2026-03-31. `nav_ink/btn_primary_normal.png \| B48C8CB2E748A509358E37CBF7D24BD9876AB15F507DEC3C3E4E27EC6985AF00 \| 6399B`, `btn_primary_pressed.png \| CCB50CDD4E2FA876DEA0CE0BE03D0B566BB8625E7CB690599829A1405267A4F7 \| 10732B`, `btn_primary_disabled.png \| 0685F6E4389205AF2773EE98E3ED7F9B761F4170A4AABCA154E5182F5944D880 \| 6407B`. SHA256 src=dst all OK. |
 | P0-2 | nav.ink 接入 lobby-main-default.json | `Agent1` | done | P0-1 | 🔴 最高 | 2026-03-31 完成；`lobby-main-default.json` 新增 `ui-common-ink.nav.primary`，並將 `lobby.nav.btn` 改為 `nav_ink` button-skin，border=`[20,20,20,20]` |
 | P0-3 | paper.utility preview → runtime sprite 搬遷 | `Agent2` | done | — | 🔴 最高 | completed 2026-03-31. `paper_utility/btn_primary_normal.png \| EA3E0BF59CCF3C095F397B877A4EC72FF464D0AD20C7C6249E174A5E50A60302 \| 7999B`, `btn_primary_pressed.png \| F2275DD45682D576FF0CB2252AFF7C979C72DCE3FFDF1D39EF27BCEB30EE5A93 \| 7491B`, `btn_primary_disabled.png \| 7A934F552A7007C4ACE1B5DF81D767DE073A31FD3CC727F5CE68D609E0C7EDDB \| 5126B`. SHA256 src=dst all OK. |
-| P0-4 | paper.utility 接入 duel-challenge（reject/utility） | `Agent1` | done | P0-3 | 🔴 最高 | 2026-03-31 完成；`duel-challenge-default.json` 新增 `ui-common-paper.utility.primary`，並將 `duel.btn.reject` 改為 `paper_utility` button-skin，border=`[20,20,20,20]`（對應 [UI-2-0002](agent-briefs/tasks/UI-2-0002.md)） |
+| P0-4 | paper.utility 接入 duel-challenge（reject/utility） | `Agent1` | done | P0-3 | 🔴 最高 | 2026-03-31 完成；`duel-challenge-default.json` 新增 `ui-common-paper.utility.primary`，並將 `duel.btn.reject` 改為 `paper_utility` button-skin，border=`[20,20,20,20]`（對應 [UI-2-0002](agent-briefs/tasks/UI-2-0002.md (doc_task_0026)) (doc_task_0026)） |
 | P0-5 | warning.destructive preview → runtime sprite | `Agent2` | done | — | 🟡 中 | completed 2026-03-31. `warning/btn_primary_normal.png \| 3A0BCC158E1EF15CB957E916C93727533648C38D0AAF7023D9E8F26FD8440909 \| 9123B`, `btn_primary_pressed.png \| 08F086A7FC341C4CFCA82000D94FE3F758CBE8496A192EA4A5CF9AE7E32C0317 \| 10177B`, `btn_primary_disabled.png \| 070A2BCFFE81F250763F807C0AB6E7FFE466DC7B5E9819935DF8723B36F3A6B4 \| 6839B`. SHA256 src=dst all OK. |
 | P0-6 | 全 button sprite border 20px 批量驗證 | `Agent1` | done | P0-1,P0-3,P0-5 | 🟡 中 | 2026-03-31 完成；新增 `tools_node/validate-button-family-borders.js` 並接入 acceptance，自動檢查 shared button family 的 `border=[20,20,20,20]` 與按鈕高度相容性 |
 
@@ -72,7 +73,7 @@
 | B-1 | ui-design-tokens.json 新增 parchment 系列 | `Agent1` | done | — | 🟡 中 | 2026-03-31 完成；已新增 `surfaceParchmentFill` / `textOnParchment` / `dividerOnParchment` / `shadowDefault` 至 `assets/resources/ui-spec/ui-design-tokens.json` |
 | B-2 | 所有 skin 加入 *.shadow slot | `Agent1` | done | A-3 | 🟡 中 | 2026-03-31 完成；已拆成 `UI-2-0013 ~ UI-2-0015` 三波 rollout，19 個 skin 的主容器 shadow slot 全數補齊 |
 | B-3 | label-style 淺底專用變體 | `Agent1` | done | B-1 | 🟡 中 | 2026-03-31 完成；新增 `bodyOnParchment` / `labelOnParchment`，並讓 `UISkinResolver` 可讀取 `label-style.style` typography preset，預設 `outlineWidth=0` |
-| UI-2-0017 | 修補 general-detail 缺失 5 個 bleed slot | `Agent1` | done | UI-1-0012 | 🟡 中 | 2026-03-31 驗證確認 `general-detail-default.json` 已補齊 5 個 bleed slot；`validate-skin-contracts.js` 與 acceptance 皆通過，29/29 PASS（對應 [UI-2-0017](agent-briefs/tasks/UI-2-0017.md)）. |
+| UI-2-0017 | 修補 general-detail 缺失 5 個 bleed slot | `Agent1` | done | UI-1-0012 | 🟡 中 | 2026-03-31 驗證確認 `general-detail-default.json` 已補齊 5 個 bleed slot；`validate-skin-contracts.js` 與 acceptance 皆通過，29/29 PASS（對應 [UI-2-0017](agent-briefs/tasks/UI-2-0017.md (doc_task_0041)) (doc_task_0041)）. |
 | B-4 | item-cell 標準 skin fragment | `Agent1` | done | A-2 | 🟡 中 | 2026-03-31 完成；`item-cell-default.json` v2：修正 sprite 路徑、新增 7 階 rarity.*.border + rarity.default.bg；R2/R5 合規，acceptance 全綠 |
 | B-5 | common-parchment skin fragment | `Agent1` | done | A-1, B-1 | 🟡 中 | 2026-03-31 完成；`common-parchment-default.json` v2：parchment frame/bleed/noise 路徑修正、新增 text.primary/secondary/accent (outlineWidth=0)；R2/R4 合規，acceptance 全綠 |
 | UI-2-0019 | 對齊 D-2 的家族目標（paper.utility vs common-parchment） | `Agent1` | done | B-5, UI-2-0014 | 🟡 中 | 2026-03-31 完成；正式將 D-2 收斂為 `common-parchment / light-surface carrier consistency`，不再以 `paper.utility` 當作 shop/gacha 的正式驗收對象 |
@@ -151,12 +152,12 @@ UI-2-0014 ──→ UI-2-0019 ──→ UI-2-0020 ──→ D-2
 | 2026-03-31 | Agent1 | 初始建立；23 個 task 全部 not-started |
 | 2026-03-31 | Agent2 | 完成 P0-1/P0-3/P0-5（sprite 搬遷）、A-1（parchment）、A-2（item-cell）、A-3（shadow）、A-5（noise）；共 23 個檔案，全部 SHA256 驗收通過 |
 | 2026-03-31 | Agent1 | 完成 B-1 / B-3 / C-3；P0-2 / P0-4 仍待 Agent2 將 nav.ink / paper.utility runtime sprite 搬入正式路徑後接線 |
-| 2026-03-31 | Agent1 | 補開 UI-2-0006 ~ UI-2-0011 任務卡，並同步 `ui-quality-todo.json` / `CheckList.md` / `tasks_index.md`，修正 P0-6 與 legacy card 的對應 |
+| 2026-03-31 | Agent1 | 補開 UI-2-0006 ~ UI-2-0011 任務卡，並同步 `ui-quality-todo.json` / `CheckList.md` (doc_ai_0022) / `tasks_index.md` (doc_task_0002)，修正 P0-6 與 legacy card 的對應 |
 | 2026-03-31 | Agent1 | 完成 UI-2-0001 / UI-2-0002；`lobby-main-default` 接上 `nav_ink`，`duel-challenge-default` 的 reject 按鈕接上 `paper_utility`，並同步所有追蹤文件 |
 | 2026-03-31 | Agent1 | 完成 UI-2-0006；新增 shared button family border 驗證腳本並接入 acceptance，P0 系列目前僅剩視覺驗收項 |
 | 2026-03-31 | Agent1 | 依 `D-3` 混搭驗收缺口補開 `UI-2-0012`，追蹤 `duel.btn.accept -> ui-common-metal.equipment.primary` 的後續接線 |
 | 2026-03-31 | Agent1 | 完成 UI-2-0012；`duel.btn.accept` 已接上 `ui-common-metal.equipment.primary`，`D-3` 所需的 mixed-family 接線前置已齊備 |
-| 2026-03-31 | Agent2 | 補開 `UI-1-0014 ~ UI-1-0016` 三張 D 階段視覺 QA 任務卡，並建立 `docs/agent-briefs/agent2-visual-qa-playbook.md` 作為 Agent2 共用截圖與評分模板；`D-1` 進入 in-progress |
+| 2026-03-31 | Agent2 | 補開 `UI-1-0014 ~ UI-1-0016` 三張 D 階段視覺 QA 任務卡，並建立 `docs/agent-briefs/agent2-visual-qa-playbook.md (doc_ai_0021)` (doc_ai_0021) 作為 Agent2 共用截圖與評分模板；`D-1` 進入 in-progress |
 | 2026-03-31 | Agent1 | 將 `B-2 / UI-2-0007` 轉為 umbrella task，拆成 `UI-2-0013 ~ UI-2-0015` 三波 shadow rollout 子卡，先同步 manifest 與 Agent1 索引 |
 | 2026-03-31 | Agent1 | 完成 `UI-2-0013`；於 `lobby-main-default`、`duel-challenge-default`、`result-popup-default`、`network-status-default`、`toast-message-default` 補上首波 shadow slot，並通過 acceptance |
 | 2026-03-31 | Agent1 | 完成 `UI-2-0014`；於 `general-detail-default`、`general-list-default`、`general-portrait-default`、`general-quickview-default`、`support-card-default`、`shop-main-default`、`gacha-default` 補上第二波 shadow slot，並通過 acceptance |
@@ -213,7 +214,7 @@ UI-2-0014 ──→ UI-2-0019 ──→ UI-2-0020 ──→ D-2
 | 2026-03-31 | Agent1 | 初始建立；23 個 task 全部 not-started |
 | 2026-03-31 | Agent2 | 完成 P0-1/P0-3/P0-5（sprite 搬遷）、A-1（parchment）、A-2（item-cell）、A-3（shadow）、A-5（noise）；共 23 個檔案，全部 SHA256 驗收通過 |
 | 2026-03-31 | Agent1 | 完成 B-1 / B-3 / C-3；P0-2 / P0-4 仍待 Agent2 將 nav.ink / paper.utility runtime sprite 搬入正式路徑後接線 |
-| 2026-03-31 | Agent1 | 補開 UI-2-0006 ~ UI-2-0011 任務卡，並同步 `ui-quality-todo.json` / `CheckList.md` / `tasks_index.md`，修正 P0-6 與 legacy card 的對應 |
+| 2026-03-31 | Agent1 | 補開 UI-2-0006 ~ UI-2-0011 任務卡，並同步 `ui-quality-todo.json` / `CheckList.md` (doc_ai_0022) / `tasks_index.md` (doc_task_0002)，修正 P0-6 與 legacy card 的對應 |
 | 2026-03-31 | Agent1 | 完成 UI-2-0001 / UI-2-0002；`lobby-main-default` 接上 `nav_ink`，`duel-challenge-default` 的 reject 按鈕接上 `paper_utility`，並同步所有追蹤文件 |
 | 2026-03-31 | Agent1 | 完成 UI-2-0006；新增 shared button family border 驗證腳本並接入 acceptance，P0 系列目前僅剩視覺驗收項 |
 | 2026-03-31 | Agent1 | 依 `D-3` 混搭驗收缺口補開 `UI-2-0012`，追蹤 `duel.btn.accept -> ui-common-metal.equipment.primary` 的後續接線 |
@@ -236,7 +237,7 @@ UI-2-0014 ──→ UI-2-0019 ──→ UI-2-0020 ──→ D-2
 | 2026-04-01 | Agent2 | 重新盤點 `docs/UI品質參考圖/` 全量截圖，補開 `UI-2-0035` 建立 20-icon baseline 與 icon family 條件規則庫，作為後續 BattleScene icon 自動生成與選型策略依據。 |
 | 2026-04-01 | Agent2 | 延續 `UI-2-0035`，把 F1~F8 icon family 正式對應到 `UI-2-0027 ~ UI-2-0032` 的量產需求單，以及現行 `battle-hud`、`battle-log`、`tiger-tally`、`gacha`、`support-card` 等 ui-spec 契約，補出 `artifacts/ui-qa/UI-2-0035/icon-family-assignment.md` 作為後續量產與 QA 的依據。 |
 | 2026-04-01 | Agent2 | 延續 `UI-2-0032`，完成 `artifacts/ui-qa/UI-2-0032/agent1-generation-brief.md`，將 v2 refinement 收斂為可直接交給 Agent1 的生圖規格；同步新開 `UI-2-0036` 作為 BattleScene icon v2 候選稿執行卡。 |
-| 2026-04-01 | Agent2 | 盤點新增參考圖 `S13 ~ S28` 後，補開 `UI-2-0037`，將研究擴充到非 icon 的量產圖 family，新增 portrait、diorama card、建築節點、任務插畫卡、獎勵容器、道具包與服裝 torso 等規則，並回寫到 `docs/UI參考圖品質分析.md` 與 `artifacts/ui-qa/UI-2-0037/`。 |
+| 2026-04-01 | Agent2 | 盤點新增參考圖 `S13 ~ S28` 後，補開 `UI-2-0037`，將研究擴充到非 icon 的量產圖 family，新增 portrait、diorama card、建築節點、任務插畫卡、獎勵容器、道具包與服裝 torso 等規則，並回寫到 `docs/UI參考圖品質分析.md (doc_ui_0051)` (doc_ui_0051) 與 `artifacts/ui-qa/UI-2-0037/`。 |
 | 2026-04-01 | Agent2 | 完成 `UI-2-0038` 的 A2 HUD 頭像裁片規格，建立 `artifacts/ui-qa/UI-2-0038/` 參考素材、`portrait-family-spec.md`、`agent1-generation-brief.md`，並補開 `UI-2-0043` 交給 Agent1 產出 BattleHUD portrait crop proof。 |
 | 2026-04-01 | Agent2 | 依 `LobbyMain` 與 `general-detail / general-quickview / general-portrait` 的 ui-spec slot 盤點結果，補開 `UI-2-0044`（Lobby icon 生圖卡）與 `UI-2-0045`（武將介紹 / QuickView icon 生圖卡），讓 Lobby 與武將介紹 icon 正式脫離 BattleScene icon 任務單獨追蹤。 |
 

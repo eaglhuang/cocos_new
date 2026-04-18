@@ -2,82 +2,73 @@
   "$schema": "../../schemas/family-map.schema.json",
   "screenId": "GeneralDetailOverview",
   "templateFamilyCandidate": "detail-split",
-  "sourceProof": "artifacts/ui-qa/UI-2-0094/runtime-r19-header-final-weight-tune/GeneralDetailOverview.png",
-  "generatedAt": "2026-04-08T03:27:57.025Z",
+  "sourceProof": "docs/UI品質參考圖/人物UI參考.png",
+  "generatedAt": "2026-04-10T14:40:01.299Z",
   "zoneFamilyMap": [
     {
       "zone": "portrait-stage",
       "family": "portrait-stage",
-      "recipe": "ink-stage-standard",
+      "recipe": "clean-cutout-stage",
       "structureOwner": "UITemplateResolver+widget-compose",
       "skinOwner": "UISkinResolver",
       "contentOwner": "contentContract",
       "generationNeed": "reuse-only",
       "widgetRefs": [
-        "portrait-viewport",
-        "portrait-shadow",
-        "portrait-glow"
+        "portrait-viewport"
       ],
       "templateRefs": [
         "detail-split"
       ],
-      "sourceProofFamily": "panel-light",
+      "sourceProofFamily": "portrait-stage",
       "sourceProofRecipe": null,
-      "notes": "角色立繪、wash、frame 與 backdrop 的主舞台"
+      "notes": "新版主舞台已移除人物 behind layers，只保留 cutout 立繪與背景氛圍"
     },
     {
-      "zone": "header-plaque",
-      "family": "header-rarity-plaque",
-      "recipe": "jade-parchment-light",
+      "zone": "identity-hint",
+      "family": "minimal-identity-tag",
+      "recipe": "light-ink-chip",
       "structureOwner": "UITemplateResolver+widget-compose",
       "skinOwner": "UISkinResolver",
       "contentOwner": "contentContract",
-      "generationNeed": "generate-partial-asset",
+      "generationNeed": "param-tune",
       "widgetRefs": [
-        "header-title-block",
+        "overview-state-hint"
+      ],
+      "templateRefs": [
+        "detail-split"
+      ],
+      "sourceProofFamily": "minimal-tag",
+      "sourceProofRecipe": null,
+      "notes": "左上身份識別帶由 chip、vertical rule 與雙行 mode 文案組成，作為人物區的明確身份錨點"
+    },
+    {
+      "zone": "info-spine-header",
+      "family": "header-rarity-plaque",
+      "recipe": "lifted-minimal-band",
+      "structureOwner": "UITemplateResolver+widget-compose",
+      "skinOwner": "UISkinResolver",
+      "contentOwner": "contentContract",
+      "generationNeed": "param-tune",
+      "widgetRefs": [
+        "header-band",
+        "header-row",
         "rarity-badge-dock"
       ],
       "templateRefs": [
         "detail-split"
       ],
-      "assetTargets": [
-        {
-          "slot": "capLeft",
-          "taskIdSuffix": "header-cap-left",
-          "label": "Header 左端 ornament",
-          "outputName": "header_cap_left",
-          "postProcess": {
-            "allowFadeSide": "right",
-            "fitPadding": 12,
-            "spriteType": "sliced",
-            "border": [20, 12, 20, 12]
-          }
-        },
-        {
-          "slot": "capRight",
-          "taskIdSuffix": "header-cap-right",
-          "label": "Header 右端 ornament",
-          "outputName": "header_cap_right",
-          "postProcess": {
-            "allowFadeSide": "left",
-            "fitPadding": 12,
-            "spriteType": "sliced",
-            "border": [20, 12, 20, 12]
-          }
-        }
-      ],
-      "sourceProofFamily": "parchment",
-      "sourceProofRecipe": "parchment-v1",
-      "notes": "角色姓名、稀有度與 jade-parchment 牌匾語言"
+      "sourceProofFamily": "glass-header-band",
+      "sourceProofRecipe": null,
+      "notes": "右上抬高 header 段，朝參考圖的高密資訊區靠攏"
     },
     {
-      "zone": "summary-cards",
-      "family": "summary-card-grid",
-      "recipe": "parchment-summary-standard",
+      "zone": "summary-spine",
+      "family": "parchment-summary-grid",
+      "recipe": "framed-summary-row",
       "structureOwner": "UITemplateResolver+widget-compose",
       "skinOwner": "UISkinResolver",
       "contentOwner": "contentContract",
-      "generationNeed": "reuse-only",
+      "generationNeed": "param-tune",
       "widgetRefs": [
         "summary-card",
         "metric-card"
@@ -85,37 +76,38 @@
       "templateRefs": [
         "detail-split"
       ],
-      "sourceProofFamily": "parchment",
+      "sourceProofFamily": "framed-parchment-row",
       "sourceProofRecipe": null,
-      "notes": "核心屬性、定位、特質三欄卡片"
+      "notes": "摘要卡回到 parchment module family：以 panel fill 承接卡面、title strip 與 value plate 維持同一塊板面語法"
     },
     {
-      "zone": "bloodline-summary",
-      "family": "parchment-body-card",
-      "recipe": "bloodline-summary-standard",
+      "zone": "bloodline-spine",
+      "family": "parchment-dossier-board",
+      "recipe": "seal-document-split-board",
       "structureOwner": "UITemplateResolver+widget-compose",
       "skinOwner": "UISkinResolver",
       "contentOwner": "contentContract",
-      "generationNeed": "reuse-only",
+      "generationNeed": "param-tune",
       "widgetRefs": [
         "body-card",
-        "awakening-bar"
+        "awakening-bar",
+        "body-divider"
       ],
       "templateRefs": [
         "detail-split"
       ],
-      "sourceProofFamily": "parchment",
+      "sourceProofFamily": "framed-parchment-board",
       "sourceProofRecipe": null,
-      "notes": "血脈標題、進度、內文與摘要欄位"
+      "notes": "血脈區改成左 seal / 右 document 的 dossier 模組，主體由 parchment fill + frame 承接，不再維持透明脊柱語法"
     },
     {
-      "zone": "crest-medallion",
+      "zone": "crest-pod",
       "family": "crest-medallion",
       "recipe": "jade-ornate-medallion",
       "structureOwner": "UITemplateResolver+widget-compose",
       "skinOwner": "UISkinResolver",
       "contentOwner": "contentContract",
-      "generationNeed": "generate-partial-asset",
+      "generationNeed": "reuse-only",
       "widgetRefs": [
         "crest-carrier",
         "crest-state-label"
@@ -123,42 +115,48 @@
       "templateRefs": [
         "detail-split"
       ],
-      "assetTargets": [
-        {
-          "slot": "crestFace",
-          "taskIdSuffix": "crest-face",
-          "label": "命紋 face",
-          "outputName": "crest_face"
-        },
-        {
-          "slot": "crestRing",
-          "taskIdSuffix": "crest-ring",
-          "label": "命紋 ring",
-          "outputName": "crest_ring"
-        }
-      ],
-      "sourceProofFamily": "parchment",
+      "sourceProofFamily": "crest-medallion",
       "sourceProofRecipe": null,
-      "notes": "右側 socket 與 face/ring 命紋視覺承載區"
+      "notes": "命紋改成血脈模組左側的 seal bay，作為 family identity medallion，而不是右段獨立 pod"
     },
     {
-      "zone": "story-strip",
-      "family": "story-strip-rail",
-      "recipe": "story-strip-standard",
+      "zone": "nav-right-rail",
+      "family": "circle-tab-cluster",
+      "recipe": "right-edge-vertical-circles",
+      "structureOwner": "UITemplateResolver+widget-compose",
+      "skinOwner": "UISkinResolver",
+      "contentOwner": "contentContract",
+      "generationNeed": "param-tune",
+      "widgetRefs": [
+        "circle-tab",
+        "tab-glyph",
+        "tab-badge",
+        "active-dot"
+      ],
+      "templateRefs": [
+        "detail-split"
+      ],
+      "sourceProofFamily": "circle-tab-cluster",
+      "sourceProofRecipe": null,
+      "notes": "右緣垂直 6 顆圓形 tabs，升級成 glyph + badge + 小標三層結構，取代舊長條 rail"
+    },
+    {
+      "zone": "nav-top-back",
+      "family": "circle-back-button",
+      "recipe": "top-right-single-circle",
       "structureOwner": "UITemplateResolver+widget-compose",
       "skinOwner": "UISkinResolver",
       "contentOwner": "contentContract",
       "generationNeed": "reuse-only",
       "widgetRefs": [
-        "story-cell",
-        "story-caption"
+        "back-circle-button"
       ],
       "templateRefs": [
         "detail-split"
       ],
-      "sourceProofFamily": "parchment",
+      "sourceProofFamily": "circle-back-button",
       "sourceProofRecipe": null,
-      "notes": "六格故事條與 caption rail"
+      "notes": "右上返回圓鈕，獨立於 tabs 與資訊脊柱之外"
     }
   ]
 }

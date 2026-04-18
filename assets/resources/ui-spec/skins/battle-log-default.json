@@ -9,13 +9,6 @@
       "color": "surfaceInkBlue",
       "alpha": 156
     },
-    "log.root.shadow": {
-      "kind": "sprite-frame",
-      "path": "sprites/ui_families/common/shadow/shadow_01",
-      "spriteType": "sliced",
-      "border": [20, 20, 20, 20],
-      "allowAutoAtlas": true
-    },
     "log.header.bg": {
       "kind": "color",
       "color": "backgroundNavyAlt",

@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
   "schemaVersion": 1,
-  "updatedAt": "2026-04-08",
+  "updatedAt": "2026-04-15T06:37:03.453Z",
   "data": [
     {
       "id": "cao-cao",
@@ -55,7 +55,56 @@
         "WINDY": "B",
         "NIGHT": "B",
         "THUNDER": "C"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        },
+        {
+          "slotId": "slot-2",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": [
+        {
+          "slot": 1,
+          "ultimateId": "ult-cao-cao-1",
+          "unlockReincarnation": 1,
+          "vitalityCostPct": 0.05,
+          "isExclusive": true
+        },
+        {
+          "slot": 2,
+          "ultimateId": "ult-cao-cao-2",
+          "unlockReincarnation": 2,
+          "vitalityCostPct": 0.06,
+          "isExclusive": true
+        },
+        {
+          "slot": 3,
+          "ultimateId": "ult-cao-cao-3",
+          "unlockReincarnation": 3,
+          "vitalityCostPct": 0.07,
+          "isExclusive": true
+        },
+        {
+          "slot": 4,
+          "ultimateId": "ult-cao-cao-4",
+          "unlockReincarnation": 4,
+          "vitalityCostPct": 0.08,
+          "isExclusive": true
+        },
+        {
+          "slot": 5,
+          "ultimateId": "ult-cao-cao-5",
+          "unlockReincarnation": 5,
+          "vitalityCostPct": 0.1,
+          "isExclusive": true
+        }
+      ]
     },
     {
       "id": "liu-bei",
@@ -73,6 +122,8 @@
       "rarityTier": "legendary",
       "characterCategory": "titled",
       "epRating": "S",
+      "skillId": "liu-bei-rally",
+      "battlePrimarySkillId": "liu-bei-rally",
       "ancestor_chain": [
         "VIRT_LIU_BEI_01",
         "VIRT_LIU_BEI_02",
@@ -112,7 +163,56 @@
         "THUNDER": "C",
         "FOG": "C",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        },
+        {
+          "slotId": "slot-2",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": [
+        {
+          "slot": 1,
+          "ultimateId": "ult-liu-bei-1",
+          "unlockReincarnation": 1,
+          "vitalityCostPct": 0.05,
+          "isExclusive": true
+        },
+        {
+          "slot": 2,
+          "ultimateId": "ult-liu-bei-2",
+          "unlockReincarnation": 2,
+          "vitalityCostPct": 0.06,
+          "isExclusive": true
+        },
+        {
+          "slot": 3,
+          "ultimateId": "ult-liu-bei-3",
+          "unlockReincarnation": 3,
+          "vitalityCostPct": 0.07,
+          "isExclusive": true
+        },
+        {
+          "slot": 4,
+          "ultimateId": "ult-liu-bei-4",
+          "unlockReincarnation": 4,
+          "vitalityCostPct": 0.08,
+          "isExclusive": true
+        },
+        {
+          "slot": 5,
+          "ultimateId": "ult-liu-bei-5",
+          "unlockReincarnation": 5,
+          "vitalityCostPct": 0.1,
+          "isExclusive": true
+        }
+      ]
     },
     {
       "id": "sun-quan",
@@ -130,8 +230,10 @@
       "rarityTier": "legendary",
       "characterCategory": "titled",
       "epRating": "S",
+      "skillId": "sun-quan-tide",
+      "battlePrimarySkillId": "sun-quan-tide",
       "ancestor_chain": [
-        "VIRT_SUN_QUAN_01",
+        "sun-jian",
         "VIRT_SUN_QUAN_02",
         "VIRT_SUN_QUAN_03",
         "VIRT_SUN_QUAN_04",
@@ -169,7 +271,56 @@
         "FOG": "C",
         "THUNDER": "C",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        },
+        {
+          "slotId": "slot-2",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": [
+        {
+          "slot": 1,
+          "ultimateId": "ult-sun-quan-1",
+          "unlockReincarnation": 1,
+          "vitalityCostPct": 0.05,
+          "isExclusive": true
+        },
+        {
+          "slot": 2,
+          "ultimateId": "ult-sun-quan-2",
+          "unlockReincarnation": 2,
+          "vitalityCostPct": 0.06,
+          "isExclusive": true
+        },
+        {
+          "slot": 3,
+          "ultimateId": "ult-sun-quan-3",
+          "unlockReincarnation": 3,
+          "vitalityCostPct": 0.07,
+          "isExclusive": true
+        },
+        {
+          "slot": 4,
+          "ultimateId": "ult-sun-quan-4",
+          "unlockReincarnation": 4,
+          "vitalityCostPct": 0.08,
+          "isExclusive": true
+        },
+        {
+          "slot": 5,
+          "ultimateId": "ult-sun-quan-5",
+          "unlockReincarnation": 5,
+          "vitalityCostPct": 0.1,
+          "isExclusive": true
+        }
+      ]
     },
     {
       "id": "zhuge-liang",
@@ -187,6 +338,8 @@
       "rarityTier": "legendary",
       "characterCategory": "famed",
       "epRating": "S",
+      "skillId": "zhuge-liang-storm",
+      "battlePrimarySkillId": "zhuge-liang-storm",
       "ancestor_chain": [
         "VIRT_ZHUGE_LIANG_01",
         "VIRT_ZHUGE_LIANG_02",
@@ -226,7 +379,56 @@
         "SUNNY": "C",
         "THUNDER": "C",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        },
+        {
+          "slotId": "slot-2",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": [
+        {
+          "slot": 1,
+          "ultimateId": "ult-zhuge-liang-1",
+          "unlockReincarnation": 1,
+          "vitalityCostPct": 0.05,
+          "isExclusive": true
+        },
+        {
+          "slot": 2,
+          "ultimateId": "ult-zhuge-liang-2",
+          "unlockReincarnation": 2,
+          "vitalityCostPct": 0.06,
+          "isExclusive": true
+        },
+        {
+          "slot": 3,
+          "ultimateId": "ult-zhuge-liang-3",
+          "unlockReincarnation": 3,
+          "vitalityCostPct": 0.07,
+          "isExclusive": true
+        },
+        {
+          "slot": 4,
+          "ultimateId": "ult-zhuge-liang-4",
+          "unlockReincarnation": 4,
+          "vitalityCostPct": 0.08,
+          "isExclusive": true
+        },
+        {
+          "slot": 5,
+          "ultimateId": "ult-zhuge-liang-5",
+          "unlockReincarnation": 5,
+          "vitalityCostPct": 0.1,
+          "isExclusive": true
+        }
+      ]
     },
     {
       "id": "zhou-yu",
@@ -244,6 +446,8 @@
       "rarityTier": "legendary",
       "characterCategory": "famed",
       "epRating": "S+",
+      "skillId": "zhou-yu-inferno",
+      "battlePrimarySkillId": "zhou-yu-inferno",
       "ancestor_chain": [
         "VIRT_ZHOU_YU_01",
         "VIRT_ZHOU_YU_02",
@@ -283,7 +487,56 @@
         "SUNNY": "C",
         "THUNDER": "C",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        },
+        {
+          "slotId": "slot-2",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": [
+        {
+          "slot": 1,
+          "ultimateId": "ult-zhou-yu-1",
+          "unlockReincarnation": 1,
+          "vitalityCostPct": 0.05,
+          "isExclusive": true
+        },
+        {
+          "slot": 2,
+          "ultimateId": "ult-zhou-yu-2",
+          "unlockReincarnation": 2,
+          "vitalityCostPct": 0.06,
+          "isExclusive": true
+        },
+        {
+          "slot": 3,
+          "ultimateId": "ult-zhou-yu-3",
+          "unlockReincarnation": 3,
+          "vitalityCostPct": 0.07,
+          "isExclusive": true
+        },
+        {
+          "slot": 4,
+          "ultimateId": "ult-zhou-yu-4",
+          "unlockReincarnation": 4,
+          "vitalityCostPct": 0.08,
+          "isExclusive": true
+        },
+        {
+          "slot": 5,
+          "ultimateId": "ult-zhou-yu-5",
+          "unlockReincarnation": 5,
+          "vitalityCostPct": 0.1,
+          "isExclusive": true
+        }
+      ]
     },
     {
       "id": "guan-yu",
@@ -337,7 +590,56 @@
         "WINDY": "B",
         "NIGHT": "A",
         "THUNDER": "C"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        },
+        {
+          "slotId": "slot-2",
+          "tacticId": "tactic-cavalry-shock",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": [
+        {
+          "slot": 1,
+          "ultimateId": "ult-guan-yu-1",
+          "unlockReincarnation": 1,
+          "vitalityCostPct": 0.05,
+          "isExclusive": true
+        },
+        {
+          "slot": 2,
+          "ultimateId": "ult-guan-yu-2",
+          "unlockReincarnation": 2,
+          "vitalityCostPct": 0.06,
+          "isExclusive": true
+        },
+        {
+          "slot": 3,
+          "ultimateId": "ult-guan-yu-3",
+          "unlockReincarnation": 3,
+          "vitalityCostPct": 0.07,
+          "isExclusive": true
+        },
+        {
+          "slot": 4,
+          "ultimateId": "ult-guan-yu-4",
+          "unlockReincarnation": 4,
+          "vitalityCostPct": 0.08,
+          "isExclusive": true
+        },
+        {
+          "slot": 5,
+          "ultimateId": "ult-guan-yu-5",
+          "unlockReincarnation": 5,
+          "vitalityCostPct": 0.1,
+          "isExclusive": true
+        }
+      ]
     },
     {
       "id": "zhang-fei",
@@ -391,7 +693,56 @@
         "FOG": "C",
         "WINDY": "B",
         "THUNDER": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        },
+        {
+          "slotId": "slot-2",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": [
+        {
+          "slot": 1,
+          "ultimateId": "ult-zhang-fei-1",
+          "unlockReincarnation": 1,
+          "vitalityCostPct": 0.05,
+          "isExclusive": true
+        },
+        {
+          "slot": 2,
+          "ultimateId": "ult-zhang-fei-2",
+          "unlockReincarnation": 2,
+          "vitalityCostPct": 0.06,
+          "isExclusive": true
+        },
+        {
+          "slot": 3,
+          "ultimateId": "ult-zhang-fei-3",
+          "unlockReincarnation": 3,
+          "vitalityCostPct": 0.07,
+          "isExclusive": true
+        },
+        {
+          "slot": 4,
+          "ultimateId": "ult-zhang-fei-4",
+          "unlockReincarnation": 4,
+          "vitalityCostPct": 0.08,
+          "isExclusive": true
+        },
+        {
+          "slot": 5,
+          "ultimateId": "ult-zhang-fei-5",
+          "unlockReincarnation": 5,
+          "vitalityCostPct": 0.1,
+          "isExclusive": true
+        }
+      ]
     },
     {
       "id": "zhao-yun",
@@ -445,7 +796,56 @@
         "SUNNY": "B",
         "WINDY": "B",
         "THUNDER": "B"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-cavalry-shock",
+          "source": "inborn"
+        },
+        {
+          "slotId": "slot-2",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": [
+        {
+          "slot": 1,
+          "ultimateId": "ult-zhao-yun-1",
+          "unlockReincarnation": 1,
+          "vitalityCostPct": 0.05,
+          "isExclusive": true
+        },
+        {
+          "slot": 2,
+          "ultimateId": "ult-zhao-yun-2",
+          "unlockReincarnation": 2,
+          "vitalityCostPct": 0.06,
+          "isExclusive": true
+        },
+        {
+          "slot": 3,
+          "ultimateId": "ult-zhao-yun-3",
+          "unlockReincarnation": 3,
+          "vitalityCostPct": 0.07,
+          "isExclusive": true
+        },
+        {
+          "slot": 4,
+          "ultimateId": "ult-zhao-yun-4",
+          "unlockReincarnation": 4,
+          "vitalityCostPct": 0.08,
+          "isExclusive": true
+        },
+        {
+          "slot": 5,
+          "ultimateId": "ult-zhao-yun-5",
+          "unlockReincarnation": 5,
+          "vitalityCostPct": 0.1,
+          "isExclusive": true
+        }
+      ]
     },
     {
       "id": "lu-bu",
@@ -499,7 +899,56 @@
         "WINDY": "A",
         "NIGHT": "B",
         "THUNDER": "C"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        },
+        {
+          "slotId": "slot-2",
+          "tacticId": "tactic-cavalry-shock",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": [
+        {
+          "slot": 1,
+          "ultimateId": "ult-lu-bu-1",
+          "unlockReincarnation": 1,
+          "vitalityCostPct": 0.05,
+          "isExclusive": true
+        },
+        {
+          "slot": 2,
+          "ultimateId": "ult-lu-bu-2",
+          "unlockReincarnation": 2,
+          "vitalityCostPct": 0.06,
+          "isExclusive": true
+        },
+        {
+          "slot": 3,
+          "ultimateId": "ult-lu-bu-3",
+          "unlockReincarnation": 3,
+          "vitalityCostPct": 0.07,
+          "isExclusive": true
+        },
+        {
+          "slot": 4,
+          "ultimateId": "ult-lu-bu-4",
+          "unlockReincarnation": 4,
+          "vitalityCostPct": 0.08,
+          "isExclusive": true
+        },
+        {
+          "slot": 5,
+          "ultimateId": "ult-lu-bu-5",
+          "unlockReincarnation": 5,
+          "vitalityCostPct": 0.1,
+          "isExclusive": true
+        }
+      ]
     },
     {
       "id": "sima-yi",
@@ -517,6 +966,8 @@
       "rarityTier": "legendary",
       "characterCategory": "famed",
       "epRating": "S+",
+      "skillId": "sima-yi-shadow",
+      "battlePrimarySkillId": "sima-yi-shadow",
       "ancestor_chain": [
         "VIRT_SIMA_YI_01",
         "VIRT_SIMA_YI_02",
@@ -556,7 +1007,56 @@
         "SUNNY": "C",
         "THUNDER": "C",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        },
+        {
+          "slotId": "slot-2",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": [
+        {
+          "slot": 1,
+          "ultimateId": "ult-sima-yi-1",
+          "unlockReincarnation": 1,
+          "vitalityCostPct": 0.05,
+          "isExclusive": true
+        },
+        {
+          "slot": 2,
+          "ultimateId": "ult-sima-yi-2",
+          "unlockReincarnation": 2,
+          "vitalityCostPct": 0.06,
+          "isExclusive": true
+        },
+        {
+          "slot": 3,
+          "ultimateId": "ult-sima-yi-3",
+          "unlockReincarnation": 3,
+          "vitalityCostPct": 0.07,
+          "isExclusive": true
+        },
+        {
+          "slot": 4,
+          "ultimateId": "ult-sima-yi-4",
+          "unlockReincarnation": 4,
+          "vitalityCostPct": 0.08,
+          "isExclusive": true
+        },
+        {
+          "slot": 5,
+          "ultimateId": "ult-sima-yi-5",
+          "unlockReincarnation": 5,
+          "vitalityCostPct": 0.1,
+          "isExclusive": true
+        }
+      ]
     },
     {
       "id": "dian-wei",
@@ -613,7 +1113,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "xu-zhu",
@@ -670,7 +1178,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "huang-zhong",
@@ -727,7 +1243,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "ma-chao",
@@ -746,7 +1270,7 @@
       "characterCategory": "famed",
       "epRating": "A+",
       "ancestor_chain": [
-        "VIRT_MA_CHAO_01",
+        "ma-teng",
         "VIRT_MA_CHAO_02",
         "VIRT_MA_CHAO_03",
         "VIRT_MA_CHAO_04",
@@ -784,7 +1308,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "lu-xun",
@@ -841,7 +1373,15 @@
         "SUNNY": "C",
         "THUNDER": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "taishi-ci",
@@ -898,7 +1438,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "zhang-liao",
@@ -955,7 +1503,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "xu-huang",
@@ -1012,7 +1568,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "cao-ren",
@@ -1069,7 +1633,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "pang-tong",
@@ -1126,7 +1698,15 @@
         "SUNNY": "C",
         "THUNDER": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "guo-jia",
@@ -1144,6 +1724,8 @@
       "rarityTier": "legendary",
       "characterCategory": "famed",
       "epRating": "A+",
+      "skillId": "guo-jia-foresight",
+      "battlePrimarySkillId": "guo-jia-foresight",
       "ancestor_chain": [
         "VIRT_GUO_JIA_01",
         "VIRT_GUO_JIA_02",
@@ -1183,7 +1765,56 @@
         "SUNNY": "C",
         "THUNDER": "C",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        },
+        {
+          "slotId": "slot-2",
+          "tacticId": "tactic-archer-volley",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": [
+        {
+          "slot": 1,
+          "ultimateId": "ult-guo-jia-1",
+          "unlockReincarnation": 1,
+          "vitalityCostPct": 0.05,
+          "isExclusive": true
+        },
+        {
+          "slot": 2,
+          "ultimateId": "ult-guo-jia-2",
+          "unlockReincarnation": 2,
+          "vitalityCostPct": 0.06,
+          "isExclusive": true
+        },
+        {
+          "slot": 3,
+          "ultimateId": "ult-guo-jia-3",
+          "unlockReincarnation": 3,
+          "vitalityCostPct": 0.07,
+          "isExclusive": true
+        },
+        {
+          "slot": 4,
+          "ultimateId": "ult-guo-jia-4",
+          "unlockReincarnation": 4,
+          "vitalityCostPct": 0.08,
+          "isExclusive": true
+        },
+        {
+          "slot": 5,
+          "ultimateId": "ult-guo-jia-5",
+          "unlockReincarnation": 5,
+          "vitalityCostPct": 0.1,
+          "isExclusive": true
+        }
+      ]
     },
     {
       "id": "xun-yu",
@@ -1240,7 +1871,15 @@
         "SUNNY": "C",
         "THUNDER": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "jia-xu",
@@ -1297,7 +1936,15 @@
         "SUNNY": "C",
         "THUNDER": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "zhang-he",
@@ -1354,7 +2001,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "yu-jin",
@@ -1411,7 +2066,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "cao-ang",
@@ -1468,7 +2131,15 @@
         "NIGHT": "C",
         "THUNDER": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "xiahou-dun",
@@ -1525,7 +2196,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "xiahou-yuan",
@@ -1582,7 +2261,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "wei-yan",
@@ -1639,7 +2326,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "jiang-wei",
@@ -1696,7 +2391,15 @@
         "FOG": "C",
         "NIGHT": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "deng-ai",
@@ -1753,7 +2456,15 @@
         "FOG": "C",
         "NIGHT": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "zhong-hui",
@@ -1810,7 +2521,15 @@
         "SUNNY": "C",
         "THUNDER": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "huang-gai",
@@ -1867,7 +2586,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "cheng-pu",
@@ -1924,7 +2651,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "han-dang",
@@ -1981,7 +2716,15 @@
         "FOG": "C",
         "THUNDER": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "gan-ning",
@@ -2038,7 +2781,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "ling-tong",
@@ -2095,7 +2846,15 @@
         "FOG": "C",
         "NIGHT": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "zhou-tai",
@@ -2152,7 +2911,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "xu-sheng",
@@ -2209,7 +2976,15 @@
         "NIGHT": "C",
         "THUNDER": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "ding-feng",
@@ -2266,7 +3041,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "zhang-zhao",
@@ -2323,7 +3106,15 @@
         "WINDY": "C",
         "THUNDER": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "lu-meng",
@@ -2380,7 +3171,15 @@
         "WINDY": "C",
         "THUNDER": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "sun-ce",
@@ -2399,7 +3198,7 @@
       "characterCategory": "famed",
       "epRating": "S-",
       "ancestor_chain": [
-        "VIRT_SUN_CE_01",
+        "sun-jian",
         "VIRT_SUN_CE_02",
         "VIRT_SUN_CE_03",
         "VIRT_SUN_CE_04",
@@ -2437,7 +3236,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "sun-jian",
@@ -2494,7 +3301,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "dong-zhuo",
@@ -2551,7 +3366,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "yuan-shao",
@@ -2608,7 +3431,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "liu-biao",
@@ -2665,7 +3496,15 @@
         "SUNNY": "C",
         "THUNDER": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "ma-teng",
@@ -2722,7 +3561,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "gongsun-zan",
@@ -2779,7 +3626,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "tao-qian",
@@ -2836,7 +3691,15 @@
         "FOG": "C",
         "NIGHT": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "liu-zhang",
@@ -2893,7 +3756,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "zhang-lu",
@@ -2950,7 +3821,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "han-sui",
@@ -3007,7 +3886,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "yuan-shu",
@@ -3064,7 +3951,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "kong-rong",
@@ -3121,7 +4016,15 @@
         "SUNNY": "C",
         "RAINY": "D",
         "THUNDER": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "liu-yan",
@@ -3178,7 +4081,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "cao-pi",
@@ -3197,20 +4108,20 @@
       "characterCategory": "general",
       "epRating": "A-",
       "ancestor_chain": [
-        "VIRT_CAO_CAO_PI_01",
-        "VIRT_CAO_CAO_PI_02",
-        "VIRT_CAO_CAO_PI_03",
-        "VIRT_CAO_CAO_PI_04",
-        "VIRT_CAO_CAO_PI_05",
-        "VIRT_CAO_CAO_PI_06",
-        "VIRT_CAO_CAO_PI_07",
-        "VIRT_CAO_CAO_PI_08",
-        "VIRT_CAO_CAO_PI_09",
-        "VIRT_CAO_CAO_PI_10",
-        "VIRT_CAO_CAO_PI_11",
-        "VIRT_CAO_CAO_PI_12",
-        "VIRT_CAO_CAO_PI_13",
-        "VIRT_CAO_CAO_PI_14"
+        "cao-cao",
+        "VIRT_CAO_PI_02",
+        "VIRT_CAO_PI_03",
+        "VIRT_CAO_PI_04",
+        "VIRT_CAO_PI_05",
+        "VIRT_CAO_PI_06",
+        "VIRT_CAO_PI_07",
+        "VIRT_CAO_PI_08",
+        "VIRT_CAO_PI_09",
+        "VIRT_CAO_PI_10",
+        "VIRT_CAO_PI_11",
+        "VIRT_CAO_PI_12",
+        "VIRT_CAO_PI_13",
+        "VIRT_CAO_PI_14"
       ],
       "troopAptitude": {
         "INFANTRY": "A",
@@ -3235,7 +4146,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "cao-xiu",
@@ -3292,7 +4211,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "sima-zhao",
@@ -3349,7 +4276,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "sima-shi",
@@ -3406,7 +4341,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "zhuge-jin",
@@ -3463,7 +4406,15 @@
         "FOG": "C",
         "NIGHT": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "zhuge-ke",
@@ -3520,7 +4471,15 @@
         "FOG": "C",
         "NIGHT": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "bu-zhi",
@@ -3577,7 +4536,15 @@
         "NIGHT": "C",
         "THUNDER": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "zhu-ran",
@@ -3634,7 +4601,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "pan-zhang",
@@ -3691,7 +4666,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "ma-zhong",
@@ -3748,7 +4731,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "liu-feng",
@@ -3805,7 +4796,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "meng-da",
@@ -3862,7 +4861,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "peng-yang",
@@ -3919,7 +4926,15 @@
         "SUNNY": "C",
         "THUNDER": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "fa-zheng",
@@ -3976,7 +4991,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "huang-quan",
@@ -4033,7 +5056,15 @@
         "SUNNY": "C",
         "THUNDER": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "li-yan",
@@ -4090,7 +5121,15 @@
         "NIGHT": "C",
         "THUNDER": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "wang-ping",
@@ -4147,7 +5186,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "zhang-yi",
@@ -4204,7 +5251,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "liao-hua",
@@ -4261,7 +5316,15 @@
         "FOG": "C",
         "NIGHT": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "guan-xing",
@@ -4280,7 +5343,7 @@
       "characterCategory": "general",
       "epRating": "A-",
       "ancestor_chain": [
-        "VIRT_GUAN_XING_01",
+        "guan-yu",
         "VIRT_GUAN_XING_02",
         "VIRT_GUAN_XING_03",
         "VIRT_GUAN_XING_04",
@@ -4318,7 +5381,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "zhang-bao",
@@ -4337,7 +5408,7 @@
       "characterCategory": "general",
       "epRating": "A-",
       "ancestor_chain": [
-        "VIRT_ZHANG_BAO_01",
+        "zhang-fei",
         "VIRT_ZHANG_BAO_02",
         "VIRT_ZHANG_BAO_03",
         "VIRT_ZHANG_BAO_04",
@@ -4375,7 +5446,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "ma-dai",
@@ -4432,7 +5511,15 @@
         "FOG": "C",
         "NIGHT": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "cao-hong",
@@ -4489,7 +5576,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "cao-zhang",
@@ -4508,7 +5603,7 @@
       "characterCategory": "general",
       "epRating": "A-",
       "ancestor_chain": [
-        "VIRT_CAO_ZHANG_01",
+        "cao-cao",
         "VIRT_CAO_ZHANG_02",
         "VIRT_CAO_ZHANG_03",
         "VIRT_CAO_ZHANG_04",
@@ -4546,7 +5641,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "man-chong",
@@ -4603,7 +5706,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "wang-shuang",
@@ -4660,7 +5771,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "guo-huai",
@@ -4717,7 +5836,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "chen-tai",
@@ -4774,7 +5901,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "wen-pin",
@@ -4831,7 +5966,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "le-jin",
@@ -4888,7 +6031,15 @@
         "FOG": "C",
         "NIGHT": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "li-dian",
@@ -4945,7 +6096,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "chen-qun",
@@ -5002,7 +6161,15 @@
         "SUNNY": "C",
         "THUNDER": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "hua-xin",
@@ -5059,7 +6226,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "wang-lang",
@@ -5116,7 +6291,15 @@
         "SUNNY": "C",
         "THUNDER": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "xun-you",
@@ -5173,7 +6356,15 @@
         "SUNNY": "C",
         "THUNDER": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "cheng-yu",
@@ -5230,7 +6421,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "liu-ye",
@@ -5287,7 +6486,15 @@
         "SUNNY": "C",
         "THUNDER": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "sun-shao",
@@ -5306,7 +6513,7 @@
       "characterCategory": "general",
       "epRating": "A-",
       "ancestor_chain": [
-        "VIRT_SUN_SHAO_01",
+        "sun-ce",
         "VIRT_SUN_SHAO_02",
         "VIRT_SUN_SHAO_03",
         "VIRT_SUN_SHAO_04",
@@ -5344,7 +6551,15 @@
         "FOG": "C",
         "NIGHT": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "gu-yong",
@@ -5401,7 +6616,15 @@
         "FOG": "C",
         "NIGHT": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "zhu-jun",
@@ -5458,7 +6681,15 @@
         "FOG": "C",
         "NIGHT": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "lv-fan",
@@ -5515,7 +6746,15 @@
         "FOG": "C",
         "NIGHT": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "sun-huan",
@@ -5572,7 +6811,15 @@
         "NIGHT": "C",
         "THUNDER": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "sun-jun",
@@ -5629,7 +6876,15 @@
         "FOG": "C",
         "THUNDER": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "he-qi",
@@ -5686,7 +6941,15 @@
         "NIGHT": "C",
         "THUNDER": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "lu-kang",
@@ -5743,7 +7006,15 @@
         "NIGHT": "C",
         "THUNDER": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "zhu-huan",
@@ -5800,7 +7071,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "lu-yin",
@@ -5819,20 +7098,20 @@
       "characterCategory": "general",
       "epRating": "A-",
       "ancestor_chain": [
-        "VIRT_LU_DAI_01",
-        "VIRT_LU_DAI_02",
-        "VIRT_LU_DAI_03",
-        "VIRT_LU_DAI_04",
-        "VIRT_LU_DAI_05",
-        "VIRT_LU_DAI_06",
-        "VIRT_LU_DAI_07",
-        "VIRT_LU_DAI_08",
-        "VIRT_LU_DAI_09",
-        "VIRT_LU_DAI_10",
-        "VIRT_LU_DAI_11",
-        "VIRT_LU_DAI_12",
-        "VIRT_LU_DAI_13",
-        "VIRT_LU_DAI_14"
+        "VIRT_LU_YIN_01",
+        "VIRT_LU_YIN_02",
+        "VIRT_LU_YIN_03",
+        "VIRT_LU_YIN_04",
+        "VIRT_LU_YIN_05",
+        "VIRT_LU_YIN_06",
+        "VIRT_LU_YIN_07",
+        "VIRT_LU_YIN_08",
+        "VIRT_LU_YIN_09",
+        "VIRT_LU_YIN_10",
+        "VIRT_LU_YIN_11",
+        "VIRT_LU_YIN_12",
+        "VIRT_LU_YIN_13",
+        "VIRT_LU_YIN_14"
       ],
       "troopAptitude": {
         "NAVY": "A",
@@ -5857,7 +7136,15 @@
         "FOG": "C",
         "NIGHT": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "cheng-bing",
@@ -5914,7 +7201,15 @@
         "WINDY": "C",
         "SUNNY": "D",
         "THUNDER": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-river-ambush",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "han-xuan",
@@ -5971,7 +7266,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "jin-xuan",
@@ -6028,7 +7331,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "liu-du",
@@ -6085,7 +7396,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "zhao-fan",
@@ -6142,7 +7461,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "wen-chou",
@@ -6199,7 +7526,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "yan-liang",
@@ -6256,7 +7591,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "zhang-bao-enemy",
@@ -6313,7 +7656,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "zhang-jue",
@@ -6370,7 +7721,15 @@
         "SUNNY": "C",
         "THUNDER": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "zhang-liang-enemy",
@@ -6427,7 +7786,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "hua-tuo",
@@ -6484,7 +7851,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "mi-zhu",
@@ -6541,7 +7916,15 @@
         "NIGHT": "C",
         "THUNDER": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "jian-yong",
@@ -6598,7 +7981,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "sun-qian",
@@ -6655,7 +8046,15 @@
         "SUNNY": "C",
         "THUNDER": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "yin-mo",
@@ -6712,7 +8111,15 @@
         "RAINY": "C",
         "SUNNY": "D",
         "THUNDER": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "deng-zhi",
@@ -6769,7 +8176,15 @@
         "FOG": "C",
         "NIGHT": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "yang-yi",
@@ -6826,7 +8241,15 @@
         "WINDY": "C",
         "THUNDER": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "fei-yi",
@@ -6883,7 +8306,15 @@
         "SUNNY": "C",
         "THUNDER": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "dong-yun",
@@ -6940,7 +8371,15 @@
         "NIGHT": "C",
         "THUNDER": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "xu-shu",
@@ -6997,7 +8436,15 @@
         "FOG": "C",
         "NIGHT": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "pang-de",
@@ -7054,7 +8501,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "zhang-xiu",
@@ -7111,7 +8566,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "zhang-xian",
@@ -7168,7 +8631,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "liu-bao",
@@ -7225,7 +8696,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "ke-bi-neng",
@@ -7282,7 +8761,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "meng-huo",
@@ -7339,7 +8826,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "zhu-rong",
@@ -7396,7 +8891,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "wu-tugu",
@@ -7453,7 +8956,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "ahui-nan",
@@ -7510,7 +9021,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "dong-tu-na",
@@ -7567,7 +9086,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "jin-huan-san-jie",
@@ -7624,7 +9151,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "yuan-tan",
@@ -7643,7 +9178,7 @@
       "characterCategory": "general",
       "epRating": "B",
       "ancestor_chain": [
-        "VIRT_YUAN_TAN_01",
+        "yuan-shao",
         "VIRT_YUAN_TAN_02",
         "VIRT_YUAN_TAN_03",
         "VIRT_YUAN_TAN_04",
@@ -7681,7 +9216,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "yuan-shang",
@@ -7700,7 +9243,7 @@
       "characterCategory": "famed",
       "epRating": "B+",
       "ancestor_chain": [
-        "VIRT_YUAN_SHANG_01",
+        "yuan-shao",
         "VIRT_YUAN_SHANG_02",
         "VIRT_YUAN_SHANG_03",
         "VIRT_YUAN_SHANG_04",
@@ -7738,7 +9281,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "yuan-xi",
@@ -7795,7 +9346,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "gao-lan",
@@ -7852,7 +9411,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "gao-gan",
@@ -7909,7 +9476,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "tian-feng",
@@ -7966,7 +9541,15 @@
         "SUNNY": "C",
         "RAINY": "D",
         "THUNDER": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "ju-shou",
@@ -8023,7 +9606,15 @@
         "SUNNY": "C",
         "THUNDER": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "guo-tu",
@@ -8080,7 +9671,9 @@
         "SUNNY": "C",
         "THUNDER": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [],
+      "ultimateSlots": []
     },
     {
       "id": "shen-pei",
@@ -8137,7 +9730,15 @@
         "SUNNY": "C",
         "THUNDER": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "dong-zhao",
@@ -8194,7 +9795,15 @@
         "SUNNY": "C",
         "THUNDER": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "han-hao",
@@ -8251,7 +9860,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "wang-yi",
@@ -8308,7 +9925,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "xi-zhi-cai",
@@ -8365,7 +9990,15 @@
         "SUNNY": "C",
         "THUNDER": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "mao-jie",
@@ -8422,7 +10055,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "lu-su",
@@ -8479,7 +10120,15 @@
         "SUNNY": "C",
         "RAINY": "D",
         "THUNDER": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "huo-yi",
@@ -8536,7 +10185,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "liao-li",
@@ -8593,7 +10250,15 @@
         "SUNNY": "C",
         "THUNDER": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "du-qiong",
@@ -8650,7 +10315,15 @@
         "RAINY": "C",
         "SUNNY": "D",
         "THUNDER": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "fei-guan",
@@ -8707,7 +10380,15 @@
         "SUNNY": "C",
         "THUNDER": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "luo-xian",
@@ -8764,7 +10445,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "jiang-wan",
@@ -8821,7 +10510,15 @@
         "SUNNY": "C",
         "THUNDER": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "gou-fu",
@@ -8840,20 +10537,20 @@
       "characterCategory": "general",
       "epRating": "A-",
       "ancestor_chain": [
-        "VIRT_GONG_YAN_01",
-        "VIRT_GONG_YAN_02",
-        "VIRT_GONG_YAN_03",
-        "VIRT_GONG_YAN_04",
-        "VIRT_GONG_YAN_05",
-        "VIRT_GONG_YAN_06",
-        "VIRT_GONG_YAN_07",
-        "VIRT_GONG_YAN_08",
-        "VIRT_GONG_YAN_09",
-        "VIRT_GONG_YAN_10",
-        "VIRT_GONG_YAN_11",
-        "VIRT_GONG_YAN_12",
-        "VIRT_GONG_YAN_13",
-        "VIRT_GONG_YAN_14"
+        "VIRT_GOU_FU_01",
+        "VIRT_GOU_FU_02",
+        "VIRT_GOU_FU_03",
+        "VIRT_GOU_FU_04",
+        "VIRT_GOU_FU_05",
+        "VIRT_GOU_FU_06",
+        "VIRT_GOU_FU_07",
+        "VIRT_GOU_FU_08",
+        "VIRT_GOU_FU_09",
+        "VIRT_GOU_FU_10",
+        "VIRT_GOU_FU_11",
+        "VIRT_GOU_FU_12",
+        "VIRT_GOU_FU_13",
+        "VIRT_GOU_FU_14"
       ],
       "troopAptitude": {
         "INFANTRY": "A",
@@ -8878,7 +10575,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "liu-chen",
@@ -8935,7 +10640,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "zhu-bao",
@@ -8971,7 +10684,9 @@
       ],
       "troopAptitude": {},
       "terrainAptitude": {},
-      "weatherAptitude": {}
+      "weatherAptitude": {},
+      "tacticSlots": [],
+      "ultimateSlots": []
     },
     {
       "id": "li-hui",
@@ -9028,7 +10743,15 @@
         "WINDY": "C",
         "THUNDER": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "chen-zhi",
@@ -9085,7 +10808,15 @@
         "SUNNY": "C",
         "THUNDER": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "zhang-yi-shu",
@@ -9142,7 +10873,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "fu-tong",
@@ -9199,7 +10938,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "ma-liang",
@@ -9256,7 +11003,15 @@
         "SUNNY": "C",
         "THUNDER": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "guan-suo",
@@ -9313,7 +11068,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "yu-fan",
@@ -9370,7 +11133,15 @@
         "WINDY": "C",
         "SUNNY": "D",
         "THUNDER": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "chen-wu",
@@ -9427,7 +11198,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "sun-yi",
@@ -9484,7 +11263,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "zhu-ji",
@@ -9541,7 +11328,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "quan-cong",
@@ -9598,7 +11393,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "lv-dai",
@@ -9655,7 +11458,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "hu-zun",
@@ -9712,7 +11523,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "wang-ji",
@@ -9769,7 +11588,15 @@
         "FOG": "C",
         "THUNDER": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "sun-li",
@@ -9826,7 +11653,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "wang-hun",
@@ -9883,7 +11718,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "wen-qin",
@@ -9940,7 +11783,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "gongsun-yuan",
@@ -9997,7 +11848,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "mu-lu-da-wang",
@@ -10054,7 +11913,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "e-huan",
@@ -10111,7 +11978,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "sha-mo-ke",
@@ -10168,7 +12043,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "mi-heng",
@@ -10225,7 +12108,15 @@
         "WINDY": "C",
         "SUNNY": "D",
         "THUNDER": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "tian-chou",
@@ -10282,7 +12173,15 @@
         "WINDY": "C",
         "THUNDER": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "guan-ning",
@@ -10339,7 +12238,15 @@
         "WINDY": "C",
         "SUNNY": "D",
         "THUNDER": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "zuo-ci",
@@ -10396,7 +12303,15 @@
         "WINDY": "C",
         "SUNNY": "D",
         "THUNDER": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "yu-ji",
@@ -10453,7 +12368,15 @@
         "WINDY": "C",
         "SUNNY": "D",
         "THUNDER": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "liu-ba",
@@ -10510,7 +12433,15 @@
         "RAINY": "C",
         "SUNNY": "D",
         "THUNDER": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "qin-mi",
@@ -10567,7 +12498,15 @@
         "RAINY": "C",
         "SUNNY": "D",
         "THUNDER": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "yi-ji",
@@ -10624,7 +12563,15 @@
         "SUNNY": "C",
         "THUNDER": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "fei-shi",
@@ -10681,7 +12628,15 @@
         "SUNNY": "C",
         "THUNDER": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "zhang-nan",
@@ -10738,7 +12693,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "fu-shou",
@@ -10795,7 +12758,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "sun-sheng",
@@ -10852,7 +12823,15 @@
         "SUNNY": "C",
         "RAINY": "D",
         "THUNDER": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "wei-zhao",
@@ -10909,7 +12888,15 @@
         "WINDY": "C",
         "SUNNY": "D",
         "THUNDER": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-river-ambush",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "xue-zong",
@@ -10966,7 +12953,15 @@
         "WINDY": "C",
         "SUNNY": "D",
         "THUNDER": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-river-ambush",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "zhu-yi",
@@ -11023,7 +13018,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "pan-jun",
@@ -11080,7 +13083,15 @@
         "NIGHT": "C",
         "THUNDER": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "cao-zhi",
@@ -11098,8 +13109,10 @@
       "rarityTier": "legendary",
       "characterCategory": "famed",
       "epRating": "A-",
+      "skillId": "cao-zhi-verse",
+      "battlePrimarySkillId": "cao-zhi-verse",
       "ancestor_chain": [
-        "VIRT_CAO_ZHI_01",
+        "cao-cao",
         "VIRT_CAO_ZHI_02",
         "VIRT_CAO_ZHI_03",
         "VIRT_CAO_ZHI_04",
@@ -11137,7 +13150,56 @@
         "WINDY": "C",
         "SUNNY": "C",
         "THUNDER": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        },
+        {
+          "slotId": "slot-2",
+          "tacticId": "tactic-archer-volley",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": [
+        {
+          "slot": 1,
+          "ultimateId": "ult-cao-zhi-1",
+          "unlockReincarnation": 1,
+          "vitalityCostPct": 0.05,
+          "isExclusive": true
+        },
+        {
+          "slot": 2,
+          "ultimateId": "ult-cao-zhi-2",
+          "unlockReincarnation": 2,
+          "vitalityCostPct": 0.06,
+          "isExclusive": true
+        },
+        {
+          "slot": 3,
+          "ultimateId": "ult-cao-zhi-3",
+          "unlockReincarnation": 3,
+          "vitalityCostPct": 0.07,
+          "isExclusive": true
+        },
+        {
+          "slot": 4,
+          "ultimateId": "ult-cao-zhi-4",
+          "unlockReincarnation": 4,
+          "vitalityCostPct": 0.08,
+          "isExclusive": true
+        },
+        {
+          "slot": 5,
+          "ultimateId": "ult-cao-zhi-5",
+          "unlockReincarnation": 5,
+          "vitalityCostPct": 0.1,
+          "isExclusive": true
+        }
+      ]
     },
     {
       "id": "lv-kai",
@@ -11194,7 +13256,15 @@
         "SUNNY": "C",
         "THUNDER": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "chen-dao",
@@ -11251,7 +13321,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "wu-ban",
@@ -11308,7 +13386,15 @@
         "NIGHT": "C",
         "FOG": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "sun-hao",
@@ -11365,7 +13451,15 @@
         "THUNDER": "C",
         "NIGHT": "D",
         "RAINY": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": []
     },
     {
       "id": "diao-chan",
@@ -11387,6 +13481,8 @@
       "gender": "女",
       "role": "Support",
       "epRating": "A-",
+      "skillId": "diao-chan-charm",
+      "battlePrimarySkillId": "diao-chan-charm",
       "troopAptitude": {
         "ARCHER": "A",
         "CAVALRY": "B",
@@ -11407,7 +13503,72 @@
         "RAINY": "B",
         "WINDY": "B",
         "THUNDER": "C"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        },
+        {
+          "slotId": "slot-2",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": [
+        {
+          "slot": 1,
+          "ultimateId": "ult-diao-chan-1",
+          "unlockReincarnation": 1,
+          "vitalityCostPct": 0.05,
+          "isExclusive": true
+        },
+        {
+          "slot": 2,
+          "ultimateId": "ult-diao-chan-2",
+          "unlockReincarnation": 2,
+          "vitalityCostPct": 0.06,
+          "isExclusive": true
+        },
+        {
+          "slot": 3,
+          "ultimateId": "ult-diao-chan-3",
+          "unlockReincarnation": 3,
+          "vitalityCostPct": 0.07,
+          "isExclusive": true
+        },
+        {
+          "slot": 4,
+          "ultimateId": "ult-diao-chan-4",
+          "unlockReincarnation": 4,
+          "vitalityCostPct": 0.08,
+          "isExclusive": true
+        },
+        {
+          "slot": 5,
+          "ultimateId": "ult-diao-chan-5",
+          "unlockReincarnation": 5,
+          "vitalityCostPct": 0.1,
+          "isExclusive": true
+        }
+      ],
+      "ancestor_chain": [
+        "VIRT_DIAO_CHAN_01",
+        "VIRT_DIAO_CHAN_02",
+        "VIRT_DIAO_CHAN_03",
+        "VIRT_DIAO_CHAN_04",
+        "VIRT_DIAO_CHAN_05",
+        "VIRT_DIAO_CHAN_06",
+        "VIRT_DIAO_CHAN_07",
+        "VIRT_DIAO_CHAN_08",
+        "VIRT_DIAO_CHAN_09",
+        "VIRT_DIAO_CHAN_10",
+        "VIRT_DIAO_CHAN_11",
+        "VIRT_DIAO_CHAN_12",
+        "VIRT_DIAO_CHAN_13",
+        "VIRT_DIAO_CHAN_14"
+      ]
     },
     {
       "id": "da-qiao",
@@ -11449,7 +13610,31 @@
         "WINDY": "B",
         "NIGHT": "B",
         "THUNDER": "C"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": [],
+      "ancestor_chain": [
+        "VIRT_DA_QIAO_01",
+        "VIRT_DA_QIAO_02",
+        "VIRT_DA_QIAO_03",
+        "VIRT_DA_QIAO_04",
+        "VIRT_DA_QIAO_05",
+        "VIRT_DA_QIAO_06",
+        "VIRT_DA_QIAO_07",
+        "VIRT_DA_QIAO_08",
+        "VIRT_DA_QIAO_09",
+        "VIRT_DA_QIAO_10",
+        "VIRT_DA_QIAO_11",
+        "VIRT_DA_QIAO_12",
+        "VIRT_DA_QIAO_13",
+        "VIRT_DA_QIAO_14"
+      ]
     },
     {
       "id": "xiao-qiao",
@@ -11491,7 +13676,31 @@
         "WINDY": "B",
         "NIGHT": "B",
         "THUNDER": "B"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": [],
+      "ancestor_chain": [
+        "VIRT_XIAO_QIAO_01",
+        "VIRT_XIAO_QIAO_02",
+        "VIRT_XIAO_QIAO_03",
+        "VIRT_XIAO_QIAO_04",
+        "VIRT_XIAO_QIAO_05",
+        "VIRT_XIAO_QIAO_06",
+        "VIRT_XIAO_QIAO_07",
+        "VIRT_XIAO_QIAO_08",
+        "VIRT_XIAO_QIAO_09",
+        "VIRT_XIAO_QIAO_10",
+        "VIRT_XIAO_QIAO_11",
+        "VIRT_XIAO_QIAO_12",
+        "VIRT_XIAO_QIAO_13",
+        "VIRT_XIAO_QIAO_14"
+      ]
     },
     {
       "id": "zhen-ji",
@@ -11534,7 +13743,31 @@
         "WINDY": "B",
         "NIGHT": "A",
         "THUNDER": "C"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": [],
+      "ancestor_chain": [
+        "VIRT_ZHEN_JI_01",
+        "VIRT_ZHEN_JI_02",
+        "VIRT_ZHEN_JI_03",
+        "VIRT_ZHEN_JI_04",
+        "VIRT_ZHEN_JI_05",
+        "VIRT_ZHEN_JI_06",
+        "VIRT_ZHEN_JI_07",
+        "VIRT_ZHEN_JI_08",
+        "VIRT_ZHEN_JI_09",
+        "VIRT_ZHEN_JI_10",
+        "VIRT_ZHEN_JI_11",
+        "VIRT_ZHEN_JI_12",
+        "VIRT_ZHEN_JI_13",
+        "VIRT_ZHEN_JI_14"
+      ]
     },
     {
       "id": "sun-shang-xiang",
@@ -11576,7 +13809,31 @@
         "FOG": "B",
         "NIGHT": "B",
         "THUNDER": "C"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": [],
+      "ancestor_chain": [
+        "VIRT_SUN_SHANG_XIANG_01",
+        "VIRT_SUN_SHANG_XIANG_02",
+        "VIRT_SUN_SHANG_XIANG_03",
+        "VIRT_SUN_SHANG_XIANG_04",
+        "VIRT_SUN_SHANG_XIANG_05",
+        "VIRT_SUN_SHANG_XIANG_06",
+        "VIRT_SUN_SHANG_XIANG_07",
+        "VIRT_SUN_SHANG_XIANG_08",
+        "VIRT_SUN_SHANG_XIANG_09",
+        "VIRT_SUN_SHANG_XIANG_10",
+        "VIRT_SUN_SHANG_XIANG_11",
+        "VIRT_SUN_SHANG_XIANG_12",
+        "VIRT_SUN_SHANG_XIANG_13",
+        "VIRT_SUN_SHANG_XIANG_14"
+      ]
     },
     {
       "id": "cai-yan",
@@ -11617,7 +13874,31 @@
         "WINDY": "B",
         "NIGHT": "A",
         "THUNDER": "C"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": [],
+      "ancestor_chain": [
+        "VIRT_CAI_YAN_01",
+        "VIRT_CAI_YAN_02",
+        "VIRT_CAI_YAN_03",
+        "VIRT_CAI_YAN_04",
+        "VIRT_CAI_YAN_05",
+        "VIRT_CAI_YAN_06",
+        "VIRT_CAI_YAN_07",
+        "VIRT_CAI_YAN_08",
+        "VIRT_CAI_YAN_09",
+        "VIRT_CAI_YAN_10",
+        "VIRT_CAI_YAN_11",
+        "VIRT_CAI_YAN_12",
+        "VIRT_CAI_YAN_13",
+        "VIRT_CAI_YAN_14"
+      ]
     },
     {
       "id": "huang-yue-ying",
@@ -11659,7 +13940,31 @@
         "WINDY": "B",
         "NIGHT": "B",
         "THUNDER": "C"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": [],
+      "ancestor_chain": [
+        "VIRT_HUANG_YUE_YING_01",
+        "VIRT_HUANG_YUE_YING_02",
+        "VIRT_HUANG_YUE_YING_03",
+        "VIRT_HUANG_YUE_YING_04",
+        "VIRT_HUANG_YUE_YING_05",
+        "VIRT_HUANG_YUE_YING_06",
+        "VIRT_HUANG_YUE_YING_07",
+        "VIRT_HUANG_YUE_YING_08",
+        "VIRT_HUANG_YUE_YING_09",
+        "VIRT_HUANG_YUE_YING_10",
+        "VIRT_HUANG_YUE_YING_11",
+        "VIRT_HUANG_YUE_YING_12",
+        "VIRT_HUANG_YUE_YING_13",
+        "VIRT_HUANG_YUE_YING_14"
+      ]
     },
     {
       "id": "zhang-chun-hua",
@@ -11700,7 +14005,31 @@
         "RAINY": "B",
         "WINDY": "B",
         "THUNDER": "C"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": [],
+      "ancestor_chain": [
+        "VIRT_ZHANG_CHUN_HUA_01",
+        "VIRT_ZHANG_CHUN_HUA_02",
+        "VIRT_ZHANG_CHUN_HUA_03",
+        "VIRT_ZHANG_CHUN_HUA_04",
+        "VIRT_ZHANG_CHUN_HUA_05",
+        "VIRT_ZHANG_CHUN_HUA_06",
+        "VIRT_ZHANG_CHUN_HUA_07",
+        "VIRT_ZHANG_CHUN_HUA_08",
+        "VIRT_ZHANG_CHUN_HUA_09",
+        "VIRT_ZHANG_CHUN_HUA_10",
+        "VIRT_ZHANG_CHUN_HUA_11",
+        "VIRT_ZHANG_CHUN_HUA_12",
+        "VIRT_ZHANG_CHUN_HUA_13",
+        "VIRT_ZHANG_CHUN_HUA_14"
+      ]
     },
     {
       "id": "xin-xian-ying",
@@ -11741,7 +14070,31 @@
         "RAINY": "B",
         "WINDY": "B",
         "THUNDER": "C"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": [],
+      "ancestor_chain": [
+        "VIRT_XIN_XIAN_YING_01",
+        "VIRT_XIN_XIAN_YING_02",
+        "VIRT_XIN_XIAN_YING_03",
+        "VIRT_XIN_XIAN_YING_04",
+        "VIRT_XIN_XIAN_YING_05",
+        "VIRT_XIN_XIAN_YING_06",
+        "VIRT_XIN_XIAN_YING_07",
+        "VIRT_XIN_XIAN_YING_08",
+        "VIRT_XIN_XIAN_YING_09",
+        "VIRT_XIN_XIAN_YING_10",
+        "VIRT_XIN_XIAN_YING_11",
+        "VIRT_XIN_XIAN_YING_12",
+        "VIRT_XIN_XIAN_YING_13",
+        "VIRT_XIN_XIAN_YING_14"
+      ]
     },
     {
       "id": "bu-lian-shi",
@@ -11782,7 +14135,31 @@
         "WINDY": "B",
         "NIGHT": "B",
         "THUNDER": "C"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": [],
+      "ancestor_chain": [
+        "VIRT_BU_LIAN_SHI_01",
+        "VIRT_BU_LIAN_SHI_02",
+        "VIRT_BU_LIAN_SHI_03",
+        "VIRT_BU_LIAN_SHI_04",
+        "VIRT_BU_LIAN_SHI_05",
+        "VIRT_BU_LIAN_SHI_06",
+        "VIRT_BU_LIAN_SHI_07",
+        "VIRT_BU_LIAN_SHI_08",
+        "VIRT_BU_LIAN_SHI_09",
+        "VIRT_BU_LIAN_SHI_10",
+        "VIRT_BU_LIAN_SHI_11",
+        "VIRT_BU_LIAN_SHI_12",
+        "VIRT_BU_LIAN_SHI_13",
+        "VIRT_BU_LIAN_SHI_14"
+      ]
     },
     {
       "id": "guan-yin-ping",
@@ -11824,7 +14201,31 @@
         "WINDY": "B",
         "NIGHT": "B",
         "THUNDER": "C"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": [],
+      "ancestor_chain": [
+        "VIRT_GUAN_YIN_PING_01",
+        "VIRT_GUAN_YIN_PING_02",
+        "VIRT_GUAN_YIN_PING_03",
+        "VIRT_GUAN_YIN_PING_04",
+        "VIRT_GUAN_YIN_PING_05",
+        "VIRT_GUAN_YIN_PING_06",
+        "VIRT_GUAN_YIN_PING_07",
+        "VIRT_GUAN_YIN_PING_08",
+        "VIRT_GUAN_YIN_PING_09",
+        "VIRT_GUAN_YIN_PING_10",
+        "VIRT_GUAN_YIN_PING_11",
+        "VIRT_GUAN_YIN_PING_12",
+        "VIRT_GUAN_YIN_PING_13",
+        "VIRT_GUAN_YIN_PING_14"
+      ]
     },
     {
       "id": "lu-ling-qi",
@@ -11865,7 +14266,31 @@
         "FOG": "C",
         "NIGHT": "B",
         "THUNDER": "C"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": [],
+      "ancestor_chain": [
+        "VIRT_LU_LING_QI_01",
+        "VIRT_LU_LING_QI_02",
+        "VIRT_LU_LING_QI_03",
+        "VIRT_LU_LING_QI_04",
+        "VIRT_LU_LING_QI_05",
+        "VIRT_LU_LING_QI_06",
+        "VIRT_LU_LING_QI_07",
+        "VIRT_LU_LING_QI_08",
+        "VIRT_LU_LING_QI_09",
+        "VIRT_LU_LING_QI_10",
+        "VIRT_LU_LING_QI_11",
+        "VIRT_LU_LING_QI_12",
+        "VIRT_LU_LING_QI_13",
+        "VIRT_LU_LING_QI_14"
+      ]
     },
     {
       "id": "ma-yun-lu",
@@ -11906,7 +14331,31 @@
         "FOG": "C",
         "NIGHT": "B",
         "THUNDER": "C"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": [],
+      "ancestor_chain": [
+        "VIRT_MA_YUN_LU_01",
+        "VIRT_MA_YUN_LU_02",
+        "VIRT_MA_YUN_LU_03",
+        "VIRT_MA_YUN_LU_04",
+        "VIRT_MA_YUN_LU_05",
+        "VIRT_MA_YUN_LU_06",
+        "VIRT_MA_YUN_LU_07",
+        "VIRT_MA_YUN_LU_08",
+        "VIRT_MA_YUN_LU_09",
+        "VIRT_MA_YUN_LU_10",
+        "VIRT_MA_YUN_LU_11",
+        "VIRT_MA_YUN_LU_12",
+        "VIRT_MA_YUN_LU_13",
+        "VIRT_MA_YUN_LU_14"
+      ]
     },
     {
       "id": "dong-bai",
@@ -11946,7 +14395,25 @@
         "WINDY": "C",
         "NIGHT": "B",
         "THUNDER": "C"
-      }
+      },
+      "tacticSlots": [],
+      "ultimateSlots": [],
+      "ancestor_chain": [
+        "VIRT_DONG_BAI_01",
+        "VIRT_DONG_BAI_02",
+        "VIRT_DONG_BAI_03",
+        "VIRT_DONG_BAI_04",
+        "VIRT_DONG_BAI_05",
+        "VIRT_DONG_BAI_06",
+        "VIRT_DONG_BAI_07",
+        "VIRT_DONG_BAI_08",
+        "VIRT_DONG_BAI_09",
+        "VIRT_DONG_BAI_10",
+        "VIRT_DONG_BAI_11",
+        "VIRT_DONG_BAI_12",
+        "VIRT_DONG_BAI_13",
+        "VIRT_DONG_BAI_14"
+      ]
     },
     {
       "id": "fan-shi",
@@ -11986,7 +14453,31 @@
         "WINDY": "C",
         "NIGHT": "B",
         "THUNDER": "C"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": [],
+      "ancestor_chain": [
+        "VIRT_FAN_SHI_01",
+        "VIRT_FAN_SHI_02",
+        "VIRT_FAN_SHI_03",
+        "VIRT_FAN_SHI_04",
+        "VIRT_FAN_SHI_05",
+        "VIRT_FAN_SHI_06",
+        "VIRT_FAN_SHI_07",
+        "VIRT_FAN_SHI_08",
+        "VIRT_FAN_SHI_09",
+        "VIRT_FAN_SHI_10",
+        "VIRT_FAN_SHI_11",
+        "VIRT_FAN_SHI_12",
+        "VIRT_FAN_SHI_13",
+        "VIRT_FAN_SHI_14"
+      ]
     },
     {
       "id": "bian-fu-ren",
@@ -12028,7 +14519,31 @@
         "WINDY": "B",
         "NIGHT": "A",
         "THUNDER": "C"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": [],
+      "ancestor_chain": [
+        "VIRT_BIAN_FU_REN_01",
+        "VIRT_BIAN_FU_REN_02",
+        "VIRT_BIAN_FU_REN_03",
+        "VIRT_BIAN_FU_REN_04",
+        "VIRT_BIAN_FU_REN_05",
+        "VIRT_BIAN_FU_REN_06",
+        "VIRT_BIAN_FU_REN_07",
+        "VIRT_BIAN_FU_REN_08",
+        "VIRT_BIAN_FU_REN_09",
+        "VIRT_BIAN_FU_REN_10",
+        "VIRT_BIAN_FU_REN_11",
+        "VIRT_BIAN_FU_REN_12",
+        "VIRT_BIAN_FU_REN_13",
+        "VIRT_BIAN_FU_REN_14"
+      ]
     },
     {
       "id": "wu-guo-tai",
@@ -12070,7 +14585,31 @@
         "WINDY": "B",
         "NIGHT": "B",
         "THUNDER": "C"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": [],
+      "ancestor_chain": [
+        "VIRT_WU_GUO_TAI_01",
+        "VIRT_WU_GUO_TAI_02",
+        "VIRT_WU_GUO_TAI_03",
+        "VIRT_WU_GUO_TAI_04",
+        "VIRT_WU_GUO_TAI_05",
+        "VIRT_WU_GUO_TAI_06",
+        "VIRT_WU_GUO_TAI_07",
+        "VIRT_WU_GUO_TAI_08",
+        "VIRT_WU_GUO_TAI_09",
+        "VIRT_WU_GUO_TAI_10",
+        "VIRT_WU_GUO_TAI_11",
+        "VIRT_WU_GUO_TAI_12",
+        "VIRT_WU_GUO_TAI_13",
+        "VIRT_WU_GUO_TAI_14"
+      ]
     },
     {
       "id": "guo-nu-wang",
@@ -12111,7 +14650,31 @@
         "RAINY": "B",
         "WINDY": "B",
         "THUNDER": "C"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": [],
+      "ancestor_chain": [
+        "VIRT_GUO_NU_WANG_01",
+        "VIRT_GUO_NU_WANG_02",
+        "VIRT_GUO_NU_WANG_03",
+        "VIRT_GUO_NU_WANG_04",
+        "VIRT_GUO_NU_WANG_05",
+        "VIRT_GUO_NU_WANG_06",
+        "VIRT_GUO_NU_WANG_07",
+        "VIRT_GUO_NU_WANG_08",
+        "VIRT_GUO_NU_WANG_09",
+        "VIRT_GUO_NU_WANG_10",
+        "VIRT_GUO_NU_WANG_11",
+        "VIRT_GUO_NU_WANG_12",
+        "VIRT_GUO_NU_WANG_13",
+        "VIRT_GUO_NU_WANG_14"
+      ]
     },
     {
       "id": "wang-yuan-ji",
@@ -12152,7 +14715,31 @@
         "RAINY": "B",
         "WINDY": "B",
         "THUNDER": "C"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": [],
+      "ancestor_chain": [
+        "VIRT_WANG_YUAN_JI_01",
+        "VIRT_WANG_YUAN_JI_02",
+        "VIRT_WANG_YUAN_JI_03",
+        "VIRT_WANG_YUAN_JI_04",
+        "VIRT_WANG_YUAN_JI_05",
+        "VIRT_WANG_YUAN_JI_06",
+        "VIRT_WANG_YUAN_JI_07",
+        "VIRT_WANG_YUAN_JI_08",
+        "VIRT_WANG_YUAN_JI_09",
+        "VIRT_WANG_YUAN_JI_10",
+        "VIRT_WANG_YUAN_JI_11",
+        "VIRT_WANG_YUAN_JI_12",
+        "VIRT_WANG_YUAN_JI_13",
+        "VIRT_WANG_YUAN_JI_14"
+      ]
     },
     {
       "id": "xiahou-shi",
@@ -12193,7 +14780,25 @@
         "FOG": "C",
         "WINDY": "C",
         "THUNDER": "C"
-      }
+      },
+      "tacticSlots": [],
+      "ultimateSlots": [],
+      "ancestor_chain": [
+        "VIRT_XIAHOU_SHI_01",
+        "VIRT_XIAHOU_SHI_02",
+        "VIRT_XIAHOU_SHI_03",
+        "VIRT_XIAHOU_SHI_04",
+        "VIRT_XIAHOU_SHI_05",
+        "VIRT_XIAHOU_SHI_06",
+        "VIRT_XIAHOU_SHI_07",
+        "VIRT_XIAHOU_SHI_08",
+        "VIRT_XIAHOU_SHI_09",
+        "VIRT_XIAHOU_SHI_10",
+        "VIRT_XIAHOU_SHI_11",
+        "VIRT_XIAHOU_SHI_12",
+        "VIRT_XIAHOU_SHI_13",
+        "VIRT_XIAHOU_SHI_14"
+      ]
     },
     {
       "id": "xiahou-ling-nv",
@@ -12234,7 +14839,31 @@
         "RAINY": "B",
         "WINDY": "B",
         "THUNDER": "C"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": [],
+      "ancestor_chain": [
+        "VIRT_XIAHOU_LING_NV_01",
+        "VIRT_XIAHOU_LING_NV_02",
+        "VIRT_XIAHOU_LING_NV_03",
+        "VIRT_XIAHOU_LING_NV_04",
+        "VIRT_XIAHOU_LING_NV_05",
+        "VIRT_XIAHOU_LING_NV_06",
+        "VIRT_XIAHOU_LING_NV_07",
+        "VIRT_XIAHOU_LING_NV_08",
+        "VIRT_XIAHOU_LING_NV_09",
+        "VIRT_XIAHOU_LING_NV_10",
+        "VIRT_XIAHOU_LING_NV_11",
+        "VIRT_XIAHOU_LING_NV_12",
+        "VIRT_XIAHOU_LING_NV_13",
+        "VIRT_XIAHOU_LING_NV_14"
+      ]
     },
     {
       "id": "gan-shi",
@@ -12276,7 +14905,31 @@
         "FOG": "B",
         "WINDY": "C",
         "THUNDER": "C"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": [],
+      "ancestor_chain": [
+        "VIRT_GAN_SHI_01",
+        "VIRT_GAN_SHI_02",
+        "VIRT_GAN_SHI_03",
+        "VIRT_GAN_SHI_04",
+        "VIRT_GAN_SHI_05",
+        "VIRT_GAN_SHI_06",
+        "VIRT_GAN_SHI_07",
+        "VIRT_GAN_SHI_08",
+        "VIRT_GAN_SHI_09",
+        "VIRT_GAN_SHI_10",
+        "VIRT_GAN_SHI_11",
+        "VIRT_GAN_SHI_12",
+        "VIRT_GAN_SHI_13",
+        "VIRT_GAN_SHI_14"
+      ]
     },
     {
       "id": "mi-shi",
@@ -12318,7 +14971,31 @@
         "FOG": "B",
         "WINDY": "C",
         "THUNDER": "C"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": [],
+      "ancestor_chain": [
+        "VIRT_MI_SHI_01",
+        "VIRT_MI_SHI_02",
+        "VIRT_MI_SHI_03",
+        "VIRT_MI_SHI_04",
+        "VIRT_MI_SHI_05",
+        "VIRT_MI_SHI_06",
+        "VIRT_MI_SHI_07",
+        "VIRT_MI_SHI_08",
+        "VIRT_MI_SHI_09",
+        "VIRT_MI_SHI_10",
+        "VIRT_MI_SHI_11",
+        "VIRT_MI_SHI_12",
+        "VIRT_MI_SHI_13",
+        "VIRT_MI_SHI_14"
+      ]
     },
     {
       "id": "cao-jie",
@@ -12359,7 +15036,31 @@
         "RAINY": "B",
         "WINDY": "B",
         "THUNDER": "C"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": [],
+      "ancestor_chain": [
+        "VIRT_CAO_JIE_01",
+        "VIRT_CAO_JIE_02",
+        "VIRT_CAO_JIE_03",
+        "VIRT_CAO_JIE_04",
+        "VIRT_CAO_JIE_05",
+        "VIRT_CAO_JIE_06",
+        "VIRT_CAO_JIE_07",
+        "VIRT_CAO_JIE_08",
+        "VIRT_CAO_JIE_09",
+        "VIRT_CAO_JIE_10",
+        "VIRT_CAO_JIE_11",
+        "VIRT_CAO_JIE_12",
+        "VIRT_CAO_JIE_13",
+        "VIRT_CAO_JIE_14"
+      ]
     },
     {
       "id": "sun-lu-ban",
@@ -12401,7 +15102,31 @@
         "RAINY": "B",
         "WINDY": "B",
         "THUNDER": "C"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": [],
+      "ancestor_chain": [
+        "VIRT_SUN_LU_BAN_01",
+        "VIRT_SUN_LU_BAN_02",
+        "VIRT_SUN_LU_BAN_03",
+        "VIRT_SUN_LU_BAN_04",
+        "VIRT_SUN_LU_BAN_05",
+        "VIRT_SUN_LU_BAN_06",
+        "VIRT_SUN_LU_BAN_07",
+        "VIRT_SUN_LU_BAN_08",
+        "VIRT_SUN_LU_BAN_09",
+        "VIRT_SUN_LU_BAN_10",
+        "VIRT_SUN_LU_BAN_11",
+        "VIRT_SUN_LU_BAN_12",
+        "VIRT_SUN_LU_BAN_13",
+        "VIRT_SUN_LU_BAN_14"
+      ]
     },
     {
       "id": "sun-lu-yu",
@@ -12443,7 +15168,31 @@
         "RAINY": "B",
         "WINDY": "C",
         "THUNDER": "C"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": [],
+      "ancestor_chain": [
+        "VIRT_SUN_LU_YU_01",
+        "VIRT_SUN_LU_YU_02",
+        "VIRT_SUN_LU_YU_03",
+        "VIRT_SUN_LU_YU_04",
+        "VIRT_SUN_LU_YU_05",
+        "VIRT_SUN_LU_YU_06",
+        "VIRT_SUN_LU_YU_07",
+        "VIRT_SUN_LU_YU_08",
+        "VIRT_SUN_LU_YU_09",
+        "VIRT_SUN_LU_YU_10",
+        "VIRT_SUN_LU_YU_11",
+        "VIRT_SUN_LU_YU_12",
+        "VIRT_SUN_LU_YU_13",
+        "VIRT_SUN_LU_YU_14"
+      ]
     },
     {
       "id": "zhao-e",
@@ -12484,7 +15233,31 @@
         "FOG": "B",
         "RAINY": "C",
         "THUNDER": "C"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": [],
+      "ancestor_chain": [
+        "VIRT_ZHAO_E_01",
+        "VIRT_ZHAO_E_02",
+        "VIRT_ZHAO_E_03",
+        "VIRT_ZHAO_E_04",
+        "VIRT_ZHAO_E_05",
+        "VIRT_ZHAO_E_06",
+        "VIRT_ZHAO_E_07",
+        "VIRT_ZHAO_E_08",
+        "VIRT_ZHAO_E_09",
+        "VIRT_ZHAO_E_10",
+        "VIRT_ZHAO_E_11",
+        "VIRT_ZHAO_E_12",
+        "VIRT_ZHAO_E_13",
+        "VIRT_ZHAO_E_14"
+      ]
     },
     {
       "id": "yang-hui-yu",
@@ -12525,7 +15298,31 @@
         "RAINY": "B",
         "WINDY": "B",
         "THUNDER": "C"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": [],
+      "ancestor_chain": [
+        "VIRT_YANG_HUI_YU_01",
+        "VIRT_YANG_HUI_YU_02",
+        "VIRT_YANG_HUI_YU_03",
+        "VIRT_YANG_HUI_YU_04",
+        "VIRT_YANG_HUI_YU_05",
+        "VIRT_YANG_HUI_YU_06",
+        "VIRT_YANG_HUI_YU_07",
+        "VIRT_YANG_HUI_YU_08",
+        "VIRT_YANG_HUI_YU_09",
+        "VIRT_YANG_HUI_YU_10",
+        "VIRT_YANG_HUI_YU_11",
+        "VIRT_YANG_HUI_YU_12",
+        "VIRT_YANG_HUI_YU_13",
+        "VIRT_YANG_HUI_YU_14"
+      ]
     },
     {
       "id": "zhu-rong-furen",
@@ -12568,7 +15365,31 @@
         "WINDY": "B",
         "NIGHT": "B",
         "THUNDER": "C"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": [],
+      "ancestor_chain": [
+        "VIRT_ZHU_RONG_FUREN_01",
+        "VIRT_ZHU_RONG_FUREN_02",
+        "VIRT_ZHU_RONG_FUREN_03",
+        "VIRT_ZHU_RONG_FUREN_04",
+        "VIRT_ZHU_RONG_FUREN_05",
+        "VIRT_ZHU_RONG_FUREN_06",
+        "VIRT_ZHU_RONG_FUREN_07",
+        "VIRT_ZHU_RONG_FUREN_08",
+        "VIRT_ZHU_RONG_FUREN_09",
+        "VIRT_ZHU_RONG_FUREN_10",
+        "VIRT_ZHU_RONG_FUREN_11",
+        "VIRT_ZHU_RONG_FUREN_12",
+        "VIRT_ZHU_RONG_FUREN_13",
+        "VIRT_ZHU_RONG_FUREN_14"
+      ]
     },
     {
       "id": "bao-san-niang",
@@ -12609,7 +15430,31 @@
         "NIGHT": "B",
         "FOG": "C",
         "THUNDER": "C"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": [],
+      "ancestor_chain": [
+        "VIRT_BAO_SAN_NIANG_01",
+        "VIRT_BAO_SAN_NIANG_02",
+        "VIRT_BAO_SAN_NIANG_03",
+        "VIRT_BAO_SAN_NIANG_04",
+        "VIRT_BAO_SAN_NIANG_05",
+        "VIRT_BAO_SAN_NIANG_06",
+        "VIRT_BAO_SAN_NIANG_07",
+        "VIRT_BAO_SAN_NIANG_08",
+        "VIRT_BAO_SAN_NIANG_09",
+        "VIRT_BAO_SAN_NIANG_10",
+        "VIRT_BAO_SAN_NIANG_11",
+        "VIRT_BAO_SAN_NIANG_12",
+        "VIRT_BAO_SAN_NIANG_13",
+        "VIRT_BAO_SAN_NIANG_14"
+      ]
     },
     {
       "id": "hua-man",
@@ -12650,7 +15495,31 @@
         "WINDY": "B",
         "NIGHT": "B",
         "THUNDER": "C"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": [],
+      "ancestor_chain": [
+        "VIRT_HUA_MAN_01",
+        "VIRT_HUA_MAN_02",
+        "VIRT_HUA_MAN_03",
+        "VIRT_HUA_MAN_04",
+        "VIRT_HUA_MAN_05",
+        "VIRT_HUA_MAN_06",
+        "VIRT_HUA_MAN_07",
+        "VIRT_HUA_MAN_08",
+        "VIRT_HUA_MAN_09",
+        "VIRT_HUA_MAN_10",
+        "VIRT_HUA_MAN_11",
+        "VIRT_HUA_MAN_12",
+        "VIRT_HUA_MAN_13",
+        "VIRT_HUA_MAN_14"
+      ]
     },
     {
       "id": "cai-shi",
@@ -12691,7 +15560,31 @@
         "FOG": "C",
         "WINDY": "C",
         "THUNDER": "C"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": [],
+      "ancestor_chain": [
+        "VIRT_CAI_SHI_01",
+        "VIRT_CAI_SHI_02",
+        "VIRT_CAI_SHI_03",
+        "VIRT_CAI_SHI_04",
+        "VIRT_CAI_SHI_05",
+        "VIRT_CAI_SHI_06",
+        "VIRT_CAI_SHI_07",
+        "VIRT_CAI_SHI_08",
+        "VIRT_CAI_SHI_09",
+        "VIRT_CAI_SHI_10",
+        "VIRT_CAI_SHI_11",
+        "VIRT_CAI_SHI_12",
+        "VIRT_CAI_SHI_13",
+        "VIRT_CAI_SHI_14"
+      ]
     },
     {
       "id": "cao-hua",
@@ -12735,7 +15628,31 @@
         "WINDY": "C",
         "SUNNY": "D",
         "THUNDER": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": [],
+      "ancestor_chain": [
+        "VIRT_CAO_HUA_01",
+        "VIRT_CAO_HUA_02",
+        "VIRT_CAO_HUA_03",
+        "VIRT_CAO_HUA_04",
+        "VIRT_CAO_HUA_05",
+        "VIRT_CAO_HUA_06",
+        "VIRT_CAO_HUA_07",
+        "VIRT_CAO_HUA_08",
+        "VIRT_CAO_HUA_09",
+        "VIRT_CAO_HUA_10",
+        "VIRT_CAO_HUA_11",
+        "VIRT_CAO_HUA_12",
+        "VIRT_CAO_HUA_13",
+        "VIRT_CAO_HUA_14"
+      ]
     },
     {
       "id": "cao-xian",
@@ -12779,7 +15696,31 @@
         "WINDY": "C",
         "SUNNY": "D",
         "THUNDER": "D"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-fire-scheme",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": [],
+      "ancestor_chain": [
+        "VIRT_CAO_XIAN_01",
+        "VIRT_CAO_XIAN_02",
+        "VIRT_CAO_XIAN_03",
+        "VIRT_CAO_XIAN_04",
+        "VIRT_CAO_XIAN_05",
+        "VIRT_CAO_XIAN_06",
+        "VIRT_CAO_XIAN_07",
+        "VIRT_CAO_XIAN_08",
+        "VIRT_CAO_XIAN_09",
+        "VIRT_CAO_XIAN_10",
+        "VIRT_CAO_XIAN_11",
+        "VIRT_CAO_XIAN_12",
+        "VIRT_CAO_XIAN_13",
+        "VIRT_CAO_XIAN_14"
+      ]
     },
     {
       "id": "xu-shi",
@@ -12821,7 +15762,31 @@
         "SUNNY": "B",
         "WINDY": "C",
         "THUNDER": "C"
-      }
+      },
+      "tacticSlots": [
+        {
+          "slotId": "slot-1",
+          "tacticId": "tactic-morale-rally",
+          "source": "inborn"
+        }
+      ],
+      "ultimateSlots": [],
+      "ancestor_chain": [
+        "VIRT_XU_SHI_01",
+        "VIRT_XU_SHI_02",
+        "VIRT_XU_SHI_03",
+        "VIRT_XU_SHI_04",
+        "VIRT_XU_SHI_05",
+        "VIRT_XU_SHI_06",
+        "VIRT_XU_SHI_07",
+        "VIRT_XU_SHI_08",
+        "VIRT_XU_SHI_09",
+        "VIRT_XU_SHI_10",
+        "VIRT_XU_SHI_11",
+        "VIRT_XU_SHI_12",
+        "VIRT_XU_SHI_13",
+        "VIRT_XU_SHI_14"
+      ]
     }
   ]
 }

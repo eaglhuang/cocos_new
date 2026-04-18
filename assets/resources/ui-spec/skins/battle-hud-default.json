@@ -20,12 +20,13 @@
       "bleed": 4,
       "allowAutoAtlas": true
     },
-    "hud.topbar.shadow": {
+    "hud.summary.card": {
       "kind": "sprite-frame",
-      "path": "sprites/ui_families/common/shadow/shadow_01",
+      "path": "sprites/ui_families/common/parchment/frame",
       "spriteType": "sliced",
-      "border": [20, 20, 20, 20],
-      "allowAutoAtlas": true
+      "border": [16, 16, 16, 16],
+      "allowAutoAtlas": true,
+      "opacity": 0.92
     },
     "hud.bar.hp": {
       "kind": "sprite-frame",
@@ -78,8 +79,8 @@
     "hud.label.round": {
       "kind": "label-style",
       "font": "fonts/notosans_tc/font",
-      "fontSize": 26,
-      "lineHeight": 32,
+      "fontSize": 22,
+      "lineHeight": 24,
       "color": "secondaryLight",
       "horizontalAlign": "CENTER",
       "outlineColor": "outlineDark",
@@ -88,8 +89,8 @@
     "hud.label.food": {
       "kind": "label-style",
       "font": "fonts/notosans_tc/font",
-      "fontSize": 16,
-      "lineHeight": 20,
+      "fontSize": 15,
+      "lineHeight": 18,
       "color": "textWarmGold",
       "horizontalAlign": "CENTER",
       "outlineColor": "outlineHeavy",
@@ -118,13 +119,55 @@
     "hud.label.status": {
       "kind": "label-style",
       "font": "fonts/notosans_tc/font",
-      "fontSize": 18,
-      "lineHeight": 24,
+      "fontSize": 16,
+      "lineHeight": 18,
       "color": "textCyanLight",
       "horizontalAlign": "CENTER",
       "overflow": "SHRINK",
       "outlineColor": "outlineHeavy",
       "outlineWidth": 2
+    },
+    "hud.label.sceneGambitBadge": {
+      "kind": "label-style",
+      "font": "fonts/notosans_tc/font",
+      "fontSize": 14,
+      "lineHeight": 16,
+      "color": "textWarmGold",
+      "horizontalAlign": "CENTER",
+      "outlineColor": "outlineHeavy",
+      "outlineWidth": 2
+    },
+    "hud.label.summaryTitle": {
+      "kind": "label-style",
+      "font": "fonts/notosans_tc/font",
+      "fontSize": 15,
+      "lineHeight": 18,
+      "color": "secondaryLight",
+      "horizontalAlign": "LEFT",
+      "outlineColor": "outlineHeavy",
+      "outlineWidth": 2
+    },
+    "hud.label.summaryBody": {
+      "kind": "label-style",
+      "font": "fonts/notosans_tc/font",
+      "fontSize": 14,
+      "lineHeight": 18,
+      "color": "textSteelLighter",
+      "horizontalAlign": "LEFT",
+      "outlineColor": "outlineHeavy",
+      "outlineWidth": 2,
+      "overflow": "SHRINK"
+    },
+    "hud.label.summaryBodyRight": {
+      "kind": "label-style",
+      "font": "fonts/notosans_tc/font",
+      "fontSize": 14,
+      "lineHeight": 18,
+      "color": "textSteelLighter",
+      "horizontalAlign": "RIGHT",
+      "outlineColor": "outlineHeavy",
+      "outlineWidth": 2,
+      "overflow": "SHRINK"
     },
     "hud.label.fortress.player": {
       "kind": "label-style",

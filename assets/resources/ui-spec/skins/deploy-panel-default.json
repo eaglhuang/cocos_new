@@ -4,18 +4,6 @@
   "bundle": "battle_ui",
   "atlasPolicy": "battle_ui",
   "slots": {
-    "deploy.root.bg": {
-      "kind": "color",
-      "color": "background",
-      "alpha": 220
-    },
-    "deploy.root.shadow": {
-      "kind": "sprite-frame",
-      "path": "sprites/ui_families/common/shadow/shadow_01",
-      "spriteType": "sliced",
-      "border": [20, 20, 20, 20],
-      "allowAutoAtlas": true
-    },
     "deploy.slot.card": {
       "kind": "color",
       "color": "surfaceDeepBlue",
@@ -46,6 +34,29 @@
       "fontSize": 13,
       "lineHeight": 17,
       "color": "textDarkGray",
+      "overflow": "CLAMP"
+    },
+    "deploy.action.button": {
+      "kind": "color",
+      "color": "surfaceDeepBlue",
+      "alpha": 200,
+      "spriteType": "sliced",
+      "border": [6, 6, 6, 6]
+    },
+    "deploy.action.button.endTurn": {
+      "kind": "color",
+      "color": "surfaceDeepBlue",
+      "alpha": 180,
+      "spriteType": "sliced",
+      "border": [6, 6, 6, 6]
+    },
+    "deploy.label.action": {
+      "kind": "label-style",
+      "font": "fonts/notosans_tc/font",
+      "fontSize": 20,
+      "lineHeight": 24,
+      "color": "onPrimary",
+      "isBold": false,
       "overflow": "CLAMP"
     }
   }

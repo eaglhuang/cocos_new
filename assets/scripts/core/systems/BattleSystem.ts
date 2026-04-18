@@ -2,16 +2,18 @@
 import { EVENT_NAMES, GAME_CONFIG, TurnPhase } from "../config/Constants";
 import { EventSystem } from "./EventSystem";
 
+/** [P2-N2] TurnSnapshot 介面：playerDp 已更名為 playerFood，與 UI 層語意統一 */
 export interface TurnSnapshot {
   turn: number;
   phase: TurnPhase;
-  playerDp: number;
+  playerFood: number;
 }
 
 export class BattleSystem {
   private turn = 1;
   private phase = TurnPhase.PlayerDeploy;
-  private playerDp = GAME_CONFIG.INITIAL_DP;
+  /** [P2-N2] 玩家糧草（原 playerDp） */
+  private playerFood = GAME_CONFIG.INITIAL_FOOD;
   private eventSystem: EventSystem | null = null;
 
   /** 由 ServiceLoader 或外部注入 EventSystem */
@@ -22,7 +24,7 @@ export class BattleSystem {
   public beginBattle(): void {
     this.turn = 1;
     this.phase = TurnPhase.PlayerDeploy;
-    this.playerDp = GAME_CONFIG.INITIAL_DP;
+    this.playerFood = GAME_CONFIG.INITIAL_FOOD;
     this.emitPhaseChange();
   }
 
@@ -30,7 +32,7 @@ export class BattleSystem {
     return {
       turn: this.turn,
       phase: this.phase,
-      playerDp: this.playerDp,
+      playerFood: this.playerFood,
     };
   }
 
@@ -38,16 +40,17 @@ export class BattleSystem {
     return this.phase;
   }
 
-  public canSpendDp(cost: number): boolean {
-    return this.playerDp >= cost;
+  /** [P2-N2] 原 canSpendDp()：判斷糧草是否足夠 */
+  public canSpendFood(cost: number): boolean {
+    return this.playerFood >= cost;
   }
 
-  public spendDp(cost: number): boolean {
-    if (!this.canSpendDp(cost)) {
+  /** [P2-N2] 原 spendDp()：消耗糧草 */
+  public spendFood(cost: number): boolean {
+    if (!this.canSpendFood(cost)) {
       return false;
     }
-
-    this.playerDp -= cost;
+    this.playerFood -= cost;
     return true;
   }
 
@@ -66,7 +69,7 @@ export class BattleSystem {
 
     if (this.phase === TurnPhase.PlayerDeploy) {
       this.turn += 1;
-      this.playerDp = Math.min(this.playerDp + GAME_CONFIG.DP_PER_TURN, GAME_CONFIG.MAX_DP);
+      this.playerFood = Math.min(this.playerFood + GAME_CONFIG.FOOD_PER_TURN, GAME_CONFIG.MAX_FOOD);
     }
 
     this.emitPhaseChange();
@@ -79,11 +82,11 @@ export class BattleSystem {
 
   /**
    * BattleController 在跑完所有自動階段後呼叫此方法。
-   * 推進回合計數、補充玩家 DP，並重置階段回 PlayerDeploy。
+   * 推進回合計數、補充玩家糧草，並重置階段回 PlayerDeploy。
    */
   public nextTurn(): TurnSnapshot {
     this.turn += 1;
-    this.playerDp = Math.min(this.playerDp + GAME_CONFIG.DP_PER_TURN, GAME_CONFIG.MAX_DP);
+    this.playerFood = Math.min(this.playerFood + GAME_CONFIG.FOOD_PER_TURN, GAME_CONFIG.MAX_FOOD);
     this.phase = TurnPhase.PlayerDeploy;
     this.emitPhaseChange();
     return this.getSnapshot();

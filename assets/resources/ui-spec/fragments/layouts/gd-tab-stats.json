@@ -1,0 +1,15 @@
+{
+  "type": "panel",
+  "name": "TabStatsContent",
+  "widget": { "top": 0, "bottom": 0, "left": 0, "right": 0 },
+  "layout": { "type": "vertical", "spacing": 18, "paddingTop": 28, "paddingBottom": 28, "paddingLeft": 28, "paddingRight": 28 },
+  "children": [
+    { "type": "label", "name": "StrValue",       "width": "100%", "height": 40, "skinSlot": "detail.field.bg", "styleSlot": "detail.label.value" },
+    { "type": "label", "name": "IntValue",       "width": "100%", "height": 40, "skinSlot": "detail.field.bg", "styleSlot": "detail.label.value" },
+    { "type": "label", "name": "LeaValue",       "width": "100%", "height": 40, "skinSlot": "detail.field.bg", "styleSlot": "detail.label.value" },
+    { "type": "label", "name": "PolValue",       "width": "100%", "height": 40, "skinSlot": "detail.field.bg", "styleSlot": "detail.label.value" },
+    { "type": "label", "name": "ChaValue",       "width": "100%", "height": 40, "skinSlot": "detail.field.bg", "styleSlot": "detail.label.value" },
+    { "type": "label", "name": "LukValue",       "width": "100%", "height": 40, "skinSlot": "detail.field.bg", "styleSlot": "detail.label.value" },
+    { "type": "label", "name": "StatsRoleValue", "width": "100%", "height": 50, "skinSlot": "detail.field.name.bg", "styleSlot": "detail.label.subtitle" }
+  ]
+}

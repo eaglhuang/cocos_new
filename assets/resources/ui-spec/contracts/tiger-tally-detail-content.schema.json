@@ -1,0 +1,29 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "schemaId": "tiger-tally-detail-content",
+  "familyId": "tiger-tally-detail",
+  "version": 1,
+  "description": "TigerTallyDetailComposite content contract — 戰鬥場景右側虎符詳情抽屜。",
+  "fields": {
+    "unitName": { "type": "string", "required": true, "bindPath": "detail.unitName" },
+    "unitSub": { "type": "string", "required": false, "bindPath": "detail.unitSub" },
+    "rarityLabel": { "type": "string", "required": false, "bindPath": "detail.rarityLabel" },
+    "stars": { "type": "string", "required": false, "bindPath": "detail.stars" },
+    "cost": { "type": "number", "required": true, "bindPath": "detail.cost" },
+    "atk": { "type": "number", "required": true, "bindPath": "detail.atk" },
+    "def": { "type": "number", "required": true, "bindPath": "detail.def" },
+    "hp": { "type": "number", "required": true, "bindPath": "detail.hp" },
+    "spd": { "type": "number", "required": true, "bindPath": "detail.spd" },
+    "desc": { "type": "string", "required": false, "bindPath": "detail.desc" },
+    "traits": { "type": "array", "required": false, "bindPath": "detail.traits" },
+    "abilities": { "type": "array", "required": false, "bindPath": "detail.abilities" }
+  },
+  "requiredFields": [
+    "unitName",
+    "cost",
+    "atk",
+    "def",
+    "hp",
+    "spd"
+  ]
+}

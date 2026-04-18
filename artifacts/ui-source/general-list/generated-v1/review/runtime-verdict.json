@@ -1,0 +1,24 @@
+{
+  "$schema": "../../schemas/runtime-verdict.schema.json",
+  "screenId": "general-list-screen",
+  "runId": null,
+  "status": "not-run",
+  "residuals": [],
+  "promoteable": false,
+  "factoryLearnings": [
+    "recipe-screen-spec compiled; runtime verification not run yet"
+  ],
+  "latestStage": "recipe-screen-spec",
+  "captureArtifacts": {},
+  "diagnosticsSummary": {},
+  "history": [
+    {
+      "runId": null,
+      "status": "not-run",
+      "updatedAt": "2026-04-15T12:55:30.508Z",
+      "residualCount": 0,
+      "promoteable": false
+    }
+  ],
+  "updatedAt": "2026-04-15T12:55:30.508Z"
+}

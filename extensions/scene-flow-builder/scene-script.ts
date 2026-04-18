@@ -231,7 +231,7 @@ export const methods = {
       scriptNode, 'LobbyScene', 'onClickExit');
 
     // ════════════════════════════════════════════════════════════════
-    // GeneralListPanel (表格面板)
+    // GeneralListComposite host node (表格面板)
     // ════════════════════════════════════════════════════════════════
     const listPanel = getOrCreate(canvas, 'GeneralListPanel');
     const listPanelTf = listPanel.getComponent(UITransform) ?? listPanel.addComponent(UITransform);
@@ -260,9 +260,9 @@ export const methods = {
 
     // 關閉按鈕
     makeButton(listPanel, 'BtnCloseList', '✕ 關閉列表', 500, 300, 140, 55,
-      listPanel, 'GeneralListPanel', 'hide');
+      listPanel, 'GeneralListComposite', 'hide');
 
-    console.log('  ✓ GeneralListPanel（掛上 GeneralListPanel 腳本）');
+    console.log('  ✓ GeneralListPanel（掛上 GeneralListComposite 腳本）');
 
     // ════════════════════════════════════════════════════════════════
     // GeneralDetailPanel（武將詳情彈窗）
@@ -298,7 +298,7 @@ export const methods = {
 
     console.log('[SceneFlowBuilder] ✅ LobbyScene 節點樹已建立！');
     console.log('  → Canvas 掛 LobbyScene 腳本');
-    console.log('  → GeneralListPanel 節點掛 GeneralListPanel 腳本');
+    console.log('  → GeneralListPanel 節點掛 GeneralListComposite 腳本');
     console.log('  → GeneralDetailPanel 節點掛 GeneralDetailPanel 腳本');
     console.log('  → 存檔 Ctrl+S');
   },

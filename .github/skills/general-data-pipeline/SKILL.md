@@ -1,4 +1,5 @@
 ---
+doc_id: doc_agentskill_0018
 name: general-data-pipeline
 description: '武將資料管線 SKILL — 整合「公開資料爬取 → 欄位映射 → 合併去重 → 自動分類 → 品質驗證 → 匯出入庫」的端到端流程。USE FOR: 批次新增武將、從光榮三國志 Wiki 匯入參考數值、建立 master 資料集。DO NOT USE FOR: 故事文案生成（用 general-story-writer）、細部數值微調（用 general-balance-tuner）。'
 argument-hint: '指定操作階段（scrape / map / merge / classify / validate / export / full）、目標武將範圍（faction / name list / all）、以及資料來源（wiki / koei / manual）。'

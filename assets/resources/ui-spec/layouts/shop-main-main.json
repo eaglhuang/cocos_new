@@ -156,7 +156,7 @@
         ]
       },
       {
-        "type": "panel",
+        "type": "container",
         "name": "MainContainer",
         "widget": {
           "top": 124,

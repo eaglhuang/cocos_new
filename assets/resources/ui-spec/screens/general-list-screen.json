@@ -1,6 +1,6 @@
 {
   "id": "general-list-screen",
-  "version": 1,
+  "version": 2,
   "uiId": "GeneralList",
   "layer": "Game",
   "bundle": "lobby_ui",

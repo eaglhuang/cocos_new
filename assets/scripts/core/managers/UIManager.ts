@@ -34,6 +34,7 @@ import { instantiate, Node } from "cc";
 import { UILayer } from "../../ui/layers/UILayer";
 import { UIID, UIConfig, LayerType } from "../config/UIConfig";
 import { services } from "./ServiceLoader";
+import type { CompositePanel } from "../../ui/core/CompositePanel";
 
 // ─── 內部紀錄結構 ─────────────────────────────────────────────────────────────
 interface UIEntry {
@@ -57,6 +58,12 @@ export class UIManager {
     // LayerDialog：佇列式對話框
     private readonly dialogQueue: UIID[] = [];
     private activeDialog: UIID | null = null;
+
+    /**
+     * CompositePanel 登記表（M5），供場景切換時逐一 dispose。
+     * key = 任意字串標識符（對應 screenId 或場景自定義的 id）
+     */
+    private readonly _compositePanels = new Map<string, CompositePanel>();
 
     /**
      * 各層級的父節點容器（供 openAsync 動態實例化時掛載子節點）。
@@ -242,8 +249,7 @@ export class UIManager {
         return this.dialogQueue.length;
     }
 
-    /**
-     * 清除指定 UI 的快取標記（強制下次 open 不呼叫 resetState）。
+    /** 清除指定 UI 的快取標記（強制下次 open 不呼叫 resetState）。
      * 若未傳入 uiId，清除所有快取標記。
      */
     public clearCache(uiId?: UIID): void {
@@ -264,6 +270,42 @@ export class UIManager {
         this.popupStack.length = 0;
         this.dialogQueue.length = 0;
         this.activeDialog = null;
+    }
+
+    // ─── CompositePanel 管理（M5） ──────────────────────────────────────────────
+
+    /**
+     * 登記一個 CompositePanel，後續場景切換時會自動呼叫 dispose。
+     * 应在 CompositePanel.mount() 完成後由場景呼叫。
+     *
+     * Unity 對照：將 Component 登記到集中化的 SubsystemManager。
+     */
+    public registerCompositePanel(id: string, panel: CompositePanel): void {
+        this._compositePanels.set(id, panel);
+    }
+
+    /**
+     * 取消登記一個 CompositePanel（由場景主動取消，如 dispose 後）。
+     */
+    public unregisterCompositePanel(id: string): void {
+        this._compositePanels.delete(id);
+    }
+
+    /**
+     * 場景即將切換時呼叫：對所有已登記的 CompositePanel 呼叫 dispose()。
+     * 應由 SceneManager.onSceneWillChange()（或對應場景的 onDestroy）呼叫。
+     *
+     * Unity 對照：SceneManager.sceneUnloaded 事件觸發的清理流程。
+     */
+    public onSceneWillChange(): void {
+        for (const [id, panel] of this._compositePanels) {
+            try {
+                panel.dispose();
+            } catch (e) {
+                console.warn(`[UIManager] onSceneWillChange: panel "${id}" dispose 失敗:`, e);
+            }
+        }
+        this._compositePanels.clear();
     }
 
     // ─── 私有層級行為實作 ──────────────────────────────────────────────────────

@@ -1,3 +1,4 @@
+<!-- doc_id: doc_ui_0032 -->
 # UI Factory Agent Entry
 
 這份文件是給其他 Agent 的正式入口。
@@ -6,25 +7,25 @@
 
 ## 必讀順序
 
-1. `docs/keep.summary.md`
+1. `docs/keep.summary.md (doc_index_0012)` (doc_index_0012)
 目的：先載入專案共識、平台範圍、UI 量產原則與 token 節流規則。
 
-2. `docs/UI技術規格書.md`
+2. `docs/UI技術規格書.md (doc_ui_0049)` (doc_ui_0049)
 目的：確認全域 UI 技術基準，例如跨平台自適應、`Widget + SafeArea + Layout`、三層 JSON 契約、禁止 hardcode 座標。
 
-3. `docs/UI品質檢核表.md`
+3. `docs/UI品質檢核表.md (doc_ui_0050)` (doc_ui_0050)
 目的：確認統一 UI 品質門檻，例如 1920x1080、44x44 觸控熱區、9-slice / ornate frame 規則、驗收解析度。
 
-4. `docs/ui/UI-factory-baseline-and-gates.md`
+4. `docs/ui/UI-factory-baseline-and-gates.md (doc_ui_0047)` (doc_ui_0047)
 目的：確認 UI factory 的統一基準、目前量產 gate、完成定義與尚未完成的缺口。
 
-5. `docs/UI-reference-source-workflow.md`
+5. `docs/UI-reference-source-workflow.md (doc_ui_0036)` (doc_ui_0036)
 目的：確認這張 screen 的參考圖來源是使用者提供、Agent 與使用者共同探索 AI 參考圖，還是混合模式。
 
-6. `docs/UI-icon-factory-workflow.md`（若畫面含 icon / badge / currency / medal / nav glyph）
+6. `docs/UI-icon-factory-workflow.md (doc_ui_0033)` (doc_ui_0033)（若畫面含 icon / badge / currency / medal / nav glyph）
 目的：確認 icon 不是單顆 PNG，而是要先定義 family、structure mode、underlay / label / runtime overlay 規則，再進入 AI 量產。
 
-7. `docs/UI-icon-family-registry.md`（若畫面含 icon system）
+7. `docs/UI-icon-family-registry.md (doc_ui_0034)` (doc_ui_0034)（若畫面含 icon system）
 目的：確認 `family id / suite id / member key / output naming` 都走統一 registry，而不是每張 screen 各自命名。
 
 8. `artifacts/ui-source/general-detail-overview/decomposition-pipeline-ops-guide.md`
@@ -33,10 +34,10 @@
 9. 當前 screen 的 `artifacts/ui-source/<screen-id>/`
 目的：直接讀現場產物，例如 `manifests/intake.json`、`proof/*.family-map.json`、`review/generated-review.json`、`review/runtime-verdict.json`。
 
-10. `.github/skills/ui-asset-slice-pipeline/SKILL.md`（若使用者提供的是整頁 UI、2K 母圖、panel sheet，且需求是先切件再收斂）
+10. `.github/skills/ui-asset-slice-pipeline/SKILL.md` (doc_agentskill_0023)（若使用者提供的是整頁 UI、2K 母圖、panel sheet，且需求是先切件再收斂）
 目的：把 `全切 -> auto-classify -> auto-pick -> temp/selected 分流 -> trim/postprocess` 納入正式工具鏈，而不是每次手工臨時拼命令。
 
-11. `docs/ui/UI-asset-slice-pipeline-quickstart.md`（若另一個 Agent 只需要 1 頁判斷是否該走切件線）
+11. `docs/ui/UI-asset-slice-pipeline-quickstart.md (doc_ui_0045)` (doc_ui_0045)（若另一個 Agent 只需要 1 頁判斷是否該走切件線）
 目的：快速判斷什麼時候該走 `slice -> selected -> postprocess`，以及最短命令長什麼樣。
 
 ## Agent 應如何推動 UI 畫面
@@ -129,7 +130,7 @@
 
 1. `run-ui-workflow.js --workflow generate-partial-asset-postprocess --task <task-id> --goal "compile manifest and postprocess raw assets" --files <family-map-or-manifest> <raw-dir> -- node tools_node/run-ui-asset-task-batch.js --family-map <family-map.json> --input-dir <raw-dir> --strict`
 
-若使用者提供的是整頁 UI、整板母圖或 2K 高品質圖，且當前目標不是直接生新圖，而是先把局部件自動萃取出來，優先改走 `.github/skills/ui-asset-slice-pipeline/SKILL.md`。
+若使用者提供的是整頁 UI、整板母圖或 2K 高品質圖，且當前目標不是直接生新圖，而是先把局部件自動萃取出來，優先改走 `.github/skills/ui-asset-slice-pipeline/SKILL.md` (doc_agentskill_0023)。
 
 這條 skill 目前的標準形狀是：
 
@@ -251,7 +252,7 @@
 2. 補新 screen 的 `intake -> family-map -> manifest`。
 3. 補既有 screen 的 `generated-review / runtime-verdict`。
 4. 把 `param-tune` task 真正回寫到 layout / skin / token 調整流程。
-5. 若使用者手上是整頁 UI 或局部件母圖，先用 `UI-asset-slice-pipeline-quickstart.md` 判斷是否該走切件線，再接正式 task flow。
+5. 若使用者手上是整頁 UI 或局部件母圖，先用 `UI-asset-slice-pipeline-quickstart.md` (doc_ui_0045) 判斷是否該走切件線，再接正式 task flow。
 
 如果使用者要你「直接挑一個題目做完」，目前預設答案應該是：
 

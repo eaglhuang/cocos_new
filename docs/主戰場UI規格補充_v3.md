@@ -1,9 +1,10 @@
+<!-- doc_id: doc_ui_0003 -->
 # 主戰場 UI 規格補充 v3（線框圖修訂依據）
 
 > **來源**：使用者 2026-03-30 反饋共 14 項修訂（v2 七項 + v3 七項）  
-> **基礎**：`docs/主戰場UI規格書.md`（原版）  
+> **基礎**：`docs/主戰場UI規格書.md (doc_ui_0001)` (doc_ui_0001)（原版）  
 > **設計基準**：1920 × 1080 橫向，Mobile First 觸控友善  
-> **取代**：本文件取代 `主戰場UI規格補充_v2.md`
+> **取代**：本文件取代 `主戰場UI規格補充_v2.md` (doc_ui_0002)
 
 ---
 
@@ -18,6 +19,7 @@
 | v3-5 | 點擊敵/我主將頭像可開啟屬性戰法小窗 | Zone 1 + 彈窗 | 新增 |
 | v3-6 | 奧義可能有多招，點擊後彈出選擇下拉/小窗 | Zone 7 + 彈窗 | 新增 |
 | v3-7 | 整理回寫相關文件 + 重繪線框圖 | 文件維護 | 維護 |
+| **v4-1** | **虎符卡片統一為 `TigerTallyUnifiedCard` 雙態元件**：State A（摘要態）+ State B（展開態），戰場與武將頁共用同一 prefab，僅換 skin。ATK/HP 移至底部左右大字，兵種 badge 改為右側垂直 icon 列。 | Zone 3 + 武將頁 | **改造** |
 
 ---
 
@@ -43,14 +45,15 @@
 
 ## Zone 3：虎符卡片列（v3 改造）
 
-### 新增：兵種符號（v3-3）
-在卡片 overlay 上新增一個兵種類型符號徽章：
+### 新增：兵種符號列（v3-3 → v4 調整）
+在卡片右側新增兵種類型與戰法 icon 垂直列：
 
 | 子節點 | 規格 |
 |---|---|
-| **UnitTypeBadge** | Widget: `bottom: 4px, left: 4px`，32×32px 圓形 |
+| **UnitTypeBadges** | Widget: `right: 4px, top: 50%, verticalCenter`，垂直排列 |
+| 單個 badge | 32×32px 圓形，間距 4px |
 | 背景 | `rgba(0, 0, 0, 0.7)` 圓形 |
-| 符號 | 兵種 icon（騎🐴、步⚔、弓🏹、盾🛡、槍🔱），字號 16px |
+| 符號 | 兵種 icon（騎🐴、步⚔、弓🏹、盾🛡、槍🔱）+ 特殊戰法 icon |
 | 顏色 | 各兵種專屬色：騎`#D4AF37`、步`#3A8FD9`、弓`#9b6dff`、盾`#888`、槍`#2ecc71` |
 
 ### 卡片尺寸限制（v3-3）
@@ -68,18 +71,43 @@ cardHeight = min(240, (可用高度 - 3×8(間距)) / 4)
 if cardHeight < 140: 啟用 ScrollView
 ```
 
-### 完整卡片子節點（v3 彙整）
+### 完整卡片子節點（v3→v4 彙整 — 統一雙態元件）
+
+> **v4 統一**：戰場與武將頁共用同一個 `TigerTallyUnifiedCard` prefab，僅透過 skin 切換視覺語言。Layout、子節點結構與資料 contract 完全共用。
 
 ```
-TigerTallyCard
-├── ArtBackground        ← 兵種美術圖（填滿）
-├── RarityBorder         ← 品質外框色
-├── StatsOverlay         ← top: ⚔攻擊 / ❤生命
-├── UnitTypeBadge ← NEW  ← bottom-left: 兵種符號圓徽章
-├── UnitName             ← bottom-center: 兵種名稱
-├── CostBadge            ← top-right: 糧草消耗
-└── DisabledMask         ← 冷卻/不足時灰度遮罩
+TigerTallyUnifiedCard
+│
+├─ [State A: 摘要態] ← 戰場預設 / 武將頁裝備欄預設
+│  ├── ArtBackground        ← 兵種美術圖（填滿）
+│  ├── RarityBorder         ← 品質外框色（runtime 依 qualityBand 切換）
+│  ├── AtkLabel             ← bottom-left: ⚔ 攻擊數值（大字）
+│  ├── HpLabel              ← bottom-right: ❤ 生命數值（大字）
+│  ├── UnitTypeBadges       ← right-side: 兵種符號 + 特殊戰法 icon 垂直列
+│  ├── UnitName             ← bottom-center: 兵種名稱
+│  ├── CostBadge            ← top-right: 糧草消耗
+│  └── DisabledMask         ← 冷卻/不足時灰度遮罩
+│
+├─ [State B: 展開態] ← 點擊/長按展開右側面板
+│  ├── Description          ← 虎符 / 兵種文字敘述
+│  ├── SpecialTacticsList   ← 該虎符賦予的戰法列表（icon + 名稱 + 簡述）
+│  ├── AdvancedStatsGrid    ← 防禦、速度、地形適性等完整數值
+│  ├── SourceInfo           ← 死亡/招降/封賞來源 crest + 名將小頭像 + 家族徽記
+│  └── FamilySealText       ← 家族單字印記（micro-seal）
+│
+└─ Skin Switch
+   ├── battle-tally-skin     ← deep-ink + cold tactical HUD + gold CTA
+   └── parchment-tally-skin  ← parchment-first 閱讀承載面（武將頁用）
 ```
+
+#### State A → State B 互動規則
+
+| 場景 | 觸發方式 | 展開行為 |
+|---|---|---|
+| **戰場** | 長按卡片 0.5s | 右側 slide-out 快覽面板，放開或點擊外部即收回 |
+| **武將頁** | 單擊卡片 | 右側 slide-out 詳情面板，點擊外部或 × 收回 |
+| **虎符圖鑑** | 單擊卡片 | 進入 `SpiritTallyDetail` 全頁 |
+| **展開動畫** | — | slide-out 0.3s ease-out，寬度約為卡片寬度 1.2~1.5 倍 |
 
 ---
 
@@ -260,9 +288,9 @@ TigerTallyCard
 | 檔案 | 改動 |
 |---|---|
 | `battle-hud-main.json` | `DpLabel` → `FoodLabel`，`dpLabel` → `foodLabel` |
-| `主戰場UI規格書.md` §2.1 | DP 改為糧草、加入攜帶上限概念 |
-| `keep.md` | 確認無 DP 殘留用語 |
-| `demo_playbook.md` | 若有 DP 提及需確認 |
+| `主戰場UI規格書.md` (doc_ui_0001) §2.1 | DP 改為糧草、加入攜帶上限概念 |
+| `keep.md` (doc_index_0011) | 確認無 DP 殘留用語 |
+| `demo_playbook.md` (doc_spec_0161) | 若有 DP 提及需確認 |
 | 所有未來 JSON / TS | 禁止使用 `dp` 作為 id 或變數名 |
 
 ### 糧草機制說明

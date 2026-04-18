@@ -1,6 +1,6 @@
 {
   "id": "general-detail-bloodline-v3-screen",
-  "version": 3,
+  "version": 4,
   "uiId": "GeneralDetailBloodlineV3",
   "layer": "Popup",
   "bundle": "lobby_ui",
@@ -15,6 +15,7 @@
       "headerMeta",
       "rarityLabel",
       "rarityTier",
+      "overviewModeBadgeLabel",
       "portraitModeHint",
       "coreStatsTitle",
       "coreStatsValue",
@@ -37,6 +38,8 @@
       "crestGlyphSecondary",
       "crestFaceResource",
       "storyCells",
+      "dualLayerStats",
+      "profilePresentation",
       "portraitResource"
     ]
   },

@@ -1,0 +1,44 @@
+{
+  "id": "nurture-session-screen",
+  "version": 2,
+  "uiId": "NurtureSession",
+  "layer": "UI2D",
+  "bundle": "lobby_ui",
+  "layout": "nurture-session-main",
+  "skin": "nurture-session-default",
+  "contentRequirements": {
+    "schemaId": "nurture-session-content",
+    "familyId": "nurture-session",
+    "requiredFields": [
+      "sessionInfo",
+      "dualLayerStats",
+      "profilePresentation",
+      "trainingProfile",
+      "supportPlan",
+      "riskPlan",
+      "sessionTitle",
+      "sessionSubtitle",
+      "turnLabel",
+      "sessionSummary",
+      "phaseBlockTitle",
+      "phaseBlockBody",
+      "mentorModeLabel",
+      "mainCourseTitle",
+      "mainCourseBody",
+      "supportWindowTitle",
+      "supportWindowBody",
+      "riskWindowTitle",
+      "riskWindowBody",
+      "graduationTagsTitle",
+      "graduationTagsBody"
+    ]
+  },
+  "content": {
+    "source": "nurture-session-states-v1",
+    "state": "smoke-default"
+  },
+  "validation": {
+    "devices": ["phone-16-9", "phone-19_5-9"],
+    "allowMissingSkin": false
+  }
+}

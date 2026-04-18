@@ -1,0 +1,64 @@
+{
+  "diagnosticSamples": [
+    {
+      "type": "warn",
+      "text": "[GeneralDetailComposite] 找不到節點 ClickBlocker",
+      "count": 1
+    },
+    {
+      "type": "warn",
+      "text": "[GeneralDetailComposite] 找不到節點 RightTabBar/BtnTabAptitude",
+      "count": 1
+    },
+    {
+      "type": "warn",
+      "text": "[GeneralDetailComposite] 找不到節點 RightTabBar/BtnTabBasics",
+      "count": 1
+    },
+    {
+      "type": "warn",
+      "text": "[GeneralDetailComposite] 找不到節點 RightTabBar/BtnTabBloodline",
+      "count": 1
+    },
+    {
+      "type": "warn",
+      "text": "[GeneralDetailComposite] 找不到節點 RightTabBar/BtnTabExtended",
+      "count": 1
+    },
+    {
+      "type": "warn",
+      "text": "[GeneralDetailComposite] 找不到節點 RightTabBar/BtnTabOverview",
+      "count": 1
+    },
+    {
+      "type": "warn",
+      "text": "[GeneralDetailComposite] 找不到節點 RightTabBar/BtnTabSkills",
+      "count": 1
+    },
+    {
+      "type": "warn",
+      "text": "[GeneralDetailComposite] 找不到節點 RightTabBar/BtnTabStats",
+      "count": 1
+    },
+    {
+      "type": "warn",
+      "text": "[GeneralDetailComposite] 找不到節點 TopCloseBtn",
+      "count": 1
+    },
+    {
+      "type": "error",
+      "text": "[object PromiseRejectionEvent]",
+      "count": 1
+    },
+    {
+      "type": "warn",
+      "text": "[UIPreviewBuilder] 容器 \"FooterPanel\" 子節點溢出（需 2657px，可用 627px）→ 自動縮減 ×0.236",
+      "count": 1
+    },
+    {
+      "type": "error",
+      "text": "[UISpecLoader] loadLayout: \"fragments/layouts/gd-tab-overview\" 的 JSON 沒有 root 欄位，spec= [object Object]",
+      "count": 1
+    }
+  ]
+}

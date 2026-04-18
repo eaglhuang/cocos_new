@@ -1,0 +1,29 @@
+{
+  "id": "tiger-tally-detail-panel-screen",
+  "version": 1,
+  "uiId": "TigerTallyDetailPanel",
+  "layer": "Game",
+  "bundle": "battle_ui",
+  "layout": "tiger-tally-detail-panel-main",
+  "skin": "tiger-tally-detail-panel-default",
+  "contentRequirements": {
+    "schemaId": "tiger-tally-detail-content",
+    "familyId": "tiger-tally-detail",
+    "requiredFields": [
+      "unitName",
+      "atk",
+      "def",
+      "hp",
+      "spd",
+      "cost"
+    ]
+  },
+  "content": {
+    "source": "tiger-tally-detail-states-v1",
+    "state": "smoke-hubaoqi"
+  },
+  "validation": {
+    "devices": ["phone-16-9", "phone-19_5-9"],
+    "allowMissingSkin": true
+  }
+}

@@ -1,4 +1,5 @@
 ---
+doc_id: doc_ai_0001
 trigger: always_on
 ---
 
@@ -65,9 +66,9 @@ trigger: always_on
 
 ## 執行前置檢查 (Pre-flight Check)
 
-1. **強制讀取 docs/keep.md**: AI 在處理任何請求前，必須先讀取 `docs/keep.md`。
-2. **共識優先原則**: `docs/keep.md` 內的紀錄為當前會話的最高執行準則。
-3. **主動維護義務**: 達成新技術決策時，AI 須提醒用戶更新 `docs/keep.md`，並在每次新對話開始時摘要其內容。
+1. **強制讀取 docs/keep.md (doc_index_0011)**: AI 在處理任何請求前，必須先讀取 `docs/keep.md (doc_index_0011)` (doc_index_0011)。
+2. **共識優先原則**: `docs/keep.md (doc_index_0011)` (doc_index_0011) 內的紀錄為當前會話的最高執行準則。
+3. **主動維護義務**: 達成新技術決策時，AI 須提醒用戶更新 `docs/keep.md (doc_index_0011)` (doc_index_0011)，並在每次新對話開始時摘要其內容。
 
 ## 語言與推理規範 (Thinking & Language)
 
@@ -87,4 +88,4 @@ trigger: always_on
 1. **unity對照**: 因為已經很熟悉 Unity，建議在學習 Cocos Creator 時，對照 Unity 的概念和架構來理解 Cocos Creator 的設計。盡量在所有的說明裡面都對照 Unity 的概念來解釋，這樣可以幫助更快地理解 Cocos Creator 的架構和使用方式。
 2. **主動說明**: 在解釋任何 Cocos Creator 的概念或功能時，建議主動說明對照 Unity 的對應概念、其原理和背後的設計理念，而不僅僅是使用方法。這樣可以幫助更深入地理解 Cocos Creator 的架構和使用方式。
 2. **實際操作**: 為了加速vibe coding 的速度跟AI掌握度可能會產生自動工具腳本，但是還是應該幫助多解釋自動腳本的原理是否與Unity的對應概念，這樣可以幫助更快地理解Cocos Creator的架構和使用方式。
-3. **持續更新**: 隨著專案的進展，技術決策和架構可能會不斷演變。建議定期回顧和更新 docs\keep.md 中的內容，以確保所有參與者都能跟上最新的共識和規範。
+3. **持續更新**: 隨著專案的進展，技術決策和架構可能會不斷演變。建議定期回顧和更新 docs\keep.md (doc_index_0011) 中的內容，以確保所有參與者都能跟上最新的共識和規範。

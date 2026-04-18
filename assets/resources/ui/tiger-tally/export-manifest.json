@@ -1,0 +1,216 @@
+{
+  "manifest_version": "1.0",
+  "task": "UI-2-0108",
+  "generated_at": "2026-04-13",
+  "last_updated": "2026-04-13T02:01 UTC — Fine frame added; Fantasy/Downgrade/hover-states/@2x pending quota reset (UTC 06:52)",
+  "agent": "Agent1",
+  "base_path": "assets/resources/ui/tiger-tally/",
+  "nine_slice_default": { "L": 24, "R": 24, "T": 20, "B": 20 },
+  "files": [
+    {
+      "id": "battle_card_body",
+      "skin_fragment": "battle/tally-card-body-final",
+      "file_1x": "battle_tally_card_body.png",
+      "file_2x": "battle_tally_card_body@2x.png",
+      "target_size_px": "321x188",
+      "nine_slice": { "L": 24, "R": 24, "T": 20, "B": 20 },
+      "style": "dark-tactical",
+      "psd_layers": ["card_body/background", "card_body/border_frame", "card_body/corner_caps", "card_body/badge_zone_left", "card_body/rarity_zone_tr", "card_body/grain_strip_bottom"],
+      "notes": "Dark leather bg, gold filigree border, 9-slice corners. Safe area inset from 9-slice edges."
+    },
+    {
+      "id": "gd_summary_card",
+      "skin_fragment": "general_detail/tally-summary-card-final",
+      "file_1x": "gd_tally_summary_card.png",
+      "file_2x": "gd_tally_summary_card@2x.png",
+      "target_size_px": "336x196",
+      "nine_slice": { "L": 24, "R": 24, "T": 20, "B": 20 },
+      "style": "parchment-warm",
+      "psd_layers": ["card_body/background", "card_body/border_frame", "card_body/header_jade_stripe", "card_body/badge_zone_left", "card_body/rarity_zone_tr", "card_body/grain_strip_bottom"],
+      "notes": "Parchment cream bg, jade-green header stripe, breathable reading layout."
+    },
+    {
+      "id": "rarity_frame_normal",
+      "skin_fragment": "battle/tally-rarity-frame-final",
+      "file_1x": "rarity/tally_rarity_frame_normal.png",
+      "tier": "Normal",
+      "color_hex": "#9E9E9E",
+      "psd_layers": ["rarity_frame/normal"],
+      "notes": "Iron-grey, no glow. Border overlay only, transparent center."
+    },
+    {
+      "id": "rarity_frame_rare",
+      "skin_fragment": "battle/tally-rarity-frame-final",
+      "file_1x": "rarity/tally_rarity_frame_rare.png",
+      "tier": "Rare",
+      "color_hex": "#1E88E5",
+      "psd_layers": ["rarity_frame/rare"],
+      "notes": "Cool blue & silver, faint icy glow."
+    },
+    {
+      "id": "rarity_frame_epic",
+      "skin_fragment": "battle/tally-rarity-frame-final",
+      "file_1x": "rarity/tally_rarity_frame_epic.png",
+      "tier": "Epic",
+      "color_hex": "#7B1FA2",
+      "psd_layers": ["rarity_frame/epic"],
+      "notes": "Purple & gold, gem corner accents, inner purple glow."
+    },
+    {
+      "id": "rarity_frame_legendary",
+      "skin_fragment": "battle/tally-rarity-frame-final",
+      "file_1x": "rarity/tally_rarity_frame_legendary.png",
+      "tier": "Legendary",
+      "color_hex": "#F57F17",
+      "psd_layers": ["rarity_frame/legendary"],
+      "notes": "Blazing gold, dragon corner ornaments, warm amber glow."
+    },
+    {
+      "id": "rarity_frame_sacred",
+      "skin_fragment": "battle/tally-rarity-frame-final",
+      "file_1x": "rarity/tally_rarity_frame_sacred.png",
+      "tier": "Sacred",
+      "color_hex": "#E0F7FA",
+      "psd_layers": ["rarity_frame/sacred"],
+      "notes": "White-gold, phoenix lotus ornaments, celestial glow."
+    },
+    {
+      "id": "badge_cavalry",
+      "skin_fragment": "battle/tally-type-badge-final",
+      "file_1x": "badge/tally_badge_cavalry.png",
+      "troop_type": "CAVALRY",
+      "target_size_px": "256x256",
+      "runtime_display_px": "32x32",
+      "psd_layers": ["badge/cavalry"],
+      "notes": "From UI-3-0100 V2. Dark indigo leather, flat anime charging cavalryman."
+    },
+    {
+      "id": "badge_infantry",
+      "skin_fragment": "battle/tally-type-badge-final",
+      "file_1x": "badge/tally_badge_infantry.png",
+      "troop_type": "INFANTRY",
+      "target_size_px": "256x256",
+      "runtime_display_px": "32x32",
+      "psd_layers": ["badge/infantry"]
+    },
+    {
+      "id": "badge_archer",
+      "skin_fragment": "battle/tally-type-badge-final",
+      "file_1x": "badge/tally_badge_archer.png",
+      "troop_type": "ARCHER",
+      "target_size_px": "256x256",
+      "runtime_display_px": "32x32",
+      "psd_layers": ["badge/archer"]
+    },
+    {
+      "id": "badge_shield",
+      "skin_fragment": "battle/tally-type-badge-final",
+      "file_1x": "badge/tally_badge_shield.png",
+      "troop_type": "SHIELD",
+      "target_size_px": "256x256",
+      "runtime_display_px": "32x32",
+      "psd_layers": ["badge/shield"]
+    },
+    {
+      "id": "badge_pike",
+      "skin_fragment": "battle/tally-type-badge-final",
+      "file_1x": "badge/tally_badge_pike.png",
+      "troop_type": "PIKE",
+      "target_size_px": "256x256",
+      "runtime_display_px": "32x32",
+      "psd_layers": ["badge/pike"]
+    },
+    {
+      "id": "grain_cost_plate",
+      "skin_fragment": "battle/tally-grain-cost-plate-final",
+      "file_1x": "tally_grain_plate.png",
+      "target_size_px": "36x28",
+      "psd_layers": ["grain_plate/background", "grain_plate/wheat_icon_left", "grain_plate/number_zone"],
+      "notes": "Number injected at runtime. Dark leather pill with gold wheat icon."
+    },
+    {
+      "id": "source_crest_death_settlement",
+      "skin_fragment": "battle/tally-source-crest-final",
+      "file_1x": "source-crest/tally_source_crest_death_settlement.png",
+      "source_type": "DeathSettlement",
+      "target_size_px": "24x24",
+      "psd_layers": ["source_crest/death_settlement"],
+      "notes": "Blue-white soul flame, legacy origin."
+    },
+    {
+      "id": "source_crest_recruitment",
+      "skin_fragment": "battle/tally-source-crest-final",
+      "file_1x": "source-crest/tally_source_crest_recruitment.png",
+      "source_type": "Recruitment",
+      "target_size_px": "24x24",
+      "psd_layers": ["source_crest/recruitment"],
+      "notes": "Gold handshake / scroll, diplomatic acquisition."
+    },
+    {
+      "id": "source_crest_war_conquest",
+      "skin_fragment": "battle/tally-source-crest-final",
+      "file_1x": "source-crest/tally_source_crest_war_conquest.png",
+      "source_type": "WarConquest",
+      "target_size_px": "24x24",
+      "psd_layers": ["source_crest/war_conquest"],
+      "notes": "Crimson crossed swords, battlefield seizure."
+    },
+    {
+      "id": "state_tag_ready",
+      "file_1x": "state-tag/state_tag_ready.png",
+      "state": "Ready",
+      "target_size_px": "48x20",
+      "color_hex": "#43A047",
+      "psd_layers": ["state_tag/ready"],
+      "has_states": ["normal", "hover", "pressed"],
+      "notes": "Jade-green, outer glow. Interactive / deployable."
+    },
+    {
+      "id": "state_tag_food_short",
+      "file_1x": "state-tag/state_tag_food_short.png",
+      "state": "FoodShort",
+      "target_size_px": "48x20",
+      "color_hex": "#FF8F00",
+      "psd_layers": ["state_tag/foodshort"],
+      "notes": "Orange-amber, warning grain icon left. Number shows deficit at runtime."
+    },
+    {
+      "id": "state_tag_cap_full",
+      "file_1x": "state-tag/state_tag_cap_full.png",
+      "state": "CapFull",
+      "target_size_px": "48x20",
+      "color_hex": "#C62828",
+      "psd_layers": ["state_tag/capfull"],
+      "notes": "Red, fully blocked deploy. No hover/pressed."
+    },
+    {
+      "id": "state_tag_set_active",
+      "file_1x": "state-tag/state_tag_set_active.png",
+      "state": "SetActive",
+      "target_size_px": "48x20",
+      "color_hex": "#B8860B",
+      "psd_layers": ["state_tag/setactive"],
+      "notes": "Muted gold, hex set symbol. Set ID badge injected at runtime."
+    },
+    {
+      "id": "state_tag_locked",
+      "file_1x": "state-tag/state_tag_locked.png",
+      "state": "Locked",
+      "target_size_px": "48x20",
+      "color_hex": "#424242",
+      "psd_layers": ["state_tag/locked"],
+      "notes": "Dark grey, padlock left, no interaction."
+    }
+  ],
+  "pending_deliverables": [
+    "battle_tally_card_body@2x.png (upscale from 1x master — 642x376)",
+    "gd_tally_summary_card@2x.png (upscale — 672x392)",
+    "rarity_frame_fine.png (Fine tier — between Normal and Rare, green tint)",
+    "rarity_frame_fantasy.png (Fantasy/UR tier — rainbow / prismatic effect)",
+    "state_tag_downgrade.png (orange stripe + arrow — yet to generate)",
+    "hover/pressed state variants for Ready & SetActive tags",
+    "card_art_standalone 1024x1024 (card art for individual tallies, on-demand per tally)"
+  ],
+  "psd_notes": "PSD layer structure follows: [component/variant] naming. Engine reads skin_fragment → loads file_1x or file_2x depending on device DPI. Rarity frame composites over card body at runtime; badge renders in reserved left zone; state tag renders at bottom-left or top-right per layout spec.",
+  "data_contract_fields": ["tallyId","tallyName","troopId","troopName","TigerTallyScore","qualityBand","star","grainCost","equippedGeneralName","sourceType","deployState","deployReasonCode","setIds","setActive","cardArtResource"]
+}

@@ -1,4 +1,5 @@
 ---
+doc_id: doc_ai_0012
 applyTo: "assets/resources/ui-spec/fragments/**"
 ---
 

@@ -16,120 +16,12 @@
       "left": 0,
       "right": 0
     },
-    "height": 160,
-    "skinSlot": "deploy.root.bg",
+    "height": 48,
     "children": [
       {
         "type": "panel",
-        "name": "SlotRow",
-        "id": "slotRow",
-        "widget": {
-          "left": 0,
-          "right": 0
-        },
-        "height": 120,
-        "layout": {
-          "type": "horizontal",
-          "spacing": 16,
-          "paddingLeft": 24,
-          "paddingRight": 24
-        },
-        "children": [
-          {
-            "type": "button",
-            "name": "SlotCavalry",
-            "id": "btnCavalry",
-            "width": 100,
-            "height": 100,
-            "skinSlot": "deploy.slot.card",
-            "children": [
-              {
-                "type": "label",
-                "name": "Label",
-                "width": 100,
-                "height": 24,
-                "text": "騎兵",
-                "styleSlot": "deploy.label.troop"
-              }
-            ]
-          },
-          {
-            "type": "button",
-            "name": "SlotInfantry",
-            "id": "btnInfantry",
-            "width": 100,
-            "height": 100,
-            "skinSlot": "deploy.slot.card",
-            "children": [
-              {
-                "type": "label",
-                "name": "Label",
-                "width": 100,
-                "height": 24,
-                "text": "步兵",
-                "styleSlot": "deploy.label.troop"
-              }
-            ]
-          },
-          {
-            "type": "button",
-            "name": "SlotShield",
-            "id": "btnShield",
-            "width": 100,
-            "height": 100,
-            "skinSlot": "deploy.slot.card",
-            "children": [
-              {
-                "type": "label",
-                "name": "Label",
-                "width": 100,
-                "height": 24,
-                "text": "盾兵",
-                "styleSlot": "deploy.label.troop"
-              }
-            ]
-          },
-          {
-            "type": "button",
-            "name": "SlotArcher",
-            "id": "btnArcher",
-            "width": 100,
-            "height": 100,
-            "skinSlot": "deploy.slot.card",
-            "children": [
-              {
-                "type": "label",
-                "name": "Label",
-                "width": 100,
-                "height": 24,
-                "text": "弓兵",
-                "styleSlot": "deploy.label.troop"
-              }
-            ]
-          },
-          {
-            "type": "button",
-            "name": "SlotPikeman",
-            "id": "btnPikeman",
-            "width": 100,
-            "height": 100,
-            "skinSlot": "deploy.slot.card",
-            "children": [
-              {
-                "type": "label",
-                "name": "Label",
-                "width": 100,
-                "height": 24,
-                "text": "槍兵",
-                "styleSlot": "deploy.label.troop"
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "type": "panel",
         "name": "InfoRow",
+        "active": false,
         "widget": {
           "left": 0,
           "right": 0
@@ -162,17 +54,21 @@
       },
       {
         "type": "container",
-        "name": "GhostImage",
-        "id": "ghostImage",
-        "width": 100,
-        "height": 100,
+        "name": "Toast",
+        "id": "toastContainer",
+        "widget": {
+          "top": -60,
+          "horizontalCenter": 0
+        },
+        "width": 400,
+        "height": 60,
         "active": false
       }
     ]
   },
   "validation": {
     "exceptions": {
-      "no-empty-container": "GhostImage 為執行期動態填充容器，不需預設子節點"
+      "no-empty-container": "Toast 為執行期動態填充容器，不需預設子節點"
     }
   }
 }

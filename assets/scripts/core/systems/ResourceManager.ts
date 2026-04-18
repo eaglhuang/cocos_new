@@ -356,6 +356,51 @@ export class ResourceManager {
     });
   }
 
+  /**
+   * 強制釋放指定路徑的資源（忽略 ref-count，直接從快取清除並通知 assetManager 釋放）。
+   * 主要供 MemoryManager 在記憶體壓力時呼叫（M8 P3 onEvict 流程）。
+   *
+   * 與 releaseAsset() 的差異：
+   *   - releaseAsset: 呼叫 asset.decRef()（仍走 ref-count 機制）
+   *   - forceRelease:  直接從快取刪除 + assetManager.releaseAsset（繞過 ref-count）
+   *
+   * Unity 對照：Resources.UnloadAsset(asset)
+   */
+  public forceRelease(path: string): void {
+    const tryRelease = (asset: Asset | undefined | null): void => {
+      if (asset) {
+        try { assetManager.releaseAsset(asset); } catch { /* silent */ }
+      }
+    };
+
+    if (this.jsonCache.has(path)) {
+      tryRelease(this.jsonCache.get(path));
+      this.jsonCache.delete(path);
+    }
+    if (this.prefabCache.has(path)) {
+      tryRelease(this.prefabCache.get(path));
+      this.prefabCache.delete(path);
+    }
+    if (this.spriteFrameCache.has(path)) {
+      this.spriteFrameCache.get(path)?.forEach(a => tryRelease(a));
+      this.spriteFrameCache.delete(path);
+    }
+    if (this.fontCache.has(path)) {
+      tryRelease(this.fontCache.get(path));
+      this.fontCache.delete(path);
+    }
+    // singleSpriteFrameCache 可能以衍生 cacheKey 存入，逐一掃描
+    for (const [key, frame] of this.singleSpriteFrameCache) {
+      if (key === path || key.startsWith(`${path}/`)) {
+        tryRelease(frame);
+        this.singleSpriteFrameCache.delete(key);
+      }
+    }
+
+    this.pathTags.delete(path);
+    this.memoryManager?.notifyReleased(path);
+  }
+
   // ─── DC-2-0004: 分層分頁載入 API ──────────────────────────────────────────
 
   private _pageLoader: import('../storage/DataPageLoader').DataPageLoader | null = null;
@@ -432,6 +477,23 @@ export class ResourceManager {
   }
 
   // ─────────────────────────────────────────────────────────────────────────
+
+  /** Returns current cache entry counts for observability / debug. */
+  public getCacheStats(): {
+    json: number;
+    prefab: number;
+    spriteFrames: number;
+    singleSpriteFrame: number;
+    font: number;
+    total: number;
+  } {
+    const json = this.jsonCache.size;
+    const prefab = this.prefabCache.size;
+    const spriteFrames = this.spriteFrameCache.size;
+    const singleSpriteFrame = this.singleSpriteFrameCache.size;
+    const font = this.fontCache.size;
+    return { json, prefab, spriteFrames, singleSpriteFrame, font, total: json + prefab + spriteFrames + singleSpriteFrame + font };
+  }
 
   public clearCache(): void {
     this.jsonCache.forEach((_, path) => this.memoryManager?.notifyReleased(path));

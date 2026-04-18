@@ -5,9 +5,9 @@
   "root": {
     "type": "panel",
     "name": "ToastRoot",
-    "width": 500,
-    "height": 60,
-    "widget": { "top": 120 },
+    "width": 560,
+    "height": 72,
+    "widget": { "top": 120, "hCenter": 0 },
     "skinSlot": "toast.bg",
     "transition": { "enter": "fadeIn", "exit": "fadeOut", "duration": 0.3 },
     "layout": { "type": "horizontal", "spacing": 0, "paddingLeft": 20, "paddingRight": 20 },
@@ -15,7 +15,7 @@
       {
         "type": "label",
         "name": "Message",
-        "width": "100%",
+        "width": 520,
         "bind": "message",
         "styleSlot": "toast.label"
       }

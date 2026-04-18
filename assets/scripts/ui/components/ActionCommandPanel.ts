@@ -1,16 +1,17 @@
 // @spec-source → 見 docs/cross-reference-index.md
 /**
- * ActionCommandPanel — Zone 7: 奧義指令區 (v3)
+ * @deprecated
+ * ActionCommandPanel — Zone 7: 奧義指令區（已廢止，請使用 ActionCommandComposite）
  *
  * 職責：
- *   1. 顯示奧義大圓（120px，含 SP 填充環，Sprite.Type.FILLED radial）
- *   2. 顯示 3 個操作小圓：結束回合 / 計謀 / 單挑（各 80px）
- *   3. 監聽 GeneralSpChanged 事件更新 SP 環視覺與文字
- *   4. 奧義大圓點擊：SP < 100% 提示「奧義蓄力中」；SP >= 100% 彈出奧義選擇小窗
- *   5. 結束回合 → emit 'endTurn'；計謀 → emit 'tactics'；單挑 → 廣播 GeneralDuelChallenge
+ *   1. 顯示奧義大圓（120px，含 SP 填充環）已遷移至 CompositePanel
+ *   2. 顯示 3 個操作小圓已遷移
+ *   3-5. 所有邏輯已遷移
  *
- * Unity 對照：UltimateButtonController（大圓 SP 環） + ActionBtnGroup（EndTurn/Tactics/Duel）
- * Cocos SP 環實作：Sprite.type = FILLED, sprite.fillRange = 0.0~1.0
+ * 遷移完成時間：2026-04-13 (Wave 2)
+ * 預計刪除：2026-05-13 (Wave 2 全部遷移後)
+ *
+ * Unity 對照：UltimateButtonController + ActionBtnGroup
  */
 import { _decorator, Button, Label, Node, Sprite } from 'cc';
 import { EVENT_NAMES, Faction } from '../../core/config/Constants';
@@ -21,6 +22,7 @@ import { UITemplateBinder } from '../core/UITemplateBinder';
 import { UltimateSelectPopup, UltimateSkillItem } from './UltimateSelectPopup';
 
 const { ccclass, property } = _decorator;
+const ENEMY_THINKING_TOAST_KEY = 'battle.enemy-thinking';
 
 @ccclass('ActionCommandPanel')
 export class ActionCommandPanel extends UIPreviewBuilder {
@@ -47,6 +49,7 @@ export class ActionCommandPanel extends UIPreviewBuilder {
     // ── 目前 SP 狀態 ──────────────────────────────────────────
     private _maxSp = 100;
     private _currentSp = 0;
+    private _enemyThinkingToastVisible = false;
 
     private readonly _unsubs: (() => void)[] = [];
 
@@ -94,6 +97,7 @@ export class ActionCommandPanel extends UIPreviewBuilder {
     }
 
     onDestroy(): void {
+        this.hideEnemyThinking();
         this._unsubs.forEach(fn => fn());
         this._unsubs.length = 0;
     }
@@ -182,6 +186,24 @@ export class ActionCommandPanel extends UIPreviewBuilder {
             this._readyWaiters.push(finish);
             this.scheduleOnce(() => finish(this._buildCompleted), Math.max(0, timeoutMs) / 1000);
         });
+    }
+
+    /** 顯示「敵軍思考中」提示，沿用 ToastMessage 全域事件。 */
+    public showEnemyThinking(): void {
+        if (this._enemyThinkingToastVisible) return;
+        this._enemyThinkingToastVisible = true;
+        services().event.emit('SHOW_TOAST', {
+            message: '敵軍思考中...',
+            duration: 999,
+            key: ENEMY_THINKING_TOAST_KEY,
+        });
+    }
+
+    /** 收起「敵軍思考中」提示。 */
+    public hideEnemyThinking(): void {
+        if (!this._enemyThinkingToastVisible) return;
+        this._enemyThinkingToastVisible = false;
+        services().event.emit('HIDE_TOAST', { key: ENEMY_THINKING_TOAST_KEY });
     }
 
     // ── 按鈕事件 ─────────────────────────────────────────────

@@ -1,0 +1,11 @@
+{
+  "schemaId": "hud-overlay-content",
+  "familyId": "hud-overlay",
+  "screenId": "battle-hud-overlay-screen",
+  "version": 1,
+  "description": "Battle HUD overlay pending contract placeholder schema.",
+  "fields": {},
+  "requiredFields": [],
+  "generatedBy": "scaffold-ui-component --ucuf",
+  "generatedAt": "2026-04-15"
+}

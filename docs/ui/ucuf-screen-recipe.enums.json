@@ -1,0 +1,71 @@
+{
+  "recipeType": [
+    "screen-recipe"
+  ],
+  "familyId": [
+    "detail-split",
+    "dialog-card",
+    "rail-list",
+    "hud-overlay",
+    "peek-drawer"
+  ],
+  "bundle": [
+    "lobby_ui",
+    "battle_ui",
+    "ui_common"
+  ],
+  "layer": [
+    "Game",
+    "Popup",
+    "HUD",
+    "Overlay",
+    "Modal"
+  ],
+  "controllerKind": [
+    "composite-panel",
+    "uipreview-builder",
+    "hybrid"
+  ],
+  "dataSourceKind": [
+    "entity",
+    "collection",
+    "summary",
+    "tab",
+    "computed",
+    "ui-state"
+  ],
+  "slotMode": [
+    "tab-routed",
+    "specialized",
+    "layout-native",
+    "list-host",
+    "preview-host",
+    "toolbar-host",
+    "footer-host"
+  ],
+  "generationPolicy": [
+    "reuse-only",
+    "param-tune",
+    "generate-partial-asset",
+    "new-family-required"
+  ],
+  "validationProfile": [
+    "detail-split-popup-strict",
+    "dialog-card-popup-strict",
+    "rail-list-game-standard",
+    "hud-overlay-strict",
+    "peek-drawer-standard"
+  ],
+  "chromeFlagKeys": [
+    "hasPortrait",
+    "hasTopMeta",
+    "hasBottomSummary",
+    "hasTabRail",
+    "hasFooterActions",
+    "hasOverviewSpecialSlot",
+    "hasSearchBar",
+    "hasSortHeader",
+    "hasLeftRail",
+    "hasRightPreview"
+  ]
+}

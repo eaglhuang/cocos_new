@@ -20,6 +20,8 @@ export interface PersonRecord {
   template_id: string | null;
   /** 顯示名稱 */
   name: string;
+  /** 性別（男 / 女 / 未知）；虛擬祖先至少要能區分父系與母系 */
+  gender?: string;
   /**
    * 基因組 ID 陣列（參照 gene-dictionary.json 的 id 欄位）
    * 空陣列代表未知或虛擬祖先無基因資料
@@ -29,6 +31,8 @@ export interface PersonRecord {
   ep_base: number;
   /** 所屬勢力（wei/shu/wu/enemy/neutral/unknown） */
   faction: string;
+  /** 血脈標籤，用於生成器與 UI 摘要 */
+  core_tags?: string[];
   /**
    * 是否為虛擬祖先（true = 系統補全的佔位條目，無真實武將資料）
    * Unity 對照：類似 Unity 中為維持樹結構而插入的 placeholder GameObject

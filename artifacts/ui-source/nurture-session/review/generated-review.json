@@ -1,0 +1,143 @@
+{
+  "screenId": "NurtureSession",
+  "updatedAt": "2026-04-11T12:03:24.544Z",
+  "latestStage": "runtimeCapture",
+  "overallVerdict": "pass",
+  "stages": {
+    "intake": {
+      "verdict": "pass",
+      "validatedAt": "2026-04-11T12:35:00.000Z",
+      "fileCount": 1,
+      "failureCount": 0,
+      "files": [
+        {
+          "kind": "intake",
+          "filePath": "artifacts\\ui-source\\nurture-session\\manifests\\intake.json",
+          "ok": true,
+          "failReasons": []
+        }
+      ],
+      "crossFileFailReasons": [],
+      "metadata": {
+        "screenId": "NurtureSession",
+        "output": "manifests/intake.json"
+      }
+    },
+    "familyMap": {
+      "verdict": "pass",
+      "validatedAt": "2026-04-11T12:36:00.000Z",
+      "fileCount": 2,
+      "failureCount": 0,
+      "files": [
+        {
+          "kind": "intake",
+          "filePath": "artifacts\\ui-source\\nurture-session\\manifests\\intake.json",
+          "ok": true,
+          "failReasons": []
+        },
+        {
+          "kind": "familyMap",
+          "filePath": "artifacts\\ui-source\\nurture-session\\proof\\nurture-session.family-map.json",
+          "ok": true,
+          "failReasons": []
+        }
+      ],
+      "crossFileFailReasons": [],
+      "metadata": {
+        "screenId": "NurtureSession",
+        "output": "proof\\nurture-session.family-map.json"
+      }
+    },
+    "assetTaskManifest": {
+      "verdict": "pass",
+      "validatedAt": "2026-04-11T12:37:00.000Z",
+      "fileCount": 3,
+      "failureCount": 0,
+      "files": [
+        {
+          "kind": "intake",
+          "filePath": "artifacts\\ui-source\\nurture-session\\manifests\\intake.json",
+          "ok": true,
+          "failReasons": []
+        },
+        {
+          "kind": "familyMap",
+          "filePath": "artifacts\\ui-source\\nurture-session\\proof\\nurture-session.family-map.json",
+          "ok": true,
+          "failReasons": []
+        },
+        {
+          "kind": "assetTaskManifest",
+          "filePath": "artifacts\\ui-source\\nurture-session\\manifests\\asset-task-manifest.json",
+          "ok": true,
+          "failReasons": []
+        }
+      ],
+      "crossFileFailReasons": [],
+      "metadata": {
+        "screenId": "NurtureSession",
+        "output": "manifests/asset-task-manifest.json",
+        "taskCount": 0
+      }
+    },
+    "paramTuneManifest": {
+      "verdict": "pass",
+      "validatedAt": "2026-04-11T12:38:00.000Z",
+      "fileCount": 1,
+      "failureCount": 0,
+      "files": [
+        {
+          "kind": "paramTuneManifest",
+          "filePath": "artifacts\\ui-source\\nurture-session\\manifests\\param-tune-manifest.json",
+          "ok": true,
+          "failReasons": []
+        }
+      ],
+      "crossFileFailReasons": [],
+      "metadata": {
+        "screenId": "NurtureSession",
+        "output": "manifests/param-tune-manifest.json",
+        "taskCount": 0
+      }
+    },
+    "runtimeCapture": {
+      "verdict": "pass",
+      "validatedAt": "2026-04-11T12:03:24.544Z",
+      "fileCount": 4,
+      "failureCount": 0,
+      "files": [
+        {
+          "kind": "intake",
+          "filePath": "artifacts\\ui-source\\nurture-session\\manifests\\intake.json",
+          "ok": true,
+          "failReasons": []
+        },
+        {
+          "kind": "familyMap",
+          "filePath": "artifacts\\ui-source\\nurture-session\\proof\\nurture-session.family-map.json",
+          "ok": true,
+          "failReasons": []
+        },
+        {
+          "kind": "generatedReview",
+          "filePath": "artifacts\\ui-source\\nurture-session\\review\\generated-review.json",
+          "ok": true,
+          "failReasons": []
+        },
+        {
+          "kind": "runtimeVerdict",
+          "filePath": "artifacts\\ui-source\\nurture-session\\review\\runtime-verdict.json",
+          "ok": true,
+          "failReasons": []
+        }
+      ],
+      "crossFileFailReasons": [],
+      "metadata": {
+        "screenId": "NurtureSession",
+        "output": "review\\runtime-verdict.json",
+        "runId": "runtime-smoke-r4",
+        "captureReport": "artifacts\\ui-qa\\nurture-session\\runtime-smoke-r4\\capture-report.json"
+      }
+    }
+  }
+}

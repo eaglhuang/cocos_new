@@ -1,9 +1,10 @@
+<!-- doc_id: doc_ai_0022 -->
 # Agent Briefs CheckList
 
 ## UI 量產新增檢查
 
 - 新 UI 任務預設必須走：`template family -> content contract -> skin fragment -> smoke route -> docs backwrite`
-- 開卡或接卡時，先對照 [UI-task-card-template.md](C:\Users\User\3KLife\docs\agent-briefs\UI-task-card-template.md)
+- 開卡或接卡時，先對照 [UI-task-card-template.md](C:\Users\User\3KLife\docs\agent-briefs\UI-task-card-template.md (doc_task_0132)) (doc_task_0132)
 - 若任務卡沒有 `template_family / content_contract / skin_fragments / smoke_route / docs_backwritten`，視為尚未收斂完成，不應直接進入大量實作
 
 本表是任務卡總覽。狀態更新時，必須同步修改：
@@ -11,7 +12,7 @@
 - [ui-quality-todo.json](C:\Users\User\3KLife\docs\ui-quality-todo.json)
 - 本檔
 
-共通硬規則以 [keep.md](C:\Users\User\3KLife\docs\keep.md) 為準。
+共通硬規則以 [keep.md](C:\Users\User\3KLife\docs\keep.md (doc_index_0011)) (doc_index_0011) 為準。
 
 ## 執行前檢查
 
@@ -26,47 +27,47 @@
 
 | 優先級 | 卡號 | 簡單描述 | 狀態 | 完成度% | 負責 Agent |
 |---|---|---|---|---|---|
-| P0 | [UI-1-0001](tasks/UI-1-0001.md) | 搬遷 `nav_ink` 按鈕 family 至 runtime 路徑 | done | 100% | Agent2 |
-| P0 | [UI-1-0002](tasks/UI-1-0002.md) | 搬遷 `paper_utility` 按鈕 family 至 runtime 路徑 | done | 100% | Agent2 |
-| P0 | [UI-1-0003](tasks/UI-1-0003.md) | 搬遷 `warning` 按鈕 family 至 runtime 路徑 | done | 100% | Agent2 |
-| P0 | [UI-1-0004](tasks/UI-1-0004.md) | 產生共用 shadow 與 noise 紋理 | done | 100% | Agent2 |
-| P0 | [UI-2-0001](tasks/UI-2-0001.md) | 更新 `lobby-main-default` skin 指向 `nav_ink` | done | 100% | Agent1 |
-| P0 | [UI-2-0002](tasks/UI-2-0002.md) | 更新 `duel-challenge-default` skin 指向 `paper_utility` | done | 100% | Agent1 |
-| P0 | [UI-2-0021](tasks/UI-2-0021.md) | 修復 PreviewInEditor 的 SpriteFrame 路徑解析 | done | 100% | Agent1 |
-| P1 | [UI-2-0003](tasks/UI-2-0003.md) | 新增 parchment 系列 design token | done | 100% | Agent1 |
-| P1 | [UI-2-0004](tasks/UI-2-0004.md) | 新增淺底專用 label-style 變體 | done | 100% | Agent1 |
-| P1 | [UI-2-0006](tasks/UI-2-0006.md) | 驗證 shared button family 的 border 20px 規範 | done | 100% | Agent1 |
-| P1 | [UI-2-0007](tasks/UI-2-0007.md) | 為多個 skin 補上 shadow slot 定義 | done | 100% | Agent1 |
-| P1 | [UI-2-0008](tasks/UI-2-0008.md) | 建立 item-cell 標準 skin fragment | done | 100% | Agent1 |
-| P1 | [UI-2-0009](tasks/UI-2-0009.md) | 建立 common-parchment skin fragment | done | 100% | Agent1 |
-| P1 | [UI-2-0010](tasks/UI-2-0010.md) | 為 `UIPreviewBuilder` 加入 shadow layer 渲染 | done | 100% | Agent1 |
-| P1 | [UI-2-0011](tasks/UI-2-0011.md) | 為 `UIPreviewBuilder` 加入 noise overlay | done | 100% | Agent1 |
-| P1 | [UI-2-0012](tasks/UI-2-0012.md) | `duel.btn.accept` 對齊 `equipment.primary` | done | 100% | Agent1 |
-| P1 | [UI-2-0013](tasks/UI-2-0013.md) | lobby / popup / duel 首批 skin 補 shadow slot | done | 100% | Agent1 |
-| P1 | [UI-2-0014](tasks/UI-2-0014.md) | general / support / shop / gacha 群組補 shadow slot | done | 100% | Agent1 |
-| P1 | [UI-2-0015](tasks/UI-2-0015.md) | battle / system 群組補 shadow slot | done | 100% | Agent1 |
-| P1 | [UI-2-0016](tasks/UI-2-0016.md) | 補齊 popup / Layout / legacy shadow 覆蓋 | done | 100% | Agent1 |
-| P1 | [UI-2-0017](tasks/UI-2-0017.md) | 修補 general-detail bleed slot 缺失 | done | 100% | Agent1 |
-| P1 | [UI-2-0018](tasks/UI-2-0018.md) | 補上 screen-driven preview harness | done | 100% | Agent1 |
-| P1 | [UI-2-0019](tasks/UI-2-0019.md) | 對齊 D-2 QA 目標與 target family | done | 100% | Agent1 |
-| P1 | [UI-2-0020](tasks/UI-2-0020.md) | 補上 shared light-surface carrier | done | 100% | Agent1 |
-| P1 | [UI-2-0022](tasks/UI-2-0022.md) | `general-list` 升級正式九宮格皮膚 | done | 100% | Agent1 |
-| P1 | [UI-2-0023](tasks/UI-2-0023.md) | 完成 headless preview screenshot 流程 | done | 100% | Agent1 |
-| P1 | [UI-2-0024](tasks/UI-2-0024.md) | 拆分 `UIPreviewBuilder.ts` 降低風險 | completed | 100% | Agent1 |
-| P1 | [UI-2-0025](tasks/UI-2-0025.md) | 對齊 `Gacha` preview contract | done | 100% | Agent1 |
-| P1 | [UI-1-0005](tasks/UI-1-0005.md) | 產生水平 Tab active/inactive sprites | done | 100% | Agent2 |
-| P1 | [UI-1-0006](tasks/UI-1-0006.md) | 產生 bleed overlay sprites | done | 100% | Agent2 |
-| P1 | [UI-1-0007](tasks/UI-1-0007.md) | 產生 dark_metal frame/fill/bg sprites | done | 100% | Agent2 |
-| P1 | [UI-1-0008](tasks/UI-1-0008.md) | 產生 circle_icon sprites | done | 100% | Agent2 |
-| P1 | [UI-1-0010](tasks/UI-1-0010.md) | 產生 badge sprites | done | 100% | Agent2 |
-| P1 | [UI-1-0011](tasks/UI-1-0011.md) | 產生 gold_cta frame/fill/bg sprites | done | 100% | Agent2 |
-| P1 | [UI-1-0012](tasks/UI-1-0012.md) | 建立 `validate-skin-contracts.js` | done | 100% | Agent2 |
-| P1 | [UI-1-0013](tasks/UI-1-0013.md) | 建立 frame sprite 金色邊緣掃描 | done | 100% | Agent2 |
-| P1 | [UI-1-0014](tasks/UI-1-0014.md) | `LobbyMain` 正式截圖與 notes 回填 | in-progress | 20% | Agent2 |
-| P1 | [UI-1-0015](tasks/UI-1-0015.md) | `ShopMain/Gacha` 正式比較與 notes 回填 | in-progress | 70% | Agent2 |
-| P1 | [UI-1-0016](tasks/UI-1-0016.md) | `DuelChallenge` mixed-family QA | in-progress | 40% | Agent2 |
-| P2 | [UI-2-0005](tasks/UI-2-0005.md) | button-skin 新增 selected 第四態 | done | 100% | Agent1 |
-| P2 | [UI-1-0009](tasks/UI-1-0009.md) | 產生 diamond_tab sprites | done | 100% | Agent2 |
+| P0 | [UI-1-0001](tasks/UI-1-0001.md (doc_task_0009)) (doc_task_0009) | 搬遷 `nav_ink` 按鈕 family 至 runtime 路徑 | done | 100% | Agent2 |
+| P0 | [UI-1-0002](tasks/UI-1-0002.md (doc_task_0010)) (doc_task_0010) | 搬遷 `paper_utility` 按鈕 family 至 runtime 路徑 | done | 100% | Agent2 |
+| P0 | [UI-1-0003](tasks/UI-1-0003.md (doc_task_0011)) (doc_task_0011) | 搬遷 `warning` 按鈕 family 至 runtime 路徑 | done | 100% | Agent2 |
+| P0 | [UI-1-0004](tasks/UI-1-0004.md (doc_task_0012)) (doc_task_0012) | 產生共用 shadow 與 noise 紋理 | done | 100% | Agent2 |
+| P0 | [UI-2-0001](tasks/UI-2-0001.md (doc_task_0025)) (doc_task_0025) | 更新 `lobby-main-default` skin 指向 `nav_ink` | done | 100% | Agent1 |
+| P0 | [UI-2-0002](tasks/UI-2-0002.md (doc_task_0026)) (doc_task_0026) | 更新 `duel-challenge-default` skin 指向 `paper_utility` | done | 100% | Agent1 |
+| P0 | [UI-2-0021](tasks/UI-2-0021.md (doc_task_0045)) (doc_task_0045) | 修復 PreviewInEditor 的 SpriteFrame 路徑解析 | done | 100% | Agent1 |
+| P1 | [UI-2-0003](tasks/UI-2-0003.md (doc_task_0027)) (doc_task_0027) | 新增 parchment 系列 design token | done | 100% | Agent1 |
+| P1 | [UI-2-0004](tasks/UI-2-0004.md (doc_task_0028)) (doc_task_0028) | 新增淺底專用 label-style 變體 | done | 100% | Agent1 |
+| P1 | [UI-2-0006](tasks/UI-2-0006.md (doc_task_0030)) (doc_task_0030) | 驗證 shared button family 的 border 20px 規範 | done | 100% | Agent1 |
+| P1 | [UI-2-0007](tasks/UI-2-0007.md (doc_task_0031)) (doc_task_0031) | 為多個 skin 補上 shadow slot 定義 | done | 100% | Agent1 |
+| P1 | [UI-2-0008](tasks/UI-2-0008.md (doc_task_0032)) (doc_task_0032) | 建立 item-cell 標準 skin fragment | done | 100% | Agent1 |
+| P1 | [UI-2-0009](tasks/UI-2-0009.md (doc_task_0033)) (doc_task_0033) | 建立 common-parchment skin fragment | done | 100% | Agent1 |
+| P1 | [UI-2-0010](tasks/UI-2-0010.md (doc_task_0034)) (doc_task_0034) | 為 `UIPreviewBuilder` 加入 shadow layer 渲染 | done | 100% | Agent1 |
+| P1 | [UI-2-0011](tasks/UI-2-0011.md (doc_task_0035)) (doc_task_0035) | 為 `UIPreviewBuilder` 加入 noise overlay | done | 100% | Agent1 |
+| P1 | [UI-2-0012](tasks/UI-2-0012.md (doc_task_0036)) (doc_task_0036) | `duel.btn.accept` 對齊 `equipment.primary` | done | 100% | Agent1 |
+| P1 | [UI-2-0013](tasks/UI-2-0013.md (doc_task_0037)) (doc_task_0037) | lobby / popup / duel 首批 skin 補 shadow slot | done | 100% | Agent1 |
+| P1 | [UI-2-0014](tasks/UI-2-0014.md (doc_task_0038)) (doc_task_0038) | general / support / shop / gacha 群組補 shadow slot | done | 100% | Agent1 |
+| P1 | [UI-2-0015](tasks/UI-2-0015.md (doc_task_0039)) (doc_task_0039) | battle / system 群組補 shadow slot | done | 100% | Agent1 |
+| P1 | [UI-2-0016](tasks/UI-2-0016.md (doc_task_0040)) (doc_task_0040) | 補齊 popup / Layout / legacy shadow 覆蓋 | done | 100% | Agent1 |
+| P1 | [UI-2-0017](tasks/UI-2-0017.md (doc_task_0041)) (doc_task_0041) | 修補 general-detail bleed slot 缺失 | done | 100% | Agent1 |
+| P1 | [UI-2-0018](tasks/UI-2-0018.md (doc_task_0042)) (doc_task_0042) | 補上 screen-driven preview harness | done | 100% | Agent1 |
+| P1 | [UI-2-0019](tasks/UI-2-0019.md (doc_task_0043)) (doc_task_0043) | 對齊 D-2 QA 目標與 target family | done | 100% | Agent1 |
+| P1 | [UI-2-0020](tasks/UI-2-0020.md (doc_task_0044)) (doc_task_0044) | 補上 shared light-surface carrier | done | 100% | Agent1 |
+| P1 | [UI-2-0022](tasks/UI-2-0022.md (doc_task_0046)) (doc_task_0046) | `general-list` 升級正式九宮格皮膚 | done | 100% | Agent1 |
+| P1 | [UI-2-0023](tasks/UI-2-0023.md (doc_task_0047)) (doc_task_0047) | 完成 headless preview screenshot 流程 | done | 100% | Agent1 |
+| P1 | [UI-2-0024](tasks/UI-2-0024.md (doc_task_0048)) (doc_task_0048) | 拆分 `UIPreviewBuilder.ts` 降低風險 | completed | 100% | Agent1 |
+| P1 | [UI-2-0025](tasks/UI-2-0025.md (doc_task_0049)) (doc_task_0049) | 對齊 `Gacha` preview contract | done | 100% | Agent1 |
+| P1 | [UI-1-0005](tasks/UI-1-0005.md (doc_task_0013)) (doc_task_0013) | 產生水平 Tab active/inactive sprites | done | 100% | Agent2 |
+| P1 | [UI-1-0006](tasks/UI-1-0006.md (doc_task_0014)) (doc_task_0014) | 產生 bleed overlay sprites | done | 100% | Agent2 |
+| P1 | [UI-1-0007](tasks/UI-1-0007.md (doc_task_0015)) (doc_task_0015) | 產生 dark_metal frame/fill/bg sprites | done | 100% | Agent2 |
+| P1 | [UI-1-0008](tasks/UI-1-0008.md (doc_task_0016)) (doc_task_0016) | 產生 circle_icon sprites | done | 100% | Agent2 |
+| P1 | [UI-1-0010](tasks/UI-1-0010.md (doc_task_0018)) (doc_task_0018) | 產生 badge sprites | done | 100% | Agent2 |
+| P1 | [UI-1-0011](tasks/UI-1-0011.md (doc_task_0019)) (doc_task_0019) | 產生 gold_cta frame/fill/bg sprites | done | 100% | Agent2 |
+| P1 | [UI-1-0012](tasks/UI-1-0012.md (doc_task_0020)) (doc_task_0020) | 建立 `validate-skin-contracts.js` | done | 100% | Agent2 |
+| P1 | [UI-1-0013](tasks/UI-1-0013.md (doc_task_0021)) (doc_task_0021) | 建立 frame sprite 金色邊緣掃描 | done | 100% | Agent2 |
+| P1 | [UI-1-0014](tasks/UI-1-0014.md (doc_task_0022)) (doc_task_0022) | `LobbyMain` 正式截圖與 notes 回填 | done | 100% | Agent2 |
+| P1 | [UI-1-0015](tasks/UI-1-0015.md (doc_task_0023)) (doc_task_0023) | `ShopMain/Gacha` 正式比較與 notes 回填 | done | 100% | Agent2 |
+| P1 | [UI-1-0016](tasks/UI-1-0016.md (doc_task_0024)) (doc_task_0024) | `DuelChallenge` mixed-family QA | done | 100% | Agent2 |
+| P2 | [UI-2-0005](tasks/UI-2-0005.md (doc_task_0029)) (doc_task_0029) | button-skin 新增 selected 第四態 | done | 100% | Agent1 |
+| P2 | [UI-1-0009](tasks/UI-1-0009.md (doc_task_0017)) (doc_task_0017) | 產生 diamond_tab sprites | done | 100% | Agent2 |
 
 ## 依賴維護原則
 

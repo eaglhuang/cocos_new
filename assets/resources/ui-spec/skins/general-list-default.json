@@ -1,49 +1,145 @@
 {
   "id": "general-list-default",
-  "version": 5,
+  "version": 6,
   "bundle": "lobby_ui",
   "atlasPolicy": "lobby_general",
-  "$fragments": ["common-parchment-default"],
+  "$fragments": ["common-parchment-default", "header-rarity-plaque-default"],
   "slots": {
-    "general.bg": {
+    "widget.header.plaque.base": {
       "kind": "color-rect",
-      "color": "surfaceContainer"
+      "color": "surfaceDeep",
+      "alpha": 214
     },
-    "general.header.bg": {
-      "kind": "color-rect",
-      "color": "dividerOnParchment"
+    "widget.header.plaque.fill": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/detail_header_fill",
+      "spriteType": "simple",
+      "allowAutoAtlas": true,
+      "opacity": 0.92
+    },
+    "widget.header.plaque.band": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/formal/header_band_formal",
+      "spriteType": "sliced",
+      "border": [20, 0, 20, 0],
+      "allowAutoAtlas": true,
+      "opacity": 0.42
+    },
+    "widget.header.plaque.title": {
+      "kind": "label-style",
+      "font": "fonts/notosans_tc/font",
+      "fontSize": 34,
+      "lineHeight": 36,
+      "color": "text.parchment.primary",
+      "outlineWidth": 0,
+      "horizontalAlign": "LEFT",
+      "verticalAlign": "CENTER",
+      "overflow": "SHRINK",
+      "isBold": true
+    },
+    "widget.header.plaque.subtitle": {
+      "kind": "label-style",
+      "font": "fonts/notosans_tc/font",
+      "fontSize": 15,
+      "lineHeight": 18,
+      "color": "accent.gold.base",
+      "outlineWidth": 0,
+      "horizontalAlign": "LEFT",
+      "verticalAlign": "CENTER",
+      "overflow": "SHRINK"
+    },
+    "widget.header.plaque.badge.underlay": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/parchment/fill",
+      "spriteType": "sliced",
+      "border": [16, 16, 16, 16],
+      "allowAutoAtlas": true,
+      "opacity": 0.9
+    },
+    "widget.header.plaque.badge.fill": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/parchment/fill",
+      "spriteType": "sliced",
+      "border": [16, 16, 16, 16],
+      "allowAutoAtlas": true,
+      "opacity": 0.96
+    },
+    "widget.header.plaque.badge.label": {
+      "kind": "label-style",
+      "font": "fonts/notosans_tc/font",
+      "fontSize": 18,
+      "lineHeight": 22,
+      "color": "text.parchment.primary",
+      "outlineWidth": 0,
+      "horizontalAlign": "CENTER",
+      "verticalAlign": "CENTER",
+      "isBold": true,
+      "overflow": "SHRINK"
+    },
+    "parchment.bg.fill": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/v3_final/info_card_panel_parchment_rect_v1",
+      "spriteType": "sliced",
+      "border": [22, 28, 22, 28],
+      "allowAutoAtlas": true,
+      "opacity": 0.95,
+      "color": "#FFFFFF"
+    },
+    "parchment.bg.frame": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/parchment/frame",
+      "spriteType": "sliced",
+      "border": [16, 16, 16, 16],
+      "allowAutoAtlas": true,
+      "opacity": 0.86
+    },
+    "parchment.bg.bleed": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/bleed/bleed_parchment",
+      "spriteType": "sliced",
+      "border": [24, 24, 24, 24],
+      "allowAutoAtlas": true,
+      "opacity": 0.18
     },
     "parchment.bg.shadow": {
       "kind": "sprite-frame",
       "path": "sprites/ui_families/common/shadow/shadow_01",
       "spriteType": "sliced",
       "border": [20, 20, 20, 20],
-      "allowAutoAtlas": true
+      "allowAutoAtlas": true,
+      "opacity": 0.28,
+      "offsetY": 10
     },
     "parchment.bg.noise": {
       "kind": "sprite-frame",
       "path": "sprites/ui_families/common/noise/paper_noise_256",
       "spriteType": "tiled",
-      "opacity": 0.10,
+      "opacity": 0.08,
       "blendMode": "alpha"
-    },
-    "parchment.bg.accent": {
-      "kind": "color-rect",
-      "color": "transparent"
     },
     "detail.bg.fullscreen": {
       "kind": "sprite-frame",
-      "path": "ui-spec/placeholders/bg_ink_main",
+      "path": "sprites/ui_families/general_detail/detail_content_bg",
       "spriteType": "sliced",
       "border": [96, 360, 96, 420],
       "allowAutoAtlas": false
     },
+    "general.header.bg": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/v3_final/story_caption_strip_parchment_v1",
+      "spriteType": "sliced",
+      "border": [18, 56, 18, 56],
+      "allowAutoAtlas": true,
+      "opacity": 0.92,
+      "color": "#FFFFFF"
+    },
     "general.list.bg": {
       "kind": "sprite-frame",
-      "path": "sprites/ui_families/common/parchment/bg",
+      "path": "sprites/ui_families/general_detail/v3_final/info_card_panel_parchment_rect_v1",
       "spriteType": "sliced",
-      "border": [8, 8, 8, 8],
-      "opacity": 0.6,
+      "border": [22, 28, 22, 28],
+      "opacity": 0.92,
+      "color": "#FFFFFF",
       "allowAutoAtlas": true
     },
     "general.list.shadow": {
@@ -54,9 +150,12 @@
       "allowAutoAtlas": true
     },
     "general.row.bg": {
-      "kind": "color-rect",
-      "color": "dividerOnParchment",
-      "alpha": 40
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/v3_final/module_card_panel_mint_rect_v1",
+      "spriteType": "sliced",
+      "border": [20, 24, 20, 24],
+      "allowAutoAtlas": true,
+      "opacity": 0.98
     },
     "general.label.title": {
       "kind": "label-style",
@@ -68,45 +167,112 @@
     },
     "general.label.header": {
       "kind": "label-style",
-      "fontSize": 20,
-      "lineHeight": 28,
-      "color": "textInk",
+      "font": "fonts/notosans_tc/font",
+      "fontSize": 18,
+      "lineHeight": 24,
+      "color": "text.parchment.secondary",
       "isBold": true,
       "horizontalAlign": "LEFT",
+      "verticalAlign": "CENTER",
       "overflow": "SHRINK"
+    },
+    "general.label.headerAction": {
+      "kind": "label-style",
+      "font": "fonts/notosans_tc/font",
+      "fontSize": 17,
+      "lineHeight": 22,
+      "color": "accent.gold.base",
+      "isBold": true,
+      "horizontalAlign": "CENTER",
+      "verticalAlign": "CENTER",
+      "overflow": "SHRINK"
+    },
+    "general.label.kicker": {
+      "kind": "label-style",
+      "font": "fonts/notosans_tc/font",
+      "fontSize": 13,
+      "lineHeight": 18,
+      "color": "accent.gold.base",
+      "horizontalAlign": "LEFT",
+      "verticalAlign": "CENTER",
+      "overflow": "SHRINK",
+      "isBold": true
     },
     "general.label.name": {
       "kind": "label-style",
-      "fontSize": 22,
-      "lineHeight": 28,
-      "color": "textInk",
+      "font": "fonts/notosans_tc/font",
+      "fontSize": 24,
+      "lineHeight": 30,
+      "color": "text.parchment.primary",
       "isBold": true,
       "horizontalAlign": "LEFT",
+      "verticalAlign": "CENTER",
       "overflow": "SHRINK"
     },
     "general.label.value": {
       "kind": "label-style",
+      "font": "fonts/notosans_tc/font",
       "fontSize": 20,
       "lineHeight": 26,
-      "color": "textInk",
+      "color": "text.parchment.primary",
       "isBold": true,
-      "horizontalAlign": "LEFT"
+      "horizontalAlign": "LEFT",
+      "verticalAlign": "CENTER",
+      "overflow": "SHRINK"
     },
     "general.label.faction": {
       "kind": "label-style",
-      "fontSize": 20,
-      "lineHeight": 26,
-      "color": "textInk",
+      "font": "fonts/notosans_tc/font",
+      "fontSize": 18,
+      "lineHeight": 24,
+      "color": "text.parchment.secondary",
       "isBold": true,
-      "horizontalAlign": "LEFT"
+      "horizontalAlign": "LEFT",
+      "verticalAlign": "CENTER",
+      "overflow": "SHRINK"
     },
     "general.label.positive": {
       "kind": "label-style",
+      "font": "fonts/notosans_tc/font",
       "fontSize": 20,
       "lineHeight": 26,
       "color": "textPositiveOnParchment",
       "isBold": true,
-      "horizontalAlign": "LEFT"
+      "horizontalAlign": "LEFT",
+      "verticalAlign": "CENTER",
+      "overflow": "SHRINK"
+    },
+    "general.label.action": {
+      "kind": "label-style",
+      "font": "fonts/notosans_tc/font",
+      "fontSize": 18,
+      "lineHeight": 22,
+      "color": "accent.gold.base",
+      "isBold": true,
+      "horizontalAlign": "CENTER",
+      "verticalAlign": "CENTER",
+      "overflow": "SHRINK"
+    },
+    "general.label.meta": {
+      "kind": "label-style",
+      "font": "fonts/notosans_tc/font",
+      "fontSize": 14,
+      "lineHeight": 18,
+      "color": "text.parchment.secondary",
+      "horizontalAlign": "LEFT",
+      "verticalAlign": "CENTER",
+      "overflow": "SHRINK"
+    },
+    "general.label.button": {
+      "kind": "label-style",
+      "font": "fonts/notosans_tc/font",
+      "fontSize": 20,
+      "lineHeight": 24,
+      "color": "textAccent",
+      "isBold": true,
+      "horizontalAlign": "CENTER",
+      "verticalAlign": "CENTER",
+      "overflow": "SHRINK"
     },
     "ui-common-metal.equipment.primary": {
       "kind": "button-skin",
@@ -118,15 +284,6 @@
       "allowAutoAtlas": true
     },
     "list.button.primary": {
-      "kind": "button-skin",
-      "normal": "sprites/ui_families/common/equipment/btn_primary_normal",
-      "pressed": "sprites/ui_families/common/equipment/btn_primary_pressed",
-      "disabled": "sprites/ui_families/common/equipment/btn_primary_disabled",
-      "spriteType": "sliced",
-      "border": [20, 20, 20, 20],
-      "allowAutoAtlas": true
-    },
-    "common.button.primary": {
       "kind": "button-skin",
       "normal": "sprites/ui_families/common/equipment/btn_primary_normal",
       "pressed": "sprites/ui_families/common/equipment/btn_primary_pressed",

@@ -1,0 +1,13 @@
+{
+  "id": "ultimate-select-popup-screen",
+  "version": 1,
+  "uiId": "UltimateSelectPopup",
+  "layer": "Popup",
+  "bundle": "battle_ui",
+  "layout": "ultimate-select-popup-main",
+  "skin": "ultimate-select-popup-default",
+  "validation": {
+    "devices": ["phone-16-9", "phone-19_5-9", "tablet-4-3"],
+    "allowMissingSkin": false
+  }
+}

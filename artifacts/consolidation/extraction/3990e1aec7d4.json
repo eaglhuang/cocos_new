@@ -1,0 +1,50 @@
+{
+  "path": "docs/遊戲規格文件/討論來源/更舊的討論/夜襲戰場視覺規格提案.md",
+  "hash": "3990e1aec7d4",
+  "paragraphCount": 6,
+  "topics": [
+    "虎符",
+    "兵種",
+    "英靈",
+    "戰場",
+    "數值",
+    "AI",
+    "視覺"
+  ],
+  "paragraphs": [
+    {
+      "index": 0,
+      "heading": "---",
+      "preview": "**🌙 《三國傳承：全球遠征》最終視覺規格書：夜襲戰場模式 (Night Raid Mode Final Production Prompt)**"
+    },
+    {
+      "index": 1,
+      "heading": "**1\\. 核心氛圍與大氣光影 (Atmosphere & Cinematic Lighting)**",
+      "preview": "* **光影風格**：**AAA 級電影「夜間冷色調（Cine-Cool Tone）」光影。** 環境光鎖定在深青灰色與暗棕色之間，營造寂靜、神秘且充滿肅殺之氣的氛圍。 * **夜襲光源**： * **自然光**： pale moonlight，烏雲密佈（Overcast Night Sky），月光"
+    },
+    {
+      "index": 2,
+      "heading": "**2\\. 棋盤格與敵營布置 (Tactical Grid & Enemy Tents)**",
+      "preview": "* **戰術棋盤**：5x8 的石磚棋盤格位於畫面中央（\\~65%）。格線與風化的碎石、灰塵、陳年血跡（Aged Blood Stains）在暗光下顯得更加厚重。 * **敵營營帳裝飾 (Important\\!):** 在敵方控制區域（右上至中）的棋盤格格子上，零星擺放數個「AAA 級精美立牌」質感"
+    },
+    {
+      "index": 3,
+      "heading": "**3\\. 單位比例與立牌系統 (Unit Scale & Scale Ratio)**",
+      "preview": "* **精確比例**： * **主將規模**：雙方主將（左下張飛、右上曹操）立牌的大小為**一般小兵的 2 倍高度**。 * **小兵規模**：小兵與營帳立牌（sprites/papers）的大小持平。 * **夜間表現**： * **小兵立牌 (Sprites/Papers)**：底座顏色在暗光下"
+    },
+    {
+      "index": 4,
+      "heading": "**4\\. 特效與環境裝飾 (FX & Sanitization)**",
+      "preview": "* **互動特效 (獲得糧草武器):** * 當我方兵種「占領」或「攻擊」敵方營帳格子時，觸發特殊的\\*\\*「掠奪特效」\\*\\*。 * 營帳內部火光爆裂，浮現亮金色粒子組成的\\*\\*「糧草 \\+ 500」、「武器 \\+ 20」\\*\\*螢光文字。同時，兵種立牌周圍閃爍琥珀般的光芒，表示獲得強化。 * "
+    },
+    {
+      "index": 5,
+      "heading": "**5\\. UI 布局與質感 (AAA Screen-Space UI)**",
+      "preview": "所有 UI 採扁平化、正面對鏡頭設計，質感為重金屬與古玉鑲嵌。 * **左方兵種選單 Expanded (D)**：垂直排列寬幅按鈕，兵種精美圖片佈滿按鈕背景。文字「步兵, Lv99」等書法體半透明覆蓋。 * **右下操作區 Fatal Four (E)**：垂直排列矩形金屬古玉質感按鈕矩陣。技能能"
+    }
+  ],
+  "stats": {
+    "charCount": 2756,
+    "wordCount": 257
+  }
+}

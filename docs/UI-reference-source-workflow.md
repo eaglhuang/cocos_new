@@ -1,3 +1,4 @@
+<!-- doc_id: doc_ui_0036 -->
 # UI Reference Source Workflow
 
 這份文件定義 UI factory 裡最前面的環節：參考圖來源確認與 AI 參考圖探索。
@@ -56,9 +57,9 @@ Agent 要做的事：
 
 最低限度要讀：
 
-1. `docs/keep.summary.md`
-2. `docs/UI技術規格書.md`
-3. `docs/UI品質檢核表.md`
+1. `docs/keep.summary.md (doc_index_0012)` (doc_index_0012)
+2. `docs/UI技術規格書.md (doc_ui_0049)` (doc_ui_0049)
+3. `docs/UI品質檢核表.md (doc_ui_0050)` (doc_ui_0050)
 4. 相關的 screen spec / task brief / family baseline
 
 ### Step 2. 把 prompt 問題拆成五類

@@ -1,0 +1,459 @@
+{
+  "id": "tiger-tally-detail-panel-main",
+  "version": 1,
+  "canvas": {
+    "fitWidth": true,
+    "fitHeight": true,
+    "safeArea": true,
+    "designWidth": 1920,
+    "designHeight": 1080,
+    "safeAreaConstrained": true
+  },
+  "root": {
+    "type": "container",
+    "name": "TigerTallyDetailRoot",
+    "id": "tigerTallyDetailRoot",
+    "widget": {
+      "top": 80,
+      "right": 12,
+      "bottom": 8
+    },
+    "width": 420,
+    "skinSlot": "ttd.root.bg",
+    "transition": {
+      "enter": "slideLeft",
+      "exit": "slideRight",
+      "duration": 0.22
+    },
+    "layout": {
+      "type": "vertical",
+      "spacing": 8,
+      "paddingLeft": 12,
+      "paddingRight": 12,
+      "paddingTop": 12,
+      "paddingBottom": 12
+    },
+    "children": [
+      {
+        "type": "panel",
+        "name": "Header",
+        "width": "100%",
+        "height": 72,
+        "skinSlot": "ttd.header.bg",
+        "layout": {
+          "type": "horizontal",
+          "spacing": 10,
+          "paddingLeft": 10,
+          "paddingRight": 10,
+          "paddingTop": 8,
+          "paddingBottom": 8
+        },
+        "children": [
+          {
+            "type": "image",
+            "name": "TypeIcon",
+            "id": "typeIcon",
+            "width": 42,
+            "height": 42,
+            "skinSlot": "ttd.type.icon"
+          },
+          {
+            "type": "panel",
+            "name": "TitleGroup",
+            "flex": 1,
+            "height": 50,
+            "layout": {
+              "type": "vertical",
+              "spacing": 0
+            },
+            "children": [
+              {
+                "type": "label",
+                "name": "UnitName",
+                "id": "unitName",
+                "width": "100%",
+                "height": 20,
+                "styleSlot": "ttd.label.name"
+              },
+              {
+                "type": "label",
+                "name": "UnitSub",
+                "id": "unitSub",
+                "width": "100%",
+                "height": 12,
+                "styleSlot": "ttd.label.sub"
+              },
+              {
+                "type": "container",
+                "name": "MetaRow",
+                "width": "100%",
+                "height": 14,
+                "layout": {
+                  "type": "horizontal",
+                  "spacing": 6
+                },
+                "children": [
+                  {
+                    "type": "label",
+                    "name": "RarityLabel",
+                    "id": "rarityLabel",
+                    "width": 54,
+                    "height": 16,
+                    "styleSlot": "ttd.label.rarity"
+                  },
+                  {
+                    "type": "label",
+                    "name": "StarsLabel",
+                    "id": "starsLabel",
+                    "width": 74,
+                    "height": 16,
+                    "styleSlot": "ttd.label.stars"
+                  },
+                  {
+                    "type": "label",
+                    "name": "SourceFaction",
+                    "id": "sourceFaction",
+                    "width": 140,
+                    "height": 16,
+                    "styleSlot": "ttd.label.meta"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "button",
+            "name": "BtnClose",
+            "id": "btnClose",
+            "width": 24,
+            "height": 24,
+            "skinSlot": "ttd.btn.close"
+          }
+        ]
+      },
+      {
+        "type": "panel",
+        "name": "ArtCard",
+        "width": "100%",
+        "height": 214,
+        "skinSlot": "ttd.section.bg",
+        "children": [
+          {
+            "type": "image",
+            "name": "ArtFrame",
+            "widget": {
+              "top": 8,
+              "left": 8,
+              "right": 8
+            },
+            "height": 162,
+            "skinSlot": "ttd.art.frame"
+          },
+          {
+            "type": "image",
+            "name": "DetailArt",
+            "id": "detailArt",
+            "widget": {
+              "top": 33,
+              "left": 34,
+              "right": 34
+            },
+            "height": 122,
+            "skinSlot": "ttd.art.preview"
+          },
+          {
+            "type": "label",
+            "name": "CostValue",
+            "id": "costValue",
+            "widget": {
+              "left": 54,
+              "top": 34
+            },
+            "width": 42,
+            "height": 16,
+            "styleSlot": "ttd.label.cost"
+          },
+          {
+            "type": "label",
+            "name": "AtkValue",
+            "id": "atkValue",
+            "widget": {
+              "left": 34,
+              "bottom": 44
+            },
+            "width": 88,
+            "height": 28,
+            "styleSlot": "ttd.label.atk"
+          },
+          {
+            "type": "label",
+            "name": "HpValue",
+            "id": "hpValue",
+            "widget": {
+              "right": 34,
+              "bottom": 44
+            },
+            "width": 104,
+            "height": 28,
+            "styleSlot": "ttd.label.hp"
+          },
+          {
+            "type": "label",
+            "name": "SourceLine",
+            "id": "sourceLine",
+            "widget": {
+              "left": 12,
+              "right": 12,
+              "bottom": 12
+            },
+            "height": 16,
+            "styleSlot": "ttd.label.meta"
+          }
+        ]
+      },
+      {
+        "type": "panel",
+        "name": "SourceSection",
+        "width": "100%",
+        "height": 84,
+        "skinSlot": "ttd.section.bg",
+        "layout": {
+          "type": "vertical",
+          "spacing": 4,
+          "paddingLeft": 10,
+          "paddingRight": 10,
+          "paddingTop": 8,
+          "paddingBottom": 8
+        },
+        "children": [
+          {
+            "type": "label",
+            "name": "SectionTitle1",
+            "width": "100%",
+            "height": 14,
+            "text": "來源模組",
+            "styleSlot": "ttd.label.section"
+          },
+          {
+            "type": "label",
+            "name": "SourceOriginValue",
+            "id": "sourceOriginValue",
+            "width": "100%",
+            "height": 16,
+            "styleSlot": "ttd.label.meta"
+          },
+          {
+            "type": "label",
+            "name": "SourceTypeValue",
+            "id": "sourceTypeValue",
+            "width": "100%",
+            "height": 16,
+            "styleSlot": "ttd.label.meta"
+          },
+          {
+            "type": "label",
+            "name": "SourceObtainValue",
+            "id": "sourceObtainValue",
+            "width": "100%",
+            "height": 32,
+            "styleSlot": "ttd.label.desc"
+          }
+        ]
+      },
+      {
+        "type": "panel",
+        "name": "SummarySection",
+        "width": "100%",
+        "height": 84,
+        "skinSlot": "ttd.section.bg",
+        "layout": {
+          "type": "vertical",
+          "spacing": 4,
+          "paddingLeft": 10,
+          "paddingRight": 10,
+          "paddingTop": 8,
+          "paddingBottom": 8
+        },
+        "children": [
+          {
+            "type": "label",
+            "name": "SectionTitle2",
+            "width": "100%",
+            "height": 14,
+            "text": "虎符摘要",
+            "styleSlot": "ttd.label.section"
+          },
+          {
+            "type": "label",
+            "name": "SummaryText",
+            "id": "summaryText",
+            "width": "100%",
+            "height": 48,
+            "styleSlot": "ttd.label.desc"
+          }
+        ]
+      },
+      {
+        "type": "panel",
+        "name": "StatsSection",
+        "width": "100%",
+        "height": 92,
+        "skinSlot": "ttd.section.bg",
+        "layout": {
+          "type": "vertical",
+          "spacing": 6,
+          "paddingLeft": 10,
+          "paddingRight": 10,
+          "paddingTop": 8,
+          "paddingBottom": 8
+        },
+        "children": [
+          {
+            "type": "label",
+            "name": "SectionTitle3",
+            "width": "100%",
+            "height": 14,
+            "text": "基礎數值",
+            "styleSlot": "ttd.label.section"
+          },
+          {
+            "type": "label",
+            "name": "DefValue",
+            "id": "defValue",
+            "width": "100%",
+            "height": 16,
+            "styleSlot": "ttd.label.stat"
+          },
+          {
+            "type": "label",
+            "name": "SpdValue",
+            "id": "spdValue",
+            "width": "100%",
+            "height": 16,
+            "styleSlot": "ttd.label.stat"
+          }
+        ]
+      },
+      {
+        "type": "panel",
+        "name": "TraitSection",
+        "width": "100%",
+        "height": 108,
+        "skinSlot": "ttd.section.bg",
+        "layout": {
+          "type": "vertical",
+          "spacing": 6,
+          "paddingLeft": 10,
+          "paddingRight": 10,
+          "paddingTop": 8,
+          "paddingBottom": 8
+        },
+        "children": [
+          {
+            "type": "label",
+            "name": "SectionTitle4",
+            "width": "100%",
+            "height": 14,
+            "text": "兵種特性",
+            "styleSlot": "ttd.label.section"
+          },
+          {
+            "type": "container",
+            "name": "TraitCards",
+            "id": "traitCards",
+            "width": "100%",
+            "height": 70,
+            "layout": {
+              "type": "vertical",
+              "spacing": 6,
+              "resizeMode": "container"
+            }
+          }
+        ]
+      },
+      {
+        "type": "panel",
+        "name": "AbilitySection",
+        "width": "100%",
+        "height": 120,
+        "skinSlot": "ttd.section.bg",
+        "layout": {
+          "type": "vertical",
+          "spacing": 4,
+          "paddingLeft": 10,
+          "paddingRight": 10,
+          "paddingTop": 8,
+          "paddingBottom": 8
+        },
+        "children": [
+          {
+            "type": "label",
+            "name": "SectionTitle5",
+            "width": "100%",
+            "height": 14,
+            "text": "特殊能力",
+            "styleSlot": "ttd.label.section"
+          },
+          {
+            "type": "container",
+            "name": "AbilityCards",
+            "id": "abilityCards",
+            "width": "100%",
+            "height": 82,
+            "layout": {
+              "type": "vertical",
+              "spacing": 6,
+              "resizeMode": "container"
+            }
+          }
+        ]
+      },
+      {
+        "type": "panel",
+        "name": "LoreSection",
+        "width": "100%",
+        "height": 122,
+        "skinSlot": "ttd.section.bg",
+        "layout": {
+          "type": "vertical",
+          "spacing": 4,
+          "paddingLeft": 10,
+          "paddingRight": 10,
+          "paddingTop": 8,
+          "paddingBottom": 8
+        },
+        "children": [
+          {
+            "type": "label",
+            "name": "LoreTitle",
+            "id": "loreTitle",
+            "width": "100%",
+            "height": 16,
+            "styleSlot": "ttd.label.section"
+          },
+          {
+            "type": "label",
+            "name": "LoreSummary",
+            "id": "loreSummary",
+            "width": "100%",
+            "height": 28,
+            "styleSlot": "ttd.label.meta"
+          },
+          {
+            "type": "label",
+            "name": "LoreBody",
+            "id": "loreBody",
+            "width": "100%",
+            "height": 54,
+            "styleSlot": "ttd.label.desc"
+          }
+        ]
+      }
+    ]
+  },
+  "validation": {
+    "exceptions": {
+      "no-empty-container": "TraitTags/AbilityList 為執行期動態填充容器"
+    }
+  }
+}

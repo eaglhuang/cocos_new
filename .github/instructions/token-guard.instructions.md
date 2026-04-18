@@ -1,4 +1,5 @@
 ---
+doc_id: doc_ai_0015
 applyTo: "**"
 ---
 
@@ -13,7 +14,7 @@ applyTo: "**"
 ## Default Guardrails
 
 - Prefer `git status --short` and targeted reads over loading large files blindly.
-- Read `docs/keep.summary.md` before reaching for larger consensus docs.
+- Read `docs/keep.summary.md (doc_index_0012)` (doc_index_0012) before reaching for larger consensus docs.
 - Avoid dumping large notes, compare boards, or many screenshots into the conversation.
 - For image artifacts, prefer at most `1` main image and `1` comparison image per turn.
 

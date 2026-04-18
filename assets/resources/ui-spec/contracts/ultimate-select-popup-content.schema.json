@@ -1,0 +1,32 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "schemaId": "ultimate-select-popup-content",
+  "familyId": "ultimate-select-popup",
+  "version": 1,
+  "description": "UltimateSelectPopupComposite content contract — 奧義選擇彈窗的資料繫結欄位。",
+  "fields": {
+    "skills": {
+      "type": "array",
+      "required": true,
+      "bindPath": "Card/SkillItems",
+      "description": "可選奧義技能清單",
+      "items": {
+        "type": "object",
+        "properties": {
+          "skillId": { "type": "string" },
+          "label": { "type": "string" },
+          "costSp": { "type": "number" }
+        }
+      }
+    },
+    "selectedSkillId": {
+      "type": "string",
+      "required": false,
+      "bindPath": "Card/SkillItems",
+      "description": "目前選中的奧義 skillId"
+    }
+  },
+  "requiredFields": [
+    "skills"
+  ]
+}

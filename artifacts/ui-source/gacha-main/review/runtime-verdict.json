@@ -2,8 +2,10 @@
   "$schema": "../../schemas/runtime-verdict.schema.json",
   "screenId": "GachaMain",
   "runId": "UI-2-0023",
-  "status": "pass",
-  "residuals": [],
+  "status": "pass-with-minor-residuals",
+  "residuals": [
+    "console warnings: 2"
+  ],
   "promoteable": true,
   "factoryLearnings": [
     "runtime capture connected to capture-ui-screens.js"
@@ -15,7 +17,7 @@
   },
   "diagnosticsSummary": {
     "consoleErrorCount": 0,
-    "consoleWarningCount": 0,
+    "consoleWarningCount": 2,
     "pageErrorCount": 0,
     "requestFailureCount": 0
   },
@@ -54,7 +56,14 @@
       "updatedAt": "2026-04-08T09:23:08.550Z",
       "residualCount": 0,
       "promoteable": true
+    },
+    {
+      "runId": "UI-2-0023",
+      "status": "pass-with-minor-residuals",
+      "updatedAt": "2026-04-14T04:12:19.644Z",
+      "residualCount": 1,
+      "promoteable": true
     }
   ],
-  "updatedAt": "2026-04-08T09:23:08.550Z"
+  "updatedAt": "2026-04-14T04:12:19.644Z"
 }

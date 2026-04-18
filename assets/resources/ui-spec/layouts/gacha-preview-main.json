@@ -277,9 +277,51 @@
       },
       {
         "type": "container",
+        "name": "PoolPositioningCard",
+        "x": 0,
+        "y": -270,
+        "width": 1080,
+        "height": 64,
+        "children": [
+          {
+            "type": "panel",
+            "name": "PoolPositioningBg",
+            "widget": { "top": 0, "left": 0, "right": 0, "bottom": 0 },
+            "skinSlot": "gacha.pity.carrier.bg"
+          },
+          {
+            "type": "panel",
+            "name": "PoolPositioningFrame",
+            "widget": { "top": 0, "left": 0, "right": 0, "bottom": 0 },
+            "skinSlot": "gacha.pity.carrier.frame"
+          },
+          {
+            "type": "label",
+            "name": "PoolPositioningTitle",
+            "x": -410,
+            "y": 0,
+            "width": 180,
+            "height": 24,
+            "text": "卡池定位",
+            "styleSlot": "widget.header.plaque.subtitle"
+          },
+          {
+            "type": "label",
+            "name": "PoolPositioningBrief",
+            "x": 94,
+            "y": 0,
+            "width": 760,
+            "height": 28,
+            "text": "Bloodline_Seed 專注名將與血脈延續，Nurture_Depth 專注支援與培育深度。",
+            "styleSlot": "gacha.label.pull_cost"
+          }
+        ]
+      },
+      {
+        "type": "container",
         "name": "PullButtons",
         "x": 0,
-        "y": -356,
+        "y": -382,
         "width": 860,
         "height": 136,
         "layout": {

@@ -34,12 +34,52 @@ export class UITemplateBinder {
             const idNames = new Map<string, string>();
             this._collectIds(layoutSpec, idNames);
             this._matchNodes(rootNode, idNames);
-            this._indexPaths(rootNode, layoutSpec, '');
+            this._indexRootChildren(rootNode, layoutSpec);
         }
 
         // 方式二：補掃整棵 node tree，把有 Label / Sprite 的節點按 Node.name 加入
         // （向後相容：原本沒有 id 的佈局，仍可透過 node name 綁定）
         this._walkTree(rootNode);
+    }
+
+    /**
+     * 為 lazy fragment 補建 path 索引，不清空既有主畫面 bindings。
+     * fragment 的相對路徑規則與 buildScreen 相同：不含 fragment root name。
+     */
+    bindLazyFragment(rootNode: Node, layoutSpec: UILayoutNodeSpec): void {
+        if (!layoutSpec) {
+            return;
+        }
+        this._indexRootChildren(rootNode, layoutSpec, true);
+    }
+
+    /** 建立 root 第一層子節點的相對路徑索引（明確排除 root 自身名稱） */
+    private _indexRootChildren(rootNode: Node, layoutSpec: UILayoutNodeSpec, overwriteExistingPath = false): void {
+        if (!layoutSpec.children || layoutSpec.children.length === 0) {
+            return;
+        }
+
+        const childBuckets = new Map<string, Node[]>();
+        for (const childNode of rootNode.children) {
+            const list = childBuckets.get(childNode.name) ?? [];
+            list.push(childNode);
+            childBuckets.set(childNode.name, list);
+        }
+
+        for (const childSpec of layoutSpec.children) {
+            if (!childSpec?.name || childSpec.name.trim().length === 0) {
+                continue;
+            }
+
+            const bucket = childBuckets.get(childSpec.name);
+            if (!bucket || bucket.length === 0) {
+                console.warn(`[UITemplateBinder] 路徑索引失敗：找不到 root 子節點 "${childSpec.name}"`);
+                continue;
+            }
+
+            const childNode = bucket.shift()!;
+            this._indexPaths(childNode, childSpec, '', overwriteExistingPath);
+        }
     }
 
     // ── 查詢 API ────────────────────────────────────────────────
@@ -190,11 +230,12 @@ export class UITemplateBinder {
     }
 
     /** 根據 layout spec 建立相對路徑 → Node/Label/Sprite 映射（不含 root name） */
-    private _indexPaths(node: Node, spec: UILayoutNodeSpec, parentPath: string): void {
-        const currentPath = parentPath ? `${parentPath}/${spec.name}` : '';
+    private _indexPaths(node: Node, spec: UILayoutNodeSpec, parentPath: string, overwriteExistingPath = false): void {
+        const currentPath = parentPath ? `${parentPath}/${spec.name}` : spec.name;
+        const isDeferredLazySlot = spec.lazySlot === true;
 
         if (currentPath) {
-            this._storePathBinding(currentPath, node);
+            this._storePathBinding(currentPath, node, overwriteExistingPath);
         }
 
         if (!spec.children || spec.children.length === 0) {
@@ -214,16 +255,18 @@ export class UITemplateBinder {
             }
             const bucket = childBuckets.get(childSpec.name);
             if (!bucket || bucket.length === 0) {
-                console.warn(`[UITemplateBinder] 路徑索引失敗：找不到節點 "${childSpec.name}"，parentPath="${parentPath || '<root>'}"`);
+                if (!isDeferredLazySlot) {
+                    console.warn(`[UITemplateBinder] 路徑索引失敗：找不到節點 "${childSpec.name}"，parentPath="${parentPath || '<root>'}"`);
+                }
                 continue;
             }
             const childNode = bucket.shift()!;
-            this._indexPaths(childNode, childSpec, currentPath);
+            this._indexPaths(childNode, childSpec, currentPath, overwriteExistingPath);
         }
     }
 
-    private _storePathBinding(path: string, node: Node): void {
-        if (this._nodePathMap.has(path)) {
+    private _storePathBinding(path: string, node: Node, overwriteExistingPath = false): void {
+        if (!overwriteExistingPath && this._nodePathMap.has(path)) {
             return;
         }
         this._nodePathMap.set(path, node);

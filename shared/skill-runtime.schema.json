@@ -1,0 +1,168 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "schemaId": "skill-runtime-draft",
+  "version": 1,
+  "description": "Draft shared runtime contract for tactics and ultimates. Not all fields are wired to production runtime yet.",
+  "definitions": {
+    "skillSourceType": {
+      "type": "string",
+      "enum": [
+        "tiger-tally",
+        "mentor",
+        "bloodline",
+        "scene-gambit",
+        "seed-tactic",
+        "ultimate"
+      ]
+    },
+    "battleSkillTargetMode": {
+      "type": "string",
+      "enum": [
+        "self",
+        "ally-single",
+        "enemy-single",
+        "ally-all",
+        "enemy-all",
+        "line",
+        "fan",
+        "around-self",
+        "area",
+        "tile",
+        "adjacent-tiles",
+        "global-stage",
+        "reactive-source-target"
+      ]
+    },
+    "battleSkillTiming": {
+      "type": "string",
+      "enum": [
+        "active-cast",
+        "start-of-battle",
+        "start-of-turn",
+        "on-attack",
+        "on-hit",
+        "on-counter",
+        "on-kill",
+        "on-death",
+        "on-enter-tile",
+        "end-of-turn"
+      ]
+    },
+    "tacticModuleType": {
+      "type": "string",
+      "enum": [
+        "direct-damage",
+        "line-damage",
+        "area-damage",
+        "movement-modifier",
+        "forced-move",
+        "tile-state",
+        "buff-apply",
+        "debuff-apply",
+        "heal-recover",
+        "link-share",
+        "counter-reaction",
+        "action-reset",
+        "stealth-reveal",
+        "obstacle-spawn",
+        "conditional-trigger"
+      ]
+    },
+    "ultimateEffectFamily": {
+      "type": "string",
+      "enum": [
+        "self-burst",
+        "team-buff",
+        "team-heal",
+        "enemy-mass-debuff",
+        "single-execute",
+        "area-burst",
+        "control-override",
+        "special-rule"
+      ]
+    },
+    "battleSkillRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "sourceType": { "$ref": "#/definitions/skillSourceType" },
+        "ownerUid": { "type": "string", "minLength": 1 },
+        "generalTemplateId": { "type": ["string", "null"] },
+        "tacticId": { "type": ["string", "null"] },
+        "ultimateId": { "type": ["string", "null"] },
+        "battleSkillId": { "type": "string", "minLength": 1 },
+        "targetMode": { "$ref": "#/definitions/battleSkillTargetMode" },
+        "timing": { "$ref": "#/definitions/battleSkillTiming" },
+        "targetUnitUid": { "type": ["string", "null"] },
+        "targetTileId": { "type": ["string", "null"] },
+        "triggeredByUnitUid": { "type": ["string", "null"] },
+        "notes": { "type": "string" }
+      },
+      "required": ["sourceType", "ownerUid", "battleSkillId", "targetMode", "timing"]
+    },
+    "battleSkillDefinitionDraft": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "sourceType": { "$ref": "#/definitions/skillSourceType" },
+        "targetMode": { "$ref": "#/definitions/battleSkillTargetMode" },
+        "timing": { "$ref": "#/definitions/battleSkillTiming" },
+        "tacticModules": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/tacticModuleType" }
+        },
+        "ultimateFamily": {
+          "oneOf": [
+            { "$ref": "#/definitions/ultimateEffectFamily" },
+            { "type": "null" }
+          ]
+        },
+        "scalingStat": {
+          "type": ["string", "null"],
+          "enum": ["str", "int", "lea", "pol", "cha", "luk", null]
+        },
+        "coefficient": { "type": "number" },
+        "durationTurns": { "type": "integer", "minimum": 0 },
+        "maxTargets": { "type": "integer", "minimum": 0 },
+        "battleLogKey": { "type": ["string", "null"] },
+        "cinematicProfile": { "type": ["string", "null"] }
+      },
+      "required": ["id", "sourceType", "targetMode", "timing"]
+    },
+    "skillExecutionDelta": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "unitUid": { "type": "string" },
+        "tileId": { "type": "string" },
+        "deltaHp": { "type": "number" },
+        "deltaSp": { "type": "number" },
+        "addBuffs": { "type": "array", "items": { "type": "string" } },
+        "removeBuffs": { "type": "array", "items": { "type": "string" } },
+        "tileState": { "type": ["string", "null"] },
+        "forcedMoveSteps": { "type": "integer" },
+        "notes": { "type": "string" }
+      }
+    },
+    "skillExecutionResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "requestId": { "type": "string", "minLength": 1 },
+        "battleSkillId": { "type": "string", "minLength": 1 },
+        "applied": { "type": "boolean" },
+        "blockedReason": { "type": ["string", "null"] },
+        "deltas": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/skillExecutionDelta" }
+        },
+        "battleLogLines": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      },
+      "required": ["requestId", "battleSkillId", "applied", "deltas", "battleLogLines"]
+    }
+  }
+}

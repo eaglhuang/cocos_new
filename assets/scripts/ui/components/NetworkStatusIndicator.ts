@@ -1,6 +1,5 @@
 // @spec-source → 見 docs/cross-reference-index.md
-import { _decorator, Node, Sprite, Color, tween, UIOpacity, Tween, Vec3 } from 'cc';
-import { UIPreviewBuilder } from '../core/UIPreviewBuilder';
+import { _decorator, Component, Node, Sprite, Color, tween, UIOpacity, Tween, Vec3 } from 'cc';
 import { services } from '../../core/managers/ServiceLoader';
 import { EVENT_NETWORK_OFFLINE, EVENT_NETWORK_ONLINE } from '../../core/systems/NetworkService';
 import { EVENT_SYNCING, EVENT_SYNC_COMPLETE, EVENT_OFFLINE_REMINDER } from '../../core/systems/SyncManager';
@@ -15,7 +14,7 @@ const { ccclass, requireComponent } = _decorator;
 @ccclass('NetworkStatusIndicator')
 @requireComponent(Sprite)
 @requireComponent(UIOpacity)
-export class NetworkStatusIndicator extends UIPreviewBuilder {
+export class NetworkStatusIndicator extends Component {
     private sprite: Sprite | null = null;
     private uiOpacity: UIOpacity | null = null;
     private spinTween: Tween<Node> | null = null;

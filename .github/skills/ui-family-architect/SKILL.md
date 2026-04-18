@@ -1,12 +1,13 @@
 ---
+doc_id: doc_agentskill_0025
 name: ui-family-architect
-description: 'UI Family 架構師 SKILL — 讀取 proof-contract-v1，為每個 visualZone 分配 FrameFamily + FrameRecipe + themeStack，驗證 family 可用性，輸出 screen.json 與 skin manifest 草稿的 family 預填欄位。USE FOR: 在 ui-reference-decompose 完成後，進行 family 分派與 recipe 選擇（UI pipeline Step 2）。DO NOT USE FOR: 直接產生 layout.json 或 asset 需求（需先完成此步）。'
-argument-hint: '提供 proof contract 路徑（或 screenId），以及設計風格偏好（水墨戰國 / 明亮 / 特殊）。'
+description: 'UI Family 架構師 SKILL — 讀取 proof draft，為每個 visualZone 分配 structural family、themeStack 與 recipe seed，驗證 family 可用性，輸出 family-map 與 recipe 預填欄位。USE FOR: 在 ui-reference-decompose 完成後，進行 family 分派、family-map 產出與 recipe 選擇（UI pipeline Step 2）。DO NOT USE FOR: 直接產生 layout skeleton 或 asset 任務（需先完成此步）。'
+argument-hint: '提供 proof draft 路徑（或 screenId），以及設計風格偏好（水墨戰國 / 明亮 / 特殊），並說明是否要直接輸出 family-map。'
 ---
 
 # UI Family Architect
 
-這是 UI production pipeline 的**第 2 步**：讀取 proof contract，決定每個 zone 的 family + recipe 組合。
+這是 UI production pipeline 的**第 2 步**：讀取 proof draft，決定每個 zone 的 family + recipe 組合。
 
 Unity 對照：相當於 Scene Assembly — 決定每個 Prefab 要套哪個 Material Variant。
 
@@ -16,56 +17,45 @@ Unity 對照：相當於 Scene Assembly — 決定每個 Prefab 要套哪個 Mat
 
 | 項目 | 說明 |
 |---|---|
-| `proofContractPath` | `assets/resources/ui-spec/proof/screens/{screenId}.proof.json` |
+| `proofDraftPath` | `assets/resources/ui-spec/proof/screens/{screenId}.proof.json` |
 | （可選）`themeOverride` | 強制指定 base skin（預設：`skin-base-v1`） |
 
 ## 輸出
 
-1. 更新 proof contract 的 `frameRecipeRef` 欄位（補齊草稿中的空值）
-2. `screen.json` 草稿中的 `recipeRef` 與 `skin` 初始值建議
-3. 建議的 `themeStack` 設定（用於對應 family 的 skin manifest）
+1. `artifacts/ui-source/{screenId}/proof/{screenId}.family-map.json`
+2. proof draft 中 family / notes / unresolved 欄位的補齊建議
+3. normalized recipe 需要的 family、themeStack、asset readiness 預填值
 
 ---
 
 ## 執行步驟
 
-### Step 1 — 讀取 proof contract
+### Step 1 — 讀取 proof draft
 
 ```
 read_file { filePath: "assets/resources/ui-spec/proof/screens/{screenId}.proof.json" }
 ```
 
-在 `visualZones` 列表中找出每個 zone 的 `family`。
+在 `visualZones` 列表中找出每個 zone 的候選 family、component intent 與 unresolved notes。
 
 ### Step 2 — 驗證 family 可用性
 
-確認以下 family 已有對應的 skin family 檔案（`skins/skin-family-*.json`）：
-- `dark-metal` → `skin-family-dark-metal.json` ✅
-- `parchment` → `skin-family-parchment.json` ✅
-- `gold-cta` → `skin-family-gold-cta.json` ✅
-- `tab` → 尚無 family skin，需通知 Agent2（UI-2-0091）
-- `item-cell` → 尚無 family skin，需通知 Agent2
+先判定 structural family 是否屬於既有 UCUF family：
+- `detail-split`
+- `dialog-card`
+- `rail-list`
+- `hud-overlay`
+- `peek-drawer`
 
-驗證對應 recipe 是否存在（`recipes/families/{family}-v1.recipe.json`）：
-```
-recipes/families/dark-metal.recipe.json ✅
-recipes/families/parchment.recipe.json ✅
-recipes/families/gold-cta.recipe.json ✅
-recipes/families/destructive.recipe.json ✅
-recipes/families/tab.recipe.json ✅
-```
+再確認對應的 skin family 與 recipe 是否存在，缺的部分標記為 `asset-pending` 或 `recipe-missing`，不要硬寫死人工作業對象。
 
-### Step 3 — 補齊 frameRecipeRef
+### Step 3 — 補齊 recipe seed
 
-對 proof contract 中 `frameRecipeRef` 為空的 zone，根據 family 補齊預設值：
-| family | 預設 frameRecipeRef |
-|---|---|
-| dark-metal | `dark-metal-v1` |
-| parchment | `parchment-v1` |
-| gold-cta | `gold-cta-v1` |
-| destructive | `destructive-v1` |
-| tab | `tab-v1` |
-| none | （不設定） |
+對 proof draft 中尚未決定的欄位，補齊：
+- structural family recommendation
+- `themeStack` 預設值
+- `assetReadiness`（ready / asset-pending / recipe-missing）
+- recipe 需要的 unresolved questions
 
 ### Step 4 — 規劃 themeStack
 
@@ -82,29 +72,32 @@ recipes/families/tab.recipe.json ✅
 ```
 
 若畫面混用多個 family，選擇**最高頻的 family** 放在 `themeStack.family`；
-其他 family 的 slot 直接放入 skin manifest 的 `slots` 層（最高優先級）。
+其他 family 的 slot 直接記錄到 family-map 的 `zoneMap` 與後續 recipe / skin 提示層。
 
 ### Step 5 — 輸出建議
 
-建立一個 `_family-plan.json` 草稿（輸出至 `artifacts/ui-qa/{screenId}/family-plan.json`）：
+建立一個 `family-map.json` 草稿（輸出至 `artifacts/ui-source/{screenId}/proof/{screenId}.family-map.json`）：
 
 ```jsonc
 {
-  "screenId": "ShopMain",
+  "screenId": "shop-main",
   "resolvedAt": "2026-04-05",
-  "primaryFamily": "dark-metal",
+  "primaryFamily": "rail-list",
   "themeStack": { "base": "skin-base-v1", "family": "skin-family-dark-metal" },
   "zoneMap": [
-    { "zoneId": "header",   "family": "dark-metal", "recipe": "dark-metal-v1", "status": "ready" },
-    { "zoneId": "tab-bar",  "family": "tab",        "recipe": "tab-v1",        "status": "asset-pending" },
-    { "zoneId": "item-grid","family": "item-cell",  "recipe": null,            "status": "asset-pending" }
+    { "zoneId": "header", "family": "rail-list", "frameFamily": "dark-metal", "status": "ready" },
+    { "zoneId": "toolbar", "family": "rail-list", "frameFamily": "tab", "status": "asset-pending" },
+    { "zoneId": "preview", "family": "detail-split", "frameFamily": "parchment", "status": "ready" }
   ],
-  "skinManifestHints": {
-    "id": "shop-main-default",
-    "themeStack": { "base": "skin-base-v1", "family": "skin-family-dark-metal" }
+  "recipeSeed": {
+    "screenId": "shop-main",
+    "familyId": "rail-list",
+    "bundle": "lobby_ui",
+    "layer": "Normal"
   },
-  "missingAssets": ["tab family skin", "item-cell family skin"],
-  "readyForLayoutJson": true
+  "missingAssets": ["toolbar tab family skin"],
+  "unresolvedQuestions": ["preview 區是否需要 special slot"],
+  "readyForRecipe": false
 }
 ```
 
@@ -113,12 +106,14 @@ recipes/families/tab.recipe.json ✅
 ## 品質門檻
 
 - 每個 zone 必須有 `status`（ready / asset-pending / recipe-missing）
-- 主要 family 必須有已建立的 skin family 檔案，否則 readyForLayout=false
-- 若有 missingAssets，**必須記錄** 並在下一步通知 ui-asset-gen-director
+- `family-map` 必須能說清楚 primary family、themeStack 與 unresolved questions
+- 若有 missingAssets，**必須記錄** 並在下一步交給 ui-asset-gen-director
 
 ---
 
 ## 下一步
 
-- 若所有 zone status=ready → 進入 **ui-vibe-pipeline** 生成 layout + screen JSON
-- 若有 asset-pending → 先進入 **ui-asset-gen-director** 準備資產委託
+- 若 unresolvedQuestions 非空 → 先跑 `node tools_node/compile-proof-to-mcq.js`
+- 若 MCQ 已回答 → 跑 `node tools_node/compile-mcq-answer-to-recipe.js`
+- 若所有 zone status=ready 且 recipe 已齊 → 進入 **ui-vibe-pipeline** 或 recipe compiler
+- 若有 asset-pending → 先進入 **ui-asset-gen-director** 準備資產任務

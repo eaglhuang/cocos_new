@@ -6,7 +6,7 @@
   "slots": {
     "mirror.bg.full": {
       "kind": "sprite-frame",
-      "path": "ui-spec/placeholders/bg_ink_main",
+      "path": "sprites/ui_families/general_detail/detail_content_bg",
       "spriteType": "sliced",
       "border": [96, 360, 96, 420],
       "allowAutoAtlas": false

@@ -1,6 +1,7 @@
+<!-- doc_id: doc_index_0007 -->
 # Keep Consensus — Current Status（§14–§18 · §24 · MCP）
 
-> 這是 `keep.md` 的「Current Status（§14–§18 · §24 · MCP）」分片。完整索引見 `docs/keep.md`。
+> 這是 `keep.md` (doc_index_0011) 的「Current Status（§14–§18 · §24 · MCP）」分片。完整索引見 `docs/keep.md (doc_index_0011)` (doc_index_0011)。
 
 ## 14. MCP 工具鏈現況
 
@@ -36,7 +37,7 @@
 
 ## 16. 架構評估（2026-04-05，Agent1）
 
-完整報告：`docs/架構評估報告_2026-04-05_Agent1.md`
+完整報告：`docs/架構評估報告_2026-04-05_Agent1.md (doc_tech_0001)` (doc_tech_0001)
 
 發現 7 個架構缺口，已全數開單（UI-2-0074 ~ UI-2-0079）：
 
@@ -94,7 +95,7 @@ services().ui.open(UIID.BattleHUD);
 - ✅ **契約擴充**：`UISpecTypes.ts` 新增 `WidgetDef.hCenter/vCenter`、`scroll-view` nodeType、`UIWidgetFragmentSpec` / `UITemplateParamDef` / `UITemplateComposeItem`
 - ✅ **BattleScene 修正**：`BattleScenePanel.ensureCanvasHost()` 統一設定 layer / 1920×1080 / `Widget.AlignMode.ALWAYS`，解決子面板不渲染與 Widget 錯位
 - ✅ **SceneManager 橋接**：新增 `boardRenderer` 橋接（`registerBoardRenderer` / `getBoardRenderer`）
-- ✅ **文件**：`cross-reference-index.md` 更新至第十六批（UI Core 子節 + 10 個核心 TS 首次建立索引）
+- ✅ **文件**：`cross-reference-index.md` (doc_index_0005) 更新至第十六批（UI Core 子節 + 10 個核心 TS 首次建立索引）
 
 ### 立即下一步（Agent1 最優先）
 
@@ -127,6 +128,17 @@ services().ui.open(UIID.BattleHUD);
 - `.github/skills/` 為本專案共用 skill 的來源目錄，新的對話開始時應優先以這裡為準。
 - 本機安裝目錄為 `C:\Users\User\.codex\skills\`，可用 `powershell -ExecutionPolicy Bypass -File tools_node/sync-project-skills.ps1` 將專案 skills 同步到本機。
 - 同步採非破壞式覆寫：會更新同名 project skills，但不會刪除本機其他既有 skills。
+
+---
+
+## 25. UCUF Migration 最終狀態（2026-04-13）
+
+- **14/14 Composite 換柱完成**（TypeScript 層）：所有 battle/lobby legacy panel 的 concrete import 已改為 `import type` 或字串查找，無任何 direct runtime binding。
+- **零引用 direct import 確認**：`BattleScenePanel.ts` 5 個、`LobbyScene.ts` 3 個、`DeployComposite.ts` 1 個已改 `import type`；`DeployPanel.ts` `@property(ToastMessage)` 也已改為 `@property(Node) toastHost`。全量 grep 無任何 concrete legacy panel import。
+- **保留邏輯**：legacy `.ts` 實體保持原位，提供 string-based getComponent runtime fallback；物理搬移 `_deprecated/` 須等 scene/prefab 全部換 Composite 組件後才執行。
+- **詳細記錄**：`docs/UCUF-migration-completion-2026-04-13.md`（刪除前有效）/ `docs/UCUF-developer-guide.md` 遷移狀態總覽表。
+- **剩餘 Editor 工作**：Battle prefab `resultPopupHost` rebind、DeployPanel `toastHost` rebind、全場景 runtime 驗收、物理搬移 `_deprecated/`。
+
 - 若後續產生新的專案 skill，應優先回寫到 `.github/skills/`，再執行同步腳本，讓所有 Agent 可共用同一套 skills。
 - `.agents/workflows/*.md` 目前視為 workflow 草稿來源，不視為正式自動執行入口；若某條流程要長期使用，應升級為 `.github/skills/<skill>/SKILL.md`。
 - `ui-generate-brief`、`ui-scaffold`、`ui-verify`、`ui-i18n-translate` 已正式升級為 project skills：
@@ -171,7 +183,27 @@ flowchart TD
    `ui-asset-qc` → `ui-runtime-verify` → `ui-preview-judge`
 4. 已有 zh-TW 文案，要補多語：
    `ui-i18n-localize`
-- 2026-04-06 新增 `.agents/skills/context-budget-guard/SKILL.md` 與 `tools_node/summarize-structured-diff.js`，之後凡是圖片批次、compare board、大型 `md/json`、長 handoff，都先走 skill 與摘要腳本，不再直接把整份內容塞進對話。
+- 2026-04-06 新增 `.agents/skills/context-budget-guard/SKILL.md` (doc_agentskill_0006) 與 `tools_node/summarize-structured-diff.js`，之後凡是圖片批次、compare board、大型 `md/json`、長 handoff，都先走 skill 與摘要腳本，不再直接把整份內容塞進對話。
 - 2026-04-06 收工前一律補 `Token 量級：少 / 中 / 大` 的估算回報；標準命令為 `node tools_node/report-turn-usage.js --files <file...> --emit-final-line`，若無法精準列 touched files，至少跑 `--changed`。這是估算值，不是假裝成 API 精準計費。
-- 2026-04-06 新增 `(best)` 專案口令：只要使用者訊息以 `(best)` 開頭，就視為 strict mode，必須先走 `.agents/skills/best-mode/SKILL.md`，再走 `context-budget-guard`，禁止直接貼整份大檔、compare board、批次 screenshot 或大型 diff。
+- 2026-04-06 新增 `(best)` 專案口令：只要使用者訊息以 `(best)` 開頭，就視為 strict mode，必須先走 `.agents/skills/best-mode/SKILL.md` (doc_agentskill_0001)，再走 `context-budget-guard`，禁止直接貼整份大檔、compare board、批次 screenshot 或大型 diff。
 - 2026-04-06 新增 wrapper 架構：UI 任務優先走 `node tools_node/run-ui-workflow.js --workflow <workflow-id> ...`，非 UI 但有圖片/大檔/重 diff 的任務優先走 `node tools_node/run-guarded-workflow.js --workflow <name> ...`，收工前優先走 `node tools_node/finalize-agent-turn.js ...`；底層共用 `tools_node/lib/context-guard-core.js`。
+
+---
+
+## 26. 討論來源全量整併里程碑（2026-04-13）
+
+- **Strategy A 深度驗證完成**：針對 112 份歷史討論文件進行全量掃描，補齊了 17 項原本被忽略的機制 Gap（如格子狀態機、雙層數值、親衛隊召喚、三國日報等）。
+- **關鍵規格書產出**：
+  - `戰場格子系統.md`：定義底層邏輯容器。
+  - `數值系統.md`：正式更新 Prowess (0~2000) 比例尺。
+- **遺留 MCQ 全數結案**：Q66 ~ Q74 決策已回寫。
+- **後續警示**：所有 112 份來源文件應視為「已萃取」，未來的真相來源以 `docs/遊戲規格文件/系統規格書/` 為唯一準繩。
+
+---
+
+## 27. 武將生活感 UI 與人性化擴充（2026-04-14）
+
+- **生活感補完**：完成對《武將人物介面規格書》的二次深讀與補遺，確性格標籤 (性格徽章) 與動態日誌氣泡 ( narrativa bubble ) 落地。
+- **俘虜處置邏輯對齊**：明確「忠誠/信任度」UI 條與沒收虎符的代價警告。
+- **Data Schema 同步**：已在 `Data Schema文件.md` 中增加 `Personality`, `Loyalty`, `Recent_Log` 等生活感驅動欄位。
+- **交付件**：`武將人物介面規格補遺_2026-04-14.md` (正式入庫)。

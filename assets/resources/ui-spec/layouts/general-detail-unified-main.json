@@ -1,0 +1,199 @@
+{
+  "id": "general-detail-unified-main",
+  "version": 1,
+  "canvas": {
+    "fitWidth": true,
+    "fitHeight": true,
+    "safeArea": true,
+    "safeAreaConstrained": true,
+    "designWidth": 1920,
+    "designHeight": 1080
+  },
+  "root": {
+    "type": "container",
+    "name": "GeneralDetailRoot",
+    "widget": { "top": 0, "bottom": 0, "left": 0, "right": 0 },
+    "transition": { "enter": "scaleIn", "exit": "scaleOut", "duration": 0.2, "easing": "backOut" },
+    "children": [
+      {
+        "type": "image",
+        "name": "BackgroundFull",
+        "widget": { "top": 0, "bottom": 0, "left": 0, "right": 0 }
+      },
+      {
+        "type": "button",
+        "name": "TopCloseBtn",
+        "id": "topCloseBtn",
+        "widget": { "top": 46, "right": 34 },
+        "width": 72,
+        "height": 72,
+        "skinSlot": "detail.back.circle",
+        "styleSlot": "detail.label.circleBack",
+        "text": "←"
+      },
+      {
+        "type": "panel",
+        "name": "ClickBlocker",
+        "widget": { "top": 0, "bottom": 0, "left": 0, "right": 0 },
+        "skinSlot": "detail.blockInput"
+      },
+      {
+        "type": "image",
+        "name": "PortraitImage",
+        "widget": { "left": 42, "bottom": 96 },
+        "width": 525,
+        "height": 932,
+        "skinSlot": "general.portrait.placeholder"
+      },
+      {
+        "type": "container",
+        "name": "RightTabBar",
+        "widget": { "top": 110, "right": 16 },
+        "width": 118,
+        "height": 854,
+        "layout": { "type": "vertical", "spacing": 12, "paddingTop": 10, "paddingBottom": 10, "paddingLeft": 10, "paddingRight": 10 },
+        "children": [
+          {
+            "type": "button",
+            "name": "BtnTabOverview",
+            "width": 97,
+            "height": 97,
+            "skinSlot": "detail.tab.circle.overview",
+            "children": [
+              { "type": "image", "name": "Badge", "widget": { "top": 8, "right": 8 }, "width": 18, "height": 18, "skinSlot": "detail.tab.circle.badge" },
+              { "type": "label", "name": "BadgeLabel", "widget": { "top": 8, "right": 8 }, "width": 18, "height": 18, "styleSlot": "detail.label.circleTabBadge", "text": "01" },
+              { "type": "image", "name": "IconInactive", "widget": { "top": 14, "hCenter": true }, "width": 42, "height": 42, "skinSlot": "detail.tab.icon.overview.inactive" },
+              { "type": "image", "name": "IconActive", "widget": { "top": 14, "hCenter": true }, "width": 42, "height": 42, "skinSlot": "detail.tab.icon.overview.active" },
+              { "type": "label", "name": "Label", "widget": { "left": 8, "right": 8, "bottom": 10 }, "height": 22, "styleSlot": "detail.label.circleTabLabel", "text": "總覽" }
+            ]
+          },
+          {
+            "type": "button",
+            "name": "BtnTabBasics",
+            "width": 97,
+            "height": 97,
+            "skinSlot": "detail.tab.circle.basics",
+            "children": [
+              { "type": "image", "name": "Badge", "widget": { "top": 8, "right": 8 }, "width": 18, "height": 18, "skinSlot": "detail.tab.circle.badge" },
+              { "type": "label", "name": "BadgeLabel", "widget": { "top": 8, "right": 8 }, "width": 18, "height": 18, "styleSlot": "detail.label.circleTabBadge", "text": "02" },
+              { "type": "image", "name": "IconInactive", "widget": { "top": 14, "hCenter": true }, "width": 42, "height": 42, "skinSlot": "detail.tab.icon.basics.inactive" },
+              { "type": "image", "name": "IconActive", "widget": { "top": 14, "hCenter": true }, "width": 42, "height": 42, "skinSlot": "detail.tab.icon.basics.active" },
+              { "type": "label", "name": "Label", "widget": { "left": 8, "right": 8, "bottom": 10 }, "height": 22, "styleSlot": "detail.label.circleTabLabel", "text": "基本" }
+            ]
+          },
+          {
+            "type": "button",
+            "name": "BtnTabStats",
+            "width": 97,
+            "height": 97,
+            "skinSlot": "detail.tab.circle.stats",
+            "children": [
+              { "type": "image", "name": "Badge", "widget": { "top": 8, "right": 8 }, "width": 18, "height": 18, "skinSlot": "detail.tab.circle.badge" },
+              { "type": "label", "name": "BadgeLabel", "widget": { "top": 8, "right": 8 }, "width": 18, "height": 18, "styleSlot": "detail.label.circleTabBadge", "text": "03" },
+              { "type": "image", "name": "IconInactive", "widget": { "top": 14, "hCenter": true }, "width": 42, "height": 42, "skinSlot": "detail.tab.icon.stats.inactive" },
+              { "type": "image", "name": "IconActive", "widget": { "top": 14, "hCenter": true }, "width": 42, "height": 42, "skinSlot": "detail.tab.icon.stats.active" },
+              { "type": "label", "name": "Label", "widget": { "left": 8, "right": 8, "bottom": 10 }, "height": 22, "styleSlot": "detail.label.circleTabLabel", "text": "屬性" }
+            ]
+          },
+          {
+            "type": "button",
+            "name": "BtnTabBloodline",
+            "width": 97,
+            "height": 97,
+            "skinSlot": "detail.tab.circle.bloodline",
+            "children": [
+              { "type": "image", "name": "Badge", "widget": { "top": 8, "right": 8 }, "width": 18, "height": 18, "skinSlot": "detail.tab.circle.badge" },
+              { "type": "label", "name": "BadgeLabel", "widget": { "top": 8, "right": 8 }, "width": 18, "height": 18, "styleSlot": "detail.label.circleTabBadge", "text": "04" },
+              { "type": "image", "name": "IconInactive", "widget": { "top": 14, "hCenter": true }, "width": 42, "height": 42, "skinSlot": "detail.tab.icon.bloodline.inactive" },
+              { "type": "image", "name": "IconActive", "widget": { "top": 14, "hCenter": true }, "width": 42, "height": 42, "skinSlot": "detail.tab.icon.bloodline.active" },
+              { "type": "label", "name": "Label", "widget": { "left": 8, "right": 8, "bottom": 10 }, "height": 22, "styleSlot": "detail.label.circleTabLabel", "text": "血脈" }
+            ]
+          },
+          {
+            "type": "button",
+            "name": "BtnTabSkills",
+            "width": 97,
+            "height": 97,
+            "skinSlot": "detail.tab.circle.skills",
+            "children": [
+              { "type": "image", "name": "Badge", "widget": { "top": 8, "right": 8 }, "width": 18, "height": 18, "skinSlot": "detail.tab.circle.badge" },
+              { "type": "label", "name": "BadgeLabel", "widget": { "top": 8, "right": 8 }, "width": 18, "height": 18, "styleSlot": "detail.label.circleTabBadge", "text": "05" },
+              { "type": "image", "name": "IconInactive", "widget": { "top": 14, "hCenter": true }, "width": 42, "height": 42, "skinSlot": "detail.tab.icon.skills.inactive" },
+              { "type": "image", "name": "IconActive", "widget": { "top": 14, "hCenter": true }, "width": 42, "height": 42, "skinSlot": "detail.tab.icon.skills.active" },
+              { "type": "label", "name": "Label", "widget": { "left": 8, "right": 8, "bottom": 10 }, "height": 22, "styleSlot": "detail.label.circleTabLabel", "text": "戰技" }
+            ]
+          },
+          {
+            "type": "button",
+            "name": "BtnTabAptitude",
+            "width": 97,
+            "height": 97,
+            "skinSlot": "detail.tab.circle.aptitude",
+            "children": [
+              { "type": "image", "name": "Badge", "widget": { "top": 8, "right": 8 }, "width": 18, "height": 18, "skinSlot": "detail.tab.circle.badge" },
+              { "type": "label", "name": "BadgeLabel", "widget": { "top": 8, "right": 8 }, "width": 18, "height": 18, "styleSlot": "detail.label.circleTabBadge", "text": "06" },
+              { "type": "image", "name": "IconInactive", "widget": { "top": 14, "hCenter": true }, "width": 42, "height": 42, "skinSlot": "detail.tab.icon.aptitude.inactive" },
+              { "type": "image", "name": "IconActive", "widget": { "top": 14, "hCenter": true }, "width": 42, "height": 42, "skinSlot": "detail.tab.icon.aptitude.active" },
+              { "type": "label", "name": "Label", "widget": { "left": 8, "right": 8, "bottom": 10 }, "height": 22, "styleSlot": "detail.label.circleTabLabel", "text": "適性" }
+            ]
+          },
+          {
+            "type": "button",
+            "name": "BtnTabExtended",
+            "width": 97,
+            "height": 97,
+            "skinSlot": "detail.tab.circle.extended",
+            "children": [
+              { "type": "image", "name": "Badge", "widget": { "top": 8, "right": 8 }, "width": 18, "height": 18, "skinSlot": "detail.tab.circle.badge" },
+              { "type": "label", "name": "BadgeLabel", "widget": { "top": 8, "right": 8 }, "width": 18, "height": 18, "styleSlot": "detail.label.circleTabBadge", "text": "07" },
+              { "type": "image", "name": "IconInactive", "widget": { "top": 14, "hCenter": true }, "width": 42, "height": 42, "skinSlot": "detail.tab.icon.extended.inactive" },
+              { "type": "image", "name": "IconActive", "widget": { "top": 14, "hCenter": true }, "width": 42, "height": 42, "skinSlot": "detail.tab.icon.extended.active" },
+              { "type": "label", "name": "Label", "widget": { "left": 8, "right": 8, "bottom": 10 }, "height": 22, "styleSlot": "detail.label.circleTabLabel", "text": "延伸" }
+            ]
+          },
+          {
+            "type": "button",
+            "name": "BtnClose",
+            "width": 97,
+            "height": 60,
+            "skinSlot": "detail.close.btn",
+            "styleSlot": "detail.label.button",
+            "text": "關閉"
+          }
+        ]
+      },
+      {
+        "type": "panel",
+        "name": "RightContentArea",
+        "widget": { "top": 174, "bottom": 56, "right": 154 },
+        "width": "38.6%",
+        "skinSlot": "detail.content.bg",
+        "children": [
+          {
+            "type": "container",
+            "name": "OverviewSlot",
+            "widget": { "top": 0, "bottom": 0, "left": 0, "right": 0 },
+            "active": false,
+            "children": [
+              { "type": "spacer", "name": "OverviewSlotAnchor", "width": 1, "height": 1 }
+            ],
+            "lazySlot": true,
+            "defaultFragment": "fragments/layouts/gd-tab-overview",
+            "childType": "GeneralDetailOverviewChild"
+          },
+          {
+            "type": "container",
+            "name": "ContentSlot",
+            "widget": { "top": 0, "bottom": 0, "left": 0, "right": 0 },
+            "children": [
+              { "type": "spacer", "name": "ContentSlotAnchor", "width": 1, "height": 1 }
+            ],
+            "lazySlot": true,
+            "defaultFragment": "fragments/layouts/gd-tab-overview",
+            "childType": "GeneralDetailOverviewChild"
+          }
+        ]
+      }
+    ]
+  }
+}

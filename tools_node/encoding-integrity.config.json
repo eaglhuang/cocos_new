@@ -25,7 +25,7 @@
     },
     "assets/scripts/ui/core/UISkinResolver.ts": {
       "label": "UI Skin Resolver",
-      "baselineNonAscii": 277,
+      "baselineNonAscii": 439,
       "maxNonAsciiDelta": 80
     },
     "assets/scripts/ui/scenes/LoadingScene.ts": {

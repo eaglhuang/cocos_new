@@ -1,3 +1,4 @@
+<!-- doc_id: doc_task_0144 -->
 # 任務卡 — battle-ui-p1-general-quickview-interactable
 
 ## frontmatter
@@ -51,8 +52,8 @@ enemyPortrait?.on(Button.EventType.CLICK,  () => this._onPortraitClick('enemy'),
 
 ## 規格來源
 
-- `docs/主戰場UI規格書.md` §4.3（GeneralQuickView）
-- `docs/主戰場UI規格補充_v3.md` §v3-5、Zone 1
+- `docs/主戰場UI規格書.md (doc_ui_0001)` (doc_ui_0001) §4.3（GeneralQuickView）
+- `docs/主戰場UI規格補充_v3.md (doc_ui_0003)` (doc_ui_0003) §v3-5、Zone 1
 
 ## 修法方向
 

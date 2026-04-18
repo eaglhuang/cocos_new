@@ -1,45 +1,57 @@
 {
   "type": "container",
   "name": "PortraitCarrier",
-  "widget": { "top": 68, "bottom": 172, "left": 48 },
-  "width": "39.6%",
+  "widget": { "top": 52, "bottom": 96, "left": 42 },
+  "width": "42.2%",
   "children": [
-    {
-      "type": "image",
-      "name": "PortraitShadow",
-      "widget": { "top": -18, "bottom": -18, "left": -18, "right": -18 },
-      "skinSlot": "gdv3.portrait.shadow"
-    },
-    {
-      "type": "image",
-      "name": "PortraitGlow",
-      "widget": { "top": -24, "bottom": -24, "left": -24, "right": -24 },
-      "skinSlot": "gdv3.portrait.glow"
-    },
-    {
-      "type": "image",
-      "name": "PortraitBackdrop",
-      "widget": { "top": -22, "bottom": -28, "left": -34, "right": -18 },
-      "skinSlot": "gdv3.portrait.backdrop"
-    },
-    {
-      "type": "image",
-      "name": "PortraitFrameBase",
-      "widget": { "top": 4, "bottom": 4, "left": 4, "right": 4 },
-      "skinSlot": "gdv3.portrait.carrier"
-    },
     {
       "type": "container",
       "name": "PortraitViewport",
-      "widget": { "top": -8, "bottom": -10, "left": -12, "right": -8 },
+      "widget": { "top": 0, "bottom": 0, "left": 0, "right": 0 },
       "children": [
+        {
+          "type": "image",
+          "name": "PortraitBackdrop",
+          "widget": { "top": 24, "bottom": 86, "left": 20, "right": 78 },
+          "skinSlot": "gdv3.portrait.backdrop"
+        },
+        {
+          "type": "image",
+          "name": "PortraitShadow",
+          "widget": { "hCenter": true, "vCenter": true },
+          "width": 686,
+          "height": 968,
+          "skinSlot": "gdv3.portrait.shadow"
+        },
+        {
+          "type": "image",
+          "name": "PortraitWash",
+          "widget": { "top": -20, "bottom": 18, "left": -16, "right": 36 },
+          "skinSlot": "gdv3.portrait.wash"
+        },
         {
           "type": "image",
           "name": "PortraitImage",
           "widget": { "hCenter": true, "vCenter": true },
-          "width": 574,
-          "height": 842,
+          "width": 618,
+          "height": 912,
           "skinSlot": "gdv3.portrait.image"
+        },
+        {
+          "type": "image",
+          "name": "PortraitRim",
+          "widget": { "hCenter": true, "vCenter": true },
+          "width": 712,
+          "height": 986,
+          "skinSlot": "gdv3.portrait.rim"
+        },
+        {
+          "type": "image",
+          "name": "PortraitFrame",
+          "widget": { "hCenter": true, "vCenter": true },
+          "width": 728,
+          "height": 1004,
+          "skinSlot": "gdv3.portrait.frame"
         }
       ]
     }

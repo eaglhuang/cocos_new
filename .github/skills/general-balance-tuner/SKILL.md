@@ -1,4 +1,5 @@
 ---
+doc_id: doc_agentskill_0017
 name: general-balance-tuner
 description: '武將數值平衡調校 SKILL — 以雙軸演算法（maxStat + avg5）自動計算 rarityTier 與 characterCategory，並執行 EP 重算、適性校驗、因子分派、稀有度分布統計。USE FOR: 新武將入庫前的數值校準、全量武將的平衡盤點、稀有度自動分類。DO NOT USE FOR: 故事生成（用 general-story-writer）、資料爬取匯入（用 general-data-pipeline）。'
 argument-hint: '指定目標武將 ID（單一或批次）、操作模式（classify / rebalance / audit / full）、以及是否要套用 characterCategory override。'

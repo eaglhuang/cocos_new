@@ -13,7 +13,7 @@
     "widget.header.plaque.badge.underlay": { "kind": "sprite-frame", "path": "sprites/ui_families/common/parchment/fill", "spriteType": "sliced", "border": [16, 16, 16, 16], "allowAutoAtlas": true, "opacity": 0.9 },
     "widget.header.plaque.badge.fill": { "kind": "sprite-frame", "path": "sprites/ui_families/common/parchment/fill", "spriteType": "sliced", "border": [16, 16, 16, 16], "allowAutoAtlas": true, "opacity": 0.96 },
     "widget.header.plaque.badge.label": { "kind": "label-style", "fontSize": 22, "lineHeight": 24, "color": "colorWhite", "outlineWidth": 1, "outlineColor": "outlineHeavy", "horizontalAlign": "CENTER" },
-    "std.bg.full": { "kind": "sprite-frame", "path": "ui-spec/placeholders/bg_ink_main", "spriteType": "sliced", "border": [96, 360, 96, 420], "allowAutoAtlas": false },
+    "std.bg.full": { "kind": "sprite-frame", "path": "sprites/ui_families/general_detail/detail_content_bg", "spriteType": "sliced", "border": [96, 360, 96, 420], "allowAutoAtlas": false },
     "std.card.main": { "kind": "sprite-frame", "path": "ui-spec/placeholders/bg_ink_detail", "spriteType": "sliced", "border": [96, 96, 96, 96], "allowAutoAtlas": false },
     "std.panel.spirit-card": { "kind": "color-rect", "color": "stdPanelSpiritCard", "alpha": 234 },
     "std.panel.summary": { "kind": "color-rect", "color": "stdPanelSummary", "alpha": 230 },

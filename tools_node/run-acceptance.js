@@ -49,6 +49,11 @@ const checks = [
         command: 'node',
         args: [path.join(__dirname, 'validate-general-data-tooling.js')],
     },
+    {
+        label: 'CrossRef Shard 完整性驗證',
+        command: 'node',
+        args: [path.join(__dirname, 'rebuild-crossref.js'), '--validate'],
+    },
 ];
 
 const regressionCheckFile = path.join(projectRoot, 'tools', 'check-unity-compound-regression.mjs');

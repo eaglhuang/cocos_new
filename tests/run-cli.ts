@@ -20,7 +20,30 @@ import { createUnityParticlePrefabParserSuite } from './UnityParticlePrefabParse
 import { createDeprecatedApiSuite } from './DeprecatedApiScanner';
 import { createSyncManagerSuite } from './SyncManager.test';
 import { createNetworkServiceSuite } from './NetworkService.test';
-import { createGeneralListPanelSuite } from './GeneralListPanel.test';
+import { createSkinLayersSuite } from './ucuf/skinLayers.test';
+import { createCompositePanelSuite } from './ucuf/compositePanel.test';
+import { createAttributePanelSuite } from './ucuf/attributePanel.test';
+import { createGridPanelSuite } from './ucuf/gridPanel.test';
+import { createScrollListPanelSuite } from './ucuf/scrollListPanel.test';
+import { createRadarChartPanelSuite } from './ucuf/radarChartPanel.test';
+import { createProgressBarPanelSuite } from './ucuf/progressBarPanel.test';
+import { createUCUFLoggerSuite } from './ucuf/ucufLogger.test';
+import { createRuntimeRuleCheckerSuite } from './ucuf/runtimeRuleChecker.test';
+import { createDataBindingValidatorSuite } from './ucuf/dataBindingValidator.test';
+import { createCompositePanelDisposeSuite } from './ucuf/compositePanelDispose.test';
+import { createAssetRegistryEntrySuite } from './ucuf/assetRegistryEntry.test';
+import { createI18nIntegrationSuite } from './ucuf/i18nIntegration.test';
+import { createPerformanceOptimizationSuite } from './ucuf/performanceOptimization.test';
+import { createArchitectureGovernanceSuite } from './ucuf/architectureGovernance.test';
+import { createScaffoldV2Suite } from './ucuf/scaffoldV2.test';
+import { createValidateUiSpecsCliSuite } from './ucuf/validateUiSpecsCli.test';
+import { createAgentGovernanceSuite } from './ucuf/agentGovernance.test';
+import { createFinalizeAgentTurnCliSuite } from './ucuf/finalizeAgentTurnCli.test';
+import { createUcufRuntimeCheckCliSuite } from './ucuf/ucufRuntimeCheckCli.test';
+import { createDeployDragDebugSuite } from './DeployDragDebug.test';
+import { createBattleSkillExecutorSuite } from './BattleSkillExecutor.test';
+import { createBattleSkillTargetSelectorSuite } from './BattleSkillTargetSelector.test';
+import { createBattleSkillDamageResolverSuite } from './BattleSkillDamageResolver.test';
 
 /**
  * 只在 Node.js CLI 環境（ts-node）下執行。
@@ -47,7 +70,43 @@ if (typeof window === 'undefined') {
     runner.register(createUnityParticlePrefabParserSuite());
     runner.register(createSyncManagerSuite());
     runner.register(createNetworkServiceSuite());
-    runner.register(createGeneralListPanelSuite());
+    runner.register(createSkinLayersSuite());
+    runner.register(createCompositePanelSuite());
+    runner.register(createAttributePanelSuite());
+    runner.register(createGridPanelSuite());
+    runner.register(createScrollListPanelSuite());
+    runner.register(createRadarChartPanelSuite());
+    runner.register(createProgressBarPanelSuite());
+    // M5
+    runner.register(createUCUFLoggerSuite());
+    runner.register(createRuntimeRuleCheckerSuite());
+    runner.register(createDataBindingValidatorSuite());
+    runner.register(createCompositePanelDisposeSuite());
+
+    // M6
+    runner.register(createAssetRegistryEntrySuite());
+
+    // M7
+    runner.register(createI18nIntegrationSuite());
+
+    // M8
+    runner.register(createPerformanceOptimizationSuite());
+
+    // M9
+    runner.register(createArchitectureGovernanceSuite());
+
+    // M10
+    runner.register(createScaffoldV2Suite());
+    runner.register(createValidateUiSpecsCliSuite());
+
+    // M11
+    runner.register(createAgentGovernanceSuite());
+    runner.register(createFinalizeAgentTurnCliSuite());
+    runner.register(createUcufRuntimeCheckCliSuite());
+    runner.register(createDeployDragDebugSuite());
+    runner.register(createBattleSkillExecutorSuite());
+    runner.register(createBattleSkillTargetSelectorSuite());
+    runner.register(createBattleSkillDamageResolverSuite());
 
     // Deprecated API 靜態掃描
     // __dirname = assets/scripts/tools/tests/  →  ../../../../ = 專案根目錄
@@ -61,7 +120,16 @@ if (typeof window === 'undefined') {
         relativeBase: projectRoot,  // violation 路徑與 whitelist 均相對此目錄
     }));
 
-    const summary = await runner.runAll();
+    // --layer N 过濾：只執行指定 層的 suite
+    const layerArg = process.argv.find(a => a.startsWith('--layer=') || a === '--layer');
+    let layerFilter: 1 | 2 | 3 | undefined;
+    if (layerArg) {
+        const raw = layerArg.includes('=') ? layerArg.split('=')[1] : process.argv[process.argv.indexOf(layerArg) + 1];
+        const n = Number(raw);
+        if (n === 1 || n === 2 || n === 3) layerFilter = n;
+    }
+
+    const summary = await runner.runAll(layerFilter);
 
     // CLI 退出碼：有失敗 → 非 0（可被 CI 捕捉）
     process.exit(summary.failed > 0 ? 1 : 0);

@@ -1,0 +1,53 @@
+{
+  "type": "panel",
+  "name": "TabAptitudeContent",
+  "widget": { "top": 0, "bottom": 0, "left": 0, "right": 0 },
+  "layout": { "type": "vertical", "spacing": 16, "paddingTop": 28, "paddingBottom": 28, "paddingLeft": 28, "paddingRight": 28 },
+  "children": [
+    {
+      "type": "panel",
+      "name": "TroopCard",
+      "width": "100%",
+      "height": 148,
+      "skinSlot": "detail.aptitude.card",
+      "layout": { "type": "vertical", "spacing": 0, "paddingTop": 10, "paddingBottom": 10, "paddingLeft": 14, "paddingRight": 14 },
+      "children": [
+        { "type": "label", "name": "TroopValue", "width": "100%", "height": 128, "styleSlot": "detail.label.value", "wrapText": true }
+      ]
+    },
+    {
+      "type": "panel",
+      "name": "TerrainCard",
+      "width": "100%",
+      "height": 168,
+      "skinSlot": "detail.aptitude.card",
+      "layout": { "type": "vertical", "spacing": 0, "paddingTop": 10, "paddingBottom": 10, "paddingLeft": 14, "paddingRight": 14 },
+      "children": [
+        { "type": "label", "name": "TerrainValue", "width": "100%", "height": 148, "styleSlot": "detail.label.value", "wrapText": true }
+      ]
+    },
+    {
+      "type": "panel",
+      "name": "WeatherCard",
+      "width": "100%",
+      "height": 196,
+      "skinSlot": "detail.aptitude.card",
+      "layout": { "type": "vertical", "spacing": 0, "paddingTop": 10, "paddingBottom": 10, "paddingLeft": 14, "paddingRight": 14 },
+      "children": [
+        { "type": "label", "name": "WeatherValue", "width": "100%", "height": 176, "styleSlot": "detail.label.value", "wrapText": true }
+      ]
+    },
+    {
+      "type": "panel",
+      "name": "TerrainSummaryCard",
+      "width": "100%",
+      "height": 92,
+      "skinSlot": "detail.aptitude.summaryCard",
+      "layout": { "type": "vertical", "spacing": 8, "paddingTop": 10, "paddingBottom": 10, "paddingLeft": 14, "paddingRight": 14 },
+      "children": [
+        { "type": "label", "name": "PreferredTerrainValue", "width": "100%", "height": 30, "styleSlot": "detail.label.value" },
+        { "type": "label", "name": "TerrainBonusValue",     "width": "100%", "height": 30, "styleSlot": "detail.label.value" }
+      ]
+    }
+  ]
+}

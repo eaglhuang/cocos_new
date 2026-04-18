@@ -1,25 +1,24 @@
 // @spec-source → 見 docs/cross-reference-index.md
 /**
- * UnitInfoPanel — 從左側滑入的兵種詳細資訊面板
+ * @deprecated
+ * UnitInfoPanel — 兵種詳細資訊面板（已廢止，請使用 UnitInfoComposite）
  *
  * 職責：
- *   1. 點擊虎符卡片後顯示（slideRight 進場，slideLeft 退場）
- *   2. 填入兵種數值、特性標籤、特殊能力、兵種描述
- *   3. BtnClose 或外部呼叫 hide() 關閉面板
+ *   1. 點擊虎符卡片後顯示已遷移至 CompositePanel
+ *   2. 填入兵種數值、特性標籤、特殊能力已遷移
+ *   3. 關閉邏輯已遷移
  *
- * 滑動動畫策略：
- *   - 依賴 UIPreviewBuilder.playEnterTransition / playExitTransition（fade）
- *   - Widget 固定 left:16%, top:88；動畫不改變 Widget，僅驅動 UIOpacity
- *   - 若未來需要真實 translate slide，可在此換成 tween(position) + 暫時關閉 Widget
+ * 遷移完成時間：2026-04-13 (Wave 2)
+ * 預計刪除：2026-05-13 (Wave 2 全部遷移後)
  *
- * Unity 對照：CharacterInfoPanel（帶SlideIn動畫的 UGUI Panel）
+ * Unity 對照：CharacterInfoPanel，帶 FadeIn/FadeOut 動畫的 UGUI Panel
  */
 import { _decorator, Button, Color, Label, Node, Sprite, SpriteFrame } from 'cc';
 import { services } from '../../core/managers/ServiceLoader';
 import { UIPreviewBuilder } from '../core/UIPreviewBuilder';
 import { UISpecLoader } from '../core/UISpecLoader';
 import { UITemplateBinder } from '../core/UITemplateBinder';
-import { TallyCardData } from './TigerTallyPanel';
+import { TallyCardData } from './TigerTallyComposite';
 
 const { ccclass } = _decorator;
 const UNITINFO_TYPE_ICON_FALLBACK_PATH = 'sprites/battle/unitinfo_type_icon';
@@ -134,24 +133,25 @@ export class UnitInfoPanel extends UIPreviewBuilder {
         if (this._hpRow)     this._hpRow.string      = `血量：${data.hp}`;
         if (this._spdRow)    this._spdRow.string     = `速度：${data.spd}`;
         if (this._costRow)   this._costRow.string    = `費用：${data.cost}`;
-        if (this._descText)  this._descText.string   = data.desc;
+        if (this._descText)  this._descText.string   = this._buildDetailText(data);
         void this._applyTypeIcon(data);
 
         // 特性標籤：每個 trait 建立一個 Label 子節點
-        this._fillTraitTags(data.traits);
+        this._fillTraitTags(data);
 
         // 能力列表：每條能力建一個 Label 子節點
-        this._fillAbilityList(data.abilities);
+        this._fillAbilityList(data);
     }
 
     /**
      * 動態建立特性標籤。
      * Unity 對照：FlowLayout 中 Instantiate prefab + setText
      */
-    private _fillTraitTags(traits: string[]): void {
+    private _fillTraitTags(data: TallyCardData): void {
         if (!this._traitTags) return;
         // 清空舊標籤
         this._traitTags.removeAllChildren();
+        const traits = data.traitDetails?.map(detail => detail.label) ?? data.traits;
         for (const trait of traits) {
             const tagNode = new Node(`Trait_${trait}`);
             tagNode.parent = this._traitTags;
@@ -164,16 +164,39 @@ export class UnitInfoPanel extends UIPreviewBuilder {
     /**
      * 動態建立能力列表。
      */
-    private _fillAbilityList(abilities: string[]): void {
+    private _fillAbilityList(data: TallyCardData): void {
         if (!this._abilityList) return;
         this._abilityList.removeAllChildren();
-        for (const ability of abilities) {
+        const abilityRows = data.abilityDetails?.map(detail => detail.detail ? `${detail.name}：${detail.detail}` : detail.name)
+            ?? data.abilities;
+        for (const ability of abilityRows) {
             const rowNode = new Node(`Ability_${ability}`);
             rowNode.parent = this._abilityList;
             const label = rowNode.addComponent(Label);
             label.string   = `• ${ability}`;
             label.fontSize = 12;
         }
+    }
+
+    private _buildDetailText(data: TallyCardData): string {
+        const blocks: string[] = [];
+        if (data.desc) blocks.push(data.desc);
+
+        const sourceLine = [data.source?.origin, data.source?.sourceType].filter(Boolean).join(' / ');
+        if (sourceLine) {
+            blocks.push(`出處：${sourceLine}`);
+        }
+
+        if (data.source?.obtainHint) {
+            blocks.push(`取得：${data.source.obtainHint}`);
+        }
+
+        const loreParts = [data.lore?.title, data.lore?.summary].filter(Boolean);
+        if (loreParts.length > 0) {
+            blocks.push(`典故：${loreParts.join('｜')}`);
+        }
+
+        return blocks.join('\n');
     }
 
     private async _applyTypeIcon(data: TallyCardData): Promise<void> {

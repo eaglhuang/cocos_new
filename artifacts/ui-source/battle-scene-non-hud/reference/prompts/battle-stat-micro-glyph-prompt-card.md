@@ -20,7 +20,7 @@
 ## Style Inputs
 
 - related screen family: `tiger-tally-screen` + `unit-info-panel-screen`
-- art bible: `docs/美術風格規格書.md`
+- art bible: `docs/美術風格規格書.md (doc_art_0002)` (doc_art_0002)
 - material language: `deep-ink battlefield + cold tactical HUD + restrained antique metal`
 - layer discipline: `background / dark overlay / runtime frame / content glyph`
 - line weight: `1.5px ~ 2px` at a `16px ~ 24px` working size

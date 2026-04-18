@@ -1,0 +1,28 @@
+{
+  "$schema": "../../schemas/intake.schema.json",
+  "screenId": "battle-hud-overlay-screen",
+  "tier": "C",
+  "templateFamilyCandidate": "hud-overlay",
+  "uiId": "BattleHudOverlay",
+  "sourceOfTruth": {
+    "screenSpec": "artifacts\\ui-source\\battle-hud-overlay\\workflow-v1\\generated\\battle-hud-overlay-screen.json",
+    "layout": "battle-hud-overlay-main",
+    "skin": "battle-hud-overlay-default",
+    "bundle": "battle_ui",
+    "layer": "HUD"
+  },
+  "canonicalReferences": [
+    "artifacts\\ui-source\\battle-hud-overlay\\workflow-v1\\generated\\battle-hud-overlay-screen.recipe.json",
+    "artifacts\\ui-source\\battle-hud-overlay\\workflow-v1\\generated\\battle-hud-overlay-screen.json",
+    "docs/ui/UCUF-UI-template-blueprint.md"
+  ],
+  "riskZones": [
+    "hud-overlay.top-bar",
+    "hud-overlay.left-overlay",
+    "hud-overlay.right-overlay"
+  ],
+  "smokeRoute": "BattleScene -> attach BattleHudOverlay HUD",
+  "notes": "Auto-generated intake skeleton from recipe battle-hud-overlay-screen; replace canonicalReferences/risk zones with proof-specific values before production handoff.",
+  "generatedAt": "2026-04-15T15:42:09.410Z",
+  "generatedBy": "GitHubCopilot"
+}

@@ -1,0 +1,651 @@
+{
+  "id": "general-detail-unified-default",
+  "version": 2,
+  "bundle": "lobby_ui",
+  "atlasPolicy": "lobby",
+  "slots": {
+    "detail.back.circle": {
+      "kind": "button-skin",
+      "normal": "sprites/ui_families/common/circle_icon/circle_normal",
+      "pressed": "sprites/ui_families/common/circle_icon/circle_normal",
+      "disabled": "sprites/ui_families/common/circle_icon/circle_normal",
+      "spriteType": "simple",
+      "allowAutoAtlas": true
+    },
+    "detail.blockInput": {
+      "kind": "color-rect",
+      "color": "transparent"
+    },
+    "general.portrait.placeholder": {
+      "kind": "color-rect",
+      "color": "transparent"
+    },
+    "detail.close.btn": {
+      "kind": "button-skin",
+      "normal": "ui-spec/placeholders/btn_close_normal",
+      "pressed": "ui-spec/placeholders/btn_close_pressed",
+      "disabled": "ui-spec/placeholders/btn_close_disabled",
+      "spriteType": "sliced",
+      "border": [8, 8, 8, 8]
+    },
+    "detail.tab.circle.overview": {
+      "kind": "button-skin",
+      "normal": "sprites/ui_families/general_detail/user_ref/tab_circle_ref_003",
+      "pressed": "sprites/ui_families/general_detail/user_ref/tab_circle_ref_003",
+      "disabled": "sprites/ui_families/general_detail/user_ref/tab_circle_ref_003",
+      "spriteType": "simple",
+      "allowAutoAtlas": true,
+      "opacity": 1
+    },
+    "detail.tab.circle.basics": {
+      "kind": "button-skin",
+      "normal": "sprites/ui_families/general_detail/user_ref/tab_circle_ref_003",
+      "pressed": "sprites/ui_families/general_detail/user_ref/tab_circle_ref_003",
+      "disabled": "sprites/ui_families/general_detail/user_ref/tab_circle_ref_003",
+      "spriteType": "simple",
+      "allowAutoAtlas": true
+    },
+    "detail.tab.circle.stats": {
+      "kind": "button-skin",
+      "normal": "sprites/ui_families/general_detail/user_ref/tab_circle_ref_003",
+      "pressed": "sprites/ui_families/general_detail/user_ref/tab_circle_ref_003",
+      "disabled": "sprites/ui_families/general_detail/user_ref/tab_circle_ref_003",
+      "spriteType": "simple",
+      "allowAutoAtlas": true
+    },
+    "detail.tab.circle.bloodline": {
+      "kind": "button-skin",
+      "normal": "sprites/ui_families/general_detail/user_ref/tab_circle_ref_003",
+      "pressed": "sprites/ui_families/general_detail/user_ref/tab_circle_ref_003",
+      "disabled": "sprites/ui_families/general_detail/user_ref/tab_circle_ref_003",
+      "spriteType": "simple",
+      "allowAutoAtlas": true
+    },
+    "detail.tab.circle.skills": {
+      "kind": "button-skin",
+      "normal": "sprites/ui_families/general_detail/user_ref/tab_circle_ref_003",
+      "pressed": "sprites/ui_families/general_detail/user_ref/tab_circle_ref_003",
+      "disabled": "sprites/ui_families/general_detail/user_ref/tab_circle_ref_003",
+      "spriteType": "simple",
+      "allowAutoAtlas": true
+    },
+    "detail.tab.circle.aptitude": {
+      "kind": "button-skin",
+      "normal": "sprites/ui_families/general_detail/user_ref/tab_circle_ref_003",
+      "pressed": "sprites/ui_families/general_detail/user_ref/tab_circle_ref_003",
+      "disabled": "sprites/ui_families/general_detail/user_ref/tab_circle_ref_003",
+      "spriteType": "simple",
+      "allowAutoAtlas": true
+    },
+    "detail.tab.circle.extended": {
+      "kind": "button-skin",
+      "normal": "sprites/ui_families/general_detail/user_ref/tab_circle_ref_003",
+      "pressed": "sprites/ui_families/general_detail/user_ref/tab_circle_ref_003",
+      "disabled": "sprites/ui_families/general_detail/user_ref/tab_circle_ref_003",
+      "spriteType": "simple",
+      "allowAutoAtlas": true
+    },
+    "detail.tab.circle.badge": {
+      "kind": "color-rect",
+      "color": "#C8A25E",
+      "alpha": 242
+    },
+    "detail.tab.icon.overview.active": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/icons/tab_overview_active",
+      "spriteType": "simple",
+      "allowAutoAtlas": true,
+      "opacity": 1
+    },
+    "detail.tab.icon.overview.inactive": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/icons/tab_overview_inactive",
+      "spriteType": "simple",
+      "allowAutoAtlas": true,
+      "opacity": 0.96
+    },
+    "detail.tab.icon.basics.active": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/icons/tab_overview_active",
+      "spriteType": "simple",
+      "allowAutoAtlas": true,
+      "opacity": 1
+    },
+    "detail.tab.icon.basics.inactive": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/icons/tab_overview_inactive",
+      "spriteType": "simple",
+      "allowAutoAtlas": true,
+      "opacity": 0.96
+    },
+    "detail.tab.icon.stats.active": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/icons/tab_stats_active",
+      "spriteType": "simple",
+      "allowAutoAtlas": true,
+      "opacity": 1
+    },
+    "detail.tab.icon.stats.inactive": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/icons/tab_stats_inactive",
+      "spriteType": "simple",
+      "allowAutoAtlas": true,
+      "opacity": 0.96
+    },
+    "detail.tab.icon.bloodline.active": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/icons/tab_bloodline_active",
+      "spriteType": "simple",
+      "allowAutoAtlas": true,
+      "opacity": 1
+    },
+    "detail.tab.icon.bloodline.inactive": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/icons/tab_bloodline_inactive",
+      "spriteType": "simple",
+      "allowAutoAtlas": true,
+      "opacity": 0.96
+    },
+    "detail.tab.icon.skills.active": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/icons/tab_skills_active",
+      "spriteType": "simple",
+      "allowAutoAtlas": true,
+      "opacity": 1
+    },
+    "detail.tab.icon.skills.inactive": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/icons/tab_skills_inactive",
+      "spriteType": "simple",
+      "allowAutoAtlas": true,
+      "opacity": 0.96
+    },
+    "detail.tab.icon.aptitude.active": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/icons/tab_aptitude_active",
+      "spriteType": "simple",
+      "allowAutoAtlas": true,
+      "opacity": 1
+    },
+    "detail.tab.icon.aptitude.inactive": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/icons/tab_aptitude_inactive",
+      "spriteType": "simple",
+      "allowAutoAtlas": true,
+      "opacity": 0.96
+    },
+    "detail.tab.icon.extended.active": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/icons/tab_extended_active",
+      "spriteType": "simple",
+      "allowAutoAtlas": true,
+      "opacity": 1
+    },
+    "detail.tab.icon.extended.inactive": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/icons/tab_extended_inactive",
+      "spriteType": "simple",
+      "allowAutoAtlas": true,
+      "opacity": 0.96
+    },
+
+    "detail.content.bg": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/dark_metal/bg",
+      "spriteType": "sliced",
+      "border": [8, 8, 8, 8],
+      "allowAutoAtlas": true,
+      "opacity": 0.86,
+      "blendMode": "alpha",
+      "color": "#0C0F13"
+    },
+    "detail.bloodline.card": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/dark_metal/frame",
+      "spriteType": "sliced",
+      "border": [12, 12, 12, 12],
+      "allowAutoAtlas": true,
+      "opacity": 0.8,
+      "blendMode": "alpha"
+    },
+    "detail.ancestry.card": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/dark_metal/frame",
+      "spriteType": "sliced",
+      "border": [12, 12, 12, 12],
+      "allowAutoAtlas": true,
+      "opacity": 0.8,
+      "blendMode": "alpha"
+    },
+    "detail.gene.card": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/dark_metal/frame",
+      "spriteType": "sliced",
+      "border": [12, 12, 12, 12],
+      "allowAutoAtlas": true,
+      "opacity": 0.8,
+      "blendMode": "alpha"
+    },
+    "detail.awakening.card": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/dark_metal/frame",
+      "spriteType": "sliced",
+      "border": [12, 12, 12, 12],
+      "allowAutoAtlas": true,
+      "opacity": 0.8,
+      "blendMode": "alpha"
+    },
+    "detail.skill.primaryCard": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/dark_metal/frame",
+      "spriteType": "sliced",
+      "border": [12, 12, 12, 12],
+      "allowAutoAtlas": true,
+      "opacity": 0.82,
+      "blendMode": "alpha"
+    },
+    "detail.skill.groupCard": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/dark_metal/frame",
+      "spriteType": "sliced",
+      "border": [12, 12, 12, 12],
+      "allowAutoAtlas": true,
+      "opacity": 0.82,
+      "blendMode": "alpha"
+    },
+    "detail.skill.lockedCard": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/dark_metal/frame",
+      "spriteType": "sliced",
+      "border": [12, 12, 12, 12],
+      "allowAutoAtlas": true,
+      "opacity": 0.78,
+      "blendMode": "alpha"
+    },
+    "detail.skill.noteCard": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/dark_metal/frame",
+      "spriteType": "sliced",
+      "border": [12, 12, 12, 12],
+      "allowAutoAtlas": true,
+      "opacity": 0.78,
+      "blendMode": "alpha"
+    },
+    "detail.aptitude.card": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/dark_metal/frame",
+      "spriteType": "sliced",
+      "border": [12, 12, 12, 12],
+      "allowAutoAtlas": true,
+      "opacity": 0.8,
+      "blendMode": "alpha"
+    },
+    "detail.aptitude.summaryCard": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/dark_metal/frame",
+      "spriteType": "sliced",
+      "border": [12, 12, 12, 12],
+      "allowAutoAtlas": true,
+      "opacity": 0.84,
+      "blendMode": "alpha"
+    },
+    "detail.crest.panel": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/dark_metal/frame",
+      "spriteType": "sliced",
+      "border": [12, 12, 12, 12],
+      "allowAutoAtlas": true,
+      "opacity": 0.76,
+      "blendMode": "alpha"
+    },
+    "detail.bloodline.summaryPanel": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/dark_metal/frame",
+      "spriteType": "sliced",
+      "border": [12, 12, 12, 12],
+      "allowAutoAtlas": true,
+      "opacity": 0.84,
+      "blendMode": "alpha"
+    },
+    "detail.ancestor.chip": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/detail_tree_node_bg",
+      "spriteType": "sliced",
+      "border": [18, 18, 18, 18],
+      "allowAutoAtlas": true
+    },
+    "general.crest.primary": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/v3_final/crest_face_final",
+      "spriteType": "simple",
+      "allowAutoAtlas": true
+    },
+    "general.crest.secondary": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/v3_final/crest_ring_final",
+      "spriteType": "simple",
+      "allowAutoAtlas": true
+    },
+    "detail.awakening.progressBar": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/progress_bar/fill",
+      "spriteType": "sliced",
+      "border": [20, 20, 20, 20],
+      "allowAutoAtlas": true
+    },
+    "detail.field.bg": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/dark_metal/fill",
+      "spriteType": "sliced",
+      "border": [8, 8, 8, 8],
+      "allowAutoAtlas": true,
+      "opacity": 0.72,
+      "blendMode": "alpha",
+      "color": "#0C0F13"
+    },
+    "detail.field.name.bg": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/dark_metal/fill",
+      "spriteType": "sliced",
+      "border": [8, 8, 8, 8],
+      "allowAutoAtlas": true,
+      "opacity": 0.78,
+      "blendMode": "alpha",
+      "color": "#0C0F13"
+    },
+
+    "gdv3.rarity.outerGlow": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/icons/rarity_glow_ssr",
+      "spriteType": "simple",
+      "allowAutoAtlas": true,
+      "opacity": 0.0
+    },
+    "gdv3.rarity.innerHalo": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/icons/rarity_halo_ssr",
+      "spriteType": "simple",
+      "allowAutoAtlas": true,
+      "opacity": 0.0
+    },
+    "gdv3.rarity.titleChip": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/icons/rarity_chip_ssr",
+      "spriteType": "simple",
+      "allowAutoAtlas": true,
+      "opacity": 0.0
+    },
+    "gdv3.rarity.badge.underlay": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/parchment/fill",
+      "spriteType": "sliced",
+      "border": [16, 16, 16, 16],
+      "allowAutoAtlas": true,
+      "opacity": 0.94
+    },
+    "gdv3.rarity.badge": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/parchment/fill",
+      "spriteType": "sliced",
+      "border": [16, 16, 16, 16],
+      "allowAutoAtlas": true,
+      "opacity": 0.94,
+      "color": "#FFFFFF"
+    },
+    "gdv3.rarity.star": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/icons/rarity_star_glow",
+      "spriteType": "simple",
+      "allowAutoAtlas": true,
+      "opacity": 1
+    },
+    "gdv3.module.card": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/dark_metal/frame",
+      "spriteType": "sliced",
+      "border": [12, 12, 12, 12],
+      "allowAutoAtlas": true,
+      "opacity": 0.8,
+      "blendMode": "alpha"
+    },
+    "gdv3.summary.titleStrip": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/dark_metal/fill",
+      "spriteType": "sliced",
+      "border": [8, 8, 8, 8],
+      "allowAutoAtlas": true,
+      "opacity": 0.7,
+      "blendMode": "alpha",
+      "color": "#0C0F13"
+    },
+    "gdv3.summary.valuePlate": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/dark_metal/fill",
+      "spriteType": "sliced",
+      "border": [8, 8, 8, 8],
+      "allowAutoAtlas": true,
+      "opacity": 0.78,
+      "blendMode": "alpha",
+      "color": "#0C0F13"
+    },
+    "gdv3.summary.valueFrame": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/dark_metal/frame",
+      "spriteType": "sliced",
+      "border": [12, 12, 12, 12],
+      "allowAutoAtlas": true,
+      "opacity": 0.84,
+      "blendMode": "alpha"
+    },
+
+    "detail.label.button": {
+      "kind": "label-style",
+      "fontSize": 12,
+      "lineHeight": 16,
+      "color": "textOnParchment",
+      "outlineWidth": 0,
+      "horizontalAlign": "CENTER",
+      "verticalAlign": "CENTER"
+    },
+    "detail.label.circleBack": {
+      "kind": "label-style",
+      "font": "fonts/manrope/font",
+      "fontSize": 30,
+      "lineHeight": 34,
+      "color": "textOnParchment",
+      "outlineWidth": 0,
+      "horizontalAlign": "CENTER",
+      "verticalAlign": "CENTER",
+      "isBold": true
+    },
+    "detail.label.circleTabBadge": {
+      "kind": "label-style",
+      "font": "fonts/manrope/font",
+      "fontSize": 9,
+      "lineHeight": 11,
+      "color": "#342819",
+      "outlineWidth": 0,
+      "horizontalAlign": "CENTER",
+      "verticalAlign": "CENTER",
+      "overflow": "SHRINK",
+      "isBold": true
+    },
+    "detail.label.circleTabLabel": {
+      "kind": "label-style",
+      "font": "fonts/notosans_tc/font",
+      "fontSize": 12,
+      "lineHeight": 15,
+      "color": "#F1E3C5",
+      "outlineWidth": 0,
+      "horizontalAlign": "CENTER",
+      "verticalAlign": "CENTER",
+      "overflow": "SHRINK",
+      "isBold": true
+    },
+    "detail.label.cardTitle": {
+      "kind": "label-style",
+      "fontSize": 16,
+      "lineHeight": 20,
+      "color": "textPrimary",
+      "horizontalAlign": "CENTER",
+      "verticalAlign": "CENTER"
+    },
+    "detail.label.cardHint": {
+      "kind": "label-style",
+      "fontSize": 13,
+      "lineHeight": 16,
+      "color": "textMuted",
+      "horizontalAlign": "CENTER",
+      "verticalAlign": "CENTER"
+    },
+    "detail.label.body": {
+      "kind": "label-style",
+      "fontSize": 16,
+      "lineHeight": 22,
+      "color": "textPrimary",
+      "horizontalAlign": "LEFT"
+    },
+    "detail.label.meta": {
+      "kind": "label-style",
+      "fontSize": 18,
+      "lineHeight": 24,
+      "color": "textSecondary",
+      "horizontalAlign": "LEFT"
+    },
+    "detail.label.value": {
+      "kind": "label-style",
+      "fontSize": 20,
+      "lineHeight": 28,
+      "color": "textPrimary",
+      "outlineColor": "outlineLight",
+      "outlineWidth": 1,
+      "horizontalAlign": "LEFT"
+    },
+    "detail.label.valueDisabled": {
+      "kind": "label-style",
+      "fontSize": 18,
+      "lineHeight": 24,
+      "color": "textMuted",
+      "horizontalAlign": "LEFT"
+    },
+    "detail.label.subtitle": {
+      "kind": "label-style",
+      "fontSize": 24,
+      "lineHeight": 30,
+      "color": "tertiary",
+      "outlineWidth": 0,
+      "horizontalAlign": "LEFT"
+    },
+    "detail.label.devNote": {
+      "kind": "label-style",
+      "fontSize": 14,
+      "lineHeight": 20,
+      "color": "textSecondary",
+      "horizontalAlign": "LEFT"
+    },
+    "detail.label.bloodlineName": {
+      "kind": "label-style",
+      "fontSize": 24,
+      "lineHeight": 30,
+      "color": "tertiary",
+      "outlineWidth": 0,
+      "horizontalAlign": "LEFT"
+    },
+
+    "gdv3.label.headerName": {
+      "kind": "label-style",
+      "font": "fonts/newsreader/font",
+      "fontSize": 56,
+      "lineHeight": 62,
+      "color": "colorWhite",
+      "outlineWidth": 0,
+      "horizontalAlign": "LEFT",
+      "verticalAlign": "CENTER",
+      "overflow": "SHRINK",
+      "isBold": true
+    },
+    "gdv3.label.headerTitle": {
+      "kind": "label-style",
+      "font": "fonts/notosans_tc/font",
+      "fontSize": 18,
+      "lineHeight": 22,
+      "color": "#F3E6C9",
+      "outlineWidth": 0,
+      "horizontalAlign": "LEFT",
+      "verticalAlign": "CENTER",
+      "overflow": "SHRINK",
+      "isBold": true
+    },
+    "gdv3.label.headerMeta": {
+      "kind": "label-style",
+      "font": "fonts/manrope/font",
+      "fontSize": 12,
+      "lineHeight": 15,
+      "color": "#E8DCC6",
+      "outlineWidth": 0,
+      "horizontalAlign": "LEFT",
+      "verticalAlign": "CENTER",
+      "overflow": "SHRINK"
+    },
+    "gdv3.label.sectionBand": {
+      "kind": "label-style",
+      "font": "fonts/notosans_tc/font",
+      "fontSize": 18,
+      "lineHeight": 24,
+      "color": "tertiary",
+      "outlineWidth": 0,
+      "horizontalAlign": "LEFT",
+      "verticalAlign": "CENTER",
+      "overflow": "SHRINK",
+      "isBold": true
+    },
+    "gdv3.label.sectionBandCompact": {
+      "kind": "label-style",
+      "font": "fonts/notosans_tc/font",
+      "fontSize": 16,
+      "lineHeight": 20,
+      "color": "tertiary",
+      "outlineWidth": 0,
+      "horizontalAlign": "LEFT",
+      "verticalAlign": "CENTER",
+      "overflow": "SHRINK",
+      "isBold": true
+    },
+    "gdv3.label.cardBodySummary": {
+      "kind": "label-style",
+      "font": "fonts/notosans_tc/font",
+      "fontSize": 16,
+      "lineHeight": 22,
+      "color": "text.parchment.primary",
+      "outlineWidth": 0,
+      "horizontalAlign": "LEFT",
+      "verticalAlign": "TOP",
+      "overflow": "SHRINK"
+    },
+    "gdv3.label.rarityBadge": {
+      "kind": "label-style",
+      "font": "fonts/newsreader/font",
+      "fontSize": 22,
+      "lineHeight": 24,
+      "color": "#FFF6D6",
+      "outlineWidth": 1,
+      "outlineColor": "#593714",
+      "horizontalAlign": "CENTER",
+      "verticalAlign": "CENTER",
+      "isBold": true
+    },
+    "gdv3.label.rarityTitleChip": {
+      "kind": "label-style",
+      "font": "fonts/notosans_tc/font",
+      "fontSize": 13,
+      "lineHeight": 15,
+      "color": "#FFFBE9",
+      "outlineWidth": 1,
+      "outlineColor": "#3F2309",
+      "horizontalAlign": "CENTER",
+      "verticalAlign": "CENTER",
+      "overflow": "SHRINK",
+      "isBold": true
+    }
+  }
+}

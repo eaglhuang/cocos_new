@@ -1,0 +1,26 @@
+{
+  "createdAt": "2026-04-15T08:14:12.835Z",
+  "host": "http://localhost:7456",
+  "machine": "DESKTOP-NREHEQ8",
+  "captures": [
+    {
+      "target": "GeneralDetailOverview",
+      "screenId": "GeneralDetailOverview",
+      "file": "overview-ucuf-policy-split-r1\\GeneralDetailOverview.png",
+      "diagnosticsSummary": {
+        "consoleErrorCount": 0,
+        "consoleWarningCount": 0,
+        "pageErrorCount": 0,
+        "requestFailureCount": 0
+      },
+      "diagnosticSamples": [],
+      "status": "pass"
+    }
+  ],
+  "runtimeUpdates": [
+    {
+      "target": "GeneralDetailOverview",
+      "status": "pass"
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "id": "general-detail-unified-screen",
+  "version": 1,
+  "uiId": "GeneralDetailUnified",
+  "layout": "general-detail-unified-main",
+  "skin": "general-detail-unified-default",
+  "layer": "Popup",
+  "bundle": "lobby_ui",
+  "contentRequirements": {
+    "schemaId": "general-detail-content",
+    "familyId": "general-detail-unified",
+    "requiredFields": [
+      "headerName"
+    ]
+  },
+  "content": {
+    "source": "general-detail-overview-states-v1",
+    "state": "smoke-zhang-fei"
+  },
+  "tabRouting": {
+    "Overview":  { "slotId": "OverviewSlot", "fragment": "fragments/layouts/gd-tab-overview" },
+    "Basics":    { "slotId": "ContentSlot", "fragment": "fragments/layouts/gd-tab-basics" },
+    "Stats":     { "slotId": "ContentSlot", "fragment": "fragments/layouts/gd-tab-stats" },
+    "Bloodline": { "slotId": "ContentSlot", "fragment": "fragments/layouts/gd-tab-bloodline" },
+    "Skills":    { "slotId": "ContentSlot", "fragment": "fragments/layouts/gd-tab-skills" },
+    "Aptitude":  { "slotId": "ContentSlot", "fragment": "fragments/layouts/gd-tab-aptitude" },
+    "Extended":  { "slotId": "ContentSlot", "fragment": "fragments/layouts/gd-tab-extended" }
+  }
+}

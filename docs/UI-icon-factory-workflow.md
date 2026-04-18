@@ -1,3 +1,4 @@
+<!-- doc_id: doc_ui_0033 -->
 # UI Icon Factory Workflow
 
 這份文件把 icon / badge / currency / medal / nav glyph 這類「不是整頁 UI、但又不是單純隨手切圖」的資產，正式納入 AI factory。
@@ -48,7 +49,7 @@ icon 不是單顆 PNG，而是一個有結構的 family unit。
 
 正式 family id、suite 命名、member key 與 output 命名規則，統一以：
 
-1. `docs/UI-icon-family-registry.md`
+1. `docs/UI-icon-family-registry.md (doc_ui_0034)` (doc_ui_0034)
 
 為準。
 
@@ -170,7 +171,7 @@ underlay 常見用途：
 可直接使用：
 
 1. `artifacts/ui-source/ai-recipes/icon-prompt-card-template.md`
-2. `docs/UI-icon-family-registry.md`
+2. `docs/UI-icon-family-registry.md (doc_ui_0034)` (doc_ui_0034)
 
 ## 7. 不該做的事
 

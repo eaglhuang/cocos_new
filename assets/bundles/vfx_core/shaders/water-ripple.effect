@@ -1,0 +1,144 @@
+CCEffect %{
+  techniques:
+  - name: transparent
+    passes:
+    - vert: water-ripple-vs:vert
+      frag: water-ripple-fs:frag
+      rasterizerState:
+        cullMode: none
+      depthStencilState: &depthState
+        depthTest: false
+        depthWrite: false
+      blendState:
+        targets:
+        - blend: true
+          blendSrc: src_alpha
+          blendDst: one_minus_src_alpha
+          blendSrcAlpha: src_alpha
+          blendDstAlpha: one_minus_src_alpha
+      properties: &props
+        mainTexture:  { value: white }
+        noiseTexture: { value: white }
+        flowMap:      { value: white }
+        foamMap:      { value: white }
+        mainColor:    { value: [0.48, 0.82, 1.0, 0.82], linear: true, editor: { type: color } }
+        uvTiling:     { value: [1.25, 1.25, 0.0, 0.0] }
+        flowParams:   { value: [0.18, 0.085, 4.2, 0.08] }
+        rippleParams: { value: [1.2, 1.0, 0.48, 0.0] }
+        worldFlowParams: { value: [0.12, 0.12, 0.75, 0.7] }
+        riverDir:        { value: [0.92, 0.38, 1.05, 0.78] }
+        foamParams:      { value: [0.56, 0.2, 2.1, 0.42] }
+  - name: additive
+    passes:
+    - vert: water-ripple-vs:vert
+      frag: water-ripple-fs:frag
+      rasterizerState:
+        cullMode: none
+      depthStencilState: *depthState
+      blendState:
+        targets:
+        - blend: true
+          blendSrc: src_alpha
+          blendDst: one
+          blendSrcAlpha: src_alpha
+          blendDstAlpha: one
+      properties: *props
+}%
+
+CCProgram water-ripple-vs %{
+  precision highp float;
+
+  #include <builtin/uniforms/cc-global>
+  #include <builtin/uniforms/cc-local>
+
+  in vec3 a_position;
+  in vec2 a_texCoord;
+
+  out vec2 uv0;
+  out vec2 worldUv;
+
+  uniform Constant {
+    vec4 mainColor;
+    vec4 uvTiling;
+    vec4 flowParams;
+    vec4 rippleParams;
+    vec4 worldFlowParams;
+    vec4 riverDir;
+    vec4 foamParams;
+  };
+
+  vec4 vert () {
+    vec4 worldPos = cc_matWorld * vec4(a_position, 1.0);
+    uv0 = a_texCoord * uvTiling.xy + uvTiling.zw;
+    worldUv = worldPos.xz * worldFlowParams.xy + uvTiling.zw;
+    return cc_matViewProj * worldPos;
+  }
+}%
+
+CCProgram water-ripple-fs %{
+  precision highp float;
+
+  #include <output>
+
+  in vec2 uv0;
+  in vec2 worldUv;
+
+  uniform sampler2D mainTexture;
+  uniform sampler2D noiseTexture;
+  uniform sampler2D flowMap;
+  uniform sampler2D foamMap;
+
+  uniform Constant {
+    vec4 mainColor;
+    vec4 uvTiling;
+    vec4 flowParams;
+    vec4 rippleParams;
+    vec4 worldFlowParams;
+    vec4 riverDir;
+    vec4 foamParams;
+  };
+
+  vec4 frag () {
+    float t = cc_time.x;
+
+    float worldBlend = clamp(worldFlowParams.z, 0.0, 1.0);
+    vec2 baseUv = mix(uv0, worldUv, worldBlend);
+
+    vec2 noiseUvA = baseUv * 1.35 + vec2(t * flowParams.x, -t * flowParams.x * 0.67);
+    vec2 noiseUvB = baseUv * 2.10 + vec2(-t * flowParams.x * 0.41, t * flowParams.x * 0.93);
+    vec2 noiseA = texture(noiseTexture, noiseUvA).rg;
+    vec2 noiseB = texture(noiseTexture, noiseUvB).rg;
+    vec2 noise = (noiseA + noiseB) - 1.0; // [-1, 1]
+
+    vec2 flowDir = normalize(max(abs(riverDir.xy), vec2(1e-4)) * sign(riverDir.xy));
+    vec2 flowMapUv = baseUv * foamParams.z + vec2(t * foamParams.w, -t * foamParams.w * 0.52);
+    vec2 flowField = texture(flowMap, flowMapUv).rg * 2.0 - 1.0;
+    vec2 mixedFlow = normalize(flowDir + flowField * 0.75 + noise * worldFlowParams.w);
+
+    vec2 flowUv = baseUv + mixedFlow * (t * flowParams.x * riverDir.z) + noise * flowParams.y;
+
+    vec4 base = texture(mainTexture, flowUv);
+
+    float wave = sin((flowUv.x + flowUv.y) * flowParams.z + t * rippleParams.y * 6.2831853);
+    float ripple = 0.5 + 0.5 * wave;
+
+    float bankMask = pow(clamp(1.0 - abs(uv0.y * 2.0 - 1.0), 0.0, 1.0), 1.8);
+    float sparkle = smoothstep(0.72, 1.0, ripple) * bankMask;
+
+    vec2 foamUv = baseUv * (foamParams.z * 0.7) + mixedFlow * (t * foamParams.w * 0.8);
+    float foamTex = texture(foamMap, foamUv).r;
+    float crestMask = smoothstep(foamParams.x, foamParams.x + foamParams.y, ripple + noise.x * 0.22);
+    float foamMask = clamp(foamTex * 0.65 + crestMask * 0.7 + bankMask * 0.35, 0.0, 1.0) * riverDir.w;
+
+    vec3 rgb = base.rgb * mainColor.rgb;
+    rgb *= (0.75 + ripple * 0.45 + flowParams.w);
+    rgb += vec3(0.18, 0.35, 0.55) * sparkle * rippleParams.z;
+    rgb += vec3(0.78, 0.9, 1.0) * foamMask * 0.55;
+
+    float alpha = base.a * mainColor.a;
+    alpha *= (0.75 + ripple * 0.35);
+    alpha = clamp(alpha + foamMask * 0.22, 0.0, 1.0);
+
+    return CCFragOutput(vec4(rgb, alpha));
+  }
+}%

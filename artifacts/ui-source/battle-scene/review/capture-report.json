@@ -1,0 +1,26 @@
+{
+  "createdAt": "2026-04-16T09:30:14.166Z",
+  "host": "http://localhost:7456",
+  "machine": "DESKTOP-NREHEQ8",
+  "captures": [
+    {
+      "target": "BattleScene",
+      "screenId": "BattleHUD",
+      "file": "artifacts\\ui-source\\battle-scene\\review\\BattleScene.png",
+      "diagnosticsSummary": {
+        "consoleErrorCount": 0,
+        "consoleWarningCount": 0,
+        "pageErrorCount": 0,
+        "requestFailureCount": 0
+      },
+      "diagnosticSamples": [],
+      "status": "pass"
+    }
+  ],
+  "runtimeUpdates": [
+    {
+      "target": "BattleScene",
+      "status": "pass"
+    }
+  ]
+}

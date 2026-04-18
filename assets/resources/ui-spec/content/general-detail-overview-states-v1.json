@@ -1,13 +1,14 @@
 {
   "id": "general-detail-overview-states-v1",
-  "version": 6,
+  "version": 8,
+  "defaultState": "smoke-zhang-fei",
   "showcase": ["showcase-guan-yu", "showcase-huang-zhong", "showcase-gongsun-zan", "showcase-dong-bai"],
   "states": {
     "showcase-guan-yu": {
       "headerTitle": "【義絕】",
       "headerName": "關羽",
       "headerMeta": "shu | 先鋒 | 活躍",
-      "portraitModeHint": "總覽模式 / 血脈命鏡",
+      "portraitModeHint": "人物識別\n血脈命鏡總覽",
       "overviewModeBadgeLabel": "血脈總覽",
       "coreStatsTitle": "核心屬性",
       "coreStatsValue": "武 97 / 統 92 / 魅 91\n智 76 / 政 68 / 運 82",
@@ -45,7 +46,7 @@
       "headerTitle": "【老將】",
       "headerName": "黃忠",
       "headerMeta": "shu | 先鋒 | 活躍",
-      "portraitModeHint": "總覽模式 / 血脈命鏡",
+      "portraitModeHint": "人物識別\n血脈命鏡總覽",
       "overviewModeBadgeLabel": "血脈總覽",
       "coreStatsTitle": "核心屬性",
       "coreStatsValue": "武 86 / 統 82 / 魅 74\n智 64 / 政 60 / 運 66",
@@ -83,7 +84,7 @@
       "headerTitle": "【白馬將軍】",
       "headerName": "公孫瓚",
       "headerMeta": "neutral | 先鋒 | 活躍",
-      "portraitModeHint": "總覽模式 / 血脈命鏡",
+      "portraitModeHint": "人物識別\n血脈命鏡總覽",
       "overviewModeBadgeLabel": "血脈總覽",
       "coreStatsTitle": "核心屬性",
       "coreStatsValue": "武 78 / 統 74 / 魅 58\n智 45 / 政 27 / 運 57",
@@ -121,7 +122,7 @@
       "headerTitle": "【董白】",
       "headerName": "董白",
       "headerMeta": "neutral | 支援 | 活躍",
-      "portraitModeHint": "總覽模式 / 血脈命鏡",
+      "portraitModeHint": "人物識別\n血脈命鏡總覽",
       "overviewModeBadgeLabel": "血脈總覽",
       "coreStatsTitle": "核心屬性",
       "coreStatsValue": "武 2 / 統 5 / 魅 57\n智 43 / 政 51 / 運 63",
@@ -159,7 +160,7 @@
       "headerTitle": "【魏武】",
       "headerName": "曹操",
       "headerMeta": "wei | 先鋒 | 活躍",
-      "portraitModeHint": "總覽模式 / 血脈命鏡",
+      "portraitModeHint": "人物識別\n血脈命鏡總覽",
       "overviewModeBadgeLabel": "血脈總覽",
       "coreStatsTitle": "核心屬性",
       "coreStatsValue": "武 82 / 統 92 / 魅 90\n智 94 / 政 96 / 運 86",
@@ -197,7 +198,7 @@
       "headerTitle": "【劉備】",
       "headerName": "劉備",
       "headerMeta": "shu | Commander | 活躍",
-      "portraitModeHint": "總覽模式 / 血脈命鏡",
+      "portraitModeHint": "人物識別\n血脈命鏡總覽",
       "overviewModeBadgeLabel": "血脈總覽",
       "coreStatsTitle": "核心屬性",
       "coreStatsValue": "武 78 / 統 88 / 魅 96\n智 84 / 政 82 / 運 88",
@@ -235,7 +236,7 @@
       "headerTitle": "【孫權】",
       "headerName": "孫權",
       "headerMeta": "wu | Commander | 活躍",
-      "portraitModeHint": "總覽模式 / 血脈命鏡",
+      "portraitModeHint": "人物識別\n血脈命鏡總覽",
       "overviewModeBadgeLabel": "血脈總覽",
       "coreStatsTitle": "核心屬性",
       "coreStatsValue": "武 76 / 統 89 / 魅 90\n智 86 / 政 88 / 運 85",
@@ -273,7 +274,7 @@
       "headerTitle": "【諸葛亮】",
       "headerName": "諸葛亮",
       "headerMeta": "shu | 支援 | 活躍",
-      "portraitModeHint": "總覽模式 / 血脈命鏡",
+      "portraitModeHint": "人物識別\n血脈命鏡總覽",
       "overviewModeBadgeLabel": "血脈總覽",
       "coreStatsTitle": "核心屬性",
       "coreStatsValue": "武 45 / 統 96 / 魅 92\n智 100 / 政 97 / 運 90",
@@ -311,7 +312,7 @@
       "headerTitle": "【周瑜】",
       "headerName": "周瑜",
       "headerMeta": "wu | 先鋒 | 活躍",
-      "portraitModeHint": "總覽模式 / 血脈命鏡",
+      "portraitModeHint": "人物識別\n血脈命鏡總覽",
       "overviewModeBadgeLabel": "血脈總覽",
       "coreStatsTitle": "核心屬性",
       "coreStatsValue": "武 74 / 統 93 / 魅 95\n智 95 / 政 86 / 運 86",
@@ -349,7 +350,7 @@
       "headerTitle": "【美髯公】",
       "headerName": "關羽",
       "headerMeta": "shu | 先鋒 | 活躍",
-      "portraitModeHint": "總覽模式 / 血脈命鏡",
+      "portraitModeHint": "人物識別\n血脈命鏡總覽",
       "overviewModeBadgeLabel": "血脈總覽",
       "coreStatsTitle": "核心屬性",
       "coreStatsValue": "武 97 / 統 92 / 魅 91\n智 76 / 政 68 / 運 82",
@@ -387,7 +388,7 @@
       "headerTitle": "【燕人】",
       "headerName": "張飛",
       "headerMeta": "shu | 先鋒 | 活躍",
-      "portraitModeHint": "總覽模式 / 血脈命鏡",
+      "portraitModeHint": "人物識別\n血脈命鏡總覽",
       "overviewModeBadgeLabel": "血脈總覽",
       "coreStatsTitle": "核心屬性",
       "coreStatsValue": "武 98 / 統 88 / 魅 74\n智 52 / 政 38 / 運 76",
@@ -417,15 +418,91 @@
         "bloodline": "燕地戰鼓入骨",
         "future": "酒盞底仍有雷"
       },
+      "dualLayerStats": {
+        "str": {
+          "talent": {
+            "base": 98,
+            "current": 100,
+            "maxPotential": 108,
+            "revelationLevel": "EXACT"
+          },
+          "prowess": 1688
+        },
+        "int": {
+          "talent": {
+            "base": 52,
+            "current": 56,
+            "maxPotential": 76,
+            "revelationLevel": "RANGE"
+          },
+          "prowess": 924
+        },
+        "lea": {
+          "talent": {
+            "base": 88,
+            "current": 91,
+            "maxPotential": 101,
+            "revelationLevel": "EXACT"
+          },
+          "prowess": 1510
+        },
+        "pol": {
+          "talent": {
+            "base": 38,
+            "current": 38,
+            "maxPotential": 62,
+            "revelationLevel": "TENDENCY"
+          },
+          "prowess": 612
+        },
+        "cha": {
+          "talent": {
+            "base": 74,
+            "current": 77,
+            "maxPotential": 86,
+            "revelationLevel": "EXACT"
+          },
+          "prowess": 1216
+        },
+        "luk": {
+          "talent": {
+            "base": 76,
+            "current": 76,
+            "maxPotential": 90,
+            "revelationLevel": "RANGE"
+          },
+          "prowess": 1180
+        }
+      },
+      "profilePresentation": {
+        "defaultTab": "Overview",
+        "crestState": "revealed",
+        "storyStripCells": {
+          "origin": "涿郡屠坊舉鼎",
+          "faction": "桃園怒笑同席",
+          "role": "一吼震散敵膽",
+          "awakening": "長坂橋頭獨立",
+          "bloodline": "燕地戰鼓入骨",
+          "future": "酒盞底仍有雷"
+        }
+      },
+      "trainingProfile": {
+        "sourceSessionId": "NS_SMOKE_ZHANG_FEI_001",
+        "phaseBlock": "MID",
+        "mentorModeLabel": "TeachingOnly",
+        "recommendedFocus": ["校場操練", "沙盤推演"],
+        "graduationTags": ["前排突破", "長坂威吼", "山地壓迫"]
+      },
       "rarityLabel": "SSR / 傳說",
       "rarityTier": "legendary",
+      "backgroundSceneResource": "sprites/ui_families/general_detail/generated/general_detail_bg_v10_martial",
       "portraitResource": "sprites/generals/zhang_fei_portrait"
     },
     "smoke-zhao-yun": {
       "headerTitle": "【常山造子】",
       "headerName": "趙雲",
       "headerMeta": "shu | 先鋒 | 活躍",
-      "portraitModeHint": "總覽模式 / 血脈命鏡",
+      "portraitModeHint": "人物識別\n血脈命鏡總覽",
       "overviewModeBadgeLabel": "血脈總覽",
       "coreStatsTitle": "核心屬性",
       "coreStatsValue": "武 96 / 統 93 / 魅 94\n智 82 / 政 74 / 運 89",
@@ -7905,6 +7982,7 @@
       },
       "rarityLabel": "SR / 史詩",
       "rarityTier": "epic",
+      "backgroundSceneResource": "sprites/ui_families/general_detail/generated/general_detail_bg_v5_civil",
       "portraitResource": "sprites/generals/zhen_ji_portrait"
     },
     "smoke-sun-shang-xiang": {

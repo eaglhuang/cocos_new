@@ -1,4 +1,5 @@
 ---
+doc_id: doc_agentskill_0004
 name: cocos-preview-qa
 description: 'BROWSER REVIEW QA SKILL — Use the built-in browser/headless browser (puppeteer-core) to open a browser-runnable Cocos preview, switch preview targets, capture screenshots, and compare them with reference images. USE FOR: screen-driven QA only when the user has already prepared a Browser Review environment that can run in the browser (`http://localhost:7456`, LoadingScene/preview host/preview target wiring ready). DO NOT USE FOR: current Cocos Editor window screenshots, Editor Preview capture, compile errors, or pure log analysis. If the Browser Review environment is not ready, stop and remind the user to prepare it first.'
 argument-hint: 'Specify target screen and task id only after confirming the Browser Review environment is ready. Example: "target=LobbyMain taskId=UI-1-0014".'
@@ -57,12 +58,28 @@ http://localhost:7456
 
 ## 可用 Preview Targets
 
-| targetId | screenId | targetIndex |
-|----------|----------|-------------|
-| `LobbyMain` | `lobby-main-screen` | 1 |
-| `ShopMain` | `shop-main-screen` | 2 |
-| `Gacha` | `gacha-main-screen` | 3 |
-| `DuelChallenge` | `duel-challenge-screen` | 4 |
+完整 target 清單定義於 `tools_node/capture-ui-screens.js` 的 `targets` 陣列，以下為目前可用項目：
+
+| targetId | screenId | targetIndex | 備註 |
+|----------|----------|-------------|------|
+| `LobbyMain` | `lobby-main-screen` | 1 | |
+| `ShopMain` | `shop-main-screen` | 2 | |
+| `Gacha` | `gacha-main-screen` | 3 | |
+| `GachaHero` | `gacha-main-screen` | 3 | `previewVariant: 'hero'` |
+| `GachaSupport` | `gacha-main-screen` | 3 | `previewVariant: 'support'` |
+| `GachaLimited` | `gacha-main-screen` | 3 | `previewVariant: 'limited'` |
+| `DuelChallenge` | `duel-challenge-screen` | 4 | |
+| `BattleScene` | `battle-scene` | 5 | |
+| `GeneralDetailOverview` | `general-detail-unified-screen` | 6 | |
+| `GeneralDetailSkills` | `general-detail-unified-screen` | 12 | |
+| `GeneralDetailOverviewZhenJi` | `general-detail-unified-screen` | 9 | |
+| `GeneralDetailBloodlineV3` | `general-detail-bloodline-v3-screen` | 6 | `hiddenAlias: true` |
+| `SpiritTallyDetail` | `spirit-tally-detail-screen` | 7 | |
+| `GeneralList` | `general-list-screen` | 8 | |
+| `NurtureSession` | `nurture-session-screen` | 10 | |
+| `BattleSceneFromLobby` | `battle-scene` | 11 | |
+
+> 同一 `screenId` 可有多個 target（如 Gacha 的 `previewVariant`）。新增 target 時需同步更新 `LoadingScene.ts` 的 switch case。
 
 ---
 
@@ -88,17 +105,17 @@ Invoke-RestMethod -Uri "http://localhost:7456/asset-db/refresh" -Method Get
 
 ## Step 2 — 執行 Headless Capture
 
-### 快速指令：截全部 4 個 screens
+### 快速指令：截全部已註冊 screens
 
 ```powershell
 cd c:\Users\User\3KLife
-node tools_node/capture-ui-screens.js --outDir artifacts/ui-qa/<taskId>
+node tools_node/capture-ui-screens.js --outDir artifacts/ui-source/<screen-id>/review
 ```
 
 ### 截單一 screen
 
 ```powershell
-node tools_node/capture-ui-screens.js --target LobbyMain --outDir artifacts/ui-qa/<taskId>
+node tools_node/capture-ui-screens.js --target LobbyMain --outDir artifacts/ui-source/lobby-main/review
 ```
 
 ### 完整參數列表
@@ -106,7 +123,7 @@ node tools_node/capture-ui-screens.js --target LobbyMain --outDir artifacts/ui-q
 | 參數 | 說明 | 預設 |
 |------|------|------|
 | `--target` | 指定單一 target（省略則截全部）| 全部 |
-| `--outDir` | 輸出目錄 | `artifacts/ui-qa/UI-2-0023` |
+| `--outDir` | 輸出目錄 | `artifacts/ui-source/<screen-id>/review` |
 | `--url` | Cocos Editor 基礎 URL | `http://localhost:7456` |
 | `--timeout` | 等待畫面就緒的 ms 上限 | `45000` |
 | `--retries` | 失敗自動重試次數 | `1` |
@@ -115,7 +132,7 @@ node tools_node/capture-ui-screens.js --target LobbyMain --outDir artifacts/ui-q
 
 **範例：指定 browser 路徑**
 ```powershell
-node tools_node/capture-ui-screens.js --target LobbyMain --outDir artifacts/ui-qa/UI-1-0014 --browser "C:\Program Files\Microsoft\Edge\Application\msedge.exe"
+node tools_node/capture-ui-screens.js --target LobbyMain --outDir artifacts/ui-source/lobby-main/review --browser "C:\Program Files\Microsoft\Edge\Application\msedge.exe"
 ```
 
 ---
@@ -127,7 +144,7 @@ node tools_node/capture-ui-screens.js --target LobbyMain --outDir artifacts/ui-q
 截圖完成後，**一次只開 1 張主圖**；若需要比對，再額外開 **1 張對照圖**，不可整批開 4 張：
 
 ```
-view_image: artifacts/ui-qa/<taskId>/LobbyMain.png
+view_image: artifacts/ui-source/lobby-main/review/LobbyMain.png
 ```
 
 > 圖片檢視硬規定：一次最多 `1` 張主圖 + `1` 張對照圖；先試 `125px`，不足才放大一倍；需要看 `>500px` 原圖時，必須先取得使用者明確同意。
@@ -141,7 +158,7 @@ view_image: artifacts/ui-qa/<taskId>/LobbyMain.png
 | 用途 | 路徑 |
 |------|------|
 | UI 品質參考圖（設計稿） | `docs/UI品質參考圖/` |
-| 已通過的歷史 QA 截圖 | `artifacts/ui-qa/<舊taskId>/*.png` |
+| 已通過的歷史 QA 截圖 | `artifacts/ui-source/<screen-id>/review/*.png` |
 
 ### 比對方法
 
@@ -164,7 +181,7 @@ view_image: artifacts/ui-qa/<taskId>/LobbyMain.png
 
 ## Step 5 — 寫 QA Notes
 
-輸出到 `artifacts/ui-qa/<taskId>/notes.md`，格式：
+輸出到 `artifacts/ui-source/<screen-id>/review/notes.md`，格式：
 
 ```markdown
 # QA Notes — <taskId> — <screenId>
@@ -204,7 +221,7 @@ view_image: artifacts/ui-qa/<taskId>/LobbyMain.png
 
 ## Step 6 — 更新任務卡狀態
 
-完成截圖與 notes 後，更新 `docs/ui-quality-todo.json` 中該任務的狀態與 notes。
+完成截圖與 notes 後，更新對應 task shard `docs/ui-quality-tasks/<task-id>.json` 中的狀態與 notes。
 
 ---
 

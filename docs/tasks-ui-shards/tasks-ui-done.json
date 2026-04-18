@@ -1069,7 +1069,7 @@
     "docs_backwritten": [
       "docs/keep.md",
       "docs/UI 規格書.md",
-      "docs/系統規格書/武將人物介面規格書.md",
+      "docs/遊戲規格文件/系統規格書/武將人物介面規格書.md",
       "docs/cross-reference-index.md"
     ],
     "notes": "2026-04-05 | done | 指令: 以 general_detail family 重用 frame / section / footer 資產，並將 TopSummaryRow、BloodlineRow、StoryStrip 的正式文字節點回寫到 layout JSON；同步修復 tasks_index.md 生成鏈與相關正式文件 | 結果: GeneralDetailBloodlineV3 已完成第一批 slot family / skin contract 收斂，overview shell runtime 不再臨時建立最終 Label 節點，任務狀態與索引已同步 | 阻塞: 無"
@@ -1110,7 +1110,7 @@
     "docs_backwritten": [
       "docs/keep.md",
       "docs/UI 規格書.md",
-      "docs/系統規格書/武將人物介面規格書.md",
+      "docs/遊戲規格文件/系統規格書/武將人物介面規格書.md",
       "docs/cross-reference-index.md"
     ],
     "notes": "2026-04-05 | done | 指令: 承接 UI-2-0058，將日常人物頁 v3 從已接線的 overview shell 再往正式 skeleton 收斂，補齊 layout / screen / node contract 缺口並同步正式文件 | 結果: 完成 `OverviewSummaryModules`、`BloodlineOverviewModules`、`OverviewStateChrome`、`AwakeningProgressGroup` 四組正式骨架群組，故事帶維持語意節點，screen contract 收緊為 `allowMissingSkin: false`，layout version 升為 v3，文件 / manifest / 索引已同步 | 阻塞: 無",
@@ -1156,7 +1156,7 @@
     "docs_backwritten": [
       "docs/keep.md",
       "docs/UI 規格書.md",
-      "docs/系統規格書/血脈命鏡過場載入規格書.md",
+      "docs/遊戲規格文件/系統規格書/血脈命鏡過場載入規格書.md",
       "docs/cross-reference-index.md"
     ],
     "notes": "2026-04-05 | done | 驗證: 新增 bloodline-mirror-loading-main/default，並將 loading / awakening 兩個 screen 一起切到 shared skeleton；allowMissingSkin=false | 變更: 完成 fullscreen-result family 的 loading / awakening 共用骨架，補齊 StateBadge / MirrorHeader / CenterStage / TipPanel / ActionRow / StoryStrip 五大模組 | 阻塞: 無"
@@ -1197,7 +1197,7 @@
     "docs_backwritten": [
       "docs/keep.md",
       "docs/UI 規格書.md",
-      "docs/系統規格書/武將人物介面規格書.md",
+      "docs/遊戲規格文件/系統規格書/武將人物介面規格書.md",
       "docs/cross-reference-index.md"
     ],
     "notes": "2026-04-05 | done | 指令: 承接 UI-2-0059，將 story / bloodline / crest 從 generic fallback 抽成正式內容契約，並補第一批示範資料 | 結果: `GeneralConfig` 已新增 `historicalAnecdote`、`bloodlineRumor`、`storyStripCells`、`crestHint`、`crestState`；overview mapper / shell 已改吃正式 contract，`generals.json` 也補入首批人物示範內容 | 阻塞: 無",

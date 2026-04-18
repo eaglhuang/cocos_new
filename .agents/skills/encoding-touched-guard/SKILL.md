@@ -1,4 +1,5 @@
 ---
+doc_id: doc_agentskill_0007
 name: encoding-touched-guard
 description: '快速編碼防災工作流。USE FOR：任何會修改 .md / .json / .ts / .js / .ps1 等文字檔的工作。目標是在每次編輯後立即檢查 touched files 是否出現 UTF-8 BOM、U+FFFD 或 mojibake，並在收工前再檢查一次，避免中文檔被整檔寫壞後才在 pre-commit 才發現。'
 argument-hint: '說明這輪改了哪些高風險文字檔，或直接描述你剛完成哪一批編輯。'

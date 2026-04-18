@@ -3,26 +3,65 @@ import {
   EVENT_NAMES,
   Faction,
   GAME_CONFIG,
-  SP_PER_KILL,
   StatusEffect,
   TerrainType,
   TroopType,
-  TROOP_DEPLOY_COST,
+  Weather,
+  type BattleTactic,
 } from "../../core/config/Constants";
-import { Color } from "cc";
+import type { Color } from "cc";
 import { services } from "../../core/managers/ServiceLoader";
 import { GeneralUnit } from "../../core/models/GeneralUnit";
 import { TroopUnit, TroopStats } from "../../core/models/TroopUnit";
-import { BattleState, TerrainGrid, TileBuff } from "../models/BattleState";
+import { BattleState, TerrainGrid, TileBuff, type TileEffect } from "../models/BattleState";
 import { EnemyAI } from "./EnemyAI";
+import { createDefaultBattleSkillExecutor } from '../skills/BattleSkillResolverFactory';
+import { resolveBattleSkillTargetMode } from '../skills/BattleSkillProfiles';
+import { BattleSkillSourceTranslator } from '../skills/adapters/BattleSkillSourceTranslator';
+import { BattleRuntimeOrchestrator } from '../orchestrators/BattleRuntimeOrchestrator';
+import { executeBattleCombatPhase } from '../runtime/phases/BattleCombatPhase';
+import { executeBattleAutoMovePhase } from '../runtime/phases/BattleAutoMovePhase';
+import { executeBattleEnemyDeployPhase } from '../runtime/phases/BattleEnemyDeployPhase';
+import { BattleDuelResolver } from '../runtime/BattleDuelResolver';
+import { executeBattleSpecialResolvePhase } from '../runtime/phases/BattleSpecialResolvePhase';
+import { executeBattleTileEffectPhase } from '../runtime/phases/BattleTileEffectPhase';
+import { BattleCombatResolver } from '../runtime/BattleCombatResolver';
+import { resolveBattleVictory } from '../runtime/BattleVictoryResolver';
+import { consumeBattleTileBuff } from '../runtime/BattleTileBuffSystem';
+import { resolveBattleTacticBehavior } from '../shared/BattleTacticBehavior';
+import type { BattleRuntimeContext } from '../runtime/BattleRuntimeContext';
+import type { BattleRuntimePhaseName, BattleRuntimePhaseOutcome, BattleResult as RuntimeBattleResult } from '../runtime/BattleRuntimeContract';
+import { createBattlePhaseExecutor, type BattlePhaseExecutor } from '../runtime/phases/BattlePhaseExecutor';
+import { TurnBasedTempoController } from '../runtime/tempo/TurnBasedTempoController';
+import { BattleTurnManager } from '../runtime/BattleTurnManager';
+import type { TigerTallySkillCarrier, TigerTallyTacticRequestOptions } from '../skills/adapters/TigerTallyTacticAdapter';
+import type { BattleSkillExecutionContext } from '../skills/BattleSkillResolver';
+import {
+  BattleSkillTargetMode,
+  BattleSkillTiming,
+  SkillSourceType,
+  buildIdMap,
+  type CanonicalTacticDefinition,
+  type JsonListEnvelope,
+  type SkillExecutionResult,
+} from '../../shared/SkillRuntimeContract';
 
-export type BattleResult = "player-win" | "enemy-win" | "draw" | "ongoing";
-export type DeployFailReason = "dp" | "occupied" | "limit";
+export type BattleResult = RuntimeBattleResult;
+/** [P2-N3] 部署失敗原因：food = 糧草不足（原 dp） */
+export type DeployFailReason = "food" | "occupied" | "limit";
 
 export interface DeployOutcome {
   ok: boolean;
   unit: TroopUnit | null;
   reason?: DeployFailReason;
+}
+
+export interface GeneralSkillCastOptions {
+  tacticId?: string | null;
+  battleSkillId?: string | null;
+  targetMode?: BattleSkillTargetMode;
+  targetUnitUid?: string | null;
+  targetTileId?: string | null;
 }
 
 /** troops.json 的 key 是 TroopType 字串，value 是 TroopStats */
@@ -51,12 +90,6 @@ const DEFAULT_TROOP_STATS: Record<TroopType, TroopStats> = {
   [TroopType.Medic]:    { hp:  90, attack:  0, defense: 15, moveRange: 1, attackRange: 0 },
   [TroopType.Navy]:     { hp: 100, attack: 30, defense: 20, moveRange: 1, attackRange: 1 },
 };
-
-// ─── 攻擊行動描述（BattleResolve 內部使用，避免在迭代 Map 時修改 Map） ────────────
-interface AttackAction {
-  attackerId: string;
-  targetId: string | null; // null = 攻擊敵方武將
-}
 
 interface TileBuffRule {
   id: string;
@@ -92,20 +125,44 @@ const DEFAULT_TILE_BUFF_CONFIG: TileBuffConfig = {
   ],
 };
 
+type RuntimeColorCtor = new (r: number, g: number, b: number, a: number) => Color;
+
+async function loadJsonWithFileFallback<T>(resourcePath: string, relativeFilePath: string): Promise<T | null> {
+  try {
+    return await services().resource.loadJson<T>(resourcePath);
+  } catch {
+    try {
+      const fs = require('fs');
+      const path = require('path');
+      const absolutePath = path.resolve(__dirname, '../../../../', relativeFilePath);
+      return JSON.parse(fs.readFileSync(absolutePath, 'utf8')) as T;
+    } catch {
+      return null;
+    }
+  }
+}
+
+function getRuntimeColorCtor(): RuntimeColorCtor | null {
+  try {
+    return (require('cc') as { Color?: RuntimeColorCtor }).Color ?? null;
+  } catch {
+    return null;
+  }
+}
+
 export class BattleController {
   private static readonly MIN_EMPTY_CELLS_FOR_BUFF_SPAWN = 10;
+  private readonly runtimeOrchestrator = new BattleRuntimeOrchestrator(new TurnBasedTempoController());
+  private readonly turnManager = new BattleTurnManager();
+  private readonly skillExecutor = createDefaultBattleSkillExecutor();
+  private readonly skillSourceTranslator = new BattleSkillSourceTranslator(() => this.tacticDefinitionMap);
 
   public readonly state = new BattleState();
   private serial = 0;
-  private enemyDp = GAME_CONFIG.INITIAL_DP;
-  private playerDeployCountThisTurn = 0;
   private readonly enemyAi = new EnemyAI();
   private troopData: TroopDataTable = {};
   private tileBuffConfig: TileBuffConfig = DEFAULT_TILE_BUFF_CONFIG;
-  /** 上一回合是否有 buff 被消耗；為 true 時才允許本回合生成新 buff */
-  private buffConsumedSinceLastSpawn = true; // 開局預設 true，允許第一回合生成
-  /** 被吃掉的 buff 格子：下一次生成時不可回填到原位 */
-  private readonly blockedBuffSpawnCells = new Set<string>();
+  private tacticDefinitionMap = new Map<string, CanonicalTacticDefinition>();
 
   // ─── 武將單挑系統狀態 ──────────────────────────────────────────────────
   /** 玩家武將化身的小兵單位 ID（null = 武將尚未出陣） */
@@ -118,11 +175,30 @@ export class BattleController {
   private duelRejectedFaction: Faction | null = null;
   /** 單挑挑戰是否已經結算過，避免每回合重複觸發 */
   private duelChallengeResolved = false;
-  /** 武將本回合是否已使用過與友軍換位推進 */
-  private generalSwapUsedThisTurn: Record<Faction, boolean> = {
-    [Faction.Player]: false,
-    [Faction.Enemy]: false,
-  };
+  private readonly combatResolver = new BattleCombatResolver({
+    state: this.state,
+    getPlayerGeneralUnitId: () => this.playerGeneralUnitId,
+    getEnemyGeneralUnitId: () => this.enemyGeneralUnitId,
+    setPlayerGeneralUnitId: (unitId) => {
+      this.playerGeneralUnitId = unitId;
+    },
+    setEnemyGeneralUnitId: (unitId) => {
+      this.enemyGeneralUnitId = unitId;
+    },
+  });
+  private readonly duelResolver = new BattleDuelResolver({
+    state: this.state,
+    combatResolver: this.combatResolver,
+    getPlayerGeneralUnitId: () => this.playerGeneralUnitId,
+    getEnemyGeneralUnitId: () => this.enemyGeneralUnitId,
+    setPlayerGeneralUnitId: (unitId) => {
+      this.playerGeneralUnitId = unitId;
+    },
+    setEnemyGeneralUnitId: (unitId) => {
+      this.enemyGeneralUnitId = unitId;
+    },
+    checkVictory: () => this.checkVictory(),
+  });
 
   // ─── 初始化 ────────────────────────────────────────────────────────────────
 
@@ -134,25 +210,23 @@ export class BattleController {
     playerGeneral: GeneralUnit,
     enemyGeneral: GeneralUnit,
     terrainGrid?: TerrainGrid,
+    weather?: Weather,
+    battleTactic?: BattleTactic,
   ): void {
-    this.state.reset(playerGeneral, enemyGeneral, terrainGrid);
+    this.state.reset(playerGeneral, enemyGeneral, terrainGrid, weather, battleTactic);
     this.serial  = 0;
-    this.enemyDp = GAME_CONFIG.INITIAL_DP;
-    this.playerDeployCountThisTurn = 0;
     this.playerGeneralUnitId = null;
     this.enemyGeneralUnitId = null;
     this.isWaitingDuelPlacement = false;
     this.duelRejectedFaction = null;
     this.duelChallengeResolved = false;
-    this.generalSwapUsedThisTurn[Faction.Player] = false;
-    this.generalSwapUsedThisTurn[Faction.Enemy] = false;
+    this.turnManager.resetForBattle();
     services().buff.clearAll(); // 清除上一場的狀態效果
-    this.buffConsumedSinceLastSpawn = true; // 開局允許第一回合生成 buff
-    this.blockedBuffSpawnCells.clear();
-    this.stopVfxTestLoop(); // [Vibe-QA] 重置舊的測試循環
+    // this.stopVfxTestLoop(); // [Vibe-QA] 重置舊的測試循環（已暫時停用）
     services().battle.beginBattle();
+    this.applyStartOfBattleSceneGambit();
     this.spawnTileBuffsForTurn();
-    this.startVfxTestLoop();
+    // this.startVfxTestLoop(); // [Vibe-QA] 暫時停用，避免干擾測試 log
   }
 
   private vfxTestTimerId: any = null;
@@ -162,18 +236,21 @@ export class BattleController {
    * 此方法為臨時穩定性測試，正式環境應移除或改由 VfxComposerTool 管理。
    */
   private startVfxTestLoop(): void {
+    // [Vibe-QA] 已暫時停用整個測試循環，避免 log 干擾
+    return;
     if (this.vfxTestTimerId !== null) return;
 
     const testEffect = () => {
         const board = services().scene.getBoardRenderer();
         if (board) {
             const pos = board.getCellWorldPosition(0, 0, 0.1);
+            const ColorCtor = getRuntimeColorCtor();
             // [LOG-DIAGNOSTIC] 合理的日誌輸出供後續追蹤
             console.log(`[BattleController:Vibe-QA] 預覽特效: zhen_ji_nova at ${pos.toString()}`);
             // [TEMP-QA] 套用冰藍色覆寫，大幅調整參數使粒子在 3D 場景中可見
             // 原因：原始 Prefab 是 additive 白色 + Cone 向上高速噴射，在明亮場景中完全不可見
             services().effect.playFullEffect('zhen_ji_nova', pos, {
-                startColor: new Color(80, 180, 255, 255),
+                ...(ColorCtor ? { startColor: new ColorCtor(80, 180, 255, 255) } : {}),
                 startSpeed: 0.3,          // 極低速度，讓粒子停留在發射點附近
                 startSize: 5.0,           // 大顆粒子（5 world units）
                 rateOverTime: 50,         // 高發射率
@@ -201,16 +278,29 @@ export class BattleController {
 
   /** 從 resources/data/troops.json 載入兵種數值表 */
   public async loadData(): Promise<void> {
-    try {
-      this.troopData = await services().resource.loadJson<TroopDataTable>("data/troops");
-    } catch {
+    const troopData = await loadJsonWithFileFallback<TroopDataTable>('data/troops', 'assets/resources/data/troops.json');
+    if (troopData) {
+      this.troopData = troopData;
+    } else {
       // 載入失敗時回退至 DEFAULT_TROOP_STATS，不影響可玩性
+      this.troopData = {};
     }
 
-    try {
-      this.tileBuffConfig = await services().resource.loadJson<TileBuffConfig>("data/tile-buffs");
-    } catch {
+    const tileBuffConfig = await loadJsonWithFileFallback<TileBuffConfig>('data/tile-buffs', 'assets/resources/data/tile-buffs.json');
+    if (tileBuffConfig) {
+      this.tileBuffConfig = tileBuffConfig;
+    } else {
       this.tileBuffConfig = DEFAULT_TILE_BUFF_CONFIG;
+    }
+
+    const tacticLibrary = await loadJsonWithFileFallback<JsonListEnvelope<CanonicalTacticDefinition>>(
+      'data/master/tactic-library',
+      'assets/resources/data/master/tactic-library.json',
+    );
+    if (tacticLibrary) {
+      this.tacticDefinitionMap = buildIdMap(tacticLibrary.data);
+    } else {
+      this.tacticDefinitionMap = new Map();
     }
   }
 
@@ -218,7 +308,7 @@ export class BattleController {
 
   /**
    * 玩家部署兵種到指定路線。
-   * 回傳 null 代表 DP 不足或部署格已佔用。
+   * 回傳 null 代表糧草不足或部署格已佔用。
    */
   public deployTroop(type: TroopType, lane: number): TroopUnit | null {
     return this.tryDeployTroop(type, lane).unit;
@@ -228,7 +318,7 @@ export class BattleController {
    * 玩家部署兵種到指定路線，並回傳成功/失敗原因供 UI 提示。
    */
   public tryDeployTroop(type: TroopType, lane: number): DeployOutcome {
-    if (this.playerDeployCountThisTurn >= GAME_CONFIG.MAX_PLAYER_DEPLOY_PER_TURN) {
+    if (!this.turnManager.canDeployPlayer()) {
       return { ok: false, unit: null, reason: "limit" };
     }
 
@@ -236,9 +326,12 @@ export class BattleController {
     if (this.state.getCell(lane, deployDepth)?.occupantId) {
       return { ok: false, unit: null, reason: "occupied" };
     }
+    if (this.combatResolver.isCellMovementBlocked(lane, deployDepth)) {
+      return { ok: false, unit: null, reason: "occupied" };
+    }
 
     const unit = this.spawnUnit(type, Faction.Player, lane, deployDepth);
-    this.playerDeployCountThisTurn += 1;
+    this.turnManager.notePlayerDeployment();
     return { ok: true, unit };
   }
 
@@ -246,14 +339,119 @@ export class BattleController {
    * 玩家發動武將技能（需 SP 滿能量）。
    * 回傳 true 代表技能成功發動。
    */
-  public triggerGeneralSkill(): boolean {
+  public triggerGeneralSkill(options: GeneralSkillCastOptions = {}): boolean {
+    return this.triggerPlayerSeedTactic(options);
+  }
+
+  public getPlayerSeedTacticDescriptor(): { skillId: string; tacticId: string | null; targetMode: BattleSkillTargetMode } | null {
+    const general = this.state.playerGeneral;
+    if (!general) {
+      return null;
+    }
+
+    const translated = this.skillSourceTranslator.resolvePrimarySeedTacticDescriptor(general);
+    if (translated) {
+      return {
+        skillId: translated.battleSkillId,
+        tacticId: translated.tacticId,
+        targetMode: translated.targetMode,
+      };
+    }
+
+    const fallbackSkillId = general.skillId ?? general.battlePrimarySkillId ?? null;
+    if (!fallbackSkillId) {
+      return null;
+    }
+
+    return {
+      skillId: fallbackSkillId,
+      tacticId: null,
+      targetMode: resolveBattleSkillTargetMode(fallbackSkillId, BattleSkillTargetMode.EnemyAll),
+    };
+  }
+
+  public triggerPlayerSeedTactic(options: GeneralSkillCastOptions = {}): boolean {
     const general = this.state.playerGeneral;
     if (!general?.canUseSkill()) return false;
 
+    const descriptor = this.getPlayerSeedTacticDescriptor();
+    const result = this.dispatchSeedTactic(Faction.Player, {
+      ...options,
+      battleSkillId: options.battleSkillId ?? descriptor?.skillId ?? null,
+      tacticId: options.tacticId ?? descriptor?.tacticId ?? null,
+    });
+    if (!result.applied) return false;
+
     general.currentSp = 0;
-    this.dispatchGeneralSkill(general.skillId, Faction.Player);
-    services().event.emit(EVENT_NAMES.GeneralSkillUsed, { faction: Faction.Player });
+    services().event.emit(EVENT_NAMES.GeneralSpChanged, {
+      faction: Faction.Player,
+      sp: general.currentSp,
+      maxSp: general.maxSp,
+    });
+    services().event.emit(EVENT_NAMES.GeneralSkillUsed, {
+      faction: Faction.Player,
+      skillName: result.battleSkillId,
+      skillId: result.battleSkillId,
+      sourceType: SkillSourceType.SeedTactic,
+    });
     return true;
+  }
+
+  public triggerPlayerBattleSkill(
+    skillId: string,
+    sourceType: SkillSourceType,
+    options: GeneralSkillCastOptions = {},
+  ): boolean {
+    if (sourceType === SkillSourceType.SeedTactic) {
+      return this.triggerPlayerSeedTactic({
+        ...options,
+        battleSkillId: options.battleSkillId ?? skillId,
+      });
+    }
+
+    const general = this.state.playerGeneral;
+    if (!general?.canUseSkill() || !skillId) return false;
+
+    const result = this.dispatchDirectBattleSkill(skillId, sourceType, Faction.Player, options);
+    if (!result.applied) return false;
+
+    general.currentSp = 0;
+    services().event.emit(EVENT_NAMES.GeneralSpChanged, {
+      faction: Faction.Player,
+      sp: general.currentSp,
+      maxSp: general.maxSp,
+    });
+    services().event.emit(EVENT_NAMES.GeneralSkillUsed, {
+      faction: Faction.Player,
+      skillName: skillId,
+      skillId,
+      sourceType,
+    });
+    return true;
+  }
+
+  /**
+   * 觸發虎符來源的戰法技能（G-1 Tiger Tally）。
+   * 路徑：TigerTallyTacticAdapter → BattleSkillSourceTranslator → executeBattleSkillRequest
+   * 不消耗 SP；skill profile 決定傷害、穿甲或爆擊加成。
+   */
+  public triggerTigerTallySkill(
+    tallyCard: TigerTallySkillCarrier,
+    ownerUid: string,
+    options: TigerTallyTacticRequestOptions,
+  ): SkillExecutionResult {
+    const request = this.skillSourceTranslator.buildTigerTallyRequest(tallyCard, ownerUid, options);
+    if (!request) {
+      return {
+        requestId: `${ownerUid}:tiger-tally-invalid`,
+        battleSkillId: options.battleSkillId ?? 'unknown',
+        applied: false,
+        blockedReason: 'invalid-tally-request',
+        deltas: [],
+        battleLogLines: ['TigerTally: invalid carrier or missing battleSkillId'],
+      };
+    }
+    return this.executeBattleSkillRequest(request);
   }
 
   // ─── 回合推進（玩家部署完畢後由 UI 呼叫）────────────────────────────────
@@ -262,544 +460,294 @@ export class BattleController {
    * 執行一個完整的回合自動流程：
    *   敵方部署 → 自動移動 → 戰鬥結算 → 特殊行動 → 勝敗判定
    *
-   * 若結果為 "ongoing"，自動推進至下一回合（補充玩家 DP）。
+   * 若結果為 "ongoing"，自動推進至下一回合（補充玩家糧草）。
    */
   public advanceTurn(): BattleResult {
-    this.runEnemyDeploy();
-    this.runAutoMove();
-    this.runBattleResolve();
-    this.runSpecialResolve();
+    return this.runtimeOrchestrator.executeTurnCycle(
+      this.createBattleRuntimeContext(),
+      this.buildTurnPhaseExecutors(),
+    );
+  }
 
-    const result = this.checkVictory();
+  private createBattleRuntimeContext(): BattleRuntimeContext {
+    return {
+      state: this.state,
+      battleTactic: this.state.battleTactic,
+      executePhase: (phaseName) => this.executeRuntimePhase(phaseName),
+      finalizeTurnCycle: () => this.finalizeRuntimeTurnCycle(),
+    };
+  }
 
-    if (result === "ongoing") {
-      const svc   = services();
-      svc.buff.tickBuff(); // 狀態效果倒計時（在換回合時結算）
-      svc.battle.nextTurn(); // 推進回合（內部已 emit TurnPhaseChanged）
-      this.enemyDp = Math.min(this.enemyDp + GAME_CONFIG.DP_PER_TURN, GAME_CONFIG.MAX_DP);
-      this.playerDeployCountThisTurn = 0;
-      this.generalSwapUsedThisTurn[Faction.Player] = false;
-      this.generalSwapUsedThisTurn[Faction.Enemy] = false;
-      this.spawnTileBuffsForTurn();
+  private buildTurnPhaseExecutors(): readonly BattlePhaseExecutor[] {
+    return [
+      createBattlePhaseExecutor('enemy-deploy', (context) => context.executePhase('enemy-deploy')),
+      createBattlePhaseExecutor('auto-move', (context) => context.executePhase('auto-move')),
+      createBattlePhaseExecutor('tile-effect', (context) => context.executePhase('tile-effect')),
+      createBattlePhaseExecutor('combat-resolve', (context) => context.executePhase('combat-resolve')),
+      createBattlePhaseExecutor('special-resolve', (context) => context.executePhase('special-resolve')),
+      createBattlePhaseExecutor('victory-check', (context) => context.executePhase('victory-check')),
+    ];
+  }
+
+  private executeRuntimePhase(phaseName: BattleRuntimePhaseName): BattleRuntimePhaseOutcome {
+    switch (phaseName) {
+      case 'enemy-deploy':
+        executeBattleEnemyDeployPhase({
+          state: this.state,
+          enemyAi: this.enemyAi,
+          turnManager: this.turnManager,
+          spawnEnemyUnit: (type, lane, depth) => this.spawnUnit(type, Faction.Enemy, lane, depth),
+          isCellMovementBlocked: (lane, depth) => this.combatResolver.isCellMovementBlocked(lane, depth),
+        });
+        return {};
+      case 'auto-move':
+        executeBattleAutoMovePhase({
+          state: this.state,
+          turnManager: this.turnManager,
+          getFactionUnits: (faction) => this.combatResolver.getFactionUnits(faction),
+          isCellMovementBlocked: (lane, depth) => this.combatResolver.isCellMovementBlocked(lane, depth),
+          isGeneralUnit: (unitId) => this.combatResolver.isGeneralUnit(unitId),
+        });
+        return {};
+      case 'tile-effect':
+        executeBattleTileEffectPhase({
+          state: this.state,
+          playerGeneralUnitId: this.playerGeneralUnitId,
+          enemyGeneralUnitId: this.enemyGeneralUnitId,
+          applyUnitDamage: (unit, damage, attackerFaction, options) => this.combatResolver.applyUnitDamage(unit, damage, attackerFaction, options),
+          onGeneralUnitKilled: (faction, svc) => this.combatResolver.onGeneralUnitKilled(faction, svc),
+          onUnitKilled: (unit, killer, svc) => this.combatResolver.onUnitKilled(unit, killer, svc),
+        });
+        return {};
+      case 'combat-resolve':
+        executeBattleCombatPhase({
+          state: this.state,
+          playerGeneralUnitId: this.playerGeneralUnitId,
+          enemyGeneralUnitId: this.enemyGeneralUnitId,
+          buildAttackAction: (unit, options) => this.combatResolver.buildAttackAction(unit, options),
+          damageEnemyGeneral: (attacker, svc) => this.combatResolver.damageEnemyGeneral(attacker, svc),
+          resolveCombat: (attacker, defender, svc) => this.combatResolver.resolveCombat(attacker, defender, svc),
+          resolveActionResetAfterAttack: (attacker, didKill, actions) => this.combatResolver.resolveActionResetAfterAttack(attacker, didKill, actions),
+          onGeneralUnitKilled: (faction, svc) => this.combatResolver.onGeneralUnitKilled(faction, svc),
+          onUnitKilled: (unit, killer, svc) => this.combatResolver.onUnitKilled(unit, killer, svc),
+        });
+        return {};
+      case 'special-resolve':
+        executeBattleSpecialResolvePhase({
+          state: this.state,
+          turnManager: this.turnManager,
+          castEnemySeedTactic: (battleSkillId) => this.dispatchSeedTactic(Faction.Enemy, { battleSkillId }),
+        });
+        return {};
+      case 'victory-check': {
+        const result = this.checkVictory();
+        return { result };
+      }
+      default:
+        return {};
     }
+  }
 
-    return result;
+  private finalizeRuntimeTurnCycle(): void {
+    const svc = services();
+    svc.buff.tickBuff();
+    svc.battle.nextTurn();
+    resolveBattleTacticBehavior(this.state.battleTactic).advanceTurn(this.state);
+    this.turnManager.refreshForNextTurn();
+    this.spawnTileBuffsForTurn();
   }
 
   // ─── 階段：敵方部署 ───────────────────────────────────────────────────────
 
-  private runEnemyDeploy(): void {
-    const decisions = this.enemyAi.decideDeploy(this.state, this.enemyDp);
-    const deployDepth = GAME_CONFIG.GRID_DEPTH - 1;
-
-    for (const d of decisions) {
-      if (this.state.getCell(d.lane, deployDepth)?.occupantId) continue;
-
-      this.spawnUnit(d.type, Faction.Enemy, d.lane, deployDepth);
-    }
-  }
-
-  // ─── 階段：自動移動 ───────────────────────────────────────────────────────
-
-  private runAutoMove(): void {
-    const svc = services();
-
-    // 玩家：從最前線開始（depth 最高），避免鏈式阻擋
-    const playerUnits = this.getFactionUnits(Faction.Player);
-    playerUnits.sort((a, b) => b.depth - a.depth);
-    for (const unit of playerUnits) this.stepMoveUnit(unit, svc);
-
-    // 敵方：從最前線開始（depth 最低）
-    const enemyUnits = this.getFactionUnits(Faction.Enemy);
-    enemyUnits.sort((a, b) => a.depth - b.depth);
-    for (const unit of enemyUnits) this.stepMoveUnit(unit, svc);
-  }
-
-  private stepMoveUnit(unit: TroopUnit, svc: ReturnType<typeof services>): void {
-    // 暈眩狀態：本回合無法移動，同時強制解除盾牆
-    if (svc.buff.hasBuff(unit.id, StatusEffect.Stun)) {
-      unit.isShieldWallActive = false;
-      return;
-    }
-
-    const dir = FORWARD_DIR[unit.faction];
-
-    for (let step = 0; step < unit.moveRange; step++) {
-      const nextDepth = unit.depth + dir;
-      const nextCell  = this.state.getCell(unit.lane, nextDepth);
-      if (!nextCell) break; // 到達棋盤邊界
-
-      if (nextCell.occupantId) {
-        const blocker = this.state.units.get(nextCell.occupantId)!;
-
-        if (
-          blocker.faction === unit.faction
-          && this.isGeneralUnit(unit.id)
-          && !this.isGeneralUnit(blocker.id)
-          && !this.generalSwapUsedThisTurn[unit.faction]
-        ) {
-          const previousLane = unit.lane;
-          const previousDepth = unit.depth;
-
-          this.state.getCell(previousLane, previousDepth)!.occupantId = blocker.id;
-          nextCell.occupantId = unit.id;
-
-          blocker.moveTo(previousLane, previousDepth);
-          unit.moveTo(unit.lane, nextDepth);
-          this.generalSwapUsedThisTurn[unit.faction] = true;
-
-          svc.event.emit(EVENT_NAMES.UnitMoved, {
-            unitId: blocker.id,
-            lane: blocker.lane,
-            depth: blocker.depth,
-            fromLane: unit.lane,
-            fromDepth: nextDepth,
-            isSwapPassenger: true,
-            swapPartnerId: unit.id,
-          });
-          svc.event.emit(EVENT_NAMES.UnitMoved, {
-            unitId: unit.id,
-            lane: unit.lane,
-            depth: unit.depth,
-            fromLane: previousLane,
-            fromDepth: previousDepth,
-            swapWithUnitId: blocker.id,
-            swapDuration: 2.0,
-            swapPassengerFromLane: blocker.lane,
-            swapPassengerFromDepth: nextDepth,
-            swapPassengerToLane: previousLane,
-            swapPassengerToDepth: previousDepth,
-          });
-
-          this.tryConsumeTileBuff(unit, svc);
-          continue;
-        }
-
-        // 遇到敵方單位：盾兵觸發盾牆
-        if (blocker.faction !== unit.faction && unit.type === TroopType.Shield) {
-          unit.isShieldWallActive = true;
-        }
-        break; // 被阻擋，停止移動
-      }
-
-      // 移動一格
-      const prevLane = unit.lane;
-      const prevDepth = unit.depth;
-      this.state.getCell(unit.lane, unit.depth)!.occupantId = null;
-      unit.moveTo(unit.lane, nextDepth);
-      nextCell.occupantId = unit.id;
-      svc.event.emit(EVENT_NAMES.UnitMoved, {
-        unitId: unit.id,
-        lane: unit.lane,
-        depth: nextDepth,
-        fromLane: prevLane,
-        fromDepth: prevDepth,
-      });
-      this.tryConsumeTileBuff(unit, svc);
-    }
-  }
-
-  // ─── 階段：戰鬥結算 ───────────────────────────────────────────────────────
-
-  private runBattleResolve(): void {
-    const svc = services();
-
-    // 先收集所有攻擊行動，再統一結算（同步解析，無先後優勢）
-    const actions: AttackAction[] = [];
-
-    for (const [, unit] of this.state.units) {
-      if (unit.attackRange === 0) continue; // 非戰鬥單位（醫護兵）
-      if (svc.buff.hasBuff(unit.id, StatusEffect.Stun)) continue; // 暈眩：本回合無法攻擊
-
-      const dir    = FORWARD_DIR[unit.faction];
-      let target: TroopUnit | null = null;
-
-      // ── 武將單挑特殊規則：敵方小兵優先攻擊出陣中的武將 ──────────────
-      const enemyGeneralId = unit.faction === Faction.Player
-        ? this.enemyGeneralUnitId
-        : this.playerGeneralUnitId;
-      if (enemyGeneralId) {
-        const generalUnit = this.state.units.get(enemyGeneralId);
-        if (generalUnit && !generalUnit.isDead()) {
-          // 計算歐幾里得距離，無條件進位（斜對角算一格）
-          const dist = Math.max(
-            Math.abs(unit.lane - generalUnit.lane),
-            Math.abs(unit.depth - generalUnit.depth),
-          );
-          if (dist <= unit.attackRange) {
-            target = generalUnit;
-          }
-        }
-      }
-
-      // ── 武將化身特殊規則：可攻擊相鄰（含斜對角）的敵方單位 ──────────
-      if (!target && this.isGeneralUnit(unit.id)) {
-        target = this.findAdjacentEnemy(unit);
-      }
-
-      // ── 標準攻擊邏輯：掃描正前方攻擊範圍內第一個敵方 ─────────────────
-      if (!target) {
-        for (let r = 1; r <= unit.attackRange; r++) {
-          const cell = this.state.getCell(unit.lane, unit.depth + dir * r);
-          if (!cell) break;
-          if (cell.occupantId) {
-            const occ = this.state.units.get(cell.occupantId)!;
-            if (occ.faction !== unit.faction) target = occ;
-            break; // 無論友敵都阻擋繼續掃描
-          }
-        }
-      }
-
-      if (target) {
-        actions.push({ attackerId: unit.id, targetId: target.id });
-      } else if (this.canAttackGeneral(unit)) {
-        actions.push({ attackerId: unit.id, targetId: null });
-      }
-    }
-
-    // 套用所有攻擊行動
-    const killed: TroopUnit[] = [];
-    const killedIds = new Set<string>();
-
-    for (const { attackerId, targetId } of actions) {
-      const attacker = this.state.units.get(attackerId);
-      if (!attacker) continue; // 此攻擊者已陣亡
-
-      if (targetId === null) {
-        this.damageEnemyGeneral(attacker, svc);
-      } else {
-        const defender = this.state.units.get(targetId);
-        if (!defender || defender.isDead()) continue; // 目標已陣亡
-
-        this.resolveCombat(attacker, defender, svc);
-
-        if (defender.isDead() && !killedIds.has(defender.id)) {
-          killedIds.add(defender.id);
-          killed.push(defender);
-        }
-      }
-    }
-
-    // 移除陣亡單位並發放 SP
-    for (const dead of killed) {
-      const action   = actions.find(a => a.targetId === dead.id);
-      const killer   = action ? this.state.units.get(action.attackerId) : undefined;
-
-      // 武將化身陣亡時，同步回武將本體
-      if (dead.id === this.playerGeneralUnitId) {
-        this.onGeneralUnitKilled(Faction.Player, svc);
-      } else if (dead.id === this.enemyGeneralUnitId) {
-        this.onGeneralUnitKilled(Faction.Enemy, svc);
-      }
-
-      this.onUnitKilled(dead, killer ?? null, svc);
-    }
-
-    // 重置盾牆狀態（只持續一個戰鬥階段）
-    for (const [, unit] of this.state.units) {
-      unit.isShieldWallActive = false;
-    }
-  }
-
-  /** 找出武將單位周圍（含斜對角一格以內）的敵方目標 */
-  private findAdjacentEnemy(unit: TroopUnit): TroopUnit | null {
-    const dir = FORWARD_DIR[unit.faction];
-    // 優先正前方，其次斜前方，再其次側面
-    const offsets = [
-      { dl: 0, dd: dir },       // 正前方
-      { dl: -1, dd: dir },      // 左前方（斜對角）
-      { dl: 1, dd: dir },       // 右前方（斜對角）
-      { dl: -1, dd: 0 },        // 左側
-      { dl: 1, dd: 0 },         // 右側
-    ];
-    for (const { dl, dd } of offsets) {
-      const cell = this.state.getCell(unit.lane + dl, unit.depth + dd);
-      if (!cell?.occupantId) continue;
-      const occ = this.state.units.get(cell.occupantId);
-      if (occ && occ.faction !== unit.faction) return occ;
-    }
-    return null;
-  }
-
-  /** 武將化身陣亡 → 同步至武將本體，標記武將死亡 */
-  private onGeneralUnitKilled(faction: Faction, svc: ReturnType<typeof services>): void {
-    const general = this.state.getGeneral(faction);
-    if (general) {
-      general.currentHp = 0; // 聯動武將本體死亡
-      svc.event.emit(EVENT_NAMES.GeneralDamaged, {
-        faction,
-        hp: 0,
-        damage: 0,
-        attackerId: null,
-      });
-    }
-    if (faction === Faction.Player) {
-      this.playerGeneralUnitId = null;
-    } else {
-      this.enemyGeneralUnitId = null;
-    }
-  }
-
-  private resolveCombat(attacker: TroopUnit, defender: TroopUnit, svc: ReturnType<typeof services>): void {
-    const attackerGeneral = this.state.getGeneral(attacker.faction);
-    const aCell = this.state.getCell(attacker.lane, attacker.depth);
-    const dCell = this.state.getCell(defender.lane, defender.depth);
-
-    // 盾牆：防禦力加倍
-    const effectiveDef = defender.defense * (defender.isShieldWallActive ? 2 : 1);
-
-    const damage = svc.formula.calculateDamage({
-      attackerAttack:  attacker.getEffectiveAttack(),
-      defenderDefense: effectiveDef,
-      attackerType:    attacker.type,
-      defenderType:    defender.type,
-      attackerTerrain: aCell?.terrain ?? TerrainType.Plain,
-      defenderTerrain: dCell?.terrain ?? TerrainType.Plain,
-      attackBonus:     attackerGeneral?.attackBonus,
-    });
-
-    defender.takeDamage(damage);
-    svc.event.emit(EVENT_NAMES.UnitDamaged, {
-      unitId: defender.id,
-      damage,
-      hp: defender.currentHp,
-      attackerId: attacker.id,
-      attackerLane: attacker.lane,
-      attackerDepth: attacker.depth,
-      defenderLane: defender.lane,
-      defenderDepth: defender.depth,
-      attackerFaction: attacker.faction,
-    });
-  }
-
-  private damageEnemyGeneral(attacker: TroopUnit, svc: ReturnType<typeof services>): void {
-    const enemyFaction = attacker.faction === Faction.Player ? Faction.Enemy : Faction.Player;
-    const general = this.state.getGeneral(enemyFaction);
-    if (!general || general.isDead()) return;
-
-    // 武將可以閃躲兵硬攻擊（對應 E-14 閃躲機率）
-    const wasDodged = svc.formula.rollDodge(general.luk);
-    if (wasDodged) {
-      svc.event.emit(EVENT_NAMES.GeneralDamaged, {
-        faction: enemyFaction,
-        hp: general.currentHp,
-        damage: 0,
-        attackerId: attacker.id,
-        wasDodged: true,
-        isCrit: false,
-      });
-      return;
-    }
-
-    const atk = attacker.getEffectiveAttack();
-    general.takeDamage(atk);
-    svc.event.emit(EVENT_NAMES.GeneralDamaged, {
-      faction: enemyFaction,
-      hp: general.currentHp,
-      damage: atk,
-      attackerId: attacker.id,
-      wasDodged: false,
-      isCrit: false,
-    });
-  }
-
-  private canAttackGeneral(unit: TroopUnit): boolean {
-    const generalDepth = unit.faction === Faction.Player ? GAME_CONFIG.GRID_DEPTH : -1;
-    const distanceToGeneral = Math.abs(generalDepth - unit.depth);
-    return distanceToGeneral <= unit.attackRange;
+  private applyStartOfBattleSceneGambit(): void {
+    resolveBattleTacticBehavior(this.state.battleTactic).applyStartOfBattle(this.state);
   }
 
   // ─── 階段：特殊行動 ───────────────────────────────────────────────────────
-
-  private runSpecialResolve(): void {
-    const svc = services();
-
-    for (const [, unit] of this.state.units) {
-      if (unit.type === TroopType.Medic)    this.resolveMedic(unit, svc);
-      if (unit.type === TroopType.Engineer) this.resolveEngineer(unit, svc);
-    }
-
-    // 敵方 AI 自動發動武將技能（SP 滿時）
-    const eg = this.state.enemyGeneral;
-    if (eg?.canUseSkill()) {
-      eg.currentSp = 0;
-      this.dispatchGeneralSkill(eg.skillId, Faction.Enemy);
-      svc.event.emit(EVENT_NAMES.GeneralSkillUsed, { faction: Faction.Enemy });
-    }
-  }
-
-  private resolveMedic(medic: TroopUnit, svc: ReturnType<typeof services>): void {
-    const dir = FORWARD_DIR[medic.faction];
-    // 治療後方與側方的友軍（不包含前方，醫護兵主要支援後排）
-    const checkDepths = [medic.depth + 1, medic.depth - 1, medic.depth - dir];
-
-    for (const d of checkDepths) {
-      const cell = this.state.getCell(medic.lane, d);
-      if (!cell?.occupantId) continue;
-
-      const ally = this.state.units.get(cell.occupantId);
-      if (!ally || ally.faction !== medic.faction || ally.currentHp >= ally.getEffectiveMaxHp()) continue;
-
-      const amount = svc.formula.calculateHeal(ally.getEffectiveMaxHp());
-      ally.heal(amount);
-      svc.event.emit(EVENT_NAMES.UnitHealed, {
-        unitId: ally.id,
-        amount,
-        hp: ally.currentHp,
-        sourceId: medic.id,
-        lane: ally.lane,
-        depth: ally.depth,
-      });
-    }
-  }
-
-  private resolveEngineer(engineer: TroopUnit, svc: ReturnType<typeof services>): void {
-    if (engineer.depth !== FRONT_DEPTH[engineer.faction]) return;
-
-    const FORTRESS_DMG = 30;
-    if (engineer.faction === Faction.Player) {
-      this.state.enemyFortressHp = Math.max(0, this.state.enemyFortressHp - FORTRESS_DMG);
-      svc.event.emit(EVENT_NAMES.FortressDamaged, { faction: Faction.Enemy, hp: this.state.enemyFortressHp });
-    } else {
-      this.state.playerFortressHp = Math.max(0, this.state.playerFortressHp - FORTRESS_DMG);
-      svc.event.emit(EVENT_NAMES.FortressDamaged, { faction: Faction.Player, hp: this.state.playerFortressHp });
-    }
-  }
 
   // ─── 武將技能分發 ──────────────────────────────────────────────────────────
 
   /**
    * 根據武將的 skillId 分發至具體技能實作。
-   * 未知技能 ID 預設使用範圍 50 傷害兜底。
+   * 若 resolver 判定沒有合法 target，回傳 applied=false，呼叫端不可先扣 SP。
    */
-  private dispatchGeneralSkill(skillId: string | null, casterFaction: Faction): void {
-    switch (skillId) {
-      case "zhang-fei-roar":
-        this.applyZhangFeiRoar();
-        break;
-      case "guan-yu-slash":
-        // 關羽：月牙刀斬，對所有敵方造成高傷害
-        this.applyAreaSkill(casterFaction, 70);
-        break;
-      case "lu-bu-rampage":
-        // 呂布：天下無雙，對所有敵方造成極高傷害
-        this.applyAreaSkill(casterFaction, 80);
-        break;
-      case "cao-cao-tactics":
-        // 曹操：兵不厭詐，範圍傷害
-        this.applyAreaSkill(casterFaction, 50);
-        break;
-      default:
-        this.applyAreaSkill(casterFaction, 50);
-        break;
+  private dispatchDirectBattleSkill(
+    skillId: string | null,
+    sourceType: SkillSourceType,
+    casterFaction: Faction,
+    options: GeneralSkillCastOptions = {},
+  ): SkillExecutionResult {
+    if (!skillId) {
+      return {
+        requestId: `${casterFaction}:missing-skill`,
+        battleSkillId: 'missing-skill',
+        applied: false,
+        blockedReason: 'missing-skill-id',
+        deltas: [],
+        battleLogLines: ['Missing general skill id'],
+      };
     }
-  }
+    const general = this.state.getGeneral(casterFaction);
+    if (!general) {
+      return {
+        requestId: `${casterFaction}:${skillId}`,
+        battleSkillId: skillId,
+        applied: false,
+        blockedReason: 'missing-caster-general',
+        deltas: [],
+        battleLogLines: [`Missing caster general for ${skillId}`],
+      };
+    }
 
-  /**
-   * 張飛技能「震吼」：
-   * 使所有敵方小兵進入暈眩狀態 1 回合（無法移動、無法攻擊、解除盾牆）。
-   */
-  private applyZhangFeiRoar(): void {
-    const svc = services();
-
-    this.state.units.forEach(unit => {
-      if (unit.faction !== Faction.Enemy) return;
-
-      // 施加暈眩 1 回合
-      svc.buff.applyBuff(unit.id, StatusEffect.Stun, 1);
-      // 震吼衝擊波破壞盾牆陣型
-      unit.isShieldWallActive = false;
-
-      svc.event.emit(EVENT_NAMES.BuffApplied, {
-        unitId: unit.id,
-        effect: StatusEffect.Stun,
-        turns:  1,
-      });
-    });
-
-    svc.event.emit(EVENT_NAMES.GeneralSkillEffect, {
-      skillId: "zhang-fei-roar",
-      faction: Faction.Player,
+    return this.executeBattleSkillRequest({
+      sourceType,
+      ownerUid: casterFaction,
+      generalTemplateId: general.id,
+      battleSkillId: skillId,
+      targetMode: options.targetMode ?? resolveBattleSkillTargetMode(skillId, BattleSkillTargetMode.EnemyAll),
+      timing: BattleSkillTiming.ActiveCast,
+      targetUnitUid: options.targetUnitUid ?? null,
+      targetTileId: options.targetTileId ?? null,
     });
   }
 
-  // ─── 武將技能（範圍傷害：對所有敵方單位造成固定傷害）─────────────────────
+  private dispatchSeedTactic(
+    casterFaction: Faction,
+    options: GeneralSkillCastOptions = {},
+  ): SkillExecutionResult {
+    const general = this.state.getGeneral(casterFaction);
+    if (!general) {
+      return {
+        requestId: `${casterFaction}:missing-seed-general`,
+        battleSkillId: options.battleSkillId ?? 'missing-seed-skill',
+        applied: false,
+        blockedReason: 'missing-caster-general',
+        deltas: [],
+        battleLogLines: ['Missing caster general for seed tactic'],
+      };
+    }
 
-  private applyAreaSkill(casterFaction: Faction, damage: number): void {
-    const svc           = services();
-    const targetFaction = casterFaction === Faction.Player ? Faction.Enemy : Faction.Player;
-    const killed: TroopUnit[] = [];
-
-    this.state.units.forEach(unit => {
-      if (unit.faction !== targetFaction) return;
-      unit.takeDamage(damage);
-      svc.event.emit(EVENT_NAMES.UnitDamaged, {
-        unitId: unit.id,
-        damage,
-        hp: unit.currentHp,
-        attackerId: null,
-        attackerLane: null,
-        attackerDepth: null,
-        defenderLane: unit.lane,
-        defenderDepth: unit.depth,
-        attackerFaction: casterFaction,
-      });
-      if (unit.isDead()) killed.push(unit);
+    const request = this.skillSourceTranslator.buildSeedTacticRequest(general, casterFaction, {
+      tacticId: options.tacticId ?? null,
+      battleSkillId: options.battleSkillId ?? general.skillId ?? general.battlePrimarySkillId ?? null,
+      targetMode: options.targetMode,
+      targetUnitUid: options.targetUnitUid ?? null,
+      targetTileId: options.targetTileId ?? null,
     });
 
-    killed.forEach(u => this.onUnitKilled(u, null, svc));
+    if (request) {
+      return this.executeBattleSkillRequest(request);
+    }
+
+    return this.dispatchDirectBattleSkill(
+      options.battleSkillId ?? general.skillId ?? general.battlePrimarySkillId ?? null,
+      SkillSourceType.SeedTactic,
+      casterFaction,
+      options,
+    );
+  }
+
+  private executeBattleSkillRequest(request: import('../../shared/SkillRuntimeContract').BattleSkillRequest): SkillExecutionResult {
+    return this.skillExecutor.execute(request, this.createBattleSkillExecutionContext());
+  }
+
+  private createBattleSkillExecutionContext(): BattleSkillExecutionContext {
+    return {
+      getFactionUnits: (faction: Faction) => this.combatResolver.getFactionUnits(faction),
+      getOpposingUnits: (casterFaction: Faction) => {
+        const targetFaction = casterFaction === Faction.Player ? Faction.Enemy : Faction.Player;
+        return this.combatResolver.getFactionUnits(targetFaction);
+      },
+      getBoardCells: () => {
+        const cells = [] as Array<{ lane: number; depth: number }>;
+        for (let lane = 0; lane < GAME_CONFIG.GRID_LANES; lane++) {
+          for (let depth = 0; depth < GAME_CONFIG.GRID_DEPTH; depth++) {
+            cells.push({ lane, depth });
+          }
+        }
+        return cells;
+      },
+      getUnit: (unitId: string) => this.state.units.get(unitId) ?? null,
+      getCasterGeneral: (casterFaction: Faction) => this.state.getGeneral(casterFaction),
+      getTerrain: (lane: number, depth: number) => this.state.getCell(lane, depth)?.terrain ?? TerrainType.Plain,
+      applyDamage: (unit: TroopUnit, damage: number, casterFaction: Faction) => {
+        const svc = services();
+        this.combatResolver.applyUnitDamage(unit, damage, casterFaction, {
+          attackerId: null,
+          attackerLane: null,
+          attackerDepth: null,
+          allowDamageLink: true,
+        });
+        if (unit.isDead()) {
+          if (unit.id === this.playerGeneralUnitId) {
+            this.combatResolver.onGeneralUnitKilled(Faction.Player, svc);
+          } else if (unit.id === this.enemyGeneralUnitId) {
+            this.combatResolver.onGeneralUnitKilled(Faction.Enemy, svc);
+          }
+          this.combatResolver.onUnitKilled(unit, null, svc);
+        }
+      },
+      healUnit: (unit: TroopUnit, amount: number, casterFaction: Faction) => {
+        const svc = services();
+        unit.heal(amount);
+        svc.event.emit(EVENT_NAMES.UnitHealed, {
+          unitId: unit.id,
+          amount,
+          hp: unit.currentHp,
+          sourceId: this.state.getGeneral(casterFaction)?.id ?? 'unknown',
+          lane: unit.lane,
+          depth: unit.depth,
+        });
+      },
+      applyBuff: (unit: TroopUnit, effect: StatusEffect, turns: number) => {
+        const svc = services();
+        svc.buff.applyBuff(unit.id, effect, turns);
+        svc.event.emit(EVENT_NAMES.BuffApplied, {
+          unitId: unit.id,
+          effect,
+          turns,
+        });
+      },
+      registerDamageLink: (primaryUnit: TroopUnit, linkedUnits: TroopUnit[], shareRatio: number, battleSkillId: string) => {
+        this.state.setDamageLink({
+          primaryUnitUid: primaryUnit.id,
+          linkedUnitUids: linkedUnits.map((unit) => unit.id),
+          shareRatio,
+          battleSkillId,
+        });
+      },
+      registerCounterReaction: (targetUnit: TroopUnit, battleSkillId: string, counterRatio: number, statusTurns: number, triggers: number, meleeOnly: boolean) => {
+        this.state.setCounterReaction({
+          unitUid: targetUnit.id,
+          battleSkillId,
+          counterRatio,
+          statusTurns,
+          remainingTriggers: triggers,
+          meleeOnly,
+        });
+      },
+      registerActionReset: (targetUnit: TroopUnit, battleSkillId: string, firstHitMultiplier: number, extraActions: number) => {
+        this.state.setActionReset({
+          unitUid: targetUnit.id,
+          battleSkillId,
+          firstHitMultiplier,
+          firstHitPending: true,
+          remainingExtraActions: extraActions,
+        });
+      },
+      emitSkillEffect: (resolvedSkillId: string, casterFaction: Faction) => {
+        services().event.emit(EVENT_NAMES.GeneralSkillEffect, {
+          skillId: resolvedSkillId,
+          faction: casterFaction,
+        });
+      },
+    };
   }
 
   // ─── 勝敗判定 ─────────────────────────────────────────────────────────────
 
   private checkVictory(): BattleResult {
-    const svc = services();
-    const pg  = this.state.playerGeneral;
-    const eg  = this.state.enemyGeneral;
-
-    const playerLost = (pg?.isDead() ?? false)
-      || svc.battle.isTurnLimitReached();
-
-    const enemyLost  = (eg?.isDead() ?? false);
-
-    let result: BattleResult = "ongoing";
-    if      (playerLost && enemyLost) result = "draw";
-    else if (playerLost)              result = "enemy-win";
-    else if (enemyLost)               result = "player-win";
-
-    if (result !== "ongoing") {
-      svc.event.emit(EVENT_NAMES.BattleEnded, { result });
-    }
-
-    return result;
-  }
-
-  // ─── 共用工具 ─────────────────────────────────────────────────────────────
-
-  private onUnitKilled(
-    unit:   TroopUnit,
-    killer: TroopUnit | null,
-    svc:    ReturnType<typeof services>,
-  ): void {
-    if (!this.state.units.has(unit.id)) return; // 防止重複移除
-
-    const { lane, depth, faction, type } = unit;
-    this.state.removeUnit(unit.id);
-    svc.buff.clearUnit(unit.id); // 陣亡時清除所有狀態效果
-    svc.event.emit(EVENT_NAMES.UnitDied, { unitId: unit.id, lane, depth, faction, type });
-
-    // 擊殺者的武將獲得 SP
-    if (killer) {
-      const general = this.state.getGeneral(killer.faction);
-      if (general) {
-        general.addSp(SP_PER_KILL);
-        svc.event.emit(EVENT_NAMES.GeneralSpChanged, {
-          faction: killer.faction,
-          sp:      general.currentSp,
-          maxSp:   general.maxSp,
-        });
-      }
-    }
+    return resolveBattleVictory(this.state);
   }
 
   private spawnUnit(type: TroopType, faction: Faction, lane: number, depth: number): TroopUnit {
@@ -823,14 +771,14 @@ export class BattleController {
 
     this.state.addUnit(unit);
     services().event.emit(EVENT_NAMES.UnitDeployed, { unitId: unit.id, lane, depth, faction, type });
-    this.tryConsumeTileBuff(unit, services());
+    consumeBattleTileBuff(unit, this.state, this.turnManager, services());
     return unit;
   }
 
   private spawnTileBuffsForTurn(): void {
     // 必須上一回合有 buff 被消耗，才允許本回合生成新 buff
-    if (!this.buffConsumedSinceLastSpawn) return;
-    this.buffConsumedSinceLastSpawn = false; // 預先重置，等下一次消耗之後才再解鎖
+    if (!this.turnManager.canSpawnTileBuffs()) return;
+    this.turnManager.beginTileBuffSpawnCycle(); // 預先重置，等下一次消耗之後才再解鎖
 
     const cfg = this.tileBuffConfig.spawn;
     const count = this.randomInt(cfg.minPerTurn, cfg.maxPerTurn);
@@ -842,7 +790,7 @@ export class BattleController {
         const cell = this.state.getCell(lane, depth);
         if (!cell || cell.occupantId) continue;
         if (this.state.getTileBuff(lane, depth)) continue;
-        if (this.blockedBuffSpawnCells.has(`${lane},${depth}`)) continue;
+        if (this.turnManager.blockedBuffSpawnCells.has(`${lane},${depth}`)) continue;
         available.push({ lane, depth });
       }
     }
@@ -872,48 +820,12 @@ export class BattleController {
       services().event.emit(EVENT_NAMES.TileBuffSpawned, buff);
     }
 
-    this.blockedBuffSpawnCells.clear();
-  }
-
-  private tryConsumeTileBuff(unit: TroopUnit, svc: ReturnType<typeof services>): void {
-    const buff = this.state.getTileBuff(unit.lane, unit.depth);
-    if (!buff) return;
-
-    let attackDelta = 0;
-    let hpDelta = 0;
-    if (buff.stat === "attack") {
-      attackDelta = buff.op === "mul"
-        ? unit.applyAttackMultiply(buff.factor)
-        : unit.applyAttackDivide(buff.factor);
-    } else {
-      hpDelta = buff.op === "mul"
-        ? unit.applyHpMultiply(buff.factor)
-        : unit.applyHpDivide(buff.factor);
-    }
-
-    this.state.removeTileBuff(unit.lane, unit.depth);
-    this.blockedBuffSpawnCells.add(`${unit.lane},${unit.depth}`);
-    this.buffConsumedSinceLastSpawn = true; // 消耗後解鎖下回合的生成權
-    svc.event.emit(EVENT_NAMES.TileBuffConsumed, {
-      unitId: unit.id,
-      faction: unit.faction,
-      lane: unit.lane,
-      depth: unit.depth,
-      buffText: buff.text,
-      attackDelta,
-      hpDelta,
-    });
+    this.turnManager.clearBlockedBuffSpawnCells();
   }
 
   private randomInt(min: number, max: number): number {
     if (max <= min) return min;
     return Math.floor(Math.random() * (max - min + 1)) + min;
-  }
-
-  private getFactionUnits(faction: Faction): TroopUnit[] {
-    const result: TroopUnit[] = [];
-    this.state.units.forEach(u => { if (u.faction === faction) result.push(u); });
-    return result;
   }
 
   // ─── 武將單挑系統 ─────────────────────────────────────────────────────────
@@ -922,18 +834,7 @@ export class BattleController {
    * 檢查玩家武將是否可以出陣（前排 depth=0 沒有我方小兵）。
    */
   public canPlayerGeneralDuel(): boolean {
-    if (this.playerGeneralUnitId) return false; // 已出陣
-    const pg = this.state.playerGeneral;
-    if (!pg || pg.isDead()) return false;
-    // 檢查 depth=0 的所有路線是否沒有我方小兵
-    for (let lane = 0; lane < GAME_CONFIG.GRID_LANES; lane++) {
-      const cell = this.state.getCell(lane, 0);
-      if (cell?.occupantId) {
-        const unit = this.state.units.get(cell.occupantId);
-        if (unit && unit.faction === Faction.Player) return false;
-      }
-    }
-    return true;
+    return this.duelResolver.canPlayerGeneralDuel();
   }
 
   /**
@@ -945,7 +846,7 @@ export class BattleController {
     if (!pg || pg.isDead()) return "general-dead";
     if (this.playerGeneralUnitId) return "already-deployed";
     if (this.isWaitingDuelPlacement) return "ok";
-    if (!this.canPlayerGeneralDuel()) return "front-blocked";
+    if (!this.duelResolver.canPlayerGeneralDuel()) return "front-blocked";
 
     this.isWaitingDuelPlacement = true;
     return "ok";
@@ -1004,12 +905,7 @@ export class BattleController {
    * 判斷武將是否已到達敵將面前（可觸發單挑邀請）。
    */
   public isGeneralFacingEnemyGeneral(faction: Faction): boolean {
-    const unitId = faction === Faction.Player ? this.playerGeneralUnitId : this.enemyGeneralUnitId;
-    if (!unitId) return false;
-    const unit = this.state.units.get(unitId);
-    if (!unit) return false;
-    const frontDepth = FRONT_DEPTH[faction];
-    return unit.depth === frontDepth;
+    return this.duelResolver.isGeneralFacingEnemyGeneral(faction);
   }
 
   /**
@@ -1032,134 +928,16 @@ export class BattleController {
         challengerFaction,
         defenderFaction,
       });
-      return this.resolveAcceptedGeneralDuel(challengerFaction, defenderFaction, svc);
+      return this.duelResolver.resolveAcceptedGeneralDuel(challengerFaction, defenderFaction, svc);
     } else {
       // 拒絕單挑：拒絕方全體受懲罰
       this.duelRejectedFaction = defenderFaction;
-      this.applyDuelPenalty(defenderFaction);
+      this.duelResolver.applyDuelPenalty(defenderFaction);
       svc.event.emit(EVENT_NAMES.GeneralDuelRejected, {
         rejectedFaction: defenderFaction,
       });
       return this.checkVictory();
     }
-  }
-
-  private resolveAcceptedGeneralDuel(
-    challengerFaction: Faction,
-    defenderFaction: Faction,
-    svc: ReturnType<typeof services>,
-  ): BattleResult {
-    const challengerGeneral = this.state.getGeneral(challengerFaction);
-    const defenderGeneral = this.state.getGeneral(defenderFaction);
-    if (!challengerGeneral || !defenderGeneral) return this.checkVictory();
-
-    const challengerUnitId = challengerFaction === Faction.Player ? this.playerGeneralUnitId : this.enemyGeneralUnitId;
-    const defenderUnitId = defenderFaction === Faction.Player ? this.playerGeneralUnitId : this.enemyGeneralUnitId;
-    const challengerUnit = challengerUnitId ? this.state.units.get(challengerUnitId) ?? null : null;
-    const defenderUnit = defenderUnitId ? this.state.units.get(defenderUnitId) ?? null : null;
-
-    const getAttack = (general: GeneralUnit, unit: TroopUnit | null): number => {
-      if (unit) return unit.getEffectiveAttack();
-      return services().formula.calculateGeneralAttack({ str: general.str, int: general.int, lea: general.lea, maxHp: general.maxHp });
-    };
-
-    const challengerAttack = getAttack(challengerGeneral, challengerUnit);
-    const defenderAttack = getAttack(defenderGeneral, defenderUnit);
-
-    while (!challengerGeneral.isDead() && !defenderGeneral.isDead()) {
-      // 對手閃躲判定（使用守方 LUK）
-      const defenderDodged = svc.formula.rollDodge(defenderGeneral.luk);
-      let attackDmg = challengerAttack;
-      let challengerCrit = false;
-      if (defenderDodged) {
-        attackDmg = 0;
-      } else {
-        // 暴擊判定（使用攻方 LUK）
-        challengerCrit = svc.formula.rollCrit(challengerGeneral.luk);
-        if (challengerCrit) {
-          attackDmg = Math.floor(attackDmg * GAME_CONFIG.GENERAL_CRIT_DAMAGE_MULTIPLIER);
-        }
-        defenderGeneral.takeDamage(attackDmg);
-      }
-      svc.event.emit(EVENT_NAMES.GeneralDamaged, {
-        faction: defenderFaction,
-        hp: defenderGeneral.currentHp,
-        damage: attackDmg,
-        attackerId: challengerUnit?.id ?? null,
-        isCrit: challengerCrit,
-        wasDodged: defenderDodged,
-      });
-
-      if (defenderUnit) {
-        defenderUnit.currentHp = defenderGeneral.currentHp;
-      }
-
-      if (defenderGeneral.isDead()) break;
-
-      // 正方閃躲判定（使用挑戰方的 LUK）
-      const challengerDodged = svc.formula.rollDodge(challengerGeneral.luk);
-      let defenseDmg = defenderAttack;
-      let defenderCrit = false;
-      if (challengerDodged) {
-        defenseDmg = 0;
-      } else {
-        defenderCrit = svc.formula.rollCrit(defenderGeneral.luk);
-        if (defenderCrit) {
-          defenseDmg = Math.floor(defenseDmg * GAME_CONFIG.GENERAL_CRIT_DAMAGE_MULTIPLIER);
-        }
-        challengerGeneral.takeDamage(defenseDmg);
-      }
-      svc.event.emit(EVENT_NAMES.GeneralDamaged, {
-        faction: challengerFaction,
-        hp: challengerGeneral.currentHp,
-        damage: defenseDmg,
-        attackerId: defenderUnit?.id ?? null,
-        isCrit: defenderCrit,
-        wasDodged: challengerDodged,
-      });
-
-      if (challengerUnit) {
-        challengerUnit.currentHp = challengerGeneral.currentHp;
-      }
-    }
-
-    if (challengerGeneral.isDead() && challengerUnit) {
-      this.onGeneralUnitKilled(challengerFaction, svc);
-      this.onUnitKilled(challengerUnit, null, svc);
-    }
-
-    if (defenderGeneral.isDead() && defenderUnit) {
-      this.onGeneralUnitKilled(defenderFaction, svc);
-      this.onUnitKilled(defenderUnit, null, svc);
-    }
-
-    return this.checkVictory();
-  }
-
-  /**
-   * 拒絕單挑懲罰：攻擊力和生命力都直接下降一半（現有+未來小兵）。
-   */
-  private applyDuelPenalty(faction: Faction): void {
-    this.state.units.forEach(unit => {
-      if (unit.faction !== faction) return;
-      // 攻擊力減半
-      const atkLoss = -Math.floor(unit.getEffectiveAttack() / 2);
-      unit.attackBonus += atkLoss;
-      // 生命力減半
-      const hpLoss = -Math.floor(unit.getEffectiveMaxHp() / 2);
-      unit.maxHpBonus += hpLoss;
-      unit.currentHp = Math.max(1, Math.floor(unit.currentHp / 2));
-      unit.currentHp = Math.min(unit.currentHp, unit.getEffectiveMaxHp());
-      unit.currentHp = Math.max(1, unit.currentHp);
-    });
-
-    // 被拒絕方的武將本體也受懲罰
-    const general = this.state.getGeneral(faction);
-    if (general) {
-      general.currentHp = Math.max(1, Math.floor(general.currentHp / 2));
-    }
-
-    services().event.emit(EVENT_NAMES.DuelPenaltyApplied, { faction });
   }
 
   /**
@@ -1174,13 +952,6 @@ export class BattleController {
   }
 
   /**
-   * 判斷指定單位是否為出陣中的武將化身。
-   */
-  public isGeneralUnit(unitId: string): boolean {
-    return unitId === this.playerGeneralUnitId || unitId === this.enemyGeneralUnitId;
-  }
-
-  /**
    * 單挑接受決策（由防守方視角評估）：
    * score = 0.45 * 主將血量優勢 + 0.35 * 場上兵力優勢 + 0.2 * 總戰力優勢
    */
@@ -1189,43 +960,6 @@ export class BattleController {
     score: number;
     defenderFaction: Faction;
   } {
-    const defenderFaction = challengerFaction === Faction.Player ? Faction.Enemy : Faction.Player;
-    const challengerGeneral = this.state.getGeneral(challengerFaction);
-    const defenderGeneral = this.state.getGeneral(defenderFaction);
-
-    if (!challengerGeneral || !defenderGeneral) {
-      return { accepted: false, score: 0, defenderFaction };
-    }
-
-    const challengerHpPct = Math.max(0, challengerGeneral.currentHp) / Math.max(1, challengerGeneral.maxHp);
-    const defenderHpPct = Math.max(0, defenderGeneral.currentHp) / Math.max(1, defenderGeneral.maxHp);
-    const hpAdvantage = defenderHpPct / Math.max(0.0001, challengerHpPct + defenderHpPct);
-
-    const challengerUnits = this.getFactionUnits(challengerFaction);
-    const defenderUnits = this.getFactionUnits(defenderFaction);
-    const unitCountAdvantage = defenderUnits.length / Math.max(1, challengerUnits.length + defenderUnits.length);
-
-    const calcPower = (units: TroopUnit[], general: GeneralUnit | null): number => {
-      const unitPower = units.reduce((sum, u) => {
-        return sum + u.getEffectiveAttack() + u.getEffectiveMaxHp() * 0.1;
-      }, 0);
-      const generalPower = general
-        ? (Math.max(0, general.currentHp) * 0.12 + general.attackBonus * 120)
-        : 0;
-      return unitPower + generalPower;
-    };
-
-    const challengerPower = calcPower(challengerUnits, challengerGeneral);
-    const defenderPower = calcPower(defenderUnits, defenderGeneral);
-    const powerAdvantage = defenderPower / Math.max(0.0001, challengerPower + defenderPower);
-
-    const score = 0.45 * hpAdvantage + 0.35 * unitCountAdvantage + 0.2 * powerAdvantage;
-    const accepted = score >= 0.58;
-
-    return {
-      accepted,
-      score,
-      defenderFaction,
-    };
+    return this.duelResolver.evaluateDuelAcceptance(challengerFaction);
   }
 }

@@ -1,5 +1,6 @@
 {
-  "version": 1,
+  "version": 2,
+  "_comment": "v2: blocks[] 多層積木支援。blockId 保留作 fallback。技能配方用 blocks[] 覆蓋。",
   "effects": {
     "hit_enemy": {
       "blockId": "impact_shock",
@@ -49,24 +50,50 @@
       "notify": { "type": "floatText", "textKey": "暈眩！", "color": "#CCAAFF" },
       "lifetime": 2.0
     },
+
+    "_comment_skill_zhang_fei": "張飛虎嘯：蓄光(0ms) → 大劍軌跡(100ms) → 火爆發(200ms) → 衝擊環(400ms)",
     "skill_zhang_fei": {
       "blockId": "fire_burst",
       "audio": "fireball",
       "notify": { "type": "floatText", "textKey": "虎嘯！", "color": "#FF6600" },
-      "lifetime": 2.5
+      "lifetime": 2.5,
+      "blocks": [
+        { "blockId": "glow_bright",    "delay": 0.0, "duration": 0.8, "scale": 1.2 },
+        { "blockId": "trail_bigsword", "delay": 0.1, "duration": 0.6 },
+        { "blockId": "fire_burst",     "delay": 0.2, "duration": 1.5, "scale": 1.5 },
+        { "blockId": "impact_ring",    "delay": 0.4, "duration": 1.0 }
+      ]
     },
+
+    "_comment_skill_guan_yu": "關羽青龍偃月：蓄光(0ms) → 寬揮斬軌跡(100ms) → 衝擊震波(200ms) → 能量波(300ms)",
     "skill_guan_yu": {
       "blockId": "impact_shock",
       "audio": "feijian",
       "notify": { "type": "floatText", "textKey": "青龍偃月！", "color": "#00AAFF" },
-      "lifetime": 2.5
+      "lifetime": 2.5,
+      "blocks": [
+        { "blockId": "glow_soft",      "delay": 0.0, "duration": 0.9, "tintHex": "#3388FF", "scale": 1.3 },
+        { "blockId": "trail_slash",    "delay": 0.1, "duration": 0.5 },
+        { "blockId": "impact_shock",   "delay": 0.2, "duration": 1.2, "scale": 1.4 },
+        { "blockId": "energy_wave",    "delay": 0.3, "duration": 1.5, "scale": 1.2 }
+      ]
     },
+
+    "_comment_skill_lu_bu": "呂布天下無雙：蓄光(0ms) → 火環波(100ms) → 能量爆環(300ms) → 衝擊環(400ms) + 鏡頭震動",
     "skill_lu_bu": {
       "blockId": "fire_ringwave",
       "audio": "boom",
       "notify": { "type": "floatText", "textKey": "天下無雙！", "color": "#FF2200" },
-      "lifetime": 3.0
+      "lifetime": 3.0,
+      "blocks": [
+        { "blockId": "glow_bright",       "delay": 0.0, "duration": 1.0, "scale": 1.5 },
+        { "blockId": "fire_ringwave",     "delay": 0.1, "duration": 1.5, "scale": 1.8 },
+        { "blockId": "energy_blast_ring", "delay": 0.3, "duration": 1.5, "scale": 2.0 },
+        { "blockId": "impact_ring",       "delay": 0.4, "duration": 1.2, "scale": 1.6 }
+      ],
+      "cameraShake": { "strength": 0.15, "duration": 0.4 }
     },
+
     "skill_cao_cao": {
       "blockId": "ring_addatk",
       "audio": "buff",

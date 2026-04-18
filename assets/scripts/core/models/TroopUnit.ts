@@ -26,6 +26,7 @@ export class TroopUnit {
   public readonly attackRange: number;
   public attackBonus = 0;
   public maxHpBonus = 0;
+  public moveRangeBonus = 0;
   
   // 戰鬥狀態緩存 (可用於結算時的狀態，如盾牆加倍)
   public isShieldWallActive = false;
@@ -62,6 +63,15 @@ export class TroopUnit {
 
   public getEffectiveMaxHp(): number {
     return Math.max(1, this.maxHp + this.maxHpBonus);
+  }
+
+  public getEffectiveMoveRange(): number {
+    return Math.max(0, this.moveRange + this.moveRangeBonus);
+  }
+
+  public applyMoveRangeDelta(delta: number): number {
+    this.moveRangeBonus += delta;
+    return this.moveRangeBonus;
   }
 
   public applyAttackMultiply(factor: number): number {

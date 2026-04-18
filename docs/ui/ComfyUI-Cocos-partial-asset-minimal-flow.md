@@ -1,3 +1,4 @@
+<!-- doc_id: doc_ui_0037 -->
 # ComfyUI x Cocos Partial Asset Minimal Flow
 
 這份文件不是要把 `ComfyUI` 變成 UI factory 主幹，而是定義一條最小可用的實戰線：

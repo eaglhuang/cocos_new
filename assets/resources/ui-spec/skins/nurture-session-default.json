@@ -1,0 +1,89 @@
+{
+  "id": "nurture-session-default",
+  "version": 1,
+  "bundle": "lobby_ui",
+  "slots": {
+    "nurture.bg": {
+      "kind": "color-rect",
+      "color": "background"
+    },
+    "nurture.panel.primary": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/parchment/bg",
+      "spriteType": "sliced",
+      "border": [18, 18, 18, 18],
+      "allowAutoAtlas": true,
+      "opacity": 0.94
+    },
+    "nurture.panel.secondary": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/parchment/frame",
+      "spriteType": "sliced",
+      "border": [16, 16, 16, 16],
+      "allowAutoAtlas": true,
+      "opacity": 0.96
+    },
+    "nurture.band.accent": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/formal/header_band_formal",
+      "spriteType": "sliced",
+      "border": [20, 0, 20, 0],
+      "allowAutoAtlas": true,
+      "opacity": 0.72
+    },
+    "nurture.band.footer": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/parchment/fill",
+      "spriteType": "sliced",
+      "border": [16, 16, 16, 16],
+      "allowAutoAtlas": true,
+      "opacity": 0.92
+    },
+    "nurture.label.title": {
+      "kind": "label-style",
+      "font": "fonts/newsreader/font",
+      "fontSize": 30,
+      "lineHeight": 34,
+      "color": "secondaryLight",
+      "horizontalAlign": "LEFT"
+    },
+    "nurture.label.subtitle": {
+      "kind": "label-style",
+      "font": "fonts/notosans_tc/font",
+      "fontSize": 17,
+      "lineHeight": 22,
+      "color": "textSecondary",
+      "horizontalAlign": "LEFT"
+    },
+    "nurture.label.section": {
+      "kind": "label-style",
+      "font": "fonts/notosans_tc/font",
+      "fontSize": 18,
+      "lineHeight": 22,
+      "color": "textWarmGold",
+      "horizontalAlign": "LEFT",
+      "outlineColor": "outlineHeavy",
+      "outlineWidth": 2
+    },
+    "nurture.label.body": {
+      "kind": "label-style",
+      "font": "fonts/notosans_tc/font",
+      "fontSize": 16,
+      "lineHeight": 22,
+      "color": "textPrimary",
+      "horizontalAlign": "LEFT",
+      "overflow": "SHRINK"
+    },
+    "nurture.label.chip": {
+      "kind": "label-style",
+      "font": "fonts/notosans_tc/font",
+      "fontSize": 15,
+      "lineHeight": 18,
+      "color": "colorWhite",
+      "horizontalAlign": "CENTER",
+      "outlineColor": "outlineHeavy",
+      "outlineWidth": 2,
+      "overflow": "SHRINK"
+    }
+  }
+}

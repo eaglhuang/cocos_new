@@ -1,3 +1,4 @@
+<!-- doc_id: doc_task_0132 -->
 # UI Task Card Template
 
 這份模板用來建立新的 UI 任務卡，目的不是增加文書，而是強制把量產路徑寫清楚，避免每張卡都重新發明 workflow。
@@ -27,9 +28,9 @@ skin_fragments:
   - common-parchment/card_body
 smoke_route: LobbyScene.onClickGeneralDetailOverviewSmoke
 docs_backwritten:
-  - docs/keep.md
-  - docs/UI 規格書.md
-  - docs/cross-reference-index.md
+  - docs/keep.md (doc_index_0011)
+  - docs/UI 規格書.md (doc_ui_0027)
+  - docs/cross-reference-index.md (doc_index_0005)
 notes: "YYYY-MM-DD | 狀態: open | 驗證: pending | 變更: 待開始 | 阻塞: none"
 ---
 ```
@@ -48,8 +49,8 @@ notes: "YYYY-MM-DD | 狀態: open | 驗證: pending | 變更: 待開始 | 阻塞
 
 ## 開卡順序
 
-1. 先讀 [keep.md](C:\Users\User\3KLife\docs\keep.md) §19
-2. 再讀 [UI 規格書.md](C:\Users\User\3KLife\docs\UI 規格書.md) §8.2
+1. 先讀 [keep.md](C:\Users\User\3KLife\docs\keep.md (doc_index_0011)) (doc_index_0011) §19
+2. 再讀 [UI 規格書.md (doc_ui_0027)](C:\Users\User\3KLife\docs\UI 規格書.md (doc_ui_0027)) §8.2
 3. 再對照對應系統正式規格書
 4. 最後才建立或接手任務卡
 
@@ -63,7 +64,7 @@ notes: "YYYY-MM-DD | 狀態: open | 驗證: pending | 變更: 待開始 | 阻塞
 
 ## 結案檢查
 
-- 任務卡 frontmatter、`docs/ui-quality-todo.json`、`tasks_index.md` 狀態一致
+- 任務卡 frontmatter、`docs/ui-quality-todo.json`、`tasks_index.md` (doc_task_0002) 狀態一致
 - 正式規格已回寫
-- `cross-reference-index.md` 已同步
+- `cross-reference-index.md` (doc_index_0005) 已同步
 - 已跑過至少一條 smoke / preview / acceptance 驗證

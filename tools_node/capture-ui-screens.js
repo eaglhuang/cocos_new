@@ -29,7 +29,7 @@ try {
 }
 
 const targets = [
-    { id: 'LobbyMain', screenId: 'lobby-main-screen', targetIndex: 1 },
+    { id: 'LobbyMain', screenId: 'lobby-main-screen', targetIndex: 1, uiSourceDir: 'lobby-main', runtimeScreenId: 'LobbyMain' },
     { id: 'ShopMain', screenId: 'shop-main-screen', targetIndex: 2, uiSourceDir: 'shop-main', runtimeScreenId: 'ShopMain' },
     { id: 'Gacha', screenId: 'gacha-main-screen', targetIndex: 3, uiSourceDir: 'gacha-main', runtimeScreenId: 'GachaMain' },
     { id: 'GachaHero', screenId: 'gacha-main-screen', targetIndex: 3, previewVariant: 'hero' },
@@ -37,9 +37,14 @@ const targets = [
     { id: 'GachaLimited', screenId: 'gacha-main-screen', targetIndex: 3, previewVariant: 'limited' },
     { id: 'DuelChallenge', screenId: 'duel-challenge-screen', targetIndex: 4 },
     { id: 'BattleScene', screenId: 'battle-scene', targetIndex: 5, uiSourceDir: 'battle-hud', runtimeScreenId: 'BattleHUD' },
-    { id: 'GeneralDetailOverview', screenId: 'general-detail-bloodline-v3-screen', targetIndex: 6, uiSourceDir: 'general-detail-overview', runtimeScreenId: 'GeneralDetailOverview' },
+    { id: 'GeneralDetailOverview', screenId: 'general-detail-unified-screen', targetIndex: 6, uiSourceDir: 'general-detail-overview', runtimeScreenId: 'GeneralDetailOverview' },
+    { id: 'GeneralDetailSkills', screenId: 'general-detail-unified-screen', targetIndex: 12, uiSourceDir: 'general-detail-skills', runtimeScreenId: 'GeneralDetailSkills' },
+    { id: 'GeneralDetailOverviewZhenJi', screenId: 'general-detail-unified-screen', targetIndex: 6, previewVariant: 'zhen-ji', uiSourceDir: 'general-detail-overview', runtimeScreenId: 'GeneralDetailOverview' },
     { id: 'GeneralDetailBloodlineV3', screenId: 'general-detail-bloodline-v3-screen', targetIndex: 6, uiSourceDir: 'general-detail-bloodline-v3', runtimeScreenId: 'GeneralDetailBloodlineV3', hiddenAlias: true },
     { id: 'SpiritTallyDetail', screenId: 'spirit-tally-detail-screen', targetIndex: 7, uiSourceDir: 'spirit-tally-detail', runtimeScreenId: 'SpiritTallyDetail' },
+    { id: 'GeneralList', screenId: 'general-list-screen', targetIndex: 8, uiSourceDir: 'general-list', runtimeScreenId: 'GeneralList' },
+    { id: 'NurtureSession', screenId: 'nurture-session-screen', targetIndex: 10, uiSourceDir: 'nurture-session', runtimeScreenId: 'NurtureSession' },
+    { id: 'BattleSceneFromLobby', screenId: 'battle-scene', targetIndex: 11, uiSourceDir: 'battle-hud', runtimeScreenId: 'BattleSceneFromLobby' },
 ];
 
 function resolveLoadingSceneUuid() {
@@ -66,8 +71,21 @@ function parseArg(name, fallback = '') {
     return process.argv[index + 1];
 }
 
+function readBattleTacticArg() {
+    return parseArg('battleTactic', '').trim();
+}
+
 function delay(ms) {
     return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function withTimeout(task, timeoutMs, label) {
+    return Promise.race([
+        task,
+        new Promise((_, reject) => {
+            setTimeout(() => reject(new Error(`TimeoutError: ${label} exceeded ${timeoutMs}ms`)), timeoutMs);
+        }),
+    ]);
 }
 
 function requestUrl(url) {
@@ -145,26 +163,15 @@ function createPageDiagnostics(page) {
         requestFailures: [],
     };
 
-    page.on('console', async (message) => {
-        let text = message.text();
-        try {
-            const args = await Promise.all(message.args().map(async (arg) => {
-                try {
-                    return await arg.jsonValue();
-                } catch {
-                    return undefined;
-                }
-            }));
-            if (args.some((arg) => arg !== undefined)) {
-                text = `${text} ${JSON.stringify(args.filter((arg) => arg !== undefined))}`;
-            }
-        } catch {
-            // 忽略 console 參數提取失敗，保留原始文字即可
+    page.on('console', (message) => {
+        const type = message.type();
+        if (type !== 'warning' && type !== 'warn' && type !== 'error') {
+            return;
         }
 
         diagnostics.console.push({
-            type: message.type(),
-            text,
+            type,
+            text: message.text(),
         });
     });
 
@@ -229,6 +236,50 @@ function isRetryableCaptureError(error, debugState) {
         || message.includes('Unable to resolve bare specifier')
         || bodyText.includes('Unable to resolve bare specifier')
         || bodyText.includes('Please open the console to see detailed errors');
+}
+
+async function waitForCaptureReady(page, screenId, timeoutMs) {
+    const startedAt = Date.now();
+
+    while (Date.now() - startedAt < timeoutMs) {
+        let snapshot;
+        try {
+            snapshot = await page.evaluate(() => {
+                const state = window.__UI_CAPTURE_STATE__ ?? null;
+                const bodyText = document.body ? document.body.innerText : '';
+                return {
+                    state,
+                    bodyText,
+                };
+            });
+        } catch (error) {
+            const message = String(error);
+            if (message.includes('Execution context was destroyed') || message.includes('Cannot find context with specified id')) {
+                await delay(500);
+                continue;
+            }
+            throw error;
+        }
+
+        const state = snapshot?.state ?? null;
+        const bodyText = snapshot?.bodyText ?? '';
+
+        if (state?.status === 'error') {
+            throw new Error(`UI capture error: ${state.error || 'unknown'}`);
+        }
+
+        if (bodyText.includes('Unable to resolve bare specifier')) {
+            throw new Error(`Preview compile failed: ${summarizeBodyText(bodyText)}`);
+        }
+
+        if (state?.status === 'ready' && state.screenId === screenId) {
+            return state;
+        }
+
+        await delay(500);
+    }
+
+    throw new Error(`TimeoutError: Waiting failed: ${timeoutMs}ms exceeded`);
 }
 
 function resolveUiSourceScreenDir(target) {
@@ -315,9 +366,88 @@ function writeRuntimeVerdictForTarget(target, outDir, metadata) {
     });
 }
 
+async function collectTargetRuntimeGuard(page, target) {
+    if (target.id !== 'GeneralDetailOverview' && target.id !== 'GeneralDetailOverviewZhenJi') {
+        return null;
+    }
+
+    return page.evaluate(() => {
+        const cc = window.cc;
+        const scene = cc?.director?.getScene?.();
+        if (!scene) {
+            return {
+                guardId: 'general-detail-overview-runtime-visibility',
+                passed: false,
+                failures: ['scene unavailable'],
+                nodes: {},
+            };
+        }
+
+        const find = (name, node = scene) => {
+            if (!node) return null;
+            if (node.name === name) return node;
+            for (const child of node.children || []) {
+                const found = find(name, child);
+                if (found) return found;
+            }
+            return null;
+        };
+
+        const readActive = (name) => {
+            const node = find(name);
+            if (!node) {
+                return { exists: false, active: false };
+            }
+            return {
+                exists: true,
+                active: Boolean(node.activeInHierarchy ?? node.active),
+            };
+        };
+
+        const expectedVisible = ['OverviewSlot', 'RightContentArea'];
+        const expectedRemoved = ['RightContentAreaFill', 'OverviewStateChrome', 'TopLeftInfo', 'BottomLeftInfo', 'FooterPanel'];
+        const failures = [];
+        const nodes = {};
+
+        for (const name of expectedVisible) {
+            const state = readActive(name);
+            nodes[name] = state;
+            if (!state.exists) {
+                failures.push(`${name} missing`);
+            } else if (!state.active) {
+                failures.push(`${name} hidden`);
+            }
+        }
+
+        for (const name of expectedRemoved) {
+            const state = readActive(name);
+            nodes[name] = state;
+            if (state.exists) {
+                failures.push(`${name} should be removed`);
+            }
+        }
+
+        const contentSlot = readActive('ContentSlot');
+        nodes.ContentSlot = contentSlot;
+        if (contentSlot.exists && contentSlot.active) {
+            failures.push('ContentSlot should be hidden during Overview mode');
+        }
+
+        return {
+            guardId: 'general-detail-overview-runtime-visibility',
+            passed: failures.length === 0,
+            failures,
+            nodes,
+        };
+    });
+}
+
 async function captureOne(browser, baseUrl, outputDir, target, timeoutMs, sceneUuid) {
     const page = await browser.newPage();
     const diagnostics = createPageDiagnostics(page);
+    const effectiveTimeoutMs = target.id === 'GeneralDetailOverview' || target.id === 'GeneralDetailOverviewZhenJi'
+        ? Math.max(timeoutMs, 70000)
+        : timeoutMs;
 
     await page.setCacheEnabled(false);
     await page.setExtraHTTPHeaders({
@@ -350,6 +480,10 @@ async function captureOne(browser, baseUrl, outputDir, target, timeoutMs, sceneU
     if (target.debugHidePaths) {
         query.set('debugHidePaths', target.debugHidePaths);
     }
+    const battleTactic = readBattleTacticArg();
+    if (battleTactic) {
+        query.set('battleTactic', battleTactic);
+    }
     query.set('t', String(Date.now()));
     if (sceneUuid) {
         query.set('scene', sceneUuid);
@@ -357,35 +491,25 @@ async function captureOne(browser, baseUrl, outputDir, target, timeoutMs, sceneU
 
     const url = `${baseUrl}?${query.toString()}`;
     try {
+        console.log(`[capture-ui-screens] ${target.id} navigating -> ${url}`);
         // Cocos Editor preview 頁常駐長連線，不能用 networkidle2 當成功條件。
-        await page.goto(url, { waitUntil: 'domcontentloaded', timeout: timeoutMs });
+        await withTimeout(
+            page.goto(url, { waitUntil: 'domcontentloaded', timeout: effectiveTimeoutMs }),
+            effectiveTimeoutMs + 5000,
+            `${target.id} page.goto`,
+        );
+        console.log(`[capture-ui-screens] ${target.id} waiting capture ready (${target.screenId})`);
+        await withTimeout(
+            waitForCaptureReady(page, target.screenId, effectiveTimeoutMs),
+            effectiveTimeoutMs + 5000,
+            `${target.id} waitForCaptureReady`,
+        );
+        console.log(`[capture-ui-screens] ${target.id} capture ready`);
 
-        await Promise.race([
-            page.waitForFunction(
-                (screenId) => {
-                    const state = window.__UI_CAPTURE_STATE__;
-                    if (!state) {
-                        return false;
-                    }
-                    if (state.status === 'error') {
-                        throw new Error(`UI capture error: ${state.error || 'unknown'}`);
-                    }
-                    return state.status === 'ready' && state.screenId === screenId;
-                },
-                { timeout: timeoutMs },
-                target.screenId
-            ),
-            page.waitForFunction(
-                () => {
-                    const bodyText = document.body ? document.body.innerText : '';
-                    return bodyText.includes('Unable to resolve bare specifier');
-                },
-                { timeout: timeoutMs }
-            ).then(async () => {
-                const bodyText = await page.evaluate(() => document.body ? document.body.innerText : '');
-                throw new Error(`Preview compile failed: ${summarizeBodyText(bodyText)}`);
-            }),
-        ]);
+        const runtimeGuard = await collectTargetRuntimeGuard(page, target);
+        if (runtimeGuard && !runtimeGuard.passed) {
+            console.warn(`[capture-ui-screens] ${target.id} runtime guard failed: ${runtimeGuard.failures.join('; ')}`);
+        }
 
         const filePath = path.join(outputDir, `${target.id}.png`);
 
@@ -478,8 +602,14 @@ async function captureOne(browser, baseUrl, outputDir, target, timeoutMs, sceneU
         const clip = toolbarHeight > 0
             ? { x: 0, y: toolbarHeight, width: vp.width, height: vp.height - toolbarHeight }
             : undefined;
-        await page.screenshot({ path: filePath, fullPage: false, ...(clip ? { clip } : {}) });
-        return { filePath, page, diagnostics };
+        console.log(`[capture-ui-screens] ${target.id} writing screenshot -> ${filePath}`);
+        await withTimeout(
+            page.screenshot({ path: filePath, fullPage: false, ...(clip ? { clip } : {}) }),
+            20000,
+            `${target.id} page.screenshot`,
+        );
+        console.log(`[capture-ui-screens] ${target.id} screenshot written`);
+        return { filePath, page, diagnostics, runtimeGuard };
     } catch (error) {
         error.diagnostics = diagnostics;
         error.page = page;
@@ -587,8 +717,11 @@ async function main() {
                     resizePng(captureResult.filePath, maxWidth);
                     const diagnosticsSummary = summarizeDiagnostics(captureResult.diagnostics);
                     const diagnosticSamples = collectDiagnosticSamples(captureResult.diagnostics);
-                    const status = buildRuntimeStatus(diagnosticsSummary, false);
-                    const residuals = buildRuntimeResiduals(diagnosticsSummary);
+                    const runtimeGuardFailures = Array.isArray(captureResult.runtimeGuard?.failures)
+                        ? captureResult.runtimeGuard.failures
+                        : [];
+                    const status = buildRuntimeStatus(diagnosticsSummary, runtimeGuardFailures.length > 0);
+                    const residuals = buildRuntimeResiduals(diagnosticsSummary, runtimeGuardFailures);
                     const relativeFile = path.relative(path.join(__dirname, '..'), captureResult.filePath).replace(/\\/g, '/');
                     captured.push({
                         target: target.id,
@@ -596,6 +729,7 @@ async function main() {
                         file: captureResult.filePath,
                         diagnosticsSummary,
                         diagnosticSamples,
+                        runtimeGuard: captureResult.runtimeGuard ?? null,
                         status,
                     });
                     writeRuntimeVerdictForTarget(target, outDir, {
@@ -604,6 +738,7 @@ async function main() {
                         residuals,
                         promoteable: status !== 'fail',
                         diagnosticsSummary,
+                        runtimeGuard: captureResult.runtimeGuard ?? null,
                         captureArtifacts: {
                             screenshotPath: relativeFile,
                         },
@@ -613,7 +748,7 @@ async function main() {
                     });
                     runtimeUpdates.push({ target: target.id, status });
                     console.log(`[capture-ui-screens] captured ${target.id} -> ${captureResult.filePath}`);
-                    await captureResult.page.close();
+                    await withTimeout(captureResult.page.close(), 10000, `${target.id} page.close`);
                     lastError = null;
                     break;
                 } catch (error) {

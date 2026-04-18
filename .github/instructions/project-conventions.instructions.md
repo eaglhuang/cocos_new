@@ -1,4 +1,5 @@
 ---
+doc_id: doc_ai_0014
 applyTo: "assets/scripts/**"
 ---
 
@@ -18,7 +19,28 @@ applyTo: "assets/scripts/**"
 
 - 解釋 Cocos Creator 概念時，主動對照 Unity 的對應概念與設計理念
 - 自動工具腳本也要說明其原理是否與 Unity 對應概念一致
-- 隨專案演進，定期回顧和更新 `docs/keep.md` 的共識
+- 隨專案演進，定期回顧和更新 `docs/keep.md (doc_index_0011)` (doc_index_0011) 的共識
+
+## 日誌規範（UCUFLogger）
+
+**強制**：`assets/scripts/` 內禁止新增裸 `console.log/warn/error`。一律透過 UCUFLogger 輸出。
+
+```ts
+import { UCUFLogger, LogCategory, LogLevel } from '../core/UCUFLogger';
+
+UCUFLogger.debug(LogCategory.LIFECYCLE, '[MyComponent] mount');
+UCUFLogger.warn(LogCategory.DATA, '[MyComponent] missing field', { key });
+```
+
+- 檔案位置：`assets/scripts/ui/core/UCUFLogger.ts`
+- 現有 `LogCategory`：`LIFECYCLE` / `SKIN` / `DATA` / `PERFORMANCE` / `RULE` / `DRAG`
+- 新增分類：直接在 `LogCategory` enum 補一個值即可，**不要另建 log 模組或自訂 debug flag**。
+- Runtime 開關（Browser DevTools Console）：
+  - `__ucuf_debug()` → 全開 DEBUG（顯示所有分類）
+  - `__ucuf_quiet()` → 靜音（僅 ERROR）
+  - `__ucuf_level(0)` → 手動 DEBUG
+- 若要建 debug helper（e.g. `XxxDebug.ts`），其內部必須委派至 `UCUFLogger.debug()`，不得自帶獨立 toggle。
+- 違規檢查：`grep_search assets/scripts/ 'console\.log'` — 看到裸 log 一律遷移或報告。
 
 ## Fragment Override 規則
 
@@ -65,3 +87,19 @@ Layout JSON 中使用 `$ref` 引用片段時，必須遵守以下規則：
 - 引擎相依代碼只能出現在 `assets/scripts/ui/platform/cocos/` 目錄。
 - `NodeHandle = unknown` 型別宣告——工具端代碼不得直接型別轉換為引擎型別（如 `node as cc.Node`）。
 - 新引擎支援時，在 `platform/<engine>/` 下新增實作，核心邏輯零修改。
+
+## 治理測試防衛規則（Governance Test Guard）
+
+**強制**：任何改動以下檔案後，必須立即跑 governance test 確認 PASS：
+- `assets/scripts/ui/components/GeneralDetailComposite.ts`
+- `assets/scripts/ui/components/GeneralDetailOverviewShell.ts`
+- `assets/scripts/ui/scenes/LoadingScene.ts`（overview 相關 assertion）
+- `assets/scripts/ui/components/` 下新增或刪除 `*.ts` 檔案
+
+```bash
+npm run test:ucuf:governance
+```
+
+- 改架構時必須**同步更新治理測試**，不可「先 skip 再說」。
+- `MIGRATION_PHASE` 常數（`tests/ucuf/architectureGovernance.test.ts`）必須與實際架構狀態一致。
+- 治理測試斷言不用 exact source-text match — 用 regex / JSON property 檢查，避免 formatting 變動導致 false fail。

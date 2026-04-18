@@ -1,0 +1,146 @@
+{
+  "id": "tiger-tally-detail-panel-default",
+  "version": 1,
+  "bundle": "battle_ui",
+  "atlasPolicy": "tiger_tally_detail_panel",
+  "slots": {
+    "ttd.root.bg": {
+      "kind": "sprite-frame",
+      "path": "sprites/common/popup_card_bg/spriteFrame",
+      "spriteType": "sliced",
+      "border": [16, 16, 16, 16],
+      "allowAutoAtlas": true
+    },
+    "ttd.header.bg": {
+      "kind": "color-rect",
+      "color": "backgroundNavyAlt",
+      "alpha": 255
+    },
+    "ttd.section.bg": {
+      "kind": "color-rect",
+      "color": "surfaceSepiaWarm",
+      "alpha": 248
+    },
+    "ttd.type.icon": {
+      "kind": "sprite-frame",
+      "path": "sprites/battle/unitinfo_type_icon/spriteFrame",
+      "spriteType": "simple",
+      "allowAutoAtlas": true
+    },
+    "ttd.btn.close": {
+      "kind": "sprite-frame",
+      "path": "sprites/common/btn_close_small/spriteFrame",
+      "spriteType": "simple",
+      "allowAutoAtlas": true,
+      "_fallback": "#444C58"
+    },
+    "ttd.art.frame": {
+      "kind": "sprite-frame",
+      "path": "ui/tiger-tally/frame-parts/ssr/tally_frame_full_ssr/spriteFrame",
+      "spriteType": "simple",
+      "allowAutoAtlas": true
+    },
+    "ttd.art.preview": {
+      "kind": "sprite-frame",
+      "path": "sprites/battle/tally_card_art_placeholder/spriteFrame",
+      "spriteType": "simple",
+      "allowAutoAtlas": true,
+      "_fallback": "#2A3040"
+    },
+    "ttd.label.name": {
+      "kind": "label-style",
+      "fontSize": 17,
+      "lineHeight": 22,
+      "color": "secondaryLight",
+      "horizontalAlign": "LEFT",
+      "isBold": true
+    },
+    "ttd.label.sub": {
+      "kind": "label-style",
+      "fontSize": 11,
+      "lineHeight": 14,
+      "color": "textSteelGray",
+      "horizontalAlign": "LEFT"
+    },
+    "ttd.label.meta": {
+      "kind": "label-style",
+      "fontSize": 11,
+      "lineHeight": 14,
+      "color": "textSecondary",
+      "horizontalAlign": "LEFT",
+      "overflow": "clampByHeight"
+    },
+    "ttd.label.rarity": {
+      "kind": "label-style",
+      "fontSize": 13,
+      "lineHeight": 15,
+      "color": "secondaryLight",
+      "horizontalAlign": "LEFT",
+      "isBold": true
+    },
+    "ttd.label.stars": {
+      "kind": "label-style",
+      "fontSize": 13,
+      "lineHeight": 15,
+      "color": "secondaryLight",
+      "horizontalAlign": "LEFT"
+    },
+    "ttd.label.section": {
+      "kind": "label-style",
+      "fontSize": 12,
+      "lineHeight": 15,
+      "color": "secondaryLight",
+      "horizontalAlign": "LEFT",
+      "isBold": true
+    },
+    "ttd.label.stat": {
+      "kind": "label-style",
+      "fontSize": 13,
+      "lineHeight": 16,
+      "color": "textOffWhite",
+      "horizontalAlign": "LEFT"
+    },
+    "ttd.label.desc": {
+      "kind": "label-style",
+      "fontSize": 12,
+      "lineHeight": 17,
+      "color": "textOffWhite",
+      "horizontalAlign": "LEFT",
+      "overflow": "clampByHeight"
+    },
+    "ttd.label.cost": {
+      "kind": "label-style",
+      "font": "fonts/manrope/font",
+      "fontSize": 15,
+      "lineHeight": 16,
+      "color": "secondaryLight",
+      "horizontalAlign": "CENTER",
+      "isBold": true
+    },
+    "ttd.label.atk": {
+      "kind": "label-style",
+      "font": "fonts/manrope/font",
+      "fontSize": 28,
+      "lineHeight": 30,
+      "color": "secondaryLight",
+      "horizontalAlign": "LEFT",
+      "isBold": true
+    },
+    "ttd.label.hp": {
+      "kind": "label-style",
+      "font": "fonts/manrope/font",
+      "fontSize": 28,
+      "lineHeight": 30,
+      "color": "secondaryLight",
+      "horizontalAlign": "RIGHT",
+      "isBold": true
+    },
+    "ttd.label.value": {
+      "kind": "label-style",
+      "fontSize": 12,
+      "lineHeight": 16,
+      "color": "textOffWhite",
+      "horizontalAlign": "LEFT"
+    }
+  }
+}

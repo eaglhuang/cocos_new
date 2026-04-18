@@ -1,0 +1,22 @@
+{
+  "id": "battle-hud-states-v1",
+  "version": 1,
+  "defaultState": "smoke-default",
+  "states": {
+    "smoke-default": {
+      "battleState": {
+        "playerName": "劉備軍",
+        "playerFortressHp": "本陣 84%",
+        "turnCount": "第 5 回合",
+        "food": "糧草 12/20",
+        "statusMessage": "夜雨山地．保守推進",
+        "enemyFortressHp": "敵陣 71%",
+        "enemyName": "曹操軍"
+      },
+      "strategistSummaryTitle": "軍師摘要",
+      "strategistSummaryBody": "主風險：夜雨山地。已揭露的是地形壓力與建議對策方向，不直接曝光伏兵點或 AI 解答。",
+      "stageSalvageTitle": "戰後回收",
+      "stageSalvageBody": "本戰可帶出糧草箱與軍令線索。戰中僅顯示摘要，不即時改寫帳號經濟或背包。"
+    }
+  }
+}

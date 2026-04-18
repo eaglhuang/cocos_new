@@ -8,6 +8,13 @@
  */
 import type { INodeFactory, NodeHandle } from '../../core/interfaces/INodeFactory';
 import type { UILayoutNodeSpec } from '../../core/UISpecTypes';
+import type {
+    ICompositeRenderer,
+    RadarChartConfig,
+    GridConfig,
+    ProgressBarConfig,
+} from '../../core/interfaces/ICompositeRenderer';
+import type { IScrollVirtualizer } from '../../core/interfaces/IScrollVirtualizer';
 
 export class UnityNodeFactory implements INodeFactory {
 
@@ -35,3 +42,66 @@ export class UnityNodeFactory implements INodeFactory {
         throw new Error(`UnityNodeFactory.createContainer not implemented for: ${name}`);
     }
 }
+
+// ─── UCUF M3 Unity Stubs ──────────────────────────────────────────────────────
+
+/**
+ * UnityCompositeRenderer (stub)
+ *
+ * ICompositeRenderer 的 Unity 引擎 stub（UCUF M3）。
+ * 移植時以 Unity Shader / MeshRenderer / UIManipulator 取代。
+ */
+export class UnityCompositeRenderer implements ICompositeRenderer {
+
+    async drawRadarChart(_parent: NodeHandle, _config: RadarChartConfig): Promise<NodeHandle> {
+        throw new Error('UnityCompositeRenderer.drawRadarChart not implemented');
+    }
+
+    async drawGrid(_parent: NodeHandle, _config: GridConfig): Promise<NodeHandle> {
+        throw new Error('UnityCompositeRenderer.drawGrid not implemented');
+    }
+
+    async drawProgressBar(_parent: NodeHandle, _config: ProgressBarConfig): Promise<NodeHandle> {
+        throw new Error('UnityCompositeRenderer.drawProgressBar not implemented');
+    }
+
+    updateRadarChart(_chartNode: NodeHandle, _config: RadarChartConfig): void {
+        throw new Error('UnityCompositeRenderer.updateRadarChart not implemented');
+    }
+
+    updateProgressBar(_barNode: NodeHandle, _current: number, _max: number): void {
+        throw new Error('UnityCompositeRenderer.updateProgressBar not implemented');
+    }
+}
+
+/**
+ * UnityScrollVirtualizer (stub)
+ *
+ * IScrollVirtualizer 的 Unity 引擎 stub（UCUF M3）。
+ * 移植時以 Unity ScrollRect + ObjectPool 取代。
+ */
+export class UnityScrollVirtualizer implements IScrollVirtualizer {
+
+    onItemRender: ((index: number, node: NodeHandle) => void) | null = null;
+
+    attach(_scrollNode: NodeHandle, _totalCount: number, _itemHeight: number, _bufferCount?: number): void {
+        throw new Error('UnityScrollVirtualizer.attach not implemented');
+    }
+
+    detach(): void {
+        throw new Error('UnityScrollVirtualizer.detach not implemented');
+    }
+
+    updateData(_totalCount: number): void {
+        throw new Error('UnityScrollVirtualizer.updateData not implemented');
+    }
+
+    getVisibleRange(): { start: number; end: number } {
+        throw new Error('UnityScrollVirtualizer.getVisibleRange not implemented');
+    }
+
+    recycleAll(): void {
+        throw new Error('UnityScrollVirtualizer.recycleAll not implemented');
+    }
+}
+

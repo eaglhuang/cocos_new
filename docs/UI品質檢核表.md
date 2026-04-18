@@ -1,6 +1,7 @@
+<!-- doc_id: doc_ui_0050 -->
 # UI 品質檢核表（v0）
 
-目的：把 `UI參考圖品質分析.md` 的規範轉成可執行的檢核清單，供 UI 美術、工程與 QA 共同驗收。
+目的：把 `UI參考圖品質分析.md` (doc_ui_0051) 的規範轉成可執行的檢核清單，供 UI 美術、工程與 QA 共同驗收。
 
 最後更新：2026-03-31
 
@@ -13,7 +14,7 @@
 
 ## 元件尺寸與幾何行為驗收（必填）
 
-> 完整標準尺寸矩陣與行為定義見 → **`docs/ui/component-sizing-contract.md`**
+> 完整標準尺寸矩陣與行為定義見 → **`docs/ui/component-sizing-contract.md (doc_ui_0038)` (doc_ui_0038)**
 
 - [ ] Screen spec 或 task card 中已有 **Component Sizing Table**，每個元件都有明確 W × H 數值（不可只寫「依內容」）
 - [ ] 每個 UI 元件已標記幾何行為代號（FX / SS / SR / TR / LC / DI）
@@ -77,4 +78,4 @@
 
 ---
 
-參考：`docs/UI參考圖品質分析.md`
+參考：`docs/UI參考圖品質分析.md (doc_ui_0051)` (doc_ui_0051)

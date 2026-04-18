@@ -1,0 +1,68 @@
+{
+  "$schema": "../../../../assets/resources/ui-spec/proof/proof-contract.schema.json",
+  "version": "1.0",
+  "screenId": "NurtureSession",
+  "proofSource": "ref://docs/UI 規格補遺_2026-04-11_培育戰場轉蛋pending.md",
+  "capturedAt": "2026-04-11",
+  "capturedBy": "GitHubCopilot",
+  "confidence": 0.69,
+  "visualZones": [
+    {
+      "id": "header-shell",
+      "label": "培育標題列",
+      "family": "parchment",
+      "frameRecipeRef": "parchment-v1",
+      "bounds": { "x": 48, "y": 24, "w": 1824, "h": 136 },
+      "notes": "承載培育行程主標、副標、回合與揭露規則摘要。"
+    },
+    {
+      "id": "phase-block-header",
+      "label": "學年階段摘要帶",
+      "family": "parchment",
+      "frameRecipeRef": "parchment-v1",
+      "bounds": { "x": 48, "y": 182, "w": 1824, "h": 108 },
+      "notes": "顯示本階段節奏重點與 TeachingOnly 邊界。"
+    },
+    {
+      "id": "training-summary-row",
+      "label": "培育摘要列",
+      "family": "parchment",
+      "frameRecipeRef": "parchment-v1",
+      "bounds": { "x": 48, "y": 320, "w": 1824, "h": 592 },
+      "notes": "主修、支援窗口、風險提醒三欄摘要。"
+    },
+    {
+      "id": "graduation-tags-strip",
+      "label": "畢業標籤帶",
+      "family": "parchment",
+      "frameRecipeRef": "parchment-v1",
+      "bounds": { "x": 48, "y": 940, "w": 1824, "h": 68 },
+      "notes": "摘要顯示畢業標籤候選，不提前暴露最終精確值。"
+    }
+  ],
+  "componentIntents": [
+    { "zone": "header-shell", "nodeHint": "panel", "bind": "sessionHeader", "notes": "頂部摘要容器" },
+    { "zone": "header-shell", "nodeHint": "label", "bind": "sessionTitle", "notes": "培育行程主標" },
+    { "zone": "phase-block-header", "nodeHint": "label", "bind": "phaseBlockTitle", "notes": "學年階段標題" },
+    { "zone": "phase-block-header", "nodeHint": "label", "bind": "mentorModeLabel", "notes": "TeachingOnly chip" },
+    { "zone": "training-summary-row", "nodeHint": "panel", "bind": "trainingSummary", "notes": "三張摘要卡群" },
+    { "zone": "graduation-tags-strip", "nodeHint": "label", "bind": "graduationTagsBody", "notes": "畢業標籤摘要" }
+  ],
+  "spacingRecipe": {
+    "containerPadding": 24,
+    "itemSpacing": 24,
+    "sectionGap": 30,
+    "unitBasis": 8
+  },
+  "contentSlots": [
+    { "id": "sessionTitle", "type": "label", "placeholder": "培育主標" },
+    { "id": "sessionSubtitle", "type": "label", "placeholder": "學年副標" },
+    { "id": "turnLabel", "type": "label", "placeholder": "回合標籤" },
+    { "id": "sessionSummary", "type": "label", "placeholder": "揭露規則摘要" },
+    { "id": "phaseBlockTitle", "type": "label", "placeholder": "Phase_Block 標題" },
+    { "id": "phaseBlockBody", "type": "label", "placeholder": "階段節奏摘要" },
+    { "id": "mentorModeLabel", "type": "label", "placeholder": "教官模式提示" },
+    { "id": "graduationTagsTitle", "type": "label", "placeholder": "畢業標籤標題" },
+    { "id": "graduationTagsBody", "type": "label", "placeholder": "畢業標籤摘要" }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "id": "gacha-main-states-v1",
+  "version": 1,
+  "defaultState": "bloodline-seed",
+  "states": {
+    "bloodline-seed": {
+      "poolPositioningTitle": "卡池定位",
+      "poolPositioningBrief": "Bloodline_Seed 專注成年名將與血脈候補，不混入虎符、英靈或其他外池資產。"
+    },
+    "nurture-depth": {
+      "poolPositioningTitle": "卡池定位",
+      "poolPositioningBrief": "Nurture_Depth 專注教官與支援卡的培育深度，提供訓練節奏、事件權重與教學線增益。"
+    },
+    "limited-spotlight": {
+      "poolPositioningTitle": "卡池定位",
+      "poolPositioningBrief": "期間限定池只會在既有雙池框架內做聚焦加成，不額外引入虎符或 DP 回流敘事。"
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "$schema": "../../schemas/asset-task-manifest.schema.json",
+  "screenId": "general-list-screen",
+  "sourceFamilyMap": "general-list-screen",
+  "generatedAt": "2026-04-15T13:56:54.586Z",
+  "taskCount": 0,
+  "tasks": [],
+  "warnings": [
+    "Auto-generated skeleton: no partial asset tasks were inferred from recipe slots; fill tasks manually if this screen needs asset generation."
+  ]
+}

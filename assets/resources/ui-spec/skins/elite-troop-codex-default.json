@@ -4,7 +4,7 @@
   "bundle": "lobby_ui",
   "atlasPolicy": "lobby",
   "slots": {
-    "etc.bg.full": { "kind": "sprite-frame", "path": "ui-spec/placeholders/bg_ink_main", "spriteType": "sliced", "border": [96, 360, 96, 420], "allowAutoAtlas": false },
+    "etc.bg.full": { "kind": "sprite-frame", "path": "sprites/ui_families/general_detail/detail_content_bg", "spriteType": "sliced", "border": [96, 360, 96, 420], "allowAutoAtlas": false },
     "etc.panel.side": { "kind": "color-rect", "color": "etcPanelSide", "alpha": 232 },
     "etc.panel.main": { "kind": "color-rect", "color": "etcPanelMain", "alpha": 222 },
     "etc.panel.detail": { "kind": "color-rect", "color": "etcPanelDetail", "alpha": 238 },

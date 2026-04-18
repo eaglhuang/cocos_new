@@ -1,7 +1,8 @@
+<!-- doc_id: doc_tech_0015 -->
 # Demo 技術架構
 
 > 第一階段 Demo 的程式架構、模組分工、資料流與技術決策。  
-> 玩法規格請參考 `docs/demo_playbook.md`。
+> 玩法規格請參考 `docs/demo_playbook.md (doc_spec_0161)` (doc_spec_0161)。
 
 **最後更新**: 2026-03-30
 
@@ -303,13 +304,13 @@ material.setProperty('effectParams', new Vec4(0.0, 0.04, 1.0, 1.0));
 
 為避免專案在不同檔案或自動產生的程式碼中反覆散布已棄用的引擎簽章，本專案採用以下統一策略：
 
-- **發現即記錄**：任何發現的 deprecated API 都要在 `keep.md` 中記錄來源、影響範圍與建議替代方案，並同步在此文件中加入說明。
+- **發現即記錄**：任何發現的 deprecated API 都要在 `keep.md` (doc_index_0011) 中記錄來源、影響範圍與建議替代方案，並同步在此文件中加入說明。
 - **Wrapper-first（先包裝再替換）**：在 `assets/scripts/core/utils/` 建立 wrapper 函式（例：`MaterialUtils.setMaterialSafe`），wrapper 負責兼容不同引擎簽章與提供 fallback，所有程式碼應改為呼叫 wrapper 而非直接呼叫被標記為 deprecated 的 API。
-- **AI / 自動化產生碼規範**：自動產生的程式碼（包含 AI 生成）不得使用 `keep.md` 中列為棄用的直接呼叫。自動化工具應改為呼叫對應的 wrapper。
+- **AI / 自動化產生碼規範**：自動產生的程式碼（包含 AI 生成）不得使用 `keep.md` (doc_index_0011) 中列為棄用的直接呼叫。自動化工具應改為呼叫對應的 wrapper。
 - **漸進替換流程**：採取小步驟替換策略（搜尋 → 建立 wrapper → 批次替換 → PR review → merge），每次替換應附帶測試或手動驗證步驟，並保留回退路徑。
 - **文件化與審查**：每個 wrapper 檔案需在檔頭註明被替代的 deprecated API、建立日期、作者與回退建議；PR 必須接受 code review 並在 CI 中加入檢查以阻止直接使用列入棄用清單的簽章。
 
-示例：`assets/scripts/core/utils/MaterialUtils.ts` 已提供 `setMaterialSafe`，並在 `keep.md` 註明該案例為示範。未來若發現其他 deprecated API，請依此流程建立對應 wrapper 並在 `keep.md` 記錄替代方案。
+示例：`assets/scripts/core/utils/MaterialUtils.ts` 已提供 `setMaterialSafe`，並在 `keep.md` (doc_index_0011) 註明該案例為示範。未來若發現其他 deprecated API，請依此流程建立對應 wrapper 並在 `keep.md` (doc_index_0011) 記錄替代方案。
 
 ---
 
@@ -457,7 +458,7 @@ DEPRECATED_RULES 現有規則：
 
 ### 4.11 模組化戰場環境（Tile-State Machine）
 
-> **整併來源**：模組化戰場系統開發策略.md、戰場互動矩陣與養成動力.md
+> **整併來源**：模組化戰場系統開發策略.md (doc_spec_0089)、戰場互動矩陣與養成動力.md (doc_spec_0091)
 
 - 場景（Scene）只作為外殼；真正的玩法差異由格子狀態與任務變數驅動。
 - 建議維持統一的 Tile-State 模組：`Normal`、`Hazard`、`Force-Move`、`Stealth`。
@@ -723,46 +724,46 @@ Unity 對照：這相當於保留原本的 loading scene，但再額外讓它兼
 
 | 工具名稱 | 代碼位置 | 對應規格書 | 功能說明 |
 |---|---|---|---|
-| **血統矩陣計算器** | 待實作 | 血統理論系統.md | 輸入父母 → 計算 14 人祖先矩陣 → 預估 EP |
-| **名士占卜模擬器** | 待實作 | 名士預言系統.md | 選名士 + 父母 → 預覽子嗣因子傾向 |
-| **虛擬祖先生成器** | 待實作 | 血統理論系統.md K 節 | 初代名將 → 自動補齊 3 代 14 人虛擬祖先 |
-| **因子分配計算器** | 待實作 | 因子爆發系統.md | 14 人因子 + 標籤 → EP 與共鳴加成 |
-| **配種最佳化計算** | 待實作 | 結緣系統（配種）.md | 父母組合 → 預估 EP、因子、五維範圍 |
-| **傷害計算器** | FormulaSystem.ts（runtime 共用） | 數值系統.md + 戰場適性系統.md | 攻防 + 適性 + 兵種 + 地形 + 天氣 → 最終傷害 |
-| SceneAutoBuilder | assets/scripts/tools/SceneAutoBuilder.ts | 場景搭建指南.md | 運行時場景生成器（已被編輯器擴展取代） |
-| VfxComposerTool | assets/scripts/tools/VfxComposerTool.ts | demo_技術架構.md | 即時特效預覽工具 |
-| vfx-block-registry | assets/scripts/tools/vfx-block-registry.ts | 美術素材規劃與使用說明.md | 特效積木登錄與路徑治理 |
-| vfx-usage-table | assets/scripts/tools/vfx-usage-table.ts | demo_技術架構.md | 積木組合宣告 + 死資源偵測 |
+| **血統矩陣計算器** | 待實作 | 血統理論系統.md (doc_spec_0011) | 輸入父母 → 計算 14 人祖先矩陣 → 預估 EP |
+| **名士占卜模擬器** | 待實作 | 名士預言系統.md (doc_spec_0006) | 選名士 + 父母 → 預覽子嗣因子傾向 |
+| **虛擬祖先生成器** | 待實作 | 血統理論系統.md (doc_spec_0011) K 節 | 初代名將 → 自動補齊 3 代 14 人虛擬祖先 |
+| **因子分配計算器** | 待實作 | 因子爆發系統.md (doc_spec_0010) | 14 人因子 + 標籤 → EP 與共鳴加成 |
+| **配種最佳化計算** | 待實作 | 結緣系統（配種）.md (doc_spec_0028) | 父母組合 → 預估 EP、因子、五維範圍 |
+| **傷害計算器** | FormulaSystem.ts（runtime 共用） | 數值系統.md (doc_data_0001) + 戰場適性系統.md (doc_spec_0041) | 攻防 + 適性 + 兵種 + 地形 + 天氣 → 最終傷害 |
+| SceneAutoBuilder | assets/scripts/tools/SceneAutoBuilder.ts | 場景搭建指南.md (doc_tech_0007) | 運行時場景生成器（已被編輯器擴展取代） |
+| VfxComposerTool | assets/scripts/tools/VfxComposerTool.ts | demo_技術架構.md (doc_tech_0015) | 即時特效預覽工具 |
+| vfx-block-registry | assets/scripts/tools/vfx-block-registry.ts | 美術素材規劃與使用說明.md (doc_art_0003) | 特效積木登錄與路徑治理 |
+| vfx-usage-table | assets/scripts/tools/vfx-usage-table.ts | demo_技術架構.md (doc_tech_0015) | 積木組合宣告 + 死資源偵測 |
 | UnityParticlePrefabParser | assets/scripts/tools/UnityParticlePrefabParser.ts | — | Unity 粒子遷移工具 |
 | UnityParticleCompoundMapper | assets/scripts/tools/UnityParticleCompoundMapper.ts | — | Unity 複合粒子映射 |
 | DeprecatedApiScanner | assets/scripts/tools/tests/ | 本文件 UnitTest 章節 | 棄用 API 靜態掃描 |
-| battle-scene-builder | extensions/battle-scene-builder/ | 場景搭建指南.md | 編輯器擴展：一鍵生成戰鬥場景節點樹 |
-| studio-tools-hub | extensions/studio-tools-hub/ | 美術素材規劃與使用說明.md | 編輯器擴展：精靈管線工具 |
-| unit-asset-organizer | extensions/unit-asset-organizer/ | 美術素材規劃與使用說明.md | 編輯器擴展：單位資產整理 |
+| battle-scene-builder | extensions/battle-scene-builder/ | 場景搭建指南.md (doc_tech_0007) | 編輯器擴展：一鍵生成戰鬥場景節點樹 |
+| studio-tools-hub | extensions/studio-tools-hub/ | 美術素材規劃與使用說明.md (doc_art_0003) | 編輯器擴展：精靈管線工具 |
+| unit-asset-organizer | extensions/unit-asset-organizer/ | 美術素材規劃與使用說明.md (doc_art_0003) | 編輯器擴展：單位資產整理 |
 | unity-particle-translator | extensions/unity-particle-translator/ | — | 編輯器擴展：Unity 粒子翻譯 |
-| sprite-pipeline | tools/sprite-pipeline/ | 美術素材規劃與使用說明.md | Node.js 圖集拆幀與特效貼圖轉 alpha |
+| sprite-pipeline | tools/sprite-pipeline/ | 美術素材規劃與使用說明.md (doc_art_0003) | Node.js 圖集拆幀與特效貼圖轉 alpha |
 
 ### 13.2 UI 技術（畫面框架 / 三層契約 / 元件）
 
 | 元件名稱 | 代碼位置 | 對應規格書 | 功能說明 |
 |---|---|---|---|
-| **UIManager** | assets/scripts/core/managers/UIManager.ts | UI 規格書.md | 六層 UI 生命週期管理 |
-| **UISpecLoader** | assets/scripts/ui/UISpecLoader.ts | UI技術規格書.md | 三層 JSON 契約載入（layouts/skins/screens） |
-| **UIPreviewBuilder** | 待實作 | UI技術規格書.md | 從 JSON 契約動態生成 Prefab 預覽 |
-| **UIValidationRunner** | 待實作 | UI技術規格書.md | 驗證 skinSlot 路徑、textKey、bind 欄位合法性 |
-| **UILayer** | assets/scripts/ui/layers/UILayer.ts | UI 規格書.md | UI 層級基底 Component |
-| **UIConfig** | assets/scripts/core/config/UIConfig.ts | 主戰場UI規格書.md | UIID / LayerType 定義 |
-| **SolidBackground** | assets/scripts/ui/components/SolidBackground.ts | UI技術規格書.md | 純色白模背景生成 |
-| **BattleHUD** | assets/scripts/ui/components/BattleHUD.ts | 主戰場UI規格書.md | 回合/糧草/SP 即時 HUD |
-| **DeployPanel** | assets/scripts/ui/components/DeployPanel.ts | 戰場部署系統.md | 兵種選擇 + 路線部署 |
-| **GeneralDetailPanel** | assets/scripts/ui/components/GeneralDetailPanel.ts | 武將人物介面規格書.md | 武將詳細面板（6 頁籤） |
-| **GeneralListPanel** | assets/scripts/ui/components/GeneralListPanel.ts | 武將人物介面規格書.md | 武將列表 |
-| **DuelChallengePanel** | assets/scripts/ui/components/DuelChallengePanel.ts | 名將挑戰賽系統.md | 單挑挑戰/接受 UI |
-| **ResultPopup** | assets/scripts/ui/components/ResultPopup.ts | 戰場部署系統.md | 戰鬥結算面板 |
-| **ToastMessage** | assets/scripts/ui/components/ToastMessage.ts | UI 規格書.md | 通知 Toast |
+| **UIManager** | assets/scripts/core/managers/UIManager.ts | UI 規格書.md (doc_ui_0027) | 六層 UI 生命週期管理 |
+| **UISpecLoader** | assets/scripts/ui/UISpecLoader.ts | UI技術規格書.md (doc_ui_0049) | 三層 JSON 契約載入（layouts/skins/screens） |
+| **UIPreviewBuilder** | 待實作 | UI技術規格書.md (doc_ui_0049) | 從 JSON 契約動態生成 Prefab 預覽 |
+| **UIValidationRunner** | 待實作 | UI技術規格書.md (doc_ui_0049) | 驗證 skinSlot 路徑、textKey、bind 欄位合法性 |
+| **UILayer** | assets/scripts/ui/layers/UILayer.ts | UI 規格書.md (doc_ui_0027) | UI 層級基底 Component |
+| **UIConfig** | assets/scripts/core/config/UIConfig.ts | 主戰場UI規格書.md (doc_ui_0001) | UIID / LayerType 定義 |
+| **SolidBackground** | assets/scripts/ui/components/SolidBackground.ts | UI技術規格書.md (doc_ui_0049) | 純色白模背景生成 |
+| **BattleHUD** | assets/scripts/ui/components/BattleHUD.ts | 主戰場UI規格書.md (doc_ui_0001) | 回合/糧草/SP 即時 HUD |
+| **DeployPanel** | assets/scripts/ui/components/DeployPanel.ts | 戰場部署系統.md (doc_spec_0040) | 兵種選擇 + 路線部署 |
+| **GeneralDetailPanel** | assets/scripts/ui/components/GeneralDetailPanel.ts | 武將人物介面規格書.md (doc_ui_0012) | 武將詳細面板（6 頁籤） |
+| **GeneralListPanel** | assets/scripts/ui/components/GeneralListPanel.ts | 武將人物介面規格書.md (doc_ui_0012) | 武將列表 |
+| **DuelChallengePanel** | assets/scripts/ui/components/DuelChallengePanel.ts | 名將挑戰賽系統.md (doc_spec_0007) | 單挑挑戰/接受 UI |
+| **ResultPopup** | assets/scripts/ui/components/ResultPopup.ts | 戰場部署系統.md (doc_spec_0040) | 戰鬥結算面板 |
+| **ToastMessage** | assets/scripts/ui/components/ToastMessage.ts | UI 規格書.md (doc_ui_0027) | 通知 Toast |
 | **NetworkStatusIndicator** | assets/scripts/ui/components/NetworkStatusIndicator.ts | Data Schema文件.md | 斷線警示與同步提示 |
-| **ui-design-tokens.json** | assets/resources/ui-spec/ui-design-tokens.json | UI技術規格書.md | 全域色彩/排版/間距 token |
-| **三層 JSON 契約** | assets/resources/ui-spec/layouts\|skins\|screens/ | UI技術規格書.md | 結構層/樣式層/組裝層 |
+| **ui-design-tokens.json** | assets/resources/ui-spec/ui-design-tokens.json | UI技術規格書.md (doc_ui_0049) | 全域色彩/排版/間距 token |
+| **三層 JSON 契約** | assets/resources/ui-spec/layouts\|skins\|screens/ | UI技術規格書.md (doc_ui_0049) | 結構層/樣式層/組裝層 |
 | **i18n/zh-TW.json** | assets/resources/i18n/zh-TW.json | — | 繁體中文 UI 字串 |
 
 ### 13.3 核心代碼（戰鬥邏輯 / 資料模型 / 架設框架）
@@ -770,27 +771,27 @@ Unity 對照：這相當於保留原本的 loading scene，但再額外讓它兼
 | 元件名稱 | 代碼位置 | 對應規格書 | 功能說明 |
 |---|---|---|---|
 | **ServiceLoader** | assets/scripts/core/managers/ServiceLoader.ts | 本文件 § 4.1 | DI 容器（9+ 服務註冊） |
-| **GameManager** | assets/scripts/core/managers/GameManager.ts | MVP遊戲驗證規格書.md | 全域模式切換 |
+| **GameManager** | assets/scripts/core/managers/GameManager.ts | MVP遊戲驗證規格書.md (doc_spec_0045) | 全域模式切換 |
 | **SceneManager** | assets/scripts/core/managers/SceneManager.ts | 本文件 § 12.3 | A→Loading→B 場景切換 |
-| **BattleSystem** | assets/scripts/core/systems/BattleSystem.ts | 戰場部署系統.md | 回合階段狀態機 + 糧草管理 |
-| **FormulaSystem** | assets/scripts/core/systems/FormulaSystem.ts | 數值系統.md | 集中傷害/治療/互剋公式 |
-| **BuffSystem** | assets/scripts/core/systems/BuffSystem.ts | 因子爆發系統.md | 狀態效果管理 |
-| **ActionSystem** | assets/scripts/core/systems/ActionSystem.ts | 戰法系統.md + 奧義系統.md | 技能時間軸演出 |
+| **BattleSystem** | assets/scripts/core/systems/BattleSystem.ts | 戰場部署系統.md (doc_spec_0040) | 回合階段狀態機 + 糧草管理 |
+| **FormulaSystem** | assets/scripts/core/systems/FormulaSystem.ts | 數值系統.md (doc_data_0001) | 集中傷害/治療/互剋公式 |
+| **BuffSystem** | assets/scripts/core/systems/BuffSystem.ts | 因子爆發系統.md (doc_spec_0010) | 狀態效果管理 |
+| **ActionSystem** | assets/scripts/core/systems/ActionSystem.ts | 戰法系統.md (doc_spec_0038) + 奧義系統.md (doc_spec_0030) | 技能時間軸演出 |
 | **EventSystem** | assets/scripts/core/systems/EventSystem.ts | 本文件 § 4.4 | Pub/Sub 事件匯流排 |
 | **PoolSystem** | assets/scripts/core/systems/PoolSystem.ts | 本文件 § 4.5 | NodePool 物件池 |
 | **ResourceManager** | assets/scripts/core/systems/ResourceManager.ts | Data Schema文件.md | JSON/Prefab 載入與快取 |
 | **EffectSystem** | assets/scripts/core/systems/EffectSystem.ts | 本文件 § 4.7 | VFX 生命週期管理 |
 | **AudioSystem** | assets/scripts/core/systems/AudioSystem.ts | 本文件 | BGM/SFX 混音管理 |
-| **MaterialSystem** | assets/scripts/core/systems/MaterialSystem.ts | 美術素材規劃與使用說明.md | 材質實例與 Shader warmup |
+| **MaterialSystem** | assets/scripts/core/systems/MaterialSystem.ts | 美術素材規劃與使用說明.md (doc_art_0003) | 材質實例與 Shader warmup |
 | **MemoryManager** | assets/scripts/core/systems/MemoryManager.ts | 本文件 § 11 | 資產追蹤與釋放 |
 | **NetworkService** | assets/scripts/core/systems/NetworkService.ts | Data Schema文件.md | 離線網路狀態偵測 |
 | **SyncManager** | assets/scripts/core/systems/SyncManager.ts | Data Schema文件.md | 離線 Action Log + HMAC 同步 |
-| **BattleController** | assets/scripts/battle/controllers/BattleController.ts | 戰場部署系統.md | 遭遇戰主控 |
-| **EnemyAI** | assets/scripts/battle/controllers/EnemyAI.ts | 治理模式他國AI系統.md | 敵方 AI 部署策略 |
-| **BattleState** | assets/scripts/battle/models/BattleState.ts | 戰場部署系統.md | 5×8 棋盤格子 + 單位索引 |
-| **TroopUnit** | assets/scripts/core/models/TroopUnit.ts | 兵種（虎符）系統.md | 兵種單位資料模型 |
-| **GeneralUnit** | assets/scripts/core/models/GeneralUnit.ts | 武將系統.md | 武將資料模型 + GeneralConfig DTO |
-| **Constants** | assets/scripts/core/config/Constants.ts | 數值系統.md | 列舉、常數、互剋表、地形修正 |
-| **UnitAssetCatalog** | assets/scripts/core/config/UnitAssetCatalog.ts | 美術素材規劃與使用說明.md | 單位資產路徑映射 |
+| **BattleController** | assets/scripts/battle/controllers/BattleController.ts | 戰場部署系統.md (doc_spec_0040) | 遭遇戰主控 |
+| **EnemyAI** | assets/scripts/battle/controllers/EnemyAI.ts | 治理模式他國AI系統.md (doc_spec_0020) | 敵方 AI 部署策略 |
+| **BattleState** | assets/scripts/battle/models/BattleState.ts | 戰場部署系統.md (doc_spec_0040) | 5×8 棋盤格子 + 單位索引 |
+| **TroopUnit** | assets/scripts/core/models/TroopUnit.ts | 兵種（虎符）系統.md (doc_spec_0012) | 兵種單位資料模型 |
+| **GeneralUnit** | assets/scripts/core/models/GeneralUnit.ts | 武將系統.md (doc_spec_0016) | 武將資料模型 + GeneralConfig DTO |
+| **Constants** | assets/scripts/core/config/Constants.ts | 數值系統.md (doc_data_0001) | 列舉、常數、互剋表、地形修正 |
+| **UnitAssetCatalog** | assets/scripts/core/config/UnitAssetCatalog.ts | 美術素材規劃與使用說明.md (doc_art_0003) | 單位資產路徑映射 |
 | **VfxEffectConfig** | assets/scripts/core/config/VfxEffectConfig.ts | 本文件 | VFX Effect 定義 |
 | **server/src/index.ts** | server/src/index.ts | Data Schema文件.md | 後端驗證引擎原型 |

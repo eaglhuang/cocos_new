@@ -1,0 +1,11 @@
+{
+  "$schema": "../../schemas/asset-task-manifest.schema.json",
+  "screenId": "LobbyMain",
+  "sourceFamilyMap": "LobbyMain",
+  "generatedAt": "2026-04-11T12:32:00.000Z",
+  "taskCount": 0,
+  "tasks": [],
+  "warnings": [
+    "current LobbyMain scaffold reuses existing lobby families; no new partial asset generation scheduled yet"
+  ]
+}

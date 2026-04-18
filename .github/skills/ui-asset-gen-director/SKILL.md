@@ -1,12 +1,13 @@
 ---
+doc_id: doc_agentskill_0021
 name: ui-asset-gen-director
-description: 'UI 資產委託導演 SKILL — 讀取 family-plan.json + skin-family-*.json，產生精確的 ArtRecipe（美術委託書），列出每個 family slot 所需的 spriteFrame 路徑、尺寸規格、9-slice 邊距，交由 Agent2（UI-2-0091）執行實際資產生成。USE FOR: family-architect 輸出 asset-pending 狀態後，正式委託美術生產。DO NOT USE FOR: 非 UI 資產生成、程式邏輯開發、QA 驗證（用 ui-asset-qc）。'
-argument-hint: '提供 screenId 或 family-plan.json 路徑，以及目標 family 清單（如 tab, item-cell）。'
+description: 'UI 資產委託導演 SKILL — 讀取 family-map 與 skin-family-*.json，產生 asset-task-manifest / param-tune-manifest 與精確 ArtRecipe，列出每個 family slot 所需的 spriteFrame 路徑、尺寸規格、9-slice 邊距。USE FOR: family-architect 輸出 asset-pending 狀態後，正式產出 UCUF partial asset 任務。DO NOT USE FOR: 非 UI 資產生成、程式邏輯開發、QA 驗證（用 ui-asset-qc）。'
+argument-hint: '提供 screenId 或 family-map.json 路徑，以及目標 family 清單（如 tab, item-cell），並說明要產 asset-task 還是 param-tune 任務。'
 ---
 
 # UI Asset Gen Director
 
-這是 UI production pipeline 的**第 3 步**：根據 family plan 產生 ArtRecipe，委託資產生成。
+這是 UI production pipeline 的**第 3 步**：根據 family-map 產生 ArtRecipe 與資產任務。
 
 Unity 對照：相當於 Art Director 給美術師 Texture Spec Sheet — 明確規定每張 sprite 的尺寸、切割比例、解析度。
 
@@ -16,15 +17,16 @@ Unity 對照：相當於 Art Director 給美術師 Texture Spec Sheet — 明確
 
 | 項目 | 說明 |
 |---|---|
-| `familyPlanPath` | `artifacts/ui-qa/{screenId}/family-plan.json`（或 screenId） |
-| `missingFamilies` | family-plan 中 `status: "asset-pending"` 的 family 清單 |
+| `familyMapPath` | `artifacts/ui-source/{screenId}/proof/{screenId}.family-map.json`（或 screenId） |
+| `missingFamilies` | family-map 中 `status: "asset-pending"` 的 family 清單 |
 
 ---
 
 ## 輸出
 
-1. `artifacts/ui-qa/{screenId}/art-recipe.json` — 每個 slot 的美術規格
-2. 報告哪些路徑（`sprites/ui_families/{family}/{asset}`）需要被建立
+1. `artifacts/ui-source/{screenId}/manifests/asset-task-manifest.json`
+2. `artifacts/ui-source/{screenId}/manifests/param-tune-manifest.json`（若適用）
+3. `artifacts/ui-source/{screenId}/tasks/*.json` 或等價 ArtRecipe 任務
 
 ---
 
@@ -46,10 +48,10 @@ Unity 對照：相當於 Art Director 給美術師 Texture Spec Sheet — 明確
 
 ## 執行步驟
 
-### Step 1 — 讀取 family plan
+### Step 1 — 讀取 family-map
 
 ```
-read_file { filePath: "artifacts/ui-qa/{screenId}/family-plan.json" }
+read_file { filePath: "artifacts/ui-source/{screenId}/proof/{screenId}.family-map.json" }
 ```
 
 找出所有 `status: "asset-pending"` 或 `recipe: null` 的 zone。
@@ -63,24 +65,40 @@ read_file { filePath: "assets/resources/ui-spec/skins/skin-family-{family}.json"
 
 列出 `slots` 中每個 slot 的 `asset`（sprite 路徑），這就是**需要建立的目標清單**。
 
-### Step 3 — 確認既有資產
+### Step 3 — 先用 compiler 產生任務
+
+優先使用：
+
+```bash
+node tools_node/compile-family-map-to-asset-tasks.js --screen-id <screenId> --dry-run
+node tools_node/compile-family-map-to-asset-tasks.js --screen-id <screenId> --write
+```
+
+若 family 已有 80% 可 reuse，只需微調：
+
+```bash
+node tools_node/compile-family-map-to-param-tune-tasks.js --screen-id <screenId> --dry-run
+node tools_node/compile-family-map-to-param-tune-tasks.js --screen-id <screenId> --write
+```
+
+### Step 4 — 確認既有資產
 
 對每個目標路徑，用 file_search 確認是否已存在：
 ```
-file_search { query: "assets/textures/ui_families/{family}/**" }
+file_search { query: "assets/resources/sprites/ui_families/{family}/**" }
 ```
 
 將結果分成：
 - `exists`: 路徑已有對應 spriteFrame
 - `missing`: 需要美術生成
 
-### Step 4 — 產生 ArtRecipe
+### Step 5 — 產生 ArtRecipe / manifest
 
-輸出 `artifacts/ui-qa/{screenId}/art-recipe.json`：
+輸出 `artifacts/ui-source/{screenId}/manifests/asset-task-manifest.json`：
 
 ```jsonc
 {
-  "screenId": "ShopMain",
+  "screenId": "shop-main",
   "generatedAt": "2026-04-05",
   "artRecipes": [
     {
@@ -88,7 +106,7 @@ file_search { query: "assets/textures/ui_families/{family}/**" }
       "slots": [
         {
           "slotId": "tab.frame.active",
-          "targetPath": "assets/textures/ui_families/tab/tab_active.png",
+          "targetPath": "assets/resources/sprites/ui_families/tab/tab_active.png",
           "spriteFramePath": "sprites/ui_families/tab/tab_active/spriteFrame",
           "status": "missing",
           "spec": {
@@ -110,9 +128,9 @@ file_search { query: "assets/textures/ui_families/{family}/**" }
 }
 ```
 
-### Step 5 — 委託備忘
+### Step 6 — 任務備忘
 
-輸出一段給 Agent2（或美術人員）的委託說明：
+輸出一段給資產產線或美術人員的委託說明：
 
 ```
 【資產委託備忘】
@@ -121,8 +139,8 @@ Missing family assets:
 - tab: tab_active, tab_inactive（120×40, 9-slice 8px, 金邊/素邊）
 - item-cell: cell_default（160×60, 9-slice 12px, 戰國卷軸質感）
 
-請依據 art-recipe.json 的 spec 生成對應 PNG，
-放置路徑：assets/textures/ui_families/{family}/{asset}.png
+請依據 asset-task-manifest / art-recipe 的 spec 生成對應 PNG，
+放置路徑：assets/resources/sprites/ui_families/{family}/{asset}.png
 生成後執行 ui-asset-qc skill 驗證。
 ```
 
@@ -130,7 +148,7 @@ Missing family assets:
 
 ## 品質門檻
 
-- 每個在 skin manifest 中列出的 slot 都必須出現在 ArtRecipe
+- 每個在 skin manifest 中列出的 slot 都必須出現在 manifest 或 ArtRecipe
 - `missing` 的 slot 必須有 `spec.size` 和 `spec.sliceBorder`
 - 9-slice border 每邊不超過 `size / 3`（否則會撕裂），若超過須 flag
 
@@ -138,5 +156,5 @@ Missing family assets:
 
 ## 下一步
 
-- 若 missingSlots > 0 → 交由 Agent2（UI-2-0091）按 art-recipe.json 生成資產
-- 資產生成後 → 進入 **ui-asset-qc** 執行 R1-R6 驗證
+- 若 missingSlots > 0 → 交由資產產線依 manifest / ArtRecipe 生成資產
+- 資產生成後 → 進入 **ui-asset-qc** 執行規則驗證與 review skeleton 更新

@@ -1,0 +1,54 @@
+{
+  "id": "ultimate-select-popup-default",
+  "version": 1,
+  "bundle": "ui_common",
+  "slots": {
+    "popup.overlay": {
+      "kind": "sprite-frame",
+      "path": "sprites/common/overlay_dark/spriteFrame",
+      "spriteType": "sliced",
+      "border": [1, 1, 1, 1],
+      "allowAutoAtlas": false
+    },
+    "popup.card.bg": {
+      "kind": "sprite-frame",
+      "path": "sprites/common/popup_card_bg/spriteFrame",
+      "spriteType": "sliced",
+      "border": [40, 40, 40, 40],
+      "allowAutoAtlas": true
+    },
+    "popup.list.bg": {
+      "kind": "sprite-frame",
+      "path": "sprites/common/btn_secondary_normal/spriteFrame",
+      "spriteType": "sliced",
+      "border": [20, 20, 20, 20],
+      "allowAutoAtlas": true
+    },
+    "popup.button.close": {
+      "kind": "button-skin",
+      "normal": "sprites/common/btn_secondary_normal/spriteFrame",
+      "pressed": "sprites/common/btn_secondary_pressed/spriteFrame",
+      "disabled": "sprites/common/btn_secondary_disabled/spriteFrame",
+      "spriteType": "sliced",
+      "border": [20, 20, 20, 20],
+      "allowAutoAtlas": true
+    },
+    "popup.label.title": {
+      "kind": "label-style",
+      "fontSize": 24,
+      "lineHeight": 30,
+      "color": "secondary",
+      "horizontalAlign": "LEFT",
+      "overflow": "SHRINK"
+    },
+    "popup.label.close": {
+      "kind": "label-style",
+      "fontSize": 18,
+      "lineHeight": 24,
+      "color": "textPrimary",
+      "horizontalAlign": "CENTER",
+      "verticalAlign": "CENTER",
+      "overflow": "SHRINK"
+    }
+  }
+}

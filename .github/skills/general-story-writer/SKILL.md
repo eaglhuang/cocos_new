@@ -1,4 +1,5 @@
 ---
+doc_id: doc_agentskill_0019
 name: general-story-writer
 description: '武將故事批次生成 SKILL — 根據武將的 GeneralConfig（含 characterCategory + rarityTier），生成 historicalAnecdote、bloodlineRumor、六格 storyStripCells 故事條。USE FOR: 填充 generals.json 中的 "???" 欄位、批次生成武將背景故事、統一故事風格。DO NOT USE FOR: 數值平衡調整（用 general-balance-tuner）、資料爬取（用 general-data-pipeline）。'
 argument-hint: '指定目標武將 ID 或名稱，以及需要生成的欄位（story / anecdote / rumor / all）。可指定批次模式一次處理多位武將。'

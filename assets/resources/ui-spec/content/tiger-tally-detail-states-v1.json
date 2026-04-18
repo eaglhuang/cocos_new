@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "states": {
+    "smoke-hubaoqi": {
+      "unitName": "虎豹騎",
+      "unitSub": "重騎兵",
+      "rarityLabel": "SSR",
+      "stars": "★★★",
+      "cost": 15,
+      "atk": 40,
+      "def": 20,
+      "hp": 100,
+      "spd": 2,
+      "desc": "機動性最強的精銳鐵騎，能快速突破敵陣。",
+      "traits": ["衝鋒", "剋步兵"],
+      "abilities": ["奔襲突破", "鐵騎威懾"]
+    }
+  }
+}

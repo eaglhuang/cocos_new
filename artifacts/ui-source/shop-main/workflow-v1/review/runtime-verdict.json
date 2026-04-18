@@ -1,0 +1,38 @@
+{
+  "$schema": "../../schemas/runtime-verdict.schema.json",
+  "screenId": "shop-main-screen",
+  "runId": null,
+  "status": "not-run",
+  "residuals": [],
+  "promoteable": false,
+  "factoryLearnings": [
+    "recipe-screen-spec compiled; runtime verification not run yet",
+    "family=rail-list; validationProfile=rail-list-game-standard",
+    "intake skeleton emitted from recipe metadata",
+    "asset-task-manifest skeleton emitted with zero inferred tasks; manual enrichment required if asset generation applies"
+  ],
+  "latestStage": "assetTaskManifest",
+  "captureArtifacts": {
+    "plannedScreenSpec": "artifacts\\ui-source\\shop-main\\workflow-v1\\generated\\shop-main-screen.json",
+    "plannedReviewDir": "artifacts\\ui-source\\shop-main\\workflow-v1/review",
+    "smokeRoute": "LobbyScene -> open ShopMain",
+    "intake": "artifacts\\ui-source\\shop-main\\workflow-v1\\manifests\\intake.json",
+    "assetTaskManifest": "artifacts\\ui-source\\shop-main\\workflow-v1\\manifests\\asset-task-manifest.json"
+  },
+  "diagnosticsSummary": {
+    "source": "compile-recipe-to-screen-spec",
+    "validationProfile": "rail-list-game-standard",
+    "generationPolicy": "reuse-only",
+    "status": "pending-asset-task-planning"
+  },
+  "history": [
+    {
+      "runId": null,
+      "status": "not-run",
+      "updatedAt": "2026-04-15T15:24:52.110Z",
+      "residualCount": 0,
+      "promoteable": false
+    }
+  ],
+  "updatedAt": "2026-04-15T15:24:52.110Z"
+}

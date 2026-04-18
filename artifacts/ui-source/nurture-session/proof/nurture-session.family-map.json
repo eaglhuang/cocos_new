@@ -1,0 +1,65 @@
+{
+  "$schema": "../../schemas/family-map.schema.json",
+  "screenId": "NurtureSession",
+  "templateFamilyCandidate": "detail-split",
+  "sourceProof": "ref://docs/UI 規格補遺_2026-04-11_培育戰場轉蛋pending.md",
+  "generatedAt": "2026-04-11T12:36:00.000Z",
+  "zoneFamilyMap": [
+    {
+      "zone": "header-shell",
+      "family": "parchment",
+      "recipe": "parchment-v1",
+      "structureOwner": "UITemplateResolver+widget-compose",
+      "skinOwner": "UISkinResolver",
+      "contentOwner": "contentContract",
+      "generationNeed": "reuse-only",
+      "widgetRefs": ["title-block"],
+      "templateRefs": ["detail-split"],
+      "sourceProofFamily": "parchment",
+      "sourceProofRecipe": "parchment-v1",
+      "notes": "培育標題列，承載學年、副標、回合與揭露節奏提示。"
+    },
+    {
+      "zone": "phase-block-header",
+      "family": "parchment",
+      "recipe": "parchment-v1",
+      "structureOwner": "UITemplateResolver+widget-compose",
+      "skinOwner": "UISkinResolver",
+      "contentOwner": "contentContract",
+      "generationNeed": "reuse-only",
+      "widgetRefs": ["phase-header", "mode-chip"],
+      "templateRefs": ["detail-split"],
+      "sourceProofFamily": "parchment",
+      "sourceProofRecipe": "parchment-v1",
+      "notes": "Phase_Block 摘要帶，右上保留 TeachingOnly chip。"
+    },
+    {
+      "zone": "training-summary-row",
+      "family": "parchment",
+      "recipe": "parchment-v1",
+      "structureOwner": "UITemplateResolver+widget-compose",
+      "skinOwner": "UISkinResolver",
+      "contentOwner": "contentContract",
+      "generationNeed": "reuse-only",
+      "widgetRefs": ["summary-card", "risk-card"],
+      "templateRefs": ["detail-split"],
+      "sourceProofFamily": "parchment",
+      "sourceProofRecipe": "parchment-v1",
+      "notes": "三張摘要卡，分流主修、支援窗口、風險提醒。"
+    },
+    {
+      "zone": "graduation-tags-strip",
+      "family": "parchment",
+      "recipe": "parchment-v1",
+      "structureOwner": "UITemplateResolver+widget-compose",
+      "skinOwner": "UISkinResolver",
+      "contentOwner": "contentContract",
+      "generationNeed": "reuse-only",
+      "widgetRefs": ["footer-strip"],
+      "templateRefs": ["detail-split"],
+      "sourceProofFamily": "parchment",
+      "sourceProofRecipe": "parchment-v1",
+      "notes": "畢業標籤條，只作摘要與揭露邊界提示。"
+    }
+  ]
+}

@@ -23,7 +23,7 @@ import { services } from '../../core/managers/ServiceLoader';
 import type { ContentContractRef } from './UISpecTypes';
 import type { UITemplateBinder } from './UITemplateBinder';
 
-interface ContentContractSchemaField {
+export interface ContentContractSchemaField {
     type: string;
     required?: boolean;
     bindPath?: string;
@@ -35,7 +35,7 @@ interface ContentContractSchemaField {
     pattern?: string;
 }
 
-interface ContentContractSchema {
+export interface ContentContractSchema {
     schemaId: string;
     familyId: string;
     fields: Record<string, ContentContractSchemaField>;
@@ -43,6 +43,7 @@ interface ContentContractSchema {
 
 interface UIContentBinderBindOptions {
     suppressUnresolvedWarnings?: boolean;
+    transformBindPath?: (bindPath: string, fieldKey: string) => string;
 }
 
 /** 驗證結果 */
@@ -133,11 +134,14 @@ export class UIContentBinder {
             }
         }
 
-        // 檢查是否有 data 欄位不在 requiredFields 中（提示用）
+        // 只對完全不在 schema.fields 中的欄位發出 warn（真正的未知欄位）
+        // 已在 schema.fields 宣告為選填（required: false）的欄位不打擾。
         const requiredSet = new Set(contractRef.requiredFields);
+        const knownFields = schema?.fields ? new Set(Object.keys(schema.fields)) : null;
         for (const key of Object.keys(data)) {
             if (!requiredSet.has(key)) {
-                warnings.push(`欄位 "${key}" 未在 requiredFields 中宣告（可能是選填欄位）`);
+                if (knownFields?.has(key)) continue;
+                warnings.push(`欄位 "${key}" 未在 schema 中宣告（未知欄位）`);
             }
         }
 
@@ -166,12 +170,29 @@ export class UIContentBinder {
         data: Record<string, unknown>,
         options: UIContentBinderBindOptions = {},
     ): Promise<void> {
-        const schema = await this._loadSchema(contractRef.schemaId);
+        const schema = await this.preloadSchema(contractRef);
+        this.bindWithSchema(binder, contractRef, schema, data, options);
+    }
+
+    preloadSchema(contractRef: ContentContractRef): Promise<ContentContractSchema | null> {
+        return this._loadSchema(contractRef.schemaId);
+    }
+
+    bindWithSchema(
+        binder: UITemplateBinder,
+        contractRef: ContentContractRef,
+        schema: ContentContractSchema | null,
+        data: Record<string, unknown>,
+        options: UIContentBinderBindOptions = {},
+    ): void {
         const fallbackTextEntries: Record<string, string> = {};
         const unresolved: string[] = [];
 
         for (const [key, value] of Object.entries(data)) {
-            const bindPath = schema?.fields?.[key]?.bindPath;
+            const rawBindPath = schema?.fields?.[key]?.bindPath;
+            const bindPath = typeof rawBindPath === 'string' && options.transformBindPath
+                ? options.transformBindPath(rawBindPath, key)
+                : rawBindPath;
 
             if (typeof bindPath === 'string' && bindPath.trim().length > 0) {
                 const label = binder.getLabelByPath(bindPath);

@@ -1,0 +1,28 @@
+{
+  "$schema": "../../schemas/intake.schema.json",
+  "screenId": "NurtureSession",
+  "tier": "B",
+  "templateFamilyCandidate": "detail-split",
+  "uiId": "NurtureSession",
+  "sourceOfTruth": {
+    "screenSpec": "assets/resources/ui-spec/screens/nurture-session-screen.json",
+    "layout": "nurture-session-main",
+    "skin": "nurture-session-default",
+    "bundle": "lobby_ui",
+    "layer": "UI2D"
+  },
+  "canonicalReferences": [
+    "ref://docs/UI 規格補遺_2026-04-11_培育戰場轉蛋pending.md",
+    "ref://docs/遊戲規格文件/系統規格書/培育系統.md"
+  ],
+  "riskZones": [
+    "header-shell",
+    "phase-block-header",
+    "training-summary-row",
+    "graduation-tags-strip"
+  ],
+  "smokeRoute": "node tools_node/capture-ui-screens.js --target NurtureSession --outDir artifacts/ui-qa/nurture-session/runtime-smoke",
+  "notes": "new nurture session skeleton focusing on phase block pacing and graduation tags disclosure boundaries",
+  "generatedAt": "2026-04-11T12:35:00.000Z",
+  "generatedBy": "GitHubCopilot"
+}

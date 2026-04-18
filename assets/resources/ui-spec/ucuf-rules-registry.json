@@ -1,0 +1,78 @@
+{
+  "_comment": "UCUF Runtime 規則持久化檔案 — UCUFRuleRegistry.loadFromJson() 的標準輸入格式",
+  "version": "1.0.0",
+  "rules": [
+    {
+      "id": "RT-01",
+      "name": "nodeDepthCheck",
+      "severity": "warning",
+      "enabled": true,
+      "triggerPoints": ["mount", "switchSlot"],
+      "params": { "maxDepth": 8 }
+    },
+    {
+      "id": "RT-02",
+      "name": "duplicateDataSource",
+      "severity": "error",
+      "enabled": true,
+      "triggerPoints": ["mount", "applyContentState"]
+    },
+    {
+      "id": "RT-03",
+      "name": "skinLayerSlotExists",
+      "severity": "error",
+      "enabled": true,
+      "triggerPoints": ["mount"]
+    },
+    {
+      "id": "RT-04",
+      "name": "fragmentLoadFailed",
+      "severity": "error",
+      "enabled": true,
+      "triggerPoints": ["mount", "switchSlot"]
+    },
+    {
+      "id": "RT-05",
+      "name": "duplicateWidgetSiblings",
+      "severity": "warning",
+      "enabled": true,
+      "triggerPoints": ["mount"]
+    },
+    {
+      "id": "RT-06",
+      "name": "compositeImageLayerCount",
+      "severity": "warning",
+      "enabled": true,
+      "triggerPoints": ["mount"],
+      "params": { "maxCount": 12 }
+    },
+    {
+      "id": "RT-07",
+      "name": "childPanelConfig",
+      "severity": "error",
+      "enabled": true,
+      "triggerPoints": ["mount"]
+    },
+    {
+      "id": "RT-08",
+      "name": "tabRoutingFragmentFailed",
+      "severity": "error",
+      "enabled": true,
+      "triggerPoints": ["mount", "switchSlot"]
+    },
+    {
+      "id": "RT-09",
+      "name": "contentStateKeyMatch",
+      "severity": "warning",
+      "enabled": true,
+      "triggerPoints": ["applyContentState"]
+    },
+    {
+      "id": "RT-10",
+      "name": "skinSlotPathUnique",
+      "severity": "error",
+      "enabled": true,
+      "triggerPoints": ["mount"]
+    }
+  ]
+}

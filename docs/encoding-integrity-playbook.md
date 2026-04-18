@@ -1,6 +1,7 @@
+<!-- doc_id: doc_tech_0016 -->
 # 編碼防災 Playbook
 
-本文件只補充編碼防災的操作流程。通用規則以 [keep.md](./keep.md) 為準，不在此重複。
+本文件只補充編碼防災的操作流程。通用規則以 [keep.md](./keep.md (doc_index_0011)) (doc_index_0011) 為準，不在此重複。
 
 ## 1. 目的
 
@@ -44,7 +45,7 @@ npm run check:encoding:staged
 
 ## 3. 高風險檔編輯流程
 
-高風險檔定義與單寫者規則見 [keep.md](./keep.md)。
+高風險檔定義與單寫者規則見 [keep.md](./keep.md (doc_index_0011)) (doc_index_0011)。
 
 編輯前：
 
@@ -105,7 +106,7 @@ git diff --word-diff -- path/to/file
 
 ## 7. 與拆分規則的關係
 
-- `400` 行以上代碼檔必拆，詳見 [keep.md](./keep.md)。
+- `400` 行以上代碼檔必拆，詳見 [keep.md](./keep.md (doc_index_0011)) (doc_index_0011)。
 - 中文密集大檔優先拆成 text、diagnostics、layout、style、factory 等模組。
 - 目標是縮小災難半徑與 merge conflict 面積。
 

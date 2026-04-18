@@ -1,3 +1,4 @@
+<!-- doc_id: doc_ui_0044 -->
 # Layout Quality Rules（嚴格模式規則說明）
 
 > 使用 `node tools_node/validate-ui-specs.js --strict` 啟用。  

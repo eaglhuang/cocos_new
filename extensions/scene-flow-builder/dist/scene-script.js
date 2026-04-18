@@ -186,7 +186,7 @@ exports.methods = {
         makeButton(canvas, 'BtnEnterBattle', '進入戰鬥 (Demo)', -450, -240, 260, 65, scriptNode, 'LobbyScene', 'onClickEnterBattle');
         makeButton(canvas, 'BtnExit', '返回登入', -450, -315, 200, 50, scriptNode, 'LobbyScene', 'onClickExit');
         // ════════════════════════════════════════════════════════════════
-        // GeneralListPanel (表格面板)
+        // GeneralListComposite host node (表格面板)
         // ════════════════════════════════════════════════════════════════
         const listPanel = getOrCreate(canvas, 'GeneralListPanel');
         const listPanelTf = listPanel.getComponent(cc_1.UITransform) ?? listPanel.addComponent(cc_1.UITransform);
@@ -210,8 +210,8 @@ exports.methods = {
             layout.childAlignment = 0; // Left
         }
         // 關閉按鈕
-        makeButton(listPanel, 'BtnCloseList', '✕ 關閉列表', 500, 300, 140, 55, listPanel, 'GeneralListPanel', 'hide');
-        console.log('  ✓ GeneralListPanel（掛上 GeneralListPanel 腳本）');
+        makeButton(listPanel, 'BtnCloseList', '✕ 關閉列表', 500, 300, 140, 55, listPanel, 'GeneralListComposite', 'hide');
+        console.log('  ✓ GeneralListPanel（掛上 GeneralListComposite 腳本）');
         // ════════════════════════════════════════════════════════════════
         // GeneralDetailPanel（武將詳情彈窗）
         // ════════════════════════════════════════════════════════════════
@@ -241,7 +241,7 @@ exports.methods = {
         console.log('  ✓ GeneralDetailPanel（掛上 GeneralDetailPanel 腳本）');
         console.log('[SceneFlowBuilder] ✅ LobbyScene 節點樹已建立！');
         console.log('  → Canvas 掛 LobbyScene 腳本');
-        console.log('  → GeneralListPanel 節點掛 GeneralListPanel 腳本');
+        console.log('  → GeneralListPanel 節點掛 GeneralListComposite 腳本');
         console.log('  → GeneralDetailPanel 節點掛 GeneralDetailPanel 腳本');
         console.log('  → 存檔 Ctrl+S');
     },

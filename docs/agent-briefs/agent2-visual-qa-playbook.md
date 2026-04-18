@@ -1,6 +1,7 @@
+<!-- doc_id: doc_ai_0021 -->
 # Agent2 Visual QA Playbook
 
-本文件只保留 Agent2 執行 D 階段 QA 的操作步驟。通用規則、單寫者、編碼與提交規則請看 [../keep.md](../keep.md)。
+本文件只保留 Agent2 執行 D 階段 QA 的操作步驟。通用規則、單寫者、編碼與提交規則請看 [../keep.md (doc_index_0011)](../keep.md (doc_index_0011)) (doc_index_0011)。
 
 ## 1. 適用任務
 

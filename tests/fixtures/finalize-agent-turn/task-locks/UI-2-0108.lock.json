@@ -1,0 +1,9 @@
+{
+  "taskId": "UI-2-0108",
+  "agentName": "Agent2",
+  "lockedAt": "2026-04-13T01:42:16.316Z",
+  "files": [
+    "assets/scripts/battle/views/BattleScene.ts",
+    "assets/scripts/ui/components/BattleScenePanel.ts"
+  ]
+}

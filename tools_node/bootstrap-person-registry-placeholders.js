@@ -45,9 +45,11 @@ for (const general of generals) {
       uid: general.id,
       template_id: general.templateId ?? null,
       name: general.name,
+      gender: general.gender ?? '未知',
       gene_refs: Array.isArray(general.genes) ? general.genes.map(g => g.id).filter(Boolean) : [],
       ep_base: general.ep ?? 0,
       faction: general.faction ?? 'unknown',
+      core_tags: Array.isArray(general.coreTags) ? general.coreTags : [],
       is_virtual: false,
     });
   }
@@ -62,9 +64,11 @@ for (const general of generals) {
         uid,
         template_id: null,
         name: `${general.name}祖脈${String(index + 1).padStart(2, '0')}`,
+        gender: index % 2 === 0 ? '男' : '女',
         gene_refs: [],
         ep_base: Math.max(0, Math.round((general.ep ?? 0) * (0.72 - index * 0.02))),
         faction: general.faction ?? 'unknown',
+        core_tags: Array.isArray(general.coreTags) ? general.coreTags : [],
         is_virtual: true,
       });
     }

@@ -1,6 +1,6 @@
 // @spec-source → 見 docs/cross-reference-index.md
-import { Animation, MeshRenderer, Node, ParticleSystem, Sprite, Vec3 } from "cc";
-import { VfxEffectDef } from "../config/VfxEffectConfig";
+import { Animation, Camera, MeshRenderer, Node, ParticleSystem, Sprite, Vec3, director, tween, v3 } from "cc";
+import { VfxBlockEntry, VfxEffectDef } from "../config/VfxEffectConfig";
 import { PoolSystem } from "./PoolSystem";
 import { services } from "../managers/ServiceLoader";
 import { ParticleOverride, applyParticleOverride } from "../utils/ParticleUtils";
@@ -409,9 +409,8 @@ export class EffectSystem {
      * 特效-音效-通知三位一體播放 API。
      *
      * 單一入口觸發「特效 + 音效 + 浮字」，防止視/聽/邏輯不一致。
-     *
-     * Unity 對照：類似 SkillEffect.Play(key, position)，將三個子系統的觸發
-     * 封裝成一個語意完整的操作，設計師只需在 vfx-effects.json 配置。
+     * v2 起：若 def.blocks[] 存在且不為空，改用 playComposite() 依序播放多層積木；
+     *         否則沿用 v1 的單 blockId 行為，保持完全向下相容。
      *
      * 使用範例：
      *   services().effect.playFullEffect('hit_enemy', targetWorldPos);
@@ -428,18 +427,117 @@ export class EffectSystem {
             return;
         }
 
-        // 1. 播放特效 Block
-        this.playBlock(def.blockId, position, override, def.lifetime ?? 2.0);
+        // 1. 播放特效（v2 多層 / v1 單層）
+        if (def.blocks && def.blocks.length > 0) {
+            this.playComposite(def.blocks, position, def.lifetime ?? 2.0, override);
+        } else {
+            this.playBlock(def.blockId, position, override, def.lifetime ?? 2.0);
+        }
 
-        // 2. 播放音效
+        // 2. 鏡頭震動（v2）
+        if (def.cameraShake) {
+            this.playCameraShake(def.cameraShake.strength, def.cameraShake.duration);
+        }
+
+        // 3. 播放音效
         if (def.audio) {
             services().audio.playSfx(def.audio);
         }
 
-        // 3. 顯示 floatText 通知
+        // 4. 顯示 floatText 通知
         if (def.notify?.type === 'floatText') {
             services().floatText.show('status', def.notify.textKey, position);
         }
+    }
+
+    // ──────────────────────────────────────────────────────────────────────────
+    // Milestone 2：多層積木組合播放（v2）
+    // ──────────────────────────────────────────────────────────────────────────
+
+    /**
+     * 依照 blocks[] 定義依序播放多個 VFX Block，每個 block 可設定獨立延遲與參數。
+     *
+     * 設計意圖：讓配方設計師能在 vfx-effects.json 中疊加 3~5 個積木，
+     * 形成「蓄氣 → 揮砍 → 衝擊波」等分層動態，而不需要手動建 compound prefab。
+     *
+     * @param blocks     積木序列（已通過 normalizeBlockEntries 驗證）
+     * @param basePos    世界座標（各積木相對此點套用 offset）
+     * @param lifetime   父 effect 的存活秒數（作為 block duration 的 fallback）
+     * @param override   粒子動態覆寫（套用到所有 block）
+     */
+    public playComposite(
+        blocks: readonly VfxBlockEntry[],
+        basePos: Vec3,
+        lifetime: number,
+        override?: ParticleOverride,
+    ): void {
+        for (const entry of blocks) {
+            const delayMs = Math.max(0, entry.delay) * 1000;
+            const duration = entry.duration ?? lifetime;
+
+            // 合併 override：塊級 scale 優先，否則沿用父級 override
+            const blockOverride: ParticleOverride | undefined = (() => {
+                if (!entry.scale && !entry.tintHex && !override) return undefined;
+                return {
+                    ...override,
+                    ...(entry.scale !== undefined ? { startSizeX: entry.scale } : {}),
+                };
+            })();
+
+            // 計算實際世界座標（套用 offset）
+            const pos = entry.offset
+                ? new Vec3(
+                    basePos.x + entry.offset[0],
+                    basePos.y + entry.offset[1],
+                    basePos.z + entry.offset[2],
+                )
+                : basePos;
+
+            if (delayMs <= 0) {
+                this.playBlock(entry.blockId, pos, blockOverride, duration);
+            } else {
+                setTimeout(() => {
+                    this.playBlock(entry.blockId, pos, blockOverride, duration);
+                }, delayMs);
+            }
+        }
+    }
+
+    /**
+     * 鏡頭震動（v2）。
+     *
+     * 取得場景主 Camera 節點後，用 tween 做 8 次 180° 交替位移再歸零，
+     * 模擬爆炸後的搖晃感。不影響 Camera 的邏輯焦點，只移動節點位置。
+     *
+     * @param strength  震動振幅（世界單位）
+     * @param duration  總持續秒數
+     */
+    public playCameraShake(strength: number, duration: number): void {
+        const scene = director.getScene();
+        if (!scene) return;
+
+        // 尋找主攝影機節點（Camera component）
+        const cameraNode = scene.getComponentInChildren(Camera)?.node;
+        if (!cameraNode) {
+            console.warn('[EffectSystem] playCameraShake: 找不到主 Camera 節點，跳過震動');
+            return;
+        }
+
+        const origin = cameraNode.position.clone();
+        const stepDuration = duration / 8;
+
+        // 建立 8 步交替震動序列後回到原點
+        const seq = tween(cameraNode)
+            .to(stepDuration, { position: v3(origin.x + strength, origin.y, origin.z) })
+            .to(stepDuration, { position: v3(origin.x - strength, origin.y, origin.z) })
+            .to(stepDuration, { position: v3(origin.x, origin.y + strength * 0.6, origin.z) })
+            .to(stepDuration, { position: v3(origin.x, origin.y - strength * 0.6, origin.z) })
+            .to(stepDuration, { position: v3(origin.x + strength * 0.4, origin.y, origin.z) })
+            .to(stepDuration, { position: v3(origin.x - strength * 0.4, origin.y, origin.z) })
+            .to(stepDuration, { position: v3(origin.x, origin.y + strength * 0.2, origin.z) })
+            .to(stepDuration, { position: origin });
+
+        seq.start();
     }
 
     /** 查詢已注冊的效果定義（給開發工具或 debug 用）。 */

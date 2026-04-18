@@ -1,3 +1,4 @@
+<!-- doc_id: doc_ai_0025 -->
 # Agent Context Budget Guideline
 
 ## 目的
@@ -15,9 +16,9 @@
 
 ### 1. 大型核心文件
 
-- `docs/keep.md`
+- `docs/keep.md (doc_index_0011)` (doc_index_0011)
 - `docs/ui-quality-todo.json`
-- `docs/cross-reference-index.md`
+- `docs/cross-reference-index.md (doc_index_0005)` (doc_index_0005)
 - 大型 workflow / skill 說明
 
 這類文件的問題不是「不能讀」，而是「很容易整份重複讀」。
@@ -101,8 +102,8 @@ artifacts/ui-qa/UI-2-0032/unitinfo_type_icon_spear_v2b_dalle3_1024.png
 
 ### C. 文件節流
 
-- `keep.md` 只保留最高層共識與 P0 警戒，不放長篇分析
-- 長分析搬到獨立文件，`keep.md` 只留一句索引
+- `keep.md` (doc_index_0011) 只保留最高層共識與 P0 警戒，不放長篇分析
+- 長分析搬到獨立文件，`keep.md` (doc_index_0011) 只留一句索引
 - `ui-quality-todo.json` 只讀單卡，不讀整份
 - workflow / skill 只取與本輪任務直接相關的段落
 
@@ -142,13 +143,13 @@ node tools_node/check-context-budget.js --changed --emit-keep-note
 - 掃描本輪 changed files 的上下文風險
 - 估算文字檔 token 量
 - 標記 compare board / screenshot / large manifest / keep 等高風險來源
-- 在 `warn` / `hard-stop` 時輸出可直接貼進 `keep.md` 的警告摘要
+- 在 `warn` / `hard-stop` 時輸出可直接貼進 `keep.md` (doc_index_0011) 的警告摘要
 
 常用方式：
 
 ```bash
 node tools_node/check-context-budget.js --changed
-node tools_node/check-context-budget.js --files docs/keep.md docs/ui-quality-todo.json
+node tools_node/check-context-budget.js --files docs/keep.md (doc_index_0011) docs/ui-quality-todo.json
 node tools_node/check-context-budget.js --scan-default --top 15
 ```
 
@@ -157,12 +158,12 @@ node tools_node/check-context-budget.js --scan-default --top 15
 1. 先停掉全文型 handoff
 2. 改成摘要卡
 3. 圖片縮成 1 張主圖 + 1 張對照圖
-4. 把大型分析搬到獨立文件，只在 `keep.md` 留索引
-5. 在 `keep.md` 記錄本次爆量原因與修正方案
+4. 把大型分析搬到獨立文件，只在 `keep.md` (doc_index_0011) 留索引
+5. 在 `keep.md` (doc_index_0011) 記錄本次爆量原因與修正方案
 
-## keep.md 應記錄的內容
+## keep.md (doc_index_0011) 應記錄的內容
 
-當上下文突然暴增時，`keep.md` 應只記：
+當上下文突然暴增時，`keep.md` (doc_index_0011) 應只記：
 
 - 發生日期
 - 估算 token 量級
@@ -170,18 +171,18 @@ node tools_node/check-context-budget.js --scan-default --top 15
 - 已採取的縮減策略
 - 是否列為 P0
 
-不要把整份分析全文再塞回 `keep.md`，否則會二次放大問題。
+不要把整份分析全文再塞回 `keep.md` (doc_index_0011)，否則會二次放大問題。
 ## Skill Entry
 
-When the work is image-heavy, diff-heavy, or handoff-heavy, route the task through `.agents/skills/context-budget-guard/SKILL.md` first.
-If the user message starts with `(best)`, route through `.agents/skills/best-mode/SKILL.md` first, then continue into `context-budget-guard`.
+When the work is image-heavy, diff-heavy, or handoff-heavy, route the task through `.agents/skills/context-budget-guard/SKILL.md` (doc_agentskill_0006) first.
+If the user message starts with `(best)`, route through `.agents/skills/best-mode/SKILL.md` (doc_agentskill_0001) first, then continue into `context-budget-guard`.
 
 Recommended commands:
 
 ```bash
 node tools_node/check-context-budget.js --changed --emit-keep-note
 node tools_node/generate-context-summary.js --task UI-2-0032 --goal "QA select one BattleScene icon" --files artifacts/ui-qa/UI-2-0032/notes.md artifacts/ui-qa/UI-2-0035/icon-family-assignment.md
-node tools_node/summarize-structured-diff.js --git docs/keep.md
+node tools_node/summarize-structured-diff.js --git docs/keep.md (doc_index_0011)
 node tools_node/summarize-structured-diff.js --git docs/ui-quality-todo.json
 ```
 

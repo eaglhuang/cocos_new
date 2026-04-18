@@ -1,6 +1,8 @@
+---
+doc_id: doc_agentskill_0020
 name: nano-banana-gen
-description: 'Nano Banana（Google Gemini）圖像生成 SKILL。用於呼叫 Gemini 系列圖像模型（gemini-2.5-flash-image, gemini-3.1-flash-image-preview, gemini-3-pro-image-preview）生成概念圖、UI 資產草稿、icon、badge、卡面母稿。需要在 tools_mcp/nano-banana-mcp/.env 設定 GOOGLE_AI_API_KEY。'
-argument-hint: '描述圖像目標、prompt 來源（直接或 --prompt-file）、輸出路徑、model 選擇（nano-banana / nano-banana-2）。'
+description: 'Nano Banana（Google Gemini）圖像生成 SKILL。用於呼叫 Gemini 系列圖像模型（gemini-2.5-flash-image, gemini-3.1-flash-image-preview, gemini-3-pro-image-preview）生成概念圖、UCUF 參考探索圖、UI 資產草稿、icon、badge、卡面母稿。需要在 tools_mcp/nano-banana-mcp/.env 設定 GOOGLE_AI_API_KEY。'
+argument-hint: '描述圖像目標、prompt 來源（直接或 --prompt-file）、輸出路徑、model 選擇（nano-banana / nano-banana-2），以及是否屬於 UCUF reference exploration 或 partial asset task。'
 ---
 
 # Nano Banana 圖像生成
@@ -47,19 +49,19 @@ Unity 對照：這類似於把「外部 AI 生成服務」包成一個固定的 
 短 prompt 直接跑（預設模型）：
 
 ```powershell
-node .github/skills/nano-banana-gen/scripts/generate-banana.js --prompt "ancient Chinese ornamental frame border, pure decorative pattern, NO text NO calligraphy, transparent background, 512x512, PNG" --output artifacts/ui-qa/UI-2-0094/r2-test/frame-v1.png
+node .github/skills/nano-banana-gen/scripts/generate-banana.js --prompt "ancient Chinese ornamental frame border, pure decorative pattern, NO text NO calligraphy, transparent background, 512x512, PNG" --output artifacts/ui-source/general-detail-overview/reference/generated/frame-v1.png
 ```
 
 長 prompt 建議走文字檔：
 
 ```powershell
-node .github/skills/nano-banana-gen/scripts/generate-banana.js --prompt-file artifacts/ui-qa/UI-2-0094/prompts/header_ornament_l.txt --output artifacts/ui-qa/UI-2-0094/r2-post-fix/header_ornament_l.png --json
+node .github/skills/nano-banana-gen/scripts/generate-banana.js --prompt-file artifacts/ui-source/general-detail-overview/reference/prompts/header_ornament_l.txt --output artifacts/ui-source/general-detail-overview/reference/generated/header_ornament_l.png --json
 ```
 
 指定使用 Nano Banana（Flash 2.5）：
 
 ```powershell
-node .github/skills/nano-banana-gen/scripts/generate-banana.js --prompt-file artifacts/ui-qa/UI-2-0094/prompts/crest_face_final.txt --model nano-banana --output artifacts/ui-qa/UI-2-0094/r2-post-fix/crest_face_final.png --json
+node .github/skills/nano-banana-gen/scripts/generate-banana.js --prompt-file artifacts/ui-source/general-detail-overview/reference/prompts/crest_face_final.txt --model nano-banana --output artifacts/ui-source/general-detail-overview/reference/generated/crest_face_final.png --json
 ```
 
 只驗證 API Key，不生圖：
@@ -73,19 +75,19 @@ node .github/skills/nano-banana-gen/scripts/generate-banana.js --self-test --jso
 按順序執行，每張確認 `"ok": true` 後再跑下一張：
 
 ```powershell
-node .github/skills/nano-banana-gen/scripts/generate-banana.js --prompt-file artifacts/ui-qa/UI-2-0094/prompts/header_ornament_l.txt --model nano-banana --output artifacts/ui-qa/UI-2-0094/r2-post-fix/header_ornament_l.png --json
+node .github/skills/nano-banana-gen/scripts/generate-banana.js --prompt-file artifacts/ui-source/general-detail-overview/reference/prompts/header_ornament_l.txt --model nano-banana --output artifacts/ui-source/general-detail-overview/reference/generated/header_ornament_l.png --json
 ```
 
 ```powershell
-node .github/skills/nano-banana-gen/scripts/generate-banana.js --prompt-file artifacts/ui-qa/UI-2-0094/prompts/header_ornament_r.txt --model nano-banana --output artifacts/ui-qa/UI-2-0094/r2-post-fix/header_ornament_r.png --json
+node .github/skills/nano-banana-gen/scripts/generate-banana.js --prompt-file artifacts/ui-source/general-detail-overview/reference/prompts/header_ornament_r.txt --model nano-banana --output artifacts/ui-source/general-detail-overview/reference/generated/header_ornament_r.png --json
 ```
 
 ```powershell
-node .github/skills/nano-banana-gen/scripts/generate-banana.js --prompt-file artifacts/ui-qa/UI-2-0094/prompts/crest_face_final.txt --model nano-banana --output artifacts/ui-qa/UI-2-0094/r2-post-fix/crest_face_final.png --json
+node .github/skills/nano-banana-gen/scripts/generate-banana.js --prompt-file artifacts/ui-source/general-detail-overview/reference/prompts/crest_face_final.txt --model nano-banana --output artifacts/ui-source/general-detail-overview/reference/generated/crest_face_final.png --json
 ```
 
 ```powershell
-node .github/skills/nano-banana-gen/scripts/generate-banana.js --prompt-file artifacts/ui-qa/UI-2-0094/prompts/crest_ring_final.txt --model nano-banana --output artifacts/ui-qa/UI-2-0094/r2-post-fix/crest_ring_final.png --json
+node .github/skills/nano-banana-gen/scripts/generate-banana.js --prompt-file artifacts/ui-source/general-detail-overview/reference/prompts/crest_ring_final.txt --model nano-banana --output artifacts/ui-source/general-detail-overview/reference/generated/crest_ring_final.png --json
 ```
 
 ## Prompt Guidance
@@ -116,3 +118,7 @@ node .github/skills/nano-banana-gen/scripts/generate-banana.js --prompt-file art
 - `savedTo` 會依模型實際回傳的 `mimeType` 自動對齊副檔名；Gemini 3.1 / Pro 常見為 `.jpg`
 - 若需要新版模型，改用 `--model nano-banana-2` 或 `--model nano-banana-pro`
 - 若要批次生多張，重複呼叫腳本即可
+
+## Image View Guard 提醒
+
+生成圖片後，若需要 `view_image` 檢視，必須先跑 `node tools_node/prepare-view-image-progressive.js --input <path> --level thumb` 再送入 `view_image`（見 image-view-guard）。

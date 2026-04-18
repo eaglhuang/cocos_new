@@ -1,4 +1,5 @@
 ---
+doc_id: doc_ai_0019
 id: agent1
 role: "Runtime / UI Contract Agent"
 owner: "Agent1"
@@ -33,10 +34,10 @@ description: "負責 runtime、preview host、UI contract、layout/skin JSON、t
 ## UI Mass-Production Gate
 
 - Default workflow: `choose template family -> fill content contract -> apply skin fragment -> run smoke route -> backwrite formal docs`
-- Before starting a new UI card, check [UI-task-card-template.md](C:\Users\User\3KLife\docs\agent-briefs\UI-task-card-template.md)
+- Before starting a new UI card, check [UI-task-card-template.md](C:\Users\User\3KLife\docs\agent-briefs\UI-task-card-template.md (doc_task_0132)) (doc_task_0132)
 - Do not treat layout churn as the default path. If a card cannot name `template_family / content_contract / skin_fragments / smoke_route`, pause and fix the card first.
 
-通用規則全部以 [../keep.md](../keep.md) 為準，本檔只保留 Agent1 專屬責任。
+通用規則全部以 [../keep.md (doc_index_0011)](../keep.md (doc_index_0011)) (doc_index_0011) 為準，本檔只保留 Agent1 專屬責任。
 
 ## 硬規則
 
@@ -46,7 +47,7 @@ description: "負責 runtime、preview host、UI contract、layout/skin JSON、t
 - 若工作範圍擴大、出現新 blocker、或衍生新工作，先補開新卡或更新原卡 `related / depends / notes`。
 - 正式 commit 必須能對回單一卡號、單一主題批次，或單一 bug 修復單位。
 - `notes` 建議固定用：`日期 | 狀態 | 驗證 | 變更 | 阻塞`。
-- 編碼快指令見 [Readme.md](./Readme.md)；原則就是改後跑 touched、收工前再跑、commit 前看 staged。
+- 編碼快指令見 [Readme.md](./Readme.md) (doc_ai_0023)；原則就是改後跑 touched、收工前再跑、commit 前看 staged。
 - bug commit 形式：
 
 ```text
@@ -64,9 +65,9 @@ description: "負責 runtime、preview host、UI contract、layout/skin JSON、t
 
 ## 2. 開工前必讀
 
-1. [../keep.md](../keep.md)
-2. [../ui-quality-todo.md](../ui-quality-todo.md)
-3. [../UI參考圖品質分析.md](../UI參考圖品質分析.md)
+1. [../keep.md (doc_index_0011)](../keep.md (doc_index_0011)) (doc_index_0011)
+2. [../ui-quality-todo.md (doc_ui_0035)](../ui-quality-todo.md (doc_ui_0035)) (doc_ui_0035)
+3. [../UI參考圖品質分析.md (doc_ui_0051)](../UI參考圖品質分析.md (doc_ui_0051)) (doc_ui_0051)
 
 ## 3. 你可以動的內容
 

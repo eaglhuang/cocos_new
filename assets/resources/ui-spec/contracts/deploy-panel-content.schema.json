@@ -1,0 +1,48 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "schemaId": "deploy-panel-content",
+  "familyId": "deploy-panel",
+  "version": 1,
+  "description": "DeployComposite content contract — 兵種部署面板的資料繫結欄位。",
+  "fields": {
+    "currentDp": {
+      "type": "number",
+      "required": true,
+      "bindPath": "InfoRow/CostLabel",
+      "description": "玩家當前可用糧草（Deploy Point）"
+    },
+    "selectedTroopType": {
+      "type": "string",
+      "required": true,
+      "bindPath": "SlotRow",
+      "description": "目前選中的兵種 TroopType 列舉值"
+    },
+    "selectedLane": {
+      "type": "number",
+      "required": true,
+      "bindPath": "InfoRow/HintLabel",
+      "description": "目前選中的部署路線索引（0-based）"
+    },
+    "deploySlots": {
+      "type": "array",
+      "required": true,
+      "bindPath": "SlotRow",
+      "description": "4 格兵種卡槽（隨機池），每格為 TroopType 列舉值",
+      "items": {
+        "type": "string"
+      }
+    },
+    "isSkillReady": {
+      "type": "boolean",
+      "required": false,
+      "bindPath": "ActionBar/BtnSkill",
+      "description": "武將技能是否可發動"
+    }
+  },
+  "requiredFields": [
+    "currentDp",
+    "selectedTroopType",
+    "selectedLane",
+    "deploySlots"
+  ]
+}

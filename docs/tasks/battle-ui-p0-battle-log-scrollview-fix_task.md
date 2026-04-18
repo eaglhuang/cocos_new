@@ -1,3 +1,4 @@
+<!-- doc_id: doc_task_0139 -->
 # 任務卡 — battle-ui-p0-battle-log-scrollview-fix
 
 ## frontmatter
@@ -50,8 +51,8 @@ Log 輸出顯示 `scrollView:false`，表示 `ScrollView` 元件**斷鏈**：
 
 ## 規格來源
 
-- `docs/主戰場UI規格書.md` §2.5（右側：戰鬥紀錄與控制）
-- `docs/主戰場UI規格補充_v3.md` Zone 5（v3-2 日誌可收合）
+- `docs/主戰場UI規格書.md (doc_ui_0001)` (doc_ui_0001) §2.5（右側：戰鬥紀錄與控制）
+- `docs/主戰場UI規格補充_v3.md (doc_ui_0003)` (doc_ui_0003) Zone 5（v3-2 日誌可收合）
 
 ## 修法方向
 

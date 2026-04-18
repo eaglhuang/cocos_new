@@ -1,7 +1,8 @@
 ---
+doc_id: doc_agentskill_0027
 name: ui-preview-judge
-description: 'UI 預覽評審 SKILL — 截取 Cocos Editor Preview 畫面，與 proof contract 提供的參考圖逐 zone 比對，輸出視覺信心分數與 PASS/FAIL 評審報告。USE FOR: ui-asset-qc 通過後，需要人工確認 + 自動評審的最終視覺驗收。DO NOT USE FOR: Runtime 崩潰（用 cocos-log-reader）、Browser QA 截圖（用 cocos-preview-qa）、資產規格問題（用 ui-asset-qc）。'
-argument-hint: '提供 screenId（對應 proof contract），確認 Cocos Editor 已開啟該畫面的 Preview 模式。'
+description: 'UI 預覽評審 SKILL — 截取 Cocos Editor Preview 畫面，與 proof draft 提供的參考圖逐 zone 比對，輸出視覺信心分數與 PASS/FAIL 評審報告，並回寫 runtime-verdict。USE FOR: ui-asset-qc 通過後，需要人工確認 + 自動評審的最終視覺驗收。DO NOT USE FOR: Runtime 崩潰（用 cocos-log-reader）、Browser QA 截圖（用 cocos-preview-qa）、資產規格問題（用 ui-asset-qc）。'
+argument-hint: '提供 screenId（對應 proof draft / review 骨架），確認 Cocos Editor 已開啟該畫面的 Preview 模式。'
 ---
 
 # UI Preview Judge
@@ -17,7 +18,7 @@ Unity 對照：相當於 UnityEditor PlayMode Screenshot + Design Diff Tool — 
 1. Cocos Creator Editor 正在執行（`http://localhost:7456` 可連）
 2. 目標 Screen 的場景已在 Editor Preview 或 Canvas 中開啟
 3. `ui-asset-qc` 已通過（零 errors）
-4. proof contract 中有可用的 `proofSource`（參考圖路徑或 ref://）
+4. proof draft 中有可用的 `proofSource`（參考圖路徑或 ref://）
 
 ---
 
@@ -26,20 +27,20 @@ Unity 對照：相當於 UnityEditor PlayMode Screenshot + Design Diff Tool — 
 | 項目 | 說明 |
 |---|---|
 | `screenId` | 對應 `assets/resources/ui-spec/proof/screens/{screenId}.proof.json` |
-| `referenceImagePath` | 本地參考圖路徑（proof contract 的 `proofSource` 值）|
+| `referenceImagePath` | 本地參考圖路徑（proof draft 的 `proofSource` 值）|
 
 ---
 
 ## 輸出
 
-1. `artifacts/ui-qa/{screenId}/preview-judge-report.json` — 逐 zone 評審結果
-2. `artifacts/ui-qa/{screenId}/preview-screenshot.png` — 截圖存档
+1. `artifacts/ui-source/{screenId}/review/runtime-verdict.json` — 逐 zone 評審結果
+2. `artifacts/ui-source/{screenId}/review/preview-screenshot.png` — 截圖存档
 
 ---
 
 ## 執行步驟
 
-### Step 1 — 讀取 proof contract
+### Step 1 — 讀取 proof draft
 
 ```
 read_file { filePath: "assets/resources/ui-spec/proof/screens/{screenId}.proof.json" }
@@ -56,7 +57,7 @@ read_file { filePath: ".github/skills/cocos-screenshot/SKILL.md" }
 
 執行截圖，確認截圖儲存至：
 ```
-artifacts/ui-qa/{screenId}/preview-screenshot.png
+artifacts/ui-source/{screenId}/review/preview-screenshot.png
 ```
 
 ### Step 3 — 查看截圖與參考圖
@@ -65,7 +66,7 @@ artifacts/ui-qa/{screenId}/preview-screenshot.png
 
 同時用 `view_image` 開啟兩張圖：
 ```
-view_image { filePath: "artifacts/ui-qa/{screenId}/preview-screenshot.png" }
+view_image { filePath: "artifacts/ui-source/{screenId}/review/preview-screenshot.png" }
 view_image { filePath: "{referenceImagePath}" }
 ```
 
@@ -73,7 +74,7 @@ view_image { filePath: "{referenceImagePath}" }
 
 ### Step 4 — 逐 zone 比對
 
-依 proof contract 的 zone 清單，對每個 zone 比對以下項目：
+依 proof draft 的 zone 清單，對每個 zone 比對以下項目：
 
 | 比對項目 | 說明 |
 |---|---|
@@ -111,8 +112,10 @@ view_image { filePath: "{referenceImagePath}" }
 
 同時輸出 JSON 版：
 ```jsonc
+// 注意：screenId 在 JSON 中使用 kebab-case（如 "shop-main"），
+// artifacts 目錄亦用 kebab-case（如 artifacts/ui-source/shop-main/review/）。
 {
-  "screenId": "ShopMain",
+  "screenId": "shop-main",
   "timestamp": "2026-04-05T12:00:00Z",
   "verdict": "CONDITIONAL_PASS",
   "overallConfidence": 0.76,
@@ -138,6 +141,6 @@ view_image { filePath: "{referenceImagePath}" }
 
 ## 下一步
 
-- **PASS** → 更新 proof contract 的 `confidence` 欄位至 0.9+，標記畫面為 `approved`
+- **PASS** → 更新 `artifacts/ui-source/{screenId}/review/runtime-verdict.json`，必要時再回寫 proof draft 的 `confidence`
 - **CONDITIONAL PASS** → 記錄未完成項，持續推進其他優先任務，之後重跑
 - **FAIL** → 回到 **ui-vibe-pipeline** 調整 layout/skin，或回到 **ui-asset-gen-director** 重新委託

@@ -8,6 +8,7 @@
     "primaryLight":      "#FFBFB8",
     "secondary":         "#D4AF37",
     "secondaryLight":    "#FFE088",
+    "accentGold":        "#D4AF37",
     "accent.gold.base":  "#D4AF37",
     "accent.gold.light": "#FFE088",
     "tertiary":          "#2E8B57",
@@ -18,6 +19,7 @@
 
     "background":        "#0F0F0F",
     "surface":           "#1A1A1A",
+    "surfaceDeep":       "#1A1A1A",
     "surfaceContainer":  "#20201F",
     "surfaceHigh":       "#2A2A2A",
     "surfaceHighest":    "#353535",

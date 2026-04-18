@@ -1,3 +1,4 @@
+<!-- doc_id: doc_task_0154 -->
 # simulate-data-growth 模擬報告
 
 **執行時間**：2026-04-06T11:45:25.391Z

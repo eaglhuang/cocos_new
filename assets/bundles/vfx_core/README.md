@@ -2,7 +2,7 @@
 
 > **來源**: 3DEffectController 專案 → 拆解為可共用積木
 > **最後更新**: 2026-03-18
-> **總計**: 47 張貼圖 + 3 Shader + 4 Mesh + 2 Animation
+> **總計**: 47 張貼圖 + 7 Shader + 4 Mesh + 2 Animation
 
 ---
 
@@ -116,6 +116,10 @@
 | Glow 發光 | `glow.effect` | 柔和外發光 | Buff 光環、選中高亮 |
 | 2D VFX | `2d-vfx.effect` | 2D 特效渲染 | UI 特效、飄字底光 |
 | 簡易卡通 | `simple-toon.effect` | 卡通描邊渲染 | 角色外觀、NPC 風格化 |
+| Lightning Arc 雷電弧 | `lightning-arc.effect` | 程序化弧光、閃爍脈衝 | 夜襲場勢、雷擊預警、技能收束 |
+| Poison Fog 毒霧 | `poison-fog.effect` | 程序化流動霧層、密度呼吸 | 伏擊場勢、毒沼區域、控制系技能 |
+| Wind Vortex 風渦 | `wind-vortex.effect` | 程序化旋流、條帶掠影 | 落石場勢、塵旋區域、風壓控制技能 |
+| Ice Crystal 冰晶 | `ice-crystal.effect` | 程序化冰面晶光、碎晶閃爍 | 水淹場勢、凍結區域、冰系控制技能 |
 | 柏林噪聲圖 | `tex_noise_perlin.png` | Shader 輔助 | 溶解效果的噪聲來源 |
 | 圓形遮罩 | `tex_shader_circle.png` | Shader 輔助 | 圓形裁切、光圈 |
 | 線段遮罩 | `tex_shader_line.png` | Shader 輔助 | 掃描線、充能條 |

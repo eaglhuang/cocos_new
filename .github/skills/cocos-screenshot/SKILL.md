@@ -1,15 +1,16 @@
 ---
+doc_id: doc_agentskill_0012
 name: cocos-screenshot
 description: 'EDITOR PREVIEW SCREENSHOT SKILL — Capture the current Cocos Creator Editor window to a PNG file and inspect exactly what is already visible inside the Editor. USE FOR: visual symptoms when the user already has the target screen open in Cocos Editor / Editor Preview. DO NOT USE FOR: browser-driven QA, automatic browser target switching, reference-image comparison pipelines, compile errors, or pure log analysis. If the user wants browser screenshots, remind them to prepare the Browser Review environment and use cocos-preview-qa instead.'
 argument-hint: 'No arguments needed. Use only after confirming the user has already opened the target content inside the Cocos Editor window.'
 ---
 
-<!-- 此檔案為 .agents/skills/cocos-screenshot/SKILL.md 的鏡像副本，供 GitHub Copilot 技能載入使用 -->
+<!-- 此檔案為 .agents/skills/cocos-screenshot/SKILL.md (doc_agentskill_0005) 的鏡像副本，供 GitHub Copilot 技能載入使用 -->
 <!-- 主版本位於 c:\Users\User\3KLife\.agents\skills\cocos-screenshot\SKILL.md -->
 
 # Cocos Screenshot（Editor Preview / Editor 視窗截圖）
 
-此技能適用於所有 **Cocos Editor 視窗內已顯示內容** 的視覺症狀：「畫面一團亂」、「UI 跑掉」、「怎麼了」、看看截圖確認狀態。
+此技能適用於所有 **Cocos Editor 視窗內已顯示內容** 的視覺症狀：「畫面一團亂」、「UI 跑掉」、「怎麼了」、「CompositePanel mount fail」、看看截圖確認狀態。
 
 ## 先判斷是不是該用這個 skill
 
@@ -94,4 +95,4 @@ filePath: c:\Users\User\3KLife\temp\cocos-screenshot.png
 ## 完整 SOP
 
 請讀取主技能檔案以取得完整分析指引：  
-`.agents/skills/cocos-screenshot/SKILL.md`
+`.agents/skills/cocos-screenshot/SKILL.md` (doc_agentskill_0005)

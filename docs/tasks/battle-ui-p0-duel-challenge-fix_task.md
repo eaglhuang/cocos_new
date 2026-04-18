@@ -1,3 +1,4 @@
+<!-- doc_id: doc_task_0140 -->
 # 任務卡 — battle-ui-p0-duel-challenge-fix
 
 ## frontmatter
@@ -54,8 +55,8 @@ started_by_agent: ~
 
 ## 規格來源
 
-- `docs/主戰場UI規格書.md` §4（彈窗與反饋）
-- `docs/主戰場UI規格補充_v3.md`
+- `docs/主戰場UI規格書.md (doc_ui_0001)` (doc_ui_0001) §4（彈窗與反饋）
+- `docs/主戰場UI規格補充_v3.md (doc_ui_0003)` (doc_ui_0003)
 
 ## 修法方向
 

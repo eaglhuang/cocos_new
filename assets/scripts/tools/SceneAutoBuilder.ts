@@ -70,13 +70,13 @@ export class SceneAutoBuilder extends Component {
     // 1. BattleScene 控制器節點
     this.createBattleSceneNode(canvas);
 
-    // 2. HUD 抬頭顯示器
+    // 2. HUD host（內容由 BattleHUDComposite 執行期建構）
     this.createHUDNode(canvas);
 
     // 3. DeployPanel 部署面板
     this.createDeployPanelNode(canvas);
 
-    // 4. ResultPopup 結果彈窗
+    // 4. Popup host（內容由 ResultPopupComposite 執行期建構）
     this.createResultPopupNode(canvas);
   }
 
@@ -88,7 +88,7 @@ export class SceneAutoBuilder extends Component {
     const node = this.getOrCreateNode(parent, "BattleScene");
     console.log("  ✓ BattleScene 節點");
     console.log("    → 請添加 BattleScene 元件");
-    console.log("    → 綁定：hud, deployPanel, resultPopup");
+    console.log("    → 綁定：hud(BattleHUDComposite), deployPanel, resultPopup(ResultPopupComposite)");
   }
 
   // ═══════════════════════════════════════════════════════════════════════════
@@ -97,7 +97,7 @@ export class SceneAutoBuilder extends Component {
 
   private createHUDNode(parent: Node): void {
     const hud = this.getOrCreateNode(parent, "HUD");
-    hud.addComponent(UITransform);
+    hud.getComponent(UITransform) || hud.addComponent(UITransform);
     
     const widget = hud.getComponent(Widget) || hud.addComponent(Widget);
     widget.isAlignTop = true;
@@ -105,27 +105,9 @@ export class SceneAutoBuilder extends Component {
     widget.top = 10;
     widget.left = 10;
 
-    // 回合 & DP
-    this.createLabel(hud, "TurnLabel", "第 1 回合", 24, new Color(255, 255, 255), -400, 300);
-    this.createLabel(hud, "DpLabel", "DP: 30", 20, new Color(255, 200, 0), -400, 260);
-
-    // SP 能量條
-    this.createProgressBar(hud, "PlayerSpBar", 0, -200, 260);
-    this.createLabel(hud, "PlayerSpLabel", "0/100", 18, new Color(255, 255, 0), -200, 260);
-
-    // 堡壘血量
-    this.createProgressBar(hud, "PlayerFortressBar", 1, -400, 220);
-    this.createLabel(hud, "PlayerFortressLabel", "我方 500", 16, new Color(0, 255, 0), -400, 190);
-
-    this.createProgressBar(hud, "EnemyFortressBar", 1, 200, 220);
-    this.createLabel(hud, "EnemyFortressLabel", "敵方 500", 16, new Color(255, 0, 0), 200, 190);
-
-    // 狀態訊息
-    this.createLabel(hud, "StatusLabel", "", 20, new Color(255, 255, 0), 0, 280);
-
     console.log("  ✓ HUD 節點");
-    console.log("    → 請添加 BattleHUD 元件");
-    console.log("    → 綁定：turnLabel, dpLabel, playerSpBar, playerSpLabel, 堡壘相關, statusLabel");
+    console.log("    → 請添加 BattleHUDComposite 元件");
+    console.log("    → HUD 內容由 battle-hud-screen 執行期自動建構");
   }
 
   // ═══════════════════════════════════════════════════════════════════════════
@@ -169,35 +151,15 @@ export class SceneAutoBuilder extends Component {
 
   private createResultPopupNode(parent: Node): void {
     const popup = this.getOrCreateNode(parent, "Popup");
-    popup.addComponent(UITransform);
+    popup.getComponent(UITransform) || popup.addComponent(UITransform);
     
     const widget = popup.getComponent(Widget) || popup.addComponent(Widget);
     widget.isAlignHorizontalCenter = true;
     widget.isAlignVerticalCenter = true;
 
-    // 背景遮罩
-    const bg = this.getOrCreateNode(popup, "Background");
-    const bgTransform = bg.getComponent(UITransform) || bg.addComponent(UITransform);
-    bgTransform.setContentSize(1280, 720);
-    const bgSprite = bg.getComponent(Sprite) || bg.addComponent(Sprite);
-    bgSprite.color = new Color(0, 0, 0, 180);
-
-    // 標題
-    this.createLabel(popup, "TitleLabel", "勝利！", 48, new Color(255, 255, 0), 0, 100);
-
-    // 描述
-    this.createLabel(popup, "DescLabel", "我方成功擊敗敵軍，取得大勝！", 24, new Color(255, 255, 255), 0, 0);
-
-    // 再來一場按鈕
-    this.createButton(popup, "BtnReplay", "再來一場", 0, -100);
-
-    // 預設隱藏
-    popup.active = false;
-
     console.log("  ✓ Popup 節點");
-    console.log("    → 請添加 ResultPopup 元件");
-    console.log("    → 綁定：titleLabel, descLabel, btnReplay");
-    console.log("    → 確認 Popup 節點的 Active 為未勾選（預設隱藏）");
+    console.log("    → 請添加 ResultPopupComposite 元件");
+    console.log("    → Popup 內容由 result-popup-screen 執行期自動建構");
   }
 
   // ═══════════════════════════════════════════════════════════════════════════

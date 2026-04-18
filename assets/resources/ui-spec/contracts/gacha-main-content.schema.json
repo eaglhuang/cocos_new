@@ -1,0 +1,23 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "schemaId": "gacha-main-content",
+  "familyId": "gacha-main",
+  "version": 1,
+  "description": "GachaMain pending contract，補雙池定位摘要帶。",
+  "fields": {
+    "poolPositioningTitle": {
+      "type": "string",
+      "required": true,
+      "bindPath": "PoolPositioningCard/PoolPositioningTitle"
+    },
+    "poolPositioningBrief": {
+      "type": "string",
+      "required": true,
+      "bindPath": "PoolPositioningCard/PoolPositioningBrief"
+    }
+  },
+  "requiredFields": [
+    "poolPositioningTitle",
+    "poolPositioningBrief"
+  ]
+}

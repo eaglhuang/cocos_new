@@ -440,7 +440,7 @@
     "docs_backwritten": [
       "docs/keep.md",
       "docs/UI 規格書.md",
-      "docs/系統規格書/血脈命鏡過場載入規格書.md",
+      "docs/遊戲規格文件/系統規格書/血脈命鏡過場載入規格書.md",
       "docs/cross-reference-index.md"
     ],
     "notes": "2026-04-05 | 狀態: in-progress | 驗證: 已完成命鏡 shared skeleton，並補上 bloodline-mirror-states-v1 四種 state content contract；loading / awakening screen 已指向對應 content.state | 變更: 將 Loading / 覺醒 / 升星 / 未持有預覽 收斂到同一份 fullscreen-result 內容契約，避免每個 state 再各自發明文案結構與節點命名 | 阻塞: 無"

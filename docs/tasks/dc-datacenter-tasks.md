@@ -1,6 +1,7 @@
-# 資料中心實作任務 (DC 系列)
+<!-- doc_id: doc_task_0152 -->
+﻿# 資料中心實作任務 (DC 系列)
 
-> **任務來源**: `docs/資料中心架構規格書.md` v1.1  
+> **任務來源**: `docs/資料中心架構規格書.md (doc_tech_0009)` (doc_tech_0009) v1.1  
 > **任務代號前綴**: `DC-{里程碑}-{流水號}`  
 > **建立日期**: 2026-04-06  
 > **任務總數**: 34 張  
@@ -81,7 +82,7 @@
 - **驗收**: validate-generals-data.js 零 error，每位含完整故事條與 rarityTier
 
 ### DC-1-0007 武將資料管線規格書
-- **交付物**: `docs/系統規格書/武將資料管線規格書.md`
+- **交付物**: `docs/遊戲規格文件/系統規格書/武將資料管線規格書.md (doc_tech_0011)` (doc_tech_0011)
 - **驗收**: 含工具鏈流程圖、欄位映射表、人工審核 checklist
 
 ---
@@ -116,7 +117,7 @@
 - **交付物**: `assets/scripts/core/MemoryManager.ts` (data scope + LRU 20 整合)
 
 ### 效能基準測試
-- **交付物**: `tools_node/benchmark-storage.js` + `docs/tasks/benchmark-storage-report.md`
+- **交付物**: `tools_node/benchmark-storage.js` + `docs/tasks/benchmark-storage-report.md (doc_task_0149)` (doc_task_0149)
 
 ---
 
@@ -188,7 +189,7 @@
 - **交付物**: `assets/scripts/core/SyncManager.ts`（delta + fallback 更新）
 
 ### Server API spec
-- **交付物**: `docs/系統規格書/同步API規格書.md`
+- **交付物**: `docs/遊戲規格文件/系統規格書/同步API規格書.md (doc_tech_0010)` (doc_tech_0010)
 
 ### Action_Records 批次壓縮
 - **驗收**: 100 筆 Action_Records < 50KB compressed

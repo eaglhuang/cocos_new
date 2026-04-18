@@ -47,20 +47,46 @@ function collectChangedFiles() {
     });
     return output
       .split(/\r?\n/)
-      .map((line) => line.trim())
+      .map((line) => line.replace(/\r/g, ''))
       .filter(Boolean)
-      .map((line) => line.slice(3).trim().replace(/\\/g, '/'))
+      .map((line) => {
+        const body = line.length > 3 ? line.slice(3).trim() : '';
+        const renamed = body.includes(' -> ') ? body.split(' -> ').pop() : body;
+        return String(renamed || '').replace(/\\/g, '/');
+      })
       .filter(Boolean);
   } catch {
     return [];
   }
 }
 
-function buildFileSet({ files = [], dirs = [], changed = false }) {
+function collectStagedFiles() {
+  try {
+    const output = cp.execSync('git diff --cached --name-only --diff-filter=ACMR', {
+      cwd: ROOT,
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'ignore'],
+    });
+    return output
+      .split(/\r?\n/)
+      .map((line) => line.replace(/\r/g, '').trim().replace(/\\/g, '/'))
+      .filter(Boolean);
+  } catch {
+    return [];
+  }
+}
+
+function buildFileSet({ files = [], dirs = [], changed = false, staged = false }) {
   const fileSet = new Set();
 
   if (changed) {
     for (const file of collectChangedFiles()) {
+      fileSet.add(file);
+    }
+  }
+
+  if (staged) {
+    for (const file of collectStagedFiles()) {
       fileSet.add(file);
     }
   }
@@ -223,6 +249,7 @@ module.exports = {
   normalizeRel,
   buildFileSet,
   collectChangedFiles,
+  collectStagedFiles,
   runNodeTool,
   runBudgetCheck,
   runTurnUsage,

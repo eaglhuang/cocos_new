@@ -1,0 +1,346 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "docs/ui/ucuf-screen-recipe.schema.json",
+  "title": "UCUF Screen Recipe",
+  "description": "Machine-readable screen recipe for UCUF UI template generation.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "recipeType",
+    "recipeVersion",
+    "screenId",
+    "uiId",
+    "familyId",
+    "variantId",
+    "bundle",
+    "layer",
+    "controllerKind",
+    "contentSchemaId",
+    "dataSources",
+    "slots",
+    "chromeFlags",
+    "generationPolicy",
+    "validationProfile",
+    "smokeRoute"
+  ],
+  "properties": {
+    "recipeType": {
+      "type": "string",
+      "enum": [
+        "screen-recipe"
+      ]
+    },
+    "recipeVersion": {
+      "type": "integer",
+      "enum": [
+        1
+      ]
+    },
+    "screenId": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "uiId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "familyId": {
+      "type": "string",
+      "enum": [
+        "detail-split",
+        "dialog-card",
+        "rail-list",
+        "hud-overlay",
+        "peek-drawer"
+      ]
+    },
+    "variantId": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "bundle": {
+      "type": "string",
+      "enum": [
+        "lobby_ui",
+        "battle_ui",
+        "ui_common"
+      ]
+    },
+    "layer": {
+      "type": "string",
+      "enum": [
+        "Game",
+        "Popup",
+        "HUD",
+        "Overlay",
+        "Modal"
+      ]
+    },
+    "controllerKind": {
+      "type": "string",
+      "enum": [
+        "composite-panel",
+        "uipreview-builder",
+        "hybrid"
+      ]
+    },
+    "controllerClass": {
+      "type": "string"
+    },
+    "layoutId": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "skinId": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "contentSchemaId": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "mapperClass": {
+      "type": "string"
+    },
+    "bindPolicyClass": {
+      "type": "string"
+    },
+    "dataSources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/definitions/dataSource"
+      }
+    },
+    "slots": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/definitions/slot"
+      }
+    },
+    "routes": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/route"
+      }
+    },
+    "chromeFlags": {
+      "$ref": "#/definitions/chromeFlags"
+    },
+    "visualTheme": {
+      "$ref": "#/definitions/visualTheme"
+    },
+    "generationPolicy": {
+      "type": "string",
+      "enum": [
+        "reuse-only",
+        "param-tune",
+        "generate-partial-asset",
+        "new-family-required"
+      ]
+    },
+    "validationProfile": {
+      "type": "string",
+      "enum": [
+        "detail-split-popup-strict",
+        "dialog-card-popup-strict",
+        "rail-list-game-standard",
+        "hud-overlay-strict",
+        "peek-drawer-standard"
+      ]
+    },
+    "smokeRoute": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "definitions": {
+    "dataSource": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sourceId",
+        "kind",
+        "required",
+        "bindPath"
+      ],
+      "properties": {
+        "sourceId": {
+          "type": "string",
+          "pattern": "^[a-zA-Z][a-zA-Z0-9_-]*$"
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "entity",
+            "collection",
+            "summary",
+            "tab",
+            "computed",
+            "ui-state"
+          ]
+        },
+        "required": {
+          "type": "boolean"
+        },
+        "bindPath": {
+          "type": "string",
+          "minLength": 1
+        },
+        "owner": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    },
+    "slot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "slotId",
+        "zoneId",
+        "mode"
+      ],
+      "properties": {
+        "slotId": {
+          "type": "string",
+          "pattern": "^[a-zA-Z][a-zA-Z0-9_-]*$"
+        },
+        "zoneId": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:[.-][a-z0-9]+)*$"
+        },
+        "mode": {
+          "type": "string",
+          "enum": [
+            "tab-routed",
+            "specialized",
+            "layout-native",
+            "list-host",
+            "preview-host",
+            "toolbar-host",
+            "footer-host"
+          ]
+        },
+        "widgetPath": {
+          "type": "string"
+        },
+        "fragment": {
+          "type": "string"
+        },
+        "fragmentFamily": {
+          "type": "string"
+        },
+        "childPanelClass": {
+          "type": "string"
+        },
+        "dataSource": {
+          "type": "string"
+        },
+        "routeKeys": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "lazySlot": {
+          "type": "boolean"
+        }
+      }
+    },
+    "route": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "routeKey",
+        "slotId"
+      ],
+      "properties": {
+        "routeKey": {
+          "type": "string"
+        },
+        "slotId": {
+          "type": "string"
+        },
+        "fragment": {
+          "type": "string"
+        },
+        "childPanelClass": {
+          "type": "string"
+        }
+      }
+    },
+    "chromeFlags": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "hasPortrait",
+        "hasTopMeta",
+        "hasBottomSummary",
+        "hasTabRail",
+        "hasFooterActions",
+        "hasOverviewSpecialSlot",
+        "hasSearchBar",
+        "hasSortHeader",
+        "hasLeftRail",
+        "hasRightPreview"
+      ],
+      "properties": {
+        "hasPortrait": {
+          "type": "boolean"
+        },
+        "hasTopMeta": {
+          "type": "boolean"
+        },
+        "hasBottomSummary": {
+          "type": "boolean"
+        },
+        "hasTabRail": {
+          "type": "boolean"
+        },
+        "hasFooterActions": {
+          "type": "boolean"
+        },
+        "hasOverviewSpecialSlot": {
+          "type": "boolean"
+        },
+        "hasSearchBar": {
+          "type": "boolean"
+        },
+        "hasSortHeader": {
+          "type": "boolean"
+        },
+        "hasLeftRail": {
+          "type": "boolean"
+        },
+        "hasRightPreview": {
+          "type": "boolean"
+        }
+      }
+    },
+    "visualTheme": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "skinFamily": {
+          "type": "string"
+        },
+        "frameRecipe": {
+          "type": "string"
+        },
+        "tokenTheme": {
+          "type": "string"
+        },
+        "rarityPresentation": {
+          "type": "string"
+        },
+        "ornamentPolicy": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

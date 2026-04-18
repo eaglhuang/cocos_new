@@ -4,8 +4,8 @@
     "description": "Central Skills Manifest — 所有 Agent Skill 的唯一索引",
     "version": 1,
     "generated": "2026-04-10",
-    "totalSkills": 25,
-    "portableCount": 11,
+    "totalSkills": 28,
+    "portableCount": 13,
     "categories": ["debug", "ui-production", "asset-gen", "image-gen", "data-pipeline", "agent-workflow", "doc-management"]
   },
   "skills": [
@@ -44,6 +44,18 @@
       "depends": [],
       "applyTo": "**",
       "tags": ["debug", "qa", "browser", "screenshot"]
+    },
+    {
+      "id": "cocos-vfx-browser-qa",
+      "version": "1.0.0",
+      "category": "debug",
+      "portable": true,
+      "description": "Browser VFX acceptance QA ??auto-verify VFX blocks and combo recipes in BattleScene preview.",
+      "locations": [".github/skills/cocos-vfx-browser-qa", ".agents/skills/cocos-vfx-browser-qa"],
+      "primaryLocation": ".github/skills/cocos-vfx-browser-qa",
+      "depends": [],
+      "applyTo": "**",
+      "tags": ["debug", "qa", "browser", "vfx"]
     },
     {
       "id": "cocos-screenshot",
@@ -116,6 +128,18 @@
       "depends": [],
       "applyTo": "**",
       "tags": ["workflow", "encoding", "guard"]
+    },
+    {
+      "id": "task-card-opener",
+      "version": "1.0.0",
+      "category": "agent-workflow",
+      "portable": true,
+      "description": "Generic task-card opener — unify Markdown cards, tasks-*.json shards, UI task shard updates, and collaboration rules.",
+      "locations": [".github/skills/task-card-opener", ".agents/skills/task-card-opener"],
+      "primaryLocation": ".github/skills/task-card-opener",
+      "depends": ["encoding-touched-guard"],
+      "applyTo": "docs/tasks/**,docs/agent-briefs/**,docs/ui-quality-tasks/**,.github/instructions/agent-collaboration.instructions.md",
+      "tags": ["workflow", "task", "card", "tracking"]
     },
     {
       "id": "best-mode",
@@ -310,35 +334,54 @@
       "version": "1.0.0",
       "category": "ui-production",
       "portable": false,
-      "description": "UI vibe coding workflow — JSON layout, skin, atlas planning, 9-slice, preview.",
+      "description": "UI automation workflow — image-first intake, proof decomposition, UCUF recipe convergence, task card/docs, scaffold, validation, browser QA.",
       "locations": [".github/skills/ui-vibe-pipeline", ".agents/skills/ui-vibe-pipeline"],
       "primaryLocation": ".github/skills/ui-vibe-pipeline",
-      "depends": ["ui-reference-decompose", "ui-family-architect"],
+      "depends": ["ui-reference-decompose", "ui-family-architect", "ui-brief-generator", "task-card-opener", "ui-spec-scaffold", "ui-runtime-verify", "cocos-preview-qa"],
       "applyTo": "assets/resources/ui-spec/**,assets/scripts/ui/**",
       "tags": ["ui", "vibe", "pipeline"]
+    },
+    {
+      "id": "crossref-progress-scanner",
+      "version": "1.0.0",
+      "category": "doc-management",
+      "portable": false,
+      "description": "Cross-reference maintenance scanner — code/spec mapping refresh, stale cleanup, progress recompute.",
+      "locations": [".github/skills/crossref-progress-scanner"],
+      "primaryLocation": ".github/skills/crossref-progress-scanner",
+      "depends": ["doc-shard-manager", "encoding-touched-guard"],
+      "applyTo": "docs/cross-ref/**,docs/cross-reference-index.md,tools_node/rebuild-crossref.js",
+      "tags": ["docs", "crossref", "progress", "cleanup"]
     }
   ],
   "mirrors": [
     { "skillId": "cocos-bug-triage", "primary": ".github/skills/cocos-bug-triage", "mirror": ".agents/skills/cocos-bug-triage" },
     { "skillId": "cocos-log-reader", "primary": ".github/skills/cocos-log-reader", "mirror": ".agents/skills/cocos-log-reader" },
     { "skillId": "cocos-preview-qa", "primary": ".github/skills/cocos-preview-qa", "mirror": ".agents/skills/cocos-preview-qa" },
+    { "skillId": "cocos-vfx-browser-qa", "primary": ".github/skills/cocos-vfx-browser-qa", "mirror": ".agents/skills/cocos-vfx-browser-qa" },
     { "skillId": "cocos-screenshot", "primary": ".github/skills/cocos-screenshot", "mirror": ".agents/skills/cocos-screenshot" },
     { "skillId": "encoding-touched-guard", "primary": ".github/skills/encoding-touched-guard", "mirror": ".agents/skills/encoding-touched-guard" },
+    { "skillId": "task-card-opener", "primary": ".github/skills/task-card-opener", "mirror": ".agents/skills/task-card-opener" },
     { "skillId": "ui-vibe-pipeline", "primary": ".github/skills/ui-vibe-pipeline", "mirror": ".agents/skills/ui-vibe-pipeline" }
   ],
   "dependencyGraph": {
     "debug": ["cocos-bug-triage -> cocos-screenshot", "cocos-bug-triage -> cocos-log-reader"],
-    "agent-workflow": ["best-mode -> context-budget-guard"],
+    "agent-workflow": ["best-mode -> context-budget-guard", "task-card-opener -> encoding-touched-guard"],
     "data-pipeline": ["general-story-writer -> general-balance-tuner", "general-balance-tuner -> general-data-pipeline"],
     "ui-production-pipeline": [
       "ui-reference-decompose",
       "ui-family-architect -> ui-reference-decompose",
+      "ui-vibe-pipeline -> task-card-opener",
       "ui-asset-gen-director -> ui-family-architect",
       "ui-asset-qc",
       "ui-preview-judge -> ui-asset-qc",
       "ui-runtime-verify -> cocos-screenshot | cocos-preview-qa",
       "ui-spec-scaffold -> ui-family-architect",
-      "ui-vibe-pipeline -> ui-reference-decompose | ui-family-architect"
+      "ui-vibe-pipeline -> ui-reference-decompose | ui-family-architect | ui-brief-generator | ui-spec-scaffold | ui-runtime-verify | cocos-preview-qa"
+    ],
+    "doc-management": [
+      "crossref-progress-scanner -> doc-shard-manager | encoding-touched-guard"
     ]
   }
 }
+

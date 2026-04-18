@@ -1,0 +1,26 @@
+{
+  "createdAt": "2026-04-15T08:05:17.248Z",
+  "host": "http://localhost:7456",
+  "machine": "DESKTOP-NREHEQ8",
+  "captures": [
+    {
+      "target": "GeneralDetailOverview",
+      "screenId": "GeneralDetailOverview",
+      "file": "overview-ucuf-binder-converge-r2\\GeneralDetailOverview.png",
+      "diagnosticsSummary": {
+        "consoleErrorCount": 0,
+        "consoleWarningCount": 0,
+        "pageErrorCount": 0,
+        "requestFailureCount": 0
+      },
+      "diagnosticSamples": [],
+      "status": "pass"
+    }
+  ],
+  "runtimeUpdates": [
+    {
+      "target": "GeneralDetailOverview",
+      "status": "pass"
+    }
+  ]
+}

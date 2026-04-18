@@ -35,25 +35,133 @@
         "skinSlot": "detail.bg.fullscreen"
       },
       {
-        "type": "label",
-        "name": "Title",
+        "type": "container",
+        "name": "HeaderRow",
         "widget": {
-          "top": 24,
-          "left": 32
+          "top": 72,
+          "left": 82,
+          "right": 82
         },
-        "width": 400,
-        "height": 48,
-        "textKey": "ui.general.title",
-        "styleSlot": "general.label.title"
+        "height": 92,
+        "children": [
+          {
+            "type": "panel",
+            "name": "HeaderPlaqueBase",
+            "widget": {
+              "top": 2,
+              "bottom": 6,
+              "left": 0,
+              "right": 0
+            },
+            "skinSlot": "widget.header.plaque.base"
+          },
+          {
+            "type": "image",
+            "name": "HeaderPlaqueFill",
+            "widget": {
+              "top": 6,
+              "bottom": 10,
+              "left": 0,
+              "right": 0
+            },
+            "skinSlot": "widget.header.plaque.fill"
+          },
+          {
+            "type": "image",
+            "name": "HeaderPlaqueBand",
+            "widget": {
+              "top": 26,
+              "bottom": 30,
+              "left": 24,
+              "right": 24
+            },
+            "skinSlot": "widget.header.plaque.band"
+          },
+          {
+            "type": "label",
+            "name": "Title",
+            "widget": {
+              "top": 8,
+              "left": 24
+            },
+            "width": 420,
+            "height": 30,
+            "textKey": "ui.general.title",
+            "styleSlot": "widget.header.plaque.title"
+          },
+          {
+            "type": "label",
+            "name": "Subtitle",
+            "widget": {
+              "bottom": 10,
+              "left": 24
+            },
+            "width": 420,
+            "height": 20,
+            "text": "名冊視圖",
+            "styleSlot": "widget.header.plaque.subtitle"
+          },
+          {
+            "type": "container",
+            "name": "RosterBadgeDock",
+            "widget": {
+              "right": 12,
+              "vCenter": 0
+            },
+            "width": 176,
+            "height": 44,
+            "children": [
+              {
+                "type": "image",
+                "name": "RosterBadgeUnderlay",
+                "widget": {
+                  "hCenter": true,
+                  "vCenter": true
+                },
+                "width": 176,
+                "height": 40,
+                "skinSlot": "widget.header.plaque.badge.underlay"
+              },
+              {
+                "type": "panel",
+                "name": "RosterBadge",
+                "widget": {
+                  "hCenter": true,
+                  "vCenter": true
+                },
+                "width": 162,
+                "height": 34,
+                "skinSlot": "widget.header.plaque.badge.fill",
+                "layout": {
+                  "type": "vertical",
+                  "paddingTop": 4,
+                  "paddingBottom": 4,
+                  "paddingLeft": 10,
+                  "paddingRight": 10
+                },
+                "children": [
+                  {
+                    "type": "label",
+                    "name": "RosterBadgeLabel",
+                    "width": 142,
+                    "height": 24,
+                    "styleSlot": "widget.header.plaque.badge.label",
+                    "text": "ROSTER"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
       },
       {
-        "type": "panel",
+        "type": "container",
         "name": "MainContainer",
         "widget": {
-          "top": 88,
-          "left": 32,
-          "right": 32,
-          "bottom": 88
+          "top": 184,
+          "left": 82,
+          "right": 82,
+          "bottom": 108
         },
         "$ref": "fragments/layouts/parchment-panel",
         "children": [
@@ -65,49 +173,101 @@
               "left": 12,
               "right": 12
             },
-            "height": 48,
+            "height": 38,
             "skinSlot": "general.header.bg",
-            "layout": {
-              "type": "horizontal",
-              "spacing": 0,
-              "paddingLeft": 24,
-              "paddingRight": 24
-            },
             "children": [
               {
-                "type": "label",
-                "name": "ColName",
-                "width": "30%",
-                "textKey": "ui.general.name",
-                "styleSlot": "general.label.header"
-              },
-              {
-                "type": "label",
-                "name": "ColFaction",
-                "width": "18%",
-                "textKey": "ui.general.faction",
-                "styleSlot": "general.label.header"
-              },
-              {
-                "type": "label",
-                "name": "ColHp",
-                "width": "17%",
-                "textKey": "ui.general.hp",
-                "styleSlot": "general.label.header"
-              },
-              {
-                "type": "label",
-                "name": "ColSp",
-                "width": "17%",
-                "textKey": "ui.general.sp",
-                "styleSlot": "general.label.header"
-              },
-              {
-                "type": "label",
-                "name": "ColAtk",
-                "width": "18%",
-                "textKey": "ui.general.atk",
-                "styleSlot": "general.label.header"
+                "type": "container",
+                "name": "ColumnHeaderRow",
+                "widget": {
+                  "top": 8,
+                  "left": 16,
+                  "right": 16
+                },
+                "height": 22,
+                "layout": {
+                  "type": "horizontal",
+                  "spacing": 0
+                },
+                "children": [
+                  {
+                    "type": "label",
+                    "name": "ColName",
+                    "width": "14%",
+                    "text": "名稱",
+                    "styleSlot": "general.label.header"
+                  },
+                  {
+                    "type": "label",
+                    "name": "ColGender",
+                    "width": "5%",
+                    "text": "性別",
+                    "styleSlot": "general.label.header"
+                  },
+                  {
+                    "type": "label",
+                    "name": "ColAge",
+                    "width": "5%",
+                    "text": "年齡",
+                    "styleSlot": "general.label.header"
+                  },
+                  {
+                    "type": "label",
+                    "name": "ColStr",
+                    "width": "7%",
+                    "text": "武力",
+                    "styleSlot": "general.label.header"
+                  },
+                  {
+                    "type": "label",
+                    "name": "ColInt",
+                    "width": "7%",
+                    "text": "智力",
+                    "styleSlot": "general.label.header"
+                  },
+                  {
+                    "type": "label",
+                    "name": "ColLea",
+                    "width": "7%",
+                    "text": "統率",
+                    "styleSlot": "general.label.header"
+                  },
+                  {
+                    "type": "label",
+                    "name": "ColPol",
+                    "width": "7%",
+                    "text": "政治",
+                    "styleSlot": "general.label.header"
+                  },
+                  {
+                    "type": "label",
+                    "name": "ColCha",
+                    "width": "7%",
+                    "text": "魅力",
+                    "styleSlot": "general.label.header"
+                  },
+                  {
+                    "type": "label",
+                    "name": "ColLuk",
+                    "width": "7%",
+                    "text": "運氣",
+                    "styleSlot": "general.label.header"
+                  },
+                  {
+                    "type": "label",
+                    "name": "ColTroop",
+                    "width": "14%",
+                    "text": "最強兵種",
+                    "styleSlot": "general.label.header"
+                  },
+                  {
+                    "type": "label",
+                    "name": "ColFaction",
+                    "width": "6%",
+                    "text": "陣營",
+                    "styleSlot": "general.label.headerAction"
+                  }
+                ]
               }
             ],
             "zIndex": 25
@@ -116,81 +276,142 @@
             "type": "scroll-list",
             "name": "DataList",
             "widget": {
-              "top": 60,
+              "top": 62,
               "left": 12,
               "right": 12,
-              "bottom": 12
+              "bottom": 76
             },
             "skinSlot": "general.list.bg",
             "layout": {
               "type": "vertical",
-              "spacing": 4
+              "spacing": 4,
+              "paddingTop": 10,
+              "paddingBottom": 10,
+              "paddingLeft": 0,
+              "paddingRight": 0
             },
             "itemTemplate": {
               "type": "panel",
               "name": "Row",
-              "height": 60,
+              "height": 54,
               "skinSlot": "general.row.bg",
               "layout": {
                 "type": "horizontal",
                 "spacing": 0,
-                "paddingLeft": 24,
-                "paddingRight": 24
+                "paddingLeft": 12,
+                "paddingRight": 12,
+                "paddingTop": 8,
+                "paddingBottom": 8
               },
               "children": [
                 {
                   "type": "label",
                   "name": "Name",
-                  "width": "30%",
+                  "width": "14%",
                   "bind": "name",
                   "styleSlot": "general.label.name"
                 },
                 {
                   "type": "label",
+                  "name": "Gender",
+                  "width": "5%",
+                  "bind": "gender",
+                  "styleSlot": "general.label.value"
+                },
+                {
+                  "type": "label",
+                  "name": "Age",
+                  "width": "5%",
+                  "bind": "age",
+                  "styleSlot": "general.label.value"
+                },
+                {
+                  "type": "label",
+                  "name": "Str",
+                  "width": "7%",
+                  "bind": "str",
+                  "styleSlot": "general.label.value"
+                },
+                {
+                  "type": "label",
+                  "name": "Int",
+                  "width": "7%",
+                  "bind": "int",
+                  "styleSlot": "general.label.value"
+                },
+                {
+                  "type": "label",
+                  "name": "Lea",
+                  "width": "7%",
+                  "bind": "lea",
+                  "styleSlot": "general.label.value"
+                },
+                {
+                  "type": "label",
+                  "name": "Pol",
+                  "width": "7%",
+                  "bind": "pol",
+                  "styleSlot": "general.label.value"
+                },
+                {
+                  "type": "label",
+                  "name": "Cha",
+                  "width": "7%",
+                  "bind": "cha",
+                  "styleSlot": "general.label.value"
+                },
+                {
+                  "type": "label",
+                  "name": "Luk",
+                  "width": "7%",
+                  "bind": "luk",
+                  "styleSlot": "general.label.value"
+                },
+                {
+                  "type": "label",
+                  "name": "Troop",
+                  "width": "14%",
+                  "bind": "troopAptitude",
+                  "styleSlot": "general.label.value"
+                },
+                {
+                  "type": "label",
                   "name": "Faction",
-                  "width": "18%",
+                  "width": "6%",
                   "bind": "faction",
-                  "styleSlot": "general.label.value"
-                },
-                {
-                  "type": "label",
-                  "name": "Hp",
-                  "width": "17%",
-                  "bind": "hp",
-                  "styleSlot": "general.label.value"
-                },
-                {
-                  "type": "label",
-                  "name": "Sp",
-                  "width": "17%",
-                  "bind": "maxSp",
-                  "styleSlot": "general.label.value"
-                },
-                {
-                  "type": "label",
-                  "name": "Atk",
-                  "width": "18%",
-                  "bind": "attackBonus",
-                  "styleSlot": "general.label.positive"
+                  "styleSlot": "general.label.faction"
                 }
               ]
             },
             "zIndex": 25
+          },
+          {
+            "type": "label",
+            "name": "FooterHint",
+            "widget": {
+              "left": 20,
+              "bottom": 24
+            },
+            "width": 520,
+            "height": 20,
+            "text": "點擊任一武將即可切換至人物總覽頁",
+            "styleSlot": "general.label.meta"
+          },
+          {
+            "type": "button",
+            "name": "BtnBack",
+            "widget": {
+              "bottom": 16,
+              "right": 16
+            },
+            "width": 220,
+            "height": 60,
+            "skinSlot": "list.button.primary",
+            "styleSlot": "general.label.button",
+            "textKey": "ui.back",
+            "onClick": "onClickBack"
           }
         ]
-      },
-      {
-        "type": "button",
-        "name": "BtnBack",
-        "widget": {
-          "bottom": 20,
-          "right": 32
-        },
-        "width": 200,
-        "height": 56,
-        "skinSlot": "common.button.primary",
-        "textKey": "ui.back",
-        "onClick": "onClickBack"
       }
     ]
   },

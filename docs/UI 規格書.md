@@ -1,3 +1,4 @@
+<!-- doc_id: doc_ui_0027 -->
 # UI 規格書
 
 ## 1. 文件目的
@@ -52,6 +53,9 @@
 - 因子解鎖彈出視窗
 - 命紋靈獸虛影提示層
 - 祖紋命篆點亮提示層
+- 晨報摘要提示層
+- 武將日誌抽屜層
+- 派遣整備掛點
 - `歷史趣聞 / 血脈傳聞` 故事抽屜層
 
 ### 3.4 商業序列
@@ -86,6 +90,7 @@
 - 倒數圖示必須常駐在玩家可見區域
 - 點擊武將立繪後，應允許短暫顯示命紋靈獸虛影與祖紋命篆，再滑出故事抽屜
 - 故事抽屜預設分成 `歷史趣聞` 與 `血脈傳聞` 兩個入口，不直接混成一段長文
+- 晨報優先作為登入後摘要層；武將日誌與派遣整備優先掛在大廳或人物頁抽屜，不預設強制拆成獨立 fullscreen
 
 ## 5. UI 狀態規則
 
@@ -123,13 +128,16 @@
 
 ## 8. 延伸場景 UI 共識（整併早期討論）
 
-> **整併來源**：三國傳承 UI 布局說明書.md
+> **整併來源**：三國傳承 UI 布局說明書.md (doc_spec_0074)
 > **衝突處理**：本章補充整體 UI 語彙與後續場景延伸，不改變本文件以新手開場為主的定位。
 
 - 開場結束後的大廳，不應退化成純按鈕清單，而應延續「幕府議事廳 / 創業團隊中樞」的沉浸式空間感。
 - 許願 / 商城相關畫面優先包裝為「誠心祭壇 / 奏摺 / 家祠」等世界觀內 UI，而非直接使用現代商城風格。
 - 主戰場、小兵支援列與大廳中的可互動角色，盡量維持一致的 2.5D 立牌 / 半平面角色語彙，降低美術風格斷裂。
-- 所有延伸 UI 若要正式落地，仍需回寫各自對應文件，如 `主戰場UI規格書.md`、`UI技術規格書.md` 與相關 ui-spec JSON。
+- 大廳中的雙牆任務、世界沙盤與官職進度，應視為同一個中樞畫面的三個正式資訊層，不得拆成彼此無關的雜散按鈕頁。
+- 大廳武將的「自告奮勇」預設只作彩蛋互動與氛圍強化，不應在母 UI 規格中硬寫固定成功率或固定獎勵公式。
+- 武將日誌、晨報摘要與派遣整備屬於同一條「生活感 / 離線互動」資訊線，正式入口優先掛在 `LobbyMain` 與人物頁抽屜，不預設另起平行人物系統。
+- 所有延伸 UI 若要正式落地，仍需回寫各自對應文件，如 `主戰場UI規格書.md` (doc_ui_0001)、`UI技術規格書.md` (doc_ui_0049) 與相關 ui-spec JSON。
 
 ### 8.1 延伸系統 UI 入口清單
 
@@ -137,21 +145,27 @@
 
 | 系統 | 預計 UI 入口 | ui-spec JSON（待建） | 規格來源 |
 |---|---|---|---|
-| 名士預言系統 | 「占卜結果」面板（從結緣 / 大廳進入） | `oracle-result-main.json` | 名士預言系統.md H 節 UI 字串 |
-| 許願池商城 | 「誠心祭壇」全屏畫面 | `shop-wishpool-main.json` | 經濟系統.md、keep.md |
-| 虎符圖鑑 | 「兵符閣」圖鑑頁面 | `catalog-tally-main.json` | 兵種（虎符）系統.md 功能清單 #11 |
-| 培育系統 | 「培育 36 回合」主畫面 | `nurture-session-main.json` | 培育系統.md E 節 |
-| 結緣系統 | 「結緣配置」面板 | `bonding-setup-main.json` | 結緣系統（配種）.md E 節 |
-| 戰場部署 | 已有 DeployPanel（scene 手動綁定） | — (已實現於 BattleScene) | 戰場部署系統.md |
-| 奧義演出 | 全屏演出層（覆蓋戰場） | `ultimate-cutscene-main.json` | 奧義系統.md F 節 |
-| 血脈逸聞 | 「歷史趣聞 / 血脈傳聞」抽屜 | `general-bloodline-vignette-main.json` | 武將人物介面規格書.md § 8.4 |
-| 英靈虎符詳情 | 「英靈虎符 / 血脈卡」詳情頁 | `spirit-tally-detail-main.json` | 兵種（虎符）系統.md |
-| 血脈命鏡過場 | 「Loading / 覺醒 / 升星 / 未持有預覽」命格展示頁，優先共用 `bloodline-mirror-states-v1` content contract，並透過 `bloodline-mirror-state-content` schema 驗證 | `bloodline-mirror-loading-main.json` | 血脈命鏡過場載入規格書.md |
+| 名士預言系統 | 「占卜結果」面板（從結緣 / 大廳進入） | `oracle-result-main.json` | 名士預言系統.md (doc_spec_0006) H 節 UI 字串 |
+| 大廳系統 | 「幕府大廳」主入口與雙牆 / 沙盤 / 官職掛點 | `lobby-main-main.json` | 大廳系統.md (doc_spec_0002)、官職系統.md (doc_spec_0014) |
+| 名將挑戰賽 | 「賽季卡 / 月度場景賽掛點」；本輪先維持 pending contract，不先寫死獨立 fullscreen | `pending contract: tournament-season-card` | 名將挑戰賽系統.md (doc_spec_0007)、UI 規格補遺_2026-04-11_大廳晨報與人物日誌pending.md (doc_ui_0030) |
+| 經濟保底提示 | 「地窖保護 / 每日補貼提示」；本輪先維持大廳 banner / badge contract | `pending contract: economy-subsidy-banner` | 經濟系統.md (doc_spec_0032)、UI 規格補遺_2026-04-11_大廳晨報與人物日誌pending.md (doc_ui_0030) |
+| 轉蛋系統 | 「雙池定位導覽 / 死亡傳承提示」；維持在既有 `GachaMain` 主畫面內，不另開平行說明頁 | `pending contract: gacha-pool-positioning-brief` | 轉蛋系統.md (doc_spec_0042)、UI 規格補遺_2026-04-11_培育戰場轉蛋pending.md (doc_ui_0031) |
+| 許願池商城 | 「誠心祭壇」全屏畫面 | `shop-wishpool-main.json` | 經濟系統.md (doc_spec_0032)、keep.md (doc_index_0011) |
+| 虎符圖鑑 | 「兵符閣」圖鑑頁面 | `catalog-tally-main.json` | 兵種（虎符）系統.md (doc_spec_0012) 功能清單 #11 |
+| 培育系統 | 「培育 36 回合」主畫面；三階段學年與畢業標籤先定義成可共用 contract，不先承諾額外 fullscreen | `nurture-session-main.json` + `pending contract: nurture-phase-block-header / graduation-tags-strip` | 培育系統.md (doc_spec_0026) E 節、UI 規格補遺_2026-04-11_培育戰場轉蛋pending.md (doc_ui_0031) |
+| 結緣系統 | 「結緣配置」面板；`Peace_Lineage` 模式與退役保種資格先收斂成摘要 chip / note，不另開宗廟或家系子頁 | `bonding-setup-main.json` + `pending contract: bonding-lineage-mode-chip` | 結緣系統（配種）.md (doc_spec_0028) E 節、UI 規格補遺_2026-04-11_培育戰場轉蛋pending.md (doc_ui_0031) |
+| 戰場部署 | 已有 DeployPanel（scene 手動綁定） | — (已實現於 BattleScene) | 戰場部署系統.md (doc_spec_0040) |
+| 關卡設計 / 戰前偵查 | 「軍師 HUD 摘要 / 關卡回收摘要」；先維持 pending contract，不直接拆出新 fullscreen | `pending contract: strategist-hud-summary / stage-salvage-summary` | 關卡設計系統.md (doc_spec_0044)、主戰場UI規格書.md (doc_ui_0001)、UI 規格補遺_2026-04-11_培育戰場轉蛋pending.md (doc_ui_0031) |
+| 奧義演出 | 全屏演出層（覆蓋戰場） | `ultimate-cutscene-main.json` | 奧義系統.md (doc_spec_0030) F 節 |
+| 血脈逸聞 | 「歷史趣聞 / 血脈傳聞」抽屜 | `general-bloodline-vignette-main.json` | 武將人物介面規格書.md (doc_ui_0012) § 8.4 |
+| 英靈虎符詳情 | 「英靈虎符 / 血脈卡」詳情頁 | `spirit-tally-detail-main.json` | 兵種（虎符）系統.md (doc_spec_0012) |
+| 血脈命鏡過場 | 「Loading / 覺醒 / 升星 / 未持有預覽」命格展示頁，優先共用 `bloodline-mirror-states-v1` content contract，並透過 `bloodline-mirror-state-content` schema 驗證 | `bloodline-mirror-loading-main.json` | 血脈命鏡過場載入規格書.md (doc_ui_0005) |
+| 武將日誌與離線互動 | 「晨報摘要 / 武將日誌抽屜 / 派遣整備掛點」；本輪先維持 pending contract，不先寫死是否獨立成 fullscreen，並與大廳賽季卡 / 經濟保底提示共用待定補遺 | `pending contract: morning-report / general-journal / dispatch-board` | 武將日誌與離線互動系統.md (doc_spec_0015)、UI 規格補遺_2026-04-11_大廳晨報與人物日誌pending.md (doc_ui_0030) |
 
-> 各系統正式建立 ui-spec JSON 時，須遵循三層契約規範（layouts / skins / screens），並同步更新 `UI技術規格書.md` 與 `cross-reference-index.md`。
+> 各系統正式建立 ui-spec JSON 時，須遵循三層契約規範（layouts / skins / screens），並同步更新 `UI技術規格書.md` (doc_ui_0049) 與 `cross-reference-index.md` (doc_index_0005)。
 ### 8.2 UI 量產工作流與 Agent 協作入口
 
-> 執行總綱請同步參照 `docs/keep.md` §19。
+> 執行總綱請同步參照 `docs/keep.md (doc_index_0011)` (doc_index_0011) §19。
 > 本節是 UI 正式規格中的方法論說明，用來確保美術、技術、Figma、ui-spec 與 Agent 協作都遵守同一套量產邏輯。
 
 #### 8.2.1 正式量產順序
@@ -206,19 +220,19 @@
 
 所有參與 UI 的 Agent，在開始修改前都必須依序確認：
 
-1. `docs/keep.md`
+1. `docs/keep.md (doc_index_0011)` (doc_index_0011)
 2. 本文件 §8.2
 3. 對應系統正式規格書
 4. 對應任務卡與 `docs/ui-quality-todo.json`
-5. `docs/cross-reference-index.md`
+5. `docs/cross-reference-index.md (doc_index_0005)` (doc_index_0005)
 
 未完成這個閱讀順序前，不應直接新增 UI family、修改大量 layout、或自行發明新的欄位命名。
 
 #### 8.2.6 文件回寫原則
 
-- 量產方法的新增共識，先回寫 `docs/keep.md` 與本文件。
-- 系統專屬規格，回寫到對應正式規格書，例如 `武將人物介面規格書.md`。
-- 程式 / 文件 / ui-spec 的對應關係，回寫 `docs/cross-reference-index.md`。
+- 量產方法的新增共識，先回寫 `docs/keep.md (doc_index_0011)` (doc_index_0011) 與本文件。
+- 系統專屬規格，回寫到對應正式規格書，例如 `武將人物介面規格書.md` (doc_ui_0012)。
+- 程式 / 文件 / ui-spec 的對應關係，回寫 `docs/cross-reference-index.md (doc_index_0005)` (doc_index_0005)。
 - 補遺只可作暫時整理，不可長期取代正式母規格。
 ### 8.2.7 美術資產治理與正式切換
 
@@ -265,3 +279,27 @@
 
 Unity 對照：
 - 這比較像先做完整的共用 `UI Panel Kit / Theme Kit`，再讓各頁 prefab 套同一套皮，而不是每頁各自拼幾張 Image。
+
+
+---
+## 🗳 MCQ 決策記錄（Q48）
+
+- **問題**：培育教官槽位定義
+- **衝突說明**：鏡像時空育才系統設計(doc_spec_0157)寫入學時可快照6位教官；養成系統與教官來源定義(doc_spec_0151)又寫培育時有5個教官插槽；現行培育系統規格書(doc_spec_0026)則定義每輪可更換1名教官，計算式也採單一Mentor。三種結構會改變TP累積、支援卡價值、UI編排與教官重複使用限制，若不拍板，教官系統(doc_spec_0027)與培育UI契約無法實作一致。
+- **裁決**：**選項 C** — 固定6教官槽（入學快照鎖定）
+- **回寫時間**：2026-04-12 12:52
+- **來源**：由 `consolidation-doubt-mcq.js rewrite-all` 自動寫入
+
+---
+
+
+---
+## 🗳 MCQ 決策記錄（Q34）
+
+- **問題**：技能能量與官職條邏輯
+- **衝突說明**：技能能量條充能邏輯未定，三種方案對戰場節奏影響截然不同，不拍板則UI動畫觸發條件與戰場代碼無法對齊。
+- **裁決**：**選項 D** — 選項 D
+- **回寫時間**：2026-04-12 13:16
+- **來源**：由 `consolidation-doubt-mcq.js rewrite-all` 自動寫入
+
+---

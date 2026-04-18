@@ -1,0 +1,108 @@
+{
+  "id": "nurture-session-main",
+  "version": 1,
+  "canvas": {
+    "fitWidth": true,
+    "fitHeight": true,
+    "safeArea": true,
+    "designWidth": 1920,
+    "designHeight": 1080
+  },
+  "root": {
+    "type": "container",
+    "name": "NurtureSessionRoot",
+    "widget": { "top": 0, "left": 0, "right": 0, "bottom": 0 },
+    "children": [
+      {
+        "type": "panel",
+        "name": "Backdrop",
+        "widget": { "top": 0, "left": 0, "right": 0, "bottom": 0 },
+        "skinSlot": "nurture.bg"
+      },
+      {
+        "type": "panel",
+        "name": "HeaderShell",
+        "widget": { "top": 24, "left": 48, "right": 48 },
+        "height": 136,
+        "skinSlot": "nurture.panel.primary",
+        "children": [
+          { "type": "label", "name": "SessionTitle", "widget": { "top": 18, "left": 24 }, "width": 420, "height": 34, "text": "培育行程", "styleSlot": "nurture.label.title" },
+          { "type": "label", "name": "SessionSubtitle", "widget": { "top": 60, "left": 24, "right": 220 }, "height": 24, "text": "三階段學年 / 36 回合", "styleSlot": "nurture.label.subtitle" },
+          { "type": "label", "name": "TurnLabel", "widget": { "top": 24, "right": 24 }, "width": 200, "height": 26, "text": "第 13 回合", "styleSlot": "nurture.label.chip" },
+          { "type": "label", "name": "SessionSummary", "widget": { "left": 24, "right": 24, "bottom": 18 }, "height": 22, "text": "目前只揭露區間與傾向，不在學年前半提前暴露精確值。", "styleSlot": "nurture.label.body" }
+        ]
+      },
+      {
+        "type": "panel",
+        "name": "PhaseBlockHeader",
+        "widget": { "top": 182, "left": 48, "right": 48 },
+        "height": 108,
+        "skinSlot": "nurture.panel.secondary",
+        "children": [
+          { "type": "label", "name": "PhaseBlockTitle", "widget": { "top": 16, "left": 24 }, "width": 340, "height": 26, "text": "學年階段", "styleSlot": "nurture.label.section" },
+          { "type": "label", "name": "PhaseBlockBody", "widget": { "top": 48, "left": 24, "right": 220, "bottom": 16 }, "text": "中盤學年聚焦戰術磨合與事件權重，只公開節奏摘要與戰略提醒。", "styleSlot": "nurture.label.body" },
+          {
+            "type": "panel",
+            "name": "MentorModeChip",
+            "widget": { "top": 18, "right": 24 },
+            "width": 220,
+            "height": 34,
+            "skinSlot": "nurture.band.accent",
+            "children": [
+              { "type": "label", "name": "MentorModeLabel", "widget": { "top": 8, "left": 10, "right": 10 }, "height": 18, "text": "教官模式：TeachingOnly", "styleSlot": "nurture.label.chip" }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "container",
+        "name": "TrainingSummaryRow",
+        "widget": { "top": 320, "left": 48, "right": 48, "bottom": 168 },
+        "layout": { "type": "horizontal", "spacing": 24, "paddingLeft": 0, "paddingRight": 0 },
+        "children": [
+          {
+            "type": "panel",
+            "name": "MainCourseCard",
+            "width": 576,
+            "skinSlot": "nurture.panel.primary",
+            "children": [
+              { "type": "label", "name": "MainCourseTitle", "widget": { "top": 18, "left": 20, "right": 20 }, "height": 24, "text": "本回合主修", "styleSlot": "nurture.label.section" },
+              { "type": "label", "name": "MainCourseBody", "widget": { "top": 54, "left": 20, "right": 20, "bottom": 20 }, "text": "兵科課程與小隊磨合並行，效果只以區間提示與事件傾向呈現。", "styleSlot": "nurture.label.body" }
+            ]
+          },
+          {
+            "type": "panel",
+            "name": "SupportWindowCard",
+            "width": 576,
+            "skinSlot": "nurture.panel.primary",
+            "children": [
+              { "type": "label", "name": "SupportWindowTitle", "widget": { "top": 18, "left": 20, "right": 20 }, "height": 24, "text": "支援窗口", "styleSlot": "nurture.label.section" },
+              { "type": "label", "name": "SupportWindowBody", "widget": { "top": 54, "left": 20, "right": 20, "bottom": 20 }, "text": "教官與支援卡只提供學習線加成，不直接承接血脈親傳資格。", "styleSlot": "nurture.label.body" }
+            ]
+          },
+          {
+            "type": "panel",
+            "name": "RiskWindowCard",
+            "width": 576,
+            "skinSlot": "nurture.panel.primary",
+            "children": [
+              { "type": "label", "name": "RiskWindowTitle", "widget": { "top": 18, "left": 20, "right": 20 }, "height": 24, "text": "風險提醒", "styleSlot": "nurture.label.section" },
+              { "type": "label", "name": "RiskWindowBody", "widget": { "top": 54, "left": 20, "right": 20, "bottom": 20 }, "text": "高壓事件只提示戰術壓力與恢復需求，不提前洩露精確數值。", "styleSlot": "nurture.label.body" }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "panel",
+        "name": "GraduationTagsStrip",
+        "widget": { "left": 48, "right": 48, "bottom": 72 },
+        "height": 68,
+        "skinSlot": "nurture.band.footer",
+        "children": [
+          { "type": "label", "name": "GraduationTagsTitle", "widget": { "top": 12, "left": 20 }, "width": 160, "height": 20, "text": "畢業標籤", "styleSlot": "nurture.label.section" },
+          { "type": "label", "name": "GraduationTagsBody", "widget": { "top": 34, "left": 20, "right": 20, "bottom": 12 }, "text": "勇戰 / 守成 / 教學線偏好等標籤只在畢業前後做摘要帶呈現。", "styleSlot": "nurture.label.body" }
+        ]
+      }
+    ]
+  }
+}

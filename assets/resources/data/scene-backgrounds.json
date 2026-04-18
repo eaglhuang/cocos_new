@@ -11,6 +11,12 @@
       "path": "textures/bg_normal_night",
       "timeOfDay": "night",
       "label": "夜晚平原"
+    },
+    {
+      "id": "bg_water",
+      "path": "textures/bg_water",
+      "timeOfDay": "day",
+      "label": "水淹戰場"
     }
   ]
 }

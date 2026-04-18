@@ -149,7 +149,10 @@ export interface TestResult {
 export class TestSuite {
     private cases: TestCase[] = [];
 
-    constructor(public readonly name: string) {}
+    constructor(
+        public readonly name: string,
+        public readonly layer: 1 | 2 | 3 = 1,
+    ) {}
 
     /**
      * 登錄一個測試案例。
@@ -212,10 +215,16 @@ export class TestRunner {
         return this;
     }
 
-    /** 執行所有已登錄的 Suite，回傳彙整報告 */
-    async runAll(): Promise<RunSummary> {
+    /**
+     * 執行所有已登錄的 Suite，回傳彙整報告。
+     * @param layerFilter 若指定 1/2/3，只執行 layer 符合的 Suite；省略則全部執行。
+     */
+    async runAll(layerFilter?: 1 | 2 | 3): Promise<RunSummary> {
         const allResults: TestResult[] = [];
-        for (const suite of this.suites) {
+        const suites = layerFilter != null
+            ? this.suites.filter(s => s.layer === layerFilter)
+            : this.suites;
+        for (const suite of suites) {
             const results = await suite.run();
             allResults.push(...results);
         }

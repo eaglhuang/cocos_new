@@ -1,23 +1,28 @@
 {
   "$schema": "../../schemas/runtime-verdict.schema.json",
   "screenId": "BattleHUD",
-  "runId": "runtime-width-backoff-r25",
-  "status": "pass",
-  "residuals": [],
-  "promoteable": true,
+  "runId": "ice-crystal-check-normal",
+  "status": "fail",
+  "residuals": [
+    "request failures: 4"
+  ],
+  "promoteable": false,
   "factoryLearnings": [
-    "runtime capture connected to capture-ui-screens.js"
+    "runtime capture connected to capture-ui-screens.js",
+    "runtime capture failure should be triaged before promoting the screen"
   ],
   "latestStage": "runtimeCapture",
   "captureArtifacts": {
-    "screenshotPath": "artifacts/ui-qa/UI-2-0100/runtime-width-backoff-r25/BattleScene.png",
-    "captureReportPath": "artifacts/ui-qa/UI-2-0100/runtime-width-backoff-r25/capture-report.json"
+    "screenshotPath": "artifacts/ui-qa/ice-crystal-check-normal/BattleScene.png",
+    "captureReportPath": "artifacts/ui-qa/ice-crystal-check-normal/capture-report.json",
+    "debugScreenshotPath": "artifacts/ui-qa/UI-2-0023/BattleScene-debug.png",
+    "debugStatePath": "artifacts/ui-qa/UI-2-0023/BattleScene-debug-state.json"
   },
   "diagnosticsSummary": {
     "consoleErrorCount": 0,
     "consoleWarningCount": 0,
     "pageErrorCount": 0,
-    "requestFailureCount": 0
+    "requestFailureCount": 4
   },
   "history": [
     {
@@ -264,7 +269,231 @@
       "updatedAt": "2026-04-10T02:44:21.850Z",
       "residualCount": 0,
       "promoteable": true
+    },
+    {
+      "runId": "UI-2-0108-runtime-smoke",
+      "status": "pass-with-minor-residuals",
+      "updatedAt": "2026-04-13T05:38:34.311Z",
+      "residualCount": 1,
+      "promoteable": true
+    },
+    {
+      "runId": "verify-deploy-fallback",
+      "status": "pass-with-minor-residuals",
+      "updatedAt": "2026-04-13T05:55:21.207Z",
+      "residualCount": 1,
+      "promoteable": true
+    },
+    {
+      "runId": "battle-debug-0413",
+      "status": "pass-with-minor-residuals",
+      "updatedAt": "2026-04-13T14:31:41.469Z",
+      "residualCount": 1,
+      "promoteable": true
+    },
+    {
+      "runId": "battle-debug-0413b",
+      "status": "pass-with-minor-residuals",
+      "updatedAt": "2026-04-13T14:35:00.815Z",
+      "residualCount": 1,
+      "promoteable": true
+    },
+    {
+      "runId": "battle-debug-0413c",
+      "status": "pass-with-minor-residuals",
+      "updatedAt": "2026-04-13T14:57:54.429Z",
+      "residualCount": 1,
+      "promoteable": true
+    },
+    {
+      "runId": "battle-debug-0413d",
+      "status": "pass-with-minor-residuals",
+      "updatedAt": "2026-04-13T15:24:03.151Z",
+      "residualCount": 1,
+      "promoteable": true
+    },
+    {
+      "runId": "tiger-tally-detail-v2",
+      "status": "pass-with-minor-residuals",
+      "updatedAt": "2026-04-14T00:59:24.451Z",
+      "residualCount": 1,
+      "promoteable": true
+    },
+    {
+      "runId": "battle-entry-verify",
+      "status": "pass-with-minor-residuals",
+      "updatedAt": "2026-04-14T02:01:05.552Z",
+      "residualCount": 1,
+      "promoteable": true
+    },
+    {
+      "runId": "battle-deploy-fix",
+      "status": "pass-with-minor-residuals",
+      "updatedAt": "2026-04-14T02:16:37.865Z",
+      "residualCount": 1,
+      "promoteable": true
+    },
+    {
+      "runId": "type-badge-verify",
+      "status": "fail",
+      "updatedAt": "2026-04-14T04:11:10.589Z",
+      "residualCount": 2,
+      "promoteable": false
+    },
+    {
+      "runId": "type-badge-verify",
+      "status": "pass-with-minor-residuals",
+      "updatedAt": "2026-04-14T04:12:43.505Z",
+      "residualCount": 1,
+      "promoteable": true
+    },
+    {
+      "runId": "type-badge-verify-full",
+      "status": "pass-with-minor-residuals",
+      "updatedAt": "2026-04-14T04:14:22.612Z",
+      "residualCount": 1,
+      "promoteable": true
+    },
+    {
+      "runId": "UI-2-0023",
+      "status": "pass-with-minor-residuals",
+      "updatedAt": "2026-04-15T07:37:46.610Z",
+      "residualCount": 1,
+      "promoteable": true
+    },
+    {
+      "runId": "UI-2-0023-battle-verify",
+      "status": "pass-with-minor-residuals",
+      "updatedAt": "2026-04-15T07:38:08.533Z",
+      "residualCount": 1,
+      "promoteable": true
+    },
+    {
+      "runId": "UI-2-0023-battle-round2",
+      "status": "pass",
+      "updatedAt": "2026-04-15T07:57:15.301Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "skill-runtime-battle-scene-check",
+      "status": "pass-with-minor-residuals",
+      "updatedAt": "2026-04-15T16:15:11.187Z",
+      "residualCount": 3,
+      "promoteable": false
+    },
+    {
+      "runId": "skill-runtime-battle-scene-check",
+      "status": "fail",
+      "updatedAt": "2026-04-15T16:16:15.598Z",
+      "residualCount": 4,
+      "promoteable": false
+    },
+    {
+      "runId": "review",
+      "status": "pass",
+      "updatedAt": "2026-04-16T09:30:14.168Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "UI-2-0023",
+      "status": "fail",
+      "updatedAt": "2026-04-16T16:54:27.764Z",
+      "residualCount": 2,
+      "promoteable": false
+    },
+    {
+      "runId": "UI-2-0023",
+      "status": "pass-with-minor-residuals",
+      "updatedAt": "2026-04-17T00:15:39.907Z",
+      "residualCount": 2,
+      "promoteable": false
+    },
+    {
+      "runId": "UI-2-0023",
+      "status": "fail",
+      "updatedAt": "2026-04-17T00:39:30.596Z",
+      "residualCount": 2,
+      "promoteable": false
+    },
+    {
+      "runId": "UI-2-0023",
+      "status": "pass",
+      "updatedAt": "2026-04-17T01:37:12.493Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "flood-ripple-check",
+      "status": "pass",
+      "updatedAt": "2026-04-17T13:16:39.531Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "flood-ripple-check-normal",
+      "status": "pass",
+      "updatedAt": "2026-04-17T13:19:03.717Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "lightning-arc-check",
+      "status": "pass",
+      "updatedAt": "2026-04-17T14:53:17.827Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "lightning-arc-check-normal",
+      "status": "pass",
+      "updatedAt": "2026-04-17T14:55:31.594Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "poison-fog-check",
+      "status": "pass",
+      "updatedAt": "2026-04-17T15:13:50.212Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "poison-fog-check-normal",
+      "status": "pass",
+      "updatedAt": "2026-04-17T15:16:18.015Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "wind-vortex-check",
+      "status": "pass",
+      "updatedAt": "2026-04-17T15:29:00.849Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "wind-vortex-check-normal",
+      "status": "pass",
+      "updatedAt": "2026-04-17T15:31:24.985Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "ice-crystal-check",
+      "status": "pass",
+      "updatedAt": "2026-04-17T15:44:31.802Z",
+      "residualCount": 0,
+      "promoteable": true
+    },
+    {
+      "runId": "ice-crystal-check-normal",
+      "status": "fail",
+      "updatedAt": "2026-04-17T15:47:02.856Z",
+      "residualCount": 1,
+      "promoteable": false
     }
   ],
-  "updatedAt": "2026-04-10T02:44:21.850Z"
+  "updatedAt": "2026-04-17T15:47:02.856Z"
 }

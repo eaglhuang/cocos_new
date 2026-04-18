@@ -1,0 +1,27 @@
+{
+  "id": "shop-main-screen",
+  "version": 1,
+  "uiId": "ShopMain",
+  "layer": "Game",
+  "bundle": "lobby_ui",
+  "layout": "shop-main-main",
+  "skin": "shop-main-default",
+  "contentRequirements": {
+    "schemaId": "shop-main-content",
+    "familyId": "rail-list",
+    "requiredFields": [
+      "title",
+      "selectedCategory",
+      "items",
+      "gold"
+    ]
+  },
+  "validation": {
+    "devices": [
+      "phone-16-9",
+      "phone-19_5-9",
+      "tablet-4-3"
+    ],
+    "allowMissingSkin": true
+  }
+}

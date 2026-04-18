@@ -31,17 +31,6 @@
         "children": [
           {
             "type": "panel",
-            "name": "TopBarShadow",
-            "widget": {
-              "top": 4,
-              "left": 16,
-              "right": 16,
-              "bottom": 0
-            },
-            "skinSlot": "hud.topbar.shadow"
-          },
-          {
-            "type": "panel",
             "name": "PlayerInfoPlate",
             "widget": {
               "top": 10,
@@ -124,18 +113,40 @@
               "hCenter": 0
             },
             "width": 360,
-            "height": 72,
+            "height": 86,
             "layout": {
               "type": "vertical",
-              "spacing": 6
+              "spacing": 2
             },
             "children": [
+              {
+                "type": "panel",
+                "name": "SceneGambitBadgeDock",
+                "id": "sceneGambitBadgeDock",
+                "widget": { "hCenter": 0 },
+                "width": 168,
+                "height": 18,
+                "active": false,
+                "skinSlot": "hud.summary.card",
+                "children": [
+                  {
+                    "type": "label",
+                    "name": "SceneGambitBadgeLabel",
+                    "id": "sceneGambitBadgeLabel",
+                    "widget": { "hCenter": 0, "vCenter": 0 },
+                    "width": 168,
+                    "height": 18,
+                    "text": "場景戰法",
+                    "styleSlot": "hud.label.sceneGambitBadge"
+                  }
+                ]
+              },
               {
                 "type": "label",
                 "name": "TurnLabel",
                 "id": "turnLabel",
                 "width": 360,
-                "height": 28,
+                "height": 24,
                 "styleSlot": "hud.label.round",
                 "text": "第 1 回合",
                 "bind": "battleState.turnCount"
@@ -145,7 +156,7 @@
                 "name": "FoodLabel",
                 "id": "foodLabel",
                 "width": 360,
-                "height": 24,
+                "height": 18,
                 "styleSlot": "hud.label.food",
                 "text": "🌾 糧草 20/20",
                 "bind": "battleState.food"
@@ -155,7 +166,7 @@
                 "name": "StatusLabel",
                 "id": "statusLabel",
                 "width": 360,
-                "height": 24,
+                "height": 18,
                 "styleSlot": "hud.label.status",
                 "text": "準備中",
                 "bind": "battleState.statusMessage"
@@ -237,7 +248,7 @@
             "type": "label",
             "name": "PlayerFortressTitle",
             "text": "我軍陣地",
-            "width": "12%",
+            "width": "11%",
             "height": 34,
             "styleSlot": "hud.label.fortress.player"
           },
@@ -245,14 +256,14 @@
             "type": "image",
             "name": "PlayerFortressBar",
             "id": "playerFortressBar",
-            "width": "31%",
+            "width": "30%",
             "skinSlot": "hud.bar.hp"
           },
           {
             "type": "label",
             "name": "VsLabel",
             "text": "VS",
-            "width": "14%",
+            "width": "12%",
             "height": 34,
             "styleSlot": "hud.label.vs"
           },
@@ -260,16 +271,62 @@
             "type": "image",
             "name": "EnemyFortressBar",
             "id": "enemyFortressBar",
-            "width": "31%",
+            "width": "30%",
             "skinSlot": "hud.bar.hp.enemy"
           },
           {
             "type": "label",
             "name": "EnemyFortressTitle",
             "text": "敵軍陣地",
-            "width": "12%",
+            "width": "11%",
             "height": 34,
             "styleSlot": "hud.label.fortress.enemy"
+          }
+        ]
+      },
+      {
+        "type": "panel",
+        "name": "StrategistSummaryBand",
+        "active": false,
+        "widget": {
+          "top": 166,
+          "left": 24,
+          "right": 24
+        },
+        "height": 76,
+        "skinSlot": "hud.summary.card",
+        "children": [
+          {
+            "type": "label",
+            "name": "StrategistSummaryTitle",
+            "widget": { "top": 12, "left": 18 },
+            "width": 148,
+            "height": 20,
+            "text": "軍師摘要",
+            "styleSlot": "hud.label.summaryTitle"
+          },
+          {
+            "type": "label",
+            "name": "StrategistSummaryBody",
+            "widget": { "top": 34, "left": 18, "right": 606, "bottom": 12 },
+            "text": "危險因子與配置缺口在此摘要，只揭露對策方向，不直接交答案。",
+            "styleSlot": "hud.label.summaryBody"
+          },
+          {
+            "type": "label",
+            "name": "StageSalvageTitle",
+            "widget": { "top": 12, "right": 298 },
+            "width": 120,
+            "height": 20,
+            "text": "戰後回收",
+            "styleSlot": "hud.label.summaryTitle"
+          },
+          {
+            "type": "label",
+            "name": "StageSalvageBody",
+            "widget": { "top": 34, "right": 18, "width": 400, "bottom": 12 },
+            "text": "僅提示可帶出的物資與線索，不在戰中直接改寫帳號經濟。",
+            "styleSlot": "hud.label.summaryBodyRight"
           }
         ]
       },

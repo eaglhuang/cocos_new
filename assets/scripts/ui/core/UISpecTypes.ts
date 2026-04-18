@@ -29,6 +29,15 @@ export interface CanvasDef {
     designWidth?: number;
     /** 設計基準高度（預設 1024） */
     designHeight?: number;
+    /**
+     * R29: 單邊 Widget 錨點的寬螢幕安全模式。
+     * 設為 true 時，CompositePanel.mount() 會在 buildScreen 後：
+     * 1. 將宿主節點 UITransform 鎖定為 designWidth × designHeight
+     * 2. 重新執行 Widget 計算
+     * 3. 將所有子 Widget 設為 AlignMode.ONCE（不再 ALWAYS 重算）
+     * 避免 FIXED_HEIGHT 策略下 Canvas 比設計寬導致 left=0 / right=X 把節點推到螢幕外。
+     */
+    safeAreaConstrained?: boolean;
 }
 
 /** Widget 自適應定義 */
@@ -73,6 +82,53 @@ export interface TransitionDef {
     easing?: string;
 }
 
+// ═══════════════════════════════════════════════════════════════
+// 1a. UCUF Skin Layer 型別（M1 Foundation）
+// ═══════════════════════════════════════════════════════════════
+
+/**
+ * SkinLayerDef — 節點級皮膚圖層定義（UCUF M1）。
+ *
+ * 允許任意節點疊加多層 skin sprite（例如底圖 + 紋理 + 裝飾邊框），
+ * 取代 UIPreviewShadowManager 的散落式 shadow/noise 處理。
+ * 圖層依 zOrder 由低到高堆疊。
+ *
+ * Unity 對照：SortingLayer 內的多層 SpriteRenderer
+ */
+export interface SkinLayerDef {
+    /** 圖層唯一 ID（同一節點內不可重複） */
+    layerId: string;
+    /** 引用 skin manifest 的 slot id */
+    slotId: string;
+    /** 堆疊順序（越小越底層） */
+    zOrder: number;
+    /** true = 此圖層自動展開填滿父節點尺寸（預設 true） */
+    expand?: boolean;
+    /** 混合模式 */
+    blendMode?: 'alpha' | 'overlay' | 'multiply';
+    /** 圖層不透明度 0~1 */
+    opacity?: number;
+}
+
+/**
+ * CompositeImageLayerDef — composite-image 節點的圖層定義（UCUF M1）。
+ *
+ * composite-image 是一個純視覺節點，由多張 sprite 按 zOrder 堆疊組成。
+ * 適用於 Footer、BloodlineCrest 等原本需要多節點疊加的場景。
+ *
+ * Unity 對照：具有多個 SpriteRenderer 子物件的空容器
+ */
+export interface CompositeImageLayerDef {
+    /** 引用 skin manifest 的 sprite slot id */
+    spriteSlotId: string;
+    /** 堆疊順序（越小越底層） */
+    zOrder: number;
+    /** 圖層不透明度 0~1（預設 1） */
+    opacity?: number;
+    /** 色調 hex（可選，疊加在 sprite 上方） */
+    tint?: string;
+}
+
 /** 節點型別聯合 */
 export type UINodeType =
     | 'container'       // 純容器（無視覺）
@@ -84,7 +140,8 @@ export type UINodeType =
     | 'scroll-view'     // scroll-list 舊別名（向後相容 battle-log-main 等既有 JSON）
     | 'image'           // 靜態圖片
     | 'resource-counter' // 資源計數器（圖示+數字）
-    | 'spacer';         // 佔位空間
+    | 'spacer'          // 佔位空間
+    | 'composite-image'; // UCUF 複合圖層（多 sprite 堆疊）
 
 /** 按鈕群組項目定義 */
 export interface ButtonGroupItem {
@@ -141,6 +198,58 @@ export interface UILayoutNodeSpec {
     /** 過渡動畫（保留在 JSON，UIPreviewBuilder 提供預設） */
     transition?: TransitionDef;
 
+    // ── UCUF 圖層 ──
+    /** 皮膚圖層堆疊（UCUF M1）：疊加多層 skin sprite 於此節點 */
+    skinLayers?: SkinLayerDef[];
+    /** composite-image 的圖層定義（type='composite-image' 時使用） */
+    compositeImageLayers?: CompositeImageLayerDef[];
+
+    // ── UCUF CompositePanel（M2）──
+    /**
+     * 延遲載入插槽（UCUF M2）。
+     * buildScreen 遇到 lazySlot=true 時建立空容器，不展開 children / $ref。
+     * 需與 CompositePanel.switchSlot() 配合使用。
+     */
+    lazySlot?: boolean;
+    /**
+     * lazySlot 的預設 fragment（UCUF M2）。
+     * mount() 後自動呼叫 switchSlot(slotId, defaultFragment)。
+     * 格式：'fragments/layouts/tab-basics'
+     */
+    defaultFragment?: string;
+    /**
+     * 此 lazySlot 預期掛載的 ChildPanel 類型（UCUF M2）。
+     * 用於 CompositePanel 自動實例化對應的 ChildPanelBase 子類。
+     */
+    childType?: string;
+
+    // ── UCUF ChildPanel 家族（M3）──
+    /**
+     * Grid 格子欄數（GridPanel 使用）。
+     * 搭配 layout.type='grid' 使用；未設定時 GridPanel 回退為 1。
+     */
+    gridColumns?: number;
+    /**
+     * Grid cell 的 fragment ref（GridPanel 使用）。
+     * 格式同 defaultFragment：'fragments/layouts/item-cell'
+     */
+    cellFragmentRef?: string;
+    /**
+     * ScrollList item 的 fragment ref（ScrollListPanel + IScrollVirtualizer 使用）。
+     * 格式：'fragments/layouts/list-item-row'
+     */
+    itemFragmentRef?: string;
+    /**
+     * ScrollList 每個 item 的固定高度（像素）。
+     * IScrollVirtualizer 用於計算 Content 總高度與 pool 大小。
+     */
+    itemHeight?: number;
+    /**
+     * ScrollList 可視區域外的緩衝 item 數（預設 2）。
+     * pool size = visibleCount + bufferCount × 2
+     */
+    bufferCount?: number;
+
     // ── 子節點 ──
     /** 子節點 */
     children?: UILayoutNodeSpec[];
@@ -159,6 +268,8 @@ export interface UILayoutNodeSpec {
 export interface UILayoutSpec {
     id: string;
     version: number;
+    /** 規格引擎版本（M9），用於 specVersion forward-compat guard */
+    specVersion?: number;
     canvas: CanvasDef;
     root: UILayoutNodeSpec;
 }
@@ -286,6 +397,9 @@ export interface UISkinManifest {
 // 3. Screen Spec 型別
 // ═══════════════════════════════════════════════════════════════
 
+/** Tab 路由條目（UCUF M2）。由 CompositePanel.switchSlot() 使用 */
+export type TabRoute = { slotId: string; fragment: string; transition?: TransitionDef };
+
 /** 設備驗證配置 */
 export interface ValidationDef {
     /** 要驗證的設備比例 */
@@ -343,6 +457,22 @@ export interface UIScreenSpec {
      * Unity 對照：Renderer 上 Material 的 per-instance override。
      */
     recipeRef?: RecipeRef;
+    /**
+     * Tab 路由表（UCUF M2）。
+     * key = Tab 識別碼（如 'Basics'）；value = 對應的 lazySlot + fragment。
+     * 切換 Tab 時由 CompositePanel 查詢此表呼叫 switchSlot()。
+     *
+     * 範例：
+     * ```json
+     * {
+     *   "Basics":    { "slotId": "TabContentSlot", "fragment": "fragments/layouts/tab-basics" },
+     *   "Stats":     { "slotId": "TabContentSlot", "fragment": "fragments/layouts/tab-stats" }
+     * }
+     * ```
+     */
+    tabRouting?: Record<string, TabRoute>;
+    /** 規格引擎版本（M9），用於 specVersion forward-compat guard */
+    specVersion?: number;
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -357,6 +487,12 @@ export const DEFAULT_CANVAS: CanvasDef = {
     designWidth: 1920,
     designHeight: 1024,
 };
+
+/**
+ * 當前規格引擎版本（M9）。
+ * UISpecLoader 載入 JSON 若 specVersion > 此值時，發出 warn 並執行 graceful degradation。
+ */
+export const CURRENT_SPEC_VERSION = 1;
 
 /** 預設過渡動畫 */
 export const DEFAULT_TRANSITION: Required<TransitionDef> = {

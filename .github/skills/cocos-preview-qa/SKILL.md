@@ -1,10 +1,11 @@
 ---
+doc_id: doc_agentskill_0011
 name: cocos-preview-qa
 description: 'BROWSER REVIEW QA SKILL — Use the built-in browser/headless browser (puppeteer-core) to open a browser-runnable Cocos preview, switch preview targets, capture screenshots, and compare them with reference images. USE FOR: screen-driven QA only when the user has already prepared a Browser Review environment that can run in the browser (`http://localhost:7456`, LoadingScene/preview host/preview target wiring ready). DO NOT USE FOR: current Cocos Editor window screenshots, Editor Preview capture, compile errors, or pure log analysis. If the Browser Review environment is not ready, stop and remind the user to prepare it first.'
 argument-hint: 'Specify target screen and task id only after confirming the Browser Review environment is ready. Example: "target=LobbyMain taskId=UI-1-0014".'
 ---
 
-<!-- 此檔案為 .agents/skills/cocos-preview-qa/SKILL.md 的鏡像副本，供 GitHub Copilot 技能載入使用 -->
+<!-- 此檔案為 .agents/skills/cocos-preview-qa/SKILL.md (doc_agentskill_0004) 的鏡像副本，供 GitHub Copilot 技能載入使用 -->
 <!-- 主版本位於 c:\Users\User\3KLife\.agents\skills\cocos-preview-qa\SKILL.md -->
 
 # Cocos Preview QA（Browser Review 自動截圖 + 比對）
@@ -12,7 +13,7 @@ argument-hint: 'Specify target screen and task id only after confirming the Brow
 此技能用於 **Browser Review 環境的自動截圖 + 參考圖比對 QA**：
 - 對象：已接入瀏覽器 preview pipeline 的 D 階段 UI screen（LobbyMain / ShopMain / Gacha / DuelChallenge）
 - 工具：`tools_node/capture-ui-screens.js`（puppeteer-core）
-- 比對對象：`docs/UI品質參考圖/` 或歷史 `artifacts/ui-qa/`
+- 比對對象：`docs/UI品質參考圖/` 或 `artifacts/ui-source/<screen-id>/reference/selected/`
 
 ## 先判斷是不是該用這個 skill
 
@@ -33,7 +34,7 @@ argument-hint: 'Specify target screen and task id only after confirming the Brow
 
 ```
 Step1: 確認 localhost:7456 可達
-Step2: node tools_node/capture-ui-screens.js --target <X> --outDir artifacts/ui-qa/<taskId>
+Step2: node tools_node/capture-ui-screens.js --target <X> --outDir artifacts/ui-source/<screenId>/review
 Step3: 一次只看 1 張新截圖（先試 `125px`）
 Step4: 再加 1 張對照圖（同樣先試 `125px`）做比較
 Step5: 寫 notes.md + 更新 ui-quality-todo.json
@@ -43,10 +44,10 @@ Step5: 寫 notes.md + 更新 ui-quality-todo.json
 
 ```powershell
 # 截全部 4 個 screens
-node tools_node/capture-ui-screens.js --outDir artifacts/ui-qa/<taskId>
+node tools_node/capture-ui-screens.js --outDir artifacts/ui-source/<screenId>/review
 
 # 截單一 screen
-node tools_node/capture-ui-screens.js --target LobbyMain --outDir artifacts/ui-qa/<taskId>
+node tools_node/capture-ui-screens.js --target LobbyMain --outDir artifacts/ui-source/lobby-main/review
 ```
 
 ## 看圖硬規定
@@ -59,4 +60,4 @@ node tools_node/capture-ui-screens.js --target LobbyMain --outDir artifacts/ui-q
 ## 完整 SOP
 
 請讀取主技能檔案以取得完整步驟、QA checklist 與排障指引：
-`.agents/skills/cocos-preview-qa/SKILL.md`
+`.agents/skills/cocos-preview-qa/SKILL.md` (doc_agentskill_0004)

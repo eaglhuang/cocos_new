@@ -2,7 +2,7 @@
 
 > **畫面 ID**: `GeneralDetailOverview`
 > **設計基準**: 1920 × 1080 px 橫向
-> **sizing contract 參考**: `docs/ui/component-sizing-contract.md`
+> **sizing contract 參考**: `docs/ui/component-sizing-contract.md (doc_ui_0038)` (doc_ui_0038)
 > **layout 數字來源**: `assets/resources/ui-spec/layouts/general-detail-main.json` (v8) + proof contract `artifacts/ui-source/general-detail-overview/proof/general-detail-overview.proof.json`
 > **最後更新**: 2026-04-09
 
@@ -54,4 +54,4 @@
 
 ---
 
-*參考*: `docs/ui/component-sizing-contract.md` / `assets/resources/ui-spec/layouts/general-detail-main.json` / `artifacts/ui-source/general-detail-overview/proof/general-detail-overview.proof.json`
+*參考*: `docs/ui/component-sizing-contract.md (doc_ui_0038)` (doc_ui_0038) / `assets/resources/ui-spec/layouts/general-detail-main.json` / `artifacts/ui-source/general-detail-overview/proof/general-detail-overview.proof.json`

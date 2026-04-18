@@ -17,12 +17,23 @@ const fs = require('fs');
 const path = require('path');
 const config = require('./lib/project-config');
 
-const projectRoot = config.ROOT;
-const uiSpecRoot = config.paths.uiSpecDir;
-const layoutDir = config.paths.layoutsDir;
-const skinDir = config.paths.skinsDir;
-const screenDir = config.paths.screensDir;
-const contractDir = config.paths.contractsDir;
+function getArgValue(flag) {
+    const index = process.argv.indexOf(flag);
+    if (index >= 0 && process.argv[index + 1]) {
+        return process.argv[index + 1];
+    }
+    return null;
+}
+
+const overrideProjectRoot = getArgValue('--project-root');
+const overrideUiSpecRoot = getArgValue('--ui-spec-root');
+
+const projectRoot = overrideProjectRoot ? path.resolve(overrideProjectRoot) : config.ROOT;
+const uiSpecRoot = overrideUiSpecRoot ? path.resolve(overrideUiSpecRoot) : config.paths.uiSpecDir;
+const layoutDir = path.join(uiSpecRoot, 'layouts');
+const skinDir = path.join(uiSpecRoot, 'skins');
+const screenDir = path.join(uiSpecRoot, 'screens');
+const contractDir = path.join(uiSpecRoot, 'contracts');
 const contentDir = path.join(uiSpecRoot, 'content');
 const recipeDir = path.join(uiSpecRoot, 'recipes', 'families');
 
@@ -32,6 +43,16 @@ const skipRules = new Set();
 for (let i = 0; i < process.argv.length; i++) {
     if (process.argv[i] === '--skip-rule' && process.argv[i + 1]) {
         skipRules.add(process.argv[++i]);
+    }
+}
+
+// --rules 白名單篩選（逗號分隔），與 --skip-rule 互斥
+const onlyRules = new Set();
+for (let i = 0; i < process.argv.length; i++) {
+    if (process.argv[i] === '--rules' && process.argv[i + 1]) {
+        for (const r of process.argv[++i].split(',')) {
+            if (r.trim()) onlyRules.add(r.trim());
+        }
     }
 }
 
@@ -64,12 +85,14 @@ function warn(message, warnings) {
 
 function strictFail(ruleId, message, failures, exceptions) {
     if (skipRules.has(ruleId)) return;
+    if (onlyRules.size > 0 && !onlyRules.has(ruleId)) return;
     if (exceptions && Object.prototype.hasOwnProperty.call(exceptions, ruleId)) return;
     failures.push(`[${ruleId}] ${message}`);
 }
 
 function strictWarn(ruleId, message, warnings, exceptions) {
     if (skipRules.has(ruleId)) return;
+    if (onlyRules.size > 0 && !onlyRules.has(ruleId)) return;
     if (exceptions && Object.prototype.hasOwnProperty.call(exceptions, ruleId)) return;
     warnings.push(`[${ruleId}] ${message}`);
 }
@@ -391,41 +414,234 @@ function validateLayoutStrict(layoutJson, filePath, allSkinSlots, failures, warn
                 strictFail('skin-slot-references-exist', `${rel} - node "${node.name || '?'}" skinSlot="${node.skinSlot}" 在所有 skin 中找不到對應 slot`, failures, exceptions);
             }
         }
+
+        // R21: no-duplicate-widget-siblings — 同一 parent 下不允許超過 2 個節點有完全相同的 widget
+        if (Array.isArray(node.children) && node.children.length > 2) {
+            const widgetMap = new Map();
+            for (const child of node.children) {
+                if (child.widget && typeof child.widget === 'object') {
+                    const key = JSON.stringify(child.widget);
+                    const list = widgetMap.get(key) || [];
+                    list.push(child.name || child.type || '?');
+                    widgetMap.set(key, list);
+                }
+            }
+            for (const [key, names] of widgetMap) {
+                if (names.length > 2) {
+                    strictWarn('no-duplicate-widget-siblings',
+                        `${loc} 下有 ${names.length} 個子節點共用相同 widget ${key}：${names.join(', ')}（疑似手動疊加，建議改用 skinLayers）`,
+                        warnings, exceptions);
+                }
+            }
+        }
+
+        // R22: no-fill-bleed-frame-triplet — 禁止 *Fill / *Bleed / *Frame 同名三件套
+        if (Array.isArray(node.children)) {
+            const baseCounts = new Map();
+            for (const child of node.children) {
+                const n = child.name || '';
+                const m = n.match(/^(.+?)(Fill|Bleed|Frame)$/);
+                if (m) {
+                    const base = m[1];
+                    const suffixes = baseCounts.get(base) || new Set();
+                    suffixes.add(m[2]);
+                    baseCounts.set(base, suffixes);
+                }
+            }
+            for (const [base, suffixes] of baseCounts) {
+                if (suffixes.size >= 2) {
+                    strictWarn('no-fill-bleed-frame-triplet',
+                        `${loc} 下偵測到 "${base}" 的多層疊加模式 (${[...suffixes].join('/')}), 建議合併為單一節點 + skinLayers`,
+                        warnings, exceptions);
+                }
+            }
+        }
+
+        // ── UCUF skinLayers / compositeImageLayers 規則 ──
+
+        // skin-layer-unique-zorder: skinLayers 內 zOrder 不得重複
+        if (Array.isArray(node.skinLayers) && node.skinLayers.length > 0) {
+            const zOrders = node.skinLayers.map((l) => l.zOrder);
+            const unique = new Set(zOrders);
+            if (unique.size !== zOrders.length) {
+                strictFail('skin-layer-unique-zorder', `${loc} skinLayers 有重複的 zOrder 值`, failures, exceptions);
+            }
+        }
+
+        // skin-layer-max-count: skinLayers 上限 12 層
+        if (Array.isArray(node.skinLayers) && node.skinLayers.length > 12) {
+            strictFail('skin-layer-max-count', `${loc} skinLayers 數量 ${node.skinLayers.length} 超過上限 12`, failures, exceptions);
+        }
+
+        // skin-layer-slot-exists: skinLayers 每層的 slotId 必須在 allSkinSlots 中存在
+        if (Array.isArray(node.skinLayers) && allSkinSlots.size > 0) {
+            for (const layer of node.skinLayers) {
+                if (typeof layer.slotId === 'string' && layer.slotId.trim().length > 0) {
+                    if (!allSkinSlots.has(layer.slotId.trim())) {
+                        strictFail('skin-layer-slot-exists', `${loc} skinLayers layerId="${layer.layerId || '?'}" slotId="${layer.slotId}" 在所有 skin 中找不到對應 slot`, failures, exceptions);
+                    }
+                }
+            }
+        }
+
+        // composite-image-min-layers: composite-image 節點至少需要 1 層
+        if (node.type === 'composite-image') {
+            const layerCount = Array.isArray(node.compositeImageLayers) ? node.compositeImageLayers.length : 0;
+            if (layerCount < 1) {
+                strictFail('composite-image-min-layers', `${loc} composite-image 缺少 compositeImageLayers（至少需要 1 層）`, failures, exceptions);
+            }
+        }
+
+        // composite-image-max-layers: composite-image 圖層上限 8 層
+        if (node.type === 'composite-image' && Array.isArray(node.compositeImageLayers)) {
+            if (node.compositeImageLayers.length > 8) {
+                strictFail('composite-image-max-layers', `${loc} compositeImageLayers 數量 ${node.compositeImageLayers.length} 超過上限 8`, failures, exceptions);
+            }
+        }
+
+        // R26: lazy-slot-has-fragment — lazySlot 節點必須宣告 defaultFragment
+        // 目的：避免 CompositePanel lazySlot 無預設 Fragment 時造成 runtime 白版面
+        if (node.lazySlot === true) {
+            const hasDefault = typeof node.defaultFragment === 'string' && node.defaultFragment.trim().length > 0;
+            if (!hasDefault) {
+                strictWarn('lazy-slot-has-fragment',
+                    `${loc} lazySlot 節點缺少 defaultFragment 宣告，可能造成 CompositePanel 初始化時白版面`,
+                    warnings, exceptions);
+            }
+        }
     }, 0);
+
+    // R29: layout-root-edge-anchor-needs-safe-parent
+    // 目的：防止「單邊 Widget 錨點卻無 safeAreaConstrained」的版面，在寬螢幕瀏覽器中被推到
+    //       設計解析度範圍外（editor 1920px 正常，browser 3063px 時節點消失）。
+    //
+    // 觸發條件：layout root 的 widget 有 left 但無 right（或有 right 但無 left），
+    //           且 canvas.safeAreaConstrained !== true。
+    //
+    // 修復方式：在 layout JSON 的 canvas 區段加入 "safeAreaConstrained": true，
+    //           CompositePanel 會在 mount 時將宿主節點大小鎖定為 designWidth×designHeight，
+    //           確保 Widget 計算以 1920px 為基準，而非擴展後的 Canvas 寬度。
+    (function checkR29() {
+        const root = layoutJson.root;
+        if (!root || !root.widget || typeof root.widget !== 'object' || Array.isArray(root.widget)) return;
+        const w = root.widget;
+        const hasLeft  = typeof w.left  === 'number';
+        const hasRight = typeof w.right === 'number';
+        const isOneSided = (hasLeft && !hasRight) || (!hasLeft && hasRight);
+        if (!isOneSided) return;
+        const alreadySafe = layoutJson.canvas && layoutJson.canvas.safeAreaConstrained === true;
+        if (alreadySafe) return;
+        const side = hasLeft ? `left=${w.left}` : `right=${w.right}`;
+        strictWarn('layout-root-edge-anchor-needs-safe-parent',
+            `${rel} root "${root.name || '?'}" widget 有單邊錨點（${side}），` +
+            `在寬螢幕（Canvas > designWidth）下節點會被推到畫面外。` +
+            `請在 canvas 區段加入 "safeAreaConstrained": true，` +
+            `讓 CompositePanel mount 時自動將宿主節點鎖定為 designWidth×designHeight。`,
+            warnings, exceptions);
+    })();
+
+    // R23: max-layout-node-count — 單一 Layout 總節點數上限
+    const NODE_COUNT_LIMIT = 50;
+    let totalNodeCount = 0;
+    walkLayoutNodes(layoutJson.root, () => { totalNodeCount++; }, 0);
+    if (totalNodeCount > NODE_COUNT_LIMIT) {
+        strictWarn('max-layout-node-count',
+            `${rel} 總節點數 ${totalNodeCount} 超過建議上限 ${NODE_COUNT_LIMIT}（建議拆分為 Fragment）`,
+            warnings, exceptions);
+    }
 }
 
 function validateScreenStrict(screenNode, screenFilePath, layoutJsons, failures, warnings) {
     const rel = relative(screenFilePath);
     const exceptions = (screenNode.validation && screenNode.validation.exceptions) || null;
 
-    // R14: bind-path-declared
-    if (skipRules.has('bind-path-declared')) return;
     const layoutId = typeof screenNode.layout === 'string' ? screenNode.layout.trim() : null;
     if (!layoutId || !layoutJsons.has(layoutId)) return;
     const layoutJson = layoutJsons.get(layoutId);
     if (!layoutJson || !layoutJson.root) return;
-
-    const bindPaths = new Set();
-    collectBindPaths(layoutJson.root, bindPaths);
-    if (bindPaths.size === 0) return;
 
     const reqFields = screenNode.contentRequirements && Array.isArray(screenNode.contentRequirements.requiredFields)
         ? new Set(screenNode.contentRequirements.requiredFields)
         : null;
     const hasContentRef = !!screenNode.content && typeof screenNode.content === 'object' && !Array.isArray(screenNode.content);
 
-    if (!reqFields) {
-        if (hasContentRef) {
-            strictWarn('bind-path-declared', `${rel} - 佈局 "${layoutId}" 含 ${bindPaths.size} 個 bind 宣告，但 screen 已宣告 content 卻未設定 contentRequirements.requiredFields`, warnings, exceptions);
+    // R14: bind-path-declared
+    if (!skipRules.has('bind-path-declared')) {
+        const bindPaths = new Set();
+        collectBindPaths(layoutJson.root, bindPaths);
+
+        if (bindPaths.size > 0) {
+            if (!reqFields) {
+                if (hasContentRef) {
+                    strictWarn('bind-path-declared', `${rel} - 佈局 "${layoutId}" 含 ${bindPaths.size} 個 bind 宣告，但 screen 已宣告 content 卻未設定 contentRequirements.requiredFields`, warnings, exceptions);
+                }
+            } else {
+                for (const bindPath of bindPaths) {
+                    const rootField = getBindRoot(bindPath);
+                    if (!rootField) continue;
+                    if (!reqFields.has(rootField)) {
+                        strictWarn('bind-path-declared', `${rel} - 佈局 "${layoutId}" 的 bind="${bindPath}" 未在 contentRequirements.requiredFields 宣告（缺少 "${rootField}"）`, warnings, exceptions);
+                    }
+                }
+            }
         }
-        return;
     }
 
-    for (const bindPath of bindPaths) {
-        const rootField = getBindRoot(bindPath);
-        if (!rootField) continue;
-        if (!reqFields.has(rootField)) {
-            strictWarn('bind-path-declared', `${rel} - 佈局 "${layoutId}" 的 bind="${bindPath}" 未在 contentRequirements.requiredFields 宣告（缺少 "${rootField}"）`, warnings, exceptions);
+    // R27: dataSource-declared — layout 節點的 dataSource 必須在 contentRequirements.requiredFields 中宣告
+    // 目的：確保 UCUF data binding 路徑與 Content Contract 保持一致
+    if (!skipRules.has('dataSource-declared') && reqFields) {
+        walkLayoutNodes(layoutJson.root, (node) => {
+            if (typeof node.dataSource === 'string' && node.dataSource.trim().length > 0) {
+                const rawField = node.dataSource.trim().replace(/^data\./, '');
+                const field = getBindRoot(rawField);
+                if (field && !reqFields.has(field)) {
+                    strictWarn('dataSource-declared',
+                        `${rel} - 佈局 "${layoutId}" 的 dataSource="${node.dataSource}" 未在 contentRequirements.requiredFields 宣告（缺少 "${field}"）`,
+                        warnings, exceptions);
+                }
+            }
+        }, 0);
+    }
+
+    // R28: composite-panel-tab-route-integrity — tabRouting 的 slotId 與 fragment 必須有效
+    // 目的：防止 CompositePanel tabRouting 宣告錯誤 slotId 或不存在的 Fragment 路徑
+    if (!skipRules.has('composite-panel-tab-route-integrity')) {
+        const tabRouting = screenNode.tabRouting;
+        if (tabRouting && typeof tabRouting === 'object' && !Array.isArray(tabRouting)) {
+            // 收集 layout 中所有 lazySlot 節點的 name
+            const lazySlotNames = new Set();
+            walkLayoutNodes(layoutJson.root, (node) => {
+                if (node.lazySlot === true && typeof node.name === 'string' && node.name.trim().length > 0) {
+                    lazySlotNames.add(node.name.trim());
+                }
+            }, 0);
+
+            const fragBase = path.join(uiSpecRoot, 'fragments');
+            for (const [tabKey, route] of Object.entries(tabRouting)) {
+                const routeObj = (typeof route === 'object' && route !== null) ? route : {};
+                const slotId = typeof routeObj.slotId === 'string' ? routeObj.slotId :
+                               typeof route === 'string' ? route : null;
+                const fragmentId = typeof routeObj.fragment === 'string' ? routeObj.fragment : null;
+
+                // slotId 必須對應 layout 中的 lazySlot 節點
+                if (slotId && lazySlotNames.size > 0 && !lazySlotNames.has(slotId)) {
+                    strictWarn('composite-panel-tab-route-integrity',
+                        `${rel} - tabRouting["${tabKey}"].slotId="${slotId}" 在 layout "${layoutId}" 中找不到對應的 lazySlot 節點`,
+                        warnings, exceptions);
+                }
+
+                // fragment 路徑必須在 layouts/ 或 fragments/ 目錄存在
+                if (fragmentId) {
+                    const layoutFragPath   = path.join(layoutDir, `${fragmentId}.json`);
+                    const fragPath         = path.join(fragBase, `${fragmentId}.json`);
+                    const fragPathRelSpec  = path.join(uiSpecRoot, `${fragmentId}.json`);
+                    if (!fs.existsSync(layoutFragPath) && !fs.existsSync(fragPath) && !fs.existsSync(fragPathRelSpec)) {
+                        strictWarn('composite-panel-tab-route-integrity',
+                            `${rel} - tabRouting["${tabKey}"].fragment="${fragmentId}" 在 layouts/ 與 fragments/ 中均找不到對應 JSON`,
+                            warnings, exceptions);
+                    }
+                }
+            }
         }
     }
 }
@@ -595,6 +811,7 @@ const warnings = [];
 const layouts = new Map();
 const layoutJsons = new Map();
 const skins = new Map();
+const skinJsons = new Map();   // skinId → parsed JSON（R24 等 strict 規則使用）
 const allSkinSlots = new Set();
 const screens = [];
 
@@ -642,6 +859,7 @@ for (const filePath of listJsonFiles(skinDir)) {
                 fail(`${relative(filePath)} - skin.id 重複：${json.id}`, failures);
             } else {
                 skins.set(json.id, filePath);
+                skinJsons.set(json.id, json);
                 if (json.slots && typeof json.slots === 'object') {
                     for (const key of Object.keys(json.slots)) { allSkinSlots.add(key); }
                 }
@@ -662,6 +880,64 @@ if (strictMode) {
             validateLayoutStrict(layoutJson, layoutFilePath, allSkinSlots, failures, warnings);
             validateRefImmutableOverrides(layoutJson, layoutFilePath, failures, warnings);
         }
+    }
+
+    // R24: atlas-batch-limit — 單一 Skin Manifest 引用超過 4 個不同 Atlas 來源
+    // 目的：避免立高超出 Auto Atlas 小圖堆叠數量，降低建檔時 draw call 片段化風險
+    const ATLAS_LIMIT = 4;
+    for (const [skinId, skinJson] of skinJsons) {
+        const skinFilePath = skins.get(skinId);
+        if (!skinFilePath || !skinJson.slots || typeof skinJson.slots !== 'object') continue;
+        const atlasDirs = new Set();
+        for (const slot of Object.values(skinJson.slots)) {
+            const paths = [];
+            if (slot.kind === 'sprite-frame' && slot.path) {
+                paths.push(slot.path);
+            } else if (slot.kind === 'button-skin') {
+                if (slot.normal)   paths.push(slot.normal);
+                if (slot.pressed)  paths.push(slot.pressed);
+                if (slot.hover)    paths.push(slot.hover);
+                if (slot.disabled) paths.push(slot.disabled);
+                if (slot.selected) paths.push(slot.selected);
+            }
+            for (const p of paths) {
+                // atlas 目錄 = 路徑的倫層目录
+                const dir = p.split('/').slice(0, -1).join('/');
+                if (dir) atlasDirs.add(dir);
+            }
+        }
+        if (atlasDirs.size > ATLAS_LIMIT) {
+            strictWarn('atlas-batch-limit',
+                `${relative(skinFilePath)} skin "${skinId}" 引用 ${atlasDirs.size} 個不同 Atlas 目錄（上限 ${ATLAS_LIMIT}），建議共用相同 Atlas 削減 batches`,
+                warnings, (skinJson.validation && skinJson.validation.exceptions) || null);
+        }
+    }
+
+    // R25: specVersion forward-compat guard — screen / layout specVersion 超過引擎支援上限
+    // 目的：提早偵測「此規格檔需要更新版引擎」的前向不相容問題
+    const CURRENT_SPEC_VERSION = 1;
+    for (const filePath of listJsonFiles(screenDir)) {
+        try {
+            const json = readJson(filePath);
+            const screens = Array.isArray(json.screens) ? json.screens : [json];
+            for (const screenNode of screens) {
+                if (typeof screenNode.specVersion === 'number' && screenNode.specVersion > CURRENT_SPEC_VERSION) {
+                    strictWarn('spec-version-mismatch',
+                        `${relative(filePath)} screen specVersion=${screenNode.specVersion} 超過引擎支援上限 ${CURRENT_SPEC_VERSION}，請升級 UCUF 引擎或降版 specVersion`,
+                        warnings, null);
+                }
+            }
+        } catch (_) { /* 解析錯誤已在前面收集 */ }
+    }
+    for (const filePath of listJsonFiles(layoutDir)) {
+        try {
+            const json = readJson(filePath);
+            if (typeof json.specVersion === 'number' && json.specVersion > CURRENT_SPEC_VERSION) {
+                strictWarn('spec-version-mismatch',
+                    `${relative(filePath)} layout specVersion=${json.specVersion} 超過引擎支援上限 ${CURRENT_SPEC_VERSION}，請升級 UCUF 引擎或降版 specVersion`,
+                    warnings, null);
+            }
+        } catch (_) { /* 解析錯誤已在前面收集 */ }
     }
 }
 

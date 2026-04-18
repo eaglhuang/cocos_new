@@ -1,0 +1,28 @@
+{
+  "$schema": "../../schemas/intake.schema.json",
+  "screenId": "general-list-screen",
+  "tier": "C",
+  "templateFamilyCandidate": "rail-list",
+  "uiId": "GeneralList",
+  "sourceOfTruth": {
+    "screenSpec": "temp_workspace\\general-list-screen.generated.json",
+    "layout": "general-list-main",
+    "skin": "general-list-default",
+    "bundle": "lobby_ui",
+    "layer": "Game"
+  },
+  "canonicalReferences": [
+    "docs\\ui\\examples\\general-list-screen.recipe.json",
+    "temp_workspace\\general-list-screen.generated.json",
+    "docs/ui/UCUF-UI-template-blueprint.md"
+  ],
+  "riskZones": [
+    "rail-list.header",
+    "rail-list.list",
+    "rail-list.footer.back"
+  ],
+  "smokeRoute": "LobbyScene -> onClickGeneralList() -> GeneralListComposite.show(generals)",
+  "notes": "Auto-generated intake skeleton from recipe general-list-screen; replace canonicalReferences/risk zones with proof-specific values before production handoff.",
+  "generatedAt": "2026-04-15T13:55:04.179Z",
+  "generatedBy": "GitHubCopilot"
+}

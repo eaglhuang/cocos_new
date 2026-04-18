@@ -1,0 +1,76 @@
+{
+  "$schema": "../../proof-contract.schema.json",
+  "version": "1.0",
+  "screenId": "BattleHudOverlay",
+  "proofSource": "ref://docs/戰場示意圖.png",
+  "capturedAt": "2026-04-15",
+  "capturedBy": "run-ui-vibe-workflow",
+  "confidence": 0.35,
+  "visualZones": [
+    {
+      "id": "top-bar",
+      "label": "頂部 HUD 列",
+      "family": "dark-metal",
+      "frameRecipeRef": "dark-metal-v1",
+      "notes": "v0 image-first skeleton"
+    },
+    {
+      "id": "left-overlay",
+      "label": "左側 overlay 區",
+      "family": "none",
+      "notes": "v0 image-first skeleton"
+    },
+    {
+      "id": "right-overlay",
+      "label": "右側 overlay 區",
+      "family": "none",
+      "notes": "v0 image-first skeleton"
+    }
+  ],
+  "componentIntents": [
+    {
+      "zone": "top-bar",
+      "nodeHint": "overlay",
+      "bind": "ui.topBar",
+      "notes": "頂部資源 / 狀態列"
+    },
+    {
+      "zone": "left-overlay",
+      "nodeHint": "overlay",
+      "bind": "ui.left",
+      "notes": "左側 overlay"
+    },
+    {
+      "zone": "right-overlay",
+      "nodeHint": "overlay",
+      "bind": "ui.right",
+      "notes": "右側 overlay"
+    }
+  ],
+  "spacingRecipe": {
+    "containerPadding": 24,
+    "itemSpacing": 16,
+    "sectionGap": 32,
+    "unitBasis": 8
+  },
+  "contentSlots": [
+    {
+      "id": "topBar",
+      "type": "label",
+      "placeholder": "頂部 HUD 資訊"
+    },
+    {
+      "id": "left",
+      "type": "label",
+      "placeholder": "左側 HUD 資訊",
+      "optional": true
+    },
+    {
+      "id": "right",
+      "type": "label",
+      "placeholder": "右側 HUD 資訊",
+      "optional": true
+    }
+  ],
+  "notes": "Auto-generated v0 proof draft from proofSource. familyHint=hud-overlay. 必須在正式生產前人工確認 visual zones / content slots / unresolved notes。"
+}

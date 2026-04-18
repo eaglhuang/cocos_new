@@ -6,7 +6,17 @@ const path = require('path');
 const projectRoot = path.resolve(__dirname, '..');
 const layoutPath = path.join(projectRoot, 'assets/resources/ui-spec/layouts/general-detail-bloodline-v3-main.json');
 const skinPath = path.join(projectRoot, 'assets/resources/ui-spec/skins/general-detail-bloodline-v3-default.json');
+const overviewContractPath = path.join(projectRoot, 'assets/resources/ui-spec/contracts/general-detail-overview-content.schema.json');
+const overviewFragmentPath = path.join(projectRoot, 'assets/resources/ui-spec/fragments/layouts/gd-tab-overview.json');
 const shellPath = path.join(projectRoot, 'assets/scripts/ui/components/GeneralDetailOverviewShell.ts');
+const compositePath = path.join(projectRoot, 'assets/scripts/ui/components/GeneralDetailComposite.ts');
+const bindPolicyPath = path.join(projectRoot, 'assets/scripts/ui/components/general-detail/GeneralDetailOverviewBindPathPolicy.ts');
+const shellResourcesPath = path.join(projectRoot, 'assets/scripts/ui/components/general-detail/GeneralDetailOverviewShellResources.ts');
+const tabBindPolicyInterfacePath = path.join(projectRoot, 'assets/scripts/ui/components/general-detail/TabBindPathPolicy.ts');
+const loadingScenePath = path.join(projectRoot, 'assets/scripts/ui/scenes/LoadingScene.ts');
+
+const unifiedLayoutPath = path.join(projectRoot, 'assets/resources/ui-spec/layouts/general-detail-unified-main.json');
+const unifiedScreenPath = path.join(projectRoot, 'assets/resources/ui-spec/screens/general-detail-unified-screen.json');
 
 function readJson(filePath) {
     return JSON.parse(fs.readFileSync(filePath, 'utf8'));
@@ -64,12 +74,42 @@ function collectPaths(node, prefix = '') {
 const failures = [];
 const layout = readJson(layoutPath);
 const skin = readJson(skinPath);
+const overviewContract = readJson(overviewContractPath);
+const overviewFragment = readJson(overviewFragmentPath);
+const unifiedLayout = readJson(unifiedLayoutPath);
+const unifiedScreen = readJson(unifiedScreenPath);
 const shellCode = fs.readFileSync(shellPath, 'utf8');
+const compositeCode = fs.readFileSync(compositePath, 'utf8');
+const bindPolicyCode = fs.readFileSync(bindPolicyPath, 'utf8');
+const shellResourcesCode = fs.readFileSync(shellResourcesPath, 'utf8');
+const tabBindPolicyCode = fs.readFileSync(tabBindPolicyInterfacePath, 'utf8');
+const loadingSceneCode = fs.readFileSync(loadingScenePath, 'utf8');
+
+const unifiedBindPathAliases = {
+    headerTitle: 'HeaderRow/NameTitleColumn/TitleLabel',
+    headerName: 'HeaderRow/NameTitleColumn/NameLabel',
+    headerMeta: 'HeaderRow/MetaColumn/MetaLabel',
+    rarityLabel: 'HeaderRow/MetaColumn/RarityBadgeDock/RarityBadge/RarityBadgeLabel',
+    coreStatsTitle: 'OverviewSummaryModules/CoreStatsCard/CoreStatsTitleBand/CoreStatsTitle',
+    coreStatsValue: 'OverviewSummaryModules/CoreStatsCard/CoreStatsValue',
+    roleTitle: 'OverviewSummaryModules/RoleCard/RoleTitleBand/RoleTitle',
+    roleValue: 'OverviewSummaryModules/RoleCard/RoleValue',
+    traitTitle: 'OverviewSummaryModules/TraitCard/TraitTitleBand/TraitTitle',
+    traitValue: 'OverviewSummaryModules/TraitCard/TraitValue',
+    bloodlineName: 'BloodlineOverviewModules/BloodlineUnifiedCard/BloodlineSummaryCard/BloodlineName',
+    awakeningLabel: 'BloodlineOverviewModules/BloodlineUnifiedCard/BloodlineSummaryCard/AwakeningProgressGroup/AwakeningLabel',
+    personalityValue: 'BloodlineOverviewModules/BloodlineUnifiedCard/BloodlineSummaryCard/PersonalityValue',
+    bloodlineBody: 'BloodlineOverviewModules/BloodlineUnifiedCard/BloodlineSummaryCard/BloodlineBody',
+    crestTitle: 'BloodlineOverviewModules/BloodlineUnifiedCard/BloodlineCrestCard/CrestTitle',
+    crestHint: 'BloodlineOverviewModules/BloodlineUnifiedCard/BloodlineCrestCard/CrestHint',
+};
 
 // $ref 展開（解析後與靜態 JSON 行為一致）
 resolveRefs(layout.root);
+resolveRefs(overviewFragment);
 
 const allPaths = new Set(collectPaths(layout.root));
+const overviewFragmentPaths = new Set(collectPaths(overviewFragment));
 
 function requirePath(nodePath) {
     if (!allPaths.has(`GeneralDetailBloodlineRoot/${nodePath}`)) {
@@ -78,8 +118,37 @@ function requirePath(nodePath) {
 }
 
 function requireShellPath(nodePath) {
-    if (!shellCode.includes(nodePath)) {
+    const contractFields = overviewContract?.fields && typeof overviewContract.fields === 'object'
+        ? Object.values(overviewContract.fields)
+        : [];
+    const coveredByContract = contractFields.some((field) => field?.bindPath === nodePath);
+    const binderFirstShell = shellCode.includes('this._screenSpec?.contentRequirements')
+        && shellCode.includes('await this._contentBinder.bind(');
+
+    if (coveredByContract && binderFirstShell) {
+        return;
+    }
+
+    const equivalentPaths = [nodePath];
+    const legacyShellPath = nodePath.replace(
+        'InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineUnifiedCard/BloodlineSummaryCard',
+        'InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineSummaryCard',
+    );
+    if (legacyShellPath !== nodePath) {
+        equivalentPaths.push(legacyShellPath);
+    }
+
+    if (!equivalentPaths.some((candidate) => shellCode.includes(candidate))) {
         failures.push(`shell 缺少關鍵 path 綁定：${nodePath}`);
+    }
+}
+
+function requireUnifiedAlias(fieldKey, nodePath) {
+    if (!bindPolicyCode.includes(`${fieldKey}: '${nodePath}'`)) {
+        failures.push(`bind policy 缺少 unified alias：${fieldKey} -> ${nodePath}`);
+    }
+    if (!overviewFragmentPaths.has(`OverviewTabContent/${nodePath}`)) {
+        failures.push(`unified fragment 缺少 alias 目標節點：OverviewTabContent/${nodePath}`);
     }
 }
 
@@ -209,11 +278,104 @@ for (const nodePath of [
     'InfoContent/OverviewSummaryModules/RoleCard/RoleTitleBand/RoleTitle',
     'InfoContent/OverviewSummaryModules/RoleCard/RoleValue',
     'InfoContent/OverviewSummaryModules/TraitCard/TraitTitleBand/TraitTitle',
-    'InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineSummaryCard/BloodlineSummaryFields/BloodlineTitle',
-    'InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineSummaryCard/BloodlineSummaryFields/PersonalityLabel'
+    'InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineUnifiedCard/BloodlineSummaryCard/BloodlineSummaryFields/BloodlineTitle',
+    'InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineUnifiedCard/BloodlineSummaryCard/BloodlineSummaryFields/PersonalityLabel'
 ]) {
     requirePath(nodePath);
     requireShellPath(nodePath);
+}
+
+for (const [fieldKey, nodePath] of Object.entries(unifiedBindPathAliases)) {
+    requireUnifiedAlias(fieldKey, nodePath);
+}
+
+// ─── 8. UCUF 統一架構守門 ─────────────────────────────────────────────
+
+// 8a. Unified layout 必須有 OverviewSlot lazySlot
+const unifiedRoot = unifiedLayout.root;
+const overviewSlotNode = findNodeByName(unifiedRoot, 'OverviewSlot');
+if (!overviewSlotNode) {
+    failures.push('general-detail-unified-main.json 缺少 OverviewSlot 節點');
+} else {
+    if (!overviewSlotNode.lazySlot) {
+        failures.push('OverviewSlot 必須設定 lazySlot: true');
+    }
+    if (overviewSlotNode.defaultFragment !== 'fragments/layouts/gd-tab-overview') {
+        failures.push(`OverviewSlot.defaultFragment 應為 fragments/layouts/gd-tab-overview，實為 ${overviewSlotNode.defaultFragment}`);
+    }
+}
+
+// 8b. Unified screen tabRouting Overview 必須路由到 OverviewSlot
+const overviewRoute = unifiedScreen?.tabRouting?.Overview;
+if (!overviewRoute) {
+    failures.push('general-detail-unified-screen.json 缺少 tabRouting.Overview');
+} else if (overviewRoute.slotId !== 'OverviewSlot') {
+    failures.push(`tabRouting.Overview.slotId 應為 OverviewSlot，實為 ${overviewRoute.slotId}`);
+}
+
+// 8c. Composite 不應再 import GeneralDetailOverviewShell
+if (compositeCode.includes("from './GeneralDetailOverviewShell'")) {
+    failures.push('GeneralDetailComposite 不應再 import GeneralDetailOverviewShell（已由 UCUF OverviewSlot 取代）');
+}
+
+// 8d. Composite 不應再含 _ensureOverviewShell / _showOverviewShell
+if (compositeCode.includes('private _ensureOverviewShell()') || compositeCode.includes('_ensureOverviewShell():')) {
+    failures.push('GeneralDetailComposite 不應再有 _ensureOverviewShell()（shell bootstrap 已移除）');
+}
+if (compositeCode.includes('private async _showOverviewShell(') || compositeCode.includes('_showOverviewShell(')) {
+    failures.push('GeneralDetailComposite 不應再有 _showOverviewShell()（shell routing 已移除）');
+}
+
+// 8e. Shell chrome/resource split 仍維持（shell 本身依然存在，用於 GeneralDetailPanel 相容）
+if (!shellCode.includes('private _applyChromeOnlyContent(') || !shellCode.includes('private async _applyResourceOnlyContent(')) {
+    failures.push('GeneralDetailOverviewShell 尚未拆成 chrome-only / resource-only content flow');
+}
+
+// 8f. Shell 資源載入已移至 ShellResources
+if (shellCode.includes('private async _applyCrestFace(')) {
+    failures.push('GeneralDetailOverviewShell._applyCrestFace() 應已移至 GeneralDetailOverviewShellResources，shell 不應自持該方法');
+}
+
+if (shellCode.includes('private async _loadPortrait(')) {
+    failures.push('GeneralDetailOverviewShell._loadPortrait() 應已移至 GeneralDetailOverviewShellResources，shell 不應自持該方法');
+}
+
+if (!shellCode.includes("from './general-detail/GeneralDetailOverviewShellResources'")) {
+    failures.push('GeneralDetailOverviewShell 缺少 GeneralDetailOverviewShellResources import');
+}
+
+if (!shellResourcesCode.includes('export async function applyShellOverviewCrestFace(')) {
+    failures.push('GeneralDetailOverviewShellResources 缺少 applyShellOverviewCrestFace export');
+}
+
+if (!shellResourcesCode.includes('export async function applyShellOverviewPortrait(')) {
+    failures.push('GeneralDetailOverviewShellResources 缺少 applyShellOverviewPortrait export');
+}
+
+// 8g. TabBindPathPolicy 介面與 overviewBindPathPolicy
+if (!tabBindPolicyCode.includes('export interface TabBindPathPolicy {')) {
+    failures.push('TabBindPathPolicy.ts 缺少 TabBindPathPolicy interface 定義');
+}
+
+if (!bindPolicyCode.includes("import type { TabBindPathPolicy }")) {
+    failures.push('GeneralDetailOverviewBindPathPolicy 未 import TabBindPathPolicy 介面');
+}
+
+if (!bindPolicyCode.includes('export const overviewBindPathPolicy: TabBindPathPolicy = {')) {
+    failures.push('GeneralDetailOverviewBindPathPolicy 缺少 overviewBindPathPolicy 物件 export');
+}
+
+// 8h. LoadingScene probe 已更新至 UCUF 結構
+if (!loadingSceneCode.includes("root.getChildByName('OverviewSlot')")) {
+    failures.push('LoadingScene._assertGeneralDetailOverviewVisualReady 未更新至 UCUF OverviewSlot 探針');
+}
+
+if (!loadingSceneCode.includes('_assertGeneralDetailOverviewVisualReady(detailPanel);')) {
+    failures.push('LoadingScene 缺少 GeneralDetailOverview visual-ready probe');
+}
+
+if (!loadingSceneCode.includes("return 'general-detail-unified-screen';")) {
+    failures.push('LoadingScene preview fallback screenId 未對齊 general-detail-unified-screen');
 }
 
 if (failures.length > 0) {

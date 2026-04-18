@@ -1,6 +1,6 @@
 {
   "id": "lobby-main-main",
-  "version": 1,
+  "version": 2,
   "canvas": { "fitWidth": true, "fitHeight": true, "safeArea": true, "designWidth": 1920, "designHeight": 1080 },
   "root": {
     "type": "container",
@@ -18,37 +18,327 @@
         "type": "panel",
         "name": "TopBar",
         "widget": { "top": 0, "left": 0, "right": 0 },
-        "height": 72,
+        "height": 84,
         "skinSlot": "lobby.topbar.bg",
-        "layout": { "type": "horizontal", "spacing": 12, "paddingLeft": 24, "paddingRight": 24 },
         "children": [
-          { "type": "sprite", "name": "Avatar",       "id": "avatarIcon",    "width": 56, "height": 56, "skinSlot": "lobby.avatar" },
-          { "type": "label",  "name": "PlayerName",   "id": "playerName",    "width": 200, "height": 40, "styleSlot": "lobby.label.name" },
-          { "type": "label",  "name": "ResourceGold", "id": "resourceGold",  "width": 160, "height": 32, "styleSlot": "lobby.label.resource" },
-          { "type": "label",  "name": "ResourceGem",  "id": "resourceGem",   "width": 160, "height": 32, "styleSlot": "lobby.label.resource" },
-          { "type": "sprite", "name": "NetworkStatus", "width": 36, "height": 36, "skinSlot": "lobby.icon.network" }
+          { "type": "sprite", "name": "Avatar", "widget": { "top": 14, "left": 24 }, "width": 56, "height": 56, "skinSlot": "lobby.avatar" },
+          { "type": "label", "name": "PlayerName", "widget": { "top": 18, "left": 96 }, "width": 220, "height": 26, "styleSlot": "lobby.label.name" },
+          {
+            "type": "panel",
+            "name": "SeasonChip",
+            "widget": { "top": 20, "left": 328 },
+            "width": 190,
+            "height": 30,
+            "skinSlot": "lobby.chip.season",
+            "children": [
+              { "type": "label", "name": "SeasonLabel", "widget": { "top": 4, "left": 12, "right": 12 }, "height": 22, "styleSlot": "lobby.label.chip" }
+            ]
+          },
+          { "type": "label", "name": "ResourceGold", "widget": { "top": 18, "right": 250 }, "width": 140, "height": 24, "styleSlot": "lobby.label.resource" },
+          { "type": "label", "name": "ResourceGem", "widget": { "top": 18, "right": 96 }, "width": 130, "height": 24, "styleSlot": "lobby.label.resource" },
+          {
+            "type": "panel",
+            "name": "NetworkChip",
+            "widget": { "top": 18, "right": 24 },
+            "width": 56,
+            "height": 24,
+            "skinSlot": "lobby.chip.network",
+            "children": [
+              { "type": "label", "name": "NetworkLabel", "widget": { "top": 4, "left": 0, "right": 0 }, "height": 16, "text": "ONLINE", "styleSlot": "lobby.label.badge" }
+            ]
+          }
         ]
       },
       {
         "type": "panel",
         "name": "NavBar",
         "widget": { "bottom": 0, "left": 0, "right": 0 },
-        "height": 88,
+        "height": 92,
         "skinSlot": "lobby.navbar.bg",
-        "layout": { "type": "horizontal", "spacing": 0, "paddingLeft": 8, "paddingRight": 8 },
+        "layout": { "type": "horizontal", "spacing": 10, "paddingLeft": 20, "paddingRight": 20, "paddingTop": 8, "paddingBottom": 8 },
         "children": [
-          { "type": "button", "name": "BtnBattle",       "id": "btnBattle",      "width": "20%", "height": 80, "skinSlot": "lobby.nav.btn", "children": [ { "type": "label", "name": "Label", "textKey": "UI_NAV_BATTLE",       "styleSlot": "lobby.label.nav" } ] },
-          { "type": "button", "name": "BtnGenerals",     "id": "btnGenerals",    "width": "20%", "height": 80, "skinSlot": "lobby.nav.btn", "children": [ { "type": "label", "name": "Label", "textKey": "UI_NAV_GENERALS",     "styleSlot": "lobby.label.nav" } ] },
-          { "type": "button", "name": "BtnSupportCard",  "id": "btnSupportCard", "width": "20%", "height": 80, "skinSlot": "lobby.nav.btn", "children": [ { "type": "label", "name": "Label", "textKey": "UI_NAV_SUPPORT",      "styleSlot": "lobby.label.nav" } ] },
-          { "type": "button", "name": "BtnGacha",        "id": "btnGacha",       "width": "20%", "height": 80, "skinSlot": "lobby.nav.btn", "children": [ { "type": "label", "name": "Label", "textKey": "UI_NAV_GACHA",        "styleSlot": "lobby.label.nav" } ] },
-          { "type": "button", "name": "BtnShop",         "id": "btnShop",        "width": "20%", "height": 80, "skinSlot": "lobby.nav.btn", "children": [ { "type": "label", "name": "Label", "textKey": "UI_NAV_SHOP",         "styleSlot": "lobby.label.nav" } ] }
+          { "type": "button", "name": "BtnBattle", "id": "btnBattle", "width": "19%", "height": 76, "skinSlot": "lobby.nav.btn", "children": [ { "type": "label", "name": "BattleLabel", "widget": { "vCenter": true, "left": 0, "right": 0 }, "height": 22, "textKey": "UI_NAV_BATTLE", "styleSlot": "lobby.label.nav" } ] },
+          { "type": "button", "name": "BtnGenerals", "id": "btnGenerals", "width": "19%", "height": 76, "skinSlot": "lobby.nav.btn", "children": [ { "type": "label", "name": "GeneralsLabel", "widget": { "vCenter": true, "left": 0, "right": 0 }, "height": 22, "textKey": "UI_NAV_GENERALS", "styleSlot": "lobby.label.nav" } ] },
+          { "type": "button", "name": "BtnSupportCard", "id": "btnSupportCard", "width": "19%", "height": 76, "skinSlot": "lobby.nav.btn", "children": [ { "type": "label", "name": "SupportLabel", "widget": { "vCenter": true, "left": 0, "right": 0 }, "height": 22, "textKey": "UI_NAV_SUPPORT", "styleSlot": "lobby.label.nav" } ] },
+          { "type": "button", "name": "BtnGacha", "id": "btnGacha", "width": "19%", "height": 76, "skinSlot": "lobby.nav.btn", "children": [ { "type": "label", "name": "GachaLabel", "widget": { "vCenter": true, "left": 0, "right": 0 }, "height": 22, "textKey": "UI_NAV_GACHA", "styleSlot": "lobby.label.nav" } ] },
+          { "type": "button", "name": "BtnShop", "id": "btnShop", "width": "19%", "height": 76, "skinSlot": "lobby.nav.btn", "children": [ { "type": "label", "name": "ShopLabel", "widget": { "vCenter": true, "left": 0, "right": 0 }, "height": 22, "textKey": "UI_NAV_SHOP", "styleSlot": "lobby.label.nav" } ] }
         ]
       },
       {
-        "type": "panel",
+        "type": "container",
         "name": "ContentArea",
-        "id": "contentArea",
-        "widget": { "top": 72, "left": 0, "right": 0, "bottom": 88 }
+        "widget": { "top": 84, "left": 0, "right": 0, "bottom": 92 },
+        "children": [
+          {
+            "type": "panel",
+            "name": "MorningReportStrip",
+            "widget": { "top": 12, "left": 72, "right": 72 },
+            "height": 70,
+            "skinSlot": "lobby.card.secondary",
+            "children": [
+              { "type": "label", "name": "MorningReportTitle", "widget": { "top": 10, "left": 18 }, "width": 140, "height": 20, "styleSlot": "lobby.label.meta" },
+              { "type": "label", "name": "MorningReportBody", "widget": { "top": 30, "left": 18, "right": 120, "bottom": 10 }, "styleSlot": "lobby.label.body" },
+              {
+                "type": "panel",
+                "name": "MorningReportUnreadBadge",
+                "widget": { "top": 16, "right": 18 },
+                "width": 90,
+                "height": 28,
+                "skinSlot": "lobby.badge.alert",
+                "children": [
+                  { "type": "label", "name": "MorningReportUnreadLabel", "widget": { "top": 6, "left": 0, "right": 0 }, "height": 16, "styleSlot": "lobby.label.badge" }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "panel",
+            "name": "HeroTaskWallCard",
+            "widget": { "top": 96, "left": 72 },
+            "width": 736,
+            "height": 408,
+            "skinSlot": "lobby.card.primary",
+            "children": [
+              {
+                "type": "panel",
+                "name": "TitleBand",
+                "widget": { "top": 18, "left": 18, "right": 18 },
+                "height": 42,
+                "skinSlot": "lobby.band.section",
+                "children": [
+                  { "type": "label", "name": "HeroWallTitle", "widget": { "top": 8, "left": 18, "right": 18 }, "height": 24, "styleSlot": "lobby.label.section" }
+                ]
+              },
+              {
+                "type": "panel",
+                "name": "UrgentMission",
+                "widget": { "top": 84, "left": 22, "right": 22 },
+                "height": 136,
+                "skinSlot": "lobby.card.urgent",
+                "children": [
+                  { "type": "label", "name": "UrgentTitle", "widget": { "top": 16, "left": 18, "right": 18 }, "height": 24, "styleSlot": "lobby.label.cardTitle" },
+                  { "type": "label", "name": "UrgentBody", "widget": { "top": 50, "left": 18, "right": 18, "bottom": 16 }, "styleSlot": "lobby.label.body" }
+                ]
+              },
+              {
+                "type": "panel",
+                "name": "DailyMission",
+                "widget": { "top": 238, "left": 22, "right": 22, "bottom": 96 },
+                "skinSlot": "lobby.card.secondary",
+                "children": [
+                  { "type": "label", "name": "DailyTitle", "widget": { "top": 16, "left": 18, "right": 18 }, "height": 24, "styleSlot": "lobby.label.cardTitle" },
+                  { "type": "label", "name": "DailyBody", "widget": { "top": 50, "left": 18, "right": 18, "bottom": 16 }, "styleSlot": "lobby.label.body" }
+                ]
+              },
+              {
+                "type": "panel",
+                "name": "DispatchBoardPeek",
+                "widget": { "left": 22, "right": 22, "bottom": 22 },
+                "height": 60,
+                "skinSlot": "lobby.card.secondary",
+                "children": [
+                  { "type": "label", "name": "DispatchBoardTitle", "widget": { "top": 10, "left": 16, "right": 180 }, "height": 18, "styleSlot": "lobby.label.cardTitle" },
+                  { "type": "label", "name": "DispatchBoardBody", "widget": { "top": 30, "left": 16, "right": 180, "bottom": 10 }, "styleSlot": "lobby.label.bodyMuted" },
+                  {
+                    "type": "button",
+                    "name": "DispatchBoardActionButton",
+                    "widget": { "right": 16, "vCenter": 0 },
+                    "width": 148,
+                    "height": 34,
+                    "skinSlot": "lobby.action.btn",
+                    "children": [
+                      { "type": "label", "name": "DispatchBoardActionLabel", "widget": { "vCenter": true, "left": 0, "right": 0 }, "height": 18, "styleSlot": "lobby.label.button" }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "panel",
+            "name": "BattleIntelCard",
+            "widget": { "top": 522, "left": 72, "bottom": 32 },
+            "width": 736,
+            "skinSlot": "lobby.card.primary",
+            "children": [
+              { "type": "label", "name": "IntelTitle", "widget": { "top": 20, "left": 22, "right": 22 }, "height": 24, "styleSlot": "lobby.label.section" },
+              {
+                "type": "container",
+                "name": "IntelRules",
+                "widget": { "top": 62, "left": 22, "right": 22, "bottom": 18 },
+                "layout": { "type": "vertical", "spacing": 12 },
+                "children": [
+                  { "type": "label", "name": "ScoutRule", "width": "100%", "height": 40, "styleSlot": "lobby.label.body" },
+                  { "type": "label", "name": "ChainBreakRule", "width": "100%", "height": 40, "styleSlot": "lobby.label.body" },
+                  { "type": "label", "name": "GridRule", "width": "100%", "height": 40, "styleSlot": "lobby.label.body" }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "panel",
+            "name": "OfficerTrackCard",
+            "widget": { "top": 44, "right": 72 },
+            "width": 968,
+            "height": 156,
+            "skinSlot": "lobby.card.primary",
+            "children": [
+              {
+                "type": "container",
+                "name": "OfficerHeader",
+                "widget": { "top": 18, "left": 22, "right": 220 },
+                "height": 42,
+                "children": [
+                  { "type": "label", "name": "OfficerTitle", "widget": { "top": 0, "left": 0 }, "width": 120, "height": 20, "text": "官職進度", "styleSlot": "lobby.label.meta" },
+                  { "type": "label", "name": "OfficerRankTitle", "widget": { "top": 18, "left": 0, "right": 0 }, "height": 24, "styleSlot": "lobby.label.section" }
+                ]
+              },
+              { "type": "label", "name": "OfficerAuthorityHint", "widget": { "top": 68, "left": 22, "right": 220 }, "height": 26, "styleSlot": "lobby.label.body" },
+              { "type": "label", "name": "OfficerUnlockHint", "widget": { "top": 98, "left": 22, "right": 220, "bottom": 18 }, "styleSlot": "lobby.label.bodyMuted" },
+              {
+                "type": "panel",
+                "name": "OfficerLockBadge",
+                "widget": { "top": 20, "right": 22 },
+                "width": 132,
+                "height": 28,
+                "skinSlot": "lobby.badge.lock",
+                "children": [
+                  { "type": "label", "name": "OfficerLockLabel", "widget": { "top": 6, "left": 0, "right": 0 }, "height": 16, "text": "升官解鎖", "styleSlot": "lobby.label.badge" }
+                ]
+              },
+              {
+                "type": "button",
+                "name": "OfficerActionButton",
+                "widget": { "right": 22, "bottom": 18 },
+                "width": 180,
+                "height": 44,
+                "skinSlot": "lobby.action.btn",
+                "children": [
+                  { "type": "label", "name": "OfficerActionLabel", "widget": { "vCenter": true, "left": 0, "right": 0 }, "height": 20, "styleSlot": "lobby.label.button" }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "panel",
+            "name": "WorldSandtableCard",
+            "widget": { "top": 236, "right": 72 },
+            "width": 968,
+            "height": 308,
+            "skinSlot": "lobby.card.primary",
+            "children": [
+              {
+                "type": "container",
+                "name": "WorldHeader",
+                "widget": { "top": 18, "left": 22, "right": 180 },
+                "height": 46,
+                "children": [
+                  { "type": "label", "name": "WorldMapTitle", "widget": { "top": 0, "left": 0, "right": 0 }, "height": 24, "styleSlot": "lobby.label.section" },
+                  { "type": "label", "name": "WorldMapPhase", "widget": { "top": 26, "left": 0, "right": 0 }, "height": 18, "styleSlot": "lobby.label.meta" }
+                ]
+              },
+              {
+                "type": "panel",
+                "name": "CoalitionBadge",
+                "widget": { "top": 20, "right": 22 },
+                "width": 148,
+                "height": 28,
+                "skinSlot": "lobby.badge.coalition",
+                "children": [
+                  { "type": "label", "name": "CoalitionBadgeLabel", "widget": { "top": 6, "left": 0, "right": 0 }, "height": 16, "text": "反霸權啟動", "styleSlot": "lobby.label.badge" }
+                ]
+              },
+              {
+                "type": "panel",
+                "name": "FrontierPanel",
+                "widget": { "top": 76, "left": 22, "right": 22 },
+                "height": 84,
+                "skinSlot": "lobby.card.secondary",
+                "children": [
+                  { "type": "label", "name": "FrontierTitle", "widget": { "top": 14, "left": 16, "right": 16 }, "height": 18, "text": "遠征與保留進度", "styleSlot": "lobby.label.cardTitle" },
+                  { "type": "label", "name": "FrontierBody", "widget": { "top": 38, "left": 16, "right": 16, "bottom": 12 }, "styleSlot": "lobby.label.body" }
+                ]
+              },
+              {
+                "type": "panel",
+                "name": "CoalitionPanel",
+                "widget": { "top": 172, "left": 22, "right": 22 },
+                "height": 74,
+                "skinSlot": "lobby.card.secondary",
+                "children": [
+                  { "type": "label", "name": "CoalitionTitle", "widget": { "top": 14, "left": 16, "right": 16 }, "height": 18, "text": "聯盟態勢", "styleSlot": "lobby.label.cardTitle" },
+                  { "type": "label", "name": "CoalitionBody", "widget": { "top": 36, "left": 16, "right": 16, "bottom": 10 }, "styleSlot": "lobby.label.body" }
+                ]
+              },
+              {
+                "type": "button",
+                "name": "WorldActionButton",
+                "widget": { "right": 22, "bottom": 18 },
+                "width": 180,
+                "height": 44,
+                "skinSlot": "lobby.action.btn",
+                "children": [
+                  { "type": "label", "name": "WorldActionLabel", "widget": { "vCenter": true, "left": 0, "right": 0 }, "height": 20, "styleSlot": "lobby.label.button" }
+                ]
+              },
+              {
+                "type": "panel",
+                "name": "TournamentSeasonCard",
+                "widget": { "left": 22, "right": 220, "bottom": 18 },
+                "height": 72,
+                "skinSlot": "lobby.card.secondary",
+                "children": [
+                  { "type": "label", "name": "TournamentSeasonTitle", "widget": { "top": 12, "left": 16, "right": 16 }, "height": 18, "styleSlot": "lobby.label.cardTitle" },
+                  { "type": "label", "name": "TournamentSeasonBody", "widget": { "top": 34, "left": 16, "right": 16, "bottom": 12 }, "styleSlot": "lobby.label.bodyMuted" }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "panel",
+            "name": "WishAltarCard",
+            "widget": { "right": 72, "bottom": 32 },
+            "width": 968,
+            "height": 180,
+            "skinSlot": "lobby.card.primary",
+            "children": [
+              { "type": "label", "name": "WishTitle", "widget": { "top": 20, "left": 22, "right": 210 }, "height": 24, "styleSlot": "lobby.label.section" },
+              { "type": "label", "name": "WishBody", "widget": { "top": 56, "left": 22, "right": 210, "bottom": 18 }, "styleSlot": "lobby.label.body" },
+              {
+                "type": "panel",
+                "name": "WishAlertBadge",
+                "widget": { "top": 20, "right": 22 },
+                "width": 112,
+                "height": 28,
+                "skinSlot": "lobby.badge.alert",
+                "children": [
+                  { "type": "label", "name": "WishAlertLabel", "widget": { "top": 6, "left": 0, "right": 0 }, "height": 16, "text": "彩蛋事件", "styleSlot": "lobby.label.badge" }
+                ]
+              },
+              {
+                "type": "button",
+                "name": "WishActionButton",
+                "widget": { "right": 22, "bottom": 18 },
+                "width": 180,
+                "height": 44,
+                "skinSlot": "lobby.action.btn",
+                "children": [
+                  { "type": "label", "name": "WishActionLabel", "widget": { "vCenter": true, "left": 0, "right": 0 }, "height": 20, "styleSlot": "lobby.label.button" }
+                ]
+              },
+              {
+                "type": "panel",
+                "name": "EconomySubsidyBanner",
+                "widget": { "left": 22, "right": 220, "bottom": 18 },
+                "height": 38,
+                "skinSlot": "lobby.band.section",
+                "children": [
+                  { "type": "label", "name": "EconomySubsidyLabel", "widget": { "top": 8, "left": 14, "right": 14 }, "height": 20, "styleSlot": "lobby.label.bodyMuted" }
+                ]
+              }
+            ]
+          }
+        ]
       }
     ]
   }

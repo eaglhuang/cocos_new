@@ -1,3 +1,4 @@
+<!-- doc_id: doc_task_0142 -->
 # 任務：battle-ui-p1-capture-toolbar-clip
 
 ## frontmatter

@@ -1,12 +1,12 @@
 // @spec-source → 見 docs/cross-reference-index.md
 /**
- * DuelChallengePanel — 武將單挑確認 UI
+ * @deprecated
+ * DuelChallengePanel — 武將單挑確認 UI（已廢止，請使用 DuelChallengeComposite）
  *
- * ⭐ 使用 dialog-confirm Template（驗證組件屋架構可用性）
- *
- * Template: dialog-confirm（assets/resources/ui-spec/templates/dialog-confirm.json）
- * Skin:     duel-challenge-default.json（保留既有視覺風格）
- * 本元件只包含業務邏輯（show/hide + 事件發射），不含任何視覺排版代碼。
+ * ⭐ 使用 dialog-confirm Template（驗證組件屋架構可用性）已遷移至 CompositePanel
+ * 
+ * 遷移完成時間：2026-04-13 (Wave 2)
+ * 預計刪除：2026-05-13 (Wave 2 全部遷移後)
  *
  * Unity 對照：ConfirmDialog + UnityEvent，但 Cocos 用 Node.emit() 做事件回調。
  */

@@ -1,3 +1,4 @@
+<!-- doc_id: doc_tech_0018 -->
 # UI 系統技術架構
 
 > 更新日期: 2026-04-10
@@ -20,12 +21,15 @@
 UISpecLoader ── cache ── $ref 遞迴展開 ── themeStack 層疊
      │
      ▼
-UIPreviewBuilder（指揮者）
-  ├─ UIPreviewNodeFactory    → 建立 Cocos Node
-  ├─ UIPreviewStyleBuilder   → 套 Sprite/Label/Button 樣式
-  ├─ UIPreviewLayoutBuilder  → 解算 Widget/Layout
-  ├─ UIPreviewShadowManager  → 五層裝飾框體
-  └─ UISkinResolver          → slot → 資產路徑
+CompositePanel（頁級宿主）
+  ├─ slot routing / tab orchestration
+  ├─ child panel mount / content state fan-out
+  └─ UIPreviewBuilder（底層節點建構）
+      ├─ UIPreviewNodeFactory    → 建立 Cocos Node
+      ├─ UIPreviewStyleBuilder   → 套 Sprite/Label/Button 樣式
+      ├─ UIPreviewLayoutBuilder  → 解算 Widget/Layout
+      ├─ UIPreviewShadowManager  → 五層裝飾框體
+      └─ UISkinResolver          → slot → 資產路徑
      │
      ▼
 UIContentBinder ← Content Contract Schema
@@ -105,7 +109,9 @@ base → family → stateOverrides → manifest（後者覆寫前者）
 | 元件 | 職責 | Unity 對照 |
 |------|------|-----------|
 | `UISpecLoader` | 載入 + cache + $ref 遞迴展開 + themeStack | AssetBundle Loader |
-| `UIPreviewBuilder` | 指揮者，遞迴建立 node tree | Canvas Builder |
+| `CompositePanel` | 頁級宿主，負責 route / child panel orchestration | Screen Presenter |
+| `ChildPanelBase` | slot 內容區基類，接單一 data source | Child ViewController |
+| `UIPreviewBuilder` | 底層 node tree builder，供 CompositePanel 與 legacy panel 共用 | Canvas Builder |
 | `UIPreviewNodeFactory` | 按 type 建立 Cocos Node | Prefab Instantiation |
 | `UIPreviewStyleBuilder` | 套 Sprite/Label/Button 樣式 | Material Override |
 | `UIPreviewLayoutBuilder` | Widget + Layout 解算 | RectTransform + LayoutGroup |
@@ -121,8 +127,11 @@ base → family → stateOverrides → manifest（後者覆寫前者）
 | `validate-ui-specs.js` | R1-R18 品質規則 + $ref immutable guard |
 | `validate-widget-registry.js` | Widget registry ↔ 實際檔案同步 |
 | `build-fragment-usage-map.js` | $ref 引用地圖（修改前查影響範圍）|
-| `scaffold-ui-spec-family.js` | 自動產生 layout/skin/screen 三件套 |
-| `scaffold-ui-component.js` | 自動產生 Panel .ts + UIConfig stub |
+| `compile-proof-to-family-map.js` | proof draft → family-map |
+| `compile-proof-to-mcq.js` | proof / family-map → MCQ package |
+| `compile-mcq-answer-to-recipe.js` | MCQ answers → normalized recipe |
+| `compile-recipe-to-screen-spec.js` | recipe → screen package |
+| `compile-recipe-to-panel-scaffold.js` | recipe → Composite / Child Panel scaffold |
 | `check-encoding-touched.js` | UTF-8 完整性驗證 |
 
 ## 9. 檔案總覽
@@ -130,6 +139,7 @@ base → family → stateOverrides → manifest（後者覆寫前者）
 ### Runtime Core（9 檔）
 - `assets/scripts/ui/core/UISpecLoader.ts`
 - `assets/scripts/ui/core/UISpecTypes.ts`
+- `assets/scripts/ui/core/CompositePanel.ts`
 - `assets/scripts/ui/core/UIPreviewBuilder.ts`
 - `assets/scripts/ui/core/UIPreviewNodeFactory.ts`
 - `assets/scripts/ui/core/UIPreviewStyleBuilder.ts`

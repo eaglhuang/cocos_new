@@ -12,16 +12,20 @@
     "layer": "Popup"
   },
   "canonicalReferences": [
-    "artifacts/ui-qa/UI-2-0094/runtime-r18-delete-badge-and-header-frame/GeneralDetailOverview.png",
-    "artifacts/ui-qa/UI-2-0094/runtime-r19-header-final-weight-tune/GeneralDetailOverview.png"
+    "docs/UI品質參考圖/人物UI參考.png",
+    "artifacts/ui-qa/general-detail-overview-identity-tabs-r1/GeneralDetailOverviewZhenJi.png",
+    "artifacts/ui-qa/general-detail-overview-reframe-a-r3/GeneralDetailOverview.png"
   ],
   "riskZones": [
-    "headerPlaque",
-    "crestMedallion",
-    "portraitStage"
+    "portraitStage",
+    "leftIdentityBand",
+    "rightInfoSpine",
+    "rightTabCluster",
+    "topRightBack",
+    "crestPod"
   ],
-  "smokeRoute": "node tools_node/capture-ui-screens.js --target GeneralDetailOverview --outDir artifacts/ui-qa/general-detail-overview/runtime-smoke",
-  "notes": null,
-  "generatedAt": "2026-04-08T03:27:56.963Z",
-  "generatedBy": "tools_node/intake-ui-screen.js"
+  "smokeRoute": "node tools_node/capture-ui-screens.js --target GeneralDetailOverviewZhenJi --outDir artifacts/ui-qa/general-detail-overview/runtime-smoke",
+  "notes": "2026-04-10 clean pass 後再補一輪 identity+nav polish：左側 portrait-first stage 現在帶明確身份識別帶，右側透明資訊脊柱維持不變，右緣 6 顆圓形 tabs 升級成 glyph + badge 語言，右上返回維持獨立圓鈕；舊 story strip 與 portrait behind layers 已退出主畫面真相。",
+  "generatedAt": "2026-04-10T14:54:55.163Z",
+  "generatedBy": "GitHubCopilot"
 }

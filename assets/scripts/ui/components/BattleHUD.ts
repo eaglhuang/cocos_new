@@ -1,17 +1,23 @@
 // @spec-source → 見 docs/cross-reference-index.md
 /**
- * BattleHUD — 戰鬥介面抬頭顯示器
+ * @deprecated
+ * BattleHUD — 戰鬥介面抬頭顯示器（已廢止，請使用 BattleHUDComposite）
  *
- * ⭐ 已遷移至 Template + Binder 架構
+ * ⭐ 已遷移至 Template + Binder 架構 + CompositePanel
  *
+ * 此類已被 BattleHUDComposite.ts 取代。
  * 佈局由 battle-hud-main.json，皮膚由 battle-hud-default.json。
  * 節點綁定由 UITemplateBinder 自動完成，元件只負責業務邏輯。
  * HP bar 因需 SolidBackground 仍在 onBuildComplete 中處理。
+ *
+ * 遷移完成時間: 2026-04-13 (Wave 1)
+ * 預計刪除: 2026-05-13 (Wave 2 全部遷移後)
  *
  * Unity 對照：GameHUDController，監聽事件更新各個 Binding
  */
 import { _decorator, Button, Color, Label, Node, Sprite, UITransform, Vec3 } from 'cc';
 import { EVENT_NAMES, Faction, GAME_CONFIG } from '../../core/config/Constants';
+import { buildBattleSkillEffectMessage, buildBattleSkillUsedMessage } from '../../battle/skills/BattleSkillPresentation';
 import { services } from '../../core/managers/ServiceLoader';
 import { UIPreviewBuilder } from '../core/UIPreviewBuilder';
 import { UISpecLoader } from '../core/UISpecLoader';
@@ -20,6 +26,9 @@ import { SolidBackground } from './SolidBackground';
 
 const { ccclass } = _decorator;
 
+/**
+ * @deprecated Use BattleHUDComposite instead (Wave 1 migration complete)
+ */
 @ccclass('BattleHUD')
 export class BattleHUD extends UIPreviewBuilder {
 
@@ -218,9 +227,9 @@ export class BattleHUD extends UIPreviewBuilder {
         );
     }
 
-    private _onTurnPhaseChanged(snap: { turn: number; playerDp: number }): void {
+    private _onTurnPhaseChanged(snap: { turn: number; playerFood: number }): void {
         this._setTurn(snap.turn);
-        this._setFood(snap.playerDp, GAME_CONFIG.MAX_DP);
+        this._setFood(snap.playerFood, GAME_CONFIG.MAX_FOOD);
         this._clearStatus();
     }
 
@@ -228,16 +237,15 @@ export class BattleHUD extends UIPreviewBuilder {
         this._setGeneralHealth(data.faction, data.hp);
     }
 
-    private _onGeneralSkillUsed(data: { faction: Faction }): void {
+    private _onGeneralSkillUsed(data: { faction: Faction; skillId?: string; skillName?: string; sourceType?: any }): void {
         if (data.faction === Faction.Player) {
-            this._showStatus('武將發動技能！');
+            const skillId = data.skillId ?? data.skillName ?? null;
+            this._showStatus(skillId ? buildBattleSkillUsedMessage(skillId, data.faction, data.sourceType) : '我方武將發動技能！');
         }
     }
 
     private _onSkillEffect(data: { skillId: string; faction: Faction }): void {
-        if (data.skillId === 'zhang-fei-roar') {
-            this._showStatus('⚡ 震吼！敵方全體暈眩 1 回合！盾牆瓦解！');
-        }
+        this._showStatus(buildBattleSkillEffectMessage(data.skillId));
     }
 
     // ── 公開 API（由 BattleScene 呼叫） ─────────────────────

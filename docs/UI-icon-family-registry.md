@@ -1,3 +1,4 @@
+<!-- doc_id: doc_ui_0034 -->
 # UI Icon Family Registry
 
 這份文件是 icon factory 的正式母規格之一。
@@ -167,6 +168,6 @@ screen 內的實際 batch 單位使用：
 
 ## 9. 與其他文件的關係
 
-1. `docs/UI-icon-factory-workflow.md`：說明 icon 怎麼進工廠流程
-2. `docs/UI-factory-agent-entry.md`：告訴 Agent 什麼時候必讀這份 registry
+1. `docs/UI-icon-factory-workflow.md (doc_ui_0033)` (doc_ui_0033)：說明 icon 怎麼進工廠流程
+2. `docs/UI-factory-agent-entry.md` (doc_ui_0032)：告訴 Agent 什麼時候必讀這份 registry
 3. `artifacts/ui-source/ai-recipes/icon-prompt-card-template.md`：實際填寫 prompt card 用

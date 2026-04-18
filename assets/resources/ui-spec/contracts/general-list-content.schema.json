@@ -1,0 +1,81 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "schemaId": "general-list-content",
+  "familyId": "general-list",
+  "version": 1,
+  "description": "GeneralListComposite content contract — provides filtered/sourced GeneralConfig array for list population.",
+  "fields": {
+    "generals": {
+      "type": "array",
+      "required": true,
+      "description": "Array of GeneralConfig objects to populate the list (bound by GeneralListComposite.show())",
+      "itemType": "object",
+      "bindPath": "generals",
+      "schema": {
+        "id": {
+          "type": "string",
+          "required": false,
+          "description": "Unique general identifier"
+        },
+        "name": {
+          "type": "string",
+          "required": true,
+          "description": "Display name of the general"
+        },
+        "gender": {
+          "type": "string",
+          "required": false,
+          "description": "Gender key (male|female|other)"
+        },
+        "age": {
+          "type": "number",
+          "required": false,
+          "description": "Age in years"
+        },
+        "str": {
+          "type": "number",
+          "required": false,
+          "description": "Strength stat (武力)"
+        },
+        "int": {
+          "type": "number",
+          "required": false,
+          "description": "Intelligence stat (智力)"
+        },
+        "lea": {
+          "type": "number",
+          "required": false,
+          "description": "Leadership stat (統率)"
+        },
+        "pol": {
+          "type": "number",
+          "required": false,
+          "description": "Politics stat (政治)"
+        },
+        "cha": {
+          "type": "number",
+          "required": false,
+          "description": "Charisma stat (魅力)"
+        },
+        "luk": {
+          "type": "number",
+          "required": false,
+          "description": "Luck stat (運勢)"
+        },
+        "troop": {
+          "type": "string",
+          "required": false,
+          "description": "Troop type rating (S|A|B|C|D)"
+        },
+        "faction": {
+          "type": "string",
+          "required": false,
+          "description": "Faction affiliation key"
+        }
+      }
+    }
+  },
+  "requiredFields": [
+    "generals"
+  ]
+}

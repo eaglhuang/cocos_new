@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "ignore": [
+    "artifacts/**/*.png",
+    "artifacts/**/*.jpg",
+    "artifacts/**/*.jpeg",
+    "artifacts/**/*.webp",
+    "artifacts/**/*.gif",
+    "artifacts/**/*.bmp",
+    "docs/asset-audit.json",
+    "docs/universal-composite-ui-framework-plan.md",
+    "docs/doc-id-registry.json",
+    "docs/doc-id-registry.md"
+  ]
+}

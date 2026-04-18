@@ -4,9 +4,9 @@
 
 延伸入口：
 
-- `docs/UI-factory-agent-entry.md`：其他 Agent 的必讀順序與路由入口。
-- `docs/UI-reference-source-workflow.md`：canonical reference 來源、AI prompt 協作與 reference 探索流程。
-- `docs/ui/UI-factory-baseline-and-gates.md`：統一 UI 基準、平台範圍、量產 gate 與完成定義。
+- `docs/UI-factory-agent-entry.md` (doc_ui_0032)：其他 Agent 的必讀順序與路由入口。
+- `docs/UI-reference-source-workflow.md (doc_ui_0036)` (doc_ui_0036)：canonical reference 來源、AI prompt 協作與 reference 探索流程。
+- `docs/ui/UI-factory-baseline-and-gates.md (doc_ui_0047)` (doc_ui_0047)：統一 UI 基準、平台範圍、量產 gate 與完成定義。
 - `artifacts/ui-source/factory-progress-scorecard.json`：當前量產工程進度與尚未完成 gate。
 
 這條量產線真正可複用的主幹，不是 AI 拆解圖，也不是單次生成成功的素材，而是：
@@ -32,7 +32,7 @@
 ### 0. Reference Source Strategist
 
 - 負責什麼：先判斷 canonical reference 來自使用者、AI 探索，還是混合模式。
-- 主要工具：正式規格、`docs/UI-reference-source-workflow.md`、`artifacts/ui-source/ai-recipes/reference-prompt-card-template.md`、`dalle3-image-gen` skill。
+- 主要工具：正式規格、`docs/UI-reference-source-workflow.md (doc_ui_0036)` (doc_ui_0036)、`artifacts/ui-source/ai-recipes/reference-prompt-card-template.md`、`dalle3-image-gen` skill。
 - 輸出：reference prompt card、`canonicalReferences`、`reference/prompts/*`、`reference/generated/*`。
 - 為什麼會變快：先對齊視覺語言與禁用語言，避免後面 proof / family routing 都建立在錯 reference 上。
 - 前提條件：screen 目標、平台限制、family 禁忌、使用者是否已有現成 reference 必須先講清楚。
@@ -152,7 +152,7 @@ node tools_node/run-ui-asset-task-batch.js --manifest <asset-task-manifest.json>
 
 | 環節 | 誰負責 | 主要工具 | 主要輸出 | 變快原理 | 前提條件 |
 |---|---|---|---|---|---|
-| 參考圖來源 | Reference Source Strategist | `UI-reference-source-workflow.md`、prompt card template、DALL-E 3 workflow | canonical reference / prompt card / reference assets | 先固定參考真相，避免後面整串都建在錯誤視覺假設上 | 必須先知道使用者是否已有參考圖 |
+| 參考圖來源 | Reference Source Strategist | `UI-reference-source-workflow.md` (doc_ui_0036)、prompt card template、DALL-E 3 workflow | canonical reference / prompt card / reference assets | 先固定參考真相，避免後面整串都建在錯誤視覺假設上 | 必須先知道使用者是否已有參考圖 |
 | Intake | Intake Compiler | `intake-ui-screen.js`、`capture-ui-screens.js` | `intake.json` | 先分流畫面重量，避免一開始就走最重流程 | 有 reference 與 runtime capture |
 | Proof | Proof Compiler | `ui-reference-decompose` | `proof.json` | 先固定語意區塊，後面才能編譯 | zone 能被穩定命名 |
 | Family Routing | Family Router | `compile-proof-to-family-map.js`、template/widget 庫 | `family-map.json` | 大部分區塊直接 reuse，不再重畫 | family 與 widget 命名穩定 |

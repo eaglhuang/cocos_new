@@ -1,0 +1,29 @@
+{
+  "$schema": "../../schemas/intake.schema.json",
+  "screenId": "LobbyMain",
+  "tier": "B",
+  "templateFamilyCandidate": "rail-list",
+  "uiId": "LobbyMain",
+  "sourceOfTruth": {
+    "screenSpec": "assets/resources/ui-spec/screens/lobby-main-screen.json",
+    "layout": "lobby-main-main",
+    "skin": "lobby-main-default",
+    "bundle": "lobby_ui",
+    "layer": "UI2D"
+  },
+  "canonicalReferences": [
+    "ref://docs/UI 規格書.md",
+    "ref://docs/UI 規格補遺_2026-04-11_培育戰場轉蛋pending.md"
+  ],
+  "riskZones": [
+    "morning-report-strip",
+    "dispatch-board-peek",
+    "battle-intel-card",
+    "world-sandtable-card",
+    "economy-subsidy-banner"
+  ],
+  "smokeRoute": "node tools_node/capture-ui-screens.js --target LobbyMain --outDir artifacts/ui-qa/lobby-main/runtime-smoke",
+  "notes": "lobby aggregation screen with pending contract anchors for morning report, dispatch, tournament season, and subsidy banner",
+  "generatedAt": "2026-04-11T12:30:00.000Z",
+  "generatedBy": "GitHubCopilot"
+}

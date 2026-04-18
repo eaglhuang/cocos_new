@@ -20,6 +20,10 @@ const config = require('./lib/project-config');
 const projectRoot = config.ROOT;
 const lockDir = config.paths.taskLocksDir;
 
+function normalizeRel(filePath) {
+    return path.relative(projectRoot, path.resolve(projectRoot, filePath)).replace(/\\/g, '/');
+}
+
 function ensureLockDir() {
     if (!fs.existsSync(lockDir)) {
         fs.mkdirSync(lockDir, { recursive: true });
@@ -38,14 +42,18 @@ function lockPath(taskId) {
     return path.join(lockDir, `${taskId}.lock.json`);
 }
 
-function lock(taskId, agentName) {
+function lock(taskId, agentName, files = []) {
     ensureLockDir();
     const lp = lockPath(taskId);
+    const normalizedFiles = Array.from(new Set((files || []).map(normalizeRel).filter(Boolean)));
     if (fs.existsSync(lp)) {
         const existing = JSON.parse(fs.readFileSync(lp, 'utf8'));
         if (existing.agentName === agentName) {
             console.log(`🔒 "${taskId}" 已由你 (${agentName}) 鎖定，更新時間戳`);
             existing.lockedAt = new Date().toISOString();
+            if (normalizedFiles.length > 0) {
+                existing.files = normalizedFiles;
+            }
             fs.writeFileSync(lp, JSON.stringify(existing, null, 2), 'utf8');
             return;
         }
@@ -56,10 +64,13 @@ function lock(taskId, agentName) {
         taskId,
         agentName,
         lockedAt: new Date().toISOString(),
-        files: []
+        files: normalizedFiles
     };
     fs.writeFileSync(lp, JSON.stringify(lockData, null, 2), 'utf8');
     console.log(`🔒 已鎖定 "${taskId}" → ${agentName}`);
+    if (normalizedFiles.length > 0) {
+        console.log(`   files: ${normalizedFiles.join(', ')}`);
+    }
 }
 
 function unlock(taskId, agentName) {
@@ -108,12 +119,17 @@ function listLocks() {
 }
 
 // CLI
-const [,, command, taskId, agentName] = process.argv;
+const rawArgs = process.argv.slice(2);
+const command = rawArgs[0];
+const taskId = rawArgs[1];
+const agentName = rawArgs[2];
+const filesFlagIndex = rawArgs.indexOf('--files');
+const files = filesFlagIndex >= 0 ? rawArgs.slice(filesFlagIndex + 1).filter((arg) => !arg.startsWith('--')) : [];
 
 switch (command) {
     case 'lock':
         if (!taskId || !agentName) { console.error('用法: task-lock.js lock <task-id> <agent-name>'); process.exit(1); }
-        lock(taskId, agentName);
+        lock(taskId, agentName, files);
         break;
     case 'unlock':
         if (!taskId || !agentName) { console.error('用法: task-lock.js unlock <task-id> <agent-name>'); process.exit(1); }

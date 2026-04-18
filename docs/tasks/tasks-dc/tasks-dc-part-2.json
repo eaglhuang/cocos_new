@@ -243,7 +243,7 @@
     "created_by_agent": "Agent1",
     "type": "documentation",
     "title": "Server API spec 文件（/sync/delta + /sync/full）",
-    "description": "建立 docs/系統規格書/同步API規格書.md，定義 POST /sync/delta（request: DeltaPatch, response: ConfirmOrConflict）與 POST /sync/full（request: FullSave, response: ConfirmOrConflict）的 schema、錯誤碼、HTTP status 碼。",
+    "description": "建立 docs/遊戲規格文件/系統規格書/同步API規格書.md，定義 POST /sync/delta（request: DeltaPatch, response: ConfirmOrConflict）與 POST /sync/full（request: FullSave, response: ConfirmOrConflict）的 schema、錯誤碼、HTTP status 碼。",
     "related": [
       "DC-5-0002"
     ],
@@ -251,12 +251,12 @@
       "DC-5-0001"
     ],
     "acceptance": [
-      "docs/系統規格書/同步API規格書.md 存在",
+      "docs/遊戲規格文件/系統規格書/同步API規格書.md 存在",
       "含兩個 API endpoint 的 request/response schema",
       "含 HTTP status 碼與錯誤碼表"
     ],
     "deliverables": [
-      "docs/系統規格書/同步API規格書.md"
+      "docs/遊戲規格文件/系統規格書/同步API規格書.md"
     ],
     "notes": "2026-04-06 | 狀態: open | 來源: 資料中心架構規格書.md §六 M5 | 阻塞: DC-5-0001"
   },

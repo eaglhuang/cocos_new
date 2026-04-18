@@ -71,5 +71,118 @@
       { "type": "damage",    "multiplier": 2.5, "target": "single",        "atTime": 0.55 },
       { "type": "floatText", "text": "龍魂突刺！", "target": "targets", "atTime": 0.55 }
     ]
+  },
+  {
+    "id": "liu-bei-rally",
+    "label": "仁德號召",
+    "description": "劉備號召全軍穩住陣線，提振士氣並對前方敵陣形成壓制。",
+    "costSp": 100,
+    "steps": [
+      { "type": "audio",     "clip": "buff",          "atTime": 0.0 },
+      { "type": "animation", "clip": "Skill",         "atTime": 0.0 },
+      { "type": "vfx",       "blockId": "ring_addatk", "target": "caster", "atTime": 0.1 },
+      { "type": "vfx",       "blockId": "glow_soft",   "target": "caster", "offsetY": 0.8, "atTime": 0.2 },
+      { "type": "damage",    "multiplier": 1.1,         "target": "all_enemies", "atTime": 0.45 },
+      { "type": "floatText", "text": "仁德號召！",      "target": "caster", "atTime": 0.5 }
+    ]
+  },
+  {
+    "id": "sun-quan-tide",
+    "label": "江東號令",
+    "description": "孫權調動江東軍勢，對敵陣發起連續波狀壓迫。",
+    "costSp": 100,
+    "steps": [
+      { "type": "audio",     "clip": "boom",            "atTime": 0.0 },
+      { "type": "animation", "clip": "Skill",           "atTime": 0.0 },
+      { "type": "vfx",       "blockId": "fire_ringwave", "target": "caster", "offsetY": 0.2, "atTime": 0.1 },
+      { "type": "vfx",       "blockId": "impact_ring",   "target": "targets", "atTime": 0.35 },
+      { "type": "damage",    "multiplier": 1.25,          "target": "all_enemies", "atTime": 0.45 },
+      { "type": "floatText", "text": "江東號令！",        "target": "caster", "atTime": 0.5 }
+    ]
+  },
+  {
+    "id": "zhuge-liang-storm",
+    "label": "八陣天機",
+    "description": "諸葛亮佈下八陣，牽引風勢重擊敵軍全線。",
+    "costSp": 100,
+    "steps": [
+      { "type": "audio",     "clip": "buff",           "atTime": 0.0 },
+      { "type": "animation", "clip": "Skill",          "atTime": 0.0 },
+      { "type": "vfx",       "blockId": "glow_soft",    "target": "caster", "offsetY": 1.0, "atTime": 0.12 },
+      { "type": "vfx",       "blockId": "impact_ring",  "target": "targets", "atTime": 0.4 },
+      { "type": "damage",    "multiplier": 1.35,         "target": "all_enemies", "atTime": 0.5 },
+      { "type": "floatText", "text": "八陣天機！",       "target": "targets", "atTime": 0.55 }
+    ]
+  },
+  {
+    "id": "zhou-yu-inferno",
+    "label": "赤壁焚風",
+    "description": "周瑜引動焚風火勢，對敵陣造成大範圍灼燒衝擊。",
+    "costSp": 100,
+    "steps": [
+      { "type": "audio",     "clip": "fireball",       "atTime": 0.0 },
+      { "type": "animation", "clip": "Skill",          "atTime": 0.0 },
+      { "type": "vfx",       "blockId": "fire_burst",   "target": "caster", "offsetY": 0.5, "atTime": 0.15 },
+      { "type": "vfx",       "blockId": "impact_shock", "target": "targets", "atTime": 0.45 },
+      { "type": "damage",    "multiplier": 1.5,          "target": "all_enemies", "atTime": 0.5 },
+      { "type": "floatText", "text": "赤壁焚風！",       "target": "targets", "atTime": 0.55 }
+    ]
+  },
+  {
+    "id": "sima-yi-shadow",
+    "label": "鷹視狼顧",
+    "description": "司馬懿佈下反制殺局，先壓制再重創敵軍核心。",
+    "costSp": 100,
+    "steps": [
+      { "type": "audio",     "clip": "buff",           "atTime": 0.0 },
+      { "type": "animation", "clip": "Skill",          "atTime": 0.0 },
+      { "type": "vfx",       "blockId": "glow_soft",    "target": "caster", "offsetY": 0.8, "atTime": 0.12 },
+      { "type": "vfx",       "blockId": "impact_shock", "target": "targets", "atTime": 0.45 },
+      { "type": "damage",    "multiplier": 1.4,          "target": "all_enemies", "atTime": 0.52 },
+      { "type": "floatText", "text": "鷹視狼顧！",       "target": "caster", "atTime": 0.56 }
+    ]
+  },
+  {
+    "id": "guo-jia-foresight",
+    "label": "鬼謀先機",
+    "description": "郭嘉先手拆解敵勢，精準擊穿最脆弱的一環。",
+    "costSp": 90,
+    "steps": [
+      { "type": "audio",     "clip": "feijian",        "atTime": 0.0 },
+      { "type": "animation", "clip": "Skill",          "atTime": 0.0 },
+      { "type": "vfx",       "blockId": "trails",       "target": "caster", "offsetY": 0.6, "atTime": 0.1 },
+      { "type": "vfx",       "blockId": "impact_shock", "target": "targets", "atTime": 0.4 },
+      { "type": "damage",    "multiplier": 1.8,          "target": "single", "atTime": 0.48 },
+      { "type": "floatText", "text": "鬼謀先機！",       "target": "targets", "atTime": 0.5 }
+    ]
+  },
+  {
+    "id": "cao-zhi-verse",
+    "label": "洛神賦",
+    "description": "曹植以辭章化形，擾亂敵軍心神並造成精神衝擊。",
+    "costSp": 90,
+    "steps": [
+      { "type": "audio",     "clip": "buff",           "atTime": 0.0 },
+      { "type": "animation", "clip": "Skill",          "atTime": 0.0 },
+      { "type": "vfx",       "blockId": "glow_soft",    "target": "caster", "offsetY": 1.0, "atTime": 0.15 },
+      { "type": "vfx",       "blockId": "impact_ring",  "target": "targets", "atTime": 0.42 },
+      { "type": "damage",    "multiplier": 1.2,          "target": "all_enemies", "atTime": 0.5 },
+      { "type": "floatText", "text": "洛神賦！",         "target": "targets", "atTime": 0.54 }
+    ]
+  },
+  {
+    "id": "diao-chan-charm",
+    "label": "閉月惑心",
+    "description": "貂蟬以惑心之舞牽制敵軍，造成範圍精神傷害並附加暈眩。",
+    "costSp": 100,
+    "steps": [
+      { "type": "audio",     "clip": "buff",           "atTime": 0.0 },
+      { "type": "animation", "clip": "Skill",          "atTime": 0.0 },
+      { "type": "vfx",       "blockId": "glow_soft",    "target": "caster", "offsetY": 0.9, "atTime": 0.12 },
+      { "type": "vfx",       "blockId": "impact_ring",  "target": "targets", "atTime": 0.4 },
+      { "type": "damage",    "multiplier": 1.0,          "target": "all_enemies", "atTime": 0.48 },
+      { "type": "buff",      "buffId": "stun",         "duration": 1, "target": "single", "atTime": 0.48 },
+      { "type": "floatText", "text": "閉月惑心！",       "target": "targets", "atTime": 0.52 }
+    ]
   }
 ]

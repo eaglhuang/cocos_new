@@ -1,0 +1,11 @@
+{
+  "$schema": "../../schemas/param-tune-manifest.schema.json",
+  "screenId": "NurtureSession",
+  "sourceFamilyMap": "NurtureSession",
+  "generatedAt": "2026-04-11T12:38:00.000Z",
+  "taskCount": 0,
+  "tasks": [],
+  "warnings": [
+    "phase header density and three-card row balance should be revisited after first runtime capture"
+  ]
+}

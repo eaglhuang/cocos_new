@@ -1,3 +1,44 @@
+export type GeneralTacticSlotSource =
+  | 'inborn'
+  | 'bloodline'
+  | 'awakened'
+  | 'locked';
+
+export interface GeneralTacticSlotConfig {
+  slotId: string;
+  tacticId: string;
+  category?: string;
+  source?: GeneralTacticSlotSource;
+  unlockCondition?: string;
+  notes?: string;
+}
+
+export interface GeneralUltimateSlotConfig {
+  slot: number;
+  ultimateId: string;
+  unlockReincarnation: number;
+  vitalityCostPct?: number;
+  isExclusive?: boolean;
+  inheritedFromGeneId?: string | null;
+  notes?: string;
+}
+
+export interface GeneralGeneratorProfileConfig {
+  coreTags?: string[];
+  tacticAffinity?: string[];
+  ultimateArchetype?: string;
+  factionBias?: string[];
+  aptitudeBias?: string[];
+  generationFlags?: string[];
+}
+
+export interface GeneralBloodlineProfileConfig {
+  hometownRegion?: string;
+  paternalSurnamePolicy?: 'fixed' | 'historical-if-known' | 'generated';
+  maternalSurnamePoolId?: string;
+  heritageTags?: string[];
+  ancestorTemplateId?: string;
+}
 // @spec-source → 見 docs/cross-reference-index.md
 import { Faction, TerrainType } from "../config/Constants";
 
@@ -32,6 +73,12 @@ export class GeneralUnit {
 
   /** 技能識別字，用於 BattleController 分派對應技能邏輯 */
   public readonly skillId: string | null;
+  /** 戰場主技能識別字，供新舊 schema 過渡使用 */
+  public readonly battlePrimarySkillId: string | null;
+  /** 正式天賦戰法槽位，供 Battle HUD / 詳情頁共用 */
+  public readonly tacticSlots: GeneralTacticSlotConfig[];
+  /** 正式奧義槽位，供 Battle HUD / 詳情頁共用 */
+  public readonly ultimateSlots: GeneralUltimateSlotConfig[];
 
   /** 該武將提供給同陣營兵種的攻擊加成比例（例如 0.1 = +10%） */
   public readonly attackBonus: number;
@@ -48,7 +95,10 @@ export class GeneralUnit {
     this.currentHp = config.hp;
     this.maxSp = config.maxSp ?? 100;
     this.currentSp = config.initialSp ?? 0;
-    this.skillId = config.skillId ?? null;
+    this.battlePrimarySkillId = config.battlePrimarySkillId ?? config.skillId ?? null;
+    this.skillId = this.battlePrimarySkillId;
+    this.tacticSlots = [...(config.tacticSlots ?? [])];
+    this.ultimateSlots = [...(config.ultimateSlots ?? [])];
     this.str = config.str ?? config.stats?.str ?? 0;
     this.int = config.int ?? config.stats?.int ?? 0;
     this.lea = config.lea ?? config.stats?.lea ?? 0;
@@ -100,6 +150,20 @@ export interface GeneralStatsConfig {
   luk?: number;
 }
 
+export type GeneralTalentRevealLevel =
+  | 'HIDDEN'
+  | 'TENDENCY'
+  | 'RANGE'
+  | 'EXACT';
+
+export interface GeneralDualLayerStatConfig {
+  base?: number;
+  current?: number;
+  maxPotential?: number;
+  revelationLevel?: GeneralTalentRevealLevel;
+  prowess?: number;
+}
+
 export type GeneralDetailStorySlot =
   | 'origin'
   | 'faction'
@@ -126,6 +190,29 @@ export type GeneralDetailRarityTier =
   | 'legendary'
   | 'mythic';
 
+export type GeneralDetailDefaultTab =
+  | 'Overview'
+  | 'Basics'
+  | 'Stats'
+  | 'Bloodline'
+  | 'Skills'
+  | 'Aptitude'
+  | 'Extended';
+
+export interface GeneralProfilePresentationConfig {
+  defaultTab?: GeneralDetailDefaultTab;
+  crestState?: GeneralDetailCrestState;
+  storyStripCells?: GeneralDetailStoryCellConfig[];
+}
+
+export interface GeneralTrainingProfileConfig {
+  sourceSessionId?: string;
+  phaseBlock?: string;
+  mentorModeLabel?: string;
+  recommendedFocus?: string[];
+  graduationTags?: string[];
+}
+
 /** 角色分類（世界觀標籤，與 rarityTier 獨立）*/
 export type CharacterCategory =
   | 'civilian'
@@ -143,6 +230,7 @@ export interface GeneralConfig {
   maxSp?: number;
   initialSp?: number;
   skillId?: string;
+  battlePrimarySkillId?: string;
   /** 武力（物理型單挑攻擊力首選）*/
   str?: number;
   /** 智力（謀略型單挑攻擊力首選）*/
@@ -185,15 +273,24 @@ export interface GeneralConfig {
   /** 角色分類：civilian 民間 / general 一般武將 / famed 名將 / mythical 神話 / titled 稱號特殊 */
   characterCategory?: CharacterCategory;
   storyStripCells?: GeneralDetailStoryCellConfig[];
+  dualLayerStats?: Partial<Record<keyof GeneralStatsConfig, GeneralDualLayerStatConfig>>;
+  profilePresentation?: GeneralProfilePresentationConfig;
+  trainingProfile?: GeneralTrainingProfileConfig;
+  coreTags?: string[];
+  generatorProfile?: GeneralGeneratorProfileConfig;
+  bloodlineProfile?: GeneralBloodlineProfileConfig;
   genes?: GeneralGeneConfig[];
 
   learnedTactics?: string[];
   inspiredTactics?: string[];
   lockedTactics?: string[];
+  tacticSlots?: GeneralTacticSlotConfig[];
+  ultimateSlots?: GeneralUltimateSlotConfig[];
 
   troopAptitude?: Record<string, string>;
   terrainAptitude?: Record<string, string>;
   weatherAptitude?: Record<string, string>;
+  ancestor_chain?: string[];
 
   stats?: GeneralStatsConfig;
   pol?: number;

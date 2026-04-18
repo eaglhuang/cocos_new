@@ -1,0 +1,10 @@
+{
+  "kind": "ui-mcq-answer-set",
+  "version": 1,
+  "screenId": "BattleHudOverlay",
+  "recipeScreenId": "battle-hud-overlay-screen",
+  "answers": {
+    "generationPolicy": "param-tune",
+    "smokeRoute": "BattleScene -> attach BattleHudOverlay HUD"
+  }
+}

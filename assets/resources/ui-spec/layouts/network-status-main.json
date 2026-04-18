@@ -1,7 +1,7 @@
 {
   "id": "network-status-main",
   "version": 1,
-  "canvas": { "fitWidth": true, "fitHeight": true, "safeArea": true, "designWidth": 1920, "designHeight": 1080 },
+  "canvas": { "fitWidth": true, "fitHeight": true, "safeArea": true, "designWidth": 1920, "designHeight": 1080, "safeAreaConstrained": true },
   "root": {
     "type": "container",
     "name": "NetworkStatusRoot",

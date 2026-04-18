@@ -1,18 +1,17 @@
 // @spec-source → 見 docs/cross-reference-index.md
 /**
- * BattleLogPanel — Zone 5: 右側面板（控制列 + 戰鬥日誌）
+ * @deprecated
+ * BattleLogPanel — 右側面板（已廢止，請使用 BattleLogComposite）
  *
  * 職責：
- *   1. 顯示滾動式戰鬥日誌
- *   2. BtnCollapse：折疊/展開日誌區（tween 0.3s）
- *   3. Auto/x2/⚙ 控制列位於日誌上方（常駐顯示）
+ *   1. 顯示滾動式戰鬥日誌已遷移至 CompositePanel
+ *   2. 折疊/展開日誌區已遷移
+ *   3. 控制列已遷移
  *
- * 注意（v3）：結束回合 / 計謀 / 單挑 已移至 ActionCommandPanel (Zone 7)，
- * 不再由 BattleLogPanel 處理。
+ * 遷移完成時間：2026-04-13 (Wave 2)
+ * 預計刪除：2026-05-13 (Wave 2 全部遷移後)
  *
- * 架構模式：繼承 UIPreviewBuilder，在 onReady(binder) 透過自動綁定取得節點引用
- * Unity 對照：BattleRightPanel（含 BattleLog + CollapseArrow）
- * 規格書：見 battle-log-{main/default/screen}.json (battle_ui bundle)
+ * Unity 對照：BattleRightPanel，含 BattleLog + 控制列
  */
 import { _decorator, Button, Label, Node, ScrollView, tween, UITransform } from "cc";
 import { UIPreviewBuilder } from '../core/UIPreviewBuilder';

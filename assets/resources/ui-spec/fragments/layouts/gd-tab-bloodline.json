@@ -1,0 +1,98 @@
+{
+  "type": "panel",
+  "name": "TabBloodlineContent",
+  "widget": { "top": 0, "bottom": 0, "left": 0, "right": 0 },
+  "layout": { "type": "vertical", "spacing": 12, "paddingTop": 28, "paddingBottom": 28, "paddingLeft": 28, "paddingRight": 28 },
+  "children": [
+    {
+      "type": "panel",
+      "name": "BloodlineSummaryCard",
+      "width": "100%",
+      "height": 156,
+      "skinSlot": "detail.bloodline.card",
+      "layout": { "type": "vertical", "spacing": 8, "paddingTop": 10, "paddingBottom": 10, "paddingLeft": 14, "paddingRight": 14 },
+      "children": [
+        { "type": "label", "name": "EpRatingValue",  "width": "100%", "height": 28, "styleSlot": "detail.label.value" },
+        { "type": "label", "name": "BloodlineValue",  "width": "100%", "height": 28, "styleSlot": "detail.label.value" },
+        { "type": "label", "name": "ParentsValue",    "width": "100%", "height": 28, "styleSlot": "detail.label.value" },
+        { "type": "label", "name": "AncestorsValue",  "width": "100%", "height": 28, "styleSlot": "detail.label.value" }
+      ]
+    },
+    {
+      "type": "panel",
+      "name": "AncestorTree",
+      "width": "100%",
+      "height": 260,
+      "skinSlot": "detail.ancestry.card",
+      "children": [
+        {
+          "type": "container",
+          "name": "Gen1Container",
+          "widget": { "top": 14, "hCenter": true },
+          "height": 55,
+          "layout": { "type": "horizontal", "spacing": 6 },
+          "children": [
+            { "type": "panel", "name": "Gen1A", "width": 83, "height": 45, "skinSlot": "detail.ancestor.chip" },
+            { "type": "panel", "name": "Gen1B", "width": 83, "height": 45, "skinSlot": "detail.ancestor.chip" },
+            { "type": "panel", "name": "Gen1C", "width": 83, "height": 45, "skinSlot": "detail.ancestor.chip" },
+            { "type": "panel", "name": "Gen1D", "width": 83, "height": 45, "skinSlot": "detail.ancestor.chip" },
+            { "type": "panel", "name": "Gen1E", "width": 83, "height": 45, "skinSlot": "detail.ancestor.chip" },
+            { "type": "panel", "name": "Gen1F", "width": 83, "height": 45, "skinSlot": "detail.ancestor.chip" },
+            { "type": "panel", "name": "Gen1G", "width": 83, "height": 45, "skinSlot": "detail.ancestor.chip" },
+            { "type": "panel", "name": "Gen1H", "width": 83, "height": 45, "skinSlot": "detail.ancestor.chip" }
+          ]
+        },
+        {
+          "type": "container",
+          "name": "Gen2Container",
+          "widget": { "top": 87, "hCenter": true },
+          "height": 65,
+          "layout": { "type": "horizontal", "spacing": 10 },
+          "children": [
+            { "type": "panel", "name": "Gen2A", "width": 140, "height": 55, "skinSlot": "detail.ancestor.chip" },
+            { "type": "panel", "name": "Gen2B", "width": 140, "height": 55, "skinSlot": "detail.ancestor.chip" },
+            { "type": "panel", "name": "Gen2C", "width": 140, "height": 55, "skinSlot": "detail.ancestor.chip" },
+            { "type": "panel", "name": "Gen2D", "width": 140, "height": 55, "skinSlot": "detail.ancestor.chip" }
+          ]
+        },
+        {
+          "type": "container",
+          "name": "Gen3Container",
+          "widget": { "top": 172, "hCenter": true },
+          "height": 75,
+          "layout": { "type": "horizontal", "spacing": 14 },
+          "children": [
+            { "type": "panel", "name": "Gen3A", "width": 180, "height": 65, "skinSlot": "detail.ancestor.chip" },
+            { "type": "panel", "name": "Gen3B", "width": 180, "height": 65, "skinSlot": "detail.ancestor.chip" }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "panel",
+      "name": "GeneListCard",
+      "width": "100%",
+      "height": 180,
+      "skinSlot": "detail.gene.card",
+      "layout": { "type": "vertical", "spacing": 8, "paddingTop": 10, "paddingBottom": 10, "paddingLeft": 14, "paddingRight": 14 },
+      "children": [
+        { "type": "label", "name": "Gene1Value", "width": "100%", "height": 28, "styleSlot": "detail.label.value" },
+        { "type": "label", "name": "Gene2Value", "width": "100%", "height": 28, "styleSlot": "detail.label.value" },
+        { "type": "label", "name": "Gene3Value", "width": "100%", "height": 28, "styleSlot": "detail.label.value" },
+        { "type": "label", "name": "Gene4Value", "width": "100%", "height": 28, "styleSlot": "detail.label.value" },
+        { "type": "label", "name": "Gene5Value", "width": "100%", "height": 28, "styleSlot": "detail.label.value" }
+      ]
+    },
+    {
+      "type": "panel",
+      "name": "AwakeningCard",
+      "width": "100%",
+      "height": 56,
+      "skinSlot": "detail.awakening.card",
+      "layout": { "type": "vertical", "spacing": 0, "paddingTop": 8, "paddingBottom": 8, "paddingLeft": 14, "paddingRight": 14 },
+      "children": [
+        { "type": "label", "name": "AwakeningValue", "width": "100%", "height": 40, "styleSlot": "detail.label.value" }
+      ]
+    }
+  ]
+}
