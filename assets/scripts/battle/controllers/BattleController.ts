@@ -73,12 +73,6 @@ const FORWARD_DIR: Record<Faction, number> = {
   [Faction.Enemy]:  -1,  // 敵方向 depth 減少方向前進（7 → 0）
 };
 
-/** 可以對敵將發動攻擊的最前線 depth */
-const FRONT_DEPTH: Record<Faction, number> = {
-  [Faction.Player]: GAME_CONFIG.GRID_DEPTH - 1,  // depth 7
-  [Faction.Enemy]:  0,
-};
-
 /** 各兵種預設數值（JSON 載入失敗時的後備） */
 const DEFAULT_TROOP_STATS: Record<TroopType, TroopStats> = {
   [TroopType.Cavalry]:  { hp: 100, attack: 40, defense: 20, moveRange: 2, attackRange: 1 },
@@ -756,7 +750,7 @@ export class BattleController {
     unit.moveTo(lane, depth);
 
     // 拒絕單挑懲罰：新部署的小兵也要減半
-    if (this.duelRejectedFaction === faction) {
+    if (this.duelFlow.duelRejectedFaction === faction) {
       const atkLoss = -Math.floor(unit.getEffectiveAttack() / 2);
       unit.attackBonus += atkLoss;
       const hpLoss = -Math.floor(unit.getEffectiveMaxHp() / 2);
@@ -765,7 +759,7 @@ export class BattleController {
     }
 
     // 武將出陣期間，新部署的我方小兵也享受攻擊加倍
-    if (faction === Faction.Player && this.playerGeneralUnitId) {
+    if (faction === Faction.Player && this.duelFlow.playerGeneralUnitId) {
       unit.attackBonus += unit.attack;
     }
 
@@ -857,48 +851,7 @@ export class BattleController {
    * @returns 成功回傳武將化身的 TroopUnit，失敗回傳 null
    */
   public placeGeneralOnBoard(lane: number, depth: number): TroopUnit | null {
-    const cell = this.state.getCell(lane, depth);
-    if (!cell || cell.occupantId) return null;
-
-    const pg = this.state.playerGeneral;
-    if (!pg || pg.isDead()) return null; // 防禦：從 startGeneralDuel() 到玩家選格期間武將可能死亡
-    // 建立武將化身小兵：使用將軍的 HP、高攻擊、1 格攻擊距離、2 格移動
-    const stats: TroopStats = {
-      hp: pg.currentHp,
-      attack: services().formula.calculateGeneralAttack({ str: pg.str, int: pg.int, lea: pg.lea, maxHp: pg.maxHp }),
-      defense: 30,
-      moveRange: 2,
-      attackRange: 1,
-    };
-    const id = `player-general-${++this.serial}`;
-    const unit = new TroopUnit(id, TroopType.Infantry, Faction.Player, stats);
-    unit.currentHp = pg.currentHp; // 同步武將當前HP
-    unit.moveTo(lane, depth);
-    this.state.addUnit(unit);
-    this.playerGeneralUnitId = id;
-    this.isWaitingDuelPlacement = false;
-
-    // 所有我方小兵攻擊力加倍
-    this.state.units.forEach(u => {
-      if (u.faction === Faction.Player && u.id !== id) {
-        u.attackBonus += u.attack; // 攻擊力翻倍 = 加上自身基礎攻擊
-      }
-    });
-
-    services().event.emit(EVENT_NAMES.GeneralDuelStart, {
-      faction: Faction.Player,
-      unitId: id,
-      lane,
-      depth,
-    });
-    services().event.emit(EVENT_NAMES.UnitDeployed, {
-      unitId: id,
-      faction: Faction.Player,
-      type: TroopType.Infantry,
-      lane,
-    });
-
-    return unit;
+    return this.duelFlow.placeGeneralOnBoard(lane, depth);
   }
 
   /**
@@ -944,11 +897,11 @@ export class BattleController {
    * 取得拒絕單挑的陣營（用於新部署小兵時自動施加懲罰減半）。
    */
   public getDuelRejectedFaction(): Faction | null {
-    return this.duelRejectedFaction;
+    return this.duelFlow.getDuelRejectedFaction();
   }
 
   public isDuelChallengeResolved(): boolean {
-    return this.duelChallengeResolved;
+    return this.duelFlow.isDuelChallengeResolved();
   }
 
   /**
