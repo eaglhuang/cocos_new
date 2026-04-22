@@ -248,15 +248,13 @@ export class UIPreviewBuilder extends Component {
         // Row 子欄位的百分比間距應相對於 Row 內容區（扣掉 Row 自身的 paddingLeft/paddingRight）。
         // Content.width は Layout.CONTAINER+no-children pass で paddingL+R だけに縮んでしまう。
         // viewPort (view) は Widget(all=0) で DataList 全体を埋めるため post-Widget 後も正確。
-        const rowPaddingLeft  = (template.layout as any)?.paddingLeft  ?? 0;
-        const rowPaddingRight = (template.layout as any)?.paddingRight ?? 0;
         const viewNode = listNode.getChildByName('view');
         const viewT    = viewNode?.getComponent(UITransform);
         const listT    = listNode.getComponent(UITransform);
         const availableW = (viewT?.width ?? 0) > 0 ? viewT!.width
                          : (listT?.width ?? 0) > 0 ? listT!.width
                          : 800;
-        const parentW  = Math.max(availableW - rowPaddingLeft - rowPaddingRight, 100);
+        const parentW  = Math.max(availableW, 100);
         const parentH  = template.height  ?? 50;
 
         for (let i = 0; i < data.length; i++) {
@@ -309,10 +307,28 @@ export class UIPreviewBuilder extends Component {
             case 'button':          await this.nodeFactory.buildButton(node, spec);       break;
             case 'scroll-list':
             case 'scroll-view': {
-                // Widget が applyWidget 内で UITransform を実際のサイズに更新済みのため
-                // post-Widget サイズを buildScrollList に渡し viewPort/Content を正しく初期化する
-                const nodeT = node.getComponent(UITransform)!;
-                await this.nodeFactory.buildScrollList(node, spec, nodeT.width || w, nodeT.height || h);
+                let scrollW = w;
+                let scrollH = h;
+                const widgetDef = spec.widget;
+                if (widgetDef) {
+                    if (widgetDef.left !== undefined && widgetDef.right !== undefined) {
+                        scrollW = Math.max(
+                            parentWidth
+                            - resolveSize(widgetDef.left, parentWidth)
+                            - resolveSize(widgetDef.right, parentWidth),
+                            0,
+                        );
+                    }
+                    if (widgetDef.top !== undefined && widgetDef.bottom !== undefined) {
+                        scrollH = Math.max(
+                            parentHeight
+                            - resolveSize(widgetDef.top, parentHeight)
+                            - resolveSize(widgetDef.bottom, parentHeight),
+                            0,
+                        );
+                    }
+                }
+                await this.nodeFactory.buildScrollList(node, spec, scrollW, scrollH);
                 break;
             }
             case 'image':           await this.nodeFactory.buildImage(node, spec);        break;
@@ -339,8 +355,38 @@ export class UIPreviewBuilder extends Component {
         // 遞迴建立子節點（Widget 對齊後的實際尺寸作為 parentWidth/Height，確保百分比子節點正確計算）
         if (spec.children) {
             const nodeT      = node.getComponent(UITransform);
-            const effectiveW = nodeT && nodeT.width  > 0 ? nodeT.width  : w;
-            const effectiveH = nodeT && nodeT.height > 0 ? nodeT.height : h;
+            let effectiveW = nodeT && nodeT.width  > 0 ? nodeT.width  : w;
+            let effectiveH = nodeT && nodeT.height > 0 ? nodeT.height : h;
+            const widgetDef = spec.widget;
+            if (widgetDef) {
+                if (widgetDef.left !== undefined && widgetDef.right !== undefined) {
+                    effectiveW = Math.max(
+                        parentWidth
+                        - resolveSize(widgetDef.left, parentWidth)
+                        - resolveSize(widgetDef.right, parentWidth),
+                        0,
+                    );
+                }
+                if (widgetDef.top !== undefined && widgetDef.bottom !== undefined) {
+                    effectiveH = Math.max(
+                        parentHeight
+                        - resolveSize(widgetDef.top, parentHeight)
+                        - resolveSize(widgetDef.bottom, parentHeight),
+                        0,
+                    );
+                }
+            }
+            const layoutDef = spec.layout;
+            if (layoutDef) {
+                effectiveW = Math.max(
+                    effectiveW - (layoutDef.paddingLeft ?? 0) - (layoutDef.paddingRight ?? 0),
+                    0,
+                );
+                effectiveH = Math.max(
+                    effectiveH - (layoutDef.paddingTop ?? 0) - (layoutDef.paddingBottom ?? 0),
+                    0,
+                );
+            }
             for (const child of spec.children) {
                 await this._buildNode(child, node, effectiveW, effectiveH);
             }

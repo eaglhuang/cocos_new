@@ -436,7 +436,7 @@ export function createBattleControllerSkillTargetingSuite(): TestSuite {
         assert.isTrue(backEnemy.currentHp < 100);
     });
 
-    suite.test('initBattle：FloodAttack 會在中線建立 river current，並推進進入河道的單位', () => {
+    suite.test('initBattle：FloodAttack 會在中線建立 river current，且水戰單位每回合只前進一格', () => {
         const originalRandom = Math.random;
         Math.random = () => 0;
         try {
@@ -451,13 +451,13 @@ export function createBattleControllerSkillTargetingSuite(): TestSuite {
             assert.equals('river', riverCell!.terrain);
             assert.isDefined(riverEffect);
             assert.equals('river-current', riverEffect!.state);
-            assert.equals(1, riverEffect!.forcedMoveSteps!);
+            assert.isFalse('forcedMoveSteps' in riverEffect!);
 
             const runner = new TroopUnit('player-runner', TroopType.Cavalry, Faction.Player, {
                 hp: 100,
                 attack: 30,
                 defense: 10,
-                moveRange: 1,
+                moveRange: 2,
                 attackRange: 1,
             });
             runner.moveTo(2, 1);
@@ -467,10 +467,174 @@ export function createBattleControllerSkillTargetingSuite(): TestSuite {
             enemyGeneral.currentSp = 0;
             ctrl.advanceTurn();
 
-            assert.equals(3, runner.depth);
+            assert.equals(2, runner.depth);
         } finally {
             Math.random = originalRandom;
         }
+    });
+
+    suite.test('FloodAttack：站在 river current 上的騎兵也只會前進一格', () => {
+        services().initialize();
+        const ctrl = new BattleController();
+        const playerGeneral = createGeneral('sun-jian', Faction.Player, 'sun-jian-blade');
+        const enemyGeneral = createGeneral('zhang-liao', Faction.Enemy, 'zhang-liao-rush');
+        ctrl.initBattle(playerGeneral, enemyGeneral, undefined, undefined, BattleTactic.FloodAttack);
+
+        const cavalry = new TroopUnit('player-cavalry', TroopType.Cavalry, Faction.Player, {
+            hp: 100,
+            attack: 30,
+            defense: 10,
+            moveRange: 2,
+            attackRange: 1,
+        });
+        cavalry.moveTo(2, 2);
+        ctrl.state.addUnit(cavalry);
+
+        const result = ctrl.resolvePlayerTurn();
+
+        assert.equals('ongoing', result);
+        assert.equals(2, cavalry.lane);
+        assert.equals(3, cavalry.depth);
+    });
+
+    suite.test('tryDeployTroop：一般戰場新部署的騎兵仍保留正常移動距離', () => {
+        services().initialize();
+        const ctrl = new BattleController();
+        const playerGeneral = createGeneral('ma-chao', Faction.Player, 'ma-chao-charge');
+        const enemyGeneral = createGeneral('cao-ren', Faction.Enemy, 'cao-ren-guard');
+        ctrl.initBattle(playerGeneral, enemyGeneral);
+
+        const outcome = ctrl.tryDeployTroop(TroopType.Cavalry, 2);
+        assert.isTrue(outcome.ok);
+        assert.isDefined(outcome.unit);
+
+        const result = ctrl.resolvePlayerTurn();
+        assert.equals('ongoing', result);
+        assert.equals(2, outcome.unit!.depth);
+    });
+
+    suite.test('FloodAttack：敵軍站在 river current 上時，回合結束會先前進一格再往左推一格', () => {
+        services().initialize();
+        const ctrl = new BattleController();
+        const playerGeneral = createGeneral('sun-jian', Faction.Player, 'sun-jian-blade');
+        const enemyGeneral = createGeneral('zhang-liao', Faction.Enemy, 'zhang-liao-rush');
+        ctrl.initBattle(playerGeneral, enemyGeneral, undefined, undefined, BattleTactic.FloodAttack);
+
+        const cavalry = new TroopUnit('enemy-cavalry', TroopType.Cavalry, Faction.Enemy, {
+            hp: 100,
+            attack: 30,
+            defense: 10,
+            moveRange: 0,
+            attackRange: 1,
+        });
+        cavalry.moveTo(2, 5);
+        ctrl.state.addUnit(cavalry);
+
+        const result = ctrl.resolveEnemyTurn();
+
+        assert.equals('ongoing', result);
+        assert.equals(1, cavalry.lane);
+        assert.equals(4, cavalry.depth);
+    });
+
+    suite.test('FloodAttack：敵軍會先完成攻擊，再被水流往左推', () => {
+        services().initialize();
+        const ctrl = new BattleController();
+        const playerGeneral = createGeneral('sun-jian', Faction.Player, 'sun-jian-blade');
+        const enemyGeneral = createGeneral('zhang-liao', Faction.Enemy, 'zhang-liao-rush');
+        ctrl.initBattle(playerGeneral, enemyGeneral, undefined, undefined, BattleTactic.FloodAttack);
+        playerGeneral.currentSp = 0;
+        enemyGeneral.currentSp = 0;
+
+        const striker = new TroopUnit('enemy-striker', TroopType.Infantry, Faction.Enemy, {
+            hp: 100,
+            attack: 80,
+            defense: 10,
+            moveRange: 0,
+            attackRange: 1,
+        });
+        striker.moveTo(2, 5);
+        ctrl.state.addUnit(striker);
+
+        const target = new TroopUnit('player-target', TroopType.Infantry, Faction.Player, {
+            hp: 100,
+            attack: 20,
+            defense: 0,
+            moveRange: 0,
+            attackRange: 0,
+        });
+        target.moveTo(2, 4);
+        ctrl.state.addUnit(target);
+
+        const result = ctrl.resolveEnemyTurn();
+
+        assert.equals('ongoing', result);
+        assert.isTrue(target.currentHp < 100);
+        assert.equals(1, striker.lane);
+        assert.equals(5, striker.depth);
+    });
+
+    suite.test('FloodAttack：敵軍被推到最左側邊界時會先前進一格再半血', () => {
+        services().initialize();
+        const ctrl = new BattleController();
+        const playerGeneral = createGeneral('sun-jian', Faction.Player, 'sun-jian-blade');
+        const enemyGeneral = createGeneral('zhang-liao', Faction.Enemy, 'zhang-liao-rush');
+        ctrl.initBattle(playerGeneral, enemyGeneral, undefined, undefined, BattleTactic.FloodAttack);
+        playerGeneral.currentSp = 0;
+        enemyGeneral.currentSp = 0;
+
+        const edgeUnit = new TroopUnit('enemy-edge', TroopType.Infantry, Faction.Enemy, {
+            hp: 100,
+            attack: 0,
+            defense: 10,
+            moveRange: 0,
+            attackRange: 0,
+        });
+        edgeUnit.moveTo(1, 5);
+        ctrl.state.addUnit(edgeUnit);
+
+        const result = ctrl.resolveEnemyTurn();
+
+        assert.equals('ongoing', result);
+        assert.equals(0, edgeUnit.lane);
+        assert.equals(4, edgeUnit.depth);
+        assert.equals(50, edgeUnit.currentHp);
+    });
+
+    suite.test('FloodAttack：敵軍回合結束前會檢查 river current，水流格上的敵軍會先前進一格再被推走', () => {
+        services().initialize();
+        const ctrl = new BattleController();
+        const playerGeneral = createGeneral('sun-jian', Faction.Player, 'sun-jian-blade');
+        const enemyGeneral = createGeneral('zhang-liao', Faction.Enemy, 'zhang-liao-rush');
+        ctrl.initBattle(playerGeneral, enemyGeneral, undefined, undefined, BattleTactic.FloodAttack);
+
+        const rider = new TroopUnit('enemy-rider', TroopType.Cavalry, Faction.Enemy, {
+            hp: 100,
+            attack: 30,
+            defense: 10,
+            moveRange: 0,
+            attackRange: 1,
+        });
+        rider.moveTo(3, 5);
+        ctrl.state.addUnit(rider);
+
+        for (let lane = 0; lane < 5; lane++) {
+            const blocker = new TroopUnit(`enemy-blocker-${lane}`, TroopType.Infantry, Faction.Enemy, {
+                hp: 100,
+                attack: 30,
+                defense: 10,
+                moveRange: 0,
+                attackRange: 1,
+            });
+            blocker.moveTo(lane, 7);
+            ctrl.state.addUnit(blocker);
+        }
+
+        const result = ctrl.resolveEnemyTurn();
+
+        assert.equals('ongoing', result);
+        assert.equals(2, rider.lane);
+        assert.equals(4, rider.depth);
     });
 
     suite.test('initBattle：RockSlide 會建立阻擋格，阻止單位往前推進', () => {
@@ -581,14 +745,17 @@ export function createBattleControllerSkillTargetingSuite(): TestSuite {
 
             const initialHp = hiddenUnit.currentHp;
             ctrl.advanceTurn();
+            ctrl.finalizeAdvanceTurn();
             assert.equals(initialHp, hiddenUnit.currentHp);
             assert.equals(1, ctrl.state.sceneFlags.stealthOpenTurns);
 
             ctrl.advanceTurn();
+            ctrl.finalizeAdvanceTurn();
             assert.equals(initialHp, hiddenUnit.currentHp);
             assert.equals(0, ctrl.state.sceneFlags.stealthOpenTurns);
 
             ctrl.advanceTurn();
+            ctrl.finalizeAdvanceTurn();
             assert.isTrue(hiddenUnit.currentHp < initialHp);
         } finally {
             Math.random = originalRandom;
@@ -631,12 +798,14 @@ export function createBattleControllerSkillTargetingSuite(): TestSuite {
             const playerInitialHp = playerUnit.currentHp;
             const enemyInitialHp = enemyUnit.currentHp;
             ctrl.advanceTurn();
+            ctrl.finalizeAdvanceTurn();
 
             assert.isTrue(enemyUnit.currentHp < enemyInitialHp);
             assert.equals(playerInitialHp, playerUnit.currentHp);
             assert.equals(1, ctrl.state.sceneFlags.nightRaidOpenTurns);
 
             ctrl.advanceTurn();
+            ctrl.finalizeAdvanceTurn();
             assert.equals(0, ctrl.state.sceneFlags.nightRaidOpenTurns);
             assert.isFalse(ctrl.state.sceneFlags.nightRaid);
         } finally {

@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="utf-8">
+<title>3KLife · Character</title>
+<link rel="stylesheet" href="../../colors_and_type.css">
+<style>
+  * { box-sizing: border-box; margin: 0; }
+  html, body { width: 1920px; height: 1080px; overflow: hidden; font-family: var(--font-body); color: var(--text-primary); }
+  body {
+    background:
+      linear-gradient(180deg, rgba(10,10,10,.6), rgba(10,10,10,.3)),
+      url("../../assets/backgrounds/bg_ink.png") center/cover no-repeat,
+      #0F0F0F;
+  }
+
+  /* ------- Top tabs (parchment plaques) ------- */
+  .tabs {
+    position:absolute; left:50%; top:32px; transform:translateX(-50%); z-index:20;
+    display:flex; gap:4px;
+  }
+  .tab {
+    padding: 0 36px; height: 56px; display:flex; align-items:center; gap:10px;
+    font-family: var(--font-headline); font-size: 20px; font-weight: 700;
+    color: #9a8f74; letter-spacing:.15em; cursor:pointer;
+    background:#151513;
+    border: 1px solid #3a3528; border-bottom: none;
+    border-radius: 10px 10px 0 0;
+    position:relative;
+  }
+  .tab .en { font-family: var(--font-label); font-size: 10px; letter-spacing:.2em; color:#6b6456; text-transform:uppercase; font-weight:600;}
+  .tab.active {
+    background: linear-gradient(180deg, #F0EBDD 0%, #E8DFD0 100%);
+    color: #3a2a14; border-color:#8A6E1F;
+    box-shadow: inset 0 -3px 0 #D4AF37, 0 -4px 12px rgba(212,175,55,.15);
+  }
+  .tab.active .en { color:#8A6E1F; }
+
+  /* Back button */
+  .back {
+    position:absolute; left:32px; top:32px; z-index:20;
+    width:56px; height:56px; border-radius:12px; cursor:pointer;
+    background: linear-gradient(180deg,#20201F,#111);
+    border: 2px solid #4D4635; display:grid; place-items:center;
+    color:#FFE088; font-family:var(--font-headline); font-size:22px; font-weight:800;
+  }
+
+  /* ------- Root layout ------- */
+  .stage {
+    position:absolute; inset: 104px 32px 32px; z-index:10;
+    display:grid; grid-template-columns: 520px 1fr 420px; gap:20px;
+  }
+
+  /* ------- Left: portrait panel ------- */
+  .portrait-panel {
+    position:relative;
+    background: linear-gradient(180deg, #F0EBDD 0%, #E8DFD0 70%, #D8CEB8 100%);
+    border: 3px solid #8A6E1F;
+    border-radius: 14px;
+    box-shadow: 0 8px 24px rgba(0,0,0,.65), inset 0 0 0 2px #D4AF37, inset 0 0 40px rgba(139,110,58,.12);
+    overflow:hidden;
+  }
+  .portrait-panel::before {
+    content:""; position:absolute; inset:6px; border: 1px solid rgba(138,110,31,.35);
+    border-radius:9px; pointer-events:none;
+  }
+  .portrait-img {
+    width:100%; height:100%; object-fit:contain; object-position:center bottom;
+    filter: drop-shadow(0 12px 20px rgba(0,0,0,.35));
+    mix-blend-mode: multiply;
+  }
+  .portrait-name {
+    position:absolute; left:0; right:0; top:24px; text-align:center;
+    font-family: var(--font-headline); font-weight:700; color:#3a2a14; letter-spacing:.5em;
+  }
+  .portrait-name .big { font-size: 64px; text-shadow: 0 2px 0 rgba(255,255,255,.6);}
+  .portrait-name .small { font-family: var(--font-label); font-size:12px; letter-spacing:.55em; color:#8A6E1F; margin-top:4px;}
+  .rarity-ribbon {
+    position:absolute; top:20px; right:-6px; padding: 6px 20px;
+    background: linear-gradient(180deg, #B22222, #8B1717);
+    color:#FFE088; font-family:var(--font-headline); font-weight:800; font-size:16px; letter-spacing:.3em;
+    box-shadow: 0 4px 8px rgba(0,0,0,.5);
+  }
+  .rarity-ribbon::after { content:""; position:absolute; bottom:-6px; right:0; border:3px solid transparent; border-top-color:#5a0f0f; border-left-color:#5a0f0f;}
+  .stars { position:absolute; left:0; right:0; bottom:18px; text-align:center; font-size:22px; color:#D4AF37; letter-spacing:.2em; text-shadow: 0 1px 0 rgba(255,255,255,.4);}
+
+  /* ------- Middle: stats & skills ------- */
+  .middle { display:flex; flex-direction:column; gap:16px; min-width:0;}
+
+  .panel {
+    background: linear-gradient(180deg, #20201F 0%, #151513 100%);
+    border: 2px solid #4D4635; border-radius: 12px;
+    box-shadow: 0 6px 16px rgba(0,0,0,.5);
+    overflow:hidden;
+  }
+  .panel-head {
+    padding: 12px 18px; display:flex; align-items:center; justify-content:space-between;
+    background: linear-gradient(180deg, #3F6A62 0%, #2A4B44 100%);
+    border-bottom: 2px solid #D4AF37; box-shadow: inset 0 1px 0 rgba(255,255,255,.15);
+  }
+  .panel-head .ttl { font-family: var(--font-headline); font-size:22px; color:#F5F1E8; font-weight:700; letter-spacing:.15em;}
+  .panel-head .en  { font-family: var(--font-label); font-size:10px; letter-spacing:.3em; color:#A4D2D0; text-transform:uppercase;}
+
+  /* Stats */
+  .stats { padding: 16px 18px; display:grid; grid-template-columns: 1fr 1fr; gap: 8px 28px;}
+  .stat {
+    display:flex; justify-content:space-between; align-items:baseline;
+    padding: 10px 0; border-bottom: 1px dashed #4D4635;
+  }
+  .stat .k { font-family: var(--font-label); font-size:12px; letter-spacing:.15em; color:#B0A880;}
+  .stat .v { font-family: var(--font-num); font-weight:700; font-size: 20px; color:#FFE088;}
+  .stat .delta { font-family: var(--font-num); font-size:12px; color:#86E1A5; margin-left:6px;}
+
+  /* Skills */
+  .skills-body { padding: 12px 18px 16px; display:flex; flex-direction:column; gap: 10px;}
+  .skill-row {
+    display:grid; grid-template-columns: 64px 1fr auto; gap: 14px; align-items:center;
+    padding: 10px 14px; background: rgba(240,232,216,.04);
+    border: 1px solid #4D4635; border-radius: 10px;
+  }
+  .skill-icon {
+    width:64px; height:64px; border-radius:14px;
+    background: radial-gradient(circle at 35% 30%, #FFE088, #D4AF37 60%, #8A6E1F);
+    border:2px solid #8A6E1F; display:grid; place-items:center;
+    font-family: var(--font-headline); font-size:30px; color:#2D1E00; font-weight:800;
+    box-shadow: inset 0 2px 4px rgba(255,255,255,.4), 0 3px 8px rgba(0,0,0,.5);
+  }
+  .skill-icon.ult { background: radial-gradient(circle at 35% 30%, #FFBFB8, #B22222 60%, #5a0f0f); color:#FFE088; border-color:#5a0f0f;}
+  .skill-info .sn { font-family: var(--font-headline); font-size: 17px; color:#FFE088; font-weight:700; margin-bottom:3px;}
+  .skill-info .sd { font-size: 12px; color:#D0C5AF; line-height:1.5;}
+  .skill-info .tag { display:inline-block; margin-right:6px; padding: 1px 6px; background:#4D4635; color:#FFE088; font-size:10px; letter-spacing:.1em; border-radius:3px; font-family:var(--font-label);}
+  .skill-info .tag.ult { background:#B22222; color:#FFE088;}
+  .skill-lv { font-family:var(--font-num); font-weight:800; font-size:18px; color:#E8E4DC; text-align:center; padding:0 6px;}
+  .skill-lv .s { font-size:10px; color:#B0A880; display:block; font-family:var(--font-label); letter-spacing:.1em;}
+
+  /* ------- Right: equipment + actions ------- */
+  .right { display:flex; flex-direction:column; gap:16px; min-width:0;}
+
+  .eq-grid { padding: 14px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;}
+  .eq-cell {
+    aspect-ratio: 1;
+    background: linear-gradient(180deg, #2a2520 0%, #1a1612 100%);
+    border: 2px solid var(--c, #4D4635); border-radius: 10px;
+    position:relative; display:grid; place-items:center;
+    font-family: var(--font-headline); font-size: 26px; color:#FFE088; font-weight:800;
+    box-shadow: inset 0 0 12px rgba(0,0,0,.5);
+  }
+  .eq-cell.eq-epic { --c:#B5179E; box-shadow: inset 0 0 16px rgba(181,23,158,.25);}
+  .eq-cell.eq-legend { --c:#FF8C00; box-shadow: inset 0 0 16px rgba(255,140,0,.3);}
+  .eq-cell.eq-rare  { --c:#4A90E2; box-shadow: inset 0 0 16px rgba(74,144,226,.25);}
+  .eq-cell.empty { color:#4D4635; font-size:14px; letter-spacing:.15em;}
+  .eq-cell .lv { position:absolute; bottom:3px; right:5px; font-family:var(--font-num); font-size:11px; color:#FFE088;}
+  .eq-cell::after { content:""; position:absolute; inset:3px; border: 1px solid rgba(212,175,55,.25); border-radius: 7px; pointer-events:none;}
+
+  /* Exp & level */
+  .exp-card { padding: 16px 18px;}
+  .exp-row { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:8px;}
+  .exp-row .lbl { font-family: var(--font-label); font-size: 11px; letter-spacing:.25em; color:#B0A880;}
+  .exp-row .lv { font-family: var(--font-headline); font-size: 34px; color:#FFE088; font-weight:800;
+    text-shadow: 0 0 10px rgba(255,224,136,.3);}
+  .exp-row .nx { font-family: var(--font-num); font-size:12px; color:#B0A880;}
+  .exp-bar { height: 14px; border-radius: 7px; background:#0a0a0a; border: 1.5px solid #4D4635; overflow:hidden; position:relative;}
+  .exp-bar i { display:block; height:100%; background: linear-gradient(90deg, #D4AF37, #FFE088); box-shadow: 0 0 8px rgba(255,224,136,.5);}
+
+  /* Bond / affinity */
+  .bond { padding: 14px 18px; display:flex; justify-content:space-between; align-items:center; gap: 14px;}
+  .bond .lbl { font-family:var(--font-label); font-size:11px; letter-spacing:.25em; color:#B0A880;}
+  .bond .hearts { color: #FF6B6B; font-size:22px; letter-spacing:.15em;}
+  .bond .hearts .off { color:#4D4635;}
+
+  /* CTA row */
+  .cta-row { display:flex; gap:12px; margin-top: auto;}
+  .cta {
+    flex:1; height: 64px; border-radius: 12px; cursor:pointer;
+    font-family: var(--font-headline); font-weight: 700; font-size: 18px; letter-spacing:.2em;
+    border: 2px solid #000;
+    transition: all var(--dur-fast) var(--ease-default);
+  }
+  .cta.primary {
+    background: linear-gradient(180deg, #FFE088 0%, #D4AF37 60%, #8A6E1F 100%);
+    color: #2D1E00;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.5), 0 4px 0 #3a2b08, 0 6px 14px rgba(0,0,0,.6);
+  }
+  .cta.secondary {
+    background: linear-gradient(180deg, #3a3a3a, #1a1a1a);
+    color: #E8E4DC;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.1), 0 4px 0 #000, 0 6px 14px rgba(0,0,0,.6);
+  }
+  .cta:active { transform: translateY(2px); box-shadow: inset 0 1px 0 rgba(255,255,255,.3), 0 2px 0 #000, 0 3px 8px rgba(0,0,0,.6);}
+</style>
+</head>
+<body data-screen-label="03 Character">
+
+  <div class="back">‹</div>
+
+  <div class="tabs">
+    <div class="tab active">資 質<div class="en">STATS</div></div>
+    <div class="tab">技 能<div class="en">SKILLS</div></div>
+    <div class="tab">裝 備<div class="en">GEAR</div></div>
+    <div class="tab">血 脈<div class="en">LINEAGE</div></div>
+    <div class="tab">命 鏡<div class="en">DESTINY</div></div>
+  </div>
+
+  <main class="stage">
+
+    <!-- LEFT: portrait on parchment -->
+    <section class="portrait-panel">
+      <div class="portrait-name">
+        <div class="big">關 羽</div>
+        <div class="small">YUN CHANG · 雲長</div>
+      </div>
+      <div class="rarity-ribbon">SSR</div>
+      <img src="../../assets/generals/guan_yu.png" class="portrait-img" alt="">
+      <div class="stars">★ ★ ★ ★ ★ ✦ ✦</div>
+    </section>
+
+    <!-- MIDDLE -->
+    <section class="middle">
+
+      <!-- Stats panel -->
+      <div class="panel">
+        <div class="panel-head"><div class="ttl">資 質</div><div class="en">CHARACTER STATS · LV 42</div></div>
+        <div class="stats">
+          <div class="stat"><span class="k">HP 生命</span><span class="v">14,200 <span class="delta">+820</span></span></div>
+          <div class="stat"><span class="k">ATK 攻擊</span><span class="v">2,480 <span class="delta">+140</span></span></div>
+          <div class="stat"><span class="k">DEF 防禦</span><span class="v">1,640 <span class="delta">+90</span></span></div>
+          <div class="stat"><span class="k">SPD 速度</span><span class="v">142 <span class="delta">+4</span></span></div>
+          <div class="stat"><span class="k">CRIT 暴擊率</span><span class="v">38%</span></div>
+          <div class="stat"><span class="k">CRIT DMG 暴傷</span><span class="v">180%</span></div>
+          <div class="stat"><span class="k">HIT 命中</span><span class="v">92%</span></div>
+          <div class="stat"><span class="k">DODGE 閃避</span><span class="v">24%</span></div>
+        </div>
+      </div>
+
+      <!-- Skills panel -->
+      <div class="panel" style="flex:1; min-height:0;">
+        <div class="panel-head"><div class="ttl">技 能</div><div class="en">SKILL TREE</div></div>
+        <div class="skills-body">
+          <div class="skill-row">
+            <div class="skill-icon">刀</div>
+            <div class="skill-info">
+              <div class="sn">青龍偃月</div>
+              <div class="sd"><span class="tag">主動</span><span class="tag">單體</span>對單體造成 240% 傷害，流血狀態下暴擊率 +30%。</div>
+            </div>
+            <div class="skill-lv">LV.8<span class="s">MAX 10</span></div>
+          </div>
+          <div class="skill-row">
+            <div class="skill-icon">陣</div>
+            <div class="skill-info">
+              <div class="sn">武聖之威</div>
+              <div class="sd"><span class="tag">被動</span>全體騎兵攻擊 +12%，受到物理傷害 −8%。</div>
+            </div>
+            <div class="skill-lv">LV.6<span class="s">MAX 10</span></div>
+          </div>
+          <div class="skill-row">
+            <div class="skill-icon ult">斬</div>
+            <div class="skill-info">
+              <div class="sn">溫酒斬華雄 · 奧義</div>
+              <div class="sd"><span class="tag ult">大招</span>對前排全體造成 480% 真實傷害，降低敵方防禦 30%，持續 3 回合。</div>
+            </div>
+            <div class="skill-lv">LV.5<span class="s">MAX 8</span></div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- RIGHT -->
+    <section class="right">
+
+      <div class="panel">
+        <div class="panel-head"><div class="ttl">裝 備</div><div class="en">EQUIPMENT</div></div>
+        <div class="eq-grid">
+          <div class="eq-cell eq-legend">刀<span class="lv">+9</span></div>
+          <div class="eq-cell eq-epic">盔<span class="lv">+6</span></div>
+          <div class="eq-cell eq-rare">甲<span class="lv">+4</span></div>
+          <div class="eq-cell eq-epic">靴<span class="lv">+5</span></div>
+          <div class="eq-cell empty">鐲</div>
+          <div class="eq-cell empty">玉</div>
+        </div>
+      </div>
+
+      <div class="panel exp-card">
+        <div class="exp-row">
+          <span class="lbl">LEVEL</span>
+          <span class="lv">42</span>
+          <span class="nx">NEXT · 18,400 / 24,000</span>
+        </div>
+        <div class="exp-bar"><i style="width:76%"></i></div>
+      </div>
+
+      <div class="panel bond">
+        <span class="lbl">BOND · 信賴度</span>
+        <span class="hearts">♥ ♥ ♥ ♥<span class="off">♥</span></span>
+      </div>
+
+      <div class="cta-row">
+        <button class="cta secondary">升 星</button>
+        <button class="cta primary">突 破 · 升 級</button>
+      </div>
+
+    </section>
+
+  </main>
+</body>
+</html>

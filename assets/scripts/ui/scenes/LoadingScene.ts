@@ -17,6 +17,7 @@ import {
 import { services } from '../../core/managers/ServiceLoader';
 import { UIScreenPreviewHost } from '../components/UIScreenPreviewHost';
 import { GeneralDetailComposite } from '../components/GeneralDetailComposite';
+import { EliteTroopCodexComposite } from '../components/EliteTroopCodexComposite';
 import { LobbyScene } from './LobbyScene';
 import { BattleTactic } from '../../core/config/Constants';
 import { DEFAULT_BATTLE_ENTRY_PARAMS, type BattleEntryParams } from '../../battle/models/BattleEntryParams';
@@ -35,6 +36,8 @@ enum LoadingPreviewTarget {
     BattleScene = 5,
     GeneralDetailOverview = 6,
     SpiritTallyDetail = 7,
+    GeneralList = 8,
+    EliteTroopCodex = 9,
     GeneralDetailSkills = 12,
 }
 
@@ -124,6 +127,10 @@ export class LoadingScene extends Component {
             return 'battle-scene';
         case LoadingPreviewTarget.GeneralDetailOverview:
             return 'general-detail-unified-screen';
+        case LoadingPreviewTarget.GeneralList:
+            return 'general-list-screen';
+        case LoadingPreviewTarget.EliteTroopCodex:
+            return 'elite-troop-codex-screen';
         case LoadingPreviewTarget.GeneralDetailSkills:
             return 'general-detail-unified-screen';
         case LoadingPreviewTarget.SpiritTallyDetail:
@@ -305,6 +312,13 @@ export class LoadingScene extends Component {
             case LoadingPreviewTarget.GeneralDetailOverview:
                 await this._previewGeneralDetailOverview();
                 return;
+            case LoadingPreviewTarget.GeneralList:
+                await this._previewGeneralList();
+                this._setCaptureState('ready', 'general-list-screen');
+                return;
+            case LoadingPreviewTarget.EliteTroopCodex:
+                await this._previewEliteTroopCodex();
+                return;
             case LoadingPreviewTarget.GeneralDetailSkills:
                 await this._previewGeneralDetailSkills();
                 return;
@@ -371,6 +385,63 @@ export class LoadingScene extends Component {
     private async _previewGeneralDetailSkills(): Promise<void> {
         console.log('[LoadingScene] Preview target -> LobbyScene GeneralDetailSkills smoke route');
         await this._previewGeneralDetailByTab('Skills');
+    }
+
+    private async _previewGeneralList(): Promise<void> {
+        console.log('[LoadingScene] Preview target -> LobbyScene GeneralList smoke route');
+
+        await new Promise<void>((resolve, reject) => {
+            director.loadScene('LobbyScene', (error) => {
+                if (error) {
+                    reject(error);
+                    return;
+                }
+                resolve();
+            });
+        });
+
+        const lobbyScene = director.getScene()?.getComponentInChildren(LobbyScene) ?? null;
+        if (!lobbyScene) {
+            throw new Error('LobbyScene component not found after preview load');
+        }
+
+        const isReady = await lobbyScene.waitForReady(10000);
+        if (!isReady) {
+            throw new Error('[LoadingScene] LobbyScene 未能在 10 秒內完成初始化（generals 尚未載入）');
+        }
+
+        await lobbyScene.previewGeneralListSmoke();
+        await this._delay(180);
+    }
+
+    private async _previewEliteTroopCodex(): Promise<void> {
+        console.log('[LoadingScene] Preview target -> LobbyScene EliteTroopCodex smoke route');
+
+        await new Promise<void>((resolve, reject) => {
+            director.loadScene('LobbyScene', (error) => {
+                if (error) {
+                    reject(error);
+                    return;
+                }
+                resolve();
+            });
+        });
+
+        const lobbyScene = director.getScene()?.getComponentInChildren(LobbyScene) ?? null;
+        if (!lobbyScene) {
+            throw new Error('LobbyScene component not found after preview load');
+        }
+
+        const isReady = await lobbyScene.waitForReady(10000);
+        if (!isReady) {
+            throw new Error('[LoadingScene] LobbyScene not ready within 10s (EliteTroopCodex data not loaded)');
+        }
+
+        await lobbyScene.onClickEliteTroopCodexSmoke(this.previewVariant);
+        await this._waitForEliteTroopCodexVisualReady();
+        await this._delay(180);
+
+        this._setCaptureState('ready', 'elite-troop-codex-screen');
     }
 
     private async _previewGeneralDetailByTab(tab: 'Overview' | 'Skills'): Promise<void> {
@@ -441,6 +512,71 @@ export class LoadingScene extends Component {
         throw lastError ?? new Error(`[LoadingScene] GeneralDetail preview readiness timed out: tab=${tab}`);
     }
 
+    private async _waitForEliteTroopCodexVisualReady(): Promise<void> {
+        const startedAt = Date.now();
+        let lastError: Error | null = null;
+
+        while (Date.now() - startedAt < 2500) {
+            const codexPanel = director.getScene()?.getComponentInChildren(EliteTroopCodexComposite) ?? null;
+            if (!codexPanel || !codexPanel.node.activeInHierarchy) {
+                lastError = new Error(
+                    `[LoadingScene] EliteTroopCodex preview missing active EliteTroopCodexComposite; active=${codexPanel?.node?.active ?? false}`,
+                );
+                await this._delay(120);
+                continue;
+            }
+
+            const root = codexPanel.node.getChildByPath('__safeArea/EliteTroopCodexRoot')
+                ?? codexPanel.node.getChildByName('EliteTroopCodexRoot');
+            if (!root || !root.activeInHierarchy) {
+                lastError = new Error('[LoadingScene] EliteTroopCodex preview missing EliteTroopCodexRoot');
+                await this._delay(120);
+                continue;
+            }
+
+            try {
+                this._requireNonEmptyLabel(root, 'HeaderRow/CodexTitle');
+                this._requireNonEmptyLabel(root, 'HeaderRow/CodexSubtitle');
+                this._requireActiveNode(root, 'RightDetailPanel/DetailContent/SelectedTroopBannerShell/SelectedTroopBannerArt');
+                this._requireActiveNode(root, 'RightDetailPanel/DetailContent/SelectedTroopCrestShell/SelectedTroopCrestArt');
+
+                const bannerArt = root.getChildByPath('RightDetailPanel/DetailContent/SelectedTroopBannerShell/SelectedTroopBannerArt')?.getComponent(Sprite);
+                const crestArt = root.getChildByPath('RightDetailPanel/DetailContent/SelectedTroopCrestShell/SelectedTroopCrestArt')?.getComponent(Sprite);
+                if (!bannerArt?.spriteFrame) {
+                    throw new Error('[LoadingScene] EliteTroopCodex preview missing banner spriteFrame');
+                }
+                if (!crestArt?.spriteFrame) {
+                    throw new Error('[LoadingScene] EliteTroopCodex preview missing crest spriteFrame');
+                }
+
+                const listContent = root.getChildByPath('CenterGridPanel/TroopList/view/Content');
+                if (!listContent || !listContent.activeInHierarchy || listContent.children.length < 34) {
+                    throw new Error(
+                        `[LoadingScene] EliteTroopCodex preview list not ready: childCount=${listContent?.children.length ?? 0}`,
+                    );
+                }
+
+                const firstRow = listContent.children[0];
+                if (!firstRow) {
+                    throw new Error('[LoadingScene] EliteTroopCodex preview missing first row');
+                }
+                const firstRowArt = firstRow.getChildByPath('CardArtShell/CardArt')?.getComponent(Sprite);
+                if (!firstRowArt?.spriteFrame) {
+                    throw new Error('[LoadingScene] EliteTroopCodex preview missing first row spriteFrame');
+                }
+
+                return;
+            } catch (error) {
+                lastError = error instanceof Error
+                    ? error
+                    : new Error(String(error));
+                await this._delay(120);
+            }
+        }
+
+        throw lastError ?? new Error('[LoadingScene] EliteTroopCodex preview readiness timed out');
+    }
+
     private async _previewSpiritTallyDetail(): Promise<void> {
         console.log('[LoadingScene] Preview target -> spirit-tally-detail-screen');
         await this._previewHost?.showScreen('spirit-tally-detail-screen');
@@ -477,7 +613,7 @@ export class LoadingScene extends Component {
     private async _loadSpiritTallyDetailPreviewState(): Promise<UIPreviewBinderState | null> {
         try {
             const generals = await services().resource.loadJson<GeneralConfig[]>('data/generals', { tags: ['LoadingScenePreview'] });
-            const smokeGeneral = generals.find((item) => item.id === 'zhang-fei') ?? generals.find((item) => item.id === 'zhao-yun') ?? generals[0] ?? null;
+            const smokeGeneral = this._resolvePreviewGeneral(generals, this.previewVariant);
             if (!smokeGeneral) {
                 return null;
             }
@@ -506,6 +642,25 @@ export class LoadingScene extends Component {
             console.warn('[LoadingScene] 載入 SpiritTallyDetail preview state 失敗', error);
             return null;
         }
+    }
+
+    private _resolvePreviewGeneral(generals: GeneralConfig[], previewVariant: string): GeneralConfig | null {
+        const requested = previewVariant.trim().toLowerCase();
+        let preferredId: string | null = null;
+
+        if (requested === 'zhen-ji' || requested === 'zhenji' || requested === 'smoke-zhen-ji') {
+            preferredId = 'zhen-ji';
+        } else if (requested === 'zhao-yun' || requested === 'zhaoyun') {
+            preferredId = 'zhao-yun';
+        } else if (requested === 'zhang-fei' || requested === 'zhangfei' || requested === 'smoke-zhang-fei') {
+            preferredId = 'zhang-fei';
+        } else if (requested && requested !== 'default') {
+            preferredId = requested;
+        }
+
+        return (preferredId ? generals.find((item) => item.id === preferredId) : null)
+            ?? generals[0]
+            ?? null;
     }
 
     private _assertGeneralDetailOverviewVisualReady(detailPanel: GeneralDetailComposite): void {
@@ -555,6 +710,17 @@ export class LoadingScene extends Component {
         const sprite = portraitNode.getComponent(Sprite);
         if (!sprite?.spriteFrame) {
             throw new Error('[LoadingScene] GeneralDetailOverview preview missing portrait spriteFrame: PortraitImage');
+        }
+
+        const portraitArtwork = root.getChildByPath('PortraitArtworkOverlayHost/PortraitArtworkCarrier/PortraitArtwork')
+            ?? root.getChildByPath('PortraitImage/PortraitArtworkCarrier/PortraitArtwork');
+        if (!portraitArtwork || !portraitArtwork.activeInHierarchy) {
+            throw new Error('[LoadingScene] GeneralDetailOverview preview missing active PortraitArtwork child: PortraitArtworkOverlayHost/PortraitArtworkCarrier/PortraitArtwork');
+        }
+
+        const portraitArtworkSprite = portraitArtwork.getComponent(Sprite);
+        if (!portraitArtworkSprite?.spriteFrame) {
+            throw new Error('[LoadingScene] GeneralDetailOverview preview missing portrait artwork spriteFrame: PortraitArtwork');
         }
 
         const opacity = portraitNode.getComponent(UIOpacity);

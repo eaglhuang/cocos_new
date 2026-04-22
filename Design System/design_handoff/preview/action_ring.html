@@ -1,0 +1,42 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../colors_and_type.css"><style>
+*{box-sizing:border-box;margin:0}html,body{width:700px;background:#0F0F0F;color:#E8E4DC;font-family:var(--font-body);padding:24px;overflow:hidden}
+.lbl{font-family:var(--font-label);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#B0A880;margin-bottom:16px}
+.row{display:flex;gap:32px;align-items:center;justify-content:center}
+.ring{position:relative;width:112px;height:112px;border-radius:50%;background:radial-gradient(circle,#2a2a2a,#0a0a0a);display:flex;align-items:center;justify-content:center;box-shadow:inset 0 0 0 3px #1a1a1a,0 6px 16px rgba(0,0,0,.5)}
+.ring.ready{box-shadow:inset 0 0 0 3px #FFE088,0 0 20px rgba(255,193,7,.55),0 6px 16px rgba(0,0,0,.5)}
+.ring img{width:58px;height:58px;object-fit:contain;filter:drop-shadow(0 1px 2px rgba(0,0,0,.7))}
+.ult{width:160px;height:160px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#FF6B35 0%,#D4AF37 20%,#8B4513 50%,#1a0a0a 100%);box-shadow:inset 0 0 0 5px #FFE088,inset 0 0 20px rgba(255,107,53,.6),0 0 40px rgba(255,193,7,.8),0 0 80px rgba(255,107,53,.5),0 12px 28px rgba(0,0,0,.7),0 0 60px rgba(255,107,53,.3);position:relative;overflow:visible}
+.ult::before{content:'';position:absolute;inset:-8px;border-radius:50%;background:radial-gradient(circle,rgba(255,107,53,.4),rgba(255,107,53,.1) 60%,transparent);filter:blur(16px);animation:energyPulse 1.5s ease-in-out infinite}
+.ult::after{content:'';position:absolute;inset:-12px;border-radius:50%;background:radial-gradient(circle,rgba(255,193,7,.3),transparent 70%);filter:blur(20px);animation:energyPulse 2s ease-in-out infinite 0.2s}
+.ult-flame{position:absolute;width:100%;height:100%;border-radius:50%;inset:0}
+.flame{position:absolute;border-radius:50%;background:radial-gradient(circle,#FF6B35,#D4AF37);opacity:0.8;filter:blur(6px);animation:flameShoot 1.8s ease-in-out infinite}
+.flame:nth-child(1){width:24px;height:28px;top:-14px;left:50%;transform:translateX(-50%);animation-delay:0s}
+.flame:nth-child(2){width:20px;height:26px;bottom:-12px;left:30%;animation-delay:0.3s}
+.flame:nth-child(3){width:22px;height:30px;top:-8px;right:20%;animation-delay:0.6s}
+.flame:nth-child(4){width:18px;height:24px;bottom:-10px;right:35%;animation-delay:0.9s}
+.flame:nth-child(5){width:26px;height:28px;top:-16px;right:15%;animation-delay:1.2s}
+.ult img{width:84px;height:84px;position:relative;z-index:2}
+.cap{font-family:var(--font-label);font-size:10px;color:#B0A880;letter-spacing:.08em;margin-top:12px;text-align:center;font-weight:600}
+.col{display:flex;flex-direction:column;align-items:center}
+@keyframes energyPulse{0%{transform:scale(1);opacity:0.6}50%{transform:scale(1.15);opacity:0.8}100%{transform:scale(1);opacity:0.6}}
+@keyframes flameShoot{0%{opacity:0.4;transform:translateY(0px)}50%{opacity:0.9;transform:translateY(-12px)}100%{opacity:0.2;transform:translateY(-24px)}}
+</style></head><body>
+<div class="lbl">Action Ring · Skill · Ultimate · Ready State</div>
+<div class="row">
+  <div class="col"><div class="ring"><img src="../assets/battle/action_tactics.png"></div><div class="cap">策略</div></div>
+  <div class="col"><div class="ring ready"><img src="../assets/battle/action_duel.png"></div><div class="cap">單挑 · 就緒</div></div>
+  <div class="col">
+    <div class="ult">
+      <div class="ult-flame">
+        <div class="flame"></div>
+        <div class="flame"></div>
+        <div class="flame"></div>
+        <div class="flame"></div>
+        <div class="flame"></div>
+      </div>
+      <img src="../assets/battle/action_endturn.png">
+    </div>
+    <div class="cap">大招 · 能量爆發</div>
+  </div>
+</div>
+</body></html>

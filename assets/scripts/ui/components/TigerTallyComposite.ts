@@ -32,9 +32,9 @@ const UNIT_TYPE_BADGES: Record<string, { icon: string; color: Color }> = {
 };
 
 const DEFAULT_BADGE_DEF = { icon: '？', color: new Color(220, 220, 220, 255) };
-const TALLY_CARD_ART_FALLBACK_PATH = 'sprites/battle/tally_card_art_placeholder/spriteFrame';
-const TALLY_TYPE_BADGE_FALLBACK_PATH = 'sprites/battle/tally_badge_type';
-const TROOP_TYPE_SUITE_UNDERLAY_PATH = 'sprites/battle/tally_badge_type';
+const TALLY_CARD_ART_FALLBACK_PATH = 'ui/tiger-tally/card-art/troops/spriteFrame';
+const TALLY_TYPE_BADGE_FALLBACK_PATH = 'sprites/battle/battle_unit_type_underlay';
+const TROOP_TYPE_SUITE_UNDERLAY_PATH = 'sprites/battle/battle_unit_type_underlay';
 const WHITE = new Color(255, 255, 255, 255);
 const TALLY_SHELL_CORE_BORDER = [40, 40, 40, 40] as const;
 const RARITY_TEXT_COLORS: Record<TallyCardData['rarity'], Color> = {
@@ -162,7 +162,7 @@ export interface TallyCardData {
 
 @ccclass('TigerTallyComposite')
 export class TigerTallyComposite extends CompositePanel {
-    private _binder: UITemplateBinder | null = null;
+    private _templateBinder: UITemplateBinder | null = null;
     private _cards: TallyCardData[] = [];
     private _cardNodes: Node[] = [];
     private _isMounted = false;
@@ -206,7 +206,7 @@ export class TigerTallyComposite extends CompositePanel {
     }
 
     protected override _onAfterBuildReady(binder: UITemplateBinder): void {
-        this._binder = binder;
+        this._templateBinder = binder;
         this._cardNodes = [];
         for (let i = 1; i <= 4; i++) {
             const card = binder.getNode(`TallyCard${i}`);
@@ -227,7 +227,7 @@ export class TigerTallyComposite extends CompositePanel {
     }
 
     private _populateCards(): void {
-        if (!this._binder) return;
+        if (!this._templateBinder) return;
 
         for (let i = 0; i < this._cardNodes.length; i++) {
             const cardNode = this._cardNodes[i];
@@ -241,32 +241,32 @@ export class TigerTallyComposite extends CompositePanel {
             }
             cardNode.active = true;
 
-            const nameLabel = this._binder.getNode(`UnitName${slot}`)?.getComponent(Label);
+            const nameLabel = this._templateBinder.getNode(`UnitName${slot}`)?.getComponent(Label);
             if (nameLabel) { nameLabel.string = data.unitName; }
 
-            const subLabelNode = this._binder.getNode(`UnitSub${slot}`);
+            const subLabelNode = this._templateBinder.getNode(`UnitSub${slot}`);
             const subLabel = subLabelNode?.getComponent(Label);
             if (subLabel) {
                 subLabel.string = data.unitSub || data.unitType;
                 subLabelNode!.active = false;
             }
 
-            const atkLabel = this._binder.getNode(`AtkLabel${slot}`)?.getComponent(Label);
+            const atkLabel = this._templateBinder.getNode(`AtkLabel${slot}`)?.getComponent(Label);
             if (atkLabel) { atkLabel.string = `${data.atk}`; }
 
-            const hpLabel = this._binder.getNode(`HpLabel${slot}`)?.getComponent(Label);
+            const hpLabel = this._templateBinder.getNode(`HpLabel${slot}`)?.getComponent(Label);
             if (hpLabel) { hpLabel.string = `${data.hp}`; }
 
-            const costLabel = this._binder.getNode(`CostBadge${slot}`)?.getComponent(Label);
+            const costLabel = this._templateBinder.getNode(`CostBadge${slot}`)?.getComponent(Label);
             if (costLabel) { costLabel.string = String(data.cost); }
 
-            const rarityLabel = this._binder.getNode(`RarityLabel${slot}`)?.getComponent(Label);
+            const rarityLabel = this._templateBinder.getNode(`RarityLabel${slot}`)?.getComponent(Label);
             if (rarityLabel) {
                 rarityLabel.string = this._resolveRarityLabel(data);
                 rarityLabel.color = this._resolveRarityTextColor(data.rarity);
             }
 
-            const starsLabel = this._binder.getNode(`StarsLabel${slot}`)?.getComponent(Label);
+            const starsLabel = this._templateBinder.getNode(`StarsLabel${slot}`)?.getComponent(Label);
             if (starsLabel) {
                 starsLabel.string = this._resolveStars(data);
                 starsLabel.color = this._resolveRarityTextColor(data.rarity);
@@ -277,7 +277,7 @@ export class TigerTallyComposite extends CompositePanel {
             void this._applyCardArt(slot, data, loadSeq);
             this._applyUnitTypeBadge(slot, data, loadSeq);
 
-            const disabledMask = this._binder.getNode(`DisabledMask${slot}`);
+            const disabledMask = this._templateBinder.getNode(`DisabledMask${slot}`);
             if (disabledMask) { disabledMask.active = data.isDisabled ?? false; }
 
             cardNode.off(Button.EventType.CLICK);
@@ -307,7 +307,7 @@ export class TigerTallyComposite extends CompositePanel {
     }
 
     private _applyUnitTypeBadge(slot: number, data: TallyCardData, loadSeq: number): void {
-        const badgeNode = this._binder?.getNode(`UnitTypeBadge${slot}`);
+        const badgeNode = this._templateBinder?.getNode(`UnitTypeBadge${slot}`);
         if (!badgeNode) return;
 
         const sprite = badgeNode.getComponent(Sprite);
@@ -330,6 +330,7 @@ export class TigerTallyComposite extends CompositePanel {
             label.isBold = true;
         }
         textNode.setPosition(0, 0, 0);
+        textNode.active = false;
 
         if (sprite) {
             sprite.color = TALLY_TIER_STYLE[data.rarity]?.badgeTint ?? WHITE;
@@ -341,14 +342,15 @@ export class TigerTallyComposite extends CompositePanel {
         const tier = this._resolveShellTier(data.rarity);
         await Promise.all([
             this._applyShellSprite(cardNode.getComponent(Sprite), `ui/tiger-tally/frame-parts/${tier}/tally_frame_core_${tier}`, loadSeq, slot, true),
-            this._applyShellSprite(this._binder?.getSprite(`FrameTitlePlaque${slot}`) ?? null, `ui/tiger-tally/frame-parts/${tier}/tally_frame_title_plaque_${tier}`, loadSeq, slot),
-            this._applyShellSprite(this._binder?.getSprite(`FrameLeftChip${slot}`) ?? null, `ui/tiger-tally/frame-parts/${tier}/tally_frame_left_chip_${tier}`, loadSeq, slot),
-            this._applyShellSprite(this._binder?.getSprite(`FrameRarityBadgePlaque${slot}`) ?? null, `ui/tiger-tally/frame-parts/${tier}/tally_frame_rarity_badge_plaque_${tier}`, loadSeq, slot),
-            this._applyShellSprite(this._binder?.getSprite(`FrameRightRailDark${slot}`) ?? null, `ui/tiger-tally/frame-parts/${tier}/tally_frame_side_rail_dark_${tier}`, loadSeq, slot),
-            this._applyShellSprite(this._binder?.getSprite(`FrameBottomBand${slot}`) ?? null, `ui/tiger-tally/frame-parts/${tier}/tally_frame_bottom_band_${tier}`, loadSeq, slot),
+            this._applyShellSprite(this._templateBinder?.getSprite(`FrameShell${slot}`) ?? null, `ui/tiger-tally/frame-parts/${tier}/tally_frame_full_${tier}`, loadSeq, slot),
+            this._applyShellSprite(this._templateBinder?.getSprite(`FrameTitlePlaque${slot}`) ?? null, `ui/tiger-tally/frame-parts/${tier}/tally_frame_title_plaque_${tier}`, loadSeq, slot),
+            this._applyShellSprite(this._templateBinder?.getSprite(`FrameLeftChip${slot}`) ?? null, `ui/tiger-tally/frame-parts/${tier}/tally_frame_left_chip_${tier}`, loadSeq, slot),
+            this._applyShellSprite(this._templateBinder?.getSprite(`FrameRarityBadgePlaque${slot}`) ?? null, `ui/tiger-tally/frame-parts/${tier}/tally_frame_rarity_badge_plaque_${tier}`, loadSeq, slot),
+            this._applyShellSprite(this._templateBinder?.getSprite(`FrameRightRailDark${slot}`) ?? null, `ui/tiger-tally/frame-parts/${tier}/tally_frame_side_rail_dark_${tier}`, loadSeq, slot),
+            this._applyShellSprite(this._templateBinder?.getSprite(`FrameBottomBand${slot}`) ?? null, `ui/tiger-tally/frame-parts/${tier}/tally_frame_bottom_band_${tier}`, loadSeq, slot),
         ]);
 
-        const amberRail = this._binder?.getSprite(`FrameRightRailAmber${slot}`) ?? null;
+        const amberRail = this._templateBinder?.getSprite(`FrameRightRailAmber${slot}`) ?? null;
         if (!amberRail) return;
         const style = TALLY_TIER_STYLE[data.rarity] ?? TALLY_TIER_STYLE.epic;
         this._applyTierTint(cardNode, slot, data.rarity);
@@ -368,6 +370,7 @@ export class TigerTallyComposite extends CompositePanel {
         }
 
         const tintMap: Array<[string, Color]> = [
+            [`FrameShell${slot}`, style.coreTint],
             [`FrameTitlePlaque${slot}`, style.plaqueTint],
             [`FrameRarityBadgePlaque${slot}`, style.plaqueTint],
             [`FrameLeftChip${slot}`, style.chipTint],
@@ -375,7 +378,7 @@ export class TigerTallyComposite extends CompositePanel {
             [`FrameRightRailDark${slot}`, style.railDarkTint],
         ];
         for (const [id, color] of tintMap) {
-            const sprite = this._binder?.getSprite(id);
+            const sprite = this._templateBinder?.getSprite(id);
             if (sprite) sprite.color = color;
         }
     }
@@ -409,7 +412,7 @@ export class TigerTallyComposite extends CompositePanel {
     }
 
     private async _applyCardArt(slot: number, data: TallyCardData, loadSeq: number): Promise<void> {
-        const artSprite = this._binder?.getSprite(`ArtBg${slot}`) ?? this._binder?.getSprite(`artBg${slot}`);
+        const artSprite = this._templateBinder?.getSprite(`ArtBg${slot}`) ?? this._templateBinder?.getSprite(`artBg${slot}`);
         if (!artSprite) return;
 
         const spriteFrame = await this._loadSpriteFrameWithFallback(
@@ -436,7 +439,7 @@ export class TigerTallyComposite extends CompositePanel {
             `tally.badge.type[${slot}]`,
             this._uniquePaths([
                 data.typeBadgeResource,
-                normalizedType ? `sprites/battle/unitinfo_type_icon_${normalizedType}` : null,
+                normalizedType ? `sprites/battle/battle_unit_type_icon_${normalizedType}` : null,
                 TROOP_TYPE_SUITE_UNDERLAY_PATH,
             ]),
             TALLY_TYPE_BADGE_FALLBACK_PATH,
@@ -449,12 +452,7 @@ export class TigerTallyComposite extends CompositePanel {
     }
 
     private _buildArtCandidates(data: TallyCardData): string[] {
-        const normalizedType = this._normalizeKey(data.unitType);
-        return this._uniquePaths([
-            data.artResource,
-            normalizedType ? `sprites/battle/tally_card_art_${normalizedType}_${data.rarity}` : null,
-            normalizedType ? `sprites/battle/tally_card_art_${normalizedType}` : null,
-        ]);
+        return this._uniquePaths([data.artResource]);
     }
 
     private async _loadSpriteFrameWithFallback(

@@ -121,7 +121,7 @@ export class GeneralPortraitPanel extends UIPreviewBuilder {
             if (spriteFrame) {
                 const sprite = n.getComponent(Sprite) || n.addComponent(Sprite);
                 sprite.spriteFrame = spriteFrame;
-                sprite.sizeMode = Sprite.SizeMode.RAW; // ⭐️ 使用原始大小，不被 Layout 無腦拉伸變形
+                sprite.sizeMode = Sprite.SizeMode.RAW; // 使用原始大小，不被 Layout 無腦拉伸變形
             } else {
                 console.warn(`[GeneralPortraitPanel] 無法載入立繪: ${path}，請檢查檔案是否存在於 resources 中。`);
             }

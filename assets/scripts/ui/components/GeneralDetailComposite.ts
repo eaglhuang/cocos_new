@@ -1,8 +1,8 @@
-import { _decorator, Button, Color, Label, Node, Sprite, UIOpacity } from 'cc';
+import { _decorator, Button, Color, Label, Node, Sprite, UIOpacity, UITransform, Widget } from 'cc';
 import { CompositePanel } from '../core/CompositePanel';
 import type { UITemplateBinder } from '../core/UITemplateBinder';
 import type { ChildPanelBase } from '../core/ChildPanelBase';
-import type { GeneralConfig, GeneralDetailDefaultTab } from '../../core/models/GeneralUnit';
+import type { GeneralConfig, GeneralDetailDefaultTab, GeneralDetailRarityTier } from '../../core/models/GeneralUnit';
 import { services } from '../../core/managers/ServiceLoader';
 import {
     buildGeneralDetailOverviewContentState,
@@ -16,21 +16,32 @@ import { GeneralDetailBloodlineChild } from './general-detail/GeneralDetailBlood
 import { GeneralDetailSkillsChild } from './general-detail/GeneralDetailSkillsChild';
 import { GeneralDetailAptitudeChild } from './general-detail/GeneralDetailAptitudeChild';
 import { GeneralDetailExtendedChild } from './general-detail/GeneralDetailExtendedChild';
+import { applyPortraitSoftMask, fitPortraitSpriteToLogicalFrame, getOrCreatePortraitArtworkSprite } from './portrait/PortraitSoftMask';
 import { UCUFLogger, LogCategory } from '../core/UCUFLogger';
 
 const { ccclass } = _decorator;
 
 type TabKey = 'Overview' | 'Basics' | 'Stats' | 'Bloodline' | 'Skills' | 'Aptitude' | 'Extended';
-type UnifiedOverviewContentState = Omit<GeneralDetailOverviewContentState, 'portraitModeHint'>;
+type UnifiedOverviewContentState = GeneralDetailOverviewContentState;
 
 const TAB_ORDER: TabKey[] = ['Overview', 'Basics', 'Stats', 'Bloodline', 'Skills', 'Aptitude', 'Extended'];
-
+const PORTRAIT_ARTWORK_OVERLAY_HOST_NAME = 'PortraitArtworkOverlayHost';
+const PORTRAIT_RARITY_BADGE_PATHS: Record<GeneralDetailRarityTier, string> = {
+    common: 'sprites/ui_families/general_detail/icons/v3_parts/badge_rarity_common_flat',
+    rare: 'sprites/ui_families/general_detail/icons/v3_parts/badge_rarity_rare_flat',
+    epic: 'sprites/ui_families/general_detail/icons/v3_parts/badge_rarity_epic_flat',
+    legendary: 'sprites/ui_families/general_detail/icons/v3_parts/badge_rarity_legendary_flat',
+    mythic: 'sprites/ui_families/general_detail/icons/v3_parts/badge_rarity_legendary_flat',
+};
 @ccclass('GeneralDetailComposite')
 export class GeneralDetailComposite extends CompositePanel {
+    public onRequestClose: (() => void) | null = null;
+
     private _isMounted = false;
     private _activeTab: TabKey = 'Overview';
     private _currentConfig: GeneralConfig | null = null;
     private _currentBackgroundResource: string | null = null;
+    private _currentPortraitRarityBadgeResource: string | null = null;
     private _gdBinder: UITemplateBinder | null = null;
 
     protected override _onAfterBuildReady(binder: UITemplateBinder): void {
@@ -98,6 +109,14 @@ export class GeneralDetailComposite extends CompositePanel {
         this.node.active = false;
     }
 
+    public requestClose(): void {
+        if (this.onRequestClose) {
+            this.onRequestClose();
+            return;
+        }
+        void services().ui.closeCurrentUI();
+    }
+
     public override applyContentState(state: Record<string, unknown>): void {
         const config = state.config as GeneralConfig | undefined;
         if (config) {
@@ -120,9 +139,14 @@ export class GeneralDetailComposite extends CompositePanel {
     }
 
     private _bindStaticEvents(): void {
-        this._bindOptionalClick('RightTabBar/BtnClose', () => this.hide());
-        this._bindOptionalClick('TopCloseBtn', () => this.hide());
-        this._bindClick('ClickBlocker', () => this.hide());
+        const tabCloseNode = this.node.getChildByPath(this._mainPath('RightTabBar/BtnClose'));
+        if (tabCloseNode) {
+            tabCloseNode.active = false;
+        }
+
+        this._bindOptionalClick('TopCloseBtn', () => {
+            this.requestClose();
+        });
 
         for (const tab of TAB_ORDER) {
             this._bindClick(`RightTabBar/BtnTab${tab}`, () => {
@@ -179,20 +203,20 @@ export class GeneralDetailComposite extends CompositePanel {
         case 'Overview': {
             const child = new GeneralDetailOverviewChild(slotNode, this.skinResolver, binder);
             child.setCustomProp('contentContractRef', OVERVIEW_UNIFIED_CONTENT_CONTRACT_REF);
-            return child;
+            return child as unknown as ChildPanelBase;
         }
         case 'Basics':
-            return new GeneralDetailBasicsChild(slotNode, this.skinResolver, binder);
+            return new GeneralDetailBasicsChild(slotNode, this.skinResolver, binder) as unknown as ChildPanelBase;
         case 'Stats':
-            return new GeneralDetailStatsChild(slotNode, this.skinResolver, binder);
+            return new GeneralDetailStatsChild(slotNode, this.skinResolver, binder) as unknown as ChildPanelBase;
         case 'Bloodline':
-            return new GeneralDetailBloodlineChild(slotNode, this.skinResolver, binder);
+            return new GeneralDetailBloodlineChild(slotNode, this.skinResolver, binder) as unknown as ChildPanelBase;
         case 'Skills':
-            return new GeneralDetailSkillsChild(slotNode, this.skinResolver, binder);
+            return new GeneralDetailSkillsChild(slotNode, this.skinResolver, binder) as unknown as ChildPanelBase;
         case 'Aptitude':
-            return new GeneralDetailAptitudeChild(slotNode, this.skinResolver, binder);
+            return new GeneralDetailAptitudeChild(slotNode, this.skinResolver, binder) as unknown as ChildPanelBase;
         case 'Extended':
-            return new GeneralDetailExtendedChild(slotNode, this.skinResolver, binder);
+            return new GeneralDetailExtendedChild(slotNode, this.skinResolver, binder) as unknown as ChildPanelBase;
         }
     }
 
@@ -205,8 +229,7 @@ export class GeneralDetailComposite extends CompositePanel {
     }
 
     private _buildUnifiedOverviewState(config: GeneralConfig): UnifiedOverviewContentState {
-        const { portraitModeHint: _portraitModeHint, ...overview } = buildGeneralDetailOverviewContentState(config);
-        return overview;
+        return buildGeneralDetailOverviewContentState(config);
     }
 
     private _applyCurrentData(): void {
@@ -225,6 +248,7 @@ export class GeneralDetailComposite extends CompositePanel {
     private _applyOverviewChrome(state: UnifiedOverviewContentState): void {
         void this._loadBackground(state.backgroundResource);
         void this._loadPortrait(state.portraitResource);
+        void this._loadPortraitRarityBadge(state.rarityTier);
 
         // Overview visual pass — 將 Shell 時代的 sprite color / opacity / label color 套用到 Unified 節點
         // 注意：由呼叫端在 super.applyContentState 之後執行，以免被重建覆蓋。
@@ -244,7 +268,7 @@ export class GeneralDetailComposite extends CompositePanel {
 
         const node = this._requireNode('BackgroundFull');
         const sprite = node.getComponent(Sprite) || node.addComponent(Sprite);
-        const frame = await services().resource.loadSpriteFrame(normalizedPath).catch(() => null);
+        const frame = await services().resource.loadSpriteFrame(normalizedPath, { preferTextureFallback: true }).catch(() => null);
         if (!frame) {
             const message = `[GeneralDetailComposite] 載入 BackgroundFull spriteFrame 失敗: ${normalizedPath}`;
             UCUFLogger.error(LogCategory.DATA, message);
@@ -262,16 +286,102 @@ export class GeneralDetailComposite extends CompositePanel {
     }
 
     private async _loadPortrait(resourcePath: string): Promise<void> {
+        const normalizedPath = resourcePath.trim();
         UCUFLogger.info(LogCategory.DATA, '[GeneralDetailComposite] loadPortrait start', {
-            resourcePath,
+            resourcePath: normalizedPath,
         });
         const node = this._requireNode('PortraitImage');
-
-        const sprite = node.getComponent(Sprite) || node.addComponent(Sprite);
-        const frame = await services().resource.loadSpriteFrame(resourcePath).catch(() => null);
+        const portraitOverlayHost = this._getOrCreatePortraitArtworkOverlayHost(node);
+        const sprite = getOrCreatePortraitArtworkSprite(portraitOverlayHost);
+        if (!sprite) {
+            UCUFLogger.error(LogCategory.DATA, '[GeneralDetailComposite] 無法建立 PortraitArtwork sprite');
+            return;
+        }
+        const frame = await services().resource.loadSpriteFrame(normalizedPath, { preferTextureFallback: true }).catch(() => null);
         if (!frame) {
             UCUFLogger.error(LogCategory.DATA,
-                `[GeneralDetailComposite] 載入 PortraitImage spriteFrame 失敗: ${resourcePath}`);
+                `[GeneralDetailComposite] 載入 PortraitImage spriteFrame 失敗: ${normalizedPath}`);
+            return;
+        }
+
+        sprite.spriteFrame = frame;
+        sprite.type = Sprite.Type.SIMPLE;
+        sprite.color = Color.WHITE;
+        const hostTransform = node.getComponent(UITransform);
+        const overlayHostTransform = portraitOverlayHost.getComponent(UITransform);
+        UCUFLogger.info(LogCategory.DATA, '[GeneralDetailComposite] portrait spriteFrame assigned', {
+            resourcePath: normalizedPath,
+            frameWidth: frame.width,
+            frameHeight: frame.height,
+            originalWidth: frame.originalSize.width,
+            originalHeight: frame.originalSize.height,
+            offsetX: frame.offset.x,
+            offsetY: frame.offset.y,
+            hostNode: node.name,
+            hostWidth: hostTransform?.width,
+            hostHeight: hostTransform?.height,
+            overlayHostNode: portraitOverlayHost.name,
+            overlayHostWidth: overlayHostTransform?.width,
+            overlayHostHeight: overlayHostTransform?.height,
+        });
+        fitPortraitSpriteToLogicalFrame(sprite);
+        const carrierNode = sprite.node.parent;
+        const carrierTransform = carrierNode?.getComponent(UITransform);
+        const requestedCarrierShiftX = this._currentConfig?.profilePresentation?.portraitCarrierShiftX ?? 0;
+        let appliedCarrierShiftX = 0;
+        if (carrierNode && carrierTransform && overlayHostTransform) {
+            const maxCarrierShiftX = Math.max(0, (overlayHostTransform.width - carrierTransform.width) * 0.5);
+            appliedCarrierShiftX = Math.max(-maxCarrierShiftX, Math.min(maxCarrierShiftX, requestedCarrierShiftX));
+            carrierNode.setPosition(appliedCarrierShiftX, carrierNode.position.y, carrierNode.position.z);
+        }
+        UCUFLogger.info(LogCategory.DATA, '[GeneralDetailComposite] portrait fit applied', {
+            resourcePath: normalizedPath,
+            overlayHostNode: portraitOverlayHost.name,
+            carrierNode: carrierNode?.name ?? null,
+            carrierWidth: carrierTransform?.width ?? null,
+            carrierHeight: carrierTransform?.height ?? null,
+            requestedCarrierShiftX,
+            appliedCarrierShiftX,
+            hostPositionX: node.position.x,
+            hostWorldPositionX: node.worldPosition.x,
+            carrierPositionX: carrierNode?.position.x ?? null,
+            carrierWorldPositionX: carrierNode?.worldPosition.x ?? null,
+            portraitNode: sprite.node.name,
+            portraitScaleX: sprite.node.scale.x,
+            portraitScaleY: sprite.node.scale.y,
+            portraitPositionX: sprite.node.position.x,
+            portraitPositionY: sprite.node.position.y,
+            portraitWorldPositionX: sprite.node.worldPosition.x,
+            portraitWorldPositionY: sprite.node.worldPosition.y,
+            portraitSizeMode: sprite.sizeMode,
+        });
+        await applyPortraitSoftMask(sprite);
+        this._syncPortraitVisibility();
+        UCUFLogger.info(LogCategory.DATA, '[GeneralDetailComposite] loadPortrait complete', {
+            resourcePath,
+            nodeActive: node.active,
+        });
+    }
+
+    private async _loadPortraitRarityBadge(tier: GeneralDetailRarityTier): Promise<void> {
+        const resourcePath = PORTRAIT_RARITY_BADGE_PATHS[tier] ?? PORTRAIT_RARITY_BADGE_PATHS.legendary;
+        if (this._currentPortraitRarityBadgeResource === resourcePath) {
+            return;
+        }
+
+        const node = this._findPortraitRarityBadgeNode();
+        if (!node) {
+            const message = '[GeneralDetailComposite] 缺少必要節點 PortraitRarityBadge';
+            UCUFLogger.error(LogCategory.LIFECYCLE, message);
+            throw new Error(message);
+        }
+        const sprite = node.getComponent(Sprite) || node.addComponent(Sprite);
+        const frame = await services().resource.loadSpriteFrame(resourcePath, { preferTextureFallback: true }).catch(() => null);
+        if (!frame) {
+            UCUFLogger.error(LogCategory.DATA, '[GeneralDetailComposite] 載入 PortraitRarityBadge spriteFrame 失敗', {
+                resourcePath,
+                tier,
+            });
             return;
         }
 
@@ -279,11 +389,29 @@ export class GeneralDetailComposite extends CompositePanel {
         sprite.type = Sprite.Type.SIMPLE;
         sprite.sizeMode = Sprite.SizeMode.CUSTOM;
         sprite.color = Color.WHITE;
-        this._syncPortraitVisibility();
-        UCUFLogger.info(LogCategory.DATA, '[GeneralDetailComposite] loadPortrait complete', {
+        this._currentPortraitRarityBadgeResource = resourcePath;
+        UCUFLogger.info(LogCategory.DATA, '[GeneralDetailComposite] portrait rarity badge assigned', {
             resourcePath,
-            nodeActive: node.active,
+            tier,
+            frameWidth: frame.width,
+            frameHeight: frame.height,
         });
+    }
+
+    private _findPortraitRarityBadgeNode(): Node | null {
+        const candidates = [
+            'PortraitRarityBadge',
+            'PortraitCarrier/PortraitRarityBadge',
+        ];
+
+        for (const path of candidates) {
+            const node = this.node.getChildByPath(this._mainPath(path));
+            if (node) {
+                return node;
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -314,8 +442,55 @@ export class GeneralDetailComposite extends CompositePanel {
      */
     private _syncPortraitVisibility(): void {
         const portrait = this.node.getChildByPath(this._mainPath('PortraitImage'));
-        if (!portrait) return;
-        portrait.active = this._activeTab !== 'Bloodline';
+        const visible = this._activeTab !== 'Bloodline';
+        if (portrait) {
+            portrait.active = visible;
+        }
+
+        const overlayHost = this._resolveMainRoot()?.getChildByName(PORTRAIT_ARTWORK_OVERLAY_HOST_NAME);
+        if (portrait && overlayHost) {
+            this._syncPortraitArtworkOverlayHost(portrait, overlayHost);
+        }
+        if (overlayHost) {
+            overlayHost.active = visible;
+        }
+    }
+
+    private _getOrCreatePortraitArtworkOverlayHost(hostNode: Node): Node {
+        const parent = hostNode.parent;
+        if (!parent) {
+            return hostNode;
+        }
+
+        let overlayHost = parent.getChildByName(PORTRAIT_ARTWORK_OVERLAY_HOST_NAME);
+        if (!overlayHost) {
+            overlayHost = new Node(PORTRAIT_ARTWORK_OVERLAY_HOST_NAME);
+            overlayHost.parent = parent;
+        }
+
+        this._syncPortraitArtworkOverlayHost(hostNode, overlayHost);
+        return overlayHost;
+    }
+
+    private _syncPortraitArtworkOverlayHost(hostNode: Node, overlayHost: Node): void {
+        const hostTransform = hostNode.getComponent(UITransform);
+        const overlayTransform = overlayHost.getComponent(UITransform) || overlayHost.addComponent(UITransform);
+        overlayTransform.setAnchorPoint(0.5, 0.5);
+        if (hostTransform) {
+            overlayTransform.setContentSize(hostTransform.contentSize.width, hostTransform.contentSize.height);
+        }
+
+        overlayHost.layer = hostNode.layer;
+        overlayHost.setPosition(hostNode.position.x, hostNode.position.y, hostNode.position.z);
+        overlayHost.active = hostNode.active;
+
+        const parent = hostNode.parent;
+        if (parent && overlayHost.parent !== parent) {
+            overlayHost.parent = parent;
+        }
+        if (parent) {
+            overlayHost.setSiblingIndex(Math.min(parent.children.length - 1, hostNode.getSiblingIndex() + 1));
+        }
     }
 
     private _syncTabVisualState(): void {

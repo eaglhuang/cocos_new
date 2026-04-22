@@ -22,9 +22,12 @@ export class PoolSystem {
     // ─────────────────────────────────────────
 
     public register(key: string, prefab: Prefab, warmupCount = 0): void {
-        if (this.pools.has(key)) return;
+        const existingPool = this.pools.get(key);
+        if (existingPool) {
+            existingPool.clear();
+        }
 
-        const pool = new NodePool();
+        const pool = existingPool ?? new NodePool();
         this.pools.set(key, pool);
         this.prefabs.set(key, prefab);
 

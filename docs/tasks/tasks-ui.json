@@ -24,10 +24,10 @@
   "shard": "UI",
   "generated": "2026-04-06",
   "summary": {
-    "done": 70,
+    "done": 71,
     "in_progress": 21,
-    "open": 9,
-    "total": 100
+    "open": 14,
+    "total": 106
   },
   "tasks": [
     {
@@ -2689,6 +2689,55 @@
         "BattleScene runtime capture 可驗證 glyph 在暗底上仍清楚"
       ],
       "notes": "2026-04-08 | open | 建議以 suite 粒度處理，不拆成三張小單。DEF / SPD 是否追加，視 runtime 空間與可讀性再決定。"
+    },
+    {
+      "id": "UI-2-0110",
+      "title": "虎符部隊卡圖量產規格與 troops_XXX.png 生成",
+      "owner": "Copilot",
+      "priority": "P1",
+      "status": "done",
+      "type": "implementation",
+      "phase": "M0",
+      "created": "2026-04-20",
+      "created_by_agent": "GitHubCopilot",
+      "description": "為虎符系統的 8 個 TroopType 建立正式卡圖與量產 prompt，並生成對應的 troops_*.png，讓 BattleSceneLoader 可依兵種直接套用正確主視覺。",
+      "related": [],
+      "depends": [],
+      "acceptance": [
+        "8 張 troops_*.png 均已生成並落在 287x142",
+        "BattleSceneLoader.ts 可依 TroopType 對應到對應 troop art",
+        "兵種（虎符）系統.md 與 主戰場UI規格書.md 已回寫"
+      ],
+      "deliverables": [
+        "8 張正式卡圖 PNG",
+        "prompt txt 檔",
+        "任務卡與總表同步"
+      ],
+      "notes": "2026-04-20 | done | 已用 Nano Banana（nano-banana-2）完成 8 張 troops_*.png，全部 resize 到 287x142。 | 相關 prompt、規格文件與任務卡已同步回寫。 | none"
+    },
+    {
+      "id": "UI-2-0111",
+      "title": "虎符卡片框體像素對位與正式兵種 icon 接線",
+      "owner": "Copilot",
+      "priority": "P1",
+      "status": "open",
+      "type": "implementation",
+      "phase": "M0",
+      "created": "2026-04-20",
+      "created_by_agent": "GitHubCopilot",
+      "description": "依照拆解母框 reference 將虎符卡片框體左/右 rail、chip、badge、底 band 等元件調整到像素級正確位置，並把正式兵種 icon 接到虎符卡片與 3D 小兵頭上 HUD。",
+      "related": [],
+      "depends": [],
+      "acceptance": [
+        "虎符卡片框體位置與參考圖對位完成",
+        "TigerTallyComposite 與 3D 單位 HUD 顯示正式兵種 icon",
+        "unit-info / tiger-tally 規格文件已同步回寫"
+      ],
+      "deliverables": [
+        "layout / skin / TS 接線修正",
+        "task card 與文件回寫"
+      ],
+      "notes": "2026-04-20 | open | 參考圖已確認；目前 frame pieces 與 formal type icons 資源已存在。 | none"
     }
   ]
 }

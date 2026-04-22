@@ -1,0 +1,51 @@
+/* Shared styles for design-system preview cards */
+@import url("../colors_and_type.css");
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  width: 700px;
+  font-family: var(--font-body);
+  color: var(--text-on-parchment);
+  background: var(--parchment-base);
+  overflow: hidden;
+}
+body {
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.card-title {
+  font-family: var(--font-label);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-on-parchment-muted);
+  font-weight: 600;
+}
+.row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.col { display: flex; flex-direction: column; gap: 8px; }
+.swatch {
+  width: 96px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.12), inset 0 0 0 1px rgba(45,41,38,0.08);
+  font-family: var(--font-label);
+  font-size: 10px;
+  line-height: 1.25;
+}
+.swatch .chip {
+  height: 56px;
+}
+.swatch .meta {
+  background: rgba(255,255,255,0.55);
+  padding: 6px 8px;
+}
+.swatch .name { font-weight: 700; color: var(--text-ink); font-size: 11px; letter-spacing: 0.04em; }
+.swatch .hex  { color: var(--text-on-parchment-muted); font-size: 10px; font-variant-numeric: tabular-nums; margin-top: 2px;}
+
+.dark-bg { background: #1A1A1A; color: var(--text-primary); }
+.dark-bg .card-title { color: var(--text-khaki); }
+.dark-bg .swatch .meta { background: rgba(255,255,255,0.06); }
+.dark-bg .swatch .name { color: var(--text-off-white); }
+.dark-bg .swatch .hex  { color: var(--text-khaki); }

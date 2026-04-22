@@ -5,105 +5,418 @@
     "hit_enemy": {
       "blockId": "impact_shock",
       "audio": "hurt",
-      "notify": { "type": "floatText", "textKey": "⚔", "color": "#FF4444" },
+      "notify": {
+        "type": "floatText",
+        "textKey": "⚔",
+        "color": "#FF4444"
+      },
       "lifetime": 1.5
     },
     "hit_miss": {
       "blockId": "impact_sparkle",
       "audio": "feijian",
-      "notify": { "type": "floatText", "textKey": "Miss", "color": "#AAAAAA" },
+      "notify": {
+        "type": "floatText",
+        "textKey": "Miss",
+        "color": "#AAAAAA"
+      },
       "lifetime": 1.5
     },
     "crit_hit": {
       "blockId": "fire_burst",
       "audio": "boom",
-      "notify": { "type": "floatText", "textKey": "暴擊！", "color": "#FF8800" },
-      "lifetime": 2.0
+      "notify": {
+        "type": "floatText",
+        "textKey": "暴擊！",
+        "color": "#FF8800"
+      },
+      "lifetime": 2
     },
     "buff_gain_atk": {
       "blockId": "ring_addatk",
       "audio": "buff",
-      "notify": { "type": "floatText", "textKey": "攻擊力提升！", "color": "#FF6B35" },
+      "notify": {
+        "type": "floatText",
+        "textKey": "攻擊力提升！",
+        "color": "#FF6B35"
+      },
       "lifetime": 2.5
     },
     "buff_gain_def": {
       "blockId": "ring_addlife",
       "audio": "heal",
-      "notify": { "type": "floatText", "textKey": "防禦力提升！", "color": "#55AAFF" },
+      "notify": {
+        "type": "floatText",
+        "textKey": "防禦力提升！",
+        "color": "#55AAFF"
+      },
       "lifetime": 2.5
     },
     "unit_death": {
       "blockId": "impact_ring",
       "audio": "boom",
-      "notify": { "type": "floatText", "textKey": "戰敗！", "color": "#FF2222" },
-      "lifetime": 2.0
+      "notify": {
+        "type": "floatText",
+        "textKey": "戰敗！",
+        "color": "#FF2222"
+      },
+      "lifetime": 2
     },
     "heal": {
       "blockId": "glow_soft",
       "audio": "heal",
-      "notify": { "type": "floatText", "textKey": "回復！", "color": "#00FF88" },
-      "lifetime": 2.0
+      "notify": {
+        "type": "floatText",
+        "textKey": "回復！",
+        "color": "#00FF88"
+      },
+      "lifetime": 2
     },
     "stun_apply": {
       "blockId": "lightning_purple",
       "audio": "thunder",
-      "notify": { "type": "floatText", "textKey": "暈眩！", "color": "#CCAAFF" },
-      "lifetime": 2.0
+      "notify": {
+        "type": "floatText",
+        "textKey": "暈眩！",
+        "color": "#CCAAFF"
+      },
+      "lifetime": 2
     },
-
     "_comment_skill_zhang_fei": "張飛虎嘯：蓄光(0ms) → 大劍軌跡(100ms) → 火爆發(200ms) → 衝擊環(400ms)",
     "skill_zhang_fei": {
       "blockId": "fire_burst",
       "audio": "fireball",
-      "notify": { "type": "floatText", "textKey": "虎嘯！", "color": "#FF6600" },
+      "notify": {
+        "type": "floatText",
+        "textKey": "虎嘯！",
+        "color": "#FF6600"
+      },
       "lifetime": 2.5,
       "blocks": [
-        { "blockId": "glow_bright",    "delay": 0.0, "duration": 0.8, "scale": 1.2 },
-        { "blockId": "trail_bigsword", "delay": 0.1, "duration": 0.6 },
-        { "blockId": "fire_burst",     "delay": 0.2, "duration": 1.5, "scale": 1.5 },
-        { "blockId": "impact_ring",    "delay": 0.4, "duration": 1.0 }
+        {
+          "blockId": "glow_bright",
+          "delay": 0,
+          "duration": 0.8,
+          "scale": 1.2
+        },
+        {
+          "blockId": "trail_bigsword",
+          "delay": 0.1,
+          "duration": 0.6
+        },
+        {
+          "blockId": "fire_burst",
+          "delay": 0.2,
+          "duration": 1.5,
+          "scale": 1.5
+        },
+        {
+          "blockId": "impact_ring",
+          "delay": 0.4,
+          "duration": 1
+        }
       ]
     },
-
     "_comment_skill_guan_yu": "關羽青龍偃月：蓄光(0ms) → 寬揮斬軌跡(100ms) → 衝擊震波(200ms) → 能量波(300ms)",
     "skill_guan_yu": {
       "blockId": "impact_shock",
       "audio": "feijian",
-      "notify": { "type": "floatText", "textKey": "青龍偃月！", "color": "#00AAFF" },
+      "notify": {
+        "type": "floatText",
+        "textKey": "青龍偃月！",
+        "color": "#00AAFF"
+      },
       "lifetime": 2.5,
       "blocks": [
-        { "blockId": "glow_soft",      "delay": 0.0, "duration": 0.9, "tintHex": "#3388FF", "scale": 1.3 },
-        { "blockId": "trail_slash",    "delay": 0.1, "duration": 0.5 },
-        { "blockId": "impact_shock",   "delay": 0.2, "duration": 1.2, "scale": 1.4 },
-        { "blockId": "energy_wave",    "delay": 0.3, "duration": 1.5, "scale": 1.2 }
+        {
+          "blockId": "glow_soft",
+          "delay": 0,
+          "duration": 0.9,
+          "tintHex": "#3388FF",
+          "scale": 1.3
+        },
+        {
+          "blockId": "trail_slash",
+          "delay": 0.1,
+          "duration": 0.5
+        },
+        {
+          "blockId": "impact_shock",
+          "delay": 0.2,
+          "duration": 1.2,
+          "scale": 1.4
+        },
+        {
+          "blockId": "energy_wave",
+          "delay": 0.3,
+          "duration": 1.5,
+          "scale": 1.2
+        }
       ]
     },
-
     "_comment_skill_lu_bu": "呂布天下無雙：蓄光(0ms) → 火環波(100ms) → 能量爆環(300ms) → 衝擊環(400ms) + 鏡頭震動",
     "skill_lu_bu": {
       "blockId": "fire_ringwave",
       "audio": "boom",
-      "notify": { "type": "floatText", "textKey": "天下無雙！", "color": "#FF2200" },
-      "lifetime": 3.0,
+      "notify": {
+        "type": "floatText",
+        "textKey": "天下無雙！",
+        "color": "#FF2200"
+      },
+      "lifetime": 3,
       "blocks": [
-        { "blockId": "glow_bright",       "delay": 0.0, "duration": 1.0, "scale": 1.5 },
-        { "blockId": "fire_ringwave",     "delay": 0.1, "duration": 1.5, "scale": 1.8 },
-        { "blockId": "energy_blast_ring", "delay": 0.3, "duration": 1.5, "scale": 2.0 },
-        { "blockId": "impact_ring",       "delay": 0.4, "duration": 1.2, "scale": 1.6 }
+        {
+          "blockId": "glow_bright",
+          "delay": 0,
+          "duration": 1,
+          "scale": 1.5
+        },
+        {
+          "blockId": "fire_ringwave",
+          "delay": 0.1,
+          "duration": 1.5,
+          "scale": 1.8
+        },
+        {
+          "blockId": "energy_blast_ring",
+          "delay": 0.3,
+          "duration": 1.5,
+          "scale": 2
+        },
+        {
+          "blockId": "impact_ring",
+          "delay": 0.4,
+          "duration": 1.2,
+          "scale": 1.6
+        }
       ],
-      "cameraShake": { "strength": 0.15, "duration": 0.4 }
+      "cameraShake": {
+        "strength": 0.15,
+        "duration": 0.4
+      }
     },
-
     "skill_cao_cao": {
       "blockId": "ring_addatk",
       "audio": "buff",
-      "notify": { "type": "floatText", "textKey": "奇謀佈陣！", "color": "#FFDD00" },
-      "lifetime": 3.0
+      "notify": {
+        "type": "floatText",
+        "textKey": "奇謀佈陣！",
+        "color": "#FFDD00"
+      },
+      "lifetime": 3
+    },
+    "battle_hit_default": {
+      "blockId": "p3d_common_light",
+      "lifetime": 0.7,
+      "blocks": [
+        {
+          "blockId": "p3d_common_light",
+          "delay": 0,
+          "duration": 0.3,
+          "scale": 0.72,
+          "tintHex": "#FFF7E8"
+        },
+        {
+          "blockId": "p3d_star",
+          "delay": 0.04,
+          "duration": 0.38,
+          "scale": 0.5,
+          "tintHex": "#FFE59A"
+        }
+      ]
+    },
+    "battle_hit_night": {
+      "blockId": "p3d_level_up",
+      "lifetime": 0.85,
+      "blocks": [
+        {
+          "blockId": "p3d_level_up",
+          "delay": 0,
+          "duration": 0.42,
+          "scale": 1.02,
+          "tintHex": "#93D8FF"
+        },
+        {
+          "blockId": "p3d_common_light",
+          "delay": 0.06,
+          "duration": 0.3,
+          "scale": 0.6,
+          "tintHex": "#EAFBFF"
+        }
+      ]
+    },
+    "battle_death_burst": {
+      "blockId": "p3d_level_up",
+      "audio": "boom",
+      "lifetime": 0.95,
+      "blocks": [
+        {
+          "blockId": "p3d_level_up",
+          "delay": 0,
+          "duration": 0.45,
+          "scale": 1,
+          "tintHex": "#FFB45A"
+        },
+        {
+          "blockId": "p3d_star",
+          "delay": 0.08,
+          "duration": 0.6,
+          "scale": 0.85,
+          "tintHex": "#FFE8A0"
+        }
+      ]
+    },
+    "battle_death_vanish": {
+      "blockId": "p3d_level_up",
+      "audio": "boom",
+      "lifetime": 0.95,
+      "blocks": [
+        {
+          "blockId": "p3d_common_light",
+          "delay": 0,
+          "duration": 0.32,
+          "scale": 0.52,
+          "tintHex": "#F2F2F2"
+        },
+        {
+          "blockId": "p3d_level_up",
+          "delay": 0.1,
+          "duration": 0.5,
+          "scale": 0.66,
+          "tintHex": "#DDE6F0"
+        }
+      ]
+    },
+    "battle_forced_move": {
+      "blockId": "p3d_common_light",
+      "audio": "hurt",
+      "lifetime": 0.6,
+      "blocks": [
+        {
+          "blockId": "p3d_common_light",
+          "delay": 0,
+          "duration": 0.35,
+          "scale": 0.65,
+          "tintHex": "#D8D8D8"
+        }
+      ]
+    },
+    "battle_skill_seed": {
+      "blockId": "p3d_common_light",
+      "audio": "skill0",
+      "lifetime": 0.9,
+      "blocks": [
+        {
+          "blockId": "p3d_common_light",
+          "delay": 0,
+          "duration": 0.4,
+          "scale": 0.9,
+          "tintHex": "#8EE6FF"
+        },
+        {
+          "blockId": "p3d_star",
+          "delay": 0.08,
+          "duration": 0.55,
+          "scale": 0.75,
+          "tintHex": "#D6F6FF"
+        }
+      ]
+    },
+    "battle_skill_ultimate": {
+      "blockId": "p3d_level_up",
+      "audio": "skill0",
+      "lifetime": 1.2,
+      "blocks": [
+        {
+          "blockId": "p3d_level_up",
+          "delay": 0,
+          "duration": 0.55,
+          "scale": 1.2,
+          "tintHex": "#FFD966"
+        },
+        {
+          "blockId": "p3d_star",
+          "delay": 0.1,
+          "duration": 0.7,
+          "scale": 1,
+          "tintHex": "#FFF0B8"
+        }
+      ],
+      "cameraShake": {
+        "strength": 0.12,
+        "duration": 0.24
+      }
+    },
+    "battle_win": {
+      "blockId": "p3d_star",
+      "audio": "buff",
+      "lifetime": 1,
+      "blocks": [
+        {
+          "blockId": "p3d_star",
+          "delay": 0,
+          "duration": 0.5,
+          "scale": 1,
+          "tintHex": "#FFD966"
+        },
+        {
+          "blockId": "p3d_level_up",
+          "delay": 0.06,
+          "duration": 0.55,
+          "scale": 0.9,
+          "tintHex": "#FFF2B0"
+        }
+      ]
+    },
+    "battle_lose": {
+      "blockId": "p3d_common_light",
+      "audio": "boom",
+      "lifetime": 0.95,
+      "blocks": [
+        {
+          "blockId": "p3d_common_light",
+          "delay": 0,
+          "duration": 0.4,
+          "scale": 0.8,
+          "tintHex": "#C4A8FF"
+        },
+        {
+          "blockId": "p3d_star",
+          "delay": 0.06,
+          "duration": 0.55,
+          "scale": 0.7,
+          "tintHex": "#E2D3FF"
+        }
+      ]
+    },
+    "battle_draw": {
+      "blockId": "p3d_common_light",
+      "lifetime": 0.85,
+      "blocks": [
+        {
+          "blockId": "p3d_common_light",
+          "delay": 0,
+          "duration": 0.35,
+          "scale": 0.75,
+          "tintHex": "#E8E8E8"
+        },
+        {
+          "blockId": "p3d_star",
+          "delay": 0.05,
+          "duration": 0.5,
+          "scale": 0.65,
+          "tintHex": "#FFFFFF"
+        }
+      ]
     },
     "zhen_ji_nova": {
       "blockId": "zhen_ji_ice_nova",
       "audio": "heal",
-      "notify": { "type": "floatText", "textKey": "霜月凝華！", "color": "#AADDFF" },
+      "notify": {
+        "type": "floatText",
+        "textKey": "霜月凝華！",
+        "color": "#AADDFF"
+      },
       "lifetime": 2.5
     }
   }

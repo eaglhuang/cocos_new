@@ -43,6 +43,7 @@ const targets = [
     { id: 'GeneralDetailBloodlineV3', screenId: 'general-detail-bloodline-v3-screen', targetIndex: 6, uiSourceDir: 'general-detail-bloodline-v3', runtimeScreenId: 'GeneralDetailBloodlineV3', hiddenAlias: true },
     { id: 'SpiritTallyDetail', screenId: 'spirit-tally-detail-screen', targetIndex: 7, uiSourceDir: 'spirit-tally-detail', runtimeScreenId: 'SpiritTallyDetail' },
     { id: 'GeneralList', screenId: 'general-list-screen', targetIndex: 8, uiSourceDir: 'general-list', runtimeScreenId: 'GeneralList' },
+    { id: 'EliteTroopCodex', screenId: 'elite-troop-codex-screen', targetIndex: 9, uiSourceDir: 'elite-troop-codex', runtimeScreenId: 'EliteTroopCodex' },
     { id: 'NurtureSession', screenId: 'nurture-session-screen', targetIndex: 10, uiSourceDir: 'nurture-session', runtimeScreenId: 'NurtureSession' },
     { id: 'BattleSceneFromLobby', screenId: 'battle-scene', targetIndex: 11, uiSourceDir: 'battle-hud', runtimeScreenId: 'BattleSceneFromLobby' },
 ];
@@ -559,6 +560,39 @@ async function captureOne(browser, baseUrl, outputDir, target, timeoutMs, sceneU
                     BattleLogPanelNode: getInfo(logPanelCanvasNode),
                     SidePanelRoot: getInfo(sidePanelRoot),
                 };
+
+                const battleSceneNode = findNode(scene, 'BattleScene');
+                const boardRendererNode = findNode(scene, 'BoardRenderer');
+                const battleSceneComp = battleSceneNode && battleSceneNode.getComponent ? battleSceneNode.getComponent('BattleScene') : null;
+                const boardRendererComp = boardRendererNode && boardRendererNode.getComponent ? boardRendererNode.getComponent('BoardRenderer') : null;
+                const colorSummary = (value) => value && typeof value === 'object'
+                    ? { r: value.r ?? null, g: value.g ?? null, b: value.b ?? null, a: value.a ?? null }
+                    : value;
+                const readMaterialColor = (material, propertyName = 'mainColor') => {
+                    if (!material) return null;
+                    try {
+                        const value = material.getProperty ? material.getProperty(propertyName) : material[propertyName];
+                        return colorSummary(value);
+                    } catch {
+                        return null;
+                    }
+                };
+                result.BattleScene = battleSceneComp ? {
+                    tactic: battleSceneComp.ctrl?.state?.battleTactic ?? null,
+                    gridDebugText: battleSceneComp.gridDebugLabel?.string ?? null,
+                    hasBoardRenderer: !!battleSceneComp.boardRenderer,
+                } : null;
+                result.BoardRenderer = boardRendererComp ? {
+                    floodRippleReady: !!(boardRendererComp.floodRippleFillMaterial && boardRendererComp.floodRippleAccentFillMaterial),
+                    hasFloodBase: !!boardRendererComp.floodBaseFillMaterial,
+                    hasFloodCurrentFoam: !!boardRendererComp.floodCurrentFoamFillMaterial,
+                    floodBaseFillColor: readMaterialColor(boardRendererComp.floodBaseFillMaterial, 'fillColor'),
+                    floodBaseEdgeColor: readMaterialColor(boardRendererComp.floodBaseFillMaterial, 'edgeColor'),
+                    floodBaseHighlightColor: readMaterialColor(boardRendererComp.floodBaseFillMaterial, 'highlightColor'),
+                    floodCurrentColor: readMaterialColor(boardRendererComp.floodCurrentFoamFillMaterial),
+                    floodRippleBaseColor: readMaterialColor(boardRendererComp.floodRippleFillMaterial),
+                    floodRippleAccentColor: readMaterialColor(boardRendererComp.floodRippleAccentFillMaterial),
+                } : null;
 
                 if (sidePanelRoot) {
                     for (const child of (sidePanelRoot.children || [])) {

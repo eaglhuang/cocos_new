@@ -1,0 +1,250 @@
+/* ============================================================
+   3KLife Design System — Colors & Typography
+   三國志・生存 — Ink Parchment × Jade × Gold × Dark Metal
+   Source: 3KLife/assets/resources/ui-spec/ui-design-tokens.json (v2.2)
+   ============================================================ */
+
+@font-face {
+  font-family: "Newsreader";
+  src: url("fonts/newsreader.ttf") format("truetype");
+  font-display: swap;
+}
+@font-face {
+  font-family: "NotoSansTC";
+  src: url("fonts/notosans_tc.ttf") format("truetype");
+  font-display: swap;
+}
+@font-face {
+  font-family: "Manrope";
+  src: url("fonts/manrope.ttf") format("truetype");
+  font-display: swap;
+}
+
+:root {
+  /* ---------- Base palette ---------- */
+  /* Primary / Secondary / Accent */
+  --primary:          #B22222;   /* 朱砂 cinnabar — primary brand, destructive accent */
+  --primary-light:    #FFBFB8;
+  --secondary:        #D4AF37;   /* 赤金 — gold CTA base */
+  --secondary-light:  #FFE088;
+  --accent-gold:      #D4AF37;
+  --accent-gold-light:#FFE088;
+  --accent-gold-cta:  #FFD700;
+  --resource-gold:    #FFD700;
+
+  --tertiary:         #2E8B57;   /* success jade */
+  --tertiary-light:   #86E1A5;
+  --error:            #FF6B6B;
+  --success:          #86E1A5;
+  --warning:          #E9C349;
+
+  /* Jade — header plaques, crests, spirit accent (局部點綴) */
+  --jade-base:        #3F6A62;
+  --jade-light:       #6E827E;
+  --jade-crest:       #8CCFC4;
+  --jade-field:       #A4D2D0;
+
+  /* Ink / dark surfaces (Dark Metal family) */
+  --bg:               #0F0F0F;
+  --bg-deep:          #0A0A0A;
+  --bg-mid:           #111111;
+  --bg-olive:         #151513;
+  --bg-navy:          #0A0C14;
+
+  --surface:          #1A1A1A;
+  --surface-deep:     #1A1A1A;
+  --surface-container:#20201F;
+  --surface-high:     #2A2A2A;
+  --surface-highest:  #353535;
+  --surface-sepia:    #2A2520;
+  --surface-sepia-warm:#241A0D;
+  --surface-charcoal: #181C22;
+
+  /* Parchment — reading surfaces (宣紙承載面) */
+  --parchment-base:   #E8DFD0;
+  --parchment-fill:   #F0E8D8;
+  --parchment-summary:#E7E0D0;
+  --parchment-module: #EFE9DB;
+  --parchment-main:   #F0EBDD;
+  --parchment-detail: #E3ECE8;
+  --parchment-side:   #E5E0D3;
+
+  /* Text */
+  --text-primary:     #E5E2E1;
+  --text-secondary:   #D0C5AF;
+  --text-muted:       #99907C;
+  --text-accent:      #FFE088;
+  --text-warm-gold:   #F0E68C;
+  --text-off-white:   #E8E4DC;
+  --text-khaki:       #B0A880;
+
+  --text-ink:         #2D2926;   /* 墨 — on parchment primary */
+  --text-on-parchment:#2D2926;
+  --text-on-parchment-muted:#6B5E4E;
+  --text-positive:    #86E1A5;
+  --text-negative:    #FF6B6B;
+  --text-positive-on-parchment:#1B6B3A;
+  --text-negative-on-parchment:#B22222;
+
+  /* Dividers & outlines */
+  --outline:          #4D4635;
+  --outline-subtle:   #353535;
+  --outline-heavy:    rgba(0,0,0,0.80);
+  --outline-standard: rgba(0,0,0,0.67);
+  --outline-light:    rgba(0,0,0,0.60);
+  --divider:          #2A2A2A;
+  --divider-parchment:#8C7A66;
+
+  /* Rarity — 七階 N/R/SR/SSR/UR/LR + Rainbow */
+  --rarity-n:         #E0E0E0;   /* White / Normal */
+  --rarity-r:         #4CAF50;   /* Green / Rare */
+  --rarity-sr:        #2196F3;   /* Blue / Super Rare */
+  --rarity-ssr:       #9C27B0;   /* Purple / SSR */
+  --rarity-ur:        #FFC107;   /* Gold / UR */
+  --rarity-lr:        #D32F2F;   /* Red / LR */
+  --rarity-rainbow:   #00FBFF;   /* Rainbow / Mythic */
+
+  /* Semantic */
+  --fg1: var(--text-primary);
+  --fg2: var(--text-secondary);
+  --fg3: var(--text-muted);
+  --ink1: var(--text-on-parchment);
+  --ink2: var(--text-on-parchment-muted);
+  --link: var(--secondary-light);
+
+  /* ---------- Type ---------- */
+  --font-headline: "Newsreader", "NotoSansTC", "Songti TC", "STSong", serif;
+  --font-body:     "NotoSansTC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+  --font-label:    "Manrope", "NotoSansTC", system-ui, sans-serif;
+  --font-num:      "Manrope", "Newsreader", serif;
+
+  /* Scale (px — spec: 1920×1080 native) */
+  --type-h-lg: 42px;   --lh-h-lg: 50px;
+  --type-h-md: 34px;   --lh-h-md: 42px;
+  --type-h-sm: 28px;   --lh-h-sm: 36px;
+  --type-body-lg: 22px; --lh-body-lg: 30px;
+  --type-body-md: 18px; --lh-body-md: 26px;
+  --type-body-sm: 14px; --lh-body-sm: 20px;
+  --type-label-lg: 16px; --lh-label-lg: 22px;
+  --type-label-md: 14px; --lh-label-md: 18px;
+  --type-label-sm: 12px; --lh-label-sm: 16px;
+
+  --text-outline-width: 2px;
+  --text-outline-color: #1A1A1A;
+
+  /* ---------- Spacing ---------- */
+  --sp-xs: 4px;
+  --sp-sm: 8px;
+  --sp-md: 12px;
+  --sp-lg: 16px;
+  --sp-xl: 24px;
+  --sp-2xl: 32px;
+  --sp-section: 48px;
+
+  /* ---------- Radii ---------- */
+  --r-none: 0;
+  --r-sm: 4px;
+  --r-md: 8px;
+  --r-lg: 16px;
+  --r-xl: 24px;
+  --r-full: 9999px;
+
+  /* ---------- Shadows & glow ---------- */
+  --shadow-sm: 0 2px 4px rgba(0,0,0,0.20);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.30);
+  --shadow-default: 0 4px 12px rgba(0,0,0,0.24);
+  --shadow-lg: 0 12px 24px rgba(0,0,0,0.40);
+  --glow-gold: 0 0 30px rgba(255,193,7,.75), 0 0 60px rgba(255,193,7,.4);
+  --glow-rainbow: 0 0 40px rgba(0,251,255,.9), 0 0 80px rgba(0,251,255,.5);
+  --glow-jade: 0 0 25px rgba(140,207,196,.7), 0 0 50px rgba(140,207,196,.35);
+
+  /* ---------- Motion ---------- */
+  --dur-fast: 150ms;
+  --dur-norm: 250ms;
+  --dur-slow: 400ms;
+  --ease-default: cubic-bezier(.4,0,.2,1);
+  --ease-enter:   cubic-bezier(0,0,.2,1);
+  --ease-exit:    cubic-bezier(.4,0,1,1);
+
+  /* ---------- Interaction ---------- */
+  --touch-min: 44px;
+  --btn-sm: 36px;
+  --btn-md: 48px;
+  --btn-lg: 56px;
+
+  /* ---------- 9-slice ---------- */
+  --slice-sm: 8px;
+  --slice-md: 16px;
+  --slice-lg: 24px;
+}
+
+/* ============================================================
+   Semantic type classes
+   ============================================================ */
+
+.ds-h1, h1.ds {
+  font-family: var(--font-headline);
+  font-size: var(--type-h-lg);
+  line-height: var(--lh-h-lg);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--text-ink);
+}
+.ds-h2, h2.ds {
+  font-family: var(--font-headline);
+  font-size: var(--type-h-md);
+  line-height: var(--lh-h-md);
+  font-weight: 700;
+  letter-spacing: 0.015em;
+  color: var(--text-ink);
+}
+.ds-h3, h3.ds {
+  font-family: var(--font-headline);
+  font-size: var(--type-h-sm);
+  line-height: var(--lh-h-sm);
+  font-weight: 600;
+  color: var(--text-ink);
+}
+.ds-body {
+  font-family: var(--font-body);
+  font-size: var(--type-body-md);
+  line-height: var(--lh-body-md);
+  color: var(--text-ink);
+}
+.ds-body-lg {
+  font-family: var(--font-body);
+  font-size: var(--type-body-lg);
+  line-height: var(--lh-body-lg);
+  color: var(--text-ink);
+}
+.ds-body-sm {
+  font-family: var(--font-body);
+  font-size: var(--type-body-sm);
+  line-height: var(--lh-body-sm);
+  color: var(--text-on-parchment-muted);
+}
+.ds-label {
+  font-family: var(--font-label);
+  font-size: var(--type-label-md);
+  line-height: var(--lh-label-md);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.ds-num {
+  font-family: var(--font-num);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+/* Text on dark surfaces use outline for legibility (per spec) */
+.ds-on-dark {
+  color: var(--text-primary);
+  text-shadow:
+    0 0 2px rgba(0,0,0,0.9),
+    0 1px 2px rgba(0,0,0,0.7);
+}
+
+/* Utility backgrounds */
+.ds-parchment { background: var(--parchment-base); color: var(--text-on-parchment); }
+.ds-ink       { background: var(--bg); color: var(--text-primary); }

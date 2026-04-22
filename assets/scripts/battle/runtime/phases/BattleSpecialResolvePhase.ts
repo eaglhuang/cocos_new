@@ -17,6 +17,7 @@ const FRONT_DEPTH: Record<Faction, number> = {
 
 export interface BattleSpecialResolvePhaseContext {
   readonly state: BattleState;
+  readonly actingFaction: Faction;
   readonly turnManager: BattleTurnManager;
   castEnemySeedTactic(battleSkillId: string | null): SkillExecutionResult;
 }
@@ -26,6 +27,9 @@ export function executeBattleSpecialResolvePhase(context: BattleSpecialResolvePh
   const currentTurn = svc.battle.getSnapshot().turn;
 
   for (const [, unit] of context.state.units) {
+    if (unit.faction !== context.actingFaction) {
+      continue;
+    }
     if (unit.type === TroopType.Medic) {
       resolveMedic(unit, context.state, svc);
     }
@@ -35,7 +39,7 @@ export function executeBattleSpecialResolvePhase(context: BattleSpecialResolvePh
   }
 
   const enemyGeneral = context.state.enemyGeneral;
-  if (enemyGeneral?.canUseSkill() && context.turnManager.canEnemyAutoCastSkill(currentTurn)) {
+  if (context.actingFaction === Faction.Enemy && enemyGeneral?.canUseSkill() && context.turnManager.canEnemyAutoCastSkill(currentTurn)) {
     const result = context.castEnemySeedTactic(enemyGeneral.skillId ?? enemyGeneral.battlePrimarySkillId ?? null);
     if (result.applied) {
       context.turnManager.markEnemyAutoSkillUsed(currentTurn);

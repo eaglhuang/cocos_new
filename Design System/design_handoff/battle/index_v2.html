@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="utf-8">
+<title>3KLife · Battle v2</title>
+<link rel="stylesheet" href="../../colors_and_type.css">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1920px; height: 1080px; overflow: hidden; font-family: var(--font-body); color: var(--text-primary); user-select: none; }
+  body {
+    background:
+      radial-gradient(1600px 1000px at 50% 70%, rgba(40,80,100,.35), transparent 75%),
+      url("../../assets/backgrounds/bg_ink.png") center/cover no-repeat,
+      #0a0c14;
+    position:relative;
+  }
+
+  /* ============ Zone 1 · TopBar (88px) ============ */
+  .topbar {
+    position:absolute; top:0; left:0; right:0; height:88px; z-index:30;
+    background: linear-gradient(180deg, rgba(8,8,12,.96) 0%, rgba(8,8,12,.82) 100%);
+    border-bottom: 1px solid rgba(212,175,55,.65);
+    display:grid; grid-template-columns: 1fr 680px 1fr; align-items:center; padding: 0 16px;
+    box-shadow: 0 4px 14px rgba(0,0,0,.6);
+  }
+  /* portrait w/ HP band */
+  .gen { display:flex; align-items:center; gap:12px;}
+  .gen.right { justify-content:flex-end;}
+  .gen.right .g-text { text-align:right;}
+  .p-portrait {
+    width:64px; height:64px; border-radius:50%; border:2.5px solid #D4AF37;
+    overflow:hidden; flex-shrink:0; box-shadow: 0 0 12px rgba(212,175,55,.4), 0 2px 6px rgba(0,0,0,.7); cursor:pointer;
+    background:#111;
+  }
+  .p-portrait.enemy { border-color:#D94A3A; box-shadow: 0 0 10px rgba(217,74,58,.35), 0 2px 6px rgba(0,0,0,.7);}
+  .p-portrait img { width:100%; height:100%; object-fit:cover; object-position:center top;}
+  .g-text { display:flex; flex-direction:column; gap:2px;}
+  .g-hpline { display:flex; align-items:baseline; gap:10px;}
+  .g-hpnum { font-family: var(--font-num); font-weight:800; font-size: 22px; color:#FFE088; font-variant-numeric: tabular-nums;}
+  .gen.right .g-hpnum { color:#FFBFB8;}
+  .g-hp-delta { font-family: var(--font-num); font-size:12px; color:#86E1A5; font-weight:700;}
+  .g-hp-delta.red { color:#FF8070;}
+  .g-name { font-family: var(--font-headline); font-size:15px; color:#F5F1E8; letter-spacing:.15em; font-weight:700;}
+  .g-title { font-family: var(--font-label); font-size:10px; letter-spacing:.3em; color:#B0A880; text-transform:uppercase;}
+  .gen.right .g-name { color:#FFBFB8;}
+  .g-sp {
+    width: 220px; height: 6px; background: rgba(0,0,0,.6); border: 1px solid rgba(155,109,255,.4);
+    border-radius:3px; overflow:hidden; margin-top:2px;
+  }
+  .g-sp i { display:block; height:100%; background: linear-gradient(90deg, #6d5dff, #9b6dff); box-shadow: 0 0 6px rgba(155,109,255,.6);}
+
+  /* center */
+  .center-info { display:flex; flex-direction:column; align-items:center; gap:6px;}
+  .turn-title {
+    font-family: var(--font-headline); font-size: 22px; font-weight:800; color:#FFE088; letter-spacing:.3em;
+    text-shadow: 0 0 12px rgba(255,224,136,.35);
+  }
+  .turn-title .sub { font-family: var(--font-label); font-size:11px; letter-spacing:.4em; color:#D4AF37; font-weight:600; margin-left:12px; }
+  .fortress {
+    display:grid; grid-template-columns: 80px 1fr 48px 1fr 80px; align-items:center; gap:10px; width: 640px;
+  }
+  .fort-label { font-family: var(--font-label); font-size:10px; letter-spacing:.25em; color:#B0A880; text-transform:uppercase; text-align:center;}
+  .fort-bar { height: 14px; border-radius: 7px; overflow:hidden; background:#0a0a0a; border: 1px solid #4D4635; position:relative;}
+  .fort-bar i { display:block; height:100%;}
+  .fort-bar.me i { background: linear-gradient(90deg, #3F6A62, #86E1A5); float:right; box-shadow: 0 0 8px rgba(134,225,165,.5);}
+  .fort-bar.en i { background: linear-gradient(90deg, #FF6B6B, #B22222); box-shadow: 0 0 8px rgba(255,107,107,.4);}
+  .vs {
+    font-family: var(--font-headline); font-weight:800; font-size:22px; color:#D4AF37; text-align:center;
+    text-shadow: 0 0 10px rgba(212,175,55,.6);
+  }
+  .food {
+    font-family: var(--font-num); font-weight:700; font-size:13px; color:#F0E68C; display:flex; align-items:center; gap:6px;
+  }
+  .food .ico { font-family: var(--font-headline); font-size:14px; color:#D4AF37;}
+
+  /* ============ Zone 3 · Tiger Tally cards (left) ============ */
+  .tally-col {
+    position:absolute; top:96px; left:0; bottom:0; width: 232px; z-index:25;
+    background: linear-gradient(90deg, rgba(10,10,18,.88) 0%, rgba(10,10,18,.7) 92%, transparent 100%);
+    border-right: 1px solid rgba(212,175,55,.2);
+    padding: 8px 10px 8px 10px;
+    display:flex; flex-direction:column; gap: 8px;
+  }
+  .tally {
+    flex: 1; min-height: 140px; max-height: 240px;
+    position:relative; border-radius: 8px; overflow: hidden;
+    border: 2px solid var(--q, #8A6E1F);
+    box-shadow: 0 4px 12px rgba(0,0,0,.55), inset 0 0 0 1px rgba(0,0,0,.6);
+    cursor: pointer;
+    transition: transform var(--dur-fast) var(--ease-default), box-shadow var(--dur-fast) var(--ease-default);
+  }
+  .tally:hover { transform: translateX(4px); }
+  .tally.selected { transform: translateX(6px) scale(1.02); box-shadow: 0 6px 18px rgba(255,224,136,.35), inset 0 0 0 1px rgba(255,255,255,.1);}
+  .tally-bg {
+    position:absolute; inset:0;
+    background-size: cover; background-position: center;
+    filter: brightness(.85) saturate(1.05);
+  }
+  .tally::after {
+    content:""; position:absolute; inset:0;
+    background: linear-gradient(180deg, rgba(0,0,0,.2) 0%, transparent 30%, transparent 55%, rgba(0,0,0,.85) 100%);
+  }
+  .tally-top {
+    position:absolute; top:6px; left:8px; right:8px; display:flex; justify-content:space-between; align-items:flex-start; z-index:2;
+  }
+  .cost-badge {
+    background: rgba(0,0,0,.78); border: 1px solid rgba(212,175,55,.5);
+    min-width: 26px; height:22px; padding: 0 7px; border-radius: 4px;
+    display:inline-flex; align-items:center; gap:3px;
+    font-family: var(--font-num); font-weight:800; font-size:13px; color:#F0E68C;
+  }
+  .star-row {
+    font-family: var(--font-headline); font-size:11px; letter-spacing:.1em;
+    color:#FFE088; text-shadow: 0 1px 2px rgba(0,0,0,.9); font-weight:800;
+  }
+  .q-pill {
+    display:inline-block; padding: 1px 6px; font-family: var(--font-headline); font-size:10px; font-weight:800; letter-spacing:.2em;
+    color:#0a0a0a; border-radius: 3px;
+  }
+  .q-SSR { background: linear-gradient(180deg,#FFE088,#D4AF37); }
+  .q-SR { background: linear-gradient(180deg,#BBAFFF,#8A6FDB); color:#fff;}
+  .q-UR { background: linear-gradient(180deg,#FFBFB8,#B22222); color:#FFE088;}
+  .q-R { background: linear-gradient(180deg,#A4D2D0,#3F6A62); color:#fff;}
+
+  .tally-badges {
+    position:absolute; top:50%; right:6px; transform: translateY(-50%); display:flex; flex-direction:column; gap:5px; z-index:2;
+  }
+  .ut-badge {
+    width:26px; height:26px; border-radius:50%; background: rgba(0,0,0,.78); border: 1.5px solid var(--bc, #D4AF37);
+    display:grid; place-items:center;
+    font-family: var(--font-headline); font-weight:800; font-size:12px; color: var(--bc, #D4AF37);
+  }
+  .ut-cav { --bc:#D4AF37; }
+  .ut-inf { --bc:#3A8FD9; }
+  .ut-bow { --bc:#9b6dff; }
+  .ut-shd { --bc:#B0A880; }
+  .ut-pik { --bc:#2ecc71; }
+
+  .tally-bottom {
+    position:absolute; left:0; right:0; bottom:0; padding: 8px 10px 10px; z-index:2;
+    display:flex; justify-content:space-between; align-items:flex-end;
+  }
+  .tally-name {
+    position: absolute; left:0; right:0; bottom: 30px; text-align:center;
+    font-family: var(--font-headline); font-size:14px; font-weight:800; color:#F5F1E8;
+    letter-spacing: .2em; text-shadow: 0 1px 3px #000, 0 0 6px rgba(0,0,0,.9); z-index:2;
+  }
+  .stat-pair { display:flex; align-items:center; gap:4px;
+    font-family: var(--font-num); font-weight:800; font-size: 18px; text-shadow: 0 1px 2px #000, 0 2px 4px rgba(0,0,0,.8);
+    font-variant-numeric: tabular-nums;
+  }
+  .stat-pair .ico { font-family: var(--font-headline); font-size: 13px; line-height:1;}
+  .atk { color:#FFE088;}
+  .atk .ico { color:#FFD700;}
+  .hp { color:#86E1A5;}
+  .hp .ico { color:#2E8B57;}
+
+  .tally-lv {
+    position:absolute; bottom:8px; left:50%; transform:translateX(-50%); z-index:2;
+    font-family: var(--font-label); font-size:9px; letter-spacing:.2em; color:#B0A880;
+  }
+
+  .tally.disabled .tally-bg { filter: grayscale(.7) brightness(.55); }
+  .tally.disabled::before { content:"糧草不足"; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); z-index:3;
+    font-family: var(--font-headline); font-weight:800; font-size:13px; color:#FF8070; letter-spacing:.2em;
+    background: rgba(0,0,0,.78); padding: 4px 10px; border: 1px solid #B22222; border-radius: 4px;}
+
+  /* ============ Zone 4 · Battlefield ============ */
+  .field { position:absolute; top:96px; left:240px; right:252px; bottom:232px; z-index:10; }
+
+  .grid-wrap {
+    position:absolute; left:50%; top:52%; transform: translate(-50%, -50%) perspective(1800px) rotateX(42deg) rotateZ(0deg);
+    transform-style: preserve-3d;
+  }
+  .grid {
+    display:grid; grid-template-columns: repeat(8, 96px); grid-template-rows: repeat(5, 88px); gap: 3px;
+  }
+  .tile {
+    background: linear-gradient(180deg, rgba(240,232,216,.04), rgba(240,232,216,.01));
+    border: 1px solid rgba(180,160,100,.14);
+  }
+  .tile.me { background: linear-gradient(180deg, rgba(134,225,165,.14), rgba(63,106,98,.05)); border-color: rgba(134,225,165,.28);}
+  .tile.en { background: linear-gradient(180deg, rgba(255,107,107,.14), rgba(178,34,34,.04)); border-color: rgba(255,107,107,.25);}
+  .tile.hl {
+    background: linear-gradient(180deg, rgba(255,224,136,.35), rgba(212,175,55,.08));
+    border: 1.5px solid #FFE088; box-shadow: inset 0 0 12px rgba(255,224,136,.35);
+  }
+  .tile.hl-cast {
+    background: linear-gradient(180deg, rgba(155,109,255,.3), rgba(90,70,180,.05));
+    border: 1.5px solid #BBAFFF; box-shadow: inset 0 0 14px rgba(155,109,255,.5);
+  }
+
+  /* units on field */
+  .unit {
+    position:absolute; width: 70px; transform: translate(-50%,-75%); z-index: 5; pointer-events:none;
+  }
+  .unit.active { z-index: 6; }
+  .unit .hud {
+    display:flex; flex-direction:column; align-items:center; gap:2px; margin-bottom:4px;
+  }
+  .unit .hud-row {
+    display:flex; align-items:center; gap:4px; padding: 1px 5px; border-radius: 3px;
+    background: rgba(8,8,14,.85);
+    font-family: var(--font-num); font-size:11px; font-weight:800; color:#F5F1E8;
+    white-space:nowrap; border: 1px solid var(--ec,#4D4635);
+    font-variant-numeric: tabular-nums;
+  }
+  .unit.me .hud-row { border-color: rgba(134,225,165,.6); }
+  .unit.en .hud-row { border-color: rgba(255,107,107,.55); }
+  .unit .hud-row .a { color:#FFE088; }
+  .unit .hud-row .h { color:#86E1A5; }
+  .unit.en .hud-row .h { color:#FF8070; }
+  .unit .hud-row .glyph { width:10px; height:10px;}
+  .unit .hud-row .uname { color:#D0C5AF; font-family: var(--font-headline); font-size:10px; letter-spacing:.08em; font-weight:700;}
+  .unit .hpbar { width: 56px; height: 4px; border-radius: 2px; background: rgba(0,0,0,.7); overflow:hidden; border:1px solid rgba(0,0,0,.8);}
+  .unit .hpbar i { display:block; height:100%; }
+  .unit.me .hpbar i { background: linear-gradient(90deg, #86E1A5, #2E8B57); }
+  .unit.en .hpbar i { background: linear-gradient(90deg, #FF8070, #B22222); }
+  .unit .token {
+    width: 62px; height: 62px; border-radius: 50%; overflow:hidden;
+    border: 2.5px solid var(--tc, #86E1A5);
+    box-shadow: 0 4px 8px rgba(0,0,0,.7), 0 0 0 1.5px rgba(0,0,0,.8);
+    background: #0a0a0a;
+  }
+  .unit .token img { width:100%; height:100%; object-fit: cover; object-position: center 18%; }
+  .unit.en .token { --tc:#FF6B6B; }
+  .unit.active .token {
+    box-shadow: 0 0 18px rgba(255,224,136,.7), 0 4px 8px rgba(0,0,0,.7);
+    animation: activeBob 1.6s ease-in-out infinite;
+  }
+  @keyframes activeBob { 0%,100% { transform: translateY(0);} 50% { transform: translateY(-3px);} }
+
+  /* banner */
+  .phase-banner {
+    position:absolute; left:0; right:0; top:40%; transform: translateY(-50%);
+    text-align:center; z-index: 15; pointer-events:none;
+  }
+  .phase-banner .bar {
+    display:inline-block;
+    padding: 14px 64px;
+    background: linear-gradient(90deg, transparent, rgba(8,8,12,.9) 20%, rgba(8,8,12,.9) 80%, transparent);
+    border-top: 1px solid rgba(134,225,165,.5);
+    border-bottom: 1px solid rgba(134,225,165,.5);
+    font-family: var(--font-headline); font-size: 26px; font-weight:800; color:#F5F1E8; letter-spacing: .6em;
+    text-shadow: 0 0 14px rgba(134,225,165,.7);
+  }
+
+  /* floating text */
+  .float {
+    position:absolute; z-index:18; font-family: var(--font-num); font-weight:800;
+    transform: translate(-50%, -50%); pointer-events:none;
+  }
+  .float .n { font-size:32px; color:#FF8070; text-shadow: 0 2px 0 #5a0f0f, 0 0 10px rgba(255,107,107,.7);}
+  .float.crit .n { font-size:42px; color:#FFD700; text-shadow: 0 2px 0 #B22222, 0 0 14px rgba(255,215,0,.85);}
+  .float .tag { display:block; text-align:center; font-family: var(--font-label); font-size:11px; letter-spacing:.3em; color:#FFE088;}
+  .float.heal .n { color:#86E1A5; text-shadow: 0 2px 0 #1a3e26, 0 0 10px rgba(134,225,165,.7);}
+  .float.buff { font-family: var(--font-headline); font-size:13px; color:#A4D2D0; letter-spacing:.2em; font-weight:700; text-shadow: 0 1px 2px #000;}
+
+  /* ============ Zone 5 · Right side — control bar + log ============ */
+  .right-col { position:absolute; top:96px; right:0; width: 240px; z-index: 25; }
+  .ctrlbar {
+    height: 44px; background: rgba(8,8,14,.92); border-left: 1px solid rgba(212,175,55,.2);
+    border-bottom: 1px solid rgba(212,175,55,.15);
+    display:flex; align-items:center; justify-content:center; gap: 10px;
+  }
+  .cbtn {
+    width:34px; height:34px; border-radius: 6px;
+    background: linear-gradient(180deg, #2a2a2a, #121212); border: 1.5px solid #4D4635;
+    color:#B0A880; font-family: var(--font-headline); font-weight:800; font-size: 11px; letter-spacing: .1em;
+    display:grid; place-items:center; cursor:pointer;
+    transition: all var(--dur-fast) var(--ease-default);
+  }
+  .cbtn:hover { border-color:#D4AF37; color:#FFE088;}
+  .cbtn.on { background: linear-gradient(180deg,#FFE088,#D4AF37); color:#2D1E00; border-color:#8A6E1F;}
+  .cbtn.sym { font-size: 15px;}
+
+  .log-panel {
+    background: rgba(8,8,14,.88); border-left: 1px solid rgba(212,175,55,.2);
+    transition: height var(--dur-medium) var(--ease-default);
+    overflow:hidden;
+  }
+  .log-panel.expanded { height: 420px; }
+  .log-panel.collapsed { height: 36px; }
+  .log-head {
+    height: 36px; padding: 0 14px; display:flex; align-items:center; justify-content:space-between;
+    border-bottom: 1px solid rgba(212,175,55,.12); cursor: pointer;
+    background: linear-gradient(90deg, rgba(15,15,25,.8), transparent);
+  }
+  .log-head .ttl { font-family: var(--font-headline); font-size:13px; font-weight:800; color:#FFE088; letter-spacing: .2em; }
+  .log-head .arrow { font-family: var(--font-label); font-size: 10px; color:#B0A880; letter-spacing:.15em;}
+  .log-body {
+    padding: 10px 14px; height: 384px; overflow-y: auto;
+    display:flex; flex-direction:column; gap: 8px;
+  }
+  .log-entry { display:flex; flex-direction:column; gap:2px; padding-left: 10px; border-left: 2px solid var(--lc,#4D4635); font-size: 11px; }
+  .log-entry.me { --lc:#86E1A5;}
+  .log-entry.en { --lc:#FF6B6B;}
+  .log-entry.sys { --lc:#D4AF37;}
+  .log-entry .l1 { font-family: var(--font-headline); font-size:11px; letter-spacing:.1em; color:#F5F1E8; font-weight:700;}
+  .log-entry.me .l1 .w { color:#86E1A5;}
+  .log-entry.en .l1 .w { color:#FF8070;}
+  .log-entry.sys .l1 .w { color:#FFE088;}
+  .log-entry .l2 { color:#B0A880; font-size:10px;}
+  .log-entry .dmg { color:#FFD700; font-family: var(--font-num); font-weight:800;}
+
+  /* ============ Zone 7 · Bottom action dock ============ */
+  .dock {
+    position:absolute; left: 240px; right: 252px; bottom: 0; height: 220px; z-index: 20;
+    background: linear-gradient(180deg, transparent 0%, rgba(8,8,14,.65) 40%, rgba(8,8,14,.92) 100%);
+    pointer-events: none;
+  }
+  .dock-inner {
+    position: absolute; inset: 0; padding: 0 24px 24px; display:flex; justify-content:space-between; align-items:flex-end; gap: 20px;
+    pointer-events: auto;
+  }
+
+  /* ---- support slots (2 sub-generals + 1 friend) ---- */
+  .support {
+    display:flex; gap: 12px; align-items:flex-end;
+  }
+  .slot {
+    width: 118px; height: 168px; position:relative;
+    background: linear-gradient(180deg, rgba(32,32,31,.88), rgba(15,15,15,.92));
+    border: 2px solid var(--sc, #4D4635); border-radius: 10px;
+    overflow:hidden;
+    box-shadow: 0 6px 14px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.06);
+    cursor:pointer;
+    transition: transform var(--dur-fast) var(--ease-default);
+  }
+  .slot:hover { transform: translateY(-3px); }
+  .slot-hd {
+    height: 22px; padding: 0 8px; display:flex; align-items:center; justify-content:space-between;
+    font-family: var(--font-label); font-size:9px; letter-spacing:.25em; color: var(--sc-txt,#B0A880); text-transform: uppercase;
+    background: rgba(0,0,0,.35); border-bottom: 1px solid rgba(212,175,55,.12);
+  }
+  .slot.sub { --sc: #3F6A62; --sc-txt: #A4D2D0;}
+  .slot.friend { --sc: #8A6FDB; --sc-txt: #BBAFFF;}
+  .slot-img {
+    height: 96px; overflow:hidden; position:relative; background: radial-gradient(ellipse at center, rgba(40,60,80,.6), transparent 70%);
+  }
+  .slot-img img { width:100%; height:100%; object-fit: cover; object-position: center top; }
+  .slot-img::after { content:""; position:absolute; inset:0; background: linear-gradient(180deg, transparent 50%, rgba(0,0,0,.6) 100%); }
+  .slot-name { padding: 4px 8px 0; font-family: var(--font-headline); font-size:13px; font-weight:700; color:#F5F1E8; letter-spacing:.15em; text-align:center;}
+  .slot-skill { padding: 2px 8px; font-family: var(--font-label); font-size:9px; letter-spacing:.15em; color: var(--sc-txt, #B0A880); text-align:center;}
+  .slot-cd {
+    position:absolute; inset:0; display:grid; place-items:center; z-index:2;
+    background: rgba(8,8,14,.72);
+    font-family: var(--font-num); font-weight:800; font-size:42px; color:#F5F1E8;
+    text-shadow: 0 0 10px #000;
+  }
+  .slot-cd .lbl { position:absolute; bottom:10px; left:0; right:0; text-align:center; font-family: var(--font-label); font-size:9px; letter-spacing:.25em; color:#B0A880; font-weight:700;}
+  .slot-ready {
+    position:absolute; top:-1px; right:-1px;
+    background: linear-gradient(180deg,#FFE088,#D4AF37); color:#2D1E00;
+    font-family: var(--font-headline); font-weight:800; font-size:9px; letter-spacing:.2em; padding: 2px 8px;
+    border-radius: 0 10px 0 6px;
+  }
+  .slot-cost {
+    position:absolute; bottom:6px; left:50%; transform: translateX(-50%);
+    background: rgba(0,0,0,.75); padding: 1px 8px; border-radius: 3px; border:1px solid rgba(212,175,55,.4);
+    font-family: var(--font-num); font-weight:800; font-size:11px; color:#F0E68C;
+  }
+  .slot-badge {
+    position:absolute; top:6px; left:6px;
+    font-family: var(--font-headline); font-size:10px; font-weight:800; letter-spacing:.15em;
+    background: var(--sc); color:#fff; padding: 1px 6px; border-radius: 3px;
+  }
+
+  /* ---- action ring (right-bottom cluster) ---- */
+  .actions {
+    position:relative; width: 280px; height: 200px;
+  }
+  .abtn {
+    position:absolute; border-radius:50%; cursor:pointer;
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px;
+    font-family: var(--font-headline); font-weight:800;
+    transition: transform var(--dur-fast) var(--ease-default);
+  }
+  .abtn:hover { transform: scale(1.05); }
+  .abtn:active { transform: scale(.97); }
+  .abtn .sym { font-family: var(--font-headline); font-weight: 800; line-height: 1;}
+  .abtn .lbl { font-family: var(--font-headline); letter-spacing: .1em;}
+
+  /* small 80 buttons */
+  .abtn.small {
+    width:80px; height:80px;
+    background: linear-gradient(180deg, var(--b1), var(--b2));
+    border: 2px solid var(--bd, #4D4635);
+    color: var(--tx, #F5F1E8);
+    box-shadow: inset 0 2px 0 rgba(255,255,255,.15), 0 4px 10px rgba(0,0,0,.6);
+  }
+  .abtn.small .sym { font-size: 22px; margin-bottom: 2px;}
+  .abtn.small .lbl { font-size: 13px;}
+  .abtn.end   { --b1: #2a8a4a; --b2: #0a3a1a; --bd:#86E1A5; --tx:#F5F1E8; left: 10px; top: 90px; }
+  .abtn.tact  { --b1: #3A5FB0; --b2: #162458; --bd:#3A8FD9; --tx:#A4D2D0; left: 92px; top: 10px; }
+  .abtn.duel  { --b1: #B85030; --b2: #5a1a00; --bd:#D94A3A; --tx:#FFBFB8; left: 194px; top: 58px; }
+  .abtn.duel.locked { filter: grayscale(.8) brightness(.6); cursor: not-allowed;}
+  .abtn.duel.locked::after { content:"🔒"; position:absolute; top:10px; right:10px; font-size:14px;}
+
+  /* big ultimate 140 */
+  .abtn.ult {
+    width: 140px; height: 140px;
+    right: 0; bottom: 0; left: auto; top: auto;
+    background: radial-gradient(circle at 35% 30%, #1a2a6a 0%, #0a0f3a 75%);
+    border: 3px solid #D4AF37;
+    color: #F5F1E8;
+    box-shadow: 0 0 24px rgba(58,143,217,.3), 0 6px 16px rgba(0,0,0,.7), inset 0 2px 0 rgba(255,255,255,.12);
+    position:absolute;
+  }
+  .abtn.ult.ready {
+    border-color: #FFD700;
+    box-shadow: 0 0 28px rgba(126,200,247,.7), 0 6px 16px rgba(0,0,0,.7), inset 0 2px 0 rgba(255,255,255,.2);
+    animation: ultPulse 1.6s ease-in-out infinite;
+  }
+  @keyframes ultPulse { 0%,100% { box-shadow: 0 0 20px rgba(126,200,247,.6), 0 6px 16px rgba(0,0,0,.7), inset 0 2px 0 rgba(255,255,255,.2);} 50% { box-shadow: 0 0 36px rgba(126,200,247,.95), 0 6px 16px rgba(0,0,0,.7), inset 0 2px 0 rgba(255,255,255,.2);}}
+  .abtn.ult .sym { font-size: 38px; color:#FFE088;}
+  .abtn.ult .lbl { font-size: 17px; letter-spacing: .25em; color:#FFE088;}
+  .abtn.ult .sp-pct { font-family: var(--font-num); font-size: 12px; color:#A4D2D0; margin-top: 2px; letter-spacing: .1em;}
+
+  /* SVG SP ring */
+  .abtn.ult svg.ring { position:absolute; inset:0; pointer-events:none; }
+  .ring-track { fill:none; stroke: rgba(100,100,120,.35); stroke-width: 6;}
+  .ring-fill  { fill:none; stroke: #3A8FD9; stroke-width: 6; stroke-linecap: round;
+    transform: rotate(-90deg); transform-origin: center; }
+  .abtn.ult.ready .ring-fill { stroke: #7EC8F7; filter: drop-shadow(0 0 6px rgba(126,200,247,.9));}
+
+  /* floating sparkle on active */
+  .abtn.ult .go {
+    position:absolute; bottom: 14px; left:50%; transform: translateX(-50%);
+    padding: 1px 10px; background:#FFD700; color:#2D1E00;
+    font-family: var(--font-headline); font-size:10px; font-weight:800; letter-spacing:.25em; border-radius:3px;
+  }
+
+  /* ============ Zone 4.5 · Unit tooltip (cursor) ============ */
+  .unit-tip {
+    position: absolute; z-index: 22; background: rgba(8,8,14,.95); border:1.5px solid #D4AF37; border-radius:8px;
+    padding: 10px 12px; width: 200px;
+    box-shadow: 0 6px 14px rgba(0,0,0,.7);
+  }
+  .unit-tip .t-name { font-family: var(--font-headline); font-size:14px; font-weight:800; color:#FFE088; letter-spacing:.15em;}
+  .unit-tip .t-sub { font-family: var(--font-label); font-size:9px; letter-spacing:.2em; color:#B0A880; margin-top:1px;}
+  .unit-tip .t-grid { display:grid; grid-template-columns: 1fr 1fr; gap: 2px 10px; margin-top:6px; font-size:11px;}
+  .unit-tip .t-grid .k { color:#B0A880; font-family: var(--font-label); letter-spacing:.1em;}
+  .unit-tip .t-grid .v { color:#F5F1E8; font-family: var(--font-num); font-weight:700; text-align:right;}
+</style>
+</head>
+<body data-screen-label="02 Battle v2">
+
+  <!-- ============ Zone 1 · TopBar ============ -->
+  <header class="topbar">
+    <div class="gen left">
+      <div class="p-portrait"><img src="../../assets/avatars/zhao_yun.png" alt=""></div>
+      <div class="g-text">
+        <div class="g-hpline">
+          <span class="g-hpnum">1,688 / 1,688</span>
+          <span class="g-hp-delta">+20% 騎</span>
+        </div>
+        <div class="g-name">趙 雲 子龍</div>
+        <div class="g-title">Shu Command · LV 42</div>
+      </div>
+    </div>
+
+    <div class="center-info">
+      <div class="turn-title">第 5 回合<span class="sub">PLAYER PHASE</span></div>
+      <div class="fortress">
+        <div class="fort-label">我軍陣地</div>
+        <div class="fort-bar me"><i style="width: 86%;"></i></div>
+        <div class="vs">VS</div>
+        <div class="fort-bar en"><i style="width: 72%;"></i></div>
+        <div class="fort-label">敵軍陣地</div>
+      </div>
+      <div class="food"><span class="ico">糧</span>糧草 8,500 / 12,000 · 【水淹場景】河道直流已成形</div>
+    </div>
+
+    <div class="gen right">
+      <div class="g-text">
+        <div class="g-hpline" style="justify-content:flex-end;">
+          <span class="g-hp-delta red">−18% HP</span>
+          <span class="g-hpnum">1,692 / 2,060</span>
+        </div>
+        <div class="g-name">曹 操 孟德</div>
+        <div class="g-title">Wei Command · LV 44</div>
+        <div class="g-sp"><i style="width:60%"></i></div>
+      </div>
+      <div class="p-portrait enemy"><img src="../../assets/avatars/cao_cao.png" alt=""></div>
+    </div>
+  </header>
+
+  <!-- ============ Zone 3 · Tiger Tally Cards ============ -->
+  <aside class="tally-col">
+
+    <div class="tally selected" style="--q:#D4AF37">
+      <div class="tally-bg" style="background-image: linear-gradient(180deg, rgba(15,15,25,.25), rgba(15,15,25,.55)), url('../../assets/generals/guan_yu.png');"></div>
+      <div class="tally-top">
+        <span class="cost-badge">糧 40</span>
+        <span class="q-pill q-SSR">SSR</span>
+      </div>
+      <div class="tally-badges">
+        <div class="ut-badge ut-cav">騎</div>
+      </div>
+      <div class="tally-name">虎 豹 騎</div>
+      <div class="tally-bottom">
+        <span class="stat-pair atk"><span class="ico">⚔</span>15</span>
+        <span class="stat-pair hp"><span class="ico">❤</span>100</span>
+      </div>
+      <div class="tally-lv">LV 15 · ★★★★</div>
+    </div>
+
+    <div class="tally" style="--q:#8A6FDB">
+      <div class="tally-bg" style="background-image: linear-gradient(180deg, rgba(15,15,25,.25), rgba(15,15,25,.55)), url('../../assets/generals/zhang_fei.png');"></div>
+      <div class="tally-top">
+        <span class="cost-badge">糧 35</span>
+        <span class="q-pill q-SR">SR</span>
+      </div>
+      <div class="tally-badges">
+        <div class="ut-badge ut-inf">步</div>
+      </div>
+      <div class="tally-name">陷 陣 營</div>
+      <div class="tally-bottom">
+        <span class="stat-pair atk"><span class="ico">⚔</span>15</span>
+        <span class="stat-pair hp"><span class="ico">❤</span>120</span>
+      </div>
+      <div class="tally-lv">LV 15 · ★★★</div>
+    </div>
+
+    <div class="tally" style="--q:#B22222">
+      <div class="tally-bg" style="background-image: linear-gradient(180deg, rgba(15,15,25,.25), rgba(15,15,25,.55)), url('../../assets/generals/lu_bu.png');"></div>
+      <div class="tally-top">
+        <span class="cost-badge">糧 50</span>
+        <span class="q-pill q-UR">UR</span>
+      </div>
+      <div class="tally-badges">
+        <div class="ut-badge ut-inf">步</div>
+      </div>
+      <div class="tally-name">大 戟 士</div>
+      <div class="tally-bottom">
+        <span class="stat-pair atk"><span class="ico">⚔</span>20</span>
+        <span class="stat-pair hp"><span class="ico">❤</span>150</span>
+      </div>
+      <div class="tally-lv">LV 15 · ★★★★★</div>
+    </div>
+
+    <div class="tally disabled" style="--q:#3F6A62">
+      <div class="tally-bg" style="background-image: linear-gradient(180deg, rgba(15,15,25,.25), rgba(15,15,25,.55)), url('../../assets/generals/zhen_ji.png');"></div>
+      <div class="tally-top">
+        <span class="cost-badge">糧 30</span>
+        <span class="q-pill q-R">R</span>
+      </div>
+      <div class="tally-badges">
+        <div class="ut-badge ut-bow">弩</div>
+      </div>
+      <div class="tally-name">連 弩 手</div>
+      <div class="tally-bottom">
+        <span class="stat-pair atk"><span class="ico">⚔</span>30</span>
+        <span class="stat-pair hp"><span class="ico">❤</span>80</span>
+      </div>
+      <div class="tally-lv">LV 12 · ★★</div>
+    </div>
+  </aside>
+
+  <!-- ============ Zone 4 · Battlefield ============ -->
+  <section class="field">
+    <div class="grid-wrap">
+      <div class="grid" id="grid"></div>
+    </div>
+
+    <!-- Units overlay — positioned against field container -->
+    <div class="unit me active" style="left: 22%; top: 70%;">
+      <div class="hud">
+        <div class="hud-row"><span class="a">30</span> <span class="uname">連弩手</span> <span class="h">20</span></div>
+      </div>
+      <div class="hpbar"><i style="width: 90%"></i></div>
+      <div class="token"><img src="../../assets/avatars/zhen_ji.png"></div>
+    </div>
+
+    <div class="unit me" style="left: 32%; top: 60%;">
+      <div class="hud">
+        <div class="hud-row"><span class="a">35</span> <span class="uname">陷陣營</span> <span class="h">108</span></div>
+      </div>
+      <div class="hpbar"><i style="width: 95%"></i></div>
+      <div class="token"><img src="../../assets/avatars/zhang_fei.png"></div>
+    </div>
+
+    <div class="unit me" style="left: 42%; top: 52%;">
+      <div class="hud">
+        <div class="hud-row"><span class="a">32</span> <span class="uname">長戟兵</span> <span class="h">110</span></div>
+      </div>
+      <div class="hpbar"><i style="width: 88%"></i></div>
+      <div class="token"><img src="../../assets/avatars/zhao_yun.png"></div>
+    </div>
+
+    <div class="unit me" style="left: 48%; top: 66%;">
+      <div class="hud">
+        <div class="hud-row"><span class="a">40</span> <span class="uname">虎豹騎</span> <span class="h">100</span></div>
+      </div>
+      <div class="hpbar"><i style="width: 100%"></i></div>
+      <div class="token"><img src="../../assets/avatars/guan_yu.png"></div>
+    </div>
+
+    <div class="unit en" style="left: 58%; top: 35%;">
+      <div class="hud">
+        <div class="hud-row"><span class="a">35</span> <span class="uname">步兵</span> <span class="h">120</span></div>
+      </div>
+      <div class="hpbar"><i style="width: 78%"></i></div>
+      <div class="token"><img src="../../assets/avatars/cao_cao.png"></div>
+    </div>
+
+    <div class="unit en" style="left: 66%; top: 45%;">
+      <div class="hud">
+        <div class="hud-row"><span class="a">20</span> <span class="uname">步兵</span> <span class="h">150</span></div>
+      </div>
+      <div class="hpbar"><i style="width: 56%"></i></div>
+      <div class="token"><img src="../../assets/avatars/default.png"></div>
+    </div>
+
+    <div class="unit en" style="left: 74%; top: 58%;">
+      <div class="hud">
+        <div class="hud-row"><span class="a">35</span> <span class="uname">步兵 x4</span> <span class="h">300</span></div>
+      </div>
+      <div class="hpbar"><i style="width: 70%"></i></div>
+      <div class="token"><img src="../../assets/avatars/lu_bu.png"></div>
+    </div>
+
+    <div class="unit en" style="left: 62%; top: 75%;">
+      <div class="hud">
+        <div class="hud-row"><span class="a">35</span> <span class="uname">步兵</span> <span class="h">120</span></div>
+      </div>
+      <div class="hpbar"><i style="width: 80%"></i></div>
+      <div class="token"><img src="../../assets/avatars/default.png"></div>
+    </div>
+
+    <!-- floating text -->
+    <div class="float crit" style="left:66%; top:35%;">
+      <span class="tag">CRITICAL</span>
+      <span class="n">−2,480</span>
+    </div>
+    <div class="float heal" style="left:32%; top:72%;">
+      <span class="n">+980</span>
+    </div>
+    <div class="float buff" style="left:42%; top:46%;">
+      <span>★ 生命 x5</span>
+    </div>
+
+    <!-- phase banner -->
+    <div class="phase-banner">
+      <div class="bar">我 方 回 合 開 始</div>
+    </div>
+  </section>
+
+  <!-- ============ Zone 5 · Right · Control + Log ============ -->
+  <aside class="right-col">
+    <div class="ctrlbar">
+      <div class="cbtn on" title="自動">自</div>
+      <div class="cbtn" title="速度">×2</div>
+      <div class="cbtn sym" title="設定">⚙</div>
+    </div>
+    <div class="log-panel expanded" id="logp">
+      <div class="log-head" onclick="toggleLog()">
+        <span class="ttl">戰 鬥 紀 錄</span>
+        <span class="arrow" id="logArrow">COLLAPSE ▾</span>
+      </div>
+      <div class="log-body">
+        <div class="log-entry me"><div class="l1"><span class="w">[R5] 虎豹騎</span> 衝鋒 · 青龍偃月</div><div class="l2">對 步兵x4 造成 <span class="dmg">−2,480</span> 暴擊</div></div>
+        <div class="log-entry en"><div class="l1"><span class="w">[R5] 曹操</span> 施放 · 奇襲</div><div class="l2">對 陷陣營 造成 −820 傷害</div></div>
+        <div class="log-entry me"><div class="l1"><span class="w">[R5] 連弩手</span> 待機</div><div class="l2">閃避率 +12%，下回合攻擊 +10%</div></div>
+        <div class="log-entry sys"><div class="l1"><span class="w">[R5] 場景戰法</span> 水淹七軍</div><div class="l2">河道直流已成形 · 敵方速度 −15%</div></div>
+        <div class="log-entry me"><div class="l1"><span class="w">[R5] 甄姬</span> 施放 · 洛神賦</div><div class="l2">友軍 <span class="dmg">+980</span> HP · 持續 2 回合</div></div>
+        <div class="log-entry en"><div class="l1"><span class="w">[R4] 呂布</span> 反擊</div><div class="l2">對 長戟兵 造成 −1,240 傷害</div></div>
+        <div class="log-entry me"><div class="l1"><span class="w">[R4] 趙雲</span> 奧義蓄力 +20%</div><div class="l2">SP 60 / 100</div></div>
+        <div class="log-entry sys"><div class="l1"><span class="w">[R4] 軍師智謀</span> 夜襲標記</div><div class="l2">目標 步兵x4 · 下回合暴擊 +30%</div></div>
+        <div class="log-entry me"><div class="l1"><span class="w">[R3] 陷陣營</span> 部署完成</div><div class="l2">消耗糧草 35 · 剩餘 8,500</div></div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ============ Zone 7 · Bottom dock ============ -->
+  <div class="dock">
+    <div class="dock-inner">
+
+      <!-- Left: 2 sub-generals + 1 friend support -->
+      <div class="support">
+
+        <div class="slot sub">
+          <div class="slot-badge">副將</div>
+          <div class="slot-hd"><span>SUB GEN</span><span>·1</span></div>
+          <div class="slot-img"><img src="../../assets/generals/zhang_fei.png" alt=""></div>
+          <div class="slot-name">張 飛</div>
+          <div class="slot-skill">長 坂 橋 · 震 吼</div>
+          <div class="slot-cost">糧 80</div>
+          <div class="slot-ready">READY</div>
+        </div>
+
+        <div class="slot sub">
+          <div class="slot-badge">副將</div>
+          <div class="slot-hd"><span>SUB GEN</span><span>·2</span></div>
+          <div class="slot-img"><img src="../../assets/generals/zhao_yun.png" alt=""></div>
+          <div class="slot-name">趙 雲</div>
+          <div class="slot-skill">七 進 七 出</div>
+          <div class="slot-cost">糧 60</div>
+          <div class="slot-cd">2<div class="lbl">冷卻 · CD</div></div>
+        </div>
+
+        <div class="slot friend">
+          <div class="slot-badge">好友</div>
+          <div class="slot-hd"><span>FRIEND</span><span>·★</span></div>
+          <div class="slot-img"><img src="../../assets/generals/guan_yu.png" alt=""></div>
+          <div class="slot-name">關 雲 長</div>
+          <div class="slot-skill">溫 酒 斬 華 雄</div>
+          <div class="slot-cost">1 / 日</div>
+          <div class="slot-ready">READY</div>
+        </div>
+
+      </div>
+
+      <!-- Right: action cluster -->
+      <div class="actions">
+
+        <button class="abtn small end"><span class="sym">旗</span><span class="lbl">結束</span></button>
+
+        <button class="abtn small tact"><span class="sym">智</span><span class="lbl">計謀 2</span></button>
+
+        <button class="abtn small duel"><span class="sym">⚔</span><span class="lbl">單挑</span></button>
+
+        <button class="abtn ult ready">
+          <svg class="ring" viewBox="0 0 140 140">
+            <circle class="ring-track" cx="70" cy="70" r="64"></circle>
+            <circle class="ring-fill" cx="70" cy="70" r="64"
+              stroke-dasharray="402" stroke-dashoffset="0"></circle>
+          </svg>
+          <span class="sym">斬</span>
+          <span class="lbl">發 動</span>
+          <span class="sp-pct">SP 100%</span>
+        </button>
+
+      </div>
+    </div>
+  </div>
+
+<script>
+  // Build 5x8 grid with tile classes
+  const grid = document.getElementById('grid');
+  const map = [
+    ['me','me','me','',  '',  'en','en','en'],
+    ['me','me','me','hl','en','en','en','en'],
+    ['me','me','hl','hl-cast','hl-cast','en','en','en'],
+    ['me','me','me','hl','en','en','en','en'],
+    ['me','me','me','',  '',  'en','en','en'],
+  ];
+  map.forEach(row => row.forEach(cell => {
+    const d = document.createElement('div');
+    d.className = 'tile ' + cell;
+    grid.appendChild(d);
+  }));
+
+  // log collapse
+  function toggleLog() {
+    const p = document.getElementById('logp');
+    const a = document.getElementById('logArrow');
+    if (p.classList.contains('expanded')) {
+      p.classList.remove('expanded'); p.classList.add('collapsed');
+      a.textContent = 'EXPAND ▴';
+      p.querySelector('.log-body').style.display = 'none';
+    } else {
+      p.classList.add('expanded'); p.classList.remove('collapsed');
+      a.textContent = 'COLLAPSE ▾';
+      p.querySelector('.log-body').style.display = '';
+    }
+  }
+</script>
+</body>
+</html>

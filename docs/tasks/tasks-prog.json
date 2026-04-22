@@ -26,8 +26,8 @@
   "summary": {
     "done": 1,
     "in_progress": 0,
-    "open": 16,
-    "total": 17
+    "open": 22,
+    "total": 23
   },
   "tasks": [
     {
@@ -555,6 +555,158 @@
         ".claude/worktrees/upbeat-spence/assets/scripts/battle/runtime/BattleGeneralDuelFlow.ts（修改）"
       ],
       "notes": "2026-04-17 | 狀態: done | 完成: Agent1 | 全部 checklist [x] | TypeScript 0 error 驗證通過"
+    },
+    {
+      "id": "SYS-SKILL-TAC-0001",
+      "priority": "P0",
+      "phase": "M1-E",
+      "owner": "Agent1",
+      "status": "open",
+      "created": "2026-04-15",
+      "created_by_agent": "GitHubCopilot",
+      "type": "tactic-module",
+      "title": "戰法傷害投射模組包（TDIR/TLINE/TFAN）",
+      "description": "覆蓋單體、直線、扇形三種傷害投射形狀。已落地：無視防禦/百步穿楊/箭雨齊發/龍魂突刺。進行中：趙家槍法三段遞增。未開始：精銳突擊/長坂雄咆/無雙亂舞/威震華夏/連環計/結姻連射/火神狩獵 的 TDIR/TLINE/TFAN 段。",
+      "related": ["SYS-SKILL-CORE-0001", "SYS-SKILL-TAC-0002"],
+      "depends": ["SYS-SKILL-CORE-0001"],
+      "acceptance": [
+        "unit test 驗 targetMode（單體/直線/扇形三種）",
+        "畫面驗投射與命中數（target highlight + 飄字數一致）",
+        "公式驗倍率（ignoreDefense / falloffRule / maxTargets 有 assertion）",
+        "整合驗施放到扣血收尾（戰報寫入 + turn state 收尾）"
+      ],
+      "deliverables": [
+        "assets/scripts/battle/ DirectDamageResolver / LineAreaResolver 補強",
+        "docs/agent-briefs/tasks/SYS-SKILL-TAC-0001.md"
+      ],
+      "notes": "2026-04-20 | 狀態: open | 無視防禦/百步穿楊/箭雨齊發/龍魂突刺已落地；趙家槍法進行中；其餘 G-1 TDIR/TLINE/TFAN 段未開始 | 阻塞: 無"
+    },
+    {
+      "id": "SYS-SKILL-TAC-0002",
+      "priority": "P0",
+      "phase": "M1-E",
+      "owner": "Agent1",
+      "status": "open",
+      "created": "2026-04-15",
+      "created_by_agent": "GitHubCopilot",
+      "type": "tactic-module",
+      "title": "戰法增益治療減益模組包（TBUFF/THEAL/TDEBUFF）",
+      "description": "覆蓋 buff 疊加覆蓋、heal 上限、DOT/slow 回合 tick。已落地：長槍列陣/軍心鼓舞。進行中：G-2 六招（單騎破陣/醫療/鼓舞/緩速/八陣圖 TBUFF/空城計 TCOND）。未開始：毒箭 DOT 段/幼麒天算 TDEBUFF 段。",
+      "related": ["SYS-SKILL-CORE-0001", "SYS-SKILL-TAC-0001"],
+      "depends": ["SYS-SKILL-CORE-0001"],
+      "acceptance": [
+        "unit test 驗刷新/覆蓋（新增/刷新/覆蓋/到期移除四種情境）",
+        "畫面驗 icon 與浮字（buff/debuff/heal 各自可辨識）",
+        "公式驗乘區與上限（Buff 乘區固定，Heal 不超上限）",
+        "整合驗回合 tick（圖示掛上→tick→到期移除完整可重現）"
+      ],
+      "deliverables": [
+        "assets/scripts/battle/ BuffDebuffResolver / HealResolver 補強",
+        "docs/agent-briefs/tasks/SYS-SKILL-TAC-0002.md"
+      ],
+      "notes": "2026-04-20 | 狀態: open | 長槍列陣/軍心鼓舞已落地；G-2 六招進行中；毒箭 DOT/幼麒天算 debuff 段未開始 | 阻塞: 無"
+    },
+    {
+      "id": "SYS-SKILL-TAC-0003",
+      "priority": "P1",
+      "phase": "M1-E",
+      "owner": "Agent1",
+      "status": "open",
+      "created": "2026-04-15",
+      "created_by_agent": "GitHubCopilot",
+      "type": "tactic-module",
+      "title": "戰法位移與棋盤控制模組包（TMOVE/TPUSH/TTILE）",
+      "description": "覆蓋位移、推擠、地格狀態。2026-04-16 骨架完成：fire/river/rock TileState、阻擋格、進格推移、standing tile tick 已接進 BattleController。未開始：騎射合一/精銳突擊 TMOVE/七進七出/長坂雄咆 TPUSH/無雙亂舞 TPUSH/火計連環 TTILE/火神狩獵/水路伏擊 TTILE。進行中：八陣圖 TTILE/空城計。",
+      "related": ["SYS-SKILL-CORE-0001", "SYS-SKILL-TAC-0001"],
+      "depends": ["SYS-SKILL-CORE-0001"],
+      "acceptance": [
+        "unit test 驗 path/blocker/tile（直線衝刺/被阻擋推擠/穿透後停點/tile 生命週期）",
+        "畫面驗路徑與 overlay（移動路徑/終點/推擠方向可辨識，overlay 與生效範圍對齊）",
+        "公式驗步數與 tick（位移距離/推擠步數/tile tick 傷害固定可推導）",
+        "整合驗移動到地格觸發（選格→位移→落點→tile 觸發→回合更新一氣呵成）"
+      ],
+      "deliverables": [
+        "assets/scripts/battle/ MovementResolver / ForcedMoveResolver / TileStateResolver 補強",
+        "docs/agent-briefs/tasks/SYS-SKILL-TAC-0003.md"
+      ],
+      "notes": "2026-04-20 | 狀態: open | 2026-04-16 fire/river/rock tile 骨架已接；火計佈陣已落地；G-1 虎符位移/推擠戰法 12 條未開始 | 阻塞: 無"
+    },
+    {
+      "id": "SYS-SKILL-TAC-0004",
+      "priority": "P1",
+      "phase": "M1-E",
+      "owner": "Agent1",
+      "status": "open",
+      "created": "2026-04-15",
+      "created_by_agent": "GitHubCopilot",
+      "type": "tactic-module",
+      "title": "戰法反應連鎖條件模組包（TLINK/TCOUNTER/TRESET/TCOND/TSTEALTH）",
+      "description": "覆蓋條件觸發、反擊、再行動、連結、隱身。2026-04-16 已完成第一版：TLINK damage-link、TCOUNTER 近戰反擊+Weak、TRESET 首擊加倍+擊殺再行動、TSTEALTH AmbushAttack 前 2 回合隱匿。未完成：火計連環 TLINK+TCOND 完整版、幼麒天算 TCOUNTER 完整版、連環計 TLINK 完整版、結姻連射 TCOND、威震華夏 TRESET+TCOND、七進七出 TSTEALTH。",
+      "related": ["SYS-SKILL-CORE-0001", "SYS-SKILL-TAC-0003"],
+      "depends": ["SYS-SKILL-CORE-0001"],
+      "acceptance": [
+        "unit test 驗 trigger（命中後觸發/進格觸發/擊殺後觸發三種 timing）",
+        "畫面驗被動觸發提示（反應技可辨識為被動觸發，連結目標有標記）",
+        "公式驗共享比例與次數 gating（每回合最多觸發次數/不遞迴觸發自身）",
+        "整合驗回合不中斷（敵方行動觸發被動後回合控制權與戰報順序正確）"
+      ],
+      "deliverables": [
+        "assets/scripts/battle/ ConditionalTriggerResolver / LinkShareResolver / CounterReactionResolver 補強",
+        "docs/agent-briefs/tasks/SYS-SKILL-TAC-0004.md"
+      ],
+      "notes": "2026-04-20 | 狀態: open | TLINK/TCOUNTER/TRESET/TSTEALTH 第一版已完成；G-1 虎符 reaction 戰法完整版（火計連環/幼麒天算/連環計/結姻連射/威震華夏/七進七出）待補 Editor/smoke 驗收 | 阻塞: 無"
+    },
+    {
+      "id": "SYS-SKILL-TAC-0005",
+      "priority": "P2",
+      "phase": "M1-E",
+      "owner": "Agent1",
+      "status": "open",
+      "created": "2026-04-15",
+      "created_by_agent": "GitHubCopilot",
+      "type": "tactic-module",
+      "title": "戰法場景注入與障礙模組包（TSUMMON/Global Stage/SceneGambitAdapter）",
+      "description": "覆蓋水淹七軍/森林埋伏/落石封路/火計佈陣。2026-04-16 骨架完成：SceneGambitAdapter/BattleHUD badge/pulse VFX/BattleEntryParams 橋接/capture 成功。剩餘：Editor 視覺 QA、VFX 資源補全（assets/fx/tactics/）、AI 場景響應驗收。",
+      "related": ["SYS-SKILL-CORE-0001", "SYS-SKILL-TAC-0003", "SYS-SKILL-TAC-0004"],
+      "depends": ["SYS-SKILL-CORE-0001"],
+      "acceptance": [
+        "unit test 驗 stage injection（關卡載入注入/戰鬥中觸發/回合結束清除）",
+        "畫面驗障礙與場勢（場景事件與個體戰法可辨識，障礙生效區域與 overlay 一致）",
+        "公式驗全場修正（全場狀態走同一份 stage state，不各自重算）",
+        "整合驗關卡載入到清場（BattleHUD 顯示場景狀態摘要，AI 正確響應）"
+      ],
+      "deliverables": [
+        "assets/scripts/battle/ SceneGambitAdapter / ObstacleSpawnResolver 補強",
+        "assets/fx/tactics/ 場景戰法 VFX 資源補全",
+        "docs/agent-briefs/tasks/SYS-SKILL-TAC-0005.md"
+      ],
+      "notes": "2026-04-20 | 狀態: open | SceneGambitAdapter 骨架/HUD badge/pulse VFX 已完成；Editor 視覺 QA 與 VFX 資源補全為主要剩餘工作 | 阻塞: 無"
+    },
+    {
+      "id": "SYS-SKILL-TAC-0006",
+      "priority": "P1",
+      "phase": "M4-M5",
+      "owner": "Agent1",
+      "status": "open",
+      "created": "2026-04-20",
+      "created_by_agent": "Claude",
+      "type": "tactic-module",
+      "title": "戰法量產驗收 Sprint 規劃（G-5 M4/M5 + G-6-3 後續排程）",
+      "description": "追蹤 G-5 M4（8 條天賦戰法 Editor 實戰驗收）、M5（battle skill smoke 補強）與 G-6-3（未進入首批可玩包的虎符/血統/教官戰法 family Sprint 排入）。對應 G-5-0-1 最後一項未勾 checklist 項目。",
+      "related": ["SYS-SKILL-TAC-0001", "SYS-SKILL-TAC-0002", "SYS-SKILL-TAC-0003", "SYS-SKILL-TAC-0004", "SYS-SKILL-TAC-0005"],
+      "depends": ["SYS-SKILL-TAC-0001", "SYS-SKILL-TAC-0002", "SYS-SKILL-TAC-0003", "SYS-SKILL-TAC-0004"],
+      "acceptance": [
+        "M4：8 條天賦戰法各在 Editor Preview 觸發一次，截圖存入 artifacts/ui-source/battle-scene/review/",
+        "M4：AI cadence 連續 5 回合不出現「全放」或「全不放」兩種極端",
+        "M5：battle skill smoke pass 數覆蓋所有已落地戰法，零 regression",
+        "G-6-3：Sprint 排程建議回寫到 G-9/G-10 表格，後續虎符戰法有明確排程"
+      ],
+      "deliverables": [
+        "artifacts/ui-source/battle-scene/review/ 8 條戰法截圖",
+        "docs/遊戲規格文件/系統規格書/戰法系統.md G-5-0-0 里程碑表更新",
+        "docs/agent-briefs/tasks/SYS-SKILL-TAC-0006.md"
+      ],
+      "notes": "2026-04-20 | 狀態: open | 對應 G-5-0-1 最後未勾項；M4/M5 里程碑進行中；G-6-3 排程未開始 | 阻塞: 依賴 TAC-0001~0004 各模組骨架穩定"
     }
   ]
 }

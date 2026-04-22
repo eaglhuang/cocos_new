@@ -48,17 +48,14 @@
           "right": 32
         },
         "height": 88,
-        "layout": {
-          "type": "horizontal",
-          "spacing": 24,
-          "paddingLeft": 0,
-          "paddingRight": 0,
-          "verticalDirection": "top-to-bottom"
-        },
         "children": [
           {
             "type": "button",
             "name": "BackBtn",
+            "widget": {
+              "right": 0,
+              "vCenter": true
+            },
             "width": 88,
             "height": 88,
             "skinSlot": "gacha.btn.back"
@@ -66,6 +63,10 @@
           {
             "type": "container",
             "name": "TopHeaderPlaque",
+            "widget": {
+              "hCenter": true,
+              "vCenter": true
+            },
             "width": 468,
             "height": 72,
             "children": [
@@ -144,16 +145,12 @@
             ]
           },
           {
-            "type": "container",
-            "name": "TopSpacer",
-            "height": 8,
-            "layout": {
-              "type": "horizontal"
-            }
-          },
-          {
             "type": "button",
             "name": "DestinyShopBtn",
+            "widget": {
+              "left": 0,
+              "vCenter": true
+            },
             "width": 180,
             "height": 72,
             "skinSlot": "gacha.btn.destiny_shop",

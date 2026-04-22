@@ -1,7 +1,0 @@
-Create a single isolated UI partial asset for GachaMain. Zone: pool-tier-badge. Slot: badgeUnderlay. Visual target: icon-badge-suite / lobby-badge-icon-v1.
-
-Use the icon-badge-suite family and lobby-badge-icon-v1 recipe language. This asset must fit inside the existing UItemplate + widget structure and cannot redefine layout. Keep these qualities: supports runtime label overlay, flat readable silhouette, same family batch consistency.
-
-Avoid: text, letters, heavy metal frame, deep perspective. No layout blocks, no full-page composition, no UI text placement, no badges with letters.
-
-no text, no letters, no calligraphy, no symbols

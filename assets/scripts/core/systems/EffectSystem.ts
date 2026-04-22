@@ -1,5 +1,5 @@
 // @spec-source → 見 docs/cross-reference-index.md
-import { Animation, Camera, MeshRenderer, Node, ParticleSystem, Sprite, Vec3, director, tween, v3 } from "cc";
+import { Animation, Camera, Color, MeshRenderer, Node, ParticleSystem, Sprite, Vec3, director, tween, v3 } from "cc";
 import { VfxBlockEntry, VfxEffectDef } from "../config/VfxEffectConfig";
 import { PoolSystem } from "./PoolSystem";
 import { services } from "../managers/ServiceLoader";
@@ -378,6 +378,33 @@ export class EffectSystem {
         return node;
     }
 
+    private parseTintHex(hex: string): Color | undefined {
+        const normalized = hex.trim();
+        if (!normalized) {
+            return undefined;
+        }
+
+        const formatted = normalized.startsWith("#") ? normalized : `#${normalized}`;
+        const color = new Color();
+        const colorAny = color as unknown as { fromHEX?: (value: string) => void };
+        const ctorAny = Color as unknown as { fromHEX?: (out: Color, value: string) => void };
+
+        try {
+            if (typeof colorAny.fromHEX === "function") {
+                colorAny.fromHEX(formatted);
+                return color;
+            }
+            if (typeof ctorAny.fromHEX === "function") {
+                ctorAny.fromHEX(color, formatted);
+                return color;
+            }
+        } catch (error) {
+            console.warn(`[EffectSystem] invalid tintHex "${hex}"`, error);
+        }
+
+        return undefined;
+    }
+
     private _isPreviewMode(): boolean {
         try {
             const globalScope = globalThis as any;
@@ -477,10 +504,12 @@ export class EffectSystem {
 
             // 合併 override：塊級 scale 優先，否則沿用父級 override
             const blockOverride: ParticleOverride | undefined = (() => {
-                if (!entry.scale && !entry.tintHex && !override) return undefined;
+                const tintColor = entry.tintHex ? this.parseTintHex(entry.tintHex) : undefined;
+                if (!entry.scale && !tintColor && !override) return undefined;
                 return {
                     ...override,
                     ...(entry.scale !== undefined ? { startSizeX: entry.scale } : {}),
+                    ...(tintColor ? { startColor: tintColor } : {}),
                 };
             })();
 

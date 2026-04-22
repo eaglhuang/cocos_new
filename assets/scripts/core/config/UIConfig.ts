@@ -98,6 +98,17 @@ export enum LayerType {
     Notify = "Notify",
 }
 
+export interface UIBackdropConfig {
+    /** 是否啟用共用背景底 */
+    enabled: boolean;
+    /** 背景底透明度（0-255） */
+    opacity?: number;
+    /** 是否阻擋點擊穿透到底層物件 */
+    blocksInput?: boolean;
+    /** 點擊背景底時是否直接關閉目前 UI */
+    closeOnTap?: boolean;
+}
+
 // ─── 單一 UI 的設定結構 ───────────────────────────────────────────────────────
 export interface UIConfigEntry {
     /** UI 所在的層級（決定 open/close 行為） */
@@ -111,6 +122,8 @@ export interface UIConfigEntry {
     bundle?: string;
     /** 是否在開啟時顯示半透明遮罩（適用 Dialog / System 層） */
     mask?: boolean;
+    /** 共用背景底設定（第一版先套用於 Layer.UI 主頁） */
+    backdrop?: UIBackdropConfig;
     /** 是否在關閉時快取節點不 destroy（M-2 UI 快取機制） */
     cache?: boolean;
 }
@@ -125,21 +138,49 @@ export const UIConfig: Record<UIID, UIConfigEntry> = {
     [UIID.ActionCommandPanel]: { layer: LayerType.Game,   prefab: "ui/action-command" },
 
     // ── 主頁面層（UI 層） ─────────────────────────────────────────────────────
-    [UIID.LobbyMain]:                  { layer: LayerType.UI, prefab: "ui/lobby-main" },
-    [UIID.ShopMain]:                   { layer: LayerType.UI, prefab: "ui/shop-main" },
-    [UIID.GachaMain]:                  { layer: LayerType.UI, prefab: "ui/gacha-main" },
-    [UIID.Gacha]:                      { layer: LayerType.UI, prefab: "ui/gacha" },
-    [UIID.GeneralList]:                { layer: LayerType.UI, prefab: "ui/general-list" },
-    [UIID.BloodlineMirrorAwakening]:   { layer: LayerType.UI, prefab: "ui/bloodline-mirror-awakening" },
+    [UIID.LobbyMain]: {
+        layer: LayerType.UI,
+        prefab: "ui/lobby-main",
+        backdrop: { enabled: true, opacity: 180, blocksInput: true, closeOnTap: false },
+    },
+    [UIID.ShopMain]: {
+        layer: LayerType.UI,
+        prefab: "ui/shop-main",
+        backdrop: { enabled: true, opacity: 180, blocksInput: true, closeOnTap: false },
+    },
+    [UIID.GachaMain]: {
+        layer: LayerType.UI,
+        prefab: "ui/gacha-main",
+        backdrop: { enabled: true, opacity: 180, blocksInput: true, closeOnTap: false },
+    },
+    [UIID.Gacha]: {
+        layer: LayerType.UI,
+        prefab: "ui/gacha",
+        backdrop: { enabled: true, opacity: 180, blocksInput: true, closeOnTap: false },
+    },
+    [UIID.GeneralList]: {
+        layer: LayerType.UI,
+        prefab: "ui/general-list",
+        backdrop: { enabled: true, opacity: 180, blocksInput: true, closeOnTap: false },
+    },
+    [UIID.BloodlineMirrorAwakening]: {
+        layer: LayerType.UI,
+        prefab: "ui/bloodline-mirror-awakening",
+        backdrop: { enabled: true, opacity: 180, blocksInput: true, closeOnTap: false },
+    },
 
     // ── 彈窗層（PopUp 層） ────────────────────────────────────────────────────
-    [UIID.GeneralDetail]:          { layer: LayerType.PopUp, prefab: "ui/general-detail" },
+    [UIID.GeneralDetail]:          {
+        layer: LayerType.PopUp,
+        prefab: "ui/general-detail",
+        backdrop: { enabled: true, opacity: 180, blocksInput: true, closeOnTap: false },
+    },
     [UIID.GeneralDetailBloodline]: { layer: LayerType.PopUp, prefab: "ui/general-detail-bloodline" },
     [UIID.GeneralPortrait]:        { layer: LayerType.PopUp, prefab: "ui/general-portrait" },
     [UIID.GeneralQuickView]:       { layer: LayerType.PopUp, prefab: "ui/general-quickview" },
     [UIID.UnitInfoPanel]:          { layer: LayerType.PopUp, prefab: "ui/unit-info-panel" },
     [UIID.TigerTallyDetailPanel]:  { layer: LayerType.PopUp, prefab: "ui/tiger-tally-detail-panel" },
-    [UIID.SupportCard]:            { layer: LayerType.PopUp, prefab: "ui/support-card" },
+    [UIID.SupportCard]:            { layer: LayerType.PopUp, prefab: "ui/support-card", backdrop: { enabled: true, opacity: 180, blocksInput: true, closeOnTap: true } },
     [UIID.SpiritTallyDetail]:      { layer: LayerType.PopUp, prefab: "ui/spirit-tally-detail" },
     [UIID.EliteTroopCodex]:        { layer: LayerType.PopUp, prefab: "ui/elite-troop-codex" },
 

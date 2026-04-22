@@ -1,7 +1,0 @@
-Create a single isolated UI partial asset for GeneralDetailBloodlineV3. Zone: header-plaque. Slot: capRight. Visual target: header-rarity-plaque / jade-parchment-light.
-
-Use the header-rarity-plaque family and jade-parchment-light recipe language. This asset must fit inside the existing UItemplate + widget structure and cannot redefine layout. Keep these qualities: .
-
-Avoid: . No layout blocks, no full-page composition, no UI text placement, no badges with letters.
-
-no text, no letters, no calligraphy, no symbols

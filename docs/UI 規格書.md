@@ -151,7 +151,7 @@
 | 經濟保底提示 | 「地窖保護 / 每日補貼提示」；本輪先維持大廳 banner / badge contract | `pending contract: economy-subsidy-banner` | 經濟系統.md (doc_spec_0032)、UI 規格補遺_2026-04-11_大廳晨報與人物日誌pending.md (doc_ui_0030) |
 | 轉蛋系統 | 「雙池定位導覽 / 死亡傳承提示」；維持在既有 `GachaMain` 主畫面內，不另開平行說明頁 | `pending contract: gacha-pool-positioning-brief` | 轉蛋系統.md (doc_spec_0042)、UI 規格補遺_2026-04-11_培育戰場轉蛋pending.md (doc_ui_0031) |
 | 許願池商城 | 「誠心祭壇」全屏畫面 | `shop-wishpool-main.json` | 經濟系統.md (doc_spec_0032)、keep.md (doc_index_0011) |
-| 虎符圖鑑 | 「兵符閣」圖鑑頁面 | `catalog-tally-main.json` | 兵種（虎符）系統.md (doc_spec_0012) 功能清單 #11 |
+| 虎符圖鑑 | 「虎符圖鑑」正式頁面（34 筆名錄已接入正式區） | `elite-troop-codex-screen.json` | 兵種（虎符）系統.md (doc_spec_0012) 功能清單 #11 / 卡圖正式區 |
 | 培育系統 | 「培育 36 回合」主畫面；三階段學年與畢業標籤先定義成可共用 contract，不先承諾額外 fullscreen | `nurture-session-main.json` + `pending contract: nurture-phase-block-header / graduation-tags-strip` | 培育系統.md (doc_spec_0026) E 節、UI 規格補遺_2026-04-11_培育戰場轉蛋pending.md (doc_ui_0031) |
 | 結緣系統 | 「結緣配置」面板；`Peace_Lineage` 模式與退役保種資格先收斂成摘要 chip / note，不另開宗廟或家系子頁 | `bonding-setup-main.json` + `pending contract: bonding-lineage-mode-chip` | 結緣系統（配種）.md (doc_spec_0028) E 節、UI 規格補遺_2026-04-11_培育戰場轉蛋pending.md (doc_ui_0031) |
 | 戰場部署 | 已有 DeployPanel（scene 手動綁定） | — (已實現於 BattleScene) | 戰場部署系統.md (doc_spec_0040) |

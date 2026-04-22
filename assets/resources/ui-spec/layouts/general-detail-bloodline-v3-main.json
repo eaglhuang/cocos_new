@@ -11,7 +11,7 @@
   "root": {
     "type": "container",
     "name": "GeneralDetailBloodlineRoot",
-    "widget": { "top": 0, "bottom": 0, "left": 0, "right": 0 },
+                        "height": 334,
     "children": [
       {
         "type": "image",
@@ -21,67 +21,12 @@
       },
       {
         "type": "image",
-        "name": "StageLeftShade",
+                            "widget": { "top": 74, "left": 28, "bottom": 14, "right": 280 },
         "widget": { "top": 0, "bottom": 0, "left": 0 },
         "width": "57.5%",
         "skinSlot": "gdv3.stage.leftShade"
       },
       { "$ref": "fragments/layouts/gdv3-portrait-carrier" },
-      {
-        "type": "container",
-        "name": "OverviewStateChrome",
-        "widget": { "top": 68, "left": 70 },
-        "width": 252,
-        "height": 114,
-        "children": [
-          {
-            "type": "image",
-            "name": "IdentityBand",
-            "widget": { "top": 14, "bottom": 0, "left": 0, "right": 0 },
-            "skinSlot": "gdv3.identity.band"
-          },
-          {
-            "type": "image",
-            "name": "IdentityRule",
-            "widget": { "top": 24, "left": 12 },
-            "width": 3,
-            "height": 76,
-            "skinSlot": "gdv3.identity.rule"
-          },
-          {
-            "type": "image",
-            "name": "IdentityChip",
-            "widget": { "top": 0, "left": 18 },
-            "width": 102,
-            "height": 26,
-            "skinSlot": "gdv3.identity.chip"
-          },
-          {
-            "type": "label",
-            "name": "IdentityChipLabel",
-            "widget": { "top": 3, "left": 30 },
-            "width": 78,
-            "height": 18,
-            "styleSlot": "gdv3.label.identityChip",
-            "text": "人物識別"
-          },
-          {
-            "type": "label",
-            "name": "PortraitModeHint",
-            "widget": { "top": 36, "left": 28, "right": 18 },
-            "height": 46,
-            "styleSlot": "gdv3.label.identityMode"
-          },
-          {
-            "type": "label",
-            "name": "IdentitySubLabel",
-            "widget": { "top": 84, "left": 28, "right": 18 },
-            "height": 18,
-            "styleSlot": "gdv3.label.identitySub",
-            "text": "GENERAL DOSSIER"
-          }
-        ]
-      },
       {
         "type": "container",
         "name": "InfoCardChrome",
@@ -312,8 +257,8 @@
                             "type": "container",
                             "name": "BloodlineSummaryFields",
                             "widget": { "top": 16, "left": 18, "right": 18 },
-                            "height": 140,
-                            "layout": { "type": "vertical", "spacing": 4 },
+                                "height": 152,
+                                "layout": { "type": "vertical", "spacing": 6 },
                             "children": [
                               { "type": "label", "name": "BloodlineTitle", "widget": { "left": 0, "right": 0 }, "width": "100%", "height": 18, "styleSlot": "gdv3.label.dossierSection" },
                               { "type": "label", "name": "BloodlineName", "widget": { "left": 0, "right": 0 }, "width": "100%", "height": 30, "styleSlot": "gdv3.label.value" },
@@ -322,14 +267,14 @@
                                 "name": "AwakeningProgressGroup",
                                 "widget": { "left": 0, "right": 0 },
                                 "width": "100%",
-                                "height": 40,
-                                "layout": { "type": "vertical", "spacing": 4 },
+                                    "height": 44,
+                                    "layout": { "type": "vertical", "spacing": 6 },
                                 "children": [
                                   { "type": "label", "name": "AwakeningLabel", "widget": { "left": 0, "right": 0 }, "width": "100%", "height": 18, "styleSlot": "gdv3.label.dossierSection" },
                                   {
                                     "type": "panel",
                                     "name": "AwakeningBarTrack",
-                                    "width": "72%",
+                                    "width": "66%",
                                     "height": 12,
                                     "skinSlot": "gdv3.progress.track",
                                     "children": [
@@ -351,10 +296,10 @@
                           {
                             "type": "image",
                             "name": "BloodlineDocumentPlate",
-                            "widget": { "top": 164, "bottom": 16, "left": 16, "right": 16 },
+                            "widget": { "top": 176, "bottom": 0, "left": 16, "right": 16 },
                             "skinSlot": "gdv3.bloodline.document.plate"
                           },
-                          { "type": "label", "name": "BloodlineBody", "widget": { "top": 176, "bottom": 24, "left": 28, "right": 24 }, "styleSlot": "gdv3.label.cardBody" }
+                          { "type": "label", "name": "BloodlineBody", "widget": { "top": 176, "bottom": 0, "left": 28, "right": 24 }, "styleSlot": "gdv3.label.cardBody" }
                         ]
                       }
                     ]

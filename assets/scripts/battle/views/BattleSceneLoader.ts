@@ -3,6 +3,7 @@
 // 本模組所有函數均無 BattleScene 實例依賴（不使用 this）。
 // Unity 對照：BattleDataLoader + BattleHandBuilder 靜態工具類別
 
+import { assetManager, AudioClip } from "cc";
 import { services } from "../../core/managers/ServiceLoader";
 import { GeneralUnit, GeneralConfig } from "../../core/models/GeneralUnit";
 import { Faction, TroopType, TROOP_DEPLOY_COST, Weather, BattleTactic } from "../../core/config/Constants";
@@ -95,6 +96,56 @@ export async function loadBattleSkillMetadata(): Promise<void> {
   await battleSkillMetadataPromise;
 }
 
+function loadAudioBundleClips(bundleName: string): Promise<Record<string, AudioClip>> {
+  return new Promise((resolve, reject) => {
+    const addClipAliases = (clipMap: Record<string, AudioClip>, rawName: string | undefined, clip: AudioClip) => {
+      const normalizedName = (rawName ?? '').trim();
+      if (!normalizedName) {
+        return;
+      }
+
+      clipMap[normalizedName] = clip;
+
+      const stem = normalizedName.replace(/\.[^.]+$/u, '');
+      if (stem && stem !== normalizedName) {
+        clipMap[stem] = clip;
+      }
+    };
+
+    const collectClips = (bundle: any) => {
+      bundle.loadDir('clips', AudioClip, (error: any, assets: AudioClip[]) => {
+        if (error || !assets) {
+          reject(error || new Error(`load audio clips failed: ${bundleName}`));
+          return;
+        }
+
+        const clipMap: Record<string, AudioClip> = {};
+        for (const clip of assets) {
+          addClipAliases(clipMap, clip?.name, clip);
+          const nativeUrl = (clip as any)?.nativeUrl ?? (clip as any)?.url ?? '';
+          const fileName = nativeUrl ? nativeUrl.split('/').pop() : '';
+          addClipAliases(clipMap, fileName, clip);
+        }
+        resolve(clipMap);
+      });
+    };
+
+    const existing = assetManager.getBundle(bundleName);
+    if (existing) {
+      collectClips(existing);
+      return;
+    }
+
+    assetManager.loadBundle(bundleName, (error, bundle) => {
+      if (error || !bundle) {
+        reject(error || new Error(`loadBundle failed: ${bundleName}`));
+        return;
+      }
+      collectClips(bundle);
+    });
+  });
+}
+
 /**
  * 依 VFX_BLOCK_REGISTRY 預熱所有 VFX Prefab 至 PoolSystem。
  * 確保 EffectSystem.playBlock 呼叫時資源已就緒，避免即時載入卡頓。
@@ -110,16 +161,46 @@ export async function prewarmVfxPools(): Promise<void> {
   const missing: string[] = [];
   const promises = registry.map(async (block) => {
     try {
-      const prefab = await res.loadPrefab(block.prefabPath!);
+      const prefab = await res.loadBundlePrefab('vfx_core', block.prefabPath!);
       if (prefab) {
         pool.register(block.id, prefab, 1);
       }
-    } catch {
-      missing.push(block.id);
+    } catch (bundleError) {
+      try {
+        const prefab = await res.loadPrefab(block.prefabPath!);
+        if (prefab) {
+          pool.register(block.id, prefab, 1);
+        }
+      } catch (resourceError) {
+        missing.push(block.id);
+        UCUFLogger.warn(LogCategory.LIFECYCLE, `[BattleSceneLoader] VFX prefab 預熱失敗: ${block.id} (${block.prefabPath})`, resourceError ?? bundleError);
+      }
     }
   });
 
   await Promise.all(promises);
+
+  if (missing.length > 0) {
+    UCUFLogger.warn(LogCategory.LIFECYCLE, `[BattleSceneLoader] 仍有 VFX prefab 未預熱: ${missing.join(', ')}`);
+  }
+}
+
+/**
+ * 預熱戰鬥音效 bundle 中的 clips，避免 BattleScene preview 先播才臨時載入。
+ * Unity 對照：AudioManager 預載 SFX clip
+ */
+export async function prewarmBattleAudioClips(): Promise<void> {
+  try {
+    const clips = await loadAudioBundleClips('audio');
+    if (Object.keys(clips).length === 0) {
+      UCUFLogger.warn(LogCategory.LIFECYCLE, '[BattleSceneLoader] audio bundle 沒有可預熱的 clips');
+      return;
+    }
+
+    services().audio.registerClips(clips);
+  } catch (error) {
+    UCUFLogger.warn(LogCategory.LIFECYCLE, '[BattleSceneLoader] battle audio clips 預熱失敗', error);
+  }
 }
 
 // ─── 遭遇戰 / 武將讀取 ──────────────────────────────────────────────────────
@@ -192,6 +273,22 @@ export function buildTacticSummary(general: GeneralUnit): BattleTacticSummary {
  * 若 selectedCardIds 有值，未來可從卡組資料查出對應卡片；目前為空時使用 demo 預設 4 張手牌。
  * Unity 對照：BattleHandManager.BuildInitialHand() → List<CardData>
  */
+const TALLY_CARD_ART_RESOURCE_FALLBACK = 'ui/tiger-tally/card-art/troops';
+const TALLY_CARD_ART_RESOURCE_BY_TYPE: Record<TroopType, string> = {
+  [TroopType.Cavalry]: 'ui/tiger-tally/card-art/troops_cavalry',
+  [TroopType.Infantry]: 'ui/tiger-tally/card-art/troops_infantry',
+  [TroopType.Shield]: 'ui/tiger-tally/card-art/troops_shield',
+  [TroopType.Archer]: 'ui/tiger-tally/card-art/troops_archer',
+  [TroopType.Pikeman]: 'ui/tiger-tally/card-art/troops_pikeman',
+  [TroopType.Engineer]: 'ui/tiger-tally/card-art/troops_engineer',
+  [TroopType.Medic]: 'ui/tiger-tally/card-art/troops_medic',
+  [TroopType.Navy]: 'ui/tiger-tally/card-art/troops_navy',
+};
+
+function resolveTallyCardArtResource(type: TroopType): string {
+  return TALLY_CARD_ART_RESOURCE_BY_TYPE[type] ?? TALLY_CARD_ART_RESOURCE_FALLBACK;
+}
+
 export function buildTallyCards(_selectedCardIds?: string[]): TallyCardData[] {
   // TODO: 當 _selectedCardIds 有值時，從卡組資料庫查出對應卡片
   // 目前一律使用 demo 預設卡組
@@ -234,7 +331,7 @@ export function buildTallyCards(_selectedCardIds?: string[]): TallyCardData[] {
       rarity: 'normal',
       rarityLabel: 'R',
       stars: '★',
-      artResource: 'sprites/battle/tally_card_art_cavalry_formal',
+      artResource: resolveTallyCardArtResource(TroopType.Cavalry),
       traits: ['衝鋒', '剋步兵'],
       traitDetails: [
         { label: '衝鋒', detail: '先手突進時提高第一擊輸出。' },
@@ -272,7 +369,7 @@ export function buildTallyCards(_selectedCardIds?: string[]): TallyCardData[] {
       rarity: 'rare',
       rarityLabel: 'SR',
       stars: '★★',
-      artResource: 'sprites/battle/tally_card_art_infantry_formal',
+      artResource: resolveTallyCardArtResource(TroopType.Infantry),
       traits: ['盾牆', '韌性'],
       traitDetails: [
         { label: '盾牆', detail: '受擊時優先形成正面減傷陣列。' },
@@ -310,7 +407,7 @@ export function buildTallyCards(_selectedCardIds?: string[]): TallyCardData[] {
       rarity: 'legendary',
       rarityLabel: 'UR',
       stars: '★★★★',
-      artResource: 'sprites/battle/tally_card_art_shield_formal',
+      artResource: resolveTallyCardArtResource(TroopType.Shield),
       traits: ['重甲', '剋弓兵'],
       traitDetails: [
         { label: '重甲', detail: '承受遠程與正面斬擊時傷害更低。' },
@@ -348,7 +445,7 @@ export function buildTallyCards(_selectedCardIds?: string[]): TallyCardData[] {
       rarity: 'mythic',
       rarityLabel: 'LR',
       stars: '★★★★★',
-      artResource: 'sprites/battle/tally_card_art_archer_formal',
+      artResource: resolveTallyCardArtResource(TroopType.Archer),
       traits: ['穿透', '遠程'],
       traitDetails: [
         { label: '穿透', detail: '集中火力時可持續削減前排耐久。' },

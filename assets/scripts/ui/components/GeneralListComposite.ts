@@ -11,7 +11,7 @@
  *
  * Unity 對照：GeneralRosterPanel，排序可重複點擊欄頭切換升降冪
  */
-import { _decorator, Node, Label, Button } from 'cc';
+import { _decorator, Node, Label, Button, UITransform, Layout } from 'cc';
 import type { GeneralConfig } from '../../core/models/GeneralUnit';
 import { CompositePanel } from '../core/CompositePanel';
 import { UITemplateBinder } from '../core/UITemplateBinder';
@@ -41,9 +41,23 @@ const COL_SORT_MAP: Record<string, SortKey> = {
     ColFaction: 'faction',
 };
 
+const HEADER_TO_ROW_MAP: Record<string, string> = {
+    ColName: 'Name',
+    ColGender: 'Gender',
+    ColAge: 'Age',
+    ColStr: 'Str',
+    ColInt: 'Int',
+    ColLea: 'Lea',
+    ColPol: 'Pol',
+    ColCha: 'Cha',
+    ColLuk: 'Luk',
+    ColTroop: 'Troop',
+    ColFaction: 'Faction',
+};
+
 // 欄頭顯示文字
-const LABELS: Record<SortKey, string> = {
-    name:    '武將',
+const DEFAULT_HEADER_LABELS: Record<SortKey, string> = {
+    name:    '武將姓名',
     gender:  '性別',
     age:     '年齡',
     str:     '武力',
@@ -51,25 +65,28 @@ const LABELS: Record<SortKey, string> = {
     lea:     '統率',
     pol:     '政治',
     cha:     '魅力',
-    luk:     '運勢',
-    troop:   '兵種',
+    luk:     '運氣',
+    troop:   '最強兵種',
     faction: '陣營',
 };
 
 const LIST_PATH = 'GeneralListRoot/MainContainer/DataList';
 const HEADER_ROW_PATH = 'ColumnHeaderRow';
+const CONTENT_PATH = 'GeneralListRoot/MainContainer/DataList/view/Content';
 
 @ccclass('GeneralListComposite')
 export class GeneralListComposite extends CompositePanel {
 
     /** 選中武將時的回呼，外部（如場景/父面板）設定 */
     public onSelectGeneral: ((config: GeneralConfig) => void) | null = null;
+    public onRequestClose: (() => void) | null = null;
 
     private _isMounted   = false;
     private _binder:    UITemplateBinder | null = null;
     private _allGenerals: GeneralConfig[] = [];
     private _sortKey: SortKey | null = null;
-    private _sortAsc     = true;
+    private _sortAsc     = false;
+    private _headerBaseLabels: Partial<Record<SortKey, string>> = {};
 
     // ── 生命週期 ─────────────────────────────────────────────
 
@@ -96,6 +113,7 @@ export class GeneralListComposite extends CompositePanel {
         });
 
         if (!this._isMounted) {
+            this._clearLegacySceneChildren();
             await this.mount('general-list-screen');
             this._isMounted = true;
             UCUFLogger.info(LogCategory.LIFECYCLE, '[GeneralListComposite] mount completed', {
@@ -121,11 +139,19 @@ export class GeneralListComposite extends CompositePanel {
         });
     }
 
+    public requestClose(): void {
+        if (this.onRequestClose) {
+            this.onRequestClose();
+            return;
+        }
+        this.hide();
+    }
+
     // ── CompositePanel 鉤子 ───────────────────────────────────
 
     protected override _onAfterBuildReady(binder: UITemplateBinder): void {
         this._binder = binder;
-        binder.getButton('BtnBack')?.node.on(Button.EventType.CLICK, this.hide, this);
+        binder.getButton('BtnBack')?.node.on(Button.EventType.CLICK, this.requestClose, this);
         this._bindSortHandlers();
     }
 
@@ -134,6 +160,13 @@ export class GeneralListComposite extends CompositePanel {
     /** 清空並重新填入列表 */
     private async _repopulate(): Promise<void> {
         const sorted = this._sortedList();
+        const content = this.node.getChildByPath(CONTENT_PATH);
+        if (content) {
+            for (const child of [...content.children]) {
+                child.removeFromParent();
+                child.destroy();
+            }
+        }
         UCUFLogger.info(LogCategory.DATA, '[GeneralListComposite] repopulate', {
             rowCount: sorted.length,
             listPath: LIST_PATH,
@@ -170,6 +203,7 @@ export class GeneralListComposite extends CompositePanel {
             }, this);
         });
         this._updateHeaderLabels();
+        this._syncHeaderColumnWidths();
     }
 
     /** 綁定欄頭排序按鈕 */
@@ -181,6 +215,11 @@ export class GeneralListComposite extends CompositePanel {
         for (const colNode of headerRow.children) {
             const sortKey = COL_SORT_MAP[colNode.name];
             if (!sortKey) continue;
+            const label = colNode.getComponent(Label);
+            const baseLabel = label?.string?.replace(/[▲▼]$/, '')?.trim();
+            if (baseLabel) {
+                this._headerBaseLabels[sortKey] = baseLabel;
+            }
             const button = colNode.getComponent(Button) ?? colNode.addComponent(Button);
             button.transition = Button.Transition.NONE;
             button.node.off(Button.EventType.CLICK);
@@ -189,10 +228,17 @@ export class GeneralListComposite extends CompositePanel {
                     this._sortAsc = !this._sortAsc;
                 } else {
                     this._sortKey = sortKey;
-                    this._sortAsc = true;
+                    this._sortAsc = false;
                 }
                 void this._repopulate();
             }, this);
+        }
+    }
+
+    /** 清除場景中遺留的舊版 GeneralList 子節點，避免與新 screen 疊在一起。 */
+    private _clearLegacySceneChildren(): void {
+        for (const child of [...this.node.children]) {
+            child.destroy();
         }
     }
 
@@ -207,12 +253,37 @@ export class GeneralListComposite extends CompositePanel {
             if (!sortKey) continue;
             const lbl  = colNode.getComponent(Label);
             if (!lbl)  continue;
-            const base = LABELS[sortKey];
+            const base = this._headerBaseLabels[sortKey] ?? DEFAULT_HEADER_LABELS[sortKey];
             if (this._sortKey === sortKey) {
                 lbl.string = `${base}${this._sortAsc ? '▲' : '▼'}`;
             } else {
                 lbl.string = base;
             }
+        }
+    }
+
+    private _syncHeaderColumnWidths(): void {
+        if (!this._binder) return;
+        const headerRow = this._binder.getNode(HEADER_ROW_PATH);
+        const contentNode = this.node.getChildByPath(CONTENT_PATH);
+        const firstRow = contentNode?.children?.[0] ?? null;
+        if (!headerRow || !firstRow) return;
+
+        let applied = false;
+        for (const headerNode of headerRow.children) {
+            const rowNodeName = HEADER_TO_ROW_MAP[headerNode.name];
+            if (!rowNodeName) continue;
+            const rowNode = firstRow.getChildByName(rowNodeName);
+            const headerTransform = headerNode.getComponent(UITransform);
+            const rowTransform = rowNode?.getComponent(UITransform);
+            if (!headerTransform || !rowTransform || rowTransform.width <= 0) continue;
+            if (Math.abs(headerTransform.width - rowTransform.width) < 0.5) continue;
+            headerTransform.setContentSize(rowTransform.width, headerTransform.height);
+            applied = true;
+        }
+
+        if (applied) {
+            headerRow.getComponent(Layout)?.updateLayout(true);
         }
     }
 
@@ -259,8 +330,8 @@ export class GeneralListComposite extends CompositePanel {
     }
 
     private _genderZh(gender: string | undefined): string {
-        if (gender === 'male')   return '男';
-        if (gender === 'female') return '女';
+        if (gender === '男' || gender === 'male')   return '男';
+        if (gender === '女' || gender === 'female') return '女';
         return '—';
     }
 

@@ -44,7 +44,7 @@ const RARITY_BORDER_COLORS: Record<TallyCardData['rarity'], Color> = {
 
 const DEFAULT_BADGE_DEF = { icon: '？', color: new Color(220, 220, 220, 255) };
 const TALLY_CARD_ART_FALLBACK_PATH = 'sprites/battle/tally_card_art_placeholder/spriteFrame';
-const TALLY_TYPE_BADGE_FALLBACK_PATH = 'sprites/battle/tally_badge_type';
+const TALLY_TYPE_BADGE_FALLBACK_PATH = 'sprites/battle/battle_unit_type_underlay';
 const TROOP_TYPE_SUITE_UNDERLAY_PATH = 'sprites/battle/battle_unit_type_underlay';
 const WHITE = new Color(255, 255, 255, 255);
 const TALLY_RARITY_PATHS: Record<TallyCardData['rarity'], string> = {
@@ -318,6 +318,7 @@ export class TigerTallyPanel extends UIPreviewBuilder {
             label.isBold = true;
         }
         textNode.setPosition(0, 0, 0);
+        textNode.active = false;
 
         if (sprite) {
             sprite.color = WHITE;
@@ -370,6 +371,7 @@ export class TigerTallyPanel extends UIPreviewBuilder {
             `tally.badge.type[${slot}]`,
             this._uniquePaths([
                 data.typeBadgeResource,
+                normalizedType ? `sprites/battle/battle_unit_type_icon_${normalizedType}` : null,
                 TROOP_TYPE_SUITE_UNDERLAY_PATH,
                 normalizedType ? `sprites/battle/tally_badge_type_${normalizedType}` : null,
             ]),

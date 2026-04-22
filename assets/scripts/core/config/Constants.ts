@@ -117,6 +117,7 @@ export const EVENT_NAMES = {
   UnitMoved:         "unit-moved",
   UnitHealed:        "unit-healed",
   GeneralDamaged:    "general-damaged",
+  GeneralDamagedVisualCommitted: "general-damaged-visual-committed",
   GeneralSpChanged:  "general-sp-changed",
   GeneralSkillUsed:  "general-skill-used",
   GeneralSkillEffect:"general-skill-effect",

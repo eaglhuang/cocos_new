@@ -1,0 +1,40 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "schemaId": "elite-troop-codex-content",
+  "familyId": "elite-troop-codex",
+  "version": 1,
+  "description": "EliteTroopCodexComposite content contract — 34 筆虎符特殊兵種名錄。",
+  "fields": {
+    "entries": {
+      "type": "array",
+      "required": true,
+      "description": "依 index 排序的虎符名錄，供圖鑑清單與正式詳情區渲染。",
+      "bindPath": "states.all.entries",
+      "itemType": "object",
+      "schema": {
+        "index": { "type": "number", "required": true, "description": "名錄序號" },
+        "groupKey": { "type": "string", "required": true, "description": "分組 key：transfer / exclusive" },
+        "groupLabel": { "type": "string", "required": true, "description": "分組標題" },
+        "tallyName": { "type": "string", "required": true, "description": "虎符名稱" },
+        "troopName": { "type": "string", "required": true, "description": "兵種名稱" },
+        "baseTypeLabel": { "type": "string", "required": true, "description": "基礎兵種" },
+        "typeKey": { "type": "string", "required": true, "description": "兵種 key" },
+        "quality": { "type": "string", "required": true, "description": "稀有度" },
+        "originHero": { "type": "string", "required": true, "description": "原名將 / 來源名將" },
+        "source": { "type": "string", "required": true, "description": "死亡結算來源" },
+        "special": { "type": "string", "required": true, "description": "兵種專屬特殊戰法" },
+        "cardArtResource": { "type": "string", "required": true, "description": "卡圖資源路徑（不含副檔名）" },
+        "artReady": { "type": "boolean", "required": true, "description": "是否已為正式圖" }
+      }
+    },
+    "defaultSelectedIndex": {
+      "type": "number",
+      "required": false,
+      "description": "預設選取的名錄 index（0-based）",
+      "bindPath": "states.all.defaultSelectedIndex"
+    }
+  },
+  "requiredFields": [
+    "entries"
+  ]
+}

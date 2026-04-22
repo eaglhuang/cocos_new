@@ -13,13 +13,13 @@
     },
     "tally.card.bg.hard": {
       "kind": "sprite-frame",
-      "path": "ui/tiger-tally/frame-parts/ssr/tally_frame_core_ssr/spriteFrame",
+      "path": "ui/tiger-tally/frame-parts/ssr/006/spriteFrame",
       "spriteType": "sliced",
-      "border": [40, 40, 40, 40],
+      "border": [60, 60, 60, 60],
       "bleed": 2,
       "allowAutoAtlas": true,
       "_fallback": "#1A1208",
-      "_doc": "虎符卡面硬版主框核心（SSR 母框拆件）。先以可拉伸外框核心做 9-slice，估值 border=[40,40,28,24]；title plaque / chip / rail / bottom band 走獨立 overlay。"
+      "_doc": "虎符卡面硬版主框核心（006 母框拆件）。第三輪加厚 border，讓 title plaque、left chip、bottom stars 都落在主框內部的視覺包覆範圍。"
     },
     "tally.card.frame.full": {
       "kind": "sprite-frame",
@@ -30,11 +30,11 @@
     },
     "tally.card.frame.core": {
       "kind": "sprite-frame",
-      "path": "ui/tiger-tally/frame-parts/ssr/tally_frame_core_ssr/spriteFrame",
+      "path": "ui/tiger-tally/frame-parts/ssr/006/spriteFrame",
       "spriteType": "sliced",
-      "border": [40, 40, 40, 40],
+      "border": [60, 60, 60, 60],
       "allowAutoAtlas": true,
-      "_doc": "SSR 母框的 stretch-safe 外框核心。Battle card 321x188 先用此 slot 做 9-slice。"
+      "_doc": "006 母框的 stretch-safe 外框核心。第三輪以更厚的 9-slice 包覆 title 與 star band。"
     },
     "tally.card.frame.titlePlaque": {
       "kind": "sprite-frame",
@@ -62,14 +62,14 @@
       "path": "ui/tiger-tally/frame-parts/ssr/tally_frame_side_rail_dark_ssr/spriteFrame",
       "spriteType": "simple",
       "allowAutoAtlas": true,
-      "_doc": "右側暗色 rail overlay。"
+      "_doc": "右側窄 dark carrier。對齊參考圖後改回較長的內嵌結構，承接徽記與功能 icon 區。"
     },
     "tally.card.frame.sideRail.amber": {
       "kind": "sprite-frame",
       "path": "ui/tiger-tally/frame-parts/ssr/tally_frame_side_rail_amber_ssr/spriteFrame",
       "spriteType": "simple",
       "allowAutoAtlas": true,
-      "_doc": "右側暖金 amber rail overlay。可用於強調態或高稀有度版本。"
+      "_doc": "右側上端短 amber cap / seat overlay。僅保留短上帽，與下方 dark carrier 形成更接近參考圖的連續輪廓。"
     },
     "tally.card.frame.bottomBand": {
       "kind": "sprite-frame",
@@ -136,7 +136,7 @@
     },
     "tally.badge.type": {
       "kind": "sprite-frame",
-      "path": "sprites/battle/tally_badge_type/spriteFrame",
+      "path": "sprites/battle/battle_unit_type_underlay/spriteFrame",
       "spriteType": "simple",
       "allowAutoAtlas": true,
       "_doc": "兵種符頭像：cavalry/infantry/archer/pike/shield/engineer。TS 依 TroopType 切換不同 spriteFrame。"
@@ -148,6 +148,7 @@
       "lineHeight": 15,
       "color": "#FFE28A",
       "horizontalAlign": "CENTER",
+      "verticalAlign": "CENTER",
       "isBold": true,
       "_doc": "稀有度標籤，顯示於左上角六角形牌匾（SSR/SR/R/N）。TS 在 _populateCards 中將 rarity enum 映射為顯示文字。"
     },
@@ -158,8 +159,20 @@
       "lineHeight": 16,
       "color": "#FFD36A",
       "horizontalAlign": "CENTER",
+      "verticalAlign": "CENTER",
       "isBold": false,
       "_doc": "星數顯示，放在底部 band 中心（★★★）。bind tally[i].stars，TS 需填入對應 rarity 的星字串。"
+    },
+    "widget.resource.icon": {
+      "kind": "label-style",
+      "font": "fonts/manrope/font",
+      "fontSize": 16,
+      "lineHeight": 18,
+      "color": "#F6D37A",
+      "horizontalAlign": "CENTER",
+      "verticalAlign": "CENTER",
+      "isBold": true,
+      "_doc": "資源 icon 用的 glyph 樣式，供糧草符號或同類資源 glyph 使用。"
     },
     "tally.label.atk": {
       "kind": "label-style",
@@ -167,7 +180,8 @@
       "fontSize": 24,
       "lineHeight": 26,
       "color": "#7EC4FF",
-      "horizontalAlign": "LEFT",
+      "horizontalAlign": "CENTER",
+      "verticalAlign": "CENTER",
       "isBold": true,
       "_doc": "底部左側主數值，改成偏戰術藍，接近參考圖的側欄資訊節奏。"
     },
@@ -177,7 +191,8 @@
       "fontSize": 24,
       "lineHeight": 26,
       "color": "#C4F7C3",
-      "horizontalAlign": "RIGHT",
+      "horizontalAlign": "CENTER",
+      "verticalAlign": "CENTER",
       "isBold": true,
       "_doc": "底部右側主數值，使用高亮薄荷綠提高生存資訊辨識。"
     },
@@ -187,7 +202,7 @@
       "fontSize": 20,
       "lineHeight": 22,
       "color": "#F7FAFF",
-      "horizontalAlign": "LEFT",
+      "horizontalAlign": "CENTER",
       "isBold": true,
       "overflow": "truncate",
       "_doc": "名稱退成頂部輔助資訊，讓頭像與底部數值成為第一視線。"
@@ -217,6 +232,7 @@
       "lineHeight": 18,
       "color": "#F6D37A",
       "horizontalAlign": "CENTER",
+      "verticalAlign": "CENTER",
       "isBold": true,
       "_doc": "糧草費用縮小成右上角標，避免跟卡片主體搶權重。"
     },
@@ -227,6 +243,7 @@
       "lineHeight": 18,
       "color": "colorWhite",
       "horizontalAlign": "CENTER",
+      "verticalAlign": "CENTER",
       "isBold": true,
       "_doc": "兵種徽章縮寫文字（CV/IN/AR/SH...），白色置中，由 Layout JSON 定義，TigerTallyPanel 只負責填入文字。lineHeight 必須 >= fontSize 避免 Cocos 裁切。"
     }

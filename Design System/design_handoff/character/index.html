@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="utf-8">
+<title>3KLife · 張飛 — 人物詳情頁</title>
+<link rel="stylesheet" href="../../colors_and_type.css">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  /* ── Scale 1920×1080 canvas to viewport ── */
+  html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
+  .stage {
+    width: 1920px; height: 1080px;
+    transform-origin: top left;
+    position: absolute; top: 0; left: 0;
+    overflow: hidden; font-family: var(--font-body); color: var(--text-primary);
+    background: #0a0a0a;
+  }
+
+  /* ── Portrait (left 62%) ── */
+  .portrait-bg {
+    position: absolute; left: 0; top: 0; bottom: 0; width: 62%;
+    background:
+      radial-gradient(ellipse at 30% 40%, rgba(139,98,42,.3), transparent 55%),
+      radial-gradient(ellipse at 80% 70%, rgba(44,58,66,.25), transparent 60%),
+      linear-gradient(180deg, #2a2720 0%, #1a1814 40%, #100e0a 100%);
+    overflow: hidden;
+  }
+  .portrait-bg::after {
+    content: ""; position: absolute; inset: 0;
+    background: linear-gradient(90deg, transparent 45%, rgba(10,10,10,.7) 75%, #0a0a0a 100%);
+    pointer-events: none;
+  }
+  .portrait-img {
+    position: absolute; bottom: 0; left: 50%; transform: translateX(-45%);
+    height: 98%; width: auto; max-width: 130%;
+    object-fit: contain; object-position: center bottom;
+    filter: drop-shadow(0 20px 40px rgba(0,0,0,.7));
+    z-index: 1;
+  }
+
+  /* ── Portrait nav buttons (left / right of portrait) ── */
+  .portrait-nav {
+    position: absolute; top: 50%; transform: translateY(-50%); z-index: 8;
+    width: 96px; height: 96px; border-radius: 50%;
+    border: 3px solid #D4AF37;
+    background: linear-gradient(135deg, rgba(212,175,55,.18), rgba(138,110,31,.1));
+    cursor: pointer; display: grid; place-items: center;
+    font-family: var(--font-headline); font-size: 48px; font-weight: 800;
+    color: #D4AF37; transition: all 200ms;
+    box-shadow: inset 0 0 16px rgba(212,175,55,.1), 0 0 24px rgba(212,175,55,.2);
+  }
+  .portrait-nav:hover {
+    background: linear-gradient(135deg, rgba(212,175,55,.32), rgba(138,110,31,.2));
+    box-shadow: inset 0 0 16px rgba(212,175,55,.2), 0 0 36px rgba(212,175,55,.4);
+    transform: translateY(-50%) scale(1.06);
+  }
+  .portrait-nav.left  { left: 24px; }
+  .portrait-nav.right { right: 24px; }
+
+  /* ── Rank badge (top-left) ── */
+  .rank-badge {
+    position: absolute; top: 28px; left: 28px; z-index: 6;
+    width: 90px; height: 90px; border-radius: 16px;
+    background: linear-gradient(135deg, #3F6A62, #1f332e);
+    border: 2px solid #8CCFC4;
+    box-shadow: 0 6px 20px rgba(0,0,0,.5), inset 0 0 20px rgba(140,207,196,.15);
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+  }
+  .rank-badge .r-label { font-family: var(--font-headline); font-size: 32px; font-weight: 800; color: #FFE088; }
+  .rank-badge .r-sub   { font-family: var(--font-label); font-size: 9px; letter-spacing: .3em; color: #A4D2D0; text-transform: uppercase; }
+
+  /* ── Portrait title (bottom-left) ── */
+  .portrait-title {
+    position: absolute; left: 36px; bottom: 36px; z-index: 5;
+    font-family: var(--font-headline); font-size: 20px; font-weight: 600;
+    color: rgba(232,223,208,.35); letter-spacing: .6em;
+  }
+
+  /* ── Back button (top-right fixed) ── */
+  .back-btn {
+    position: absolute; top: 28px; right: 28px; z-index: 30;
+    width: 88px; height: 88px; border-radius: 50%;
+    border: 3px solid #4D4635;
+    background: linear-gradient(180deg, #20201F, #111);
+    cursor: pointer; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 2px;
+    transition: all 150ms;
+    box-shadow: 0 4px 16px rgba(0,0,0,.5);
+  }
+  .back-btn:hover {
+    border-color: #D4AF37;
+    box-shadow: 0 0 20px rgba(212,175,55,.35);
+  }
+  .back-btn .back-arrow { font-family: var(--font-headline); font-size: 28px; color: #FFE088; line-height: 1; }
+  .back-btn .back-label { font-family: var(--font-label); font-size: 11px; color: #B0A880; letter-spacing: .15em; }
+
+  /* ── RIGHT SHELL: tab rail + content, pinned to right ── */
+  .right-shell {
+    position: absolute;
+    right: 0; top: 0; bottom: 0;
+    width: 720px;           /* 160 tab + 20 gap + 540 content */
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    z-index: 10;
+  }
+
+  /* ── Content pane ── */
+  .right-content {
+    flex: 1;
+    padding-top: 50px;
+    padding-bottom: 60px;
+    padding-right: 20px;
+    padding-left: 20px;
+    overflow-y: auto; overflow-x: hidden;
+    scrollbar-width: thin; scrollbar-color: #4D4635 transparent;
+  }
+  .right-content::-webkit-scrollbar { width: 4px; }
+  .right-content::-webkit-scrollbar-thumb { background: #4D4635; border-radius: 2px; }
+  .right-content::-webkit-scrollbar-track { background: transparent; }
+
+  /* ── Tab rail ── */
+  .tab-rail-wrap {
+    width: 160px;
+    flex-shrink: 0;
+    padding-top: 150px;
+    padding-bottom: 20px;
+    padding-right: 16px;
+    padding-left: 10px;
+    overflow-y: auto; overflow-x: hidden;
+    display: flex; flex-direction: column; align-items: center; gap: 20px;
+    scrollbar-width: none;
+  }
+  .tab-rail-wrap::-webkit-scrollbar { display: none; }
+
+  /* ── Story strip ── */
+  .story-strip-wrap {
+    position: absolute; left: 0; right: 780px; bottom: 0; height: 0; z-index: 12;
+    background: linear-gradient(180deg, transparent, rgba(0,0,0,.78) 18%, rgba(0,0,0,.97));
+    overflow: hidden; transition: height 320ms cubic-bezier(.4,0,.2,1);
+  }
+  .story-strip-wrap.open { height: 240px; }
+  .strip-toggle {
+    position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); z-index: 13;
+    padding: 5px 28px; border-radius: 10px 10px 0 0; cursor: pointer;
+    background: rgba(20,20,18,.9); border: 1px solid #4D4635; border-bottom: none;
+    font-family: var(--font-label); font-size: 11px; color: #B0A880; letter-spacing: .3em;
+    transition: bottom 320ms cubic-bezier(.4,0,.2,1);
+  }
+  .strip-toggle.open { bottom: 240px; }
+  .strip-head { display: flex; align-items: baseline; gap: 12px; padding: 14px 28px 8px; }
+  .strip-head h4 { font-family: var(--font-headline); font-size: 16px; font-weight: 700; color: #FFE088; letter-spacing: .4em; }
+  .strip-head .en { font-family: var(--font-headline); font-style: italic; font-size: 12px; color: #9a8f74; }
+  .strip-head .line { flex: 1; height: 1px; background: linear-gradient(90deg, rgba(212,175,55,.35), transparent); }
+  .strip { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; height: 168px; padding: 0 28px; }
+  .cell {
+    position: relative; overflow: hidden;
+    border: 2px solid rgba(212,175,55,.28); cursor: pointer;
+    transition: transform 150ms, border-color 150ms, box-shadow 150ms;
+    clip-path: polygon(0 0, 100% 0, 100% 86%, 91% 100%, 0 100%);
+  }
+  .cell:last-child { clip-path: none; }
+  .cell:hover { transform: translateY(-5px) scale(1.025); border-color: #D4AF37; box-shadow: 0 10px 28px rgba(0,0,0,.75), 0 0 14px rgba(212,175,55,.35); z-index: 2; }
+  .cell-bg { position: absolute; inset: 0; background-size: cover; background-position: center; }
+  /* screen-tone texture */
+  .cell::before {
+    content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+    background-image: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,.07) 3px, rgba(0,0,0,.07) 4px);
+  }
+  .cell::after {
+    content: ""; position: absolute; inset: 0; z-index: 2; pointer-events: none;
+    background: linear-gradient(180deg, rgba(0,0,0,.08) 0%, transparent 32%, transparent 48%, rgba(0,0,0,.84) 100%);
+  }
+  .cell-num {
+    position: absolute; top: 0; left: 0; z-index: 4;
+    font-family: var(--font-headline); font-style: italic; font-size: 30px; font-weight: 900;
+    color: rgba(255,224,136,.13); line-height: 1; padding: 3px 6px; letter-spacing: -.02em;
+  }
+  .cell-label { position: absolute; left: 0; right: 0; bottom: 0; z-index: 4; padding: 6px 8px 9px; }
+  .cell-label .t {
+    font-family: var(--font-headline); font-size: 13px; font-weight: 800;
+    color: #FFE088; letter-spacing: .15em; display: block;
+    text-shadow: 0 1px 0 #000, 0 0 10px rgba(0,0,0,.9);
+  }
+  .cell-label .s { display: block; font-family: var(--font-label); font-size: 9px; color: rgba(208,197,175,.65); letter-spacing: .12em; text-transform: uppercase; margin-top: 2px; }
+</style>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<div class="stage" id="stage">
+
+  <!-- Portrait -->
+  <div class="portrait-bg">
+    <button class="portrait-nav left"  onclick="prevCharacter()">‹</button>
+    <img class="portrait-img" src="../../assets/generals/zhang_fei.png" alt="張飛"
+         onerror="this.style.opacity='0.2'">
+    <button class="portrait-nav right" onclick="nextCharacter()">›</button>
+  </div>
+  <div class="portrait-title">燕 人 武 聖</div>
+  <div class="rank-badge">
+    <span class="r-label">傳</span>
+    <span class="r-sub">LEGEND</span>
+  </div>
+
+  <!-- Back button (top-right fixed) -->
+  <button class="back-btn" onclick="goBack()">
+    <span class="back-arrow">←</span>
+    <span class="back-label">返回</span>
+  </button>
+
+  <!-- Right shell (tab rail + content) -->
+  <div class="right-shell">
+    <!-- Content -->
+    <div class="right-content" id="right-content"></div>
+    <!-- Tab rail -->
+    <div class="tab-rail-wrap" id="tab-rail"></div>
+  </div>
+
+  <!-- Story strip -->
+  <div class="story-strip-wrap" id="strip-wrap">
+    <div class="strip-head">
+      <h4>逸 事</h4><span class="en">Chronicles</span><span class="line"></span>
+    </div>
+    <div class="strip" id="strip-cells"></div>
+  </div>
+  <div class="strip-toggle" id="strip-toggle" onclick="toggleStrip()">▲ 逸 事 ▲</div>
+
+</div>
+
+<!-- Scale stage to viewport -->
+<script>
+(function scaleStage() {
+  const stage = document.getElementById('stage');
+  function fit() {
+    const scaleX = window.innerWidth  / 1920;
+    const scaleY = window.innerHeight / 1080;
+    const scale  = Math.min(scaleX, scaleY);
+    const x = (window.innerWidth  - 1920 * scale) / 2;
+    const y = (window.innerHeight - 1080 * scale) / 2;
+    stage.style.transform = `translate(${x}px,${y}px) scale(${scale})`;
+  }
+  fit();
+  window.addEventListener('resize', fit);
+})();
+</script>
+
+<script type="text/babel" src="components.jsx"></script>
+<script type="text/babel" src="tabs.jsx"></script>
+
+<script type="text/babel">
+// ── Override TabRail to render into #tab-rail ──
+function TabRailInline({ activeTab, onTabChange }) {
+  const tabs = [
+    { id: "overview",  label: "將", en: "GEN"  },
+    { id: "stats",     label: "屬", en: "STAT" },
+    { id: "tactics",   label: "技", en: "TACT" },
+    { id: "bloodline", label: "命", en: "FATE" },
+    { id: "equip",     label: "寶", en: "GEAR" },
+    { id: "aptitude",  label: "適", en: "APT"  },
+  ];
+  return React.createElement(React.Fragment, null,
+    tabs.map(t =>
+      React.createElement("button", {
+        key: t.id,
+        onClick: () => onTabChange(t.id),
+        style: {
+          width: 128, height: 128, borderRadius: "50%", flexShrink: 0,
+          border: activeTab === t.id ? "4px solid #D4AF37" : "3px solid #4D4635",
+          background: activeTab === t.id
+            ? "linear-gradient(180deg, rgba(212,175,55,.25), rgba(138,110,31,.12))"
+            : "linear-gradient(180deg, #20201F, #111)",
+          cursor: "pointer",
+          display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+          transition: "all 150ms",
+          boxShadow: activeTab === t.id
+            ? "0 0 28px rgba(212,175,55,.45), inset 0 0 20px rgba(212,175,55,.18)"
+            : "0 4px 16px rgba(0,0,0,.5)",
+        }
+      },
+        React.createElement("span", {
+          style: { fontFamily: "var(--font-headline)", fontSize: 32, fontWeight: 700, color: "#FFE088", lineHeight: 1 }
+        }, t.label),
+        React.createElement("span", {
+          style: { fontFamily: "var(--font-label)", fontSize: 12, fontWeight: 600, color: "#B0A880", letterSpacing: ".15em", textTransform: "uppercase", marginTop: 6 }
+        }, t.en),
+      )
+    ),
+    // Close button removed — back button is now top-right fixed
+    // (no close button in tab rail)
+  );
+}
+
+function App() {
+  const [tab, setTab] = React.useState("overview");
+  const data = ZHANG_FEI;
+  const tabContent = {
+    overview:  React.createElement(TabOverview,  { data }),
+    stats:     React.createElement(TabStats,     { data }),
+    tactics:   React.createElement(TabTactics,   { data }),
+    bloodline: React.createElement(TabBloodline, { data }),
+    equip:     React.createElement(TabEquip,     { data }),
+    aptitude:  React.createElement(TabAptitude,  { data }),
+  };
+  return React.createElement(React.Fragment, null,
+    tabContent[tab] || tabContent.overview,
+    React.createElement(TabRailInline, { activeTab: tab, onTabChange: t => { setTab(t); document.getElementById('right-content').scrollTop = 0; } }),
+  );
+}
+
+// Mount content into right-content, rail into tab-rail
+function RootContent() {
+  const [tab, setTab] = React.useState("overview");
+  const data = ZHANG_FEI;
+  const tabContent = {
+    overview:  React.createElement(TabOverview,  { data }),
+    stats:     React.createElement(TabStats,     { data }),
+    tactics:   React.createElement(TabTactics,   { data }),
+    bloodline: React.createElement(TabBloodline, { data }),
+    equip:     React.createElement(TabEquip,     { data }),
+    aptitude:  React.createElement(TabAptitude,  { data }),
+  };
+  return React.createElement(React.Fragment, null, tabContent[tab]);
+}
+
+// Use portals to render into separate DOM nodes
+function Root() {
+  const [tab, setTab] = React.useState("overview");
+  const data = ZHANG_FEI;
+  const tabContent = {
+    overview:  React.createElement(TabOverview,  { data }),
+    stats:     React.createElement(TabStats,     { data }),
+    tactics:   React.createElement(TabTactics,   { data }),
+    bloodline: React.createElement(TabBloodline, { data }),
+    equip:     React.createElement(TabEquip,     { data }),
+    aptitude:  React.createElement(TabAptitude,  { data }),
+  };
+  const changeTab = (t) => {
+    setTab(t);
+    document.getElementById('right-content').scrollTop = 0;
+  };
+  return React.createElement(React.Fragment, null,
+    ReactDOM.createPortal(tabContent[tab], document.getElementById('right-content')),
+    ReactDOM.createPortal(
+      React.createElement(TabRailInline, { activeTab: tab, onTabChange: changeTab }),
+      document.getElementById('tab-rail')
+    ),
+  );
+}
+
+const rootMount = document.createElement('div');
+document.getElementById('stage').appendChild(rootMount);
+ReactDOM.createRoot(rootMount).render(React.createElement(Root));
+</script>
+
+<script type="text/babel">
+// Story strip
+(() => {
+  const strips = window.ZHANG_FEI ? window.ZHANG_FEI.storyStrip : [];
+  const container = document.getElementById("strip-cells");
+  // Each scene gets a unique atmospheric dual-tone gradient
+  const panelGrads = [
+    "linear-gradient(145deg,#7a6040 0%,#3a2e18 45%,#1a130a 100%)",  // 01 涿郡
+    "linear-gradient(145deg,#7a2020 0%,#3a1212 45%,#120608 100%)",  // 02 桃園
+    "linear-gradient(145deg,#5a1010 0%,#2a0808 45%,#0e0404 100%)",  // 03 長坂
+    "linear-gradient(145deg,#384820 0%,#1e2c10 45%,#0a0e06 100%)",  // 04 嚴顏
+    "linear-gradient(145deg,#6a3a18 0%,#341c0a 45%,#120a04 100%)",  // 05 醉後
+    "linear-gradient(145deg,#1e3a3a 0%,#0e2020 45%,#060c0c 100%)",  // 06 傳承
+  ];
+  if (container && strips) {
+    strips.forEach((s, i) => {
+      const cell = document.createElement("div");
+      cell.className = "cell";
+      cell.innerHTML = `
+        <div class="cell-bg" style="background:${panelGrads[i]||panelGrads[0]};"></div>
+        <span class="cell-num">${s.num}</span>
+        <div class="cell-label">
+          <div class="t">${s.title}</div>
+          <span class="s">${s.en}</span>
+        </div>`;
+      container.appendChild(cell);
+    });
+  }
+})();
+
+window.toggleStrip = () => {
+  window._stripOpen = !window._stripOpen;
+  document.getElementById("strip-wrap").classList.toggle("open", window._stripOpen);
+  document.getElementById("strip-toggle").classList.toggle("open", window._stripOpen);
+  document.getElementById("strip-toggle").textContent = window._stripOpen ? "▼ 收 起 ▼" : "▲ 逸 事 ▲";
+};
+window.goBack = () => console.log('← go back');
+window.prevCharacter = () => console.log('← prev character');
+window.nextCharacter = () => console.log('→ next character');
+</script>
+
+</body>
+</html>

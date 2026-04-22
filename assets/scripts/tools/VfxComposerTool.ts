@@ -58,6 +58,8 @@ const MAX_ROWS  = 5;
 const PREVIEW_POS = new Vec3(0, 0.5, 0); // 特效浮在格子上方 0.5 單位，2.5D 視角更清楚（舊值 0.08 幾乎貼地不易看見）
 const PREVIEW_DURATION = 5;              // seconds before auto-clear
 const THUMB_SIZE = 64;
+const DEFAULT_FLOOD_RIVER_DIR = new Vec4(-0.5, -0.866, 1.05, 0.78);
+const DEFAULT_FLOOD_FOAM_DIR = new Vec4(-1.0, 0.0, 1.0, 1.0);
 const LARGE_PREVIEW_SIZE = 220;
 // Panel 縮小至 0.80 倍 → 有效寬度從 912px 降至約 608px，讓 3D 背景可見
 // 舊值 1.2 會讓右側面板佔據 71% 螢幕，完全遮住棋盤中央的特效預覽
@@ -92,6 +94,7 @@ interface ProceduralShaderProfile {
     readonly rippleParams?: Vec4;
     readonly worldFlowParams?: Vec4;
     readonly riverDir?: Vec4;
+    readonly foamDir?: Vec4;
     readonly foamParams?: Vec4;
 }
 
@@ -139,7 +142,8 @@ const PROCEDURAL_SHADER_PROFILES: Record<string, ProceduralShaderProfile> = {
         flowParams: new Vec4(0.18, 0.085, 4.2, 0.08),
         rippleParams: new Vec4(1.2, 1.0, 0.48, 0),
         worldFlowParams: new Vec4(0.12, 0.12, 0.75, 0.7),
-        riverDir: new Vec4(0.92, 0.38, 1.05, 0.78),
+        riverDir: DEFAULT_FLOOD_RIVER_DIR,
+        foamDir: DEFAULT_FLOOD_FOAM_DIR,
         foamParams: new Vec4(0.56, 0.2, 2.1, 0.42),
     },
 };
@@ -1061,7 +1065,19 @@ export class VfxComposerTool extends Component {
         if (profile.flowParams) mat.setProperty('flowParams', profile.flowParams);
         if (profile.rippleParams) mat.setProperty('rippleParams', profile.rippleParams);
         if (profile.worldFlowParams) mat.setProperty('worldFlowParams', profile.worldFlowParams);
-        if (profile.riverDir) mat.setProperty('riverDir', profile.riverDir);
+        const board = block.id === 'shader_water_ripple'
+            ? (director.getScene()?.getComponentInChildren(BoardRenderer) ?? null)
+            : null;
+        const floodRiverDir = board?.getFloodRiverDirectionVector() ?? null;
+        const floodFoamDir = board?.getFloodFoamDirectionVector() ?? null;
+        const riverDir = floodRiverDir && profile.riverDir
+            ? new Vec4(floodRiverDir.x, floodRiverDir.z, profile.riverDir.z, profile.riverDir.w)
+            : profile.riverDir;
+        const foamDir = floodFoamDir && profile.foamDir
+            ? new Vec4(floodFoamDir.x, floodFoamDir.z, profile.foamDir.z, profile.foamDir.w)
+            : profile.foamDir;
+        if (riverDir) mat.setProperty('riverDir', riverDir);
+        if (foamDir) mat.setProperty('foamDir', foamDir);
         if (profile.foamParams) mat.setProperty('foamParams', profile.foamParams);
 
         const noiseTex = profile.noiseTexPath

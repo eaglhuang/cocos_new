@@ -35,6 +35,7 @@ test-parser*.js
 #//////////////////////////
 # Generated QA / Preview Artifacts
 #//////////////////////////
+artifacts/
 artifacts/ui-layered-frames/
 artifacts/ui-qa/
 artifacts/ui-generated/

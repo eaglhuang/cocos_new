@@ -221,7 +221,7 @@ export class BattleHUD extends UIPreviewBuilder {
         const svc = services();
         this._unsubs.push(
             svc.event.on(EVENT_NAMES.TurnPhaseChanged,   this._onTurnPhaseChanged.bind(this)),
-            svc.event.on(EVENT_NAMES.GeneralDamaged,     this._onGeneralDamaged.bind(this)),
+            svc.event.on(EVENT_NAMES.GeneralDamagedVisualCommitted, this._onGeneralDamaged.bind(this)),
             svc.event.on(EVENT_NAMES.GeneralSkillUsed,   this._onGeneralSkillUsed.bind(this)),
             svc.event.on(EVENT_NAMES.GeneralSkillEffect, this._onSkillEffect.bind(this)),
         );

@@ -1,5 +1,0 @@
-Create a single isolated UI partial asset for BattleSceneNonHUD. Zone: tiger-tally-panel. Slot: typeBadgeUnderlay. Visual target: battle-status-icon-v1 / F7 battle micro badge underlay.
-
-This asset is a 32x32 style tactical badge underlay for TigerTally type markers. It must support runtime text overlay and color variation by troop type. Keep these qualities: circular or compact tactical badge silhouette, deep-ink battlefield language, restrained antique metal edge, readable at small size.
-
-Avoid: text, letters, numbers, collectible card frame, heavy reward badge, sci-fi plating. No full card art, no layout blocks, no baked abbreviations.

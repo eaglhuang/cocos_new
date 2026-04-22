@@ -1,0 +1,21 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../colors_and_type.css"><style>
+*{box-sizing:border-box;margin:0}html,body{width:700px;background:#1A1A1A;color:var(--text-off-white);font-family:var(--font-body);padding:24px;overflow:hidden}
+.lbl{font-family:var(--font-label);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-khaki);margin-bottom:14px}
+.row{display:flex;gap:24px;align-items:center;flex-wrap:wrap}
+.glyph{width:120px;display:flex;flex-direction:column;align-items:center;gap:12px}
+.underlay{width:100px;height:100px;border-radius:50%;background:radial-gradient(circle at 30% 25%,#3c3c3c,#151515);display:flex;align-items:center;justify-content:center;box-shadow:inset 0 1px 0 rgba(255,255,255,.2),0 3px 6px rgba(0,0,0,.5);border:2px solid #4D4635}
+.underlay img,.underlay svg{width:64px;height:64px;object-fit:contain;filter:drop-shadow(0 1px 1px rgba(0,0,0,.6))}
+.archer-img{width:72px!important;height:72px!important}
+.cap{font-family:var(--font-label);font-size:10px;letter-spacing:.08em;color:var(--text-khaki);font-weight:600}
+</style></head><body>
+<div class="lbl">Unit-Type Glyphs · Flat-Anime · 256² Master</div>
+<div class="row">
+  <div class="glyph"><div class="underlay"><img src="../assets/battle/glyph_infantry.png"></div><div class="cap">INFANTRY</div></div>
+  <div class="glyph"><div class="underlay"><img src="../assets/battle/glyph_cavalry.png"></div><div class="cap">CAVALRY</div></div>
+  <div class="glyph"><div class="underlay"><img src="../assets/battle/glyph_archer.png" class="archer-img"></div><div class="cap">ARCHER</div></div>
+  <div class="glyph"><div class="underlay"><svg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="pikeMetalGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#E8D7B8;stop-opacity:1" /><stop offset="50%" style="stop-color:#FFE088;stop-opacity:1" /><stop offset="100%" style="stop-color:#D4AF37;stop-opacity:1" /></linearGradient><linearGradient id="pikeShaftGrad" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:#A0826D;stop-opacity:1" /><stop offset="50%" style="stop-color:#8B6F47;stop-opacity:1" /><stop offset="100%" style="stop-color:#6B5837;stop-opacity:1" /></linearGradient></defs><!-- 斜槍杆 (約45度角) --><g transform="rotate(-35 128 128)"><rect x="120" y="30" width="16" height="190" fill="url(#pikeShaftGrad)" stroke="#5C4A2C" stroke-width="1"/><line x1="128" y1="35" x2="128" y2="215" stroke="#5C4A2C" stroke-width="0.5" opacity="0.4"/><!-- 槍尖 (上) --><path d="M 128 25 L 116 45 L 128 55 L 140 45 Z" fill="url(#pikeMetalGrad)" stroke="#8B7500" stroke-width="1.5" stroke-linejoin="round"/><path d="M 128 25 L 120 42 L 128 52 L 136 42 Z" fill="#FFE088" opacity="0.6"/><!-- 槍尖 (下) --><path d="M 125 225 L 115 242 L 141 242 Z" fill="url(#pikeMetalGrad)" stroke="#8B7500" stroke-width="1.5"/><path d="M 128 225 L 120 240 L 136 240 Z" fill="#FFE088" opacity="0.4"/><!-- 護手 --><ellipse cx="128" cy="72" rx="24" ry="11" fill="#D4AF37" opacity="0.85"/><rect x="106" y="70" width="44" height="3" fill="#8B7500" opacity="0.7"/><ellipse cx="128" cy="78" rx="20" ry="7" fill="#B8860B" opacity="0.65"/></g></svg></div><div class="cap">PIKEMAN</div></div>
+  <div class="glyph"><div class="underlay"><img src="../assets/battle/glyph_shield.png"></div><div class="cap">SHIELD</div></div>
+  <div class="glyph"><div class="underlay"><img src="../assets/battle/glyph_medic.png"></div><div class="cap">MEDIC</div></div>
+  <div class="glyph"><div class="underlay"><img src="../assets/battle/glyph_navy.png"></div><div class="cap">NAVY</div></div>
+</div>
+</body></html>

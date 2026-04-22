@@ -17,7 +17,7 @@ import { TallyCardData } from './TigerTallyComposite';
 
 const { ccclass } = _decorator;
 
-const UNITINFO_TYPE_ICON_FALLBACK_PATH = 'sprites/battle/unitinfo_type_icon';
+const UNITINFO_TYPE_ICON_FALLBACK_PATH = 'sprites/battle/battle_unit_type_underlay';
 const TROOP_TYPE_SUITE_GLYPH_PREFIX = 'sprites/battle/battle_unit_type_glyph_';
 const TALLY_CARD_ART_FALLBACK_PATH = 'sprites/battle/tally_card_art_placeholder/spriteFrame';
 const WHITE = new Color(255, 255, 255, 255);
@@ -268,8 +268,8 @@ export class TigerTallyDetailComposite extends CompositePanel {
         const normalizedType = this._normalizeKey(data.unitType);
         return this._uniquePaths([
             data.typeIconResource,
+            normalizedType ? `sprites/battle/battle_unit_type_icon_${normalizedType}` : null,
             normalizedType ? `${TROOP_TYPE_SUITE_GLYPH_PREFIX}${normalizedType}` : null,
-            normalizedType ? `sprites/battle/unitinfo_type_icon_${normalizedType}` : null,
         ]);
     }
 

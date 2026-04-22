@@ -119,13 +119,21 @@ function createChainableTween() {
   };
 }
 
-function createDecoratorPassthrough() {
+function createClassDecoratorPassthrough() {
   return (...args) => {
-    if (args.length === 1 && typeof args[0] === 'function') {
+    if (args.length === 1 && typeof args[0] === 'function' && args[0].prototype instanceof DummyComponent) {
       return args[0];
     }
     return (target) => target;
   };
+}
+
+function createPropertyDecoratorPassthrough() {
+  return () => (target) => target;
+}
+
+function createFactoryDecoratorPassthrough() {
+  return () => (target) => target;
 }
 
 function createDummyClass(name) {
@@ -140,13 +148,13 @@ function createDummyClass(name) {
 
 const baseCcStub = {
   _decorator: {
-    ccclass: createDecoratorPassthrough(),
-    property: createDecoratorPassthrough(),
-    executeInEditMode: createDecoratorPassthrough(),
-    requireComponent: createDecoratorPassthrough(),
-    menu: createDecoratorPassthrough(),
-    help: createDecoratorPassthrough(),
-    disallowMultiple: createDecoratorPassthrough(),
+    ccclass: createClassDecoratorPassthrough(),
+    property: createPropertyDecoratorPassthrough(),
+    executeInEditMode: createClassDecoratorPassthrough(),
+    requireComponent: createFactoryDecoratorPassthrough(),
+    menu: createFactoryDecoratorPassthrough(),
+    help: createFactoryDecoratorPassthrough(),
+    disallowMultiple: createFactoryDecoratorPassthrough(),
   },
   Node: DummyNode,
   Component: DummyComponent,

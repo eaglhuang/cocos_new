@@ -20,8 +20,11 @@ import { geometry, Vec3 } from 'cc';
 import { BattleSceneContext } from './BattleUIBridge';
 import { BattleUIBridge } from './BattleUIBridge';
 import { buildTacticSummary } from './BattleSceneLoader';
+import { BATTLE_TURN_FLOW_TIMING } from './BattlePresentationTiming';
 
 export class TurnFlowManager {
+  private _advanceTurnGeneration = 0;
+
   constructor(
     private readonly ctx: BattleSceneContext,
     /** BattleScene Component 本身，用於 scheduleOnce */
@@ -34,65 +37,83 @@ export class TurnFlowManager {
   public onEndTurn(): void {
     const c = this.ctx;
     if (!c.ctrl || c.isAdvancingTurn) return;
+    c.skillTargetingFlow?.cancelPendingSkillTargeting(false);
+    if (c.ctrl.isWaitingDuelPlacement) {
+      c.deployRuntime?.showToast('請先完成武將出陣', BATTLE_TURN_FLOW_TIMING.shortToastSec);
+      return;
+    }
+    if (!c.ctrl.canAdvanceBattleTurn()) return;
 
     c.battleLogPanel?.append('執行回合推進');
     c.isAdvancingTurn = true;
-    c.boardRenderer?.setDeployHintFaction(Faction.Enemy);
+    c.boardRenderer?.setDeployHintFaction(Faction.Player);
     this.bridge.refreshBattleViews();
-
-    this.bridge.showEnemyThinkingPanel();
+    const gen = ++this._advanceTurnGeneration;
     this.scene.scheduleOnce(() => {
-      this.bridge.hideEnemyThinkingPanel();
-      try {
-        const result = c.ctrl?.advanceTurn();
-        if (result === 'ongoing') {
-          this.checkDuelChallenge();
-        }
-      } finally {
-        const finalizeAdvance = () => {
-          if (c.isDuelPanelActive) return;
-
-          let attempts = 0;
-          const maxAttempts = 12; // 每次 0.5s，最多 6s
-          const poll = () => {
-            if (!c.isDrainingCombatVisual) {
-              c.isAdvancingTurn = false;
-              this.bridge.playTurnBanner(Faction.Player);
-              c.boardRenderer?.setDeployHintFaction(Faction.Player);
-              return;
-            }
-            attempts += 1;
-            if (attempts >= maxAttempts) {
-              c.isAdvancingTurn = false;
-              this.bridge.playTurnBanner(Faction.Player);
-              c.boardRenderer?.setDeployHintFaction(Faction.Player);
-              return;
-            }
-            this.scene.scheduleOnce(poll, 0.5);
-          };
-
-          // 保留原先的 2.3s 最小等待，然後開始輪詢
-          this.scene.scheduleOnce(poll, 2.3);
-        };
-        this.scene.scheduleOnce(finalizeAdvance, 0); // trigger the finalize logic (schedules internal poll after 2.3s)
+      if (c.isAdvancingTurn && this._advanceTurnGeneration === gen) {
+        console.warn('[TurnFlowManager] isAdvancingTurn safety-reset（超時 20s），強制解鎖');
+        this.finalizeAdvance();
       }
-    }, 2.0);
+    }, BATTLE_TURN_FLOW_TIMING.advanceSafetyUnlockSec);
+
+    let playerResult = c.ctrl.resolvePlayerTurn();
+    this.scene.scheduleOnce(() => this.pollCombatDrain(0, () => {
+      if (playerResult !== 'ongoing') {
+        this.finalizeAdvance();
+        return;
+      }
+
+      c.boardRenderer?.setDeployHintFaction(Faction.Enemy);
+      this.bridge.showEnemyThinkingPanel();
+      this.scene.scheduleOnce(() => {
+        this.bridge.hideEnemyThinkingPanel();
+        c.ctrl?.resolveEnemyTurn();
+          this.scene.scheduleOnce(() => this.pollCombatDrain(0, () => {
+            c.ctrl?.finalizeEnemyTurn();
+            this.finalizeAdvance();
+          }), BATTLE_TURN_FLOW_TIMING.postSubturnVisualBufferSec);
+      }, BATTLE_TURN_FLOW_TIMING.enemyThinkingLeadInSec);
+    }), BATTLE_TURN_FLOW_TIMING.postSubturnVisualBufferSec);
+  }
+
+  public finalizeAdvance(): void {
+    const c = this.ctx;
+    if (!c.isAdvancingTurn) return;
+    c.isAdvancingTurn = false;
+    this.bridge.playTurnBanner(Faction.Player);
+    c.boardRenderer?.setDeployHintFaction(Faction.Player);
+  }
+
+  private pollCombatDrain(attempts: number, onDone: () => void): void {
+    const c = this.ctx;
+    if (c.isDuelPanelActive) {
+      this.scene.scheduleOnce(() => this.pollCombatDrain(attempts, onDone), BATTLE_TURN_FLOW_TIMING.combatDrainPollIntervalSec);
+      return;
+    }
+
+    const maxAttempts = BATTLE_TURN_FLOW_TIMING.combatDrainMaxPollAttempts;
+    if (!c.isDrainingCombatVisual || attempts >= maxAttempts) {
+      onDone();
+      return;
+    }
+
+    this.scene.scheduleOnce(() => this.pollCombatDrain(attempts + 1, onDone), BATTLE_TURN_FLOW_TIMING.combatDrainPollIntervalSec);
   }
 
   public onPlayerDeployed(): void {
-    this.ctx.deployRuntime?.showToast('部署完成，等待敵軍行動...', 1.8);
-    this.scene.scheduleOnce(() => this.onEndTurn(), 2.0);
+    this.ctx.deployRuntime?.showToast('部署完成，等待敵軍行動...', BATTLE_TURN_FLOW_TIMING.deployCompletedToastSec);
+    this.scene.scheduleOnce(() => this.onEndTurn(), BATTLE_TURN_FLOW_TIMING.autoAdvanceAfterDeploySec);
   }
 
   public onTactics(): void {
     const general = this.ctx.pg;
     if (!general) {
-      this.ctx.deployRuntime?.showToast('尚未載入我方主將戰法', 1.5);
+      this.ctx.deployRuntime?.showToast('尚未載入我方主將戰法', BATTLE_TURN_FLOW_TIMING.shortToastSec);
       return;
     }
 
     const summary = buildTacticSummary(general);
-    this.ctx.deployRuntime?.showToast(summary.message, summary.count > 0 ? 2.0 : 1.5);
+    this.ctx.deployRuntime?.showToast(summary.message, summary.count > 0 ? BATTLE_TURN_FLOW_TIMING.summaryToastSec : BATTLE_TURN_FLOW_TIMING.shortToastSec);
     if (summary.count > 0) {
       this.ctx.battleLogPanel?.append(`戰法槽位：${summary.names.join('｜')}`);
     }
@@ -118,6 +139,12 @@ export class TurnFlowManager {
       case 'general-dead':
         c.deployRuntime?.showToast('武將已陣亡，無法出陣！');
         break;
+      case 'battle-locked':
+        c.deployRuntime?.showToast('目前流程尚未允許出陣', BATTLE_TURN_FLOW_TIMING.shortToastSec);
+        break;
+      case 'battle-ended':
+        c.deployRuntime?.showToast('戰鬥已結束，無法出陣！', BATTLE_TURN_FLOW_TIMING.shortToastSec);
+        break;
     }
   }
 
@@ -136,34 +163,16 @@ export class TurnFlowManager {
       return;
     }
 
-    // [Fix-Bug1] 使用 ctx.boardCamera 取代 (this.scene as any).getMainCamera?.()
-    // 避免 Cocos minifier 混淆 private 方法名稱導致靜默失敗
-    const cam = c.boardCamera;
-    if (!cam) {
-      console.warn('[TurnFlowManager] doDeployRaycast: boardCamera 為 null，無法射線偵測。請確認 setupCameraForBoard() 已執行');
+    if (c.skillTargetingFlow?.isPending) {
+      c.skillTargetingFlow.handleSkillTargetClick(screenX, screenY);
       return;
     }
 
-    const ray = new geometry.Ray();
-    cam.screenPointToRay(screenX, screenY, ray);
-    console.log(`[TurnFlowManager] ray.d=(${ray.d.x.toFixed(3)},${ray.d.y.toFixed(3)},${ray.d.z.toFixed(3)})`);
-
-    if (Math.abs(ray.d.y) < 0.0001) {
-      console.warn('[TurnFlowManager] doDeployRaycast: 射線平行地面，無法偵測');
-      return;
-    }
-    const t = -ray.o.y / ray.d.y;
-    if (t < 0) {
-      console.warn(`[TurnFlowManager] doDeployRaycast: t=${t.toFixed(3)} < 0，射線打到背面`);
-      return;
-    }
-    const hitPoint = new Vec3();
-    Vec3.scaleAndAdd(hitPoint, ray.o, ray.d, t);
-    console.log(`[TurnFlowManager] hitPoint=(${hitPoint.x.toFixed(2)},${hitPoint.y.toFixed(2)},${hitPoint.z.toFixed(2)})`);
-
-    const cell = c.boardRenderer?.getCellFromWorldPos(hitPoint);
+    const cell = c.raycastBoardCell
+      ? c.raycastBoardCell(screenX, screenY)
+      : this._legacyRaycastBoardCell(screenX, screenY);
     if (!cell) {
-      console.log('[TurnFlowManager] doDeployRaycast: 未命中任何格子（hitPoint 不在棋盤範圍內）');
+      console.log('[TurnFlowManager] doDeployRaycast: 未命中任何格子');
       return;
     }
     console.log(`[TurnFlowManager] 命中格子 lane=${cell.lane} depth=${cell.depth}`);
@@ -188,6 +197,40 @@ export class TurnFlowManager {
     } else {
       console.log(`[TurnFlowManager] depth=${cell.depth} 非部署列（需 depth=0），忽略`);
     }
+  }
+
+  private _legacyRaycastBoardCell(screenX: number, screenY: number): { lane: number; depth: number } | null {
+    // [Fix-Bug1] 使用 ctx.boardCamera 取代 (this.scene as any).getMainCamera?.()
+    // 避免 Cocos minifier 混淆 private 方法名稱導致靜默失敗
+    const cam = this.ctx.boardCamera;
+    if (!cam) {
+      console.warn('[TurnFlowManager] doDeployRaycast: boardCamera 為 null，無法射線偵測。請確認 setupCameraForBoard() 已執行');
+      return null;
+    }
+
+    const ray = new geometry.Ray();
+    cam.screenPointToRay(screenX, screenY, ray);
+    console.log(`[TurnFlowManager] ray.d=(${ray.d.x.toFixed(3)},${ray.d.y.toFixed(3)},${ray.d.z.toFixed(3)})`);
+
+    if (Math.abs(ray.d.y) < 0.0001) {
+      console.warn('[TurnFlowManager] doDeployRaycast: 射線平行地面，無法偵測');
+      return null;
+    }
+    const t = -ray.o.y / ray.d.y;
+    if (t < 0) {
+      console.warn(`[TurnFlowManager] doDeployRaycast: t=${t.toFixed(3)} < 0，射線打到背面`);
+      return null;
+    }
+    const hitPoint = new Vec3();
+    Vec3.scaleAndAdd(hitPoint, ray.o, ray.d, t);
+    console.log(`[TurnFlowManager] hitPoint=(${hitPoint.x.toFixed(2)},${hitPoint.y.toFixed(2)},${hitPoint.z.toFixed(2)})`);
+
+    const cell = this.ctx.boardRenderer?.getCellFromWorldPos(hitPoint);
+    if (!cell) {
+      console.log('[TurnFlowManager] doDeployRaycast: 未命中任何格子（hitPoint 不在棋盤範圍內）');
+      return null;
+    }
+    return cell;
   }
 
 

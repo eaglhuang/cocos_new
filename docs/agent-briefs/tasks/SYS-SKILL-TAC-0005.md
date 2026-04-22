@@ -27,7 +27,7 @@ verification_commands:
 docs_backwritten:
   - docs/遊戲規格文件/系統規格書/戰法系統.md (doc_spec_0038)
   - docs/遊戲規格文件/系統規格書/Data Schema文件（本機端與Server端）.md (doc_tech_0013)
-notes: "供場景戰法與關卡腳本共用，不得讓 stage injection 在 battle runtime 外再長一份平行棋盤邏輯。"
+notes: "供場景戰法與關卡腳本共用，不得讓 stage injection 在 battle runtime 外再長一份平行棋盤邏輯。2026-04-16 已完成：SceneGambitAdapter/BattleHUD badge/pulse VFX/BattleEntryParams 橋接全部到位；Editor 視覺 QA、VFX 資源補全（assets/fx/tactics/）與 AI 場景響應驗收為剩餘主要工作。"
 ---
 
 # [SYS-SKILL-TAC-0005] 戰法場景注入與障礙模組包
@@ -38,9 +38,29 @@ notes: "供場景戰法與關卡腳本共用，不得讓 stage injection 在 bat
 
 ## 覆蓋戰法
 
-- `水淹七軍`
-- `森林埋伏`
-- `落石封路`
+> 狀態標記：[x] 已落地骨架 / [-] 視覺/資源待補 / [ ] 未開始
+
+- [-] `水淹七軍` (TTILE+TPUSH+TDEBUFF, 場景 G-4) — 骨架已接，Editor 視覺 QA 待驗
+- [-] `森林埋伏` (TSTEALTH+TBUFF+TCOND, 場景 G-4) — 骨架已接，視覺 QA 待驗
+- [-] `落石封路` (TSUMMON+TTILE, 場景 G-4) — 骨架已接，視覺 QA 待驗
+- [-] `火計佈陣` (TTILE+TDIR+TCOND, 初始庫 G-5) — 場景注入路徑共用，VFX 資源補全
+
+## 2026-04-16 已完成骨架
+
+- [x] `SceneGambitAdapter` 將關卡資料轉成 `BattleSkillRequest`
+- [x] battle log / toast / `BattleHUD.StatusLabel` 持續狀態層已接通
+- [x] preview-only battleTactic 注入打通
+- [x] `BattleScene → BoardRenderer` 全場 pulse VFX
+- [x] `BattleHUD` 場景戰法 badge 顯示
+- [x] `LobbyScene` 已透過 `BattleEntryParams` 把場景戰法送進 `BattleScene`
+- [x] `capture-ui-screens --target BattleScene` 已成功輸出 BattleScene.png (capture diagnostics: 0 failures)
+
+## 剩餘工作（視覺 QA + 資源）
+
+- [ ] `水淹七軍 / 森林埋伏 / 落石封路` 的 Editor 實戰畫面視覺驗收
+- [ ] 三個場景戰法的 VFX 特效資源補全（`assets/fx/tactics/` 目錄）
+- [ ] 場景 HUD 摘要與 `BattleHUD.StatusLabel` 的文案最終對齊
+- [ ] AI 在場景狀態下的 choke point / 危險格判斷驗收
 
 ## 實作清單
 

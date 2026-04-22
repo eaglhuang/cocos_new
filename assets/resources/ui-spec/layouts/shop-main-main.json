@@ -93,7 +93,7 @@
             "type": "button",
             "name": "TabGem",
             "id": "tabGem",
-            "width": "25%",
+            "width": "24.9%",
             "height": 52,
             "skinSlot": "shop.tab.btn",
             "children": [
@@ -109,7 +109,7 @@
             "type": "button",
             "name": "TabGold",
             "id": "tabGold",
-            "width": "25%",
+            "width": "24.9%",
             "height": 52,
             "skinSlot": "shop.tab.btn",
             "children": [
@@ -125,7 +125,7 @@
             "type": "button",
             "name": "TabStamp",
             "id": "tabStamp",
-            "width": "25%",
+            "width": "24.9%",
             "height": 52,
             "skinSlot": "shop.tab.btn",
             "children": [
@@ -141,7 +141,7 @@
             "type": "button",
             "name": "TabScore",
             "id": "tabScore",
-            "width": "25%",
+            "width": "24.9%",
             "height": 52,
             "skinSlot": "shop.tab.btn",
             "children": [

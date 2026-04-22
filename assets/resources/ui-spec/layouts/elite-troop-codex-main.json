@@ -1,6 +1,6 @@
 {
   "id": "elite-troop-codex-main",
-  "version": 1,
+  "version": 2,
   "canvas": {
     "fitWidth": true,
     "fitHeight": true,
@@ -13,35 +13,736 @@
     "name": "EliteTroopCodexRoot",
     "widget": { "top": 0, "bottom": 0, "left": 0, "right": 0 },
     "children": [
-      { "type": "image", "name": "BackgroundFull", "widget": { "top": 0, "bottom": 0, "left": 0, "right": 0 }, "skinSlot": "etc.bg.full" },
-      { "type": "panel", "name": "LeftFilterRail", "widget": { "top": 64, "bottom": 64, "left": 40 }, "width": 260, "skinSlot": "etc.panel.side" },
-      { "type": "panel", "name": "CenterGridPanel", "widget": { "top": 64, "bottom": 64, "left": 324, "right": 524 }, "skinSlot": "etc.panel.main" },
-      { "type": "panel", "name": "RightDetailPanel", "widget": { "top": 64, "bottom": 64, "right": 40 }, "width": 460, "skinSlot": "etc.panel.detail" },
       {
-        "type": "container",
-        "name": "TroopGrid",
-        "widget": { "top": 92, "bottom": 92, "left": 352, "right": 552 },
-        "layout": { "type": "grid", "columns": 3, "spacingX": 14, "spacingY": 14 },
+        "type": "image",
+        "name": "BackgroundFull",
+        "widget": { "top": 0, "bottom": 0, "left": 0, "right": 0 },
+        "skinSlot": "etc.bg.full"
+      },
+      {
+        "type": "panel",
+        "name": "LeftFilterRail",
+        "widget": { "top": 64, "bottom": 64, "left": 40 },
+        "width": 260,
+        "skinSlot": "etc.panel.side",
         "children": [
-          { "type": "panel", "name": "TroopCard01", "width": 250, "height": 250, "skinSlot": "etc.card.troop" },
-          { "type": "panel", "name": "TroopCard02", "width": 250, "height": 250, "skinSlot": "etc.card.troop" },
-          { "type": "panel", "name": "TroopCard03", "width": 250, "height": 250, "skinSlot": "etc.card.troop" },
-          { "type": "panel", "name": "TroopCard04", "width": 250, "height": 250, "skinSlot": "etc.card.troop" },
-          { "type": "panel", "name": "TroopCard05", "width": 250, "height": 250, "skinSlot": "etc.card.troop" },
-          { "type": "panel", "name": "TroopCard06", "width": 250, "height": 250, "skinSlot": "etc.card.troop" }
+          {
+            "type": "container",
+            "name": "RailContent",
+            "widget": {
+              "top": 18,
+              "bottom": 18,
+              "left": 18,
+              "right": 18
+            },
+            "layout": {
+              "type": "vertical",
+              "spacing": 10,
+              "paddingLeft": 0,
+              "paddingRight": 0,
+              "paddingTop": 0,
+              "paddingBottom": 0
+            },
+            "children": [
+              {
+                "type": "label",
+                "name": "RailTitle",
+                "width": "100%",
+                "height": 34,
+                "text": "虎符圖鑑",
+                "styleSlot": "etc.label.rail.title"
+              },
+              {
+                "type": "label",
+                "name": "RailSubtitle",
+                "width": "100%",
+                "height": 48,
+                "text": "34 枚正式虎符，點選卡片可看詳情與專屬戰法。",
+                "styleSlot": "etc.label.rail.body"
+              },
+              {
+                "type": "panel",
+                "name": "RailSummaryPanel",
+                "width": "100%",
+                "height": 112,
+                "skinSlot": "etc.panel.module",
+                "layout": {
+                  "type": "vertical",
+                  "spacing": 6,
+                  "paddingLeft": 14,
+                  "paddingRight": 14,
+                  "paddingTop": 12,
+                  "paddingBottom": 12
+                },
+                "children": [
+                  {
+                    "type": "label",
+                    "name": "RailTotalLabel",
+                    "width": "100%",
+                    "height": 22,
+                    "text": "總數：34",
+                    "styleSlot": "etc.label.meta"
+                  },
+                  {
+                    "type": "label",
+                    "name": "RailFormalLabel",
+                    "width": "100%",
+                    "height": 22,
+                    "text": "正式圖：27",
+                    "styleSlot": "etc.label.meta"
+                  },
+                  {
+                    "type": "label",
+                    "name": "RailMissingLabel",
+                    "width": "100%",
+                    "height": 22,
+                    "text": "暫用圖：7",
+                    "styleSlot": "etc.label.meta"
+                  }
+                ]
+              },
+              {
+                "type": "label",
+                "name": "RailQualityTitle",
+                "width": "100%",
+                "height": 24,
+                "text": "品質分布",
+                "styleSlot": "etc.label.rail.title"
+              },
+              {
+                "type": "label",
+                "name": "RailQualityR",
+                "width": "100%",
+                "height": 20,
+                "text": "R",
+                "styleSlot": "etc.label.rail.body"
+              },
+              {
+                "type": "label",
+                "name": "RailQualitySR",
+                "width": "100%",
+                "height": 20,
+                "text": "SR",
+                "styleSlot": "etc.label.rail.body"
+              },
+              {
+                "type": "label",
+                "name": "RailQualitySSR",
+                "width": "100%",
+                "height": 20,
+                "text": "SSR",
+                "styleSlot": "etc.label.rail.body"
+              },
+              {
+                "type": "label",
+                "name": "RailQualityUR",
+                "width": "100%",
+                "height": 20,
+                "text": "UR",
+                "styleSlot": "etc.label.rail.body"
+              },
+              {
+                "type": "label",
+                "name": "RailQualityLR",
+                "width": "100%",
+                "height": 20,
+                "text": "LR",
+                "styleSlot": "etc.label.rail.body"
+              },
+              {
+                "type": "label",
+                "name": "RailTypeTitle",
+                "width": "100%",
+                "height": 24,
+                "text": "基礎兵種",
+                "styleSlot": "etc.label.rail.title"
+              },
+              {
+                "type": "label",
+                "name": "RailTypeSummary",
+                "width": "100%",
+                "height": 132,
+                "text": "騎兵 8\n步兵 8\n弓兵 9\n盾兵 1\n水軍 1\n長槍兵 1\n機械 1",
+                "styleSlot": "etc.label.rail.body"
+              },
+              {
+                "type": "label",
+                "name": "RailNote",
+                "width": "100%",
+                "height": 40,
+                "text": "圖像可後續逐張替換，不影響頁面結構。",
+                "styleSlot": "etc.label.meta"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "panel",
+        "name": "CenterGridPanel",
+        "widget": { "top": 64, "bottom": 64, "left": 324, "right": 524 },
+        "skinSlot": "etc.panel.main",
+        "children": [
+          {
+            "type": "scroll-list",
+            "name": "TroopList",
+            "widget": {
+              "top": 24,
+              "bottom": 24,
+              "left": 24,
+              "right": 24
+            },
+            "skinSlot": "etc.panel.module",
+            "layout": {
+              "type": "vertical",
+              "spacing": 12,
+              "paddingLeft": 14,
+              "paddingRight": 14,
+              "paddingTop": 14,
+              "paddingBottom": 14
+            },
+            "itemTemplate": {
+              "type": "panel",
+              "name": "TroopCardRow",
+              "height": 172,
+              "skinSlot": "etc.card.troop",
+              "layout": {
+                "type": "horizontal",
+                "spacing": 16,
+                "paddingLeft": 16,
+                "paddingRight": 16,
+                "paddingTop": 14,
+                "paddingBottom": 14
+              },
+              "children": [
+                {
+                  "type": "panel",
+                  "name": "SelectionGlow",
+                  "widget": { "top": 0, "bottom": 0, "left": 0, "right": 0 },
+                  "skinSlot": "etc.card.troop.selected",
+                  "active": false
+                },
+                {
+                  "type": "panel",
+                  "name": "CardArtShell",
+                  "width": 308,
+                  "height": 144,
+                  "skinSlot": "etc.art.banner",
+                  "children": [
+                    {
+                      "type": "image",
+                      "name": "CardArt",
+                      "widget": {
+                        "top": 10,
+                        "bottom": 10,
+                        "left": 10,
+                        "right": 10
+                      }
+                    },
+                    {
+                      "type": "label",
+                      "name": "CardArtBadge",
+                      "widget": {
+                        "left": 10,
+                        "bottom": 10
+                      },
+                      "width": 118,
+                      "height": 22,
+                      "text": "正式圖",
+                      "styleSlot": "etc.label.badge"
+                    },
+                    {
+                      "type": "image",
+                      "name": "CardTypeIcon",
+                      "widget": {
+                        "top": 8,
+                        "right": 8
+                      },
+                      "width": 32,
+                      "height": 32
+                    }
+                  ]
+                },
+                {
+                  "type": "container",
+                  "name": "CardInfo",
+                  "widget": {
+                    "top": 0,
+                    "bottom": 0,
+                    "right": 16,
+                    "left": 336
+                  },
+                  "layout": {
+                    "type": "vertical",
+                    "spacing": 6,
+                    "paddingLeft": 0,
+                    "paddingRight": 0,
+                    "paddingTop": 0,
+                    "paddingBottom": 0
+                  },
+                  "children": [
+                    {
+                      "type": "container",
+                      "name": "CardHeaderRow",
+                      "width": "100%",
+                      "height": 28,
+                      "layout": {
+                        "type": "horizontal",
+                        "spacing": 8,
+                        "paddingLeft": 0,
+                        "paddingRight": 0,
+                        "paddingTop": 0,
+                        "paddingBottom": 0
+                      },
+                      "children": [
+                        {
+                          "type": "label",
+                          "name": "CardQuality",
+                          "width": 92,
+                          "height": 28,
+                          "text": "SSR",
+                          "styleSlot": "etc.label.quality"
+                        },
+                        {
+                          "type": "label",
+                          "name": "CardIndex",
+                          "width": 92,
+                          "height": 28,
+                          "text": "#01",
+                          "styleSlot": "etc.label.badge"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "label",
+                      "name": "CardTallyName",
+                      "width": "100%",
+                      "height": 28,
+                      "text": "虎符：白馬",
+                      "styleSlot": "etc.label.card.title"
+                    },
+                    {
+                      "type": "label",
+                      "name": "CardTroopName",
+                      "width": "100%",
+                      "height": 24,
+                      "text": "白馬義從",
+                      "styleSlot": "etc.label.card.subtitle"
+                    },
+                    {
+                      "type": "label",
+                      "name": "CardMeta",
+                      "width": "100%",
+                      "height": 22,
+                      "text": "騎兵 / 公孫瓚死亡結算",
+                      "styleSlot": "etc.label.card.meta"
+                    },
+                    {
+                      "type": "label",
+                      "name": "CardSpecial",
+                      "width": "100%",
+                      "height": 58,
+                      "text": "騎射合一：騎兵移動 + 弓兵射程",
+                      "styleSlot": "etc.label.card.body"
+                    },
+                    {
+                      "type": "label",
+                      "name": "CardStateHint",
+                      "width": "100%",
+                      "height": 22,
+                      "text": "正式圖",
+                      "styleSlot": "etc.label.meta"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "type": "panel",
+        "name": "RightDetailPanel",
+        "widget": { "top": 64, "bottom": 64, "right": 40 },
+        "width": 460,
+        "skinSlot": "etc.panel.detail",
+        "children": [
+          {
+            "type": "container",
+            "name": "DetailContent",
+            "widget": {
+              "top": 18,
+              "bottom": 18,
+              "left": 18,
+              "right": 18
+            },
+            "children": [
+              {
+                "type": "panel",
+                "name": "SelectedTroopBannerShell",
+                "widget": { "top": 0, "left": 0, "right": 0 },
+                "height": 148,
+                "skinSlot": "etc.art.banner",
+                "children": [
+                  {
+                    "type": "image",
+                    "name": "SelectedTroopBannerArt",
+                    "widget": {
+                      "top": 8,
+                      "bottom": 8,
+                      "left": 8,
+                      "right": 8
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "panel",
+                "name": "SelectedTroopCrestShell",
+                "widget": {
+                  "top": 160,
+                  "hCenter": 0
+                },
+                "width": 132,
+                "height": 132,
+                "skinSlot": "etc.art.crest",
+                "children": [
+                  {
+                    "type": "image",
+                    "name": "SelectedTroopCrestArt",
+                    "widget": {
+                      "top": 10,
+                      "bottom": 10,
+                      "left": 10,
+                      "right": 10
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "panel",
+                "name": "SelectedTroopStats",
+                "widget": { "top": 310, "left": 0, "right": 0 },
+                "height": 190,
+                "skinSlot": "etc.panel.module",
+                "children": [
+                  {
+                    "type": "container",
+                    "name": "StatsContent",
+                    "widget": {
+                      "top": 12,
+                      "bottom": 12,
+                      "left": 14,
+                      "right": 14
+                    },
+                    "layout": {
+                      "type": "vertical",
+                      "spacing": 6,
+                      "paddingLeft": 0,
+                      "paddingRight": 0,
+                      "paddingTop": 0,
+                      "paddingBottom": 0
+                    },
+                    "children": [
+                      {
+                        "type": "label",
+                        "name": "SelectedTroopTitle",
+                        "width": "100%",
+                        "height": 28,
+                        "text": "虎符：白馬",
+                        "styleSlot": "etc.label.detail.title"
+                      },
+                      {
+                        "type": "label",
+                        "name": "SelectedTroopSubtitle",
+                        "width": "100%",
+                        "height": 22,
+                        "text": "白馬義從",
+                        "styleSlot": "etc.label.detail.subtitle"
+                      },
+                      {
+                        "type": "label",
+                        "name": "SelectedTroopMeta",
+                        "width": "100%",
+                        "height": 22,
+                        "text": "騎兵 / SSR / 死亡傳承虎符",
+                        "styleSlot": "etc.label.detail.meta"
+                      },
+                      {
+                        "type": "label",
+                        "name": "SelectedTroopIndex",
+                        "width": "100%",
+                        "height": 20,
+                        "text": "#01 / 公孫瓚死亡結算",
+                        "styleSlot": "etc.label.detail.meta"
+                      },
+                      {
+                        "type": "label",
+                        "name": "SelectedTroopQuality",
+                        "width": "100%",
+                        "height": 20,
+                        "text": "品質：SSR",
+                        "styleSlot": "etc.label.detail.meta"
+                      },
+                      {
+                        "type": "label",
+                        "name": "SelectedTroopOrigin",
+                        "width": "100%",
+                        "height": 20,
+                        "text": "來源：公孫瓚",
+                        "styleSlot": "etc.label.detail.meta"
+                      },
+                      {
+                        "type": "label",
+                        "name": "SelectedTroopSource",
+                        "width": "100%",
+                        "height": 20,
+                        "text": "結算：公孫瓚死亡結算",
+                        "styleSlot": "etc.label.detail.meta"
+                      },
+                      {
+                        "type": "label",
+                        "name": "SelectedTroopArtState",
+                        "width": "100%",
+                        "height": 20,
+                        "text": "圖像狀態：正式圖",
+                        "styleSlot": "etc.label.detail.meta"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "panel",
+                "name": "SelectedTroopLore",
+                "widget": { "top": 518, "left": 0, "right": 0 },
+                "height": 178,
+                "skinSlot": "etc.panel.module",
+                "children": [
+                  {
+                    "type": "container",
+                    "name": "LoreContent",
+                    "widget": {
+                      "top": 12,
+                      "bottom": 12,
+                      "left": 14,
+                      "right": 14
+                    },
+                    "layout": {
+                      "type": "vertical",
+                      "spacing": 6,
+                      "paddingLeft": 0,
+                      "paddingRight": 0,
+                      "paddingTop": 0,
+                      "paddingBottom": 0
+                    },
+                    "children": [
+                      {
+                        "type": "label",
+                        "name": "SelectedTroopSpecialTitle",
+                        "width": "100%",
+                        "height": 24,
+                        "text": "兵種專屬戰法",
+                        "styleSlot": "etc.label.detail.title"
+                      },
+                      {
+                        "type": "label",
+                        "name": "SelectedTroopSpecialBody",
+                        "width": "100%",
+                        "height": 98,
+                        "text": "騎射合一：騎兵移動 + 弓兵射程",
+                        "styleSlot": "etc.label.detail.body"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "panel",
+                "name": "LinkedHeroPanel",
+                "widget": { "bottom": 0, "left": 0, "right": 0 },
+                "height": 170,
+                "skinSlot": "etc.panel.module",
+                "children": [
+                  {
+                    "type": "container",
+                    "name": "LinkedHeroContent",
+                    "widget": {
+                      "top": 12,
+                      "bottom": 12,
+                      "left": 14,
+                      "right": 14
+                    },
+                    "layout": {
+                      "type": "vertical",
+                      "spacing": 6,
+                      "paddingLeft": 0,
+                      "paddingRight": 0,
+                      "paddingTop": 0,
+                      "paddingBottom": 0
+                    },
+                    "children": [
+                      {
+                        "type": "label",
+                        "name": "SelectedTroopNoteTitle",
+                        "width": "100%",
+                        "height": 24,
+                        "text": "圖像備註",
+                        "styleSlot": "etc.label.detail.title"
+                      },
+                      {
+                        "type": "label",
+                        "name": "SelectedTroopNoteBody",
+                        "width": "100%",
+                        "height": 100,
+                        "text": "正式圖可直接接入；若標記為暫用圖，之後只要換掉同名資產即可。",
+                        "styleSlot": "etc.label.detail.body"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
         ]
       },
       {
         "type": "container",
-        "name": "DetailContent",
-        "widget": { "top": 92, "bottom": 92, "right": 64 },
-        "width": 412,
+        "name": "HeaderRow",
+        "widget": { "top": 76, "left": 82, "right": 82 },
+        "height": 92,
         "children": [
-          { "type": "image", "name": "SelectedTroopBanner", "widget": { "top": 0, "left": 0, "right": 0 }, "height": 138, "skinSlot": "etc.art.banner" },
-          { "type": "image", "name": "SelectedTroopCrest", "widget": { "top": 156, "hCenter": 0 }, "width": 148, "height": 148, "skinSlot": "etc.art.crest" },
-          { "type": "panel", "name": "SelectedTroopStats", "widget": { "top": 324, "left": 0, "right": 0 }, "height": 180, "skinSlot": "etc.panel.module" },
-          { "type": "panel", "name": "SelectedTroopLore", "widget": { "top": 522, "left": 0, "right": 0 }, "height": 178, "skinSlot": "etc.panel.module" },
-          { "type": "panel", "name": "LinkedHeroPanel", "widget": { "bottom": 0, "left": 0, "right": 0 }, "height": 168, "skinSlot": "etc.panel.module" }
+          {
+            "type": "panel",
+            "name": "HeaderPlaqueBase",
+            "widget": { "top": 2, "bottom": 6, "left": 0, "right": 0 },
+            "skinSlot": "widget.header.plaque.base"
+          },
+          {
+            "type": "image",
+            "name": "HeaderPlaqueFill",
+            "widget": { "top": 6, "bottom": 10, "left": 0, "right": 0 },
+            "skinSlot": "widget.header.plaque.fill"
+          },
+          {
+            "type": "image",
+            "name": "HeaderPlaqueBand",
+            "widget": { "top": 26, "bottom": 30, "left": 24, "right": 24 },
+            "skinSlot": "widget.header.plaque.band"
+          },
+          {
+            "type": "label",
+            "name": "CodexTitle",
+            "widget": { "top": 8, "left": 24 },
+            "width": 320,
+            "height": 30,
+            "text": "虎符圖鑑",
+            "styleSlot": "widget.header.plaque.title"
+          },
+          {
+            "type": "label",
+            "name": "CodexSubtitle",
+            "widget": { "bottom": 10, "left": 24 },
+            "width": 420,
+            "height": 20,
+            "text": "34 枚死亡傳承與名將專屬虎符",
+            "styleSlot": "widget.header.plaque.subtitle"
+          },
+          {
+            "type": "panel",
+            "name": "CodexStateBadge",
+            "widget": { "right": 188, "vCenter": 0 },
+            "width": 170,
+            "height": 44,
+            "skinSlot": "widget.header.plaque.badge.fill",
+            "layout": {
+              "type": "horizontal",
+              "spacing": 0,
+              "paddingLeft": 10,
+              "paddingRight": 10,
+              "paddingTop": 8,
+              "paddingBottom": 8
+            },
+            "children": [
+              {
+                "type": "label",
+                "name": "CodexStateLabel",
+                "width": "100%",
+                "height": 24,
+                "text": "正式區",
+                "styleSlot": "widget.header.plaque.badge.label"
+              }
+            ]
+          },
+          {
+            "type": "panel",
+            "name": "CodexCountDock",
+            "widget": { "right": 0, "vCenter": 0 },
+            "width": 170,
+            "height": 44,
+            "skinSlot": "widget.header.plaque.badge.underlay",
+            "layout": {
+              "type": "horizontal",
+              "spacing": 0,
+              "paddingLeft": 10,
+              "paddingRight": 10,
+              "paddingTop": 8,
+              "paddingBottom": 8
+            },
+            "children": [
+              {
+                "type": "label",
+                "name": "CodexCountLabel",
+                "width": "100%",
+                "height": 24,
+                "text": "34 / 34",
+                "styleSlot": "widget.header.plaque.badge.label"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "container",
+        "name": "ActionRow",
+        "widget": { "left": 82, "right": 82, "bottom": 80 },
+        "height": 70,
+        "layout": {
+          "type": "horizontal",
+          "spacing": 16,
+          "paddingLeft": 0,
+          "paddingRight": 0,
+          "paddingTop": 0,
+          "paddingBottom": 0
+        },
+        "children": [
+          {
+            "type": "button",
+            "name": "BtnRefresh",
+            "width": 220,
+            "height": 64,
+            "skinSlot": "std.button.primary",
+            "styleSlot": "std.label.button",
+            "text": "重新整理"
+          },
+          {
+            "type": "button",
+            "name": "BtnTop",
+            "width": 220,
+            "height": 64,
+            "skinSlot": "std.button.secondary",
+            "styleSlot": "std.label.button",
+            "text": "回到頂端"
+          },
+          {
+            "type": "button",
+            "name": "BtnClose",
+            "width": 220,
+            "height": 64,
+            "skinSlot": "std.button.secondary",
+            "styleSlot": "std.label.button",
+            "text": "關閉"
+          }
         ]
       }
     ]

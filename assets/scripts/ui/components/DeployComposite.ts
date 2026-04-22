@@ -54,6 +54,7 @@ export enum DeployDragState {
 export class DeployComposite extends CompositePanel implements DeployRuntimeApi {
   private ctrl: BattleController | null = null;
   private selectedType: TroopType = TroopType.Infantry;
+  private selectedUnitName = '';
   private selectedLane = 0;
   private currentDp = GAME_CONFIG.INITIAL_FOOD;
 
@@ -175,6 +176,7 @@ export class DeployComposite extends CompositePanel implements DeployRuntimeApi 
           unitType: payload.data.unitType,
         });
         this.selectedType = payload.data.unitType as TroopType;
+        this.selectedUnitName = payload.data.unitName?.trim() || this.toTroopDisplayName(this.selectedType);
         this.updateSelectionLabels();
       },
     );
@@ -189,6 +191,7 @@ export class DeployComposite extends CompositePanel implements DeployRuntimeApi 
           dragState: this._dragState,
         });
         this.selectedType = payload.data.unitType as TroopType;
+        this.selectedUnitName = payload.data.unitName?.trim() || this.toTroopDisplayName(this.selectedType);
         this.updateSelectionLabels();
         this.beginDrag(payload.ev, this.selectedType);
       },
@@ -227,7 +230,7 @@ export class DeployComposite extends CompositePanel implements DeployRuntimeApi 
     const labelTf = labelNode.addComponent(UITransform);
     labelTf.setContentSize(120, 60);
     const label = labelNode.addComponent(Label);
-    label.string = this.toTroopDisplayName(type);
+    label.string = this.selectedUnitName || this.toTroopDisplayName(type);
     label.fontSize = 24;
     label.lineHeight = 28;
     label.color = new Color(20, 20, 20, 255);
@@ -330,7 +333,7 @@ export class DeployComposite extends CompositePanel implements DeployRuntimeApi 
       });
       return;
     }
-    const outcome = this.ctrl.tryDeployTroop(this.selectedType, this.selectedLane);
+    const outcome = this.ctrl.tryDeployTroop(this.selectedType, this.selectedLane, this.selectedUnitName || undefined);
     emitDeployDragDebug('DeployComposite', 'deploy-click-result', {
       ok: outcome.ok,
       reason: outcome.reason,
@@ -357,6 +360,7 @@ export class DeployComposite extends CompositePanel implements DeployRuntimeApi 
   }
 
   private getDeployFailMessage(reason?: DeployFailReason): string {
+    if (reason === 'battle-locked') return '目前流程鎖定，暫時無法部署';
     if (reason === 'limit') return '本回合已部署，請等待下一回合';
     if (reason === 'occupied') return '目標格已有單位，請改放其他格子';
     return '糧草不足，無法部署';

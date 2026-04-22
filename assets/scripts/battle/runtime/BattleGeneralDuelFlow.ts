@@ -116,7 +116,7 @@ export class BattleGeneralDuelFlow {
       attackRange: 1,
     };
     const id = `player-general-${++this.serial}`;
-    const unit = new TroopUnit(id, TroopType.Infantry, Faction.Player, stats);
+    const unit = new TroopUnit(id, TroopType.Infantry, Faction.Player, stats, pg.name);
     unit.currentHp = pg.currentHp;
     unit.moveTo(lane, depth);
     this.context.state.addUnit(unit);
@@ -141,6 +141,7 @@ export class BattleGeneralDuelFlow {
       type: TroopType.Infantry,
       lane,
       depth,
+      unitName: unit.name,
     });
 
     return unit;

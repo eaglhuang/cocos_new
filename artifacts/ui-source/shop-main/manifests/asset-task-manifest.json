@@ -1,9 +1,0 @@
-{
-  "$schema": "../../schemas/asset-task-manifest.schema.json",
-  "screenId": "ShopMain",
-  "sourceFamilyMap": "ShopMain",
-  "generatedAt": "2026-04-08T03:33:08.817Z",
-  "taskCount": 0,
-  "tasks": [],
-  "warnings": []
-}

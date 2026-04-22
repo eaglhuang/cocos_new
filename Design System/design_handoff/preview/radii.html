@@ -1,0 +1,18 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../colors_and_type.css"><style>
+*{box-sizing:border-box;margin:0}html,body{width:700px;background:var(--parchment-base);color:var(--text-ink);font-family:var(--font-body);padding:22px 26px;overflow:hidden}
+.lbl{font-family:var(--font-label);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-on-parchment-muted);margin-bottom:12px}
+.row{display:flex;gap:16px;align-items:center}
+.r{width:68px;height:68px;background:#3F6A62;display:flex;align-items:center;justify-content:center;font-family:var(--font-label);color:#F5F1E8;font-size:11px;font-weight:700}
+.cap{font-family:var(--font-label);font-size:10px;color:var(--text-on-parchment-muted);margin-top:6px;text-align:center}
+.col{display:flex;flex-direction:column;align-items:center}
+</style></head><body>
+<div class="lbl">Corner Radii · 0 · 4 · 8 · 16 · 24 · full</div>
+<div class="row">
+  <div class="col"><div class="r" style="border-radius:0">0</div><div class="cap">none</div></div>
+  <div class="col"><div class="r" style="border-radius:4px">4</div><div class="cap">sm</div></div>
+  <div class="col"><div class="r" style="border-radius:8px">8</div><div class="cap">md (pref)</div></div>
+  <div class="col"><div class="r" style="border-radius:16px">16</div><div class="cap">lg</div></div>
+  <div class="col"><div class="r" style="border-radius:24px">24</div><div class="cap">xl</div></div>
+  <div class="col"><div class="r" style="border-radius:9999px">∞</div><div class="cap">full</div></div>
+</div>
+</body></html>

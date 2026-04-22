@@ -1,10 +1,33 @@
 {
   "id": "general-list-default",
-  "version": 6,
+  "version": 8,
   "bundle": "lobby_ui",
   "atlasPolicy": "lobby_general",
   "$fragments": ["common-parchment-default", "header-rarity-plaque-default"],
   "slots": {
+    "general.backdrop.scrim": {
+      "kind": "color-rect",
+      "color": "surfaceDeep",
+      "alpha": 228
+    },
+    "general.header.bar": {
+      "kind": "color-rect",
+      "color": "surfaceDeep",
+      "alpha": 236
+    },
+    "general.header.title": {
+      "kind": "label-style",
+      "font": "fonts/notosans_tc/font",
+      "fontSize": 44,
+      "lineHeight": 48,
+      "color": "textAccent",
+      "outlineColor": "#1A1A1A",
+      "outlineWidth": 1,
+      "horizontalAlign": "LEFT",
+      "verticalAlign": "CENTER",
+      "overflow": "SHRINK",
+      "isBold": true
+    },
     "widget.header.plaque.base": {
       "kind": "color-rect",
       "color": "surfaceDeep",
@@ -170,9 +193,20 @@
       "font": "fonts/notosans_tc/font",
       "fontSize": 18,
       "lineHeight": 24,
-      "color": "text.parchment.secondary",
+      "color": "textOffWhite",
       "isBold": true,
       "horizontalAlign": "LEFT",
+      "verticalAlign": "CENTER",
+      "overflow": "SHRINK"
+    },
+    "general.label.headerCenter": {
+      "kind": "label-style",
+      "font": "fonts/notosans_tc/font",
+      "fontSize": 18,
+      "lineHeight": 24,
+      "color": "textOffWhite",
+      "isBold": true,
+      "horizontalAlign": "CENTER",
       "verticalAlign": "CENTER",
       "overflow": "SHRINK"
     },
@@ -217,6 +251,17 @@
       "color": "text.parchment.primary",
       "isBold": true,
       "horizontalAlign": "LEFT",
+      "verticalAlign": "CENTER",
+      "overflow": "SHRINK"
+    },
+    "general.label.valueCenter": {
+      "kind": "label-style",
+      "font": "fonts/notosans_tc/font",
+      "fontSize": 20,
+      "lineHeight": 26,
+      "color": "text.parchment.primary",
+      "isBold": true,
+      "horizontalAlign": "CENTER",
       "verticalAlign": "CENTER",
       "overflow": "SHRINK"
     },

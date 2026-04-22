@@ -27,14 +27,14 @@
             {
               "type": "container",
               "name": "BloodlineSummaryCard",
-              "widget": { "top": 74, "left": 28, "bottom": 22, "right": 280 },
+              "widget": { "top": 74, "left": 28, "bottom": 14, "right": 260 },
               "children": [
                 {
                   "type": "container",
                   "name": "BloodlineSummaryFields",
                   "widget": { "top": 8, "left": 0, "right": 0 },
-                  "height": 144,
-                  "layout": { "type": "vertical", "spacing": 4 },
+                  "height": 168,
+                  "layout": { "type": "vertical", "spacing": 8 },
                   "children": [
                     { "type": "label", "name": "BloodlineTitle", "widget": { "left": 0, "right": 0 }, "width": "100%", "height": 18, "styleSlot": "gdv3.label.meta" },
                     { "type": "label", "name": "BloodlineName", "widget": { "left": 0, "right": 0 }, "width": "100%", "height": 30, "styleSlot": "gdv3.label.value" },
@@ -43,8 +43,8 @@
                       "name": "AwakeningProgressGroup",
                       "widget": { "left": 0, "right": 0 },
                       "width": "100%",
-                      "height": 40,
-                      "layout": { "type": "vertical", "spacing": 4 },
+                      "height": 48,
+                      "layout": { "type": "vertical", "spacing": 6 },
                       "children": [
                         { "type": "label", "name": "AwakeningLabel", "widget": { "left": 0, "right": 0 }, "width": "100%", "height": 18, "styleSlot": "gdv3.label.meta" },
                         {
@@ -69,7 +69,7 @@
                     { "type": "label", "name": "PersonalityValue", "widget": { "left": 0, "right": 0 }, "width": "100%", "height": 18, "styleSlot": "gdv3.label.note" }
                   ]
                 },
-                { "type": "label", "name": "BloodlineBody", "widget": { "top": 164, "bottom": 0, "left": 0, "right": 0 }, "styleSlot": "gdv3.label.cardBody" }
+                { "type": "label", "name": "BloodlineBody", "widget": { "top": 188, "bottom": 0, "left": 0, "right": 0 }, "styleSlot": "gdv3.label.cardBody" }
               ]
             },
             {

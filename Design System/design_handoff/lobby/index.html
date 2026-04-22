@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="utf-8">
+<title>3KLife · Lobby</title>
+<link rel="stylesheet" href="../../colors_and_type.css">
+<style>
+  * { box-sizing: border-box; margin: 0; }
+  html, body { width: 1920px; height: 1080px; overflow: hidden; font-family: var(--font-body); color: var(--text-primary); }
+  body {
+    background: url("../../assets/backgrounds/bg_lobby.png") center/cover no-repeat, #0F0F0F;
+    position: relative;
+  }
+  body::after { content:""; position:absolute; inset:0; background:linear-gradient(180deg,rgba(0,0,0,.45) 0%,rgba(0,0,0,.15) 40%,rgba(0,0,0,.6) 100%); pointer-events:none; }
+
+  /* Top bar */
+  .topbar { position: absolute; top: 24px; left: 32px; right: 32px; display:flex; justify-content:space-between; align-items:center; z-index:10; }
+  .player { display:flex; align-items:center; gap:14px; background:linear-gradient(180deg,#20201f,#111); border:2px solid #4D4635; border-radius:44px; padding:6px 24px 6px 6px; box-shadow:0 4px 12px rgba(0,0,0,.5); }
+  .player img { width:68px; height:68px; border-radius:50%; border:2px solid #D4AF37; object-fit:cover; object-position:center top; }
+  .p-info .name { font-family: var(--font-headline); font-size: 22px; font-weight: 700; color:#FFE088; letter-spacing:.04em; }
+  .p-info .sub  { font-family: var(--font-label); font-size: 11px; color:#B0A880; letter-spacing:.12em; text-transform:uppercase; }
+  .bar { width: 180px; height: 10px; background:#0a0a0a; border-radius:10px; margin-top:4px; box-shadow:inset 0 1px 3px rgba(0,0,0,.8); overflow:hidden;}
+  .bar > i { display:block; height:100%; width:64%; background:linear-gradient(180deg,#FFE088,#D4AF37); border-radius:10px; }
+
+  .res { display:flex; gap:10px; }
+  .res-pill { display:flex; align-items:center; gap:10px; background:linear-gradient(180deg,#20201f,#111); border:1.5px solid #4D4635; border-radius:36px; padding:8px 20px 8px 8px; min-width:150px; box-shadow:0 3px 8px rgba(0,0,0,.5);}
+  .res-pill .ico { width:34px; height:34px; border-radius:50%; display:grid; place-items:center; font-family: var(--font-headline); font-weight:800; color:#2D1E00; font-size:15px; }
+  .g { background: radial-gradient(circle,#FFE088,#D4AF37 70%,#8A6E1F); }
+  .j { background: radial-gradient(circle,#A4D2D0,#3F6A62 80%); color:#F5F1E8;}
+  .r { background: radial-gradient(circle,#ffbfb8,#B22222 80%); color:#fff;}
+  .res-pill .num { font-family: var(--font-num); font-variant-numeric: tabular-nums; font-weight:700; font-size:16px; color:#FFE088;}
+  .plus { width:28px; height:28px; border-radius:50%; background:#D4AF37; color:#2D1E00; display:grid; place-items:center; font-weight:800; font-size:18px; margin-left:6px;}
+
+  /* Character slot */
+  .hero { position:absolute; left:50%; top:56%; transform:translate(-50%,-50%); z-index:4; text-align:center;}
+  .hero-img { height:720px; filter: drop-shadow(0 20px 36px rgba(0,0,0,.7)); }
+  .hero-name {
+    position: absolute; left:50%; top:14%; transform:translateX(-50%);
+    font-family: var(--font-headline); font-size: 56px; font-weight:700; color:#FFF; letter-spacing:.1em;
+    text-shadow: 0 0 10px rgba(0,0,0,.9), 0 2px 2px rgba(0,0,0,.9);
+  }
+  .hero-sub {
+    position:absolute; left:50%; top:22%; transform:translateX(-50%);
+    font-family: var(--font-label); font-size:14px; letter-spacing:.5em; color:#FFE088; text-shadow: 0 1px 2px rgba(0,0,0,.9);
+  }
+
+  /* Nav rail left */
+  .nav { position: absolute; left: 32px; top: 50%; transform: translateY(-50%); display:flex; flex-direction:column; gap:12px; z-index:10;}
+  .nav-btn {
+    width:110px; height:100px; border-radius:18px; cursor:pointer;
+    background: linear-gradient(180deg,rgba(32,32,31,.88),rgba(15,15,15,.92));
+    border:2px solid #4D4635; box-shadow:0 4px 10px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.08);
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px;
+    font-family:var(--font-headline); font-size:17px; color:#FFE088; font-weight:700;
+    transition: transform var(--dur-fast) var(--ease-default);
+  }
+  .nav-btn:hover { transform: translateX(3px); border-color:#D4AF37;}
+  .nav-btn.active { border-color:#D4AF37; box-shadow:0 0 16px rgba(255,193,7,.4), 0 4px 10px rgba(0,0,0,.55); }
+  .nav-btn .g-ico { width:40px; height:40px; display:grid; place-items:center; font-size:28px; color:#FFE088; font-family:var(--font-headline);}
+  .nav-btn .en { font-family:var(--font-label); font-size:9px; letter-spacing:.15em; color:#B0A880; text-transform:uppercase; font-weight:600;}
+
+  /* Event cards right */
+  .events { position:absolute; right:32px; top:130px; display:flex; flex-direction:column; gap:14px; z-index:10; width:360px;}
+  .ev { border-radius:14px; overflow:hidden; border:2px solid #4D4635; box-shadow:0 6px 14px rgba(0,0,0,.5); cursor:pointer;
+    transition: transform var(--dur-fast) var(--ease-default);}
+  .ev:hover { transform: translateY(-2px); border-color:#D4AF37;}
+  .ev-head { padding:12px 16px; display:flex; justify-content:space-between; align-items:center;}
+  .ev-title { font-family: var(--font-headline); font-size:20px; font-weight:700; color:#F5F1E8;}
+  .ev-tag { font-family: var(--font-label); font-size:10px; letter-spacing:.12em; padding:3px 10px; border-radius:4px; font-weight:700;}
+  .ev-body { padding: 10px 16px 14px; font-size:13px; line-height:1.5; color:#D0C5AF;}
+  .ev-footer { display:flex; justify-content:space-between; padding:8px 16px 12px; font-family: var(--font-label); font-size:11px; color:#B0A880; letter-spacing:.08em;}
+  .ev1 { background: linear-gradient(180deg,#1a2030,#0a0c14);}
+  .ev1 .ev-tag { background:#B22222; color:#fff;}
+  .ev2 { background: linear-gradient(180deg,#2a2010,#151513);}
+  .ev2 .ev-tag { background:#D4AF37; color:#2D1E00;}
+  .ev3 { background: linear-gradient(180deg,#202830,#0F1220);}
+  .ev3 .ev-tag { background:#A4D2D0; color:#1F302B;}
+
+  /* Bottom dock */
+  .dock { position:absolute; left:50%; bottom:24px; transform:translateX(-50%); display:flex; gap:12px; z-index:10;}
+  .dock-btn {
+    padding: 0 36px; height:68px; display:flex; align-items:center; gap:14px;
+    font-family: var(--font-headline); font-size: 24px; font-weight:700;
+    border-radius:14px; cursor:pointer; letter-spacing:.1em;
+    border:2px solid #000; box-shadow: 0 4px 0 #000, 0 6px 14px rgba(0,0,0,.6);
+    transition: all var(--dur-fast) var(--ease-default);
+  }
+  .dock-btn:active { transform: translateY(2px); box-shadow: 0 2px 0 #000, 0 4px 10px rgba(0,0,0,.6); }
+  .dock-primary { background: linear-gradient(180deg,#FFE088,#D4AF37 60%,#8A6E1F); color:#2D1E00; min-width:260px; justify-content:center;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.5), 0 4px 0 #3a2b08, 0 6px 14px rgba(0,0,0,.7);}
+  .dock-primary::before { content: "⚔"; font-size:22px;}
+  .dock-secondary { background: linear-gradient(180deg,#3a3a3a,#1a1a1a); color:#E8E4DC;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.15), 0 4px 0 #000, 0 6px 14px rgba(0,0,0,.7);}
+
+  /* Bottom tab bar */
+  .tabs { position: absolute; left:32px; bottom:32px; display:flex; gap:8px; z-index:10;}
+  .tab { width:86px; height:86px; border-radius:14px; background: linear-gradient(180deg,rgba(32,32,31,.85),rgba(15,15,15,.9)); border:2px solid #4D4635; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; cursor:pointer; color:#FFE088; font-family:var(--font-headline); font-weight:700; font-size:14px;}
+  .tab .sym { font-size:24px;}
+
+  /* Banner header */
+  .banner { position:absolute; left:50%; top:24px; transform:translateX(-50%); z-index:5; font-family:var(--font-headline); font-size:32px; color:#FFE088; letter-spacing:.6em; text-shadow: 0 0 14px rgba(0,0,0,.9), 0 2px 2px rgba(0,0,0,.9);}
+  .banner-sub { position:absolute; left:50%; top:72px; transform:translateX(-50%); z-index:5; font-family:var(--font-label); font-size:11px; color:#B0A880; letter-spacing:.6em; text-shadow:0 1px 2px rgba(0,0,0,.9);}
+</style>
+</head>
+<body data-screen-label="01 Lobby">
+  <div class="banner">三 國 志 ・ 生 存</div>
+  <div class="banner-sub">THREE KINGDOMS · SURVIVAL</div>
+
+  <div class="topbar">
+    <div class="player">
+      <img src="../../assets/avatars/cao_cao.png" alt="">
+      <div class="p-info">
+        <div class="name">劉玄德</div>
+        <div class="sub">LV · 42 · 義軍首領</div>
+        <div class="bar"><i></i></div>
+      </div>
+    </div>
+    <div class="res">
+      <div class="res-pill"><div class="ico g">金</div><span class="num">248,400</span><span class="plus">+</span></div>
+      <div class="res-pill"><div class="ico j">玉</div><span class="num">1,820</span><span class="plus">+</span></div>
+      <div class="res-pill"><div class="ico r">糧</div><span class="num">6,400</span><span class="plus">+</span></div>
+    </div>
+  </div>
+
+  <nav class="nav">
+    <div class="nav-btn active"><span class="g-ico">帥</span>主城<span class="en">LOBBY</span></div>
+    <div class="nav-btn"><span class="g-ico">鑑</span>圖鑑<span class="en">CODEX</span></div>
+    <div class="nav-btn"><span class="g-ico">符</span>轉蛋<span class="en">GACHA</span></div>
+    <div class="nav-btn"><span class="g-ico">市</span>商店<span class="en">SHOP</span></div>
+    <div class="nav-btn"><span class="g-ico">信</span>書信<span class="en">MAIL</span></div>
+  </nav>
+
+  <div class="hero">
+    <img src="../../assets/generals/guan_yu.png" class="hero-img" alt="Guan Yu">
+  </div>
+  <div class="hero-name">關 羽</div>
+  <div class="hero-sub">YUN CHANG · SSR</div>
+
+  <div class="events">
+    <div class="ev ev1">
+      <div class="ev-head"><div class="ev-title">赤壁之戰 · 限時</div><div class="ev-tag">LIMITED</div></div>
+      <div class="ev-body">火燒連環船。集結三千水師共破百萬雄兵。</div>
+      <div class="ev-footer"><span>剩餘 · 2 日 14 時</span><span>參戰</span></div>
+    </div>
+    <div class="ev ev2">
+      <div class="ev-head"><div class="ev-title">兵符轉蛋 · 雲長降臨</div><div class="ev-tag">NEW</div></div>
+      <div class="ev-body">首抽保底必得 SSR。10 連送紅玉 100。</div>
+      <div class="ev-footer"><span>新人池 · 開放中</span><span>前往</span></div>
+    </div>
+    <div class="ev ev3">
+      <div class="ev-head"><div class="ev-title">每日晨報 · 軍情</div><div class="ev-tag">DAILY</div></div>
+      <div class="ev-body">領取每日登入獎勵、查看戰令進度。</div>
+      <div class="ev-footer"><span>已重置 · 05:00</span><span>領取</span></div>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <div class="tab"><span class="sym">⚙</span>設定</div>
+    <div class="tab"><span class="sym">♖</span>好友</div>
+    <div class="tab"><span class="sym">☰</span>任務</div>
+  </div>
+
+  <div class="dock">
+    <button class="dock-btn dock-secondary">出征編組</button>
+    <button class="dock-btn dock-primary">出　戰</button>
+    <button class="dock-btn dock-secondary">訓練</button>
+  </div>
+</body>
+</html>

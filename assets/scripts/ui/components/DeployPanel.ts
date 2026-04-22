@@ -127,6 +127,7 @@ export class DeployPanel extends UIPreviewBuilder implements DeployRuntimeApi {
   // ─── 運行時狀態 ───────────────────────────────────────────────────────────
   private ctrl: BattleController | null = null;
   private selectedType: TroopType = TroopType.Infantry;
+  private selectedUnitName = '';
   private selectedSlotIndex = 0;
   private selectedLane: number = 0;
   /** [P2-N6] 當前糧草（原 currentDp，與 TurnSnapshot.playerFood 同步） */
@@ -333,6 +334,7 @@ export class DeployPanel extends UIPreviewBuilder implements DeployRuntimeApi {
           return;
         }
         this.selectedType = type;
+        this.selectedUnitName = payload.data.unitName?.trim() || this.toTroopDisplayName(type);
         this.selectedSlotIndex = payload.index;
         this.updateSelectionLabel();
         this.refreshButtonStates();
@@ -364,6 +366,7 @@ export class DeployPanel extends UIPreviewBuilder implements DeployRuntimeApi {
           return;
         }
         this.selectedType = type;
+        this.selectedUnitName = payload.data.unitName?.trim() || this.toTroopDisplayName(type);
         this.updateSelectionLabel();
         this.refreshButtonStates();
         this.beginDrag(payload.ev, type);
@@ -537,7 +540,7 @@ export class DeployPanel extends UIPreviewBuilder implements DeployRuntimeApi {
     this.ghostNode.addChild(lblNode);
     lblNode.addComponent(UITransform).setContentSize(120, 60);
     const lbl = lblNode.addComponent(Label);
-    lbl.string = this.toTroopDisplayName(type);
+    lbl.string = this.selectedUnitName || this.toTroopDisplayName(type);
     lbl.fontSize = 24;
     lbl.isBold = true;
     lbl.color = new Color(20, 20, 20, 255);
@@ -644,6 +647,7 @@ export class DeployPanel extends UIPreviewBuilder implements DeployRuntimeApi {
 
   private selectTroop(type: TroopType, slotIndex = 0): void {
     this.selectedType = type;
+    this.selectedUnitName = this.toTroopDisplayName(type);
     this.selectedSlotIndex = slotIndex;
     this.updateSelectionLabel();
     this.updateTroopSelectionVisuals();
@@ -727,7 +731,7 @@ export class DeployPanel extends UIPreviewBuilder implements DeployRuntimeApi {
       });
       return;
     }
-    const outcome = this.ctrl.tryDeployTroop(this.selectedType, this.selectedLane);
+    const outcome = this.ctrl.tryDeployTroop(this.selectedType, this.selectedLane, this.selectedUnitName || undefined);
     emitDeployDragDebug("DeployPanel", "deploy-click-result", {
       ok: outcome.ok,
       reason: outcome.reason,
@@ -768,6 +772,10 @@ export class DeployPanel extends UIPreviewBuilder implements DeployRuntimeApi {
     if (!this.ctrl) return;
     // 點擊閃光反饋（不論是否能發動都給出視覺回應）
     this.playSkillClickFlash();
+    if (!this.ctrl.canUsePlayerSkills()) {
+      this.showToast('目前流程鎖定，暫時無法施放技能');
+      return;
+    }
     const success = this.ctrl.triggerGeneralSkill();
     if (!success) {
       this.showToast("技能能量不足！");
@@ -1040,6 +1048,7 @@ export class DeployPanel extends UIPreviewBuilder implements DeployRuntimeApi {
   }
 
   private getDeployFailMessage(reason?: DeployFailReason): string {
+    if (reason === "battle-locked") return "目前流程鎖定，暫時無法部署";
     if (reason === "limit")    return "本回合已部署，請等待下一回合";
     if (reason === "occupied") return "目標格已有單位，請改放其他格子";
     return "糧草不足，無法部署";

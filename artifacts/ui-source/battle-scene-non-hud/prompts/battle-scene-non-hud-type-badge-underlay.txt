@@ -1,7 +1,0 @@
-Create a single isolated UI partial asset for BattleSceneNonHUD. Zone: tiger-tally-panel. Slot: typeBadgeUnderlay. Visual target: battle-card-rail / tactical-diorama-v1.
-
-Use the battle-card-rail family and tactical-diorama-v1 recipe language. This asset must fit inside the existing UItemplate + widget structure and cannot redefine layout. Keep these qualities: .
-
-Avoid: . No layout blocks, no full-page composition, no UI text placement, no badges with letters.
-
-no text, no letters, no calligraphy, no symbols

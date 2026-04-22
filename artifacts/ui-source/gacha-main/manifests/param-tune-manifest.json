@@ -1,9 +1,0 @@
-{
-  "$schema": "../../schemas/param-tune-manifest.schema.json",
-  "screenId": "GachaMain",
-  "sourceFamilyMap": "GachaMain",
-  "generatedAt": "2026-04-08T05:06:05.994Z",
-  "taskCount": 0,
-  "tasks": [],
-  "warnings": []
-}

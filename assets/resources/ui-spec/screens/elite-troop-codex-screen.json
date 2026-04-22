@@ -6,6 +6,17 @@
   "bundle": "lobby_ui",
   "layout": "elite-troop-codex-main",
   "skin": "elite-troop-codex-default",
+  "contentRequirements": {
+    "schemaId": "elite-troop-codex-content",
+    "familyId": "elite-troop-codex",
+    "requiredFields": [
+      "entries"
+    ]
+  },
+  "content": {
+    "source": "elite-troop-codex-v1",
+    "state": "all"
+  },
   "validation": {
     "devices": ["phone-16-9", "phone-19_5-9", "tablet-4-3"],
     "allowMissingSkin": true

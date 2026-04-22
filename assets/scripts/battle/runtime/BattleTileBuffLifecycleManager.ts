@@ -22,6 +22,22 @@ export interface BattleTileBuffConfig {
   rules: BattleTileBuffRule[];
 }
 
+export const DEFAULT_BATTLE_TILE_BUFF_CONFIG: BattleTileBuffConfig = {
+  spawn: {
+    minPerTurn: 1,
+    maxPerTurn: 3,
+    factorMin: 2,
+    factorMax: 5,
+    rareFactorThreshold: 5,
+  },
+  rules: [
+    { id: 'atk-mul', stat: 'attack', op: 'mul', text: '攻擊 x {factor}' },
+    { id: 'hp-mul', stat: 'hp', op: 'mul', text: '生命 x {factor}' },
+    { id: 'atk-div', stat: 'attack', op: 'div', text: '攻擊 / {factor}' },
+    { id: 'hp-div', stat: 'hp', op: 'div', text: '生命 / {factor}' },
+  ],
+};
+
 export interface BattleTileBuffLifecycleContext {
   state: BattleState;
   getTileBuffConfig: () => BattleTileBuffConfig;

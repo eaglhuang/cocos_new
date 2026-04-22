@@ -44,17 +44,19 @@
     },
     "hud.portrait.player": {
       "kind": "sprite-frame",
-      "path": "sprites/battle/portrait_player_placeholder/spriteFrame",
+      "path": "sprites/generals/avatars/cao_cao_avatar/spriteFrame",
       "spriteType": "simple",
-      "allowAutoAtlas": true,
-      "_fallback": "#3A8FD9"
+      "allowAutoAtlas": false,
+      "_fallback": "#3A8FD9",
+      "$note": "初始顯示曹操頭像；BattleScene 呼叫 setPlayerGeneralId 後由 BattleHUDComposite._applyPortrait 替換為當場武將頭像"
     },
     "hud.portrait.enemy": {
       "kind": "sprite-frame",
-      "path": "sprites/battle/portrait_enemy_placeholder/spriteFrame",
+      "path": "sprites/generals/avatars/lu_bu_avatar/spriteFrame",
       "spriteType": "simple",
-      "allowAutoAtlas": true,
-      "_fallback": "#D94A3A"
+      "allowAutoAtlas": false,
+      "_fallback": "#D94A3A",
+      "$note": "初始顯示呂布頭像；BattleScene 呼叫 setEnemyGeneralId 後由 BattleHUDComposite._applyPortrait 替換為當場武將頭像"
     },
     "hud.label.name": {
       "kind": "label-style",

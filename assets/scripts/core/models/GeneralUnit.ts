@@ -203,6 +203,7 @@ export interface GeneralProfilePresentationConfig {
   defaultTab?: GeneralDetailDefaultTab;
   crestState?: GeneralDetailCrestState;
   storyStripCells?: GeneralDetailStoryCellConfig[];
+  portraitCarrierShiftX?: number;
 }
 
 export interface GeneralTrainingProfileConfig {

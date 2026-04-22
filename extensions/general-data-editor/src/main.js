@@ -188,6 +188,11 @@ module.exports = {
     console.log("[GeneralDataEditor] Extension 已卸載。");
   },
 
+  getGeneralsList,
+  searchGenerals,
+  getGeneralDetail,
+  updateGeneralFields,
+
   methods: {
     /** 開啟武將資料編輯器 Panel */
     openPanel() {

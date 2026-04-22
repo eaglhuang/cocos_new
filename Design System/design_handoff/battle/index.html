@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="utf-8">
+<title>3KLife · Battle</title>
+<link rel="stylesheet" href="../../colors_and_type.css">
+<style>
+  * { box-sizing: border-box; margin: 0; }
+  html, body { width: 1920px; height: 1080px; overflow: hidden; font-family: var(--font-body); color: var(--text-primary); }
+  body {
+    background:
+      radial-gradient(1200px 800px at 40% 90%, rgba(139,69,19,.25), transparent 70%),
+      radial-gradient(1000px 700px at 80% 20%, rgba(25,40,60,.6), transparent 75%),
+      url("../../assets/backgrounds/bg_ink.png") center/cover no-repeat,
+      #1a1612;
+    position:relative;
+  }
+
+  /* ---- Top bar ---- */
+  .topbar {
+    position:absolute; top:0; left:0; right:0; height:88px; z-index:20;
+    background: linear-gradient(180deg, rgba(10,10,10,.95), rgba(10,10,10,.6));
+    border-bottom: 1px solid #4D4635;
+    display:flex; align-items:center; justify-content:space-between; padding:0 32px;
+    box-shadow: 0 4px 14px rgba(0,0,0,.5);
+  }
+  .phase {
+    display:flex; align-items:center; gap:16px;
+    font-family: var(--font-headline); color: var(--text-accent);
+  }
+  .phase .turn { font-size:34px; font-weight:800; letter-spacing:.08em;
+    text-shadow: 0 0 12px rgba(255,224,136,.3); }
+  .phase .label { font-family: var(--font-label); font-size:11px; letter-spacing:.3em; color:#B0A880; text-transform:uppercase; }
+  .stage-title {
+    font-family: var(--font-headline); font-size:26px; font-weight:700; color:#F5F1E8; letter-spacing:.3em;
+    text-shadow: 0 2px 4px rgba(0,0,0,.8);
+  }
+  .stage-sub { font-family: var(--font-label); font-size:10px; color:#B0A880; letter-spacing:.45em; text-align:center; margin-top:2px;}
+
+  .battle-controls { display:flex; gap:10px; }
+  .ctrl { width:48px; height:48px; border-radius:10px; background: linear-gradient(180deg,#2a2a2a,#121212); border:1.5px solid #4D4635; display:grid; place-items:center; cursor:pointer; color:#FFE088; font-family:var(--font-headline); font-weight:700;}
+  .ctrl:hover { border-color:#D4AF37;}
+  .ctrl.active { background: linear-gradient(180deg,#FFE088,#D4AF37); color:#2D1E00; border-color:#8A6E1F;}
+
+  /* ---- Battlefield grid (isometric-ish tiles) ---- */
+  .field {
+    position:absolute; left:50%; top:52%; transform:translate(-50%,-50%) perspective(1400px) rotateX(28deg);
+    width: 1080px; height: 600px;
+  }
+  .grid {
+    display:grid; grid-template-columns: repeat(8, 120px); grid-template-rows: repeat(5, 110px);
+    gap: 4px;
+  }
+  .tile {
+    border:1px solid rgba(180,160,100,.18);
+    background:
+      linear-gradient(180deg, rgba(240,232,216,.08), rgba(240,232,216,.03));
+    position:relative;
+  }
+  .tile.friend { background: linear-gradient(180deg, rgba(164,210,208,.12), rgba(63,106,98,.06)); border-color: rgba(140,207,196,.3);}
+  .tile.enemy { background: linear-gradient(180deg, rgba(178,34,34,.14), rgba(178,34,34,.04)); border-color: rgba(255,107,107,.25);}
+  .tile.highlight { background: linear-gradient(180deg, rgba(255,224,136,.28), rgba(212,175,55,.08)); border:1.5px solid #FFE088; box-shadow: inset 0 0 12px rgba(255,224,136,.4);}
+
+  /* Units on field */
+  .unit {
+    position:absolute; width: 90px; height: 130px; transform: translate(-50%,-70%);
+    display:flex; flex-direction:column; align-items:center;
+  }
+  .unit .avatar {
+    width:70px; height:70px; border-radius:50%;
+    border: 3px solid var(--b, #FFE088);
+    background:#111; overflow:hidden;
+    box-shadow: 0 6px 10px rgba(0,0,0,.7);
+  }
+  .unit .avatar img { width:100%; height:100%; object-fit:cover; object-position:center top;}
+  .unit .hp {
+    width:72px; height:8px; border-radius:4px; background:#0a0a0a; margin-top:4px; overflow:hidden;
+    border:1px solid #4D4635;
+  }
+  .unit .hp i { display:block; height:100%; }
+  .unit .name { font-family: var(--font-headline); font-size:11px; font-weight:700; color:#F5F1E8; margin-top:2px; text-shadow:0 1px 2px #000; letter-spacing:.05em;}
+  .unit .lv { font-family: var(--font-num); font-size:10px; color:#FFE088; font-weight:700;}
+  .unit.f .hp i { background: linear-gradient(90deg,#86E1A5,#2E8B57); }
+  .unit.e .hp i { background: linear-gradient(90deg,#FF6B6B,#B22222); }
+  .unit.f { --b:#A4D2D0; }
+  .unit.e { --b:#FF6B6B; }
+  .unit.active { animation: bob 2s ease-in-out infinite;}
+  .unit.active .avatar { box-shadow: 0 0 20px #FFE088, 0 6px 10px rgba(0,0,0,.7); border-color:#FFE088;}
+  @keyframes bob { 0%,100% { transform: translate(-50%, -72%); } 50% { transform: translate(-50%,-76%); } }
+
+  /* ---- Action ring (bottom center) ---- */
+  .ring-wrap { position:absolute; bottom:20px; left:50%; transform:translateX(-50%); z-index:20; display:flex; gap:22px; align-items:flex-end;}
+  .active-portrait {
+    width:160px; height:160px; border-radius:12px; overflow:hidden;
+    border: 3px solid #D4AF37; box-shadow: 0 0 24px rgba(255,224,136,.35), 0 8px 16px rgba(0,0,0,.7);
+    background:linear-gradient(180deg,#20201f,#111); position:relative;
+  }
+  .active-portrait img { width:100%; height:100%; object-fit:cover; object-position:center top;}
+  .active-portrait .frame-name { position:absolute; left:0; right:0; bottom:0; padding:6px 8px; text-align:center;
+    background:linear-gradient(180deg,transparent,rgba(0,0,0,.95)); font-family:var(--font-headline); font-size:16px; color:#FFE088; font-weight:700; letter-spacing:.1em;}
+
+  .actions {
+    display:flex; gap:14px; align-items:center;
+    padding: 10px 18px;
+    background: linear-gradient(180deg, rgba(32,32,31,.92), rgba(15,15,15,.95));
+    border: 2px solid #4D4635; border-radius: 16px;
+    box-shadow: 0 -4px 16px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.05);
+  }
+  .act {
+    width: 88px; height: 88px; border-radius: 50%; cursor:pointer; position:relative;
+    background: radial-gradient(circle at 35% 30%, #3a3a3a 0%, #1a1a1a 75%);
+    border: 3px solid #4D4635;
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px;
+    color:#E8E4DC;
+    transition: all var(--dur-fast) var(--ease-default);
+  }
+  .act:hover { border-color:#D4AF37; transform: translateY(-2px);}
+  .act .sym { font-family:var(--font-headline); font-size:28px; color:#FFE088; font-weight:800;}
+  .act .nm { font-family:var(--font-label); font-size:10px; letter-spacing:.15em; color:#B0A880; text-transform:uppercase;}
+  .act.ready {
+    background: radial-gradient(circle at 35% 30%, #FFE088 0%, #D4AF37 70%, #8A6E1F 100%);
+    border-color:#FFD700; box-shadow: 0 0 24px rgba(255,215,0,.55), inset 0 2px 4px rgba(255,255,255,.6);
+    animation: readyPulse 1.6s ease-in-out infinite;
+  }
+  .act.ready .sym, .act.ready .nm { color:#2D1E00;}
+  @keyframes readyPulse { 0%,100% { box-shadow: 0 0 22px rgba(255,215,0,.5), inset 0 2px 4px rgba(255,255,255,.6);} 50% { box-shadow: 0 0 36px rgba(255,215,0,.85), inset 0 2px 4px rgba(255,255,255,.7);} }
+  .act.ult { width: 108px; height: 108px; border-width:4px;}
+
+  /* SP tray */
+  .sp-tray { display:flex; flex-direction:column; gap:6px; align-items:flex-end; margin-right:12px;}
+  .sp-bar { width:180px; height:14px; border-radius:8px; background:#0a0a0a; border:1.5px solid #4D4635; overflow:hidden; position:relative;}
+  .sp-bar i { display:block; height:100%; background: linear-gradient(90deg, #86E1A5, #FFE088 60%, #FFD700); box-shadow: 0 0 10px rgba(255,215,0,.5); }
+  .sp-label { font-family:var(--font-label); font-size:10px; letter-spacing:.25em; color:#B0A880;}
+
+  /* ---- Right side unit card ---- */
+  .unit-card {
+    position:absolute; right:24px; top:112px; width:340px; z-index:15;
+    background: linear-gradient(180deg,#20201F 0%, #151513 100%);
+    border: 2px solid #4D4635; border-radius: 14px;
+    box-shadow: 0 8px 24px rgba(0,0,0,.65);
+    overflow:hidden;
+  }
+  .uc-head {
+    background: linear-gradient(180deg, #3F6A62 0%, #2A4B44 100%);
+    padding: 14px 18px; border-bottom: 2px solid #D4AF37; display:flex; gap:12px; align-items:center;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.15);
+  }
+  .uc-head .name { font-family:var(--font-headline); font-size:24px; color:#F5F1E8; font-weight:700;}
+  .uc-head .cl { font-family:var(--font-label); font-size:11px; color:#A4D2D0; letter-spacing:.18em;}
+  .uc-rarity { margin-left:auto; padding:3px 10px; background:#B22222; color:#fff; border-radius:4px; font-family:var(--font-headline); font-size:12px; font-weight:800; letter-spacing:.15em;}
+  .uc-body { padding: 16px 18px; }
+  .stat-row { display:flex; justify-content:space-between; padding:7px 0; border-bottom: 1px dashed #4D4635; font-size:13px;}
+  .stat-row:last-child { border:none;}
+  .stat-row .k { color:#B0A880; font-family:var(--font-label); letter-spacing:.12em;}
+  .stat-row .v { font-family:var(--font-num); font-weight:700; color:#FFE088;}
+  .skill {
+    margin-top:10px; padding:10px 12px;
+    background: linear-gradient(180deg, rgba(240,232,216,.06), rgba(240,232,216,.02));
+    border:1px solid #4D4635; border-radius:8px;
+  }
+  .skill .sn { font-family:var(--font-headline); font-size:15px; color:#FFE088; font-weight:700; margin-bottom:4px;}
+  .skill .sd { font-size:12px; color:#D0C5AF; line-height:1.5;}
+
+  /* ---- Left battle log ---- */
+  .log {
+    position:absolute; left:24px; top:112px; width: 280px; z-index:15;
+    background: linear-gradient(180deg, rgba(32,32,31,.92), rgba(15,15,15,.95));
+    border: 2px solid #4D4635; border-radius: 12px;
+    max-height: 360px; overflow:hidden;
+    box-shadow: 0 8px 20px rgba(0,0,0,.55);
+  }
+  .log-head { padding: 10px 14px; background: linear-gradient(180deg, #20201F, #151513);
+    border-bottom: 1px solid #4D4635; display:flex; justify-content:space-between; align-items:center;}
+  .log-head .ttl { font-family: var(--font-headline); font-size:14px; color:#FFE088; font-weight:700; letter-spacing:.1em;}
+  .log-head .collapse { color:#B0A880; cursor:pointer; font-family:var(--font-label); font-size:10px;}
+  .log-body { padding: 10px 14px; display:flex; flex-direction:column; gap:8px; font-size:12px;}
+  .log-entry { padding-left:10px; border-left: 2px solid #4D4635;}
+  .log-entry .who { font-family: var(--font-headline); font-size:12px; font-weight:700;}
+  .log-entry .f { color:#A4D2D0;}
+  .log-entry .e { color:#FF6B6B;}
+  .log-entry .msg { color:#D0C5AF; margin-top:2px;}
+  .log-entry .dmg { color:#FFE088; font-family:var(--font-num); font-weight:700;}
+
+  /* ---- End turn CTA ---- */
+  .end-turn {
+    position:absolute; right:24px; bottom:24px; z-index:20;
+    padding: 0 36px; height: 68px;
+    background: linear-gradient(180deg,#FFE088,#D4AF37 60%,#8A6E1F);
+    color:#2D1E00; font-family:var(--font-headline); font-weight:800; font-size:22px; letter-spacing:.2em;
+    border: 2px solid #000; border-radius: 14px; cursor:pointer;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.5), 0 4px 0 #3a2b08, 0 6px 14px rgba(0,0,0,.7);
+  }
+
+  /* ---- Damage floaters ---- */
+  .floater {
+    position:absolute; font-family:var(--font-num); font-weight:800; font-size:42px;
+    color:#FFE088; text-shadow: 0 2px 0 #B22222, 0 0 12px rgba(255,224,136,.7);
+    transform: translate(-50%,-50%); z-index:18;
+  }
+  .floater.crit { color:#FFD700; font-size:54px; text-shadow: 0 2px 0 #B22222, 0 0 18px rgba(255,215,0,.9);}
+  .crit-tag { font-family:var(--font-label); font-size:12px; color:#FF6B6B; letter-spacing:.3em; display:block; text-align:center;}
+</style>
+</head>
+<body data-screen-label="02 Battle">
+
+  <div class="topbar">
+    <div class="phase">
+      <div>
+        <div class="turn">第 7 回合</div>
+        <div class="label">BATTLE TURN · PLAYER PHASE</div>
+      </div>
+    </div>
+    <div>
+      <div class="stage-title">官 渡 · 烏 巢 劫 糧</div>
+      <div class="stage-sub">GUANDU · RAID AT WUCHAO</div>
+    </div>
+    <div class="battle-controls">
+      <div class="ctrl" title="速度">×2</div>
+      <div class="ctrl active" title="自動">自</div>
+      <div class="ctrl" title="設定">⚙</div>
+    </div>
+  </div>
+
+  <!-- Battlefield -->
+  <div class="field">
+    <div class="grid">
+      <!-- 5 rows x 8 cols -->
+      <div class="tile friend"></div><div class="tile friend"></div><div class="tile friend"></div><div class="tile"></div>
+      <div class="tile"></div><div class="tile enemy"></div><div class="tile enemy"></div><div class="tile enemy"></div>
+
+      <div class="tile friend"></div><div class="tile friend"></div><div class="tile highlight"></div><div class="tile"></div>
+      <div class="tile"></div><div class="tile enemy"></div><div class="tile enemy"></div><div class="tile enemy"></div>
+
+      <div class="tile friend"></div><div class="tile friend"></div><div class="tile friend"></div><div class="tile highlight"></div>
+      <div class="tile highlight"></div><div class="tile enemy"></div><div class="tile enemy"></div><div class="tile enemy"></div>
+
+      <div class="tile friend"></div><div class="tile friend"></div><div class="tile friend"></div><div class="tile"></div>
+      <div class="tile"></div><div class="tile enemy"></div><div class="tile enemy"></div><div class="tile enemy"></div>
+
+      <div class="tile friend"></div><div class="tile friend"></div><div class="tile friend"></div><div class="tile"></div>
+      <div class="tile"></div><div class="tile enemy"></div><div class="tile enemy"></div><div class="tile enemy"></div>
+    </div>
+
+    <!-- Units -->
+    <div class="unit f active" style="left:140px; top:230px;">
+      <div class="avatar"><img src="../../assets/avatars/guan_yu.png"></div>
+      <div class="hp"><i style="width:88%"></i></div>
+      <div class="name">關羽</div><div class="lv">LV.42</div>
+    </div>
+    <div class="unit f" style="left:260px; top:125px;">
+      <div class="avatar"><img src="../../assets/avatars/zhao_yun.png"></div>
+      <div class="hp"><i style="width:71%"></i></div>
+      <div class="name">趙雲</div><div class="lv">LV.38</div>
+    </div>
+    <div class="unit f" style="left:380px; top:345px;">
+      <div class="avatar"><img src="../../assets/avatars/zhang_fei.png"></div>
+      <div class="hp"><i style="width:56%"></i></div>
+      <div class="name">張飛</div><div class="lv">LV.40</div>
+    </div>
+    <div class="unit f" style="left:200px; top:455px;">
+      <div class="avatar"><img src="../../assets/avatars/zhen_ji.png"></div>
+      <div class="hp"><i style="width:92%"></i></div>
+      <div class="name">甄姬</div><div class="lv">LV.36</div>
+    </div>
+
+    <div class="unit e" style="left:760px; top:230px;">
+      <div class="avatar"><img src="../../assets/avatars/lu_bu.png"></div>
+      <div class="hp"><i style="width:42%"></i></div>
+      <div class="name">呂布</div><div class="lv">LV.45</div>
+    </div>
+    <div class="unit e" style="left:880px; top:125px;">
+      <div class="avatar"><img src="../../assets/avatars/cao_cao.png"></div>
+      <div class="hp"><i style="width:78%"></i></div>
+      <div class="name">曹操</div><div class="lv">LV.44</div>
+    </div>
+    <div class="unit e" style="left:940px; top:345px;">
+      <div class="avatar"><img src="../../assets/avatars/default.png"></div>
+      <div class="hp"><i style="width:31%"></i></div>
+      <div class="name">夏侯惇</div><div class="lv">LV.39</div>
+    </div>
+    <div class="unit e" style="left:820px; top:455px;">
+      <div class="avatar"><img src="../../assets/avatars/default.png"></div>
+      <div class="hp"><i style="width:65%"></i></div>
+      <div class="name">張遼</div><div class="lv">LV.41</div>
+    </div>
+
+    <!-- Damage floater -->
+    <div class="floater crit" style="left:790px; top:150px;">
+      <span class="crit-tag">CRITICAL</span>
+      −4,820
+    </div>
+  </div>
+
+  <!-- Left log -->
+  <aside class="log">
+    <div class="log-head"><div class="ttl">戰 報</div><div class="collapse">COLLAPSE ▾</div></div>
+    <div class="log-body">
+      <div class="log-entry"><span class="who f">關羽</span> 使用 <b>青龍偃月</b></div>
+      <div class="log-entry"><span class="who e">呂布</span> 受擊 <span class="dmg">-4,820</span> 暴擊</div>
+      <div class="log-entry"><span class="who e">夏侯惇</span> 反擊 <span class="dmg">-1,240</span></div>
+      <div class="log-entry"><span class="who f">甄姬</span> 施放 <b>洛神賦</b>，友軍回血 +980</div>
+      <div class="log-entry"><span class="who f">趙雲</span> 待機，閃避率 +12%</div>
+    </div>
+  </aside>
+
+  <!-- Right unit card -->
+  <aside class="unit-card">
+    <div class="uc-head">
+      <img src="../../assets/avatars/guan_yu.png" style="width:48px; height:48px; border-radius:50%; object-fit:cover; border:2px solid #FFE088;">
+      <div>
+        <div class="name">關 雲 長</div>
+        <div class="cl">騎兵 · CAVALRY</div>
+      </div>
+      <div class="uc-rarity">SSR</div>
+    </div>
+    <div class="uc-body">
+      <div class="stat-row"><span class="k">HP</span><span class="v">12,480 / 14,200</span></div>
+      <div class="stat-row"><span class="k">ATK · 攻</span><span class="v">2,480</span></div>
+      <div class="stat-row"><span class="k">DEF · 守</span><span class="v">1,640</span></div>
+      <div class="stat-row"><span class="k">SPD · 速</span><span class="v">142</span></div>
+      <div class="stat-row"><span class="k">CRIT · 暴</span><span class="v">38%</span></div>
+      <div class="skill">
+        <div class="sn">青龍偃月</div>
+        <div class="sd">對單體造成 240% 傷害，若對方處於流血狀態則造成 340% 暴擊。</div>
+      </div>
+      <div class="skill" style="background: linear-gradient(180deg, rgba(255,224,136,.1), rgba(255,224,136,.02));">
+        <div class="sn" style="color:#FFD700;">溫酒斬華雄 · 大招</div>
+        <div class="sd">充能 5/5 ・ 對前排全體造成 480% 真實傷害，並使其受到後續傷害增加 30%。</div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Action ring -->
+  <div class="ring-wrap">
+    <div class="active-portrait">
+      <img src="../../assets/generals/guan_yu.png" alt="">
+      <div class="frame-name">關 羽</div>
+    </div>
+
+    <div class="actions">
+      <div class="sp-tray">
+        <div class="sp-label">SP · 5 / 5</div>
+        <div class="sp-bar"><i style="width:100%"></i></div>
+        <div class="sp-label">ULT · READY</div>
+      </div>
+      <div class="act"><div class="sym">刀</div><div class="nm">Attack</div></div>
+      <div class="act"><div class="sym">陣</div><div class="nm">Tactics</div></div>
+      <div class="act ready ult"><div class="sym">斬</div><div class="nm">Ultimate</div></div>
+      <div class="act"><div class="sym">守</div><div class="nm">Defend</div></div>
+      <div class="act"><div class="sym">退</div><div class="nm">Retreat</div></div>
+    </div>
+  </div>
+
+  <button class="end-turn">結 束 回 合  →</button>
+
+</body>
+</html>

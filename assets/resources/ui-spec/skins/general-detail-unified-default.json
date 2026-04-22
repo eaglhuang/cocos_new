@@ -20,6 +20,13 @@
       "kind": "color-rect",
       "color": "transparent"
     },
+    "gdv3.portrait.rarityBadge": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/general_detail/icons/v3_parts/badge_rarity_common_flat",
+      "spriteType": "simple",
+      "allowAutoAtlas": true,
+      "opacity": 1
+    },
     "detail.close.btn": {
       "kind": "button-skin",
       "normal": "ui-spec/placeholders/btn_close_normal",

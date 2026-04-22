@@ -1,6 +1,6 @@
 {
   "id": "general-list-main",
-  "version": 1,
+  "version": 2,
   "canvas": {
     "fitWidth": true,
     "fitHeight": true,
@@ -24,290 +24,182 @@
     },
     "children": [
       {
-        "type": "image",
-        "name": "Background",
+        "type": "panel",
+        "name": "Backdrop",
         "widget": {
           "top": 0,
           "left": 0,
           "right": 0,
           "bottom": 0
         },
-        "skinSlot": "detail.bg.fullscreen"
+        "skinSlot": "general.backdrop.scrim"
       },
       {
-        "type": "container",
-        "name": "HeaderRow",
+        "type": "panel",
+        "name": "HeaderBar",
         "widget": {
-          "top": 72,
-          "left": 82,
-          "right": 82
+          "top": 64,
+          "left": 96,
+          "right": 96
         },
-        "height": 92,
+        "height": 88,
+        "skinSlot": "general.header.bar",
+        "zIndex": 10,
         "children": [
-          {
-            "type": "panel",
-            "name": "HeaderPlaqueBase",
-            "widget": {
-              "top": 2,
-              "bottom": 6,
-              "left": 0,
-              "right": 0
-            },
-            "skinSlot": "widget.header.plaque.base"
-          },
-          {
-            "type": "image",
-            "name": "HeaderPlaqueFill",
-            "widget": {
-              "top": 6,
-              "bottom": 10,
-              "left": 0,
-              "right": 0
-            },
-            "skinSlot": "widget.header.plaque.fill"
-          },
-          {
-            "type": "image",
-            "name": "HeaderPlaqueBand",
-            "widget": {
-              "top": 26,
-              "bottom": 30,
-              "left": 24,
-              "right": 24
-            },
-            "skinSlot": "widget.header.plaque.band"
-          },
           {
             "type": "label",
             "name": "Title",
             "widget": {
-              "top": 8,
-              "left": 24
-            },
-            "width": 420,
-            "height": 30,
-            "textKey": "ui.general.title",
-            "styleSlot": "widget.header.plaque.title"
-          },
-          {
-            "type": "label",
-            "name": "Subtitle",
-            "widget": {
-              "bottom": 10,
-              "left": 24
-            },
-            "width": 420,
-            "height": 20,
-            "text": "名冊視圖",
-            "styleSlot": "widget.header.plaque.subtitle"
-          },
-          {
-            "type": "container",
-            "name": "RosterBadgeDock",
-            "widget": {
-              "right": 12,
+              "left": 38,
               "vCenter": 0
             },
-            "width": 176,
-            "height": 44,
-            "children": [
-              {
-                "type": "image",
-                "name": "RosterBadgeUnderlay",
-                "widget": {
-                  "hCenter": true,
-                  "vCenter": true
-                },
-                "width": 176,
-                "height": 40,
-                "skinSlot": "widget.header.plaque.badge.underlay"
-              },
-              {
-                "type": "panel",
-                "name": "RosterBadge",
-                "widget": {
-                  "hCenter": true,
-                  "vCenter": true
-                },
-                "width": 162,
-                "height": 34,
-                "skinSlot": "widget.header.plaque.badge.fill",
-                "layout": {
-                  "type": "vertical",
-                  "paddingTop": 4,
-                  "paddingBottom": 4,
-                  "paddingLeft": 10,
-                  "paddingRight": 10
-                },
-                "children": [
-                  {
-                    "type": "label",
-                    "name": "RosterBadgeLabel",
-                    "width": 142,
-                    "height": 24,
-                    "styleSlot": "widget.header.plaque.badge.label",
-                    "text": "ROSTER"
-                  }
-                ]
-              }
-            ]
+            "width": 720,
+            "height": 54,
+            "text": "武將列表",
+            "styleSlot": "general.header.title"
           }
         ]
       },
       {
-        "type": "container",
+        "type": "panel",
         "name": "MainContainer",
         "widget": {
-          "top": 184,
-          "left": 82,
-          "right": 82,
-          "bottom": 108
+          "top": 176,
+          "left": 96,
+          "right": 96,
+          "bottom": 88
         },
-        "$ref": "fragments/layouts/parchment-panel",
+        "skinSlot": "general.list.bg",
+        "zIndex": 20,
         "children": [
           {
-            "type": "panel",
-            "name": "HeaderBar",
+            "type": "container",
+            "name": "ColumnHeaderRow",
             "widget": {
-              "top": 12,
-              "left": 12,
-              "right": 12
+              "top": 24,
+              "left": 38,
+              "right": 38
             },
-            "height": 38,
-            "skinSlot": "general.header.bg",
+            "height": 28,
+            "layout": {
+              "type": "horizontal",
+              "spacing": 0
+            },
             "children": [
               {
-                "type": "container",
-                "name": "ColumnHeaderRow",
-                "widget": {
-                  "top": 8,
-                  "left": 16,
-                  "right": 16
-                },
-                "height": 22,
-                "layout": {
-                  "type": "horizontal",
-                  "spacing": 0
-                },
-                "children": [
-                  {
-                    "type": "label",
-                    "name": "ColName",
-                    "width": "14%",
-                    "text": "名稱",
-                    "styleSlot": "general.label.header"
-                  },
-                  {
-                    "type": "label",
-                    "name": "ColGender",
-                    "width": "5%",
-                    "text": "性別",
-                    "styleSlot": "general.label.header"
-                  },
-                  {
-                    "type": "label",
-                    "name": "ColAge",
-                    "width": "5%",
-                    "text": "年齡",
-                    "styleSlot": "general.label.header"
-                  },
-                  {
-                    "type": "label",
-                    "name": "ColStr",
-                    "width": "7%",
-                    "text": "武力",
-                    "styleSlot": "general.label.header"
-                  },
-                  {
-                    "type": "label",
-                    "name": "ColInt",
-                    "width": "7%",
-                    "text": "智力",
-                    "styleSlot": "general.label.header"
-                  },
-                  {
-                    "type": "label",
-                    "name": "ColLea",
-                    "width": "7%",
-                    "text": "統率",
-                    "styleSlot": "general.label.header"
-                  },
-                  {
-                    "type": "label",
-                    "name": "ColPol",
-                    "width": "7%",
-                    "text": "政治",
-                    "styleSlot": "general.label.header"
-                  },
-                  {
-                    "type": "label",
-                    "name": "ColCha",
-                    "width": "7%",
-                    "text": "魅力",
-                    "styleSlot": "general.label.header"
-                  },
-                  {
-                    "type": "label",
-                    "name": "ColLuk",
-                    "width": "7%",
-                    "text": "運氣",
-                    "styleSlot": "general.label.header"
-                  },
-                  {
-                    "type": "label",
-                    "name": "ColTroop",
-                    "width": "14%",
-                    "text": "最強兵種",
-                    "styleSlot": "general.label.header"
-                  },
-                  {
-                    "type": "label",
-                    "name": "ColFaction",
-                    "width": "6%",
-                    "text": "陣營",
-                    "styleSlot": "general.label.headerAction"
-                  }
-                ]
+                "type": "label",
+                "name": "ColName",
+                "width": "18%",
+                "text": "武將姓名",
+                "styleSlot": "general.label.header"
+              },
+              {
+                "type": "label",
+                "name": "ColGender",
+                "width": "5%",
+                "text": "性別",
+                "styleSlot": "general.label.headerCenter"
+              },
+              {
+                "type": "label",
+                "name": "ColAge",
+                "width": "5%",
+                "text": "年齡",
+                "styleSlot": "general.label.headerCenter"
+              },
+              {
+                "type": "label",
+                "name": "ColStr",
+                "width": "6%",
+                "text": "武力",
+                "styleSlot": "general.label.headerCenter"
+              },
+              {
+                "type": "label",
+                "name": "ColInt",
+                "width": "6%",
+                "text": "智力",
+                "styleSlot": "general.label.headerCenter"
+              },
+              {
+                "type": "label",
+                "name": "ColLea",
+                "width": "6%",
+                "text": "統率",
+                "styleSlot": "general.label.headerCenter"
+              },
+              {
+                "type": "label",
+                "name": "ColPol",
+                "width": "6%",
+                "text": "政治",
+                "styleSlot": "general.label.headerCenter"
+              },
+              {
+                "type": "label",
+                "name": "ColCha",
+                "width": "6%",
+                "text": "魅力",
+                "styleSlot": "general.label.headerCenter"
+              },
+              {
+                "type": "label",
+                "name": "ColLuk",
+                "width": "6%",
+                "text": "運氣",
+                "styleSlot": "general.label.headerCenter"
+              },
+              {
+                "type": "label",
+                "name": "ColTroop",
+                "width": "24%",
+                "text": "最強兵種",
+                "styleSlot": "general.label.header"
+              },
+              {
+                "type": "label",
+                "name": "ColFaction",
+                "width": "12%",
+                "text": "陣營",
+                "styleSlot": "general.label.headerCenter"
               }
-            ],
-            "zIndex": 25
+            ]
           },
           {
             "type": "scroll-list",
             "name": "DataList",
             "widget": {
-              "top": 62,
-              "left": 12,
-              "right": 12,
-              "bottom": 76
+              "top": 68,
+              "left": 20,
+              "right": 20,
+              "bottom": 20
             },
-            "skinSlot": "general.list.bg",
             "layout": {
               "type": "vertical",
-              "spacing": 4,
-              "paddingTop": 10,
-              "paddingBottom": 10,
+              "spacing": 8,
+              "paddingTop": 8,
+              "paddingBottom": 8,
               "paddingLeft": 0,
               "paddingRight": 0
             },
             "itemTemplate": {
               "type": "panel",
               "name": "Row",
-              "height": 54,
+              "height": 60,
               "skinSlot": "general.row.bg",
               "layout": {
                 "type": "horizontal",
                 "spacing": 0,
-                "paddingLeft": 12,
-                "paddingRight": 12,
-                "paddingTop": 8,
-                "paddingBottom": 8
+                "paddingLeft": 18,
+                "paddingRight": 18,
+                "paddingTop": 10,
+                "paddingBottom": 10
               },
               "children": [
                 {
                   "type": "label",
                   "name": "Name",
-                  "width": "14%",
+                  "width": "18%",
                   "bind": "name",
                   "styleSlot": "general.label.name"
                 },
@@ -316,102 +208,91 @@
                   "name": "Gender",
                   "width": "5%",
                   "bind": "gender",
-                  "styleSlot": "general.label.value"
+                  "styleSlot": "general.label.valueCenter"
                 },
                 {
                   "type": "label",
                   "name": "Age",
                   "width": "5%",
                   "bind": "age",
-                  "styleSlot": "general.label.value"
+                  "styleSlot": "general.label.valueCenter"
                 },
                 {
                   "type": "label",
                   "name": "Str",
-                  "width": "7%",
+                  "width": "6%",
                   "bind": "str",
-                  "styleSlot": "general.label.value"
+                  "styleSlot": "general.label.valueCenter"
                 },
                 {
                   "type": "label",
                   "name": "Int",
-                  "width": "7%",
+                  "width": "6%",
                   "bind": "int",
-                  "styleSlot": "general.label.value"
+                  "styleSlot": "general.label.valueCenter"
                 },
                 {
                   "type": "label",
                   "name": "Lea",
-                  "width": "7%",
+                  "width": "6%",
                   "bind": "lea",
-                  "styleSlot": "general.label.value"
+                  "styleSlot": "general.label.valueCenter"
                 },
                 {
                   "type": "label",
                   "name": "Pol",
-                  "width": "7%",
+                  "width": "6%",
                   "bind": "pol",
-                  "styleSlot": "general.label.value"
+                  "styleSlot": "general.label.valueCenter"
                 },
                 {
                   "type": "label",
                   "name": "Cha",
-                  "width": "7%",
+                  "width": "6%",
                   "bind": "cha",
-                  "styleSlot": "general.label.value"
+                  "styleSlot": "general.label.valueCenter"
                 },
                 {
                   "type": "label",
                   "name": "Luk",
-                  "width": "7%",
+                  "width": "6%",
                   "bind": "luk",
-                  "styleSlot": "general.label.value"
+                  "styleSlot": "general.label.valueCenter"
                 },
                 {
                   "type": "label",
                   "name": "Troop",
-                  "width": "14%",
+                  "width": "24%",
                   "bind": "troopAptitude",
                   "styleSlot": "general.label.value"
                 },
                 {
                   "type": "label",
                   "name": "Faction",
-                  "width": "6%",
+                  "width": "12%",
                   "bind": "faction",
-                  "styleSlot": "general.label.faction"
+                  "styleSlot": "general.label.valueCenter"
                 }
               ]
             },
             "zIndex": 25
-          },
-          {
-            "type": "label",
-            "name": "FooterHint",
-            "widget": {
-              "left": 20,
-              "bottom": 24
-            },
-            "width": 520,
-            "height": 20,
-            "text": "點擊任一武將即可切換至人物總覽頁",
-            "styleSlot": "general.label.meta"
-          },
-          {
-            "type": "button",
-            "name": "BtnBack",
-            "widget": {
-              "bottom": 16,
-              "right": 16
-            },
-            "width": 220,
-            "height": 60,
-            "skinSlot": "list.button.primary",
-            "styleSlot": "general.label.button",
-            "textKey": "ui.back",
-            "onClick": "onClickBack"
           }
         ]
+      },
+      {
+        "type": "button",
+        "name": "BtnBack",
+        "widget": {
+          "top": 28,
+          "right": 32
+        },
+        "width": 200,
+        "height": 56,
+        "zIndex": 40,
+        "skinSlot": "list.button.primary",
+        "styleSlot": "general.label.button",
+        "textKey": "ui.back",
+        "onClick": "onClickBack"
       }
     ]
   },

@@ -30,20 +30,35 @@
  * 參考來源：dgflash/oops-framework LayerManager
  */
 
-import { instantiate, Node } from "cc";
+import { Button, Color, instantiate, Node, UIOpacity, UITransform, Widget } from "cc";
+import { SolidBackground } from "../../ui/components/SolidBackground";
 import { UILayer } from "../../ui/layers/UILayer";
-import { UIID, UIConfig, LayerType } from "../config/UIConfig";
+import { UIBackdropConfig, UIID, UIConfig, LayerType } from "../config/UIConfig";
 import { services } from "./ServiceLoader";
 import type { CompositePanel } from "../../ui/core/CompositePanel";
+
+export interface UIManagedController {
+    readonly node: Node;
+    show(payload?: unknown): void | Promise<void>;
+    hide(): void | Promise<void>;
+    resetState?(): void;
+}
 
 // ─── 內部紀錄結構 ─────────────────────────────────────────────────────────────
 interface UIEntry {
     readonly uiId: UIID;
-    layer: UILayer;
+    controller: UIManagedController;
     isOpen: boolean;
     /** 是否曾以快取模式關閉——下次 open 需先呼叫 resetState()（M-2） */
     wasCached: boolean;
 }
+
+const DEFAULT_UI_BACKDROP: Required<UIBackdropConfig> = {
+    enabled: true,
+    opacity: 180,
+    blocksInput: true,
+    closeOnTap: false,
+};
 
 export class UIManager {
     // 統一頁面登記表
@@ -51,6 +66,9 @@ export class UIManager {
 
     // LayerUI：目前顯示的替換式主頁面（同時只有一個）
     private currentUI: UIID | null = null;
+    private readonly uiHistory: UIID[] = [];
+    private _uiBackdropNode: Node | null = null;
+    private _uiBackdropCloseOnTap = false;
 
     // LayerPopUp：堆疊式彈窗（可多個共存，LIFO 順序）
     private readonly popupStack: UIID[] = [];
@@ -78,8 +96,11 @@ export class UIManager {
      * 將場景中的 UILayer 元件綁定到指定 UIID。
      * 必須在呼叫 open/close 之前完成（通常在 BattleScene.start() 或對應 View 的 onLoad 中執行）。
      */
-    public register(uiId: UIID, layer: UILayer): void {
-        this.registry.set(uiId, { uiId, layer, isOpen: false, wasCached: false });
+    public register(uiId: UIID, layerOrController: UILayer | UIManagedController): void {
+        const controller = layerOrController instanceof UILayer
+            ? this._createLayerController(layerOrController)
+            : layerOrController;
+        this.registry.set(uiId, { uiId, controller, isOpen: false, wasCached: false });
     }
 
     /**
@@ -114,10 +135,10 @@ export class UIManager {
      *
      * @returns 成功開啟回傳 true；prefab 路徑不存在或載入失敗回傳 false
      */
-    public async openAsync(uiId: UIID): Promise<boolean> {
+    public async openAsync(uiId: UIID, payload?: unknown): Promise<boolean> {
         // 已登錄 → 直接走同步路徑
         if (this.registry.has(uiId)) {
-            return this.open(uiId);
+            return this.open(uiId, payload);
         }
 
         const cfg = UIConfig[uiId];
@@ -152,7 +173,7 @@ export class UIManager {
         }
 
         this.register(uiId, layer);
-        return this.open(uiId);
+        return this.open(uiId, payload);
     }
 
     /**
@@ -160,7 +181,7 @@ export class UIManager {
      * 若該 UI 之前以快取模式關閉，先呼叫 resetState() 清除殘留資料（M-2）。
      * @returns 若未 register 則回傳 false
      */
-    public open(uiId: UIID): boolean {
+    public async open(uiId: UIID, payload?: unknown): Promise<boolean> {
         const entry = this.registry.get(uiId);
         if (!entry) {
             console.warn(`[UIManager] open: "${uiId}" not registered`);
@@ -172,18 +193,19 @@ export class UIManager {
             case LayerType.Game:
             case LayerType.System:
             case LayerType.Notify:
-                this._showEntry(entry);
+                await this._showEntry(entry, payload);
                 break;
             case LayerType.UI:
-                this._openReplace(uiId, entry);
+                await this._openReplace(uiId, entry, payload);
                 break;
             case LayerType.PopUp:
-                this._openStack(uiId, entry);
+                await this._openStack(uiId, entry, payload);
                 break;
             case LayerType.Dialog:
-                this._openQueue(uiId, entry);
+                await this._openQueue(uiId, entry, payload);
                 break;
         }
+        this._syncUIBackdrop();
         return true;
     }
 
@@ -192,7 +214,7 @@ export class UIManager {
      * Dialog 關閉後會自動推進佇列中的下一個對話框。
      * @returns 若未 register 或已關閉則回傳 false
      */
-    public close(uiId: UIID): boolean {
+    public async close(uiId: UIID): Promise<boolean> {
         const entry = this.registry.get(uiId);
         if (!entry || !entry.isOpen) { return false; }
 
@@ -201,20 +223,32 @@ export class UIManager {
             case LayerType.Game:
             case LayerType.System:
             case LayerType.Notify:
-                this._hideEntry(entry, cfg.cache);
+                await this._hideEntry(entry, cfg.cache);
                 break;
             case LayerType.UI:
-                this._hideEntry(entry, cfg.cache);
-                if (this.currentUI === uiId) { this.currentUI = null; }
+                await this._closeReplace(uiId, entry);
                 break;
             case LayerType.PopUp:
-                this._closeStack(uiId, entry);
+                await this._closeStack(uiId, entry);
                 break;
             case LayerType.Dialog:
-                this._closeQueue(uiId, entry);
+                await this._closeQueue(uiId, entry);
                 break;
         }
+        this._syncUIBackdrop();
         return true;
+    }
+
+    public async closeCurrentUI(): Promise<boolean> {
+        const targetUiId = this._getTopClosableUI();
+        if (!targetUiId) {
+            return false;
+        }
+        return this.close(targetUiId);
+    }
+
+    public async goBack(): Promise<boolean> {
+        return this.closeCurrentUI();
     }
 
     /** 查詢指定 UI 是否目前處於開啟狀態 */
@@ -262,14 +296,18 @@ export class UIManager {
     }
 
     /** 關閉所有已開啟的 UI 並重置所有狀態 */
-    public closeAll(): void {
-        this.registry.forEach(entry => {
-            if (entry.isOpen) { this._hideEntry(entry, false); }
-        });
+    public async closeAll(): Promise<void> {
+        for (const entry of this.registry.values()) {
+            if (entry.isOpen) {
+                await this._hideEntry(entry, false);
+            }
+        }
         this.currentUI = null;
+        this.uiHistory.length = 0;
         this.popupStack.length = 0;
         this.dialogQueue.length = 0;
         this.activeDialog = null;
+        this._syncUIBackdrop();
     }
 
     // ─── CompositePanel 管理（M5） ──────────────────────────────────────────────
@@ -306,6 +344,15 @@ export class UIManager {
             }
         }
         this._compositePanels.clear();
+        this.currentUI = null;
+        this.uiHistory.length = 0;
+        this.popupStack.length = 0;
+        this.dialogQueue.length = 0;
+        this.activeDialog = null;
+        if (this._uiBackdropNode) {
+            this._uiBackdropNode.active = false;
+        }
+        this._uiBackdropCloseOnTap = false;
     }
 
     // ─── 私有層級行為實作 ──────────────────────────────────────────────────────
@@ -313,67 +360,105 @@ export class UIManager {
     /**
      * 顯示面板：若曾以快取模式關閉，先呼叫 resetState() 清除殘留狀態（M-2）。
      */
-    private _showEntry(entry: UIEntry): void {
+    private async _showEntry(entry: UIEntry, payload?: unknown): Promise<void> {
         if (entry.wasCached) {
-            entry.layer.resetState();
+            entry.controller.resetState?.();
             entry.wasCached = false;
         }
         entry.isOpen = true;
-        entry.layer.show();
+        await entry.controller.show(payload);
     }
 
     /**
      * 隱藏面板。
      * @param useCache 若為 true，標記為快取（下次 open 前呼叫 resetState）
      */
-    private _hideEntry(entry: UIEntry, useCache?: boolean): void {
+    private async _hideEntry(entry: UIEntry, useCache?: boolean): Promise<void> {
         entry.isOpen = false;
         entry.wasCached = useCache === true;
-        entry.layer.hide();
+
+        const node = entry.controller.node;
+        if (!node || !node.isValid) {
+            return;
+        }
+
+        await entry.controller.hide();
     }
 
     /**
      * LayerUI 替換模式：先關閉目前主頁面，再開啟新頁面。
      * 對照 Unity：像切換主場景的 Canvas，不允許兩個主頁面同時存在。
      */
-    private _openReplace(uiId: UIID, entry: UIEntry): void {
-        if (this.currentUI && this.currentUI !== uiId) {
+    private async _openReplace(uiId: UIID, entry: UIEntry, payload?: unknown): Promise<void> {
+        if (this.currentUI === uiId) {
+            await this._showEntry(entry, payload);
+            return;
+        }
+
+        await this._closeTransientOverlays();
+
+        if (this.currentUI) {
             const prev = this.registry.get(this.currentUI);
-            if (prev) {
+            if (prev && prev.isOpen) {
+                this.uiHistory.push(this.currentUI);
                 const prevCfg = UIConfig[prev.uiId];
-                this._hideEntry(prev, prevCfg.cache);
+                await this._hideEntry(prev, prevCfg.cache);
             }
         }
+
         this.currentUI = uiId;
-        this._showEntry(entry);
+        await this._showEntry(entry, payload);
+    }
+
+    private async _closeReplace(uiId: UIID, entry: UIEntry): Promise<void> {
+        const cfg = UIConfig[uiId];
+        if (this.currentUI === uiId) {
+            await this._closeTransientOverlays();
+        }
+        await this._hideEntry(entry, cfg.cache);
+
+        if (this.currentUI !== uiId) {
+            this._removeFromUIHistory(uiId);
+            return;
+        }
+
+        this.currentUI = null;
+        const previousUI = this._popPreviousUI(uiId);
+        if (previousUI) {
+            const previousEntry = this.registry.get(previousUI);
+            if (previousEntry) {
+                this.currentUI = previousUI;
+                await this._showEntry(previousEntry);
+            }
+        }
     }
 
     /**
      * LayerPopUp 堆疊模式：推入堆疊後直接顯示。
      * 對照 Unity：多個 Panel 可同時疊加，但有記錄堆疊順序。
      */
-    private _openStack(uiId: UIID, entry: UIEntry): void {
+    private async _openStack(uiId: UIID, entry: UIEntry, payload?: unknown): Promise<void> {
         if (!this.popupStack.includes(uiId)) {
             this.popupStack.push(uiId);
         }
-        this._showEntry(entry);
+        await this._showEntry(entry, payload);
     }
 
     /**
      * LayerPopUp 堆疊關閉：從堆疊中任意位置移除。
      */
-    private _closeStack(uiId: UIID, entry: UIEntry): void {
+    private async _closeStack(uiId: UIID, entry: UIEntry): Promise<void> {
         const idx = this.popupStack.indexOf(uiId);
         if (idx !== -1) { this.popupStack.splice(idx, 1); }
         const cfg = UIConfig[uiId];
-        this._hideEntry(entry, cfg.cache);
+        await this._hideEntry(entry, cfg.cache);
     }
 
     /**
      * LayerDialog 佇列模式：若有正在顯示的對話框，則排隊等候；否則立即顯示。
      * 對照 Unity：類似 MessageQueue，保證對話框不互相打斷。
      */
-    private _openQueue(uiId: UIID, entry: UIEntry): void {
+    private async _openQueue(uiId: UIID, entry: UIEntry, payload?: unknown): Promise<void> {
         if (this.activeDialog !== null) {
             // 已有對話框在顯示，加入等候佇列
             if (!this.dialogQueue.includes(uiId)) {
@@ -382,15 +467,15 @@ export class UIManager {
             return;
         }
         this.activeDialog = uiId;
-        this._showEntry(entry);
+        await this._showEntry(entry, payload);
     }
 
     /**
      * LayerDialog 佇列關閉：關閉當前後自動顯示下一個等候中的對話框。
      */
-    private _closeQueue(uiId: UIID, entry: UIEntry): void {
+    private async _closeQueue(uiId: UIID, entry: UIEntry): Promise<void> {
         const cfg = UIConfig[uiId];
-        this._hideEntry(entry, cfg.cache);
+        await this._hideEntry(entry, cfg.cache);
         if (this.activeDialog === uiId) {
             this.activeDialog = null;
             const nextId = this.dialogQueue.shift();
@@ -398,9 +483,233 @@ export class UIManager {
                 const nextEntry = this.registry.get(nextId);
                 if (nextEntry) {
                     this.activeDialog = nextId;
-                    this._showEntry(nextEntry);
+                    await this._showEntry(nextEntry);
                 }
             }
         }
+    }
+
+    private async _closeTransientOverlays(): Promise<void> {
+        const activeDialogId = this.activeDialog;
+        const popupIds = [...this.popupStack].reverse();
+
+        this.activeDialog = null;
+        this.dialogQueue.length = 0;
+        this.popupStack.length = 0;
+
+        if (activeDialogId) {
+            const activeDialogEntry = this.registry.get(activeDialogId);
+            if (activeDialogEntry?.isOpen) {
+                const cfg = UIConfig[activeDialogId];
+                await this._hideEntry(activeDialogEntry, cfg.cache);
+            }
+        }
+
+        for (const popupId of popupIds) {
+            const popupEntry = this.registry.get(popupId);
+            if (!popupEntry?.isOpen) {
+                continue;
+            }
+            const cfg = UIConfig[popupId];
+            await this._hideEntry(popupEntry, cfg.cache);
+        }
+    }
+
+    private _createLayerController(layer: UILayer): UIManagedController {
+        return {
+            node: layer.node,
+            show: () => layer.show(),
+            hide: () => layer.hide(),
+            resetState: () => layer.resetState(),
+        };
+    }
+
+    private _popPreviousUI(excludeUiId: UIID): UIID | null {
+        while (this.uiHistory.length > 0) {
+            const previousUiId = this.uiHistory.pop() ?? null;
+            if (!previousUiId || previousUiId === excludeUiId) {
+                continue;
+            }
+            if (!this.registry.has(previousUiId)) {
+                continue;
+            }
+            return previousUiId;
+        }
+        return null;
+    }
+
+    private _removeFromUIHistory(uiId: UIID): void {
+        for (let index = this.uiHistory.length - 1; index >= 0; index -= 1) {
+            if (this.uiHistory[index] === uiId) {
+                this.uiHistory.splice(index, 1);
+            }
+        }
+    }
+
+    private _resolveBackdropConfig(uiId: UIID | null): Required<UIBackdropConfig> | null {
+        if (!uiId) {
+            return null;
+        }
+        const cfg = UIConfig[uiId];
+        const backdrop = cfg.backdrop;
+        const needsDefaultBackdrop = cfg.layer === LayerType.UI
+            || cfg.layer === LayerType.PopUp
+            || cfg.layer === LayerType.Dialog
+            || cfg.mask === true;
+
+        if (backdrop?.enabled === false) {
+            return null;
+        }
+        if (!backdrop && !needsDefaultBackdrop) {
+            return null;
+        }
+        return {
+            enabled: true,
+            opacity: backdrop?.opacity ?? DEFAULT_UI_BACKDROP.opacity,
+            blocksInput: backdrop?.blocksInput ?? DEFAULT_UI_BACKDROP.blocksInput,
+            closeOnTap: backdrop?.closeOnTap ?? DEFAULT_UI_BACKDROP.closeOnTap,
+        };
+    }
+
+    private _getBackdropOwnerUiId(): UIID | null {
+        if (this.activeDialog) {
+            const activeDialogEntry = this.registry.get(this.activeDialog);
+            if (activeDialogEntry?.isOpen) {
+                return this.activeDialog;
+            }
+        }
+
+        for (let index = this.popupStack.length - 1; index >= 0; index -= 1) {
+            const popupUiId = this.popupStack[index];
+            const popupEntry = this.registry.get(popupUiId);
+            if (popupEntry?.isOpen) {
+                return popupUiId;
+            }
+        }
+
+        if (this.currentUI) {
+            const currentEntry = this.registry.get(this.currentUI);
+            if (currentEntry?.isOpen) {
+                return this.currentUI;
+            }
+        }
+
+        return null;
+    }
+
+    private _syncUIBackdrop(): void {
+        const activeUiId = this._getBackdropOwnerUiId();
+        const backdropConfig = this._resolveBackdropConfig(activeUiId);
+        if (!activeUiId || !backdropConfig) {
+            if (this._uiBackdropNode) {
+                this._uiBackdropNode.active = false;
+            }
+            this._uiBackdropCloseOnTap = false;
+            return;
+        }
+
+        const entry = this.registry.get(activeUiId);
+        const activeCfg = UIConfig[activeUiId];
+        const hostNode = entry?.controller.node ?? null;
+        const container = this.layerContainers.get(LayerType.UI) ?? hostNode?.parent ?? null;
+        if (!hostNode || !container) {
+            if (this._uiBackdropNode) {
+                this._uiBackdropNode.active = false;
+            }
+            this._uiBackdropCloseOnTap = false;
+            return;
+        }
+
+        const backdropNode = this._ensureUIBackdropNode(container);
+        backdropNode.active = true;
+        backdropNode.layer = container.layer;
+        backdropNode.setSiblingIndex(Math.max(0, hostNode.getSiblingIndex()));
+        hostNode.setSiblingIndex(backdropNode.getSiblingIndex() + 1);
+
+        const backdropFill = backdropNode.getComponent(SolidBackground) ?? backdropNode.addComponent(SolidBackground);
+        backdropFill.color = new Color(0, 0, 0, 255);
+
+        const backdropOpacity = backdropNode.getComponent(UIOpacity) ?? backdropNode.addComponent(UIOpacity);
+        backdropOpacity.opacity = backdropConfig.opacity;
+
+        const blockerButton = backdropNode.getComponent(Button) ?? backdropNode.addComponent(Button);
+        blockerButton.transition = Button.Transition.NONE;
+        const shouldBlockInput = activeCfg.layer !== LayerType.UI
+            ? (backdropConfig.blocksInput || backdropConfig.closeOnTap)
+            : backdropConfig.closeOnTap;
+        blockerButton.enabled = shouldBlockInput;
+        blockerButton.interactable = shouldBlockInput;
+
+        this._uiBackdropCloseOnTap = shouldBlockInput && backdropConfig.closeOnTap;
+    }
+
+    private _ensureUIBackdropNode(container: Node): Node {
+        if (this._uiBackdropNode?.isValid) {
+            if (this._uiBackdropNode.parent !== container) {
+                this._uiBackdropNode.parent = container;
+            }
+            return this._uiBackdropNode;
+        }
+
+        const backdropNode = new Node('__ui-backdrop');
+        backdropNode.layer = container.layer;
+        backdropNode.parent = container;
+
+        const transform = backdropNode.addComponent(UITransform);
+        transform.setContentSize(1920, 1080);
+
+        const widget = backdropNode.addComponent(Widget);
+        widget.isAlignTop = true;
+        widget.isAlignBottom = true;
+        widget.isAlignLeft = true;
+        widget.isAlignRight = true;
+        widget.top = 0;
+        widget.bottom = 0;
+        widget.left = 0;
+        widget.right = 0;
+
+        const backdropFill = backdropNode.addComponent(SolidBackground);
+        backdropFill.color = new Color(0, 0, 0, 255);
+
+        const opacity = backdropNode.addComponent(UIOpacity);
+        opacity.opacity = DEFAULT_UI_BACKDROP.opacity;
+
+        const blockerButton = backdropNode.addComponent(Button);
+        blockerButton.transition = Button.Transition.NONE;
+        blockerButton.node.on(Button.EventType.CLICK, () => {
+            if (!this._uiBackdropCloseOnTap) {
+                return;
+            }
+            void this.closeCurrentUI();
+        });
+
+        this._uiBackdropNode = backdropNode;
+        return backdropNode;
+    }
+
+    private _getTopClosableUI(): UIID | null {
+        if (this.activeDialog) {
+            const activeDialogEntry = this.registry.get(this.activeDialog);
+            if (activeDialogEntry?.isOpen) {
+                return this.activeDialog;
+            }
+        }
+
+        for (let index = this.popupStack.length - 1; index >= 0; index -= 1) {
+            const popupUiId = this.popupStack[index];
+            const popupEntry = this.registry.get(popupUiId);
+            if (popupEntry?.isOpen) {
+                return popupUiId;
+            }
+        }
+
+        if (this.currentUI) {
+            const currentEntry = this.registry.get(this.currentUI);
+            if (currentEntry?.isOpen) {
+                return this.currentUI;
+            }
+        }
+
+        return null;
     }
 }

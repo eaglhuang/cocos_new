@@ -64,6 +64,7 @@
 
   - **卡牌樣式（State A 摘要態）**:
     - **美術圖**: 中央為兵種部隊美術圖（如：虎豹騎、陷陣營），填滿卡片。
+    - **卡圖規格**: 現行 troop 主視覺以 `287x142 px` 為基準，資源命名跟隨 `troops_<troopType>.png`，Battle 端由 `TigerTallyComposite` 依 `artResource` 載入；目前 8 張正式 `troops_*.png` 已完成，找不到專圖時退回 `troops.png`。
     - **攻擊力 (AtkLabel)**: 底部左側，大字顯示攻擊數值，搭配 ⚔ 或十字準星 icon。
     - **生命值 (HpLabel)**: 底部右側，大字顯示生命數值，搭配 ❤ 或盾牌 icon。
     - **兵種徽章列 (UnitTypeBadges)**: 右側垂直 icon 列，顯示兵種類型與特殊戰法 icon。

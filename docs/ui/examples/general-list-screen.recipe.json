@@ -28,7 +28,7 @@
       "slotId": "HeaderBar",
       "zoneId": "rail-list.header",
       "mode": "toolbar-host",
-      "widgetPath": "GeneralListRoot/MainContainer/HeaderBar"
+      "widgetPath": "GeneralListRoot/HeaderBar"
     },
     {
       "slotId": "ListSlot",
@@ -39,8 +39,8 @@
     },
     {
       "slotId": "BackAction",
-      "zoneId": "rail-list.footer.back",
-      "mode": "footer-host",
+      "zoneId": "rail-list.header.back",
+      "mode": "toolbar-host",
       "widgetPath": "GeneralListRoot/BtnBack"
     }
   ],
@@ -49,7 +49,7 @@
     "hasTopMeta": false,
     "hasBottomSummary": false,
     "hasTabRail": false,
-    "hasFooterActions": true,
+    "hasFooterActions": false,
     "hasOverviewSpecialSlot": false,
     "hasSearchBar": false,
     "hasSortHeader": true,

@@ -9,7 +9,6 @@ export const OVERVIEW_CONTENT_REQUIRED_FIELDS = [
     'headerMeta',
     'rarityLabel',
     'rarityTier',
-    'portraitModeHint',
     'coreStatsTitle',
     'coreStatsValue',
     'roleTitle',
@@ -36,9 +35,7 @@ export const OVERVIEW_CONTENT_REQUIRED_FIELDS = [
     'portraitResource',
 ] as const;
 
-export const OVERVIEW_UNIFIED_CONTENT_REQUIRED_FIELDS = OVERVIEW_CONTENT_REQUIRED_FIELDS.filter(
-    (field) => field !== 'portraitModeHint',
-);
+export const OVERVIEW_UNIFIED_CONTENT_REQUIRED_FIELDS = [...OVERVIEW_CONTENT_REQUIRED_FIELDS];
 
 export const OVERVIEW_CONTENT_CONTRACT_REF: ContentContractRef = {
     schemaId: 'general-detail-overview-content',

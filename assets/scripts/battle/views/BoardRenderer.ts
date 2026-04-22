@@ -3,6 +3,7 @@ import { _decorator, Component, Node, Vec3, Vec4, MeshRenderer, primitives, util
 import { BattleTactic, Faction, GAME_CONFIG } from '../../core/config/Constants';
 import { BattleState } from '../models/BattleState';
 import { UCUFLogger, LogCategory } from '../../ui/core/UCUFLogger';
+import { FLOOD_ATTACK_PUSH_DEPTH_DELTA, FLOOD_ATTACK_PUSH_LANE_DELTA } from '../shared/BattleTacticBehavior';
 import { resolveBattleSceneDisplayRule, type BattleSceneBaseStyle } from '../shared/BattleSceneMode';
 import { resolveBattleSceneMode, resolveBattleScenePulseColor, type BattleSceneMode } from '../shared/BattleSceneMode';
 
@@ -26,6 +27,7 @@ interface CellView {
     root: Node;
     fillRenderer: MeshRenderer | null;
     overlayRenderer: MeshRenderer | null;
+    overlayAccentRenderer: MeshRenderer | null;
     borderEdgeRenderers: MeshRenderer[];
     borderMidRenderers: MeshRenderer[];
     borderInnerRenderers: MeshRenderer[];
@@ -42,6 +44,11 @@ interface ImpactFxView {
 }
 
 type SceneEffectOverlayKind = 'fire' | 'water' | 'rock';
+
+type SceneEffectMaterialSet = {
+    primary: Material | null;
+    accent: Material | null;
+};
 
 @ccclass('BoardRenderer')
 export class BoardRenderer extends Component {
@@ -95,6 +102,7 @@ export class BoardRenderer extends Component {
     private sceneEffectFireFillMaterial: Material | null = null;
     private sceneEffectWaterFillMaterial: Material | null = null;
     private floodRippleFillMaterial: Material | null = null;
+    private floodRippleAccentFillMaterial: Material | null = null;
     private lightningArcFillMaterial: Material | null = null;
     private poisonFogFillMaterial: Material | null = null;
     private windVortexFillMaterial: Material | null = null;
@@ -119,6 +127,9 @@ export class BoardRenderer extends Component {
     private readonly activeImpactFxViews: Map<string, ImpactFxView> = new Map();
     private boardRevision: number = 0;
     private impactFxSerial: number = 0;
+    private lastRenderedState: BattleState | null = null;
+    private floodDebugVectorRoot: Node | null = null;
+    private hasLoggedFloodRenderStateDebug: boolean = false;
 
     onLoad() {
         // 確保此節點本身也在 DEFAULT layer，Camera 才照得到
@@ -139,6 +150,10 @@ export class BoardRenderer extends Component {
         this.tileBuffFxViews.clear();
         this.cellNodes.clear();
         this.boardRoot = null;
+        if (this.floodDebugVectorRoot?.isValid) {
+            this.floodDebugVectorRoot.destroy();
+        }
+        this.floodDebugVectorRoot = null;
     }
 
     public rebuildBoard(): void {
@@ -160,7 +175,7 @@ export class BoardRenderer extends Component {
                 return;
             }
             if (err || !effectAsset) {
-                UCUFLogger.warn(LogCategory.LIFECYCLE, '[BoardRenderer] 棋盤玻璃 Shader 載入失敗，暫用 fallback 材質', err?.message ?? err);
+                UCUFLogger.warn(LogCategory.LIFECYCLE, '[BoardRenderer] 棋盤玻璃 Shader 載入失敗，暫用 fallback 材質', err?.message || err);
                 return;
             }
 
@@ -182,13 +197,17 @@ export class BoardRenderer extends Component {
         this.floodRippleLoadRequested = true;
         this.isFloodRippleLoading = true;
         this.loadFloodRippleMaterial()
-            .then((material) => {
-                if (!this.node?.isValid || !material) {
+            .then((materials) => {
+                if (!this.node?.isValid || !materials) {
                     this.floodRippleLoadRequested = false;
                     return;
                 }
-                this.floodRippleFillMaterial = material;
-                UCUFLogger.info(LogCategory.LIFECYCLE, '[BoardRenderer] Flood ripple material loaded (water-ripple.effect)');
+                this.floodRippleFillMaterial = materials.base;
+                this.floodRippleAccentFillMaterial = materials.accent;
+                UCUFLogger.info(LogCategory.LIFECYCLE, '[BoardRenderer] Flood ripple materials loaded (water-ripple.effect dual-layer)');
+                if (this.lastRenderedState) {
+                    this.renderState(this.lastRenderedState);
+                }
             })
             .catch((error) => {
                 this.floodRippleLoadRequested = false;
@@ -199,7 +218,7 @@ export class BoardRenderer extends Component {
             });
     }
 
-    private async loadFloodRippleMaterial(): Promise<Material | null> {
+    private async loadFloodRippleMaterial(): Promise<{ base: Material; accent: Material } | null> {
         const vfxBundle = await this.ensureVfxCoreBundle();
         if (!vfxBundle) {
             return null;
@@ -215,29 +234,152 @@ export class BoardRenderer extends Component {
             return null;
         }
 
-        const resolvedMain = mainTex ?? lineTex ?? noiseTex;
+        const resolvedMain = mainTex || lineTex || noiseTex;
         if (!resolvedMain) {
             return null;
         }
 
-        const resolvedNoise = noiseTex ?? resolvedMain;
-        const resolvedFlow = noiseTex ?? lineTex ?? resolvedMain;
-        const resolvedFoam = lineTex ?? noiseTex ?? resolvedMain;
+        const resolvedNoise = noiseTex || resolvedMain;
+        const resolvedFlow = noiseTex || lineTex || resolvedMain;
+        const resolvedFoam = lineTex || noiseTex || resolvedMain;
+        const floodRiverDir = this.getFloodRiverDirectionVector() ?? new Vec3(1, 0, 1).normalize();
+        const floodFoamDir = this.getFloodFoamDirectionVector() ?? new Vec3(-1, 0, 0);
+        const baseMaterial = this.createFloodRippleLayerMaterial(
+            effectAsset,
+            0,
+            resolvedMain,
+            resolvedNoise,
+            resolvedFlow,
+            resolvedFoam,
+            new Vec4(0.36, 0.60, 0.82, 0.26),
+            new Vec4(0.84, 0.84, 0.0, 0.0),
+            new Vec4(0.28, 0.050, 2.35, 0.07),
+            new Vec4(0.96, 0.44, 0.22, 0.0),
+            new Vec4(0.14, 0.14, 0.62, 0.24),
+            new Vec4(0.0, 0.0, 0.0, 0.0),
+            new Vec4(floodRiverDir.x, floodRiverDir.z, 1.28, 0.16),
+            new Vec4(floodFoamDir.x, floodFoamDir.z, 1.0, 1.0),
+            new Vec4(0.46, 0.16, 1.0, 0.18),
+            new Vec4(0.88, 0.34, 0.10, 0.84)
+        );
 
+        const accentMaterial = this.createFloodRippleLayerMaterial(
+            effectAsset,
+            1,
+            resolvedMain,
+            resolvedNoise,
+            resolvedFlow,
+            resolvedFoam,
+            new Vec4(0.34, 0.58, 0.82, 0.22),
+            new Vec4(1.18, 1.18, 0.0, 0.0),
+            new Vec4(0.40, 0.095, 2.75, 0.28),
+            new Vec4(0.72, 0.58, 0.52, 0.0),
+            new Vec4(0.14, 0.14, 0.96, 0.32),
+            new Vec4(1.0, 0.0, 0.0, 0.0),
+            new Vec4(floodRiverDir.x, floodRiverDir.z, 1.78, 0.88),
+            new Vec4(floodFoamDir.x, floodFoamDir.z, 1.60, 1.0),
+            new Vec4(0.48, 0.14, 0.98, 0.36),
+            new Vec4(0.50, 0.80, 0.56, 0.88)
+        );
+
+        return {
+            base: baseMaterial,
+            accent: accentMaterial,
+        };
+    }
+
+    public getFloodRiverDirectionVector(): Vec3 | null {
+        if (this.cols < 1 || this.rows < 1) {
+            return null;
+        }
+
+        return this.getFloodDirectionVector(0, 0, this.cols - 1, this.rows - 1);
+    }
+
+    public getFloodFoamDirectionVector(): Vec3 | null {
+        const fromLane = Math.min(Math.max(0, -FLOOD_ATTACK_PUSH_LANE_DELTA), this.cols - 1);
+        const fromDepth = Math.min(Math.max(0, -FLOOD_ATTACK_PUSH_DEPTH_DELTA), this.rows - 1);
+        const toLane = fromLane + FLOOD_ATTACK_PUSH_LANE_DELTA;
+        const toDepth = fromDepth + FLOOD_ATTACK_PUSH_DEPTH_DELTA;
+
+        if (toLane < 0 || toLane >= this.cols || toDepth < 0 || toDepth >= this.rows) {
+            return null;
+        }
+
+        return this.getFloodDirectionVector(fromLane, fromDepth, toLane, toDepth);
+    }
+
+    private getFloodEnemyPushDirectionVector(state: BattleState): Vec3 | null {
+        const pushedEnemy = Array.from(state.units.values()).find((unit) => {
+            if (unit.faction !== Faction.Enemy || unit.isDead()) {
+                return false;
+            }
+            const effect = state.getTileEffect(unit.lane, unit.depth);
+            return effect?.state === 'river-current';
+        });
+
+        if (!pushedEnemy) {
+            return this.getFloodFoamDirectionVector();
+        }
+
+        const toLane = pushedEnemy.lane + FLOOD_ATTACK_PUSH_LANE_DELTA;
+        const toDepth = pushedEnemy.depth + FLOOD_ATTACK_PUSH_DEPTH_DELTA;
+        if (toLane < 0 || toLane >= this.cols || toDepth < 0 || toDepth >= this.rows) {
+            return this.getFloodFoamDirectionVector();
+        }
+
+        return this.getFloodDirectionVector(pushedEnemy.lane, pushedEnemy.depth, toLane, toDepth);
+    }
+
+    private getFloodDirectionVector(fromLane: number, fromDepth: number, toLane: number, toDepth: number): Vec3 | null {
+        const from = this.getCellWorldPosition(fromLane, fromDepth, 0);
+        const to = this.getCellWorldPosition(toLane, toDepth, 0);
+        const direction = to.subtract(from);
+        direction.y = 0;
+        if (direction.lengthSqr() <= 0.0001) {
+            return null;
+        }
+
+        direction.normalize();
+        return direction;
+    }
+
+    private createFloodRippleLayerMaterial(
+        effectAsset: EffectAsset,
+        technique: number,
+        mainTexture: Texture2D | null,
+        noiseTexture: Texture2D,
+        flowMap: Texture2D,
+        foamMap: Texture2D,
+        mainColor: Vec4,
+        uvTiling: Vec4,
+        flowParams: Vec4,
+        rippleParams: Vec4,
+        worldFlowParams: Vec4,
+        layerParams: Vec4,
+        riverDir: Vec4,
+        foamDir: Vec4,
+        foamParams: Vec4,
+        accentParams: Vec4,
+    ): Material {
         const material = new Material();
-        material.initialize({ effectAsset, technique: 0 });
-        material.setProperty('mainTexture', resolvedMain);
-        material.setProperty('noiseTexture', resolvedNoise);
-        material.setProperty('flowMap', resolvedFlow);
-        material.setProperty('foamMap', resolvedFoam);
-        material.setProperty('mainColor', new Vec4(0.5, 0.85, 1.0, 0.84));
-        material.setProperty('uvTiling', new Vec4(1.0, 1.0, 0.0, 0.0));
-        material.setProperty('flowParams', new Vec4(0.2, 0.09, 4.5, 0.12));
-        material.setProperty('rippleParams', new Vec4(1.3, 1.1, 0.55, 0.0));
-        material.setProperty('worldFlowParams', new Vec4(0.11, 0.11, 0.92, 0.72));
-        material.setProperty('riverDir', new Vec4(0.92, 0.38, 1.08, 0.82));
-        material.setProperty('foamParams', new Vec4(0.56, 0.2, 2.2, 0.45));
-
+        material.initialize({ effectAsset, technique });
+        if (mainTexture) {
+            material.setProperty('mainTexture', mainTexture);
+        }
+        material.setProperty('noiseTexture', noiseTexture);
+        material.setProperty('flowMap', flowMap);
+        material.setProperty('foamMap', foamMap);
+        material.setProperty('mainColor', mainColor);
+        material.setProperty('uvTiling', uvTiling);
+        material.setProperty('flowParams', flowParams);
+        material.setProperty('rippleParams', rippleParams);
+        material.setProperty('worldFlowParams', worldFlowParams);
+        material.setProperty('layerParams', layerParams);
+        material.setProperty('riverDir', riverDir);
+        material.setProperty('foamDir', foamDir);
+        material.setProperty('foamParams', foamParams);
+        material.setProperty('accentParams', accentParams);
         return material;
     }
 
@@ -284,7 +426,7 @@ export class BoardRenderer extends Component {
             return null;
         }
 
-        const resolvedNoise = noiseTex ?? lineTex;
+        const resolvedNoise = noiseTex || lineTex;
         const material = new Material();
         material.initialize({ effectAsset, technique: 0 });
         material.setProperty('mainTexture', lineTex);
@@ -341,12 +483,12 @@ export class BoardRenderer extends Component {
             return null;
         }
 
-        const resolvedMain = smokeTex ?? smokeCloudTex ?? noiseTex;
+        const resolvedMain = smokeTex || smokeCloudTex || noiseTex;
         if (!resolvedMain) {
             return null;
         }
 
-        const resolvedNoise = noiseTex ?? smokeCloudTex ?? resolvedMain;
+        const resolvedNoise = noiseTex || smokeCloudTex || resolvedMain;
         const material = new Material();
         material.initialize({ effectAsset, technique: 0 });
         material.setProperty('mainTexture', resolvedMain);
@@ -404,12 +546,12 @@ export class BoardRenderer extends Component {
             return null;
         }
 
-        const resolvedMain = smokeTex ?? splitTex ?? noiseTex;
+        const resolvedMain = smokeTex || splitTex || noiseTex;
         if (!resolvedMain) {
             return null;
         }
 
-        const resolvedNoise = noiseTex ?? splitTex ?? resolvedMain;
+        const resolvedNoise = noiseTex || splitTex || resolvedMain;
         const material = new Material();
         material.initialize({ effectAsset, technique: 0 });
         material.setProperty('mainTexture', resolvedMain);
@@ -467,12 +609,12 @@ export class BoardRenderer extends Component {
             return null;
         }
 
-        const resolvedMain = crystalTex ?? circleTex ?? noiseTex;
+        const resolvedMain = crystalTex || circleTex || noiseTex;
         if (!resolvedMain) {
             return null;
         }
 
-        const resolvedNoise = noiseTex ?? circleTex ?? resolvedMain;
+        const resolvedNoise = noiseTex || circleTex || resolvedMain;
         const material = new Material();
         material.initialize({ effectAsset, technique: 0 });
         material.setProperty('mainTexture', resolvedMain);
@@ -568,10 +710,10 @@ export class BoardRenderer extends Component {
         this.defaultBorderInnerMaterial = this.defaultFillMaterial;
 
         this.floodBaseFillMaterial = this.createCellMaterial(
-            new Color(70, 108, 148, 34),
-            new Color(132, 190, 238, 104),
-            new Color(216, 242, 255, 72),
-            new Vec4(0.1, 0.16, 0.22, 0.62)
+            new Color(70, 108, 148, 8),
+            new Color(132, 190, 238, 12),
+            new Color(216, 242, 255, 8),
+            new Vec4(0.09, 0.14, 0.2, 0.08)
         );
 
         this.playerOccupiedFillMaterial = this.createCellMaterial(
@@ -628,10 +770,10 @@ export class BoardRenderer extends Component {
             new Vec4(0.09, 0.16, 0.2, 0.66)
         );
         this.sceneEffectWaterFillMaterial = this.createCellMaterial(
-            new Color(72, 168, 255, 36),
-            new Color(112, 196, 255, 138),
-            new Color(212, 238, 255, 96),
-            new Vec4(0.12, 0.18, 0.24, 0.7)
+            new Color(72, 168, 255, 12),
+            new Color(112, 196, 255, 16),
+            new Color(212, 238, 255, 10),
+            new Vec4(0.1, 0.16, 0.22, 0.24)
         );
         this.sceneEffectRockFillMaterial = this.createCellMaterial(
             new Color(150, 140, 126, 36),
@@ -686,33 +828,45 @@ export class BoardRenderer extends Component {
     private applyCellStyle(cellView: CellView, fillMaterial: Material | null, borderMaterial: Material | null): void {
         if (cellView.fillRenderer) {
             cellView.fillRenderer.enabled = true;
-            const activeMaterial = fillMaterial ?? borderMaterial ?? this.defaultFillMaterial;
+            const activeMaterial = fillMaterial || borderMaterial || this.defaultFillMaterial;
             if (activeMaterial) {
                 cellView.fillRenderer.setSharedMaterial(activeMaterial, 0);
             }
         }
     }
 
-    private applyCellOverlayStyle(cellView: CellView, overlayMaterial: Material | null): void {
-        if (!cellView.overlayRenderer) {
-            return;
+    private applyCellOverlayStyle(cellView: CellView, overlayMaterial: Material | null, accentMaterial: Material | null = null): void {
+        if (cellView.overlayRenderer) {
+            if (!overlayMaterial) {
+                cellView.overlayRenderer.enabled = false;
+            } else {
+                cellView.overlayRenderer.enabled = true;
+                cellView.overlayRenderer.setSharedMaterial(overlayMaterial, 0);
+            }
         }
 
-        if (!overlayMaterial) {
-            cellView.overlayRenderer.enabled = false;
-            return;
+        if (cellView.overlayAccentRenderer) {
+            if (!accentMaterial) {
+                cellView.overlayAccentRenderer.enabled = false;
+            } else {
+                cellView.overlayAccentRenderer.enabled = true;
+                cellView.overlayAccentRenderer.setSharedMaterial(accentMaterial, 0);
+            }
         }
-
-        cellView.overlayRenderer.enabled = true;
-        cellView.overlayRenderer.setSharedMaterial(overlayMaterial, 0);
     }
 
     public setDeployHintFaction(faction: Faction | null): void {
         this.deployHintFaction = faction;
+        if (this.lastRenderedState) {
+            this.renderState(this.lastRenderedState);
+        }
     }
 
     public clearDeployHint(): void {
         this.deployHintFaction = null;
+        if (this.lastRenderedState) {
+            this.renderState(this.lastRenderedState);
+        }
     }
 
     public setSkillPreviewCells(cells: Array<{ lane: number; depth: number }>): void {
@@ -728,7 +882,7 @@ export class BoardRenderer extends Component {
 
     private resolveCellBaseMaterial(baseStyle: BattleSceneBaseStyle): Material | null {
         if (baseStyle === 'flood-river') {
-            return this.floodRippleFillMaterial ?? this.floodBaseFillMaterial ?? this.defaultFillMaterial;
+            return this.floodBaseFillMaterial || this.defaultFillMaterial;
         }
 
         return this.defaultFillMaterial;
@@ -800,12 +954,22 @@ export class BoardRenderer extends Component {
                 overlayRenderer.enabled = false;
                 cellNode.addChild(overlayNode);
 
+                const overlayAccentNode = new Node('OverlayAccent');
+                overlayAccentNode.layer = Layers.Enum.DEFAULT;
+                overlayAccentNode.setPosition(new Vec3(0, 0, 0.003));
+                overlayAccentNode.setScale(new Vec3(fillScale, fillScale, 1));
+                const overlayAccentRenderer = overlayAccentNode.addComponent(MeshRenderer);
+                overlayAccentRenderer.mesh = quadMesh;
+                overlayAccentRenderer.enabled = false;
+                cellNode.addChild(overlayAccentNode);
+
                 this.boardRoot.addChild(cellNode);
                 const key = `${x},${z}`;
                 this.cellNodes.set(key, {
                     root: cellNode,
                     fillRenderer,
                     overlayRenderer,
+                    overlayAccentRenderer,
                     borderEdgeRenderers: [],
                     borderMidRenderers: [],
                     borderInnerRenderers: [],
@@ -861,7 +1025,7 @@ export class BoardRenderer extends Component {
         UCUFLogger.error(
             LogCategory.LIFECYCLE,
             `[BoardRenderer] Impact FX lifecycle 異常 id=${id} lane=${view.lane} depth=${view.depth} fxRevision=${view.boardRevision} currentRevision=${this.boardRevision} reason=${reason}`,
-            error ?? '',
+            error || '',
         );
 
         try {
@@ -875,8 +1039,22 @@ export class BoardRenderer extends Component {
     public getBoardMetrics(): { width: number; depth: number; center: Vec3 } {
         const width = this.cols * this.cellSize + Math.max(0, this.cols - 1) * this.cellGap;
         const depth = this.rows * this.cellSize + Math.max(0, this.rows - 1) * this.cellGap;
-        const center = (this.boardRoot?.worldPosition ?? this.node.worldPosition).clone();
+        const center = (this.boardRoot?.worldPosition || this.node.worldPosition).clone();
         return { width, depth, center };
+    }
+
+    public async waitForFloodRippleReady(timeoutMs = 5000): Promise<boolean> {
+        const startedAt = Date.now();
+        while (Date.now() - startedAt < timeoutMs) {
+            if (this.floodRippleFillMaterial && this.floodRippleAccentFillMaterial) {
+                return true;
+            }
+            await new Promise<void>((resolve) => {
+                this.scheduleOnce(() => resolve(), 0);
+            });
+        }
+
+        return !!(this.floodRippleFillMaterial && this.floodRippleAccentFillMaterial);
     }
 
     public getCellWorldPosition(lane: number, depth: number, yOffset = 0): Vec3 {
@@ -1015,11 +1193,14 @@ export class BoardRenderer extends Component {
      * 不負責邏輯判定，僅作為 View 層負責渲染。
      */
     public renderState(state: BattleState) {
+        this.lastRenderedState = state;
+        const riverCurrentCount = Array.from(state.tileEffects.values()).filter((effect) => effect.state === 'river-current').length;
         this.tryEnsureFloodRippleMaterial(state.battleTactic);
         this.tryEnsureLightningArcMaterial(state.battleTactic);
         this.tryEnsurePoisonFogMaterial(state.battleTactic);
         this.tryEnsureWindVortexMaterial(state.battleTactic);
         this.tryEnsureIceCrystalMaterial(state.battleTactic);
+        const floodAmbientMaterial = this.resolveFloodAmbientOverlayMaterial(state.battleTactic);
 
         // 先將所有格子重置為預設基底與空 overlay；狀態只疊在 overlay，不改變格子是否存在。
         const sceneRule = resolveBattleSceneDisplayRule(state.battleTactic);
@@ -1031,8 +1212,19 @@ export class BoardRenderer extends Component {
 
             const baseMaterial = this.resolveCellBaseMaterial(sceneRule.resolveCellBaseStyle(cell.terrain));
             this.applyCellStyle(cellView, baseMaterial, baseMaterial);
-            this.applyCellOverlayStyle(cellView, null);
+            this.applyCellOverlayStyle(cellView, null, null);
         });
+
+        if (floodAmbientMaterial) {
+            state.cells.forEach((cell) => {
+                const cellView = this.cellNodes.get(`${cell.lane},${cell.depth}`);
+                if (!cellView) {
+                    return;
+                }
+
+                this.applyCellOverlayStyle(cellView, floodAmbientMaterial, null);
+            });
+        }
 
         // 取出棋盤上有單位的格子並設置為高亮
         // state 的小兵
@@ -1051,13 +1243,21 @@ export class BoardRenderer extends Component {
         });
 
         state.tileEffects.forEach((effect) => {
+            const cell = state.getCell(effect.lane, effect.depth);
             const cellNode = this.cellNodes.get(`${effect.lane},${effect.depth}`);
             if (!cellNode) return;
             const overlayState = sceneRule.resolveOverlayState(effect.state);
             if (!overlayState) return;
-            const overlayMaterial = this.resolveSceneEffectMaterial(overlayState);
-            if (!overlayMaterial) return;
-            this.applyCellOverlayStyle(cellNode, overlayMaterial);
+            const overlayMaterials = this.resolveSceneEffectMaterial(overlayState);
+            const isFloodCurrent = state.battleTactic === BattleTactic.FloodAttack && overlayState === 'river-current';
+            const primaryMaterial = isFloodCurrent
+                ? (this.floodRippleFillMaterial || floodAmbientMaterial || overlayMaterials.primary)
+                : overlayMaterials.primary;
+            const accentMaterial = isFloodCurrent
+                ? (this.floodRippleAccentFillMaterial || overlayMaterials.accent)
+                : (cell?.occupantId ? null : overlayMaterials.accent);
+            if (!primaryMaterial && !accentMaterial) return;
+            this.applyCellOverlayStyle(cellNode, primaryMaterial, accentMaterial);
         });
 
         // 玩家部署提示 (只在玩家回合顯示)
@@ -1079,24 +1279,149 @@ export class BoardRenderer extends Component {
             this.applyCellOverlayStyle(cellNode, this.skillPreviewFillMaterial);
         });
 
+        this.syncFloodDebugVectors(state);
         this.syncTileBuffFx(state);
     }
 
-    private resolveSceneEffectMaterial(state: string): Material | null {
+    private syncFloodDebugVectors(state: BattleState): void {
+        this.clearFloodDebugVectors();
+        if (state.battleTactic !== BattleTactic.FloodAttack) {
+            this.hasLoggedFloodRenderStateDebug = false;
+            return;
+        }
+
+        const riverDir = this.getFloodRiverDirectionVector();
+        const foamDir = this.getFloodFoamDirectionVector();
+        const pushDir = this.getFloodEnemyPushDirectionVector(state);
+        if (!riverDir || !foamDir || !pushDir) {
+            return;
+        }
+
+        const pushFoamDot = pushDir.x * foamDir.x + pushDir.z * foamDir.z;
+        const pushRiverDot = pushDir.x * riverDir.x + pushDir.z * riverDir.z;
+        UCUFLogger.info(
+            LogCategory.LIFECYCLE,
+            `[BoardRenderer] Flood debug vectors river=(${riverDir.x.toFixed(3)}, ${riverDir.z.toFixed(3)}) foam=(${foamDir.x.toFixed(3)}, ${foamDir.z.toFixed(3)}) push=(${pushDir.x.toFixed(3)}, ${pushDir.z.toFixed(3)}) pushDelta=(${FLOOD_ATTACK_PUSH_LANE_DELTA}, ${FLOOD_ATTACK_PUSH_DEPTH_DELTA}) dot(push,foam)=${pushFoamDot.toFixed(3)} dot(push,river)=${pushRiverDot.toFixed(3)} colors={river:gold,push:red,foam:cyan}`,
+        );
+        if (pushFoamDot < 0.98) {
+            UCUFLogger.warn(
+                LogCategory.LIFECYCLE,
+                `[BoardRenderer] Flood debug mismatch push and foam diverged dot=${pushFoamDot.toFixed(3)} push=(${pushDir.x.toFixed(3)}, ${pushDir.z.toFixed(3)}) foam=(${foamDir.x.toFixed(3)}, ${foamDir.z.toFixed(3)})`,
+            );
+        }
+        this.hasLoggedFloodRenderStateDebug = true;
+    }
+
+    private ensureFloodDebugVectorRoot(): Node {
+        if (this.floodDebugVectorRoot?.isValid) {
+            return this.floodDebugVectorRoot;
+        }
+
+        const root = new Node('FloodDebugVectors');
+        root.layer = Layers.Enum.DEFAULT;
+        this.node.addChild(root);
+        this.floodDebugVectorRoot = root;
+        return root;
+    }
+
+    private clearFloodDebugVectors(): void {
+        if (this.floodDebugVectorRoot?.isValid) {
+            this.floodDebugVectorRoot.destroy();
+        }
+        this.floodDebugVectorRoot = null;
+    }
+
+    private createFloodDebugArrow(parent: Node, label: string, origin: Vec3, direction: Vec3, length: number, color: Color): void {
+        const normalizedDirection = this.normalizeFloodDebugDirection(direction);
+        if (!normalizedDirection) {
+            return;
+        }
+
+        const yawDeg = Math.atan2(normalizedDirection.x, normalizedDirection.z) * 180 / Math.PI;
+        const shaft = new Node(`FloodDebug_${label}_Shaft`);
+        shaft.layer = Layers.Enum.DEFAULT;
+        const shaftRenderer = shaft.addComponent(MeshRenderer);
+        shaftRenderer.mesh = this.flashQuadMesh;
+        shaftRenderer.setSharedMaterial(this.createFloodDebugVectorMaterial(color), 0);
+        shaft.setRotationFromEuler(-90, yawDeg, 0);
+        shaft.setScale(new Vec3(Math.max(this.cellSize * 0.10, 0.08), length * 0.72, 1));
+        shaft.setWorldPosition(
+            origin.x + normalizedDirection.x * length * 0.34,
+            origin.y,
+            origin.z + normalizedDirection.z * length * 0.34,
+        );
+        parent.addChild(shaft);
+
+        const head = new Node(`FloodDebug_${label}_Head`);
+        head.layer = Layers.Enum.DEFAULT;
+        const headRenderer = head.addComponent(MeshRenderer);
+        headRenderer.mesh = this.flashQuadMesh;
+        headRenderer.setSharedMaterial(this.createFloodDebugVectorMaterial(color), 0);
+        head.setRotationFromEuler(-90, yawDeg, 45);
+        const headSize = Math.max(this.cellSize * 0.22, 0.14);
+        head.setScale(new Vec3(headSize, headSize, 1));
+        head.setWorldPosition(
+            origin.x + normalizedDirection.x * length * 0.78,
+            origin.y,
+            origin.z + normalizedDirection.z * length * 0.78,
+        );
+        parent.addChild(head);
+    }
+
+    private createFloodDebugVectorMaterial(color: Color): Material {
+        const material = new Material();
+        material.initialize({
+            effectName: 'builtin-unlit',
+            states: {
+                blendState: { targets: [{ blend: true }] },
+                depthStencilState: { depthTest: true, depthWrite: false },
+                rasterizerState: { cullMode: gfx.CullMode.NONE },
+            },
+        });
+        material.setProperty('mainColor', color);
+        return material;
+    }
+
+    private normalizeFloodDebugDirection(direction: Vec3 | null): Vec3 | null {
+        if (!direction) {
+            return null;
+        }
+
+        const normalized = new Vec3(direction.x, 0, direction.z);
+        if (normalized.lengthSqr() <= 0.0001) {
+            return null;
+        }
+
+        normalized.normalize();
+        return normalized;
+    }
+
+    private resolveSceneEffectMaterial(state: string): SceneEffectMaterialSet {
         switch (state) {
             case 'hazard-fire':
-                return this.sceneEffectFireFillMaterial;
+                return { primary: this.sceneEffectFireFillMaterial, accent: null };
             case 'river-current':
-                return this.iceCrystalFillMaterial ?? this.sceneEffectWaterFillMaterial;
+                return {
+                    primary: this.floodRippleFillMaterial || this.iceCrystalFillMaterial || this.sceneEffectWaterFillMaterial,
+                    accent: this.floodRippleAccentFillMaterial,
+                };
             case 'hazard-rock':
-                return this.windVortexFillMaterial ?? this.sceneEffectRockFillMaterial;
+                return { primary: this.windVortexFillMaterial || this.sceneEffectRockFillMaterial, accent: null };
             case 'night-raid':
-                return this.lightningArcFillMaterial ?? this.sceneEffectCampFillMaterial;
+                return { primary: this.lightningArcFillMaterial || this.sceneEffectCampFillMaterial, accent: null };
             case 'ambush-field':
-                return this.poisonFogFillMaterial ?? this.sceneEffectForestFillMaterial;
+                return { primary: this.poisonFogFillMaterial || this.sceneEffectForestFillMaterial, accent: null };
             default:
-                return null;
+                return { primary: null, accent: null };
         }
+    }
+
+    private resolveFloodAmbientOverlayMaterial(battleTactic: BattleTactic): Material | null {
+        if (battleTactic !== BattleTactic.FloodAttack) {
+            return null;
+        }
+
+        return this.floodRippleFillMaterial || this.sceneEffectWaterFillMaterial;
     }
 
     private syncTileBuffFx(_state: BattleState): void {

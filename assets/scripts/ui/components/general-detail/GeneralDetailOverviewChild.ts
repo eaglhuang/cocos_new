@@ -35,13 +35,18 @@ export class GeneralDetailOverviewChild extends ChildPanelBase {
             throw new Error(`[OverviewChild] 無法載入 content contract schema: ${this._contentContractRef.schemaId}`);
         }
         UCUFLogger.info(LogCategory.LIFECYCLE, '[OverviewChild] onMount', { host: this.hostNode.name });
+        if (this._lastData) {
+            this.onDataUpdate(this._lastData);
+        }
     }
 
     onDataUpdate(data: unknown): void {
         const s = data as GeneralDetailOverviewContentState;
+        this._lastData = s;
         UCUFLogger.info(LogCategory.LIFECYCLE, '[OverviewChild] onDataUpdate received', { keys: Object.keys(s || {}) });
         if (!this._contentSchema) {
-            throw new Error('[OverviewChild] content schema 尚未就緒');
+            UCUFLogger.warn(LogCategory.LIFECYCLE, '[OverviewChild] content schema 尚未就緒，延後套用');
+            return;
         }
         this._contentBinder.bindWithSchema(
             this.binder,

@@ -54,6 +54,15 @@
           "skinSlot": "gdv3.portrait.frame"
         }
       ]
+    },
+    {
+      "type": "image",
+      "name": "PortraitRarityBadge",
+      "widget": { "top": 20, "left": 16 },
+      "width": 96,
+      "height": 150,
+      "skinSlot": "gdv3.portrait.rarityBadge",
+      "zIndex": 40
     }
   ]
 }

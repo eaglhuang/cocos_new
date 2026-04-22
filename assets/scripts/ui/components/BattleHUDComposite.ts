@@ -257,7 +257,7 @@ export class BattleHUDComposite extends CompositePanel {
         const ev = services().event;
         this._unsubs.push(
             ev.on(EVENT_NAMES.TurnPhaseChanged,  (d) => this._onTurnPhaseChanged(d as { turn: number; food: number; maxFood: number })),
-            ev.on(EVENT_NAMES.GeneralDamaged,    (d) => this._onGeneralDamaged(d as { faction: Faction; hp: number; maxHp: number })),
+            ev.on(EVENT_NAMES.GeneralDamagedVisualCommitted, (d) => this._onGeneralDamaged(d as { faction: Faction; hp: number; maxHp: number })),
             ev.on(EVENT_NAMES.GeneralSkillUsed,  (d) => this._onGeneralSkillUsed(d as { faction: Faction; skillId?: string; skillName?: string; sourceType?: any })),
             ev.on(EVENT_NAMES.GeneralSkillEffect,(d) => this._onSkillEffect(d as { faction: Faction; skillId: string })),
         );
@@ -373,13 +373,23 @@ export class BattleHUDComposite extends CompositePanel {
             ? ++this._playerPortraitLoadSeq
             : ++this._enemyPortraitLoadSeq;
 
-        const portraitPath = generalId ? this._buildPortraitPath(generalId) : fallbackPath;
-        const spriteFrame = await services().resource.loadSpriteFrame(portraitPath).catch(async (error) => {
-            if (portraitPath !== fallbackPath) {
-                console.warn(`[BattleHUDComposite] ${side} portrait 載入失敗，退回 placeholder: ${portraitPath}`, error);
+        const res = services().resource;
+        let spriteFrame = null;
+
+        if (generalId) {
+            // 優先嘗試 256×256 頭像（頭+脖子裁切版）
+            spriteFrame = await res.loadSpriteFrame(this._buildAvatarPath(generalId)).catch(() => null);
+            // 退回完整立繪
+            if (!spriteFrame) {
+                spriteFrame = await res.loadSpriteFrame(this._buildPortraitPath(generalId)).catch(() => null);
+                if (!spriteFrame) console.warn(`[BattleHUDComposite] ${side} 立繪載入失敗：${generalId}`);
             }
-            return services().resource.loadSpriteFrame(fallbackPath).catch(() => null);
-        });
+        }
+
+        // 最終退回 placeholder
+        if (!spriteFrame) {
+            spriteFrame = await res.loadSpriteFrame(fallbackPath).catch(() => null);
+        }
 
         const latestSeq = side === 'player' ? this._playerPortraitLoadSeq : this._enemyPortraitLoadSeq;
         if (loadSeq !== latestSeq || !spriteFrame) return;
@@ -387,6 +397,10 @@ export class BattleHUDComposite extends CompositePanel {
         const sprite = portraitNode.getComponent(Sprite) ?? portraitNode.addComponent(Sprite);
         sprite.spriteFrame = spriteFrame;
         sprite.sizeMode = Sprite.SizeMode.CUSTOM;
+    }
+
+    private _buildAvatarPath(generalId: string): string {
+        return `sprites/generals/avatars/${generalId.replace(/-/g, '_')}_avatar`;
     }
 
     private _buildPortraitPath(generalId: string): string {

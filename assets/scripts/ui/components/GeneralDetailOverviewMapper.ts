@@ -46,7 +46,6 @@ export interface GeneralDetailOverviewContentState {
     rarityTier: GeneralDetailRarityTier;
     backgroundResource: string;
     overviewModeBadgeLabel: string;
-    portraitModeHint: string;
     coreStatsTitle: string;
     coreStatsValue: string;
     roleTitle: string;
@@ -209,7 +208,6 @@ export function buildGeneralDetailOverviewContentState(config: GeneralConfig): G
         rarityLabel: resolveRarityLabel(config),
         rarityTier: resolveRarityTier(config),
         overviewModeBadgeLabel: '血脈總覽',
-        portraitModeHint: '總覽模式 / 血脈命鏡',
         coreStatsTitle: '核心屬性',
         coreStatsValue: overview.cards.coreStatsSummary,
         roleTitle: '戰場定位',

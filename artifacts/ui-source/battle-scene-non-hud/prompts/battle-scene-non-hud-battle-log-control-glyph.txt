@@ -1,5 +1,0 @@
-Create a single isolated UI partial asset for BattleSceneNonHUD. Zone: battle-log-rail. Slot: controlGlyphSuite. Visual target: battle-action-icon-v1 / F8 tactical control glyph mother.
-
-This asset defines the glyph mother language for battle-log controls: auto, speed, setting, and collapse. Keep these qualities: low-presence tactical utility, clean silhouette, readable at 32x32, same family line weight as battle command controls, but quieter than the main CTA.
-
-Avoid: text, letters, AUTO, x2, gear labels, full button plate, collectible badge styling, giant gold medal framing.

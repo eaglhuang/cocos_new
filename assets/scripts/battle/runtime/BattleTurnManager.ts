@@ -3,6 +3,7 @@ import { Faction, GAME_CONFIG } from '../../core/config/Constants';
 export class BattleTurnManager {
   public enemyFood = GAME_CONFIG.INITIAL_FOOD;
   public playerDeployCountThisTurn = 0;
+  public readonly movedUnitIdsThisTurn = new Set<string>();
   public readonly generalSwapUsedThisTurn: Record<Faction, boolean> = {
     [Faction.Player]: false,
     [Faction.Enemy]: false,
@@ -14,6 +15,7 @@ export class BattleTurnManager {
   public resetForBattle(): void {
     this.enemyFood = GAME_CONFIG.INITIAL_FOOD;
     this.playerDeployCountThisTurn = 0;
+    this.movedUnitIdsThisTurn.clear();
     this.generalSwapUsedThisTurn[Faction.Player] = false;
     this.generalSwapUsedThisTurn[Faction.Enemy] = false;
     this.buffConsumedSinceLastSpawn = true;
@@ -32,8 +34,17 @@ export class BattleTurnManager {
   public refreshForNextTurn(): void {
     this.enemyFood = Math.min(this.enemyFood + GAME_CONFIG.FOOD_PER_TURN, GAME_CONFIG.MAX_FOOD);
     this.playerDeployCountThisTurn = 0;
+    this.movedUnitIdsThisTurn.clear();
     this.generalSwapUsedThisTurn[Faction.Player] = false;
     this.generalSwapUsedThisTurn[Faction.Enemy] = false;
+  }
+
+  public markUnitMoved(unitId: string): void {
+    this.movedUnitIdsThisTurn.add(unitId);
+  }
+
+  public hasUnitMovedThisTurn(unitId: string): boolean {
+    return this.movedUnitIdsThisTurn.has(unitId);
   }
 
   public canUseGeneralSwap(faction: Faction): boolean {

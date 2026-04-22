@@ -205,7 +205,16 @@ export class UIPreviewNodeFactory {
      * Unity 對照：Image（Source Image 直接指向 Sprite）+ Inspector 預設色塊
      */
     async buildImage(node: Node, spec: UILayoutNodeSpec): Promise<void> {
-        if (!spec.skinSlot) return;
+        if (!spec.skinSlot) {
+            const sprite = node.getComponent(Sprite) || node.addComponent(Sprite);
+            sprite.sizeMode = Sprite.SizeMode.CUSTOM;
+            if (spec.interactable) {
+                const button = node.getComponent(Button) || node.addComponent(Button);
+                button.target = node;
+                button.interactable = true;
+            }
+            return;
+        }
 
         const slot  = this.skinResolver.getSlot(spec.skinSlot);
         const resolveOpacity = (rawOpacity: unknown): number | null => {

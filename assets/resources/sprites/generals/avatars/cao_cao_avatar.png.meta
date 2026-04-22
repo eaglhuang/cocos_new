@@ -1,0 +1,137 @@
+{
+  "ver": "1.0.27",
+  "importer": "image",
+  "imported": true,
+  "uuid": "731e9265-4777-4a77-b595-38d46050c206",
+  "files": [
+    ".json",
+    ".png"
+  ],
+  "subMetas": {
+    "f9941": {
+      "importer": "sprite-frame",
+      "uuid": "731e9265-4777-4a77-b595-38d46050c206@f9941",
+      "displayName": "cao_cao_avatar",
+      "id": "f9941",
+      "name": "spriteFrame",
+      "userData": {
+        "trimThreshold": 1,
+        "rotated": false,
+        "offsetX": 2,
+        "offsetY": -10,
+        "trimX": 4,
+        "trimY": 20,
+        "width": 252,
+        "height": 236,
+        "rawWidth": 256,
+        "rawHeight": 256,
+        "borderTop": 0,
+        "borderBottom": 0,
+        "borderLeft": 0,
+        "borderRight": 0,
+        "packable": true,
+        "pixelsToUnit": 100,
+        "pivotX": 0.5,
+        "pivotY": 0.5,
+        "meshType": 0,
+        "vertices": {
+          "rawPosition": [
+            -126,
+            -118,
+            0,
+            126,
+            -118,
+            0,
+            -126,
+            118,
+            0,
+            126,
+            118,
+            0
+          ],
+          "indexes": [
+            0,
+            1,
+            2,
+            2,
+            1,
+            3
+          ],
+          "uv": [
+            4,
+            236,
+            256,
+            236,
+            4,
+            0,
+            256,
+            0
+          ],
+          "nuv": [
+            0.015625,
+            0,
+            1,
+            0,
+            0.015625,
+            0.921875,
+            1,
+            0.921875
+          ],
+          "minPos": [
+            -126,
+            -118,
+            0
+          ],
+          "maxPos": [
+            126,
+            118,
+            0
+          ]
+        },
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "731e9265-4777-4a77-b595-38d46050c206@6c48a",
+        "atlasUuid": "",
+        "trimType": "auto"
+      },
+      "ver": "1.0.12",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "6c48a": {
+      "importer": "texture",
+      "uuid": "731e9265-4777-4a77-b595-38d46050c206@6c48a",
+      "displayName": "cao_cao_avatar",
+      "id": "6c48a",
+      "name": "texture",
+      "userData": {
+        "wrapModeS": "clamp-to-edge",
+        "wrapModeT": "clamp-to-edge",
+        "minfilter": "linear",
+        "magfilter": "linear",
+        "mipfilter": "none",
+        "anisotropy": 0,
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "731e9265-4777-4a77-b595-38d46050c206",
+        "visible": false
+      },
+      "ver": "1.0.22",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    }
+  },
+  "userData": {
+    "type": "sprite-frame",
+    "fixAlphaTransparencyArtifacts": false,
+    "hasAlpha": true,
+    "redirect": "731e9265-4777-4a77-b595-38d46050c206@6c48a",
+    "compressSettings": {
+      "useCompressTexture": true
+    }
+  }
+}

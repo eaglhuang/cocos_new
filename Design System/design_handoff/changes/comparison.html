@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>張飛人物介紹頁 - 佈局改進對比</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft JhengHei", sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: #e8e8e8;
+            padding: 40px 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #D4AF37 0%, #FFE088 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .subtitle {
+            color: #999;
+            font-size: 1.1em;
+            margin-bottom: 40px;
+        }
+        
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 40px 0;
+        }
+        
+        .panel {
+            background: rgba(40, 40, 40, 0.8);
+            border: 2px solid rgba(212, 175, 55, 0.3);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+        
+        .panel h2 {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            color: #D4AF37;
+        }
+        
+        .panel.before h2::before { content: "❌ "; }
+        .panel.after h2::before { content: "✅ "; }
+        
+        .metric {
+            background: rgba(0, 0, 0, 0.3);
+            border-left: 4px solid #D4AF37;
+            padding: 15px 20px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+        
+        .metric-label {
+            color: #FFE088;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .metric-value {
+            font-size: 1.3em;
+            color: #fff;
+            font-weight: 700;
+        }
+        
+        .change-indicator {
+            display: inline-block;
+            padding: 4px 12px;
+            background: rgba(76, 175, 80, 0.2);
+            border: 1px solid rgba(76, 175, 80, 0.5);
+            border-radius: 16px;
+            color: #81C784;
+            font-size: 0.85em;
+            margin-left: 10px;
+            font-weight: 600;
+        }
+        
+        .issues, .improvements {
+            margin-top: 30px;
+        }
+        
+        .issues h3, .improvements h3 {
+            color: #FFE088;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        
+        .issues ul, .improvements ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .issues li, .improvements li {
+            padding: 10px 0 10px 30px;
+            position: relative;
+            color: #ccc;
+        }
+        
+        .issues li::before {
+            content: "⚠️";
+            position: absolute;
+            left: 0;
+        }
+        
+        .improvements li::before {
+            content: "✨";
+            position: absolute;
+            left: 0;
+        }
+        
+        .visual-demo {
+            margin: 40px 0;
+            padding: 40px;
+            background: rgba(30, 30, 30, 0.9);
+            border-radius: 12px;
+            border: 2px solid rgba(212, 175, 55, 0.2);
+        }
+        
+        .visual-demo h2 {
+            color: #D4AF37;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .tabs-comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: start;
+        }
+        
+        .tab-demo {
+            text-align: center;
+        }
+        
+        .tab-demo h3 {
+            color: #FFE088;
+            margin-bottom: 20px;
+        }
+        
+        .tab-button {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            border: 3px solid rgba(212, 175, 55, 0.5);
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(40, 40, 40, 0.9), rgba(30, 30, 30, 0.9));
+            box-shadow: 0 4px 16px rgba(212, 175, 55, 0.2);
+            position: relative;
+            margin: 20px auto;
+            padding: 15px;
+        }
+        
+        .tab-button.small {
+            width: 97px;
+            height: 97px;
+        }
+        
+        .tab-button.large {
+            width: 290px;
+            height: 290px;
+        }
+        
+        .tab-icon {
+            color: #D4AF37;
+            font-size: 42px;
+            margin-top: 10px;
+        }
+        
+        .tab-button.large .tab-icon {
+            font-size: 126px;
+        }
+        
+        .tab-label {
+            color: #FFE088;
+            font-size: 11px;
+            margin-top: 5px;
+        }
+        
+        .tab-button.large .tab-label {
+            font-size: 33px;
+            font-weight: 600;
+        }
+        
+        .badge {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: #D32F2F;
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+        
+        .tab-button.large .badge {
+            top: 24px;
+            right: 24px;
+            width: 54px;
+            height: 54px;
+            font-size: 30px;
+        }
+        
+        .size-label {
+            margin-top: 15px;
+            color: #999;
+            font-size: 0.9em;
+        }
+        
+        .action-section {
+            margin-top: 50px;
+            padding: 30px;
+            background: rgba(212, 175, 55, 0.1);
+            border: 2px solid rgba(212, 175, 55, 0.3);
+            border-radius: 12px;
+        }
+        
+        .action-section h2 {
+            color: #D4AF37;
+            margin-bottom: 20px;
+        }
+        
+        .action-steps {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #D4AF37;
+        }
+        
+        .action-steps ol {
+            padding-left: 25px;
+        }
+        
+        .action-steps li {
+            margin: 15px 0;
+            color: #ccc;
+            line-height: 1.8;
+        }
+        
+        .code {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #81C784;
+            font-size: 0.9em;
+        }
+        
+        @media (max-width: 900px) {
+            .comparison, .tabs-comparison {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 { font-size: 2em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>張飛人物介紹頁 - 佈局改進</h1>
+        <div class="subtitle">General Detail Layout Updates - 2026-04-22</div>
+        
+        <div class="comparison">
+            <div class="panel before">
+                <h2>改進前</h2>
+                
+                <div class="metric">
+                    <div class="metric-label">Tab 按鈕尺寸</div>
+                    <div class="metric-value">97 × 97 px</div>
+                </div>
+                
+                <div class="metric">
+                    <div class="metric-label">圖標尺寸</div>
+                    <div class="metric-value">42 × 42 px</div>
+                </div>
+                
+                <div class="metric">
+                    <div class="metric-label">Badge 尺寸</div>
+                    <div class="metric-value">18 × 18 px</div>
+                </div>
+                
+                <div class="metric">
+                    <div class="metric-label">Tab 欄寬度</div>
+                    <div class="metric-value">118 px</div>
+                </div>
+                
+                <div class="metric">
+                    <div class="metric-label">內容區上邊距</div>
+                    <div class="metric-value">174 px</div>
+                </div>
+                
+                <div class="metric">
+                    <div class="metric-label">內容區右邊距</div>
+                    <div class="metric-value">154 px</div>
+                </div>
+                
+                <div class="issues">
+                    <h3>主要問題</h3>
+                    <ul>
+                        <li>按鈕太小，手機上難以點擊</li>
+                        <li>圖標和文字過小，閱讀困難</li>
+                        <li>內容區域上方空間擠迫</li>
+                        <li>整體視覺層級不明確</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="panel after">
+                <h2>改進後</h2>
+                
+                <div class="metric">
+                    <div class="metric-label">Tab 按鈕尺寸</div>
+                    <div class="metric-value">
+                        290 × 290 px
+                        <span class="change-indicator">+199%</span>
+                    </div>
+                </div>
+                
+                <div class="metric">
+                    <div class="metric-label">圖標尺寸</div>
+                    <div class="metric-value">
+                        126 × 126 px
+                        <span class="change-indicator">+200%</span>
+                    </div>
+                </div>
+                
+                <div class="metric">
+                    <div class="metric-label">Badge 尺寸</div>
+                    <div class="metric-value">
+                        54 × 54 px
+                        <span class="change-indicator">+200%</span>
+                    </div>
+                </div>
+                
+                <div class="metric">
+                    <div class="metric-label">Tab 欄寬度</div>
+                    <div class="metric-value">
+                        330 px
+                        <span class="change-indicator">+180%</span>
+                    </div>
+                </div>
+                
+                <div class="metric">
+                    <div class="metric-label">內容區上邊距</div>
+                    <div class="metric-value">
+                        280 px
+                        <span class="change-indicator">+61%</span>
+                    </div>
+                </div>
+                
+                <div class="metric">
+                    <div class="metric-label">內容區右邊距</div>
+                    <div class="metric-value">
+                        366 px
+                        <span class="change-indicator">+138%</span>
+                    </div>
+                </div>
+                
+                <div class="improvements">
+                    <h3>改進效果</h3>
+                    <ul>
+                        <li>按鈕尺寸放大 3 倍，更易點擊</li>
+                        <li>圖標和文字清晰可讀</li>
+                        <li>內容區域呼吸空間充足</li>
+                        <li>視覺層級更加明確</li>
+                        <li>整體使用體驗大幅提升</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="visual-demo">
+            <h2>視覺對比示意</h2>
+            
+            <div class="tabs-comparison">
+                <div class="tab-demo">
+                    <h3>改進前 (97×97)</h3>
+                    <div class="tab-button small">
+                        <div class="badge">01</div>
+                        <div class="tab-icon">📊</div>
+                        <div class="tab-label">總覽</div>
+                    </div>
+                    <div class="size-label">在手機上過小難以點擊</div>
+                </div>
+                
+                <div class="tab-demo">
+                    <h3>改進後 (290×290)</h3>
+                    <div class="tab-button large">
+                        <div class="badge">01</div>
+                        <div class="tab-icon">📊</div>
+                        <div class="tab-label">總覽</div>
+                    </div>
+                    <div class="size-label">清晰易讀，符合手機觸控標準</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="action-section">
+            <h2>📋 實施步驟</h2>
+            
+            <div class="action-steps">
+                <ol>
+                    <li>
+                        將更新後的檔案複製回專案：<br>
+                        從 <span class="code">changes/general-detail-unified-main-updated.json</span><br>
+                        到 <span class="code">3KLife/assets/resources/ui-spec/layouts/general-detail-unified-main.json</span>
+                    </li>
+                    <li>
+                        在 Cocos Creator 中開啟專案並重新載入場景
+                    </li>
+                    <li>
+                        測試張飛人物介紹頁面：
+                        <ul style="margin-top: 10px; padding-left: 20px;">
+                            <li>檢查所有 Tab 按鈕是否正確顯示</li>
+                            <li>確認按鈕尺寸是否符合預期</li>
+                            <li>驗證內容區域間距是否充足</li>
+                        </ul>
+                    </li>
+                    <li>
+                        在實機（手機/平板）上測試觸控體驗
+                    </li>
+                    <li>
+                        確認所有分頁（總覽、基本、屬性、血脈、戰技、適性、延伸）的佈局都正常
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

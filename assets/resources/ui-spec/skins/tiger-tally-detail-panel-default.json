@@ -23,7 +23,7 @@
     },
     "ttd.type.icon": {
       "kind": "sprite-frame",
-      "path": "sprites/battle/unitinfo_type_icon/spriteFrame",
+      "path": "sprites/battle/battle_unit_type_underlay/spriteFrame",
       "spriteType": "simple",
       "allowAutoAtlas": true
     },

@@ -1,10 +1,11 @@
-import { Faction } from '../../../core/config/Constants';
+import { EVENT_NAMES, Faction } from '../../../core/config/Constants';
 import { services } from '../../../core/managers/ServiceLoader';
 import type { TroopUnit } from '../../../core/models/TroopUnit';
 import type { BattleState } from '../../models/BattleState';
 
 export interface BattleTileEffectPhaseContext {
   readonly state: BattleState;
+  readonly actingFaction: Faction;
   readonly playerGeneralUnitId: string | null;
   readonly enemyGeneralUnitId: string | null;
   applyUnitDamage(
@@ -29,6 +30,9 @@ export function executeBattleTileEffectPhase(context: BattleTileEffectPhaseConte
   const killedIds = new Set<string>();
 
   for (const [, unit] of context.state.units) {
+    if (unit.faction !== context.actingFaction) {
+      continue;
+    }
     const effect = context.state.getTileEffect(unit.lane, unit.depth);
     if (!effect?.damagePerTurn || unit.isDead()) {
       continue;

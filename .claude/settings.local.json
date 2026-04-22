@@ -1,0 +1,41 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(sort -t_ -k3 -n)",
+      "Bash(node -e \"const j = JSON.parse\\(require\\('fs'\\).readFileSync\\('C:/Users/User/3KLife/docs/tasks/tasks-prog.json'\\)\\); console.log\\('tasks count:', j.tasks.length, '| TAC entries:', j.tasks.filter\\(t=>t.id.startsWith\\('SYS-SKILL-TAC'\\)\\).map\\(t=>t.id\\).join\\(', '\\)\\)\")",
+      "Bash(npm test *)",
+      "Bash(find tests *)",
+      "Bash(node -e \"const fs=require\\('fs'\\); const lines=fs.readFileSync\\('assets/scripts/battle/views/BattleScene.ts','utf8'\\).split\\('\\\\n'\\); console.log\\('line 1173:', JSON.stringify\\(lines[1172]\\)\\); console.log\\('line 1174:', JSON.stringify\\(lines[1173]\\)\\); console.log\\('line 1175:', JSON.stringify\\(lines[1174]\\)\\); console.log\\('line 1176:', JSON.stringify\\(lines[1175]\\)\\); console.log\\('line 1177:', JSON.stringify\\(lines[1176]\\)\\);\")",
+      "Bash(node -e \"const fs=require\\('fs'\\); const lines=fs.readFileSync\\('assets/scripts/battle/views/BattleSceneLoader.ts','utf8'\\).split\\('\\\\n'\\); for\\(let i=232;i<=242;i++\\) console.log\\('line '+\\(i+1\\)+':', JSON.stringify\\(lines[i]\\)\\);\")",
+      "Bash(python -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\(d.get\\('scripts',{}\\).get\\('check:ts-syntax',''\\)\\)\")",
+      "Bash(node -e \"const fs=require\\('fs'\\); const content=fs.readFileSync\\('assets/scripts/battle/views/BattleScene.ts','utf8'\\); const lines=content.split\\('\\\\n'\\); console.log\\('total lines:', lines.length\\); for\\(let i=1170;i<=1190;i++\\) { console.log\\('L'+\\(i+1\\)+'['+lines[i]?.length+']:', JSON.stringify\\(lines[i]?.substring\\(0,80\\)\\)\\); }\")",
+      "Bash(node tools_node/check-ts-syntax.js)",
+      "Bash(npx jest *)",
+      "Bash(node -e \"const j=require\\('./assets/resources/data/master/tactic-library.json'\\); console.log\\(j.data.slice\\(0,10\\).map\\(t=>t.id+':'+t.battleSkillId+':'+t.manualTargeting\\).join\\('\\\\n'\\)\\)\")",
+      "Bash(cat jest.config.js)",
+      "Bash(cat jest.config.ts)",
+      "Bash(cat jest.config.json)",
+      "Bash(cat babel.config.js)",
+      "Bash(cat babel.config.json)",
+      "Bash(cat .babelrc)",
+      "Bash(python -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\(json.dumps\\(d.get\\('jest',{}\\),indent=2\\)\\); print\\('TEST SCRIPT:', d.get\\('scripts',{}\\).get\\('test',''\\)\\)\")",
+      "Bash(node -e ' *)",
+      "Bash(node tools_node/validate-general-detail-ui.js)",
+      "Bash(npx tsx *)",
+      "Bash(node -r ./tests/register-cc-test-stub.js -r ./tests/register-tsconfig-test-paths.js -e ' *)",
+      "Bash(node -r ./tests/register-cc-test-stub.js -r ./tests/register-tsconfig-test-paths.js -e \"console.log\\('cc stub loaded ok'\\)\")",
+      "Bash(npx ts-node *)",
+      "Bash(node -e \"require\\('./tests/register-tsconfig-test-paths.js'\\)\")",
+      "Bash(python -c \"import sys,json; print\\(json.dumps\\(json.load\\(sys.stdin\\), indent=2\\)\\)\")",
+      "Bash(node -e \"const fs = require\\('fs'\\); console.log\\(JSON.stringify\\(JSON.parse\\(fs.readFileSync\\('assets/resources/ui-spec/screens/general-detail-screen.json'\\)\\), null, 2\\)\\)\")",
+      "Bash(node -e \"const fs = require\\('fs'\\); const skin = JSON.parse\\(fs.readFileSync\\('assets/resources/ui-spec/skins/general-detail-default.json'\\)\\); console.log\\(Object.keys\\(skin.slots || {}\\).filter\\(k => k.startsWith\\('detail.header'\\) || k.startsWith\\('detail.summary'\\)\\).sort\\(\\).join\\('\\\\n'\\)\\)\")",
+      "Bash(node -e \"const fs = require\\('fs'\\); const skin = JSON.parse\\(fs.readFileSync\\('assets/resources/ui-spec/skins/general-detail-default.json'\\)\\); const slots = skin.slots; const keys = ['detail.header.fill', 'detail.header.frame', 'detail.header.bg', 'detail.summary.fill', 'detail.summary.frame', 'detail.footer.fill', 'detail.footer.frame', 'detail.footer.bleed', 'detail.content.bleed', 'detail.tabbar.rail.bleed']; keys.forEach\\(k => console.log\\(k + ':', JSON.stringify\\(slots[k]\\)\\)\\)\")",
+      "Bash(node -e \"const fs=require\\('fs'\\); const layout=JSON.parse\\(fs.readFileSync\\('assets/resources/ui-spec/layouts/lobby-main-main.json'\\)\\); function find\\(node,path,idx=0\\){if\\(idx===path.length\\)return node;const c=\\(node.children||[]\\).find\\(n=>n.id===path[idx]\\);return c?find\\(c,path,idx+1\\):null;} const btn=find\\(layout.root,'LobbyRoot/MainFrame/ContentArea/HeroTaskWallCard/DispatchBoardPeek/DispatchBoardActionButton'.split\\('/'\\),0\\); console.log\\(JSON.stringify\\(btn,null,2\\)\\)\")",
+      "Bash(node -e \"const g=require\\('./assets/resources/data/generals.json'\\); const e=g.find\\(x=>x.id==='guan-yu'\\)||g[0]; console.log\\(JSON.stringify\\(e,null,2\\)\\)\")",
+      "Bash(node -e \"const fs=require\\('fs'\\); const files=fs.readdirSync\\('assets/resources/sprites/generals/'\\).filter\\(f=>f.endsWith\\('.png'\\)\\); console.log\\(files.join\\('\\\\n'\\)\\)\")",
+      "Bash(node -e \"const p=require\\('./package.json'\\); console.log\\('deps:', JSON.stringify\\(Object.keys\\(p.dependencies||{}\\), null, 2\\)\\); console.log\\('devDeps:', JSON.stringify\\(Object.keys\\(p.devDependencies||{}\\), null, 2\\)\\)\")",
+      "Bash(node tools_node/generate-general-avatars.js --verify)",
+      "Bash(node tools_node/generate-general-avatars.js)"
+    ]
+  }
+}

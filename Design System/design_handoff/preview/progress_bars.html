@@ -1,0 +1,20 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../colors_and_type.css"><style>
+*{box-sizing:border-box;margin:0}html,body{width:700px;background:#0F0F0F;color:#E8E4DC;font-family:var(--font-body);padding:24px;overflow:hidden}
+.lbl{font-family:var(--font-label);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#B0A880;margin-bottom:14px}
+.row{display:flex;flex-direction:column;gap:14px}
+.bar-wrap{display:flex;align-items:center;gap:12px}
+.bar-label{width:56px;font-family:var(--font-label);font-size:11px;font-weight:700;letter-spacing:.1em;color:#B0A880}
+.bar{flex:1;height:18px;border-radius:10px;background:#20201F;box-shadow:inset 0 2px 4px rgba(0,0,0,.6);overflow:hidden;border:1px solid #000}
+.fill{height:100%;border-radius:10px}
+.hp{background:linear-gradient(180deg,#6BCB77,#2E8B57);box-shadow:inset 0 1px 0 rgba(255,255,255,.3)}
+.hpx{background:linear-gradient(180deg,#FF8888,#B22222);box-shadow:inset 0 1px 0 rgba(255,255,255,.2)}
+.sp{background:linear-gradient(180deg,#FFE088,#D4AF37);box-shadow:inset 0 1px 0 rgba(255,255,255,.5),0 0 8px rgba(255,193,7,.4)}
+.val{font-family:var(--font-num);font-variant-numeric:tabular-nums;font-size:13px;min-width:96px;text-align:right;color:#E8E4DC}
+</style></head><body>
+<div class="lbl">Progress · HP Ally · HP Enemy · SP / Ultimate</div>
+<div class="row">
+  <div class="bar-wrap"><div class="bar-label">HP</div><div class="bar"><div class="fill hp" style="width:72%"></div></div><div class="val">6,768 / 9,400</div></div>
+  <div class="bar-wrap"><div class="bar-label">HP·敵</div><div class="bar"><div class="fill hpx" style="width:34%"></div></div><div class="val">2,100 / 6,200</div></div>
+  <div class="bar-wrap"><div class="bar-label">SP</div><div class="bar"><div class="fill sp" style="width:88%"></div></div><div class="val">88 / 100</div></div>
+</div>
+</body></html>

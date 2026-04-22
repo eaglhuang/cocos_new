@@ -1,7 +1,0 @@
-Create a single isolated UI partial asset for BattleSceneNonHUD. Zone: battle-log-rail. Slot: controlGlyphSuite. Visual target: parchment-rail / parchment-v1.
-
-Use the parchment-rail family and parchment-v1 recipe language. This asset must fit inside the existing UItemplate + widget structure and cannot redefine layout. Keep these qualities: .
-
-Avoid: . No layout blocks, no full-page composition, no UI text placement, no badges with letters.
-
-no text, no letters, no calligraphy, no symbols

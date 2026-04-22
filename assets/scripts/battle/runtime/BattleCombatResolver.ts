@@ -2,6 +2,7 @@ import { EVENT_NAMES, Faction, GAME_CONFIG, SP_PER_KILL, StatusEffect, TerrainTy
 import { services } from '../../core/managers/ServiceLoader';
 import type { TroopUnit } from '../../core/models/TroopUnit';
 import type { BattleState } from '../models/BattleState';
+import { BattleTurnManager } from './BattleTurnManager';
 import { resolveBattleTacticBehavior } from '../shared/BattleTacticBehavior';
 
 export interface BattleCombatAction {
@@ -11,6 +12,7 @@ export interface BattleCombatAction {
 
 export interface BattleCombatResolverContext {
   readonly state: BattleState;
+  readonly turnManager?: BattleTurnManager;
   getPlayerGeneralUnitId(): string | null;
   getEnemyGeneralUnitId(): string | null;
   setPlayerGeneralUnitId(unitId: string | null): void;
@@ -183,6 +185,40 @@ export class BattleCombatResolver {
     this.context.state.setActionReset(nextState);
   }
 
+  public advanceAfterKill(attacker: TroopUnit, svc: ReturnType<typeof services>): void {
+    if (this.context.turnManager?.hasUnitMovedThisTurn(attacker.id)) {
+      return;
+    }
+
+    const direction = this.getForwardDirection(attacker);
+    const fromLane = attacker.lane;
+    const fromDepth = attacker.depth;
+    const nextLane = fromLane;
+    const nextDepth = fromDepth + direction;
+    const currentCell = this.context.state.getCell(fromLane, fromDepth);
+    const nextCell = this.context.state.getCell(nextLane, nextDepth);
+
+    if (!currentCell || !nextCell) {
+      return;
+    }
+    if (nextCell.occupantId !== null || this.isCellMovementBlocked(nextLane, nextDepth)) {
+      return;
+    }
+
+    currentCell.occupantId = null;
+    attacker.moveTo(nextLane, nextDepth);
+    nextCell.occupantId = attacker.id;
+    this.context.turnManager?.markUnitMoved(attacker.id);
+
+    svc.event.emit(EVENT_NAMES.UnitMoved, {
+      unitId: attacker.id,
+      lane: attacker.lane,
+      depth: attacker.depth,
+      fromLane,
+      fromDepth,
+    });
+  }
+
   public applyUnitDamage(
     unit: TroopUnit,
     damage: number,
@@ -342,6 +378,9 @@ export class BattleCombatResolver {
       }
       if (occupant.faction !== unit.faction && !this.isUnitHiddenFrom(unit.faction, occupant)) {
         return occupant;
+      }
+      if (effectiveAttackRange > 1 && occupant.faction === unit.faction) {
+        continue;
       }
       break;
     }

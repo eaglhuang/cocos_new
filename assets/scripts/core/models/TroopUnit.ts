@@ -1,6 +1,17 @@
 // @spec-source → 見 docs/cross-reference-index.md
 import { Faction, TroopType } from "../config/Constants";
 
+export function resolveTroopDisplayName(type: TroopType): string {
+  if (type === TroopType.Cavalry) return '騎兵';
+  if (type === TroopType.Infantry) return '步兵';
+  if (type === TroopType.Shield) return '盾兵';
+  if (type === TroopType.Archer) return '弓兵';
+  if (type === TroopType.Pikeman) return '長槍兵';
+  if (type === TroopType.Engineer) return '工兵';
+  if (type === TroopType.Medic) return '醫護兵';
+  return '水軍';
+}
+
 export interface TroopStats {
   hp: number;
   attack: number;
@@ -13,6 +24,7 @@ export class TroopUnit {
   public readonly id: string;
   public readonly type: TroopType;
   public readonly faction: Faction;
+  public readonly name: string;
   public readonly maxHp: number;
   public readonly attack: number;
   public readonly defense: number;
@@ -31,10 +43,11 @@ export class TroopUnit {
   // 戰鬥狀態緩存 (可用於結算時的狀態，如盾牆加倍)
   public isShieldWallActive = false;
 
-  constructor(id: string, type: TroopType, faction: Faction, stats: TroopStats) {
+  constructor(id: string, type: TroopType, faction: Faction, stats: TroopStats, name?: string) {
     this.id = id;
     this.type = type;
     this.faction = faction;
+    this.name = name?.trim() || resolveTroopDisplayName(type);
     this.maxHp = stats.hp;
     this.currentHp = stats.hp;
     this.attack = stats.attack;

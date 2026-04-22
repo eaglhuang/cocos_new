@@ -1,12 +1,12 @@
 CCEffect %{
   techniques:
-  - name: transparent
+  - name: transparent-base
     passes:
     - vert: water-ripple-vs:vert
       frag: water-ripple-fs:frag
       rasterizerState:
         cullMode: none
-      depthStencilState: &depthState
+      depthStencilState:
         depthTest: false
         depthWrite: false
       blendState:
@@ -16,33 +16,52 @@ CCEffect %{
           blendDst: one_minus_src_alpha
           blendSrcAlpha: src_alpha
           blendDstAlpha: one_minus_src_alpha
-      properties: &props
-        mainTexture:  { value: white }
-        noiseTexture: { value: white }
-        flowMap:      { value: white }
-        foamMap:      { value: white }
-        mainColor:    { value: [0.48, 0.82, 1.0, 0.82], linear: true, editor: { type: color } }
-        uvTiling:     { value: [1.25, 1.25, 0.0, 0.0] }
-        flowParams:   { value: [0.18, 0.085, 4.2, 0.08] }
-        rippleParams: { value: [1.2, 1.0, 0.48, 0.0] }
-        worldFlowParams: { value: [0.12, 0.12, 0.75, 0.7] }
-        riverDir:        { value: [0.92, 0.38, 1.05, 0.78] }
-        foamParams:      { value: [0.56, 0.2, 2.1, 0.42] }
-  - name: additive
+      properties:
+        mainTexture:     { value: white }
+        noiseTexture:    { value: white }
+        flowMap:         { value: white }
+        foamMap:         { value: white }
+        mainColor:       { value: [0.52, 0.86, 1.0, 0.30], linear: true, editor: { type: color } }
+        uvTiling:        { value: [0.84, 0.84, 0.0, 0.0] }
+        flowParams:      { value: [0.28, 0.050, 2.35, 0.07] }
+        rippleParams:    { value: [0.96, 0.44, 0.22, 0.0] }
+        worldFlowParams: { value: [0.14, 0.14, 0.62, 0.24] }
+        layerParams:     { value: [0.0, 0.0, 0.0, 0.0] }
+        riverDir:        { value: [1.0, 1.0, 1.28, 0.16] }
+        foamDir:         { value: [-1.0, 0.0, 1.0, 1.0] }
+        foamParams:      { value: [0.46, 0.16, 1.0, 0.18] }
+        accentParams:    { value: [0.88, 0.34, 0.10, 0.84] }
+  - name: transparent-accent
     passes:
     - vert: water-ripple-vs:vert
       frag: water-ripple-fs:frag
       rasterizerState:
         cullMode: none
-      depthStencilState: *depthState
+      depthStencilState:
+        depthTest: false
+        depthWrite: false
       blendState:
         targets:
         - blend: true
           blendSrc: src_alpha
-          blendDst: one
+          blendDst: one_minus_src_alpha
           blendSrcAlpha: src_alpha
-          blendDstAlpha: one
-      properties: *props
+          blendDstAlpha: one_minus_src_alpha
+      properties:
+        mainTexture:     { value: white }
+        noiseTexture:    { value: white }
+        flowMap:         { value: white }
+        foamMap:         { value: white }
+        mainColor:       { value: [0.96, 0.99, 1.0, 0.22], linear: true, editor: { type: color } }
+        uvTiling:        { value: [1.18, 1.18, 0.0, 0.0] }
+        flowParams:      { value: [0.28, 0.095, 2.75, 0.28] }
+        rippleParams:    { value: [0.72, 0.38, 0.52, 0.0] }
+        worldFlowParams: { value: [0.14, 0.14, 0.96, 0.32] }
+        layerParams:     { value: [1.0, 0.0, 0.0, 0.0] }
+        riverDir:        { value: [1.0, 1.0, 1.78, 0.88] }
+        foamDir:         { value: [-1.0, 0.0, 1.08, 1.0] }
+        foamParams:      { value: [0.68, 0.10, 1.10, 0.40] }
+        accentParams:    { value: [0.05, 1.22, 0.28, 0.88] }
 }%
 
 CCProgram water-ripple-vs %{
@@ -63,8 +82,11 @@ CCProgram water-ripple-vs %{
     vec4 flowParams;
     vec4 rippleParams;
     vec4 worldFlowParams;
+    vec4 layerParams;
     vec4 riverDir;
+    vec4 foamDir;
     vec4 foamParams;
+    vec4 accentParams;
   };
 
   vec4 vert () {
@@ -94,51 +116,92 @@ CCProgram water-ripple-fs %{
     vec4 flowParams;
     vec4 rippleParams;
     vec4 worldFlowParams;
+    vec4 layerParams;
     vec4 riverDir;
+    vec4 foamDir;
     vec4 foamParams;
+    vec4 accentParams;
   };
+
+  vec2 wrapUv(vec2 uv) {
+    return fract(uv);
+  }
 
   vec4 frag () {
     float t = cc_time.x;
-
+    float layerMix = clamp(layerParams.x, 0.0, 1.0);
     float worldBlend = clamp(worldFlowParams.z, 0.0, 1.0);
     vec2 baseUv = mix(uv0, worldUv, worldBlend);
 
-    vec2 noiseUvA = baseUv * 1.35 + vec2(t * flowParams.x, -t * flowParams.x * 0.67);
-    vec2 noiseUvB = baseUv * 2.10 + vec2(-t * flowParams.x * 0.41, t * flowParams.x * 0.93);
-    vec2 noiseA = texture(noiseTexture, noiseUvA).rg;
-    vec2 noiseB = texture(noiseTexture, noiseUvB).rg;
-    vec2 noise = (noiseA + noiseB) - 1.0; // [-1, 1]
+    vec2 riverFlowDir = normalize(max(abs(riverDir.xy), vec2(1e-4)) * sign(riverDir.xy));
+    vec2 foamFlowDir = normalize(max(abs(foamDir.xy), vec2(1e-4)) * sign(foamDir.xy));
+    vec2 riverCrossDir = vec2(-riverFlowDir.y, riverFlowDir.x);
+    vec2 foamCrossDir = vec2(-foamFlowDir.y, foamFlowDir.x);
+    float bankMask = pow(clamp(1.0 - abs(uv0.y * 2.0 - 1.0), 0.0, 1.0), 2.2);
 
-    vec2 flowDir = normalize(max(abs(riverDir.xy), vec2(1e-4)) * sign(riverDir.xy));
-    vec2 flowMapUv = baseUv * foamParams.z + vec2(t * foamParams.w, -t * foamParams.w * 0.52);
-    vec2 flowField = texture(flowMap, flowMapUv).rg * 2.0 - 1.0;
-    vec2 mixedFlow = normalize(flowDir + flowField * 0.75 + noise * worldFlowParams.w);
+    vec4 outColor;
+    if (layerMix < 0.5) {
+      vec2 riverScroll = riverFlowDir * (t * max(flowParams.x, 0.02) * max(riverDir.z, 0.1));
+      vec2 riverNoiseUv = wrapUv(baseUv * 0.72 - riverScroll * 0.35);
+      vec2 riverNoise = texture(noiseTexture, riverNoiseUv).rg * 2.0 - 1.0;
+      vec2 riverFlowUv = wrapUv(baseUv - riverScroll + riverNoise * flowParams.y + riverCrossDir * riverNoise.y * worldFlowParams.w * 0.08);
+      vec4 riverBase = texture(mainTexture, riverFlowUv);
 
-    vec2 flowUv = baseUv + mixedFlow * (t * flowParams.x * riverDir.z) + noise * flowParams.y;
+      float riverBand = 0.5 + 0.5 * sin(dot(baseUv, riverCrossDir) * 10.4 - t * (5.6 + flowParams.x * 2.0));
+      riverBand = smoothstep(0.25, 0.88, riverBand);
+      float riverRipple = 0.5 + 0.5 * sin(dot(baseUv, riverFlowDir) * rippleParams.x - t * rippleParams.y * 4.8);
+      float riverFoamMask = smoothstep(0.62, 0.96, riverRipple + riverBand * 0.18 + riverNoise.x * 0.08) * bankMask;
 
-    vec4 base = texture(mainTexture, flowUv);
+      vec3 riverRgb = riverBase.rgb * mainColor.rgb * max(accentParams.x, 0.01);
+      riverRgb += vec3(0.06, 0.10, 0.14) * riverBand * 0.18;
+      riverRgb += vec3(1.0, 1.0, 1.0) * riverFoamMask * accentParams.y * 0.42;
+      float riverAlpha = clamp(riverBase.a * mainColor.a + riverFoamMask * accentParams.z * 0.45, 0.0, 1.0);
+      outColor = vec4(riverRgb, riverAlpha);
+    } else {
+      // ── 白浪衝擊層（technique 1）─────────────────────────────────────────
+      // 設計：三層噪聲閾值化 → 有機湍流塊，sin 波只做浪峰節奏
+      vec2 foamScroll = foamFlowDir * (t * max(flowParams.x, 0.02) * max(foamDir.z, 0.1));
 
-    float wave = sin((flowUv.x + flowUv.y) * flowParams.z + t * rippleParams.y * 6.2831853);
-    float ripple = 0.5 + 0.5 * wave;
+      // 擾動噪聲（增大擾動量製造湍急感）
+      vec2 foamNoiseUv = wrapUv(baseUv * 0.72 - foamScroll * 0.35);
+      vec2 foamNoise = texture(noiseTexture, foamNoiseUv).rg * 2.0 - 1.0;
 
-    float bankMask = pow(clamp(1.0 - abs(uv0.y * 2.0 - 1.0), 0.0, 1.0), 1.8);
-    float sparkle = smoothstep(0.72, 1.0, ripple) * bankMask;
+      // 三層噪聲：低頻大塊 + 中頻側向湍流 + 高頻細碎邊緣
+      vec2 noiseUv1 = wrapUv(baseUv * 1.4 - foamScroll * 0.90 + foamNoise * 0.13);
+      vec2 noiseUv2 = wrapUv(baseUv * 2.6 + foamCrossDir * 0.48 - foamScroll * 0.70 + foamNoise.yx * 0.10);
+      vec2 noiseUv3 = wrapUv(baseUv * 4.2 - foamCrossDir * 0.24 - foamScroll * 0.46);
+      float n1 = texture(noiseTexture, noiseUv1).r;  // 低頻：大塊湍流群
+      float n2 = texture(noiseTexture, noiseUv2).g;  // 中頻：側向湍流紋理
+      float n3 = texture(foamMap,      noiseUv3).r;  // 高頻：細碎泡沫邊緣
 
-    vec2 foamUv = baseUv * (foamParams.z * 0.7) + mixedFlow * (t * foamParams.w * 0.8);
-    float foamTex = texture(foamMap, foamUv).r;
-    float crestMask = smoothstep(foamParams.x, foamParams.x + foamParams.y, ripple + noise.x * 0.22);
-    float foamMask = clamp(foamTex * 0.65 + crestMask * 0.7 + bankMask * 0.35, 0.0, 1.0) * riverDir.w;
+      // 大尺度波浪週期（sin → 僅輕微調製密度，不主導形狀避免光束感）
+      float wavePeriod = 0.5 + 0.5 * sin(dot(baseUv, foamFlowDir) * rippleParams.x - t * rippleParams.y * 4.5);
+      float waveEnvelope = smoothstep(0.28, 0.72, wavePeriod);  // 只用來微調密度
 
-    vec3 rgb = base.rgb * mainColor.rgb;
-    rgb *= (0.75 + ripple * 0.45 + flowParams.w);
-    rgb += vec3(0.18, 0.35, 0.55) * sparkle * rippleParams.z;
-    rgb += vec3(0.78, 0.9, 1.0) * foamMask * 0.55;
+      // 綜合泡沫密度：噪聲主導（90%），sin 只做微弱節奏調製（10%）
+      float foamDensity = n1 * 0.50 + n2 * 0.28 + n3 * 0.22 + waveEnvelope * 0.16;
 
-    float alpha = base.a * mainColor.a;
-    alpha *= (0.75 + ripple * 0.35);
-    alpha = clamp(alpha + foamMask * 0.22, 0.0, 1.0);
+      // 閾值化 → 有機塊狀泡沫
+      float foamPatch = smoothstep(foamParams.x, foamParams.x + foamParams.y, foamDensity);
+      float foamCore  = smoothstep(foamParams.x + 0.11, foamParams.x + foamParams.y + 0.04, foamDensity);
 
-    return CCFragOutput(vec4(rgb, alpha));
+      // 深水識別：收窄範圍讓波谷更銳利、更暗
+      float troughMask = 1.0 - smoothstep(0.18, 0.44, foamDensity);
+
+      // 顏色合成：更深的波谷 + 更亮的波峰
+      vec3 deepWaterRgb = vec3(0.0, 0.03, 0.10);   // 更深的深水藍黑
+      vec3 surfaceRgb   = mainColor.rgb * 0.76;
+      vec3 foamWhiteRgb = vec3(0.90, 0.96, 1.0);
+
+      vec3 foamRgb = mix(surfaceRgb, deepWaterRgb, troughMask * 0.92);
+      foamRgb = mix(foamRgb, foamWhiteRgb, foamPatch * 0.94);
+      foamRgb += foamWhiteRgb * foamCore * 0.24;
+
+      float foamMask  = foamPatch * bankMask;
+      float foamAlpha = clamp(mainColor.a * 0.28 + foamMask * accentParams.z * 0.76, 0.0, 1.0);
+      outColor = vec4(foamRgb, foamAlpha);
+    }
+
+    return CCFragOutput(outColor);
   }
 }%

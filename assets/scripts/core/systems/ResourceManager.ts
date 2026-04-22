@@ -49,9 +49,13 @@ export class ResourceManager {
     if (normalizedPath.endsWith('/spriteFrame')) {
       candidates.add(normalizedPath);
       candidates.add(basePath);
+      candidates.add(`${basePath}.png`);
+      candidates.add(`${basePath}.png/spriteFrame`);
     } else {
       candidates.add(normalizedPath);
       candidates.add(`${basePath}/spriteFrame`);
+      candidates.add(`${basePath}.png`);
+      candidates.add(`${basePath}.png/spriteFrame`);
     }
 
     return [...candidates].filter(candidate => candidate.length > 0);
@@ -67,6 +71,8 @@ export class ResourceManager {
     const candidates = new Set<string>();
     candidates.add(basePath);
     candidates.add(`${basePath}/texture`);
+    candidates.add(`${basePath}.png`);
+    candidates.add(`${basePath}.png/texture`);
     return [...candidates];
   }
 

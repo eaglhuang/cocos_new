@@ -7,6 +7,7 @@ import { _decorator, Node, Sprite, SpriteFrame, Label, tween, UIOpacity } from '
 import { services } from '../../core/managers/ServiceLoader';
 import { CompositePanel } from '../core/CompositePanel';
 import { UITemplateBinder } from '../core/UITemplateBinder';
+import { applyPortraitSoftMask, fitPortraitSpriteToLogicalFrame, getOrCreatePortraitArtworkSprite } from './portrait/PortraitSoftMask';
 
 const { ccclass } = _decorator;
 
@@ -55,9 +56,17 @@ export class GeneralPortraitComposite extends CompositePanel {
 
     private async _loadAndDisplayPortrait(path: string, name: string): Promise<void> {
         try {
-            const frame = await services().resource.loadSpriteFrame(path);
-            if (frame && this._portraitSprite) {
-                this._portraitSprite.spriteFrame = frame;
+            const frame = await services().resource.loadSpriteFrame(path, { preferTextureFallback: true });
+            if (frame) {
+                const portraitSprite = this._portraitSprite?.node
+                    ? getOrCreatePortraitArtworkSprite(this._portraitSprite.node)
+                    : null;
+                if (portraitSprite) {
+                    portraitSprite.spriteFrame = frame;
+                    portraitSprite.type = Sprite.Type.SIMPLE;
+                    fitPortraitSpriteToLogicalFrame(portraitSprite);
+                    await applyPortraitSoftMask(portraitSprite);
+                }
             }
         } catch (e) {
             console.warn(`[GeneralPortraitComposite] Failed to load portrait: ${path}`, e);

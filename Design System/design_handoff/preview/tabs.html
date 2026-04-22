@@ -1,0 +1,73 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../colors_and_type.css"><style>
+*{box-sizing:border-box;margin:0}html,body{width:900px;background:#E8DFD0;color:#2D2926;font-family:var(--font-body);padding:24px;overflow:hidden}
+.lbl{font-family:var(--font-label);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#6B5E4E;margin-bottom:14px}
+.container{display:flex;gap:24px;align-items:flex-start;height:500px}
+.content{flex:1;background:#F0EBDD;border:2px solid #8C7A66;border-radius:12px;padding:24px;overflow-y:auto}
+.content h2{font-family:var(--font-headline);font-size:22px;font-weight:700;color:#1F302B;margin-bottom:12px}
+.content p{font-size:14px;color:#2D2926;line-height:1.6}
+.tabs-vertical{display:flex;flex-direction:column;gap:16px;padding:16px;background:rgba(140,207,196,.08);border-radius:12px}
+.tab-btn{width:100px;height:100px;border-radius:50%;border:3px solid #3F6A62;background:linear-gradient(135deg,#5a8a82,#3F6A62);display:flex;align-items:center;justify-content:center;flex-direction:column;cursor:pointer;transition:all 0.3s ease;box-shadow:0 4px 12px rgba(0,0,0,.2);position:relative}
+.tab-btn:hover{transform:scale(1.08);box-shadow:0 6px 16px rgba(140,207,196,.3)}
+.tab-btn.active{background:linear-gradient(135deg,#8CCFC4,#6E827E);box-shadow:0 8px 20px rgba(140,207,196,.4),inset 0 2px 6px rgba(255,255,255,.3)}
+.tab-icon{font-size:32px;margin-bottom:4px}
+.tab-label{font-family:var(--font-label);font-size:10px;color:#F0EBDD;text-align:center;letter-spacing:.08em;text-transform:uppercase;font-weight:600}
+.tab-btn.active .tab-label{color:#1F302B}
+</style></head><body>
+<div class="lbl">Tabs · Vertical Circle Buttons (General Detail Layout)</div>
+<div class="container">
+  <div class="content">
+    <h2 id="title">總覽</h2>
+    <p id="body">關羽，字雲長。出身河東解縣，於桃園與玄德、翼德結義。勇冠三軍，義薄雲天。</p>
+  </div>
+  <div class="tabs-vertical">
+    <div class="tab-btn active" data-tab="overview" onclick="switchTab('overview')">
+      <div class="tab-icon">📊</div>
+      <div class="tab-label">總覽</div>
+    </div>
+    <div class="tab-btn" data-tab="basics" onclick="switchTab('basics')">
+      <div class="tab-icon">ⓘ</div>
+      <div class="tab-label">基本</div>
+    </div>
+    <div class="tab-btn" data-tab="stats" onclick="switchTab('stats')">
+      <div class="tab-icon">⚔️</div>
+      <div class="tab-label">屬性</div>
+    </div>
+    <div class="tab-btn" data-tab="bloodline" onclick="switchTab('bloodline')">
+      <div class="tab-icon">🧬</div>
+      <div class="tab-label">血脈</div>
+    </div>
+    <div class="tab-btn" data-tab="skills" onclick="switchTab('skills')">
+      <div class="tab-icon">💫</div>
+      <div class="tab-label">戰技</div>
+    </div>
+    <div class="tab-btn" data-tab="story" onclick="switchTab('story')">
+      <div class="tab-icon">📖</div>
+      <div class="tab-label">故事</div>
+    </div>
+  </div>
+</div>
+
+<script>
+const tabContent = {
+  overview: { title: '總覽', body: '關羽，字雲長。出身河東解縣，於桃園與玄德、翼德結義。勇冠三軍，義薄雲天。' },
+  basics: { title: '基本資訊', body: '武力：95 | 政治：78 | 統率：88 | 智慧：85 | 魅力：92' },
+  stats: { title: '屬性', body: '生命：800 | 攻擊：120 | 防禦：85 | 速度：90 | 幸運：75' },
+  bloodline: { title: '血脈', body: '父脈：豫州武將。祖脈：三國名將。傳說：忠義之血脈代代相傳。' },
+  skills: { title: '戰技', body: '青龍偃月刀：揮舞偃月刀攻擊敵方全體，造成150%傷害。' },
+  story: { title: '故事', body: '年少時與劉備、張飛結為義兄弟，誓言同心同德。戎馬生涯數十年，忠義不渝。' }
+};
+
+function switchTab(tabName) {
+  // 更新內容
+  const content = tabContent[tabName];
+  document.getElementById('title').textContent = content.title;
+  document.getElementById('body').textContent = content.body;
+  
+  // 更新按鈕狀態
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.classList.remove('active');
+  });
+  document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+}
+</script>
+</body></html>

@@ -1,9 +1,9 @@
-import { EVENT_NAMES, Faction, StatusEffect, TroopType } from '../../../core/config/Constants';
+import { BattleTactic, EVENT_NAMES, Faction, StatusEffect, TroopType } from '../../../core/config/Constants';
 import { services } from '../../../core/managers/ServiceLoader';
 import type { TroopUnit } from '../../../core/models/TroopUnit';
 import type { BattleState } from '../../models/BattleState';
-import { consumeBattleTileBuff } from '../BattleTileBuffSystem';
 import { BattleTurnManager } from '../BattleTurnManager';
+import { resolveBattleTacticBehavior } from '../../shared/BattleTacticBehavior';
 
 const FORWARD_DIR: Record<Faction, number> = {
   [Faction.Player]: 1,
@@ -12,7 +12,9 @@ const FORWARD_DIR: Record<Faction, number> = {
 
 export interface BattleAutoMovePhaseContext {
   readonly state: BattleState;
+  readonly actingFaction: Faction;
   readonly turnManager: BattleTurnManager;
+  consumeTileBuff(unit: TroopUnit): void;
   getFactionUnits(faction: Faction): TroopUnit[];
   isCellMovementBlocked(lane: number, depth: number): boolean;
   isGeneralUnit(unitId: string): boolean;
@@ -20,16 +22,18 @@ export interface BattleAutoMovePhaseContext {
 
 export function executeBattleAutoMovePhase(context: BattleAutoMovePhaseContext): void {
   const svc = services();
+  const units = context.getFactionUnits(context.actingFaction);
+  units.sort((a, b) => {
+    const depthDelta = context.actingFaction === Faction.Player
+      ? b.depth - a.depth
+      : a.depth - b.depth;
+    if (depthDelta !== 0) {
+      return depthDelta;
+    }
+    return a.lane - b.lane;
+  });
 
-  const playerUnits = context.getFactionUnits(Faction.Player);
-  playerUnits.sort((a, b) => b.depth - a.depth);
-  for (const unit of playerUnits) {
-    stepMoveUnit(unit, svc, context);
-  }
-
-  const enemyUnits = context.getFactionUnits(Faction.Enemy);
-  enemyUnits.sort((a, b) => a.depth - b.depth);
-  for (const unit of enemyUnits) {
+  for (const unit of units) {
     stepMoveUnit(unit, svc, context);
   }
 }
@@ -45,9 +49,15 @@ function stepMoveUnit(unit: TroopUnit, svc: ReturnType<typeof services>, context
 
   const dir = FORWARD_DIR[unit.faction];
   const slowPenalty = svc.buff.hasBuff(unit.id, StatusEffect.Slow) ? 1 : 0;
-  const moveBudget = Math.max(0, unit.getEffectiveMoveRange() - slowPenalty);
+  const tacticMoveRange = resolveBattleTacticBehavior(context.state.battleTactic).getEffectiveMoveRange(unit, context.state);
+  const isFloodBattle = context.state.battleTactic === BattleTactic.FloodAttack;
+  const baseMoveRange = isFloodBattle ? 1 : tacticMoveRange;
+  let remainingMoveBudget = Math.max(0, baseMoveRange - slowPenalty);
+  if (!isFloodBattle) {
+    remainingMoveBudget += resolveTileMoveRangeDelta(context.state, unit.lane, unit.depth);
+  }
 
-  for (let step = 0; step < moveBudget; step++) {
+  while (remainingMoveBudget > 0) {
     const nextDepth = unit.depth + dir;
     const nextCell = context.state.getCell(unit.lane, nextDepth);
     if (!nextCell) break;
@@ -81,6 +91,7 @@ function stepMoveUnit(unit: TroopUnit, svc: ReturnType<typeof services>, context
           isSwapPassenger: true,
           swapPartnerId: unit.id,
         });
+        context.turnManager.markUnitMoved(blocker.id);
         svc.event.emit(EVENT_NAMES.UnitMoved, {
           unitId: unit.id,
           lane: unit.lane,
@@ -94,9 +105,11 @@ function stepMoveUnit(unit: TroopUnit, svc: ReturnType<typeof services>, context
           swapPassengerToLane: previousLane,
           swapPassengerToDepth: previousDepth,
         });
+        context.turnManager.markUnitMoved(unit.id);
 
-        consumeBattleTileBuff(unit, context.state, context.turnManager, svc);
-        applyTileEffectOnEnter(unit, dir, svc, context);
+        context.consumeTileBuff(unit);
+        remainingMoveBudget -= 1;
+        remainingMoveBudget += applyTileEffectOnEnter(unit, dir, svc, context);
         continue;
       }
 
@@ -118,8 +131,10 @@ function stepMoveUnit(unit: TroopUnit, svc: ReturnType<typeof services>, context
       fromLane: prevLane,
       fromDepth: prevDepth,
     });
-    consumeBattleTileBuff(unit, context.state, context.turnManager, svc);
-    applyTileEffectOnEnter(unit, dir, svc, context);
+    context.turnManager.markUnitMoved(unit.id);
+    context.consumeTileBuff(unit);
+    remainingMoveBudget -= 1;
+    remainingMoveBudget += applyTileEffectOnEnter(unit, dir, svc, context);
   }
 }
 
@@ -128,14 +143,15 @@ function applyTileEffectOnEnter(
   moveDir: number,
   svc: ReturnType<typeof services>,
   context: BattleAutoMovePhaseContext,
-): void {
+): number {
   const effect = context.state.getTileEffect(unit.lane, unit.depth);
   if (!effect?.forcedMoveSteps) {
-    return;
+    return resolveTileMoveRangeDelta(context.state, unit.lane, unit.depth);
   }
 
   const pushDir = effect.forcedMoveDirection === 'backward' ? -moveDir : moveDir;
   forceMoveUnit(unit, pushDir, effect.forcedMoveSteps, svc, context, `${effect.state}:enter`);
+  return resolveTileMoveRangeDelta(context.state, unit.lane, unit.depth);
 }
 
 function forceMoveUnit(
@@ -167,5 +183,10 @@ function forceMoveUnit(
       forcedMove: true,
       forcedMoveReason: reason,
     });
+    context.turnManager.markUnitMoved(unit.id);
   }
+}
+
+function resolveTileMoveRangeDelta(state: BattleState, lane: number, depth: number): number {
+  return state.getTileEffect(lane, depth)?.moveRangeDelta ?? 0;
 }

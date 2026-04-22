@@ -45,7 +45,7 @@ export class GeneralListPanel extends UIPreviewBuilder {
     private _isBuilt     = false;
     private _allGenerals: GeneralConfig[] = [];
     private _sortKey: SortKey | null = null;
-    private _sortAsc     = true;
+    private _sortAsc     = false;
 
     private _getRowLabel(row: Node, nodeName: string): Label | null {
         return row.getChildByName(nodeName)?.getComponent(Label) ?? null;
@@ -165,7 +165,7 @@ export class GeneralListPanel extends UIPreviewBuilder {
             this._sortAsc = !this._sortAsc;
         } else {
             this._sortKey = sortKey;
-            this._sortAsc = true;
+            this._sortAsc = false;
         }
         this._updateHeaderIndicators();
         services().event.emit('SHOW_TOAST', { message: '【 排序中 】', duration: 60, blocking: true });

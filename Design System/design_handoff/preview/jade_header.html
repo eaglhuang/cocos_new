@@ -1,0 +1,26 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../colors_and_type.css"><style>
+*{box-sizing:border-box;margin:0}html,body{width:700px;background:#E8DFD0;color:#2D2926;font-family:var(--font-body);padding:22px;overflow:hidden}
+.lbl{font-family:var(--font-label);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#6B5E4E;margin-bottom:10px}
+.plaque{position:relative;height:96px;border-radius:16px;background:linear-gradient(135deg,#6b9b92 0%,#5a8a82 40%,#3F6A62 70%,#2c4a45 100%);padding:4px;box-shadow:0 12px 28px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.2),0 0 20px rgba(140,207,196,.25)}
+.plaque-inner{height:100%;border-radius:13px;background:linear-gradient(180deg,#F5F0E6 0%,#F0EBDD 30%,#E8DFD0 70%,#E0D8C8 100%);padding:0 28px;display:flex;align-items:center;justify-content:space-between;border:2px solid rgba(140,207,196,.35);box-shadow:inset 0 2px 8px rgba(255,255,255,.5),inset 0 -2px 8px rgba(0,0,0,.08)}
+.title{font-family:var(--font-headline);font-size:28px;font-weight:800;color:#1F302B;letter-spacing:.04em;text-shadow:0 2px 4px rgba(0,0,0,.08)}
+.sub{font-family:var(--font-label);font-size:11px;color:#8B7A66;letter-spacing:.14em;text-transform:uppercase;margin-bottom:4px;font-weight:600}
+.tier{width:72px;height:72px;border-radius:50%;background:radial-gradient(circle at 32% 32%,#FFFACC 0%,#FFEF99 15%,#FFE088 35%,#D4AF37 60%,#8A6E1F 100%);display:flex;align-items:center;justify-content:center;font-family:var(--font-headline);font-weight:900;color:#3D2E0A;font-size:26px;box-shadow:0 8px 20px rgba(212,175,55,.5),inset 0 3px 8px rgba(255,255,255,.8),inset 0 -3px 8px rgba(0,0,0,.3),0 0 16px rgba(212,175,55,.4);position:relative;letter-spacing:0.05em}
+.tier::before{content:'';position:absolute;inset:-6px;border-radius:50%;border:2px solid rgba(212,175,55,.4);box-shadow:inset 0 0 8px rgba(212,175,55,.3),0 0 16px rgba(212,175,55,.25)}
+.tier::after{content:'';position:absolute;inset:-10px;border-radius:50%;background:radial-gradient(circle,rgba(212,175,55,.15),transparent 70%);filter:blur(12px);z-index:-1}
+.frame-dots{position:absolute;inset:14px 20px;border:2px dashed rgba(140,207,196,.25);border-radius:10px;pointer-events:none}
+.accent-top{position:absolute;top:0;left:24px;right:24px;height:2px;background:linear-gradient(90deg,transparent,rgba(140,207,196,.5),transparent);border-radius:1px}
+</style></head><body>
+<div class="lbl">Jade Plaque Header · Three-layer chrome (bleed · band · frame)</div>
+<div class="plaque">
+  <div class="accent-top"></div>
+  <div class="plaque-inner">
+    <div>
+      <div class="sub">Hero Codex · 人物圖鑑</div>
+      <div class="title">關羽　雲長</div>
+    </div>
+    <div class="tier">SSR</div>
+  </div>
+  <div class="frame-dots"></div>
+</div>
+</body></html>

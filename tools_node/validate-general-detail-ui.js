@@ -15,7 +15,7 @@ const projectRoot = path.resolve(__dirname, '..');
 const layoutPath = path.join(projectRoot, 'assets/resources/ui-spec/layouts/general-detail-main.json');
 const skinPath = path.join(projectRoot, 'assets/resources/ui-spec/skins/general-detail-default.json');
 const screenPath = path.join(projectRoot, 'assets/resources/ui-spec/screens/general-detail-screen.json');
-const panelPath = path.join(projectRoot, 'assets/scripts/ui/components/GeneralDetailPanel.ts');
+const panelPath = path.join(projectRoot, 'assets/scripts/ui/components/GeneralDetailComposite.ts');
 
 const skinDir = path.join(projectRoot, 'assets/resources/ui-spec/skins');
 const layoutDir = path.join(projectRoot, 'assets/resources/ui-spec/layouts');
@@ -149,7 +149,7 @@ const failures = [];
 if (!fs.existsSync(layoutPath)) failures.push('缺少 general-detail layout');
 if (!fs.existsSync(skinPath)) failures.push('缺少 general-detail skin');
 if (!fs.existsSync(screenPath)) failures.push('缺少 general-detail screen');
-if (!fs.existsSync(panelPath)) failures.push('缺少 GeneralDetailPanel.ts');
+if (!fs.existsSync(panelPath)) failures.push('缺少 GeneralDetailComposite.ts');
 
 if (failures.length > 0) {
     console.error('❌ GeneralDetail UI 驗證失敗\n');
@@ -210,8 +210,10 @@ if (skin.slots?.['detail.section.bg']?.kind !== 'sprite-frame') {
 if (skin.slots?.['detail.tab.idle']?.kind !== 'button-skin') {
     failures.push('detail.tab.idle 應為 button-skin，讓頁籤具備按下/停用狀態圖');
 }
-if (!panelCode.includes("loadFullScreen('general-detail-screen')") && !panelCode.includes('loadFullScreen("general-detail-screen")')) {
-    failures.push('GeneralDetailPanel 尚未使用 general-detail-screen 作為載入入口');
+const usesLegacyLoad = panelCode.includes("loadFullScreen('general-detail-screen')") || panelCode.includes('loadFullScreen("general-detail-screen")');
+const usesUnifiedMount = panelCode.includes("mount('general-detail-unified-screen')") || panelCode.includes('mount("general-detail-unified-screen")');
+if (!usesLegacyLoad && !usesUnifiedMount) {
+    failures.push('GeneralDetailComposite 尚未使用 general-detail-screen 或 general-detail-unified-screen 作為載入入口');
 }
 const hasHeaderLayering = hasAllNodes([
     'GeneralDetailRoot/TopLeftInfoFill',
