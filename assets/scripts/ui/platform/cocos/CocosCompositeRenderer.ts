@@ -55,18 +55,22 @@ export class CocosCompositeRenderer implements ICompositeRenderer {
     async drawRadarChart(parent: NodeHandle, config: RadarChartConfig): Promise<NodeHandle> {
         const parentNode = parent as Node;
         const size       = config.size ?? 120;
-        const canvasSize = size * 2 + 60; // 留邊給 label
+        const axisLabelRadius = config.axisLabelRadius ?? (size + 22);
+        const canvasSize = Math.ceil(axisLabelRadius * 2 + 24); // 留邊給 label
 
         const container = new Node('RadarChart');
+        container.layer = parentNode.layer;
         ensureUITransform(container, canvasSize, canvasSize);
         parentNode.addChild(container);
 
         const gfxNode = new Node('RadarGfx');
+        gfxNode.layer = parentNode.layer;
         ensureUITransform(gfxNode, canvasSize, canvasSize);
         container.addChild(gfxNode);
 
         const gfx = gfxNode.addComponent(Graphics);
         this._drawRadarInternal(gfx, config, size);
+        this._syncRadarAxisLabels(container, config, size);
 
         return container;
     }
@@ -80,6 +84,7 @@ export class CocosCompositeRenderer implements ICompositeRenderer {
         gfx.clear();
         const size = config.size ?? 120;
         this._drawRadarInternal(gfx, config, size);
+        this._syncRadarAxisLabels(container, config, size);
     }
 
     /**
@@ -89,23 +94,30 @@ export class CocosCompositeRenderer implements ICompositeRenderer {
         const { axes, layers } = config;
         const n       = axes.length;
         const gridClr = hexToColor(config.gridColor ?? '#FFFFFF33');
+        const center  = 0;
+        const gridRings = Math.max(1, Math.round(config.gridRings ?? 4));
+        const gridLineWidth = config.gridLineWidth ?? 0.7;
+        const axisLineWidth = config.axisLineWidth ?? 0.7;
+        const outlineWidth = config.outlineWidth ?? 2;
+        const markerRadius = config.markerRadius ?? 4;
 
-        // 1. 背景格線（3 圈）
-        gfx.lineWidth = 1;
+        // 1. 背景格線
+        gfx.lineWidth = gridLineWidth;
         gfx.strokeColor = gridClr;
-        for (let ring = 1; ring <= 3; ring++) {
-            const r = (size / 3) * ring;
-            gfx.moveTo(...this._radialPoint(0, r, n));
+        for (let ring = 1; ring <= gridRings; ring++) {
+            const r = (size / gridRings) * ring;
+            gfx.moveTo(...this._radialPoint(0, r, n, center, center));
             for (let i = 1; i <= n; i++) {
-                gfx.lineTo(...this._radialPoint(i, r, n));
+                gfx.lineTo(...this._radialPoint(i, r, n, center, center));
             }
             gfx.stroke();
         }
 
         // 2. 軸線（從圓心到頂點）
+        gfx.lineWidth = axisLineWidth;
         for (let i = 0; i < n; i++) {
-            const [x, y] = this._radialPoint(i, size, n);
-            gfx.moveTo(0, 0);
+            const [x, y] = this._radialPoint(i, size, n, center, center);
+            gfx.moveTo(center, center);
             gfx.lineTo(x, y);
         }
         gfx.stroke();
@@ -117,25 +129,102 @@ export class CocosCompositeRenderer implements ICompositeRenderer {
             const alpha   = Math.round((layer.opacity ?? 0.4) * 255);
             fillClr.a     = alpha;
 
+            // 1. 填充多邊形
             gfx.fillColor = fillClr;
-            const [x0, y0] = this._radialPoint(0, layer.values[0] * size, n);
+            const [x0, y0] = this._radialPoint(0, layer.values[0] * size, n, center, center);
             gfx.moveTo(x0, y0);
             for (let i = 1; i < n; i++) {
-                const [x, y] = this._radialPoint(i, layer.values[i] * size, n);
+                const [x, y] = this._radialPoint(i, layer.values[i] * size, n, center, center);
                 gfx.lineTo(x, y);
             }
             gfx.close();
             gfx.fill();
+
+            // 2. 描邊輪廓（Cocos Graphics 在 fill() 後會清空路徑，需要重建路徑再 stroke）
+            // 對應 HTML reference: stroke="#8CCFC4" strokeWidth=2
+            const outlineClr = hexToColor(layer.color ?? (li === 0 ? '#4488FF' : '#FFAA22'));
+            outlineClr.a = 230;
+            gfx.strokeColor = outlineClr;
+            gfx.lineWidth = outlineWidth;
+            gfx.moveTo(x0, y0);
+            for (let i = 1; i < n; i++) {
+                const [x, y] = this._radialPoint(i, layer.values[i] * size, n, center, center);
+                gfx.lineTo(x, y);
+            }
+            gfx.close();
+            gfx.stroke();
+
+            // Vertex markers improve readability on dark backgrounds and match the HTML radar intent.
+            const markerColors = config.markerColors ?? [];
+            for (let i = 0; i < n; i++) {
+                const [vx, vy] = this._radialPoint(i, layer.values[i] * size, n, center, center);
+                const markerClr = hexToColor(markerColors[i] ?? (layer.color ?? '#8CCFC4'));
+                markerClr.a = 255;
+                gfx.fillColor = markerClr;
+                gfx.circle(vx, vy, markerRadius);
+                gfx.fill();
+            }
+        }
+    }
+
+    private _syncRadarAxisLabels(container: Node, config: RadarChartConfig, size: number): void {
+        if (config.showAxisLabels === false) {
+            const existing = container.getChildByName('RadarAxisLabels');
+            if (existing) existing.destroy();
+            return;
+        }
+
+        const n = config.axes.length;
+        const radius = config.axisLabelRadius ?? (size + 22);
+        const offsetY = config.axisLabelOffsetY ?? 5;
+        const fontSize = config.labelFontSize ?? 13;
+        const colors = config.axisLabelColors ?? [];
+
+        let labelRoot = container.getChildByName('RadarAxisLabels');
+        if (!labelRoot) {
+            labelRoot = new Node('RadarAxisLabels');
+            labelRoot.layer = container.layer;
+            ensureUITransform(labelRoot, 1, 1);
+            container.addChild(labelRoot);
+        }
+
+        for (let i = 0; i < n; i++) {
+            const labelName = `RadarAxisLabel-${i}`;
+            let labelNode = labelRoot.getChildByName(labelName);
+            if (!labelNode) {
+                labelNode = new Node(labelName);
+                labelNode.layer = container.layer;
+                ensureUITransform(labelNode, 52, 20);
+                labelRoot.addChild(labelNode);
+                labelNode.addComponent(Label);
+            }
+
+            const [x, y] = this._radialPoint(i, radius, n, 0, 0);
+            labelNode.setPosition(x, y + offsetY, 0);
+            const label = labelNode.getComponent(Label);
+            if (!label) continue;
+            label.string = config.axes[i] ?? '';
+            label.fontSize = fontSize;
+            label.lineHeight = fontSize + 2;
+            label.color = hexToColor(colors[i] ?? '#8CCFC4');
+            label.isBold = true;
+            label.horizontalAlign = HorizontalTextAlignment.CENTER;
+            label.verticalAlign = VerticalTextAlignment.CENTER;
+        }
+
+        for (let i = labelRoot.children.length - 1; i >= n; i--) {
+            labelRoot.children[i].destroy();
         }
     }
 
     /**
      * 計算第 i 個頂點坐標（從正上方（-90°）開始，順時針）。
-     * Cocos 2D：Y 軸朝上，因此 sin 取負值到正確朝向。
+     * Cocos 2D：Y 軸朝上；若沿用 SVG 的 +sin 會把雷達上下翻轉，
+     * 因此要改成 -sin 才能與 HTML 座標語意一致。
      */
-    private _radialPoint(i: number, r: number, n: number): [number, number] {
+    private _radialPoint(i: number, r: number, n: number, offsetX = 0, offsetY = 0): [number, number] {
         const angle = (2 * Math.PI * i / n) - Math.PI / 2;
-        return [r * Math.cos(angle), r * Math.sin(angle)];
+        return [offsetX + r * Math.cos(angle), offsetY - r * Math.sin(angle)];
     }
 
     // ── Grid ────────────────────────────────────────────────────────────────

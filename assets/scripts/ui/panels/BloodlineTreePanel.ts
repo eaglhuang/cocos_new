@@ -77,11 +77,25 @@ export class BloodlineTreePanel extends Component {
             if (!txtNode) continue;
             const label = txtNode.getComponent(Label);
             if (!label) continue;
-            label.string = person
-                ? person.is_virtual
-                    ? `${person.name}\n(虛擬祖先)`
-                    : `${person.name}\n(${person.faction})`
-                : '—';
+            label.string = person ? this._formatAncestorLabel(person) : '—';
+        }
+    }
+
+    private _formatAncestorLabel(person: { name: string; faction: string; gene_refs: string[]; is_virtual: boolean }): string {
+        const factionLine = person.is_virtual ? '虛擬祖先' : this._formatFaction(person.faction);
+        const geneCount = Array.isArray(person.gene_refs) ? person.gene_refs.length : 0;
+        return `${person.name}\n${factionLine}\n因子 ${geneCount}`;
+    }
+
+    private _formatFaction(faction: string): string {
+        switch (faction) {
+            case 'player': return '玩家';
+            case 'enemy': return '敵方';
+            case 'wei': return '魏';
+            case 'shu': return '蜀';
+            case 'wu': return '吳';
+            case 'neutral': return '中立';
+            default: return faction || '未知';
         }
     }
 }

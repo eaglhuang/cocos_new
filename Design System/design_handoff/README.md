@@ -298,14 +298,11 @@ rarityMythic:"#00FBFF"// 彩虹
 2. **完成 BloodlineTreePanel.ts**  
    參考：`bloodline-mirror-main.json` + `bloodline-mirror-states-v1.json`  
    設計參考：`design_handoff/preview/` 中的稀有度顏色、badge 規格
-
-3. **Lobby 畫面綁定**  
-   `LobbyScene.ts` 需完整綁定 `lobby-main-main.json` 中的所有節點
-
-### 🟡 下週
-4. **Battle HUD v3 同步**  
+3. **Battle HUD v3 同步**  
    對照 `design_handoff/battle/index_v3.html`，更新 `battle-hud-main.json`
-
+### 🟡 下週
+4. **Lobby 畫面綁定**  
+   `LobbyScene.ts` 需完整綁定 `lobby-main-main.json` 中的所有節點
 ---
 
 ## 八、設計參考檔案清單

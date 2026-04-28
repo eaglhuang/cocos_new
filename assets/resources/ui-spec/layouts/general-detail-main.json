@@ -11,20 +11,27 @@
   "root": {
     "type": "container",
     "name": "GeneralDetailRoot",
-    "widget": { "top": 0, "bottom": 0, "left": 0, "right": 0 },
-    "transition": { "enter": "scaleIn", "exit": "scaleOut", "duration": 0.2, "easing": "backOut" },
+    "widget": {
+      "top": 0,
+      "bottom": 0,
+      "left": 0,
+      "right": 0
+    },
+    "transition": {
+      "enter": "scaleIn",
+      "exit": "scaleOut",
+      "duration": 0.2,
+      "easing": "backOut"
+    },
     "children": [
-      {
-        "type": "image",
-        "name": "BackgroundFull",
-        "widget": { "top": 0, "bottom": 0, "left": 0, "right": 0 },
-        "skinSlot": "detail.bg.fullscreen"
-      },
       {
         "type": "button",
         "name": "TopCloseBtn",
         "id": "topCloseBtn",
-        "widget": { "top": 46, "right": 34 },
+        "widget": {
+          "top": 46,
+          "right": 34
+        },
         "width": 72,
         "height": 72,
         "skinSlot": "detail.back.circle",
@@ -33,22 +40,11 @@
       },
       {
         "type": "panel",
-        "name": "ClickBlocker",
-        "widget": { "top": 0, "bottom": 0, "left": 0, "right": 0 },
-        "skinSlot": "detail.blockInput"
-      },
-      {
-        "type": "image",
-        "name": "PortraitImage",
-        "widget": { "bottom": 56, "left": 36 },
-        "width": "47%",
-        "height": "88%",
-        "skinSlot": "general.portrait.placeholder"
-      },
-      {
-        "type": "panel",
         "name": "TopLeftInfo",
-        "widget": { "top": 68, "left": 40 },
+        "widget": {
+          "top": 68,
+          "left": 40
+        },
         "width": "23%",
         "height": 196,
         "skinSlot": "detail.header.bg",
@@ -56,12 +52,45 @@
           {
             "type": "container",
             "name": "Content",
-            "widget": { "top": 0, "bottom": 0, "left": 0, "right": 0 },
-            "layout": { "type": "vertical", "spacing": 4, "paddingTop": 10, "paddingBottom": 10, "paddingLeft": 18, "paddingRight": 18 },
+            "widget": {
+              "top": 0,
+              "bottom": 0,
+              "left": 0,
+              "right": 0
+            },
+            "layout": {
+              "type": "vertical",
+              "spacing": 4,
+              "paddingTop": 10,
+              "paddingBottom": 10,
+              "paddingLeft": 18,
+              "paddingRight": 18
+            },
             "children": [
-              { "type": "label", "name": "TitleLabel", "width": "100%", "height": 68, "skinSlot": "detail.field.title.bg", "styleSlot": "detail.label.title" },
-              { "type": "label", "name": "NameLabel", "width": "100%", "height": 44, "skinSlot": "detail.field.name.bg", "styleSlot": "detail.label.subtitle" },
-              { "type": "label", "name": "MetaLabel", "width": "100%", "height": 54, "skinSlot": "detail.field.meta.bg", "styleSlot": "detail.label.meta" }
+              {
+                "type": "label",
+                "name": "TitleLabel",
+                "width": "100%",
+                "height": 68,
+                "skinSlot": "detail.field.title.bg",
+                "styleSlot": "detail.label.title"
+              },
+              {
+                "type": "label",
+                "name": "NameLabel",
+                "width": "100%",
+                "height": 44,
+                "skinSlot": "detail.field.name.bg",
+                "styleSlot": "detail.label.subtitle"
+              },
+              {
+                "type": "label",
+                "name": "MetaLabel",
+                "width": "100%",
+                "height": 54,
+                "skinSlot": "detail.field.meta.bg",
+                "styleSlot": "detail.label.meta"
+              }
             ]
           }
         ]
@@ -69,7 +98,10 @@
       {
         "type": "panel",
         "name": "BottomLeftInfo",
-        "widget": { "top": 68, "right": 152 },
+        "widget": {
+          "top": 68,
+          "right": 152
+        },
         "width": "31%",
         "height": 92,
         "skinSlot": "detail.summary.bg",
@@ -77,8 +109,16 @@
           {
             "type": "container",
             "name": "Content",
-            "widget": { "top": 0, "bottom": 0, "left": 0, "right": 0 },
-            "layout": { "type": "horizontal", "spacing": 16 },
+            "widget": {
+              "top": 0,
+              "bottom": 0,
+              "left": 0,
+              "right": 0
+            },
+            "layout": {
+              "type": "horizontal",
+              "spacing": 16
+            },
             "children": [
               {
                 "type": "panel",
@@ -86,10 +126,29 @@
                 "width": "48%",
                 "height": "100%",
                 "skinSlot": "detail.summary.card",
-                "layout": { "type": "vertical", "spacing": 2, "paddingTop": 8, "paddingBottom": 8, "paddingLeft": 18, "paddingRight": 18 },
+                "layout": {
+                  "type": "vertical",
+                  "spacing": 2,
+                  "paddingTop": 8,
+                  "paddingBottom": 8,
+                  "paddingLeft": 18,
+                  "paddingRight": 18
+                },
                 "children": [
-                  { "type": "label", "name": "EpLabel", "width": "100%", "height": 30, "styleSlot": "detail.label.meta" },
-                  { "type": "label", "name": "EpValue", "width": "100%", "height": 36, "styleSlot": "detail.label.summary" }
+                  {
+                    "type": "label",
+                    "name": "EpLabel",
+                    "width": "100%",
+                    "height": 30,
+                    "styleSlot": "detail.label.meta"
+                  },
+                  {
+                    "type": "label",
+                    "name": "EpValue",
+                    "width": "100%",
+                    "height": 36,
+                    "styleSlot": "detail.label.summary"
+                  }
                 ]
               },
               {
@@ -98,10 +157,29 @@
                 "width": "48%",
                 "height": "100%",
                 "skinSlot": "detail.summary.card",
-                "layout": { "type": "vertical", "spacing": 2, "paddingTop": 8, "paddingBottom": 8, "paddingLeft": 18, "paddingRight": 18 },
+                "layout": {
+                  "type": "vertical",
+                  "spacing": 2,
+                  "paddingTop": 8,
+                  "paddingBottom": 8,
+                  "paddingLeft": 18,
+                  "paddingRight": 18
+                },
                 "children": [
-                  { "type": "label", "name": "VitLabel", "width": "100%", "height": 30, "styleSlot": "detail.label.meta" },
-                  { "type": "label", "name": "VitValue", "width": "100%", "height": 36, "styleSlot": "detail.label.summary" }
+                  {
+                    "type": "label",
+                    "name": "VitLabel",
+                    "width": "100%",
+                    "height": 30,
+                    "styleSlot": "detail.label.meta"
+                  },
+                  {
+                    "type": "label",
+                    "name": "VitValue",
+                    "width": "100%",
+                    "height": 36,
+                    "styleSlot": "detail.label.summary"
+                  }
                 ]
               }
             ]
@@ -109,33 +187,22 @@
         ]
       },
       {
-        "type": "panel",
-        "name": "RightTabBarFill",
-        "widget": { "top": 110, "right": 16 },
-        "width": 118,
-        "skinSlot": "detail.tabbar.rail.fill"
-      },
-      {
-        "type": "panel",
-        "name": "RightTabBarBleed",
-        "widget": { "top": 110, "right": 16 },
-        "width": 118,
-        "skinSlot": "detail.tabbar.rail.bleed"
-      },
-      {
-        "type": "panel",
-        "name": "RightTabBarFrame",
-        "widget": { "top": 110, "right": 16 },
-        "width": 118,
-        "skinSlot": "detail.tabbar.rail.frame"
-      },
-      {
         "type": "container",
         "name": "RightTabBar",
-        "widget": { "top": 110, "right": 16 },
+        "widget": {
+          "top": 110,
+          "right": 16
+        },
         "width": 118,
         "height": 662,
-        "layout": { "type": "vertical", "spacing": 12, "paddingTop": 10, "paddingBottom": 10, "paddingLeft": 10, "paddingRight": 10 },
+        "layout": {
+          "type": "vertical",
+          "spacing": 12,
+          "paddingTop": 10,
+          "paddingBottom": 10,
+          "paddingLeft": 10,
+          "paddingRight": 10
+        },
         "children": [
           {
             "type": "button",
@@ -144,11 +211,68 @@
             "height": 97,
             "skinSlot": "detail.tab.circle.basics",
             "children": [
-              { "type": "image", "name": "Badge", "widget": { "top": 8, "right": 8 }, "width": 18, "height": 18, "skinSlot": "detail.tab.circle.badge" },
-              { "type": "label", "name": "BadgeLabel", "widget": { "top": 8, "right": 8 }, "width": 18, "height": 18, "styleSlot": "detail.label.circleTabBadge", "text": "01" },
-              { "type": "image", "name": "IconInactive", "widget": { "top": 14, "hCenter": true }, "width": 42, "height": 42, "skinSlot": "detail.tab.icon.basics.inactive" },
-              { "type": "image", "name": "IconActive", "widget": { "top": 14, "hCenter": true }, "width": 42, "height": 42, "skinSlot": "detail.tab.icon.basics.active" },
-              { "type": "label", "name": "Label", "widget": { "left": 8, "right": 8, "bottom": 10 }, "height": 22, "styleSlot": "detail.label.circleTabLabel", "text": "總覽" }
+              {
+                "type": "label",
+                "name": "BadgeLabel",
+                "widget": {
+                  "top": 8,
+                  "right": 8
+                },
+                "width": 18,
+                "height": 18,
+                "styleSlot": "detail.label.circleTabBadge",
+                "text": "01"
+              },
+              {
+                "type": "label",
+                "name": "Label",
+                "widget": {
+                  "left": 8,
+                  "right": 8,
+                  "bottom": 10
+                },
+                "height": 22,
+                "styleSlot": "detail.label.circleTabLabel",
+                "text": "總覽"
+              }
+            ],
+            "skinLayers": [
+              {
+                "layerId": "Badge",
+                "slotId": "detail.tab.circle.badge",
+                "zOrder": 0,
+                "expand": false,
+                "width": 18,
+                "height": 18,
+                "widget": {
+                  "top": 8,
+                  "right": 8
+                }
+              },
+              {
+                "layerId": "IconInactive",
+                "slotId": "detail.tab.icon.basics.inactive",
+                "zOrder": 1,
+                "expand": false,
+                "width": 42,
+                "height": 42,
+                "widget": {
+                  "top": 14,
+                  "hCenter": true
+                }
+              },
+              {
+                "layerId": "IconActive",
+                "slotId": "detail.tab.icon.basics.active",
+                "zOrder": 2,
+                "expand": false,
+                "width": 42,
+                "height": 42,
+                "widget": {
+                  "top": 14,
+                  "hCenter": true
+                }
+              }
             ]
           },
           {
@@ -158,11 +282,68 @@
             "height": 97,
             "skinSlot": "detail.tab.circle.stats",
             "children": [
-              { "type": "image", "name": "Badge", "widget": { "top": 8, "right": 8 }, "width": 18, "height": 18, "skinSlot": "detail.tab.circle.badge" },
-              { "type": "label", "name": "BadgeLabel", "widget": { "top": 8, "right": 8 }, "width": 18, "height": 18, "styleSlot": "detail.label.circleTabBadge", "text": "02" },
-              { "type": "image", "name": "IconInactive", "widget": { "top": 14, "hCenter": true }, "width": 42, "height": 42, "skinSlot": "detail.tab.icon.stats.inactive" },
-              { "type": "image", "name": "IconActive", "widget": { "top": 14, "hCenter": true }, "width": 42, "height": 42, "skinSlot": "detail.tab.icon.stats.active" },
-              { "type": "label", "name": "Label", "widget": { "left": 8, "right": 8, "bottom": 10 }, "height": 22, "styleSlot": "detail.label.circleTabLabel", "text": "屬性" }
+              {
+                "type": "label",
+                "name": "BadgeLabel",
+                "widget": {
+                  "top": 8,
+                  "right": 8
+                },
+                "width": 18,
+                "height": 18,
+                "styleSlot": "detail.label.circleTabBadge",
+                "text": "02"
+              },
+              {
+                "type": "label",
+                "name": "Label",
+                "widget": {
+                  "left": 8,
+                  "right": 8,
+                  "bottom": 10
+                },
+                "height": 22,
+                "styleSlot": "detail.label.circleTabLabel",
+                "text": "屬性"
+              }
+            ],
+            "skinLayers": [
+              {
+                "layerId": "Badge",
+                "slotId": "detail.tab.circle.badge",
+                "zOrder": 0,
+                "expand": false,
+                "width": 18,
+                "height": 18,
+                "widget": {
+                  "top": 8,
+                  "right": 8
+                }
+              },
+              {
+                "layerId": "IconInactive",
+                "slotId": "detail.tab.icon.stats.inactive",
+                "zOrder": 1,
+                "expand": false,
+                "width": 42,
+                "height": 42,
+                "widget": {
+                  "top": 14,
+                  "hCenter": true
+                }
+              },
+              {
+                "layerId": "IconActive",
+                "slotId": "detail.tab.icon.stats.active",
+                "zOrder": 2,
+                "expand": false,
+                "width": 42,
+                "height": 42,
+                "widget": {
+                  "top": 14,
+                  "hCenter": true
+                }
+              }
             ]
           },
           {
@@ -172,11 +353,68 @@
             "height": 97,
             "skinSlot": "detail.tab.circle.bloodline",
             "children": [
-              { "type": "image", "name": "Badge", "widget": { "top": 8, "right": 8 }, "width": 18, "height": 18, "skinSlot": "detail.tab.circle.badge" },
-              { "type": "label", "name": "BadgeLabel", "widget": { "top": 8, "right": 8 }, "width": 18, "height": 18, "styleSlot": "detail.label.circleTabBadge", "text": "03" },
-              { "type": "image", "name": "IconInactive", "widget": { "top": 14, "hCenter": true }, "width": 42, "height": 42, "skinSlot": "detail.tab.icon.bloodline.inactive" },
-              { "type": "image", "name": "IconActive", "widget": { "top": 14, "hCenter": true }, "width": 42, "height": 42, "skinSlot": "detail.tab.icon.bloodline.active" },
-              { "type": "label", "name": "Label", "widget": { "left": 8, "right": 8, "bottom": 10 }, "height": 22, "styleSlot": "detail.label.circleTabLabel", "text": "血脈" }
+              {
+                "type": "label",
+                "name": "BadgeLabel",
+                "widget": {
+                  "top": 8,
+                  "right": 8
+                },
+                "width": 18,
+                "height": 18,
+                "styleSlot": "detail.label.circleTabBadge",
+                "text": "03"
+              },
+              {
+                "type": "label",
+                "name": "Label",
+                "widget": {
+                  "left": 8,
+                  "right": 8,
+                  "bottom": 10
+                },
+                "height": 22,
+                "styleSlot": "detail.label.circleTabLabel",
+                "text": "血脈"
+              }
+            ],
+            "skinLayers": [
+              {
+                "layerId": "Badge",
+                "slotId": "detail.tab.circle.badge",
+                "zOrder": 0,
+                "expand": false,
+                "width": 18,
+                "height": 18,
+                "widget": {
+                  "top": 8,
+                  "right": 8
+                }
+              },
+              {
+                "layerId": "IconInactive",
+                "slotId": "detail.tab.icon.bloodline.inactive",
+                "zOrder": 1,
+                "expand": false,
+                "width": 42,
+                "height": 42,
+                "widget": {
+                  "top": 14,
+                  "hCenter": true
+                }
+              },
+              {
+                "layerId": "IconActive",
+                "slotId": "detail.tab.icon.bloodline.active",
+                "zOrder": 2,
+                "expand": false,
+                "width": 42,
+                "height": 42,
+                "widget": {
+                  "top": 14,
+                  "hCenter": true
+                }
+              }
             ]
           },
           {
@@ -186,11 +424,68 @@
             "height": 97,
             "skinSlot": "detail.tab.circle.skills",
             "children": [
-              { "type": "image", "name": "Badge", "widget": { "top": 8, "right": 8 }, "width": 18, "height": 18, "skinSlot": "detail.tab.circle.badge" },
-              { "type": "label", "name": "BadgeLabel", "widget": { "top": 8, "right": 8 }, "width": 18, "height": 18, "styleSlot": "detail.label.circleTabBadge", "text": "04" },
-              { "type": "image", "name": "IconInactive", "widget": { "top": 14, "hCenter": true }, "width": 42, "height": 42, "skinSlot": "detail.tab.icon.skills.inactive" },
-              { "type": "image", "name": "IconActive", "widget": { "top": 14, "hCenter": true }, "width": 42, "height": 42, "skinSlot": "detail.tab.icon.skills.active" },
-              { "type": "label", "name": "Label", "widget": { "left": 8, "right": 8, "bottom": 10 }, "height": 22, "styleSlot": "detail.label.circleTabLabel", "text": "戰技" }
+              {
+                "type": "label",
+                "name": "BadgeLabel",
+                "widget": {
+                  "top": 8,
+                  "right": 8
+                },
+                "width": 18,
+                "height": 18,
+                "styleSlot": "detail.label.circleTabBadge",
+                "text": "04"
+              },
+              {
+                "type": "label",
+                "name": "Label",
+                "widget": {
+                  "left": 8,
+                  "right": 8,
+                  "bottom": 10
+                },
+                "height": 22,
+                "styleSlot": "detail.label.circleTabLabel",
+                "text": "戰技"
+              }
+            ],
+            "skinLayers": [
+              {
+                "layerId": "Badge",
+                "slotId": "detail.tab.circle.badge",
+                "zOrder": 0,
+                "expand": false,
+                "width": 18,
+                "height": 18,
+                "widget": {
+                  "top": 8,
+                  "right": 8
+                }
+              },
+              {
+                "layerId": "IconInactive",
+                "slotId": "detail.tab.icon.skills.inactive",
+                "zOrder": 1,
+                "expand": false,
+                "width": 42,
+                "height": 42,
+                "widget": {
+                  "top": 14,
+                  "hCenter": true
+                }
+              },
+              {
+                "layerId": "IconActive",
+                "slotId": "detail.tab.icon.skills.active",
+                "zOrder": 2,
+                "expand": false,
+                "width": 42,
+                "height": 42,
+                "widget": {
+                  "top": 14,
+                  "hCenter": true
+                }
+              }
             ]
           },
           {
@@ -200,11 +495,68 @@
             "height": 97,
             "skinSlot": "detail.tab.circle.aptitude",
             "children": [
-              { "type": "image", "name": "Badge", "widget": { "top": 8, "right": 8 }, "width": 18, "height": 18, "skinSlot": "detail.tab.circle.badge" },
-              { "type": "label", "name": "BadgeLabel", "widget": { "top": 8, "right": 8 }, "width": 18, "height": 18, "styleSlot": "detail.label.circleTabBadge", "text": "05" },
-              { "type": "image", "name": "IconInactive", "widget": { "top": 14, "hCenter": true }, "width": 42, "height": 42, "skinSlot": "detail.tab.icon.aptitude.inactive" },
-              { "type": "image", "name": "IconActive", "widget": { "top": 14, "hCenter": true }, "width": 42, "height": 42, "skinSlot": "detail.tab.icon.aptitude.active" },
-              { "type": "label", "name": "Label", "widget": { "left": 8, "right": 8, "bottom": 10 }, "height": 22, "styleSlot": "detail.label.circleTabLabel", "text": "適性" }
+              {
+                "type": "label",
+                "name": "BadgeLabel",
+                "widget": {
+                  "top": 8,
+                  "right": 8
+                },
+                "width": 18,
+                "height": 18,
+                "styleSlot": "detail.label.circleTabBadge",
+                "text": "05"
+              },
+              {
+                "type": "label",
+                "name": "Label",
+                "widget": {
+                  "left": 8,
+                  "right": 8,
+                  "bottom": 10
+                },
+                "height": 22,
+                "styleSlot": "detail.label.circleTabLabel",
+                "text": "適性"
+              }
+            ],
+            "skinLayers": [
+              {
+                "layerId": "Badge",
+                "slotId": "detail.tab.circle.badge",
+                "zOrder": 0,
+                "expand": false,
+                "width": 18,
+                "height": 18,
+                "widget": {
+                  "top": 8,
+                  "right": 8
+                }
+              },
+              {
+                "layerId": "IconInactive",
+                "slotId": "detail.tab.icon.aptitude.inactive",
+                "zOrder": 1,
+                "expand": false,
+                "width": 42,
+                "height": 42,
+                "widget": {
+                  "top": 14,
+                  "hCenter": true
+                }
+              },
+              {
+                "layerId": "IconActive",
+                "slotId": "detail.tab.icon.aptitude.active",
+                "zOrder": 2,
+                "expand": false,
+                "width": 42,
+                "height": 42,
+                "widget": {
+                  "top": 14,
+                  "hCenter": true
+                }
+              }
             ]
           },
           {
@@ -214,11 +566,68 @@
             "height": 97,
             "skinSlot": "detail.tab.circle.extended",
             "children": [
-              { "type": "image", "name": "Badge", "widget": { "top": 8, "right": 8 }, "width": 18, "height": 18, "skinSlot": "detail.tab.circle.badge" },
-              { "type": "label", "name": "BadgeLabel", "widget": { "top": 8, "right": 8 }, "width": 18, "height": 18, "styleSlot": "detail.label.circleTabBadge", "text": "06" },
-              { "type": "image", "name": "IconInactive", "widget": { "top": 14, "hCenter": true }, "width": 42, "height": 42, "skinSlot": "detail.tab.icon.extended.inactive" },
-              { "type": "image", "name": "IconActive", "widget": { "top": 14, "hCenter": true }, "width": 42, "height": 42, "skinSlot": "detail.tab.icon.extended.active" },
-              { "type": "label", "name": "Label", "widget": { "left": 8, "right": 8, "bottom": 10 }, "height": 22, "styleSlot": "detail.label.circleTabLabel", "text": "延伸" }
+              {
+                "type": "label",
+                "name": "BadgeLabel",
+                "widget": {
+                  "top": 8,
+                  "right": 8
+                },
+                "width": 18,
+                "height": 18,
+                "styleSlot": "detail.label.circleTabBadge",
+                "text": "06"
+              },
+              {
+                "type": "label",
+                "name": "Label",
+                "widget": {
+                  "left": 8,
+                  "right": 8,
+                  "bottom": 10
+                },
+                "height": 22,
+                "styleSlot": "detail.label.circleTabLabel",
+                "text": "延伸"
+              }
+            ],
+            "skinLayers": [
+              {
+                "layerId": "Badge",
+                "slotId": "detail.tab.circle.badge",
+                "zOrder": 0,
+                "expand": false,
+                "width": 18,
+                "height": 18,
+                "widget": {
+                  "top": 8,
+                  "right": 8
+                }
+              },
+              {
+                "layerId": "IconInactive",
+                "slotId": "detail.tab.icon.extended.inactive",
+                "zOrder": 1,
+                "expand": false,
+                "width": 42,
+                "height": 42,
+                "widget": {
+                  "top": 14,
+                  "hCenter": true
+                }
+              },
+              {
+                "layerId": "IconActive",
+                "slotId": "detail.tab.icon.extended.active",
+                "zOrder": 2,
+                "expand": false,
+                "width": 42,
+                "height": 42,
+                "widget": {
+                  "top": 14,
+                  "hCenter": true
+                }
+              }
             ]
           },
           {
@@ -233,72 +642,224 @@
         ]
       },
       {
-        "type": "panel",
-        "name": "RightContentAreaFill",
-        "widget": { "top": 174, "bottom": 56, "right": 152 },
-        "width": "38%",
-        "skinSlot": "detail.content.fill"
-      },
-      {
-        "type": "panel",
-        "name": "RightContentAreaBleed",
-        "widget": { "top": 174, "bottom": 56, "right": 152 },
-        "width": "38%",
-        "skinSlot": "detail.content.bleed"
-      },
-      {
-        "type": "panel",
-        "name": "RightContentAreaFrame",
-        "widget": { "top": 174, "bottom": 56, "right": 152 },
-        "width": "38%",
-        "skinSlot": "detail.content.frame"
-      },
-      {
         "type": "container",
         "name": "RightContentArea",
-        "widget": { "top": 174, "bottom": 56, "right": 152 },
+        "widget": {
+          "top": 174,
+          "bottom": 56,
+          "right": 152
+        },
         "width": "38%",
         "children": [
           {
             "type": "panel",
             "name": "TabBasics",
-            "widget": { "top": 28, "bottom": 112, "left": 28, "right": 28 },
-            "layout": { "type": "vertical", "spacing": 12, "paddingTop": 0, "paddingBottom": 0, "paddingLeft": 0, "paddingRight": 0 },
+            "widget": {
+              "top": 28,
+              "bottom": 112,
+              "left": 28,
+              "right": 28
+            },
+            "layout": {
+              "type": "vertical",
+              "spacing": 12,
+              "paddingTop": 0,
+              "paddingBottom": 0,
+              "paddingLeft": 0,
+              "paddingRight": 0
+            },
             "children": [
-              { "type": "label", "name": "UidValue", "width": "100%", "height": 30, "skinSlot": "detail.field.bg", "styleSlot": "detail.label.value" },
-              { "type": "label", "name": "NameValue", "width": "100%", "height": 30, "skinSlot": "detail.field.bg", "styleSlot": "detail.label.value" },
-              { "type": "label", "name": "TitleValue", "width": "100%", "height": 30, "skinSlot": "detail.field.bg", "styleSlot": "detail.label.value" },
-              { "type": "label", "name": "TemplateValue", "width": "100%", "height": 30, "skinSlot": "detail.field.bg", "styleSlot": "detail.label.value" },
-              { "type": "label", "name": "FactionValue", "width": "100%", "height": 30, "skinSlot": "detail.field.bg", "styleSlot": "detail.label.value" },
-              { "type": "label", "name": "GenderValue", "width": "100%", "height": 30, "skinSlot": "detail.field.bg", "styleSlot": "detail.label.value" },
-              { "type": "label", "name": "AgeValue", "width": "100%", "height": 30, "skinSlot": "detail.field.bg", "styleSlot": "detail.label.value" },
-              { "type": "label", "name": "RoleValue", "width": "100%", "height": 30, "skinSlot": "detail.field.bg", "styleSlot": "detail.label.value" },
-              { "type": "label", "name": "StatusValue", "width": "100%", "height": 30, "skinSlot": "detail.field.bg", "styleSlot": "detail.label.value" },
-              { "type": "label", "name": "LifespanValue", "width": "100%", "height": 30, "skinSlot": "detail.field.bg", "styleSlot": "detail.label.value" },
-              { "type": "label", "name": "VitalityValue", "width": "100%", "height": 30, "skinSlot": "detail.field.bg", "styleSlot": "detail.label.value" },
-              { "type": "label", "name": "SourceValue", "width": "100%", "height": 30, "skinSlot": "detail.field.bg", "styleSlot": "detail.label.value" }
+              {
+                "type": "label",
+                "name": "UidValue",
+                "width": "100%",
+                "height": 30,
+                "skinSlot": "detail.field.bg",
+                "styleSlot": "detail.label.value"
+              },
+              {
+                "type": "label",
+                "name": "NameValue",
+                "width": "100%",
+                "height": 30,
+                "skinSlot": "detail.field.bg",
+                "styleSlot": "detail.label.value"
+              },
+              {
+                "type": "label",
+                "name": "TitleValue",
+                "width": "100%",
+                "height": 30,
+                "skinSlot": "detail.field.bg",
+                "styleSlot": "detail.label.value"
+              },
+              {
+                "type": "label",
+                "name": "TemplateValue",
+                "width": "100%",
+                "height": 30,
+                "skinSlot": "detail.field.bg",
+                "styleSlot": "detail.label.value"
+              },
+              {
+                "type": "label",
+                "name": "FactionValue",
+                "width": "100%",
+                "height": 30,
+                "skinSlot": "detail.field.bg",
+                "styleSlot": "detail.label.value"
+              },
+              {
+                "type": "label",
+                "name": "GenderValue",
+                "width": "100%",
+                "height": 30,
+                "skinSlot": "detail.field.bg",
+                "styleSlot": "detail.label.value"
+              },
+              {
+                "type": "label",
+                "name": "AgeValue",
+                "width": "100%",
+                "height": 30,
+                "skinSlot": "detail.field.bg",
+                "styleSlot": "detail.label.value"
+              },
+              {
+                "type": "label",
+                "name": "RoleValue",
+                "width": "100%",
+                "height": 30,
+                "skinSlot": "detail.field.bg",
+                "styleSlot": "detail.label.value"
+              },
+              {
+                "type": "label",
+                "name": "StatusValue",
+                "width": "100%",
+                "height": 30,
+                "skinSlot": "detail.field.bg",
+                "styleSlot": "detail.label.value"
+              },
+              {
+                "type": "label",
+                "name": "LifespanValue",
+                "width": "100%",
+                "height": 30,
+                "skinSlot": "detail.field.bg",
+                "styleSlot": "detail.label.value"
+              },
+              {
+                "type": "label",
+                "name": "VitalityValue",
+                "width": "100%",
+                "height": 30,
+                "skinSlot": "detail.field.bg",
+                "styleSlot": "detail.label.value"
+              },
+              {
+                "type": "label",
+                "name": "SourceValue",
+                "width": "100%",
+                "height": 30,
+                "skinSlot": "detail.field.bg",
+                "styleSlot": "detail.label.value"
+              }
             ]
           },
           {
             "type": "panel",
             "name": "TabStats",
-            "widget": { "top": 28, "bottom": 112, "left": 28, "right": 28 },
-            "layout": { "type": "vertical", "spacing": 18, "paddingTop": 0, "paddingBottom": 0, "paddingLeft": 0, "paddingRight": 0 },
+            "widget": {
+              "top": 28,
+              "bottom": 112,
+              "left": 28,
+              "right": 28
+            },
+            "layout": {
+              "type": "vertical",
+              "spacing": 18,
+              "paddingTop": 0,
+              "paddingBottom": 0,
+              "paddingLeft": 0,
+              "paddingRight": 0
+            },
             "children": [
-              { "type": "label", "name": "StrValue", "width": "100%", "height": 40, "skinSlot": "detail.field.bg", "styleSlot": "detail.label.value" },
-              { "type": "label", "name": "IntValue", "width": "100%", "height": 40, "skinSlot": "detail.field.bg", "styleSlot": "detail.label.value" },
-              { "type": "label", "name": "LeaValue", "width": "100%", "height": 40, "skinSlot": "detail.field.bg", "styleSlot": "detail.label.value" },
-              { "type": "label", "name": "PolValue", "width": "100%", "height": 40, "skinSlot": "detail.field.bg", "styleSlot": "detail.label.value" },
-              { "type": "label", "name": "ChaValue", "width": "100%", "height": 40, "skinSlot": "detail.field.bg", "styleSlot": "detail.label.value" },
-              { "type": "label", "name": "LukValue", "width": "100%", "height": 40, "skinSlot": "detail.field.bg", "styleSlot": "detail.label.value" },
-              { "type": "label", "name": "StatsRoleValue", "width": "100%", "height": 50, "skinSlot": "detail.field.name.bg", "styleSlot": "detail.label.subtitle" }
+              {
+                "type": "label",
+                "name": "StrValue",
+                "width": "100%",
+                "height": 40,
+                "skinSlot": "detail.field.bg",
+                "styleSlot": "detail.label.value"
+              },
+              {
+                "type": "label",
+                "name": "IntValue",
+                "width": "100%",
+                "height": 40,
+                "skinSlot": "detail.field.bg",
+                "styleSlot": "detail.label.value"
+              },
+              {
+                "type": "label",
+                "name": "LeaValue",
+                "width": "100%",
+                "height": 40,
+                "skinSlot": "detail.field.bg",
+                "styleSlot": "detail.label.value"
+              },
+              {
+                "type": "label",
+                "name": "PolValue",
+                "width": "100%",
+                "height": 40,
+                "skinSlot": "detail.field.bg",
+                "styleSlot": "detail.label.value"
+              },
+              {
+                "type": "label",
+                "name": "ChaValue",
+                "width": "100%",
+                "height": 40,
+                "skinSlot": "detail.field.bg",
+                "styleSlot": "detail.label.value"
+              },
+              {
+                "type": "label",
+                "name": "LukValue",
+                "width": "100%",
+                "height": 40,
+                "skinSlot": "detail.field.bg",
+                "styleSlot": "detail.label.value"
+              },
+              {
+                "type": "label",
+                "name": "StatsRoleValue",
+                "width": "100%",
+                "height": 50,
+                "skinSlot": "detail.field.name.bg",
+                "styleSlot": "detail.label.subtitle"
+              }
             ]
           },
           {
             "type": "panel",
             "name": "TabBloodline",
-            "widget": { "top": 28, "bottom": 112, "left": 28, "right": 28 },
-            "layout": { "type": "vertical", "spacing": 12, "paddingTop": 0, "paddingBottom": 0, "paddingLeft": 0, "paddingRight": 0 },
+            "widget": {
+              "top": 28,
+              "bottom": 112,
+              "left": 28,
+              "right": 28
+            },
+            "layout": {
+              "type": "vertical",
+              "spacing": 12,
+              "paddingTop": 0,
+              "paddingBottom": 0,
+              "paddingLeft": 0,
+              "paddingRight": 0
+            },
             "children": [
               {
                 "type": "panel",
@@ -306,12 +867,43 @@
                 "width": "100%",
                 "height": 156,
                 "skinSlot": "detail.section.bg",
-                "layout": { "type": "vertical", "spacing": 4, "paddingTop": 12, "paddingBottom": 12, "paddingLeft": 20, "paddingRight": 20 },
+                "layout": {
+                  "type": "vertical",
+                  "spacing": 4,
+                  "paddingTop": 12,
+                  "paddingBottom": 12,
+                  "paddingLeft": 20,
+                  "paddingRight": 20
+                },
                 "children": [
-                  { "type": "label", "name": "EpRatingValue", "width": "100%", "height": 28, "styleSlot": "detail.label.subtitle" },
-                  { "type": "label", "name": "BloodlineValue", "width": "100%", "height": 28, "styleSlot": "detail.label.subtitle" },
-                  { "type": "label", "name": "ParentsValue", "width": "100%", "height": 32, "styleSlot": "detail.label.valueDense" },
-                  { "type": "label", "name": "AncestorsValue", "width": "100%", "height": 32, "styleSlot": "detail.label.valueDense" }
+                  {
+                    "type": "label",
+                    "name": "EpRatingValue",
+                    "width": "100%",
+                    "height": 28,
+                    "styleSlot": "detail.label.subtitle"
+                  },
+                  {
+                    "type": "label",
+                    "name": "BloodlineValue",
+                    "width": "100%",
+                    "height": 28,
+                    "styleSlot": "detail.label.subtitle"
+                  },
+                  {
+                    "type": "label",
+                    "name": "ParentsValue",
+                    "width": "100%",
+                    "height": 32,
+                    "styleSlot": "detail.label.valueDense"
+                  },
+                  {
+                    "type": "label",
+                    "name": "AncestorsValue",
+                    "width": "100%",
+                    "height": 32,
+                    "styleSlot": "detail.label.valueDense"
+                  }
                 ]
               },
               {
@@ -320,41 +912,185 @@
                 "width": "100%",
                 "height": 260,
                 "skinSlot": "detail.section.bg",
-                "layout": { "type": "vertical", "spacing": 8, "paddingTop": 12, "paddingBottom": 12, "paddingLeft": 16, "paddingRight": 16 },
+                "layout": {
+                  "type": "vertical",
+                  "spacing": 8,
+                  "paddingTop": 12,
+                  "paddingBottom": 12,
+                  "paddingLeft": 16,
+                  "paddingRight": 16
+                },
                 "children": [
-                  { "type": "label", "name": "TreeTitle", "width": "100%", "height": 34, "styleSlot": "detail.label.section", "textKey": "ui.general.bloodline.tree" },
                   {
-                    "type": "container", "name": "Gen1Container", "width": "100%", "height": 45,
-                    "layout": { "type": "horizontal", "spacing": 4, "paddingLeft": 0, "paddingRight": 0 },
+                    "type": "label",
+                    "name": "TreeTitle",
+                    "width": "100%",
+                    "height": 34,
+                    "styleSlot": "detail.label.section",
+                    "textKey": "ui.general.bloodline.tree"
+                  },
+                  {
+                    "type": "container",
+                    "name": "Gen1Container",
+                    "width": "100%",
+                    "height": 45,
+                    "layout": {
+                      "type": "horizontal",
+                      "spacing": 4,
+                      "paddingLeft": 0,
+                      "paddingRight": 0
+                    },
                     "children": [
-                       {"type": "panel", "name": "G1_0", "width": 83, "height": 45, "skinSlot": "detail.tree.node", "children": [{"type": "label", "name": "Txt", "styleSlot": "detail.label.meta", "width": 83, "height": 45 }]},
-                       {"type": "panel", "name": "G1_1", "width": 83, "height": 45, "skinSlot": "detail.tree.node", "children": [{"type": "label", "name": "Txt", "styleSlot": "detail.label.meta", "width": 83, "height": 45 }]},
-                       {"type": "panel", "name": "G1_2", "width": 83, "height": 45, "skinSlot": "detail.tree.node", "children": [{"type": "label", "name": "Txt", "styleSlot": "detail.label.meta", "width": 83, "height": 45 }]},
-                       {"type": "panel", "name": "G1_3", "width": 83, "height": 45, "skinSlot": "detail.tree.node", "children": [{"type": "label", "name": "Txt", "styleSlot": "detail.label.meta", "width": 83, "height": 45 }]},
-                       {"type": "spacer", "name": "Spc1", "width": 8},
-                       {"type": "panel", "name": "G1_4", "width": 83, "height": 45, "skinSlot": "detail.tree.node", "children": [{"type": "label", "name": "Txt", "styleSlot": "detail.label.meta", "width": 83, "height": 45 }]},
-                       {"type": "panel", "name": "G1_5", "width": 83, "height": 45, "skinSlot": "detail.tree.node", "children": [{"type": "label", "name": "Txt", "styleSlot": "detail.label.meta", "width": 83, "height": 45 }]},
-                       {"type": "panel", "name": "G1_6", "width": 83, "height": 45, "skinSlot": "detail.tree.node", "children": [{"type": "label", "name": "Txt", "styleSlot": "detail.label.meta", "width": 83, "height": 45 }]},
-                       {"type": "panel", "name": "G1_7", "width": 83, "height": 45, "skinSlot": "detail.tree.node", "children": [{"type": "label", "name": "Txt", "styleSlot": "detail.label.meta", "width": 83, "height": 45 }]}
+                      {
+                        "type": "label",
+                        "name": "G1_0",
+                        "width": 83,
+                        "height": 45,
+                        "skinSlot": "detail.tree.node",
+                        "styleSlot": "detail.label.meta"
+                      },
+                      {
+                        "type": "label",
+                        "name": "G1_1",
+                        "width": 83,
+                        "height": 45,
+                        "skinSlot": "detail.tree.node",
+                        "styleSlot": "detail.label.meta"
+                      },
+                      {
+                        "type": "label",
+                        "name": "G1_2",
+                        "width": 83,
+                        "height": 45,
+                        "skinSlot": "detail.tree.node",
+                        "styleSlot": "detail.label.meta"
+                      },
+                      {
+                        "type": "label",
+                        "name": "G1_3",
+                        "width": 83,
+                        "height": 45,
+                        "skinSlot": "detail.tree.node",
+                        "styleSlot": "detail.label.meta"
+                      },
+                      {
+                        "type": "spacer",
+                        "name": "Spc1",
+                        "width": 8
+                      },
+                      {
+                        "type": "label",
+                        "name": "G1_4",
+                        "width": 83,
+                        "height": 45,
+                        "skinSlot": "detail.tree.node",
+                        "styleSlot": "detail.label.meta"
+                      },
+                      {
+                        "type": "label",
+                        "name": "G1_5",
+                        "width": 83,
+                        "height": 45,
+                        "skinSlot": "detail.tree.node",
+                        "styleSlot": "detail.label.meta"
+                      },
+                      {
+                        "type": "label",
+                        "name": "G1_6",
+                        "width": 83,
+                        "height": 45,
+                        "skinSlot": "detail.tree.node",
+                        "styleSlot": "detail.label.meta"
+                      },
+                      {
+                        "type": "label",
+                        "name": "G1_7",
+                        "width": 83,
+                        "height": 45,
+                        "skinSlot": "detail.tree.node",
+                        "styleSlot": "detail.label.meta"
+                      }
                     ]
                   },
                   {
-                    "type": "container", "name": "Gen2Container", "width": "100%", "height": 55,
-                    "layout": { "type": "horizontal", "spacing": 12, "paddingLeft": 24, "paddingRight": 24 },
+                    "type": "container",
+                    "name": "Gen2Container",
+                    "width": "100%",
+                    "height": 55,
+                    "layout": {
+                      "type": "horizontal",
+                      "spacing": 12,
+                      "paddingLeft": 24,
+                      "paddingRight": 24
+                    },
                     "children": [
-                       {"type": "panel", "name": "G2_0", "width": 140, "height": 55, "skinSlot": "detail.tree.node", "children": [{"type": "label", "name": "Txt", "styleSlot": "detail.label.meta", "width": 140, "height": 55 }]},
-                       {"type": "panel", "name": "G2_1", "width": 140, "height": 55, "skinSlot": "detail.tree.node", "children": [{"type": "label", "name": "Txt", "styleSlot": "detail.label.meta", "width": 140, "height": 55 }]},
-                      {"type": "spacer", "name": "Spc2", "width": 24},
-                       {"type": "panel", "name": "G2_2", "width": 140, "height": 55, "skinSlot": "detail.tree.node", "children": [{"type": "label", "name": "Txt", "styleSlot": "detail.label.meta", "width": 140, "height": 55 }]},
-                       {"type": "panel", "name": "G2_3", "width": 140, "height": 55, "skinSlot": "detail.tree.node", "children": [{"type": "label", "name": "Txt", "styleSlot": "detail.label.meta", "width": 140, "height": 55 }]}
+                      {
+                        "type": "label",
+                        "name": "G2_0",
+                        "width": 140,
+                        "height": 55,
+                        "skinSlot": "detail.tree.node",
+                        "styleSlot": "detail.label.meta"
+                      },
+                      {
+                        "type": "label",
+                        "name": "G2_1",
+                        "width": 140,
+                        "height": 55,
+                        "skinSlot": "detail.tree.node",
+                        "styleSlot": "detail.label.meta"
+                      },
+                      {
+                        "type": "spacer",
+                        "name": "Spc2",
+                        "width": 24
+                      },
+                      {
+                        "type": "label",
+                        "name": "G2_2",
+                        "width": 140,
+                        "height": 55,
+                        "skinSlot": "detail.tree.node",
+                        "styleSlot": "detail.label.meta"
+                      },
+                      {
+                        "type": "label",
+                        "name": "G2_3",
+                        "width": 140,
+                        "height": 55,
+                        "skinSlot": "detail.tree.node",
+                        "styleSlot": "detail.label.meta"
+                      }
                     ]
                   },
                   {
-                    "type": "container", "name": "Gen3Container", "width": "100%", "height": 65,
-                    "layout": { "type": "horizontal", "spacing": 56, "paddingLeft": 120, "paddingRight": 120 },
+                    "type": "container",
+                    "name": "Gen3Container",
+                    "width": "100%",
+                    "height": 65,
+                    "layout": {
+                      "type": "horizontal",
+                      "spacing": 56,
+                      "paddingLeft": 120,
+                      "paddingRight": 120
+                    },
                     "children": [
-                       {"type": "panel", "name": "G3_0", "width": 180, "height": 65, "skinSlot": "detail.tree.node", "children": [{"type": "label", "name": "Txt", "styleSlot": "detail.label.meta", "width": 180, "height": 65 }]},
-                       {"type": "panel", "name": "G3_1", "width": 180, "height": 65, "skinSlot": "detail.tree.node", "children": [{"type": "label", "name": "Txt", "styleSlot": "detail.label.meta", "width": 180, "height": 65 }]}
+                      {
+                        "type": "label",
+                        "name": "G3_0",
+                        "width": 180,
+                        "height": 65,
+                        "skinSlot": "detail.tree.node",
+                        "styleSlot": "detail.label.meta"
+                      },
+                      {
+                        "type": "label",
+                        "name": "G3_1",
+                        "width": 180,
+                        "height": 65,
+                        "skinSlot": "detail.tree.node",
+                        "styleSlot": "detail.label.meta"
+                      }
                     ]
                   }
                 ]
@@ -365,129 +1101,163 @@
                 "width": "100%",
                 "height": 180,
                 "skinSlot": "detail.section.bg",
-                "layout": { "type": "vertical", "spacing": 6, "paddingTop": 12, "paddingBottom": 12, "paddingLeft": 20, "paddingRight": 20 },
+                "layout": {
+                  "type": "vertical",
+                  "spacing": 6,
+                  "paddingTop": 12,
+                  "paddingBottom": 12,
+                  "paddingLeft": 20,
+                  "paddingRight": 20
+                },
                 "children": [
-                  { "type": "label", "name": "Gene1Value", "width": "100%", "height": 26, "styleSlot": "detail.label.valueDense" },
-                  { "type": "label", "name": "Gene2Value", "width": "100%", "height": 26, "styleSlot": "detail.label.valueDense" },
-                  { "type": "label", "name": "Gene3Value", "width": "100%", "height": 26, "styleSlot": "detail.label.valueDense" },
-                  { "type": "label", "name": "Gene4Value", "width": "100%", "height": 26, "styleSlot": "detail.label.valueDense" },
-                  { "type": "label", "name": "Gene5Value", "width": "100%", "height": 26, "styleSlot": "detail.label.valueDense" }
+                  {
+                    "type": "label",
+                    "name": "Gene1Value",
+                    "width": "100%",
+                    "height": 26,
+                    "styleSlot": "detail.label.valueDense"
+                  },
+                  {
+                    "type": "label",
+                    "name": "Gene2Value",
+                    "width": "100%",
+                    "height": 26,
+                    "styleSlot": "detail.label.valueDense"
+                  },
+                  {
+                    "type": "label",
+                    "name": "Gene3Value",
+                    "width": "100%",
+                    "height": 26,
+                    "styleSlot": "detail.label.valueDense"
+                  },
+                  {
+                    "type": "label",
+                    "name": "Gene4Value",
+                    "width": "100%",
+                    "height": 26,
+                    "styleSlot": "detail.label.valueDense"
+                  },
+                  {
+                    "type": "label",
+                    "name": "Gene5Value",
+                    "width": "100%",
+                    "height": 26,
+                    "styleSlot": "detail.label.valueDense"
+                  }
                 ]
               },
               {
-                "type": "panel",
+                "type": "label",
                 "name": "AwakeningCard",
                 "width": "100%",
                 "height": 56,
                 "skinSlot": "detail.section.bg",
-                "layout": { "type": "vertical", "spacing": 0, "paddingTop": 12, "paddingBottom": 12, "paddingLeft": 20, "paddingRight": 20 },
-                "children": [
-                  { "type": "label", "name": "AwakeningValue", "width": "100%", "height": 30, "styleSlot": "detail.label.subtitle" }
-                ]
+                "styleSlot": "detail.label.subtitle"
               }
             ]
           },
           {
             "type": "panel",
             "name": "TabSkills",
-            "widget": { "top": 28, "bottom": 112, "left": 28, "right": 28 },
-            "layout": { "type": "vertical", "spacing": 16, "paddingTop": 0, "paddingBottom": 0, "paddingLeft": 0, "paddingRight": 0 },
+            "widget": {
+              "top": 28,
+              "bottom": 112,
+              "left": 28,
+              "right": 28
+            },
+            "layout": {
+              "type": "vertical",
+              "spacing": 16,
+              "paddingTop": 0,
+              "paddingBottom": 0,
+              "paddingLeft": 0,
+              "paddingRight": 0
+            },
             "children": [
               {
-                "type": "panel",
+                "type": "label",
                 "name": "PrimarySkillCard",
                 "width": "100%",
                 "height": 72,
                 "skinSlot": "detail.section.bg",
-                "layout": { "type": "vertical", "spacing": 0, "paddingTop": 16, "paddingBottom": 16, "paddingLeft": 20, "paddingRight": 20 },
-                "children": [
-                  { "type": "label", "name": "PrimarySkillValue", "width": "100%", "height": 36, "styleSlot": "detail.label.subtitle" }
-                ]
+                "styleSlot": "detail.label.subtitle"
               },
               {
-                "type": "panel",
+                "type": "label",
                 "name": "LearnedSkillsCard",
                 "width": "100%",
                 "height": 126,
                 "skinSlot": "detail.section.bg",
-                "layout": { "type": "vertical", "spacing": 0, "paddingTop": 16, "paddingBottom": 16, "paddingLeft": 20, "paddingRight": 20 },
-                "children": [
-                  { "type": "label", "name": "LearnedSkillsValue", "width": "100%", "height": 94, "styleSlot": "detail.label.valueDense" }
-                ]
+                "styleSlot": "detail.label.valueDense"
               },
               {
-                "type": "panel",
+                "type": "label",
                 "name": "InspiredSkillsCard",
                 "width": "100%",
                 "height": 126,
                 "skinSlot": "detail.section.bg",
-                "layout": { "type": "vertical", "spacing": 0, "paddingTop": 16, "paddingBottom": 16, "paddingLeft": 20, "paddingRight": 20 },
-                "children": [
-                  { "type": "label", "name": "InspiredSkillsValue", "width": "100%", "height": 94, "styleSlot": "detail.label.valueDense" }
-                ]
+                "styleSlot": "detail.label.valueDense"
               },
               {
-                "type": "panel",
+                "type": "label",
                 "name": "LockedSkillsCard",
                 "width": "100%",
                 "height": 126,
                 "skinSlot": "detail.section.bg",
-                "layout": { "type": "vertical", "spacing": 0, "paddingTop": 16, "paddingBottom": 16, "paddingLeft": 20, "paddingRight": 20 },
-                "children": [
-                  { "type": "label", "name": "LockedSkillsValue", "width": "100%", "height": 94, "styleSlot": "detail.label.valueDense" }
-                ]
+                "styleSlot": "detail.label.valueDense"
               },
               {
-                "type": "panel",
+                "type": "label",
                 "name": "SkillNoteCard",
                 "width": "100%",
                 "height": 76,
                 "skinSlot": "detail.section.bg",
-                "layout": { "type": "vertical", "spacing": 0, "paddingTop": 16, "paddingBottom": 16, "paddingLeft": 20, "paddingRight": 20 },
-                "children": [
-                  { "type": "label", "name": "SkillNoteValue", "width": "100%", "height": 44, "styleSlot": "detail.label.note" }
-                ]
+                "styleSlot": "detail.label.note"
               }
             ]
           },
           {
-            "type": "panel",
+            "type": "container",
             "name": "TabAptitude",
-            "widget": { "top": 28, "bottom": 112, "left": 28, "right": 28 },
-            "layout": { "type": "vertical", "spacing": 16, "paddingTop": 0, "paddingBottom": 0, "paddingLeft": 0, "paddingRight": 0 },
+            "widget": {
+              "top": 28,
+              "bottom": 112,
+              "left": 28,
+              "right": 28
+            },
+            "layout": {
+              "type": "vertical",
+              "spacing": 16,
+              "paddingTop": 0,
+              "paddingBottom": 0,
+              "paddingLeft": 0,
+              "paddingRight": 0
+            },
             "children": [
               {
-                "type": "panel",
+                "type": "label",
                 "name": "TroopCard",
                 "width": "100%",
                 "height": 148,
                 "skinSlot": "detail.section.bg",
-                "layout": { "type": "vertical", "spacing": 0, "paddingTop": 18, "paddingBottom": 18, "paddingLeft": 20, "paddingRight": 20 },
-                "children": [
-                  { "type": "label", "name": "TroopValue", "width": "100%", "height": 112, "styleSlot": "detail.label.valueDense" }
-                ]
+                "styleSlot": "detail.label.valueDense"
               },
               {
-                "type": "panel",
+                "type": "label",
                 "name": "TerrainCard",
                 "width": "100%",
                 "height": 168,
                 "skinSlot": "detail.section.bg",
-                "layout": { "type": "vertical", "spacing": 0, "paddingTop": 18, "paddingBottom": 18, "paddingLeft": 20, "paddingRight": 20 },
-                "children": [
-                  { "type": "label", "name": "TerrainValue", "width": "100%", "height": 132, "styleSlot": "detail.label.valueDense" }
-                ]
+                "styleSlot": "detail.label.valueDense"
               },
               {
-                "type": "panel",
+                "type": "label",
                 "name": "WeatherCard",
                 "width": "100%",
                 "height": 196,
                 "skinSlot": "detail.section.bg",
-                "layout": { "type": "vertical", "spacing": 0, "paddingTop": 18, "paddingBottom": 18, "paddingLeft": 20, "paddingRight": 20 },
-                "children": [
-                  { "type": "label", "name": "WeatherValue", "width": "100%", "height": 160, "styleSlot": "detail.label.valueDense" }
-                ]
+                "styleSlot": "detail.label.valueDense"
               },
               {
                 "type": "panel",
@@ -495,10 +1265,29 @@
                 "width": "100%",
                 "height": 92,
                 "skinSlot": "detail.section.bg",
-                "layout": { "type": "vertical", "spacing": 8, "paddingTop": 18, "paddingBottom": 18, "paddingLeft": 20, "paddingRight": 20 },
+                "layout": {
+                  "type": "vertical",
+                  "spacing": 8,
+                  "paddingTop": 18,
+                  "paddingBottom": 18,
+                  "paddingLeft": 20,
+                  "paddingRight": 20
+                },
                 "children": [
-                  { "type": "label", "name": "PreferredTerrainValue", "width": "100%", "height": 24, "styleSlot": "detail.label.subtitle" },
-                  { "type": "label", "name": "TerrainBonusValue", "width": "100%", "height": 24, "styleSlot": "detail.label.subtitle" }
+                  {
+                    "type": "label",
+                    "name": "PreferredTerrainValue",
+                    "width": "100%",
+                    "height": 24,
+                    "styleSlot": "detail.label.subtitle"
+                  },
+                  {
+                    "type": "label",
+                    "name": "TerrainBonusValue",
+                    "width": "100%",
+                    "height": 24,
+                    "styleSlot": "detail.label.subtitle"
+                  }
                 ]
               }
             ]
@@ -506,52 +1295,181 @@
           {
             "type": "panel",
             "name": "TabExtended",
-            "widget": { "top": 28, "bottom": 112, "left": 28, "right": 28 },
-            "layout": { "type": "vertical", "spacing": 16, "paddingTop": 0, "paddingBottom": 0, "paddingLeft": 0, "paddingRight": 0 },
+            "widget": {
+              "top": 28,
+              "bottom": 112,
+              "left": 28,
+              "right": 28
+            },
+            "layout": {
+              "type": "vertical",
+              "spacing": 16,
+              "paddingTop": 0,
+              "paddingBottom": 0,
+              "paddingLeft": 0,
+              "paddingRight": 0
+            },
             "children": [
-              { "type": "label", "name": "CurrentHpValue", "width": "100%", "height": 40, "styleSlot": "detail.label.value" },
-              { "type": "label", "name": "CurrentSpValue", "width": "100%", "height": 40, "styleSlot": "detail.label.value" },
-              { "type": "label", "name": "AttackBonusValue", "width": "100%", "height": 40, "styleSlot": "detail.label.value" },
-              { "type": "label", "name": "HiddenFlagsValue", "width": "100%", "height": 120, "styleSlot": "detail.label.value" },
-              { "type": "label", "name": "NotesValue", "width": "100%", "height": 60, "styleSlot": "detail.label.value" },
-              { "type": "label", "name": "DevNoteValue", "width": "100%", "height": 60, "styleSlot": "detail.label.value" }
+              {
+                "type": "label",
+                "name": "CurrentHpValue",
+                "width": "100%",
+                "height": 40,
+                "styleSlot": "detail.label.value"
+              },
+              {
+                "type": "label",
+                "name": "CurrentSpValue",
+                "width": "100%",
+                "height": 40,
+                "styleSlot": "detail.label.value"
+              },
+              {
+                "type": "label",
+                "name": "AttackBonusValue",
+                "width": "100%",
+                "height": 40,
+                "styleSlot": "detail.label.value"
+              },
+              {
+                "type": "label",
+                "name": "HiddenFlagsValue",
+                "width": "100%",
+                "height": 120,
+                "styleSlot": "detail.label.value"
+              },
+              {
+                "type": "label",
+                "name": "NotesValue",
+                "width": "100%",
+                "height": 60,
+                "styleSlot": "detail.label.value"
+              },
+              {
+                "type": "label",
+                "name": "DevNoteValue",
+                "width": "100%",
+                "height": 60,
+                "styleSlot": "detail.label.value"
+              }
             ]
-          },
-          {
-            "type": "panel",
-            "name": "FooterPanelFill",
-            "widget": { "left": 24, "right": 24, "bottom": 24 },
-            "height": 72,
-            "skinSlot": "detail.footer.fill"
-          },
-          {
-            "type": "panel",
-            "name": "FooterPanelBleed",
-            "widget": { "left": 24, "right": 24, "bottom": 24 },
-            "height": 72,
-            "skinSlot": "detail.footer.bleed"
-          },
-          {
-            "type": "panel",
-            "name": "FooterPanelFrame",
-            "widget": { "left": 24, "right": 24, "bottom": 24 },
-            "height": 72,
-            "skinSlot": "detail.footer.frame"
           },
           {
             "type": "container",
             "name": "FooterPanel",
-            "widget": { "left": 24, "right": 24, "bottom": 24 },
+            "widget": {
+              "left": 24,
+              "right": 24,
+              "bottom": 24
+            },
             "height": 72,
-            "layout": { "type": "horizontal", "spacing": 10, "paddingTop": 8, "paddingBottom": 8, "paddingLeft": 14, "paddingRight": 14 },
+            "layout": {
+              "type": "horizontal",
+              "spacing": 10,
+              "paddingTop": 8,
+              "paddingBottom": 8,
+              "paddingLeft": 14,
+              "paddingRight": 14
+            },
             "children": [
-              { "type": "button", "name": "BtnFavorite", "width": 128, "height": 56, "skinSlot": "common.button.primary", "styleSlot": "detail.label.button", "text": "收藏" },
-              { "type": "button", "name": "BtnLock", "width": 128, "height": 56, "skinSlot": "common.button.primary", "styleSlot": "detail.label.button", "text": "鎖定" },
-              { "type": "button", "name": "BtnCompare", "width": 128, "height": 56, "skinSlot": "common.button.primary", "styleSlot": "detail.label.button", "text": "比較" },
-              { "type": "button", "name": "BtnShare", "width": 128, "height": 56, "skinSlot": "common.button.primary", "styleSlot": "detail.label.button", "text": "分享" }
+              {
+                "type": "button",
+                "name": "BtnFavorite",
+                "width": 128,
+                "height": 56,
+                "skinSlot": "common.button.primary",
+                "styleSlot": "detail.label.button",
+                "text": "收藏"
+              },
+              {
+                "type": "button",
+                "name": "BtnLock",
+                "width": 128,
+                "height": 56,
+                "skinSlot": "common.button.primary",
+                "styleSlot": "detail.label.button",
+                "text": "鎖定"
+              },
+              {
+                "type": "button",
+                "name": "BtnCompare",
+                "width": 128,
+                "height": 56,
+                "skinSlot": "common.button.primary",
+                "styleSlot": "detail.label.button",
+                "text": "比較"
+              },
+              {
+                "type": "button",
+                "name": "BtnShare",
+                "width": 128,
+                "height": 56,
+                "skinSlot": "common.button.primary",
+                "styleSlot": "detail.label.button",
+                "text": "分享"
+              }
             ]
           }
         ]
+      }
+    ],
+    "skinLayers": [
+      {
+        "layerId": "BackgroundFull",
+        "slotId": "detail.bg.fullscreen",
+        "zOrder": 0,
+        "expand": true
+      },
+      {
+        "layerId": "ClickBlocker",
+        "slotId": "detail.blockInput",
+        "zOrder": 1,
+        "expand": true
+      },
+      {
+        "layerId": "PortraitImage",
+        "slotId": "general.portrait.placeholder",
+        "zOrder": 2,
+        "expand": false,
+        "width": "47%",
+        "height": "88%",
+        "widget": {
+          "left": 36,
+          "bottom": 56
+        }
+      },
+      {
+        "layerId": "RightTabBarFill",
+        "slotId": "detail.tabbar.rail.fill",
+        "zOrder": 3,
+        "expand": false,
+        "width": 118,
+        "widget": {
+          "top": 110,
+          "right": 16
+        }
+      },
+      {
+        "layerId": "RightTabBarBleed",
+        "slotId": "detail.tabbar.rail.bleed",
+        "zOrder": 4,
+        "expand": false,
+        "width": 118,
+        "widget": {
+          "top": 110,
+          "right": 16
+        }
+      },
+      {
+        "layerId": "RightTabBarFrame",
+        "slotId": "detail.tabbar.rail.frame",
+        "zOrder": 5,
+        "expand": false,
+        "width": 118,
+        "widget": {
+          "top": 110,
+          "right": 16
+        }
       }
     ]
   }

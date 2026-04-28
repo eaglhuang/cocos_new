@@ -23,7 +23,7 @@
       "color": "textAccent",
       "outlineColor": "#1A1A1A",
       "outlineWidth": 1,
-      "horizontalAlign": "LEFT",
+      "horizontalAlign": "CENTER",
       "verticalAlign": "CENTER",
       "overflow": "SHRINK",
       "isBold": true
@@ -164,6 +164,20 @@
       "opacity": 0.92,
       "color": "#FFFFFF",
       "allowAutoAtlas": true
+    },
+    "general.scrollbar.track": {
+      "kind": "color-rect",
+      "color": "surfaceDeep",
+      "alpha": 96
+    },
+    "general.scrollbar.thumb": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/parchment/fill",
+      "spriteType": "sliced",
+      "border": [16, 16, 16, 16],
+      "allowAutoAtlas": true,
+      "opacity": 0.86,
+      "color": "#E1C77B"
     },
     "general.list.shadow": {
       "kind": "sprite-frame",

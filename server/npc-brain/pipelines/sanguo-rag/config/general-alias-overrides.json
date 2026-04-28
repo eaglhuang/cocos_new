@@ -1,0 +1,46 @@
+{
+  "version": "1.0.0",
+  "globalExcludedAliases": [
+    "將軍",
+    "軍師",
+    "先生",
+    "大人",
+    "主公",
+    "縣令",
+    "太守",
+    "都督",
+    "丞相"
+  ],
+  "entries": [
+    {
+      "generalId": "zhang-fei",
+      "add": ["張翼德", "翼德", "燕人張翼德"],
+      "remove": []
+    },
+    {
+      "generalId": "guan-yu",
+      "add": ["關雲長", "雲長", "美髯公關雲長"],
+      "remove": []
+    },
+    {
+      "generalId": "zhao-yun",
+      "add": ["趙子龍", "子龍", "常山趙子龍"],
+      "remove": []
+    },
+    {
+      "generalId": "liu-bei",
+      "add": ["劉玄德", "玄德", "劉使君"],
+      "remove": []
+    },
+    {
+      "generalId": "cao-cao",
+      "add": ["曹孟德", "孟德", "阿瞞"],
+      "remove": []
+    },
+    {
+      "generalId": "zhuge-liang",
+      "add": ["諸葛孔明", "孔明", "臥龍", "臥龍先生"],
+      "remove": []
+    }
+  ]
+}

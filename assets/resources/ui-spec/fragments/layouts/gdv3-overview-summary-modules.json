@@ -1,107 +1,212 @@
 {
   "type": "container",
   "name": "OverviewSummaryModules",
-  "widget": { "top": 158, "left": 0, "right": 0 },
-  "height": 188,
-  "layout": { "type": "horizontal", "spacing": 16 },
+  "widget": { "top": 156, "left": 20, "right": 20 },
+  "height": 176,
+  "layout": { "type": "horizontal", "spacing": 10 },
   "children": [
     {
       "type": "panel",
       "name": "CoreStatsCard",
-      "width": "33.5%",
-      "height": 188,
-      "skinSlot": "gdv3.module.card",
+      "width": "34.2%",
+      "height": 176,
+      "skinSlot": "gdv3.summary.miniCard",
       "children": [
         {
           "type": "container",
           "name": "CoreStatsTitleBand",
-          "widget": { "top": 13, "left": 12, "right": 12 },
-          "height": 34,
+          "widget": { "top": 12, "left": 14, "right": 14 },
+          "height": 20,
           "children": [
-            {
-              "type": "image",
-              "name": "CoreStatsTitleBandFill",
-              "widget": { "top": 0, "bottom": 0, "left": 0, "right": 0 },
-              "skinSlot": "gdv3.summary.titleStrip"
-            },
-            {
-              "type": "label",
-              "name": "CoreStatsTitle",
-              "widget": { "left": 14, "right": 14, "vCenter": true },
-              "height": 30,
-              "styleSlot": "gdv3.label.sectionBand"
-            }
+            { "type": "image", "name": "CoreStatsTitleBar", "widget": { "left": 0, "vCenter": true }, "width": 4, "height": 16, "skinSlot": "gdv3.summary.sectionBar" },
+            { "type": "label", "name": "CoreStatsTitle", "widget": { "left": 11, "top": 0 }, "width": 96, "height": 20, "styleSlot": "gdv3.label.summarySection" },
+            { "type": "label", "name": "CoreStatsTitleEn", "widget": { "left": 102, "top": 4 }, "width": 40, "height": 12, "styleSlot": "gdv3.label.summarySectionEn", "text": "CORE" }
           ]
         },
-        { "type": "image", "name": "CoreStatsValuePlate", "widget": { "top": 60, "bottom": 16, "left": 12, "right": 12 }, "skinSlot": "gdv3.summary.valuePlate" },
-        { "type": "image", "name": "CoreStatsValueFrame", "widget": { "top": 60, "bottom": 16, "left": 12, "right": 12 }, "skinSlot": "gdv3.summary.valueFrame" },
-        { "type": "label", "name": "CoreStatsValue", "widget": { "top": 72, "bottom": 24, "left": 24, "right": 22 }, "styleSlot": "gdv3.label.cardBodySummary" }
+        {
+          "type": "container",
+          "name": "CoreStatsGrid",
+          "widget": { "top": 44, "left": 14, "right": 14, "bottom": 16 },
+          "children": [
+            {
+              "type": "container",
+              "name": "CoreStatsRow1",
+              "height": 26,
+              "widget": { "top": 0, "left": 0, "right": 0 },
+              "layout": { "type": "horizontal", "spacing": 12 },
+              "children": [
+                {
+                  "type": "container",
+                  "name": "CoreStatItem1",
+                  "width": "43%",
+                  "height": 26,
+                  "children": [
+                    { "type": "label", "name": "CoreStatKey1", "widget": { "left": 0, "top": 0 }, "width": 20, "height": 26, "styleSlot": "gdv3.label.coreStatKey", "text": "武" },
+                    { "type": "label", "name": "CoreStatValue1", "widget": { "left": 26, "top": 0, "right": 0 }, "height": 26, "styleSlot": "gdv3.label.coreStatValue" }
+                  ]
+                },
+                {
+                  "type": "container",
+                  "name": "CoreStatItem2",
+                  "width": "43%",
+                  "height": 26,
+                  "children": [
+                    { "type": "label", "name": "CoreStatKey2", "widget": { "left": 0, "top": 0 }, "width": 20, "height": 26, "styleSlot": "gdv3.label.coreStatKey", "text": "統" },
+                    { "type": "label", "name": "CoreStatValue2", "widget": { "left": 26, "top": 0, "right": 0 }, "height": 26, "styleSlot": "gdv3.label.coreStatValue" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "container",
+              "name": "CoreStatsRow2",
+              "height": 26,
+              "widget": { "top": 30, "left": 0, "right": 0 },
+              "layout": { "type": "horizontal", "spacing": 12 },
+              "children": [
+                {
+                  "type": "container",
+                  "name": "CoreStatItem3",
+                  "width": "43%",
+                  "height": 26,
+                  "children": [
+                    { "type": "label", "name": "CoreStatKey3", "widget": { "left": 0, "top": 0 }, "width": 20, "height": 26, "styleSlot": "gdv3.label.coreStatKey", "text": "魅" },
+                    { "type": "label", "name": "CoreStatValue3", "widget": { "left": 26, "top": 0, "right": 0 }, "height": 26, "styleSlot": "gdv3.label.coreStatValue" }
+                  ]
+                },
+                {
+                  "type": "container",
+                  "name": "CoreStatItem4",
+                  "width": "43%",
+                  "height": 26,
+                  "children": [
+                    { "type": "label", "name": "CoreStatKey4", "widget": { "left": 0, "top": 0 }, "width": 20, "height": 26, "styleSlot": "gdv3.label.coreStatKey", "text": "智" },
+                    { "type": "label", "name": "CoreStatValue4", "widget": { "left": 26, "top": 0, "right": 0 }, "height": 26, "styleSlot": "gdv3.label.coreStatValue" }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "container",
+              "name": "CoreStatsRow3",
+              "height": 26,
+              "widget": { "top": 60, "left": 0, "right": 0 },
+              "layout": { "type": "horizontal", "spacing": 12 },
+              "children": [
+                {
+                  "type": "container",
+                  "name": "CoreStatItem5",
+                  "width": "43%",
+                  "height": 26,
+                  "children": [
+                    { "type": "label", "name": "CoreStatKey5", "widget": { "left": 0, "top": 0 }, "width": 20, "height": 26, "styleSlot": "gdv3.label.coreStatKey", "text": "政" },
+                    { "type": "label", "name": "CoreStatValue5", "widget": { "left": 26, "top": 0, "right": 0 }, "height": 26, "styleSlot": "gdv3.label.coreStatValue" }
+                  ]
+                },
+                {
+                  "type": "container",
+                  "name": "CoreStatItem6",
+                  "width": "43%",
+                  "height": 26,
+                  "children": [
+                    { "type": "label", "name": "CoreStatKey6", "widget": { "left": 0, "top": 0 }, "width": 20, "height": 26, "styleSlot": "gdv3.label.coreStatKey", "text": "運" },
+                    { "type": "label", "name": "CoreStatValue6", "widget": { "left": 26, "top": 0, "right": 0 }, "height": 26, "styleSlot": "gdv3.label.coreStatValue" }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
       ]
     },
     {
       "type": "panel",
       "name": "RoleCard",
-      "width": "26%",
-      "height": 188,
-      "skinSlot": "gdv3.module.card",
+      "width": "27.8%",
+      "height": 176,
+      "skinSlot": "gdv3.summary.miniCard",
       "children": [
         {
           "type": "container",
           "name": "RoleTitleBand",
-          "widget": { "top": 14, "left": 10, "right": 10 },
-          "height": 32,
+          "widget": { "top": 12, "left": 14, "right": 14 },
+          "height": 20,
           "children": [
-            {
-              "type": "image",
-              "name": "RoleTitleBandFill",
-              "widget": { "top": 0, "bottom": 0, "left": 0, "right": 0 },
-              "skinSlot": "gdv3.summary.titleStrip"
-            },
-            {
-              "type": "label",
-              "name": "RoleTitle",
-              "widget": { "left": 10, "right": 10, "vCenter": true },
-              "height": 28,
-              "styleSlot": "gdv3.label.sectionBandCompact"
-            }
+            { "type": "image", "name": "RoleTitleBar", "widget": { "left": 0, "vCenter": true }, "width": 4, "height": 16, "skinSlot": "gdv3.summary.sectionBar" },
+            { "type": "label", "name": "RoleTitle", "widget": { "left": 11, "top": 0 }, "width": 96, "height": 20, "styleSlot": "gdv3.label.summarySection" },
+            { "type": "label", "name": "RoleTitleEn", "widget": { "left": 102, "top": 4 }, "width": 40, "height": 12, "styleSlot": "gdv3.label.summarySectionEn", "text": "ROLE" }
           ]
         },
-        { "type": "image", "name": "RoleValuePlate", "widget": { "top": 62, "bottom": 18, "left": 10, "right": 10 }, "skinSlot": "gdv3.summary.valuePlate" },
-        { "type": "image", "name": "RoleValueFrame", "widget": { "top": 62, "bottom": 18, "left": 10, "right": 10 }, "skinSlot": "gdv3.summary.valueFrame" },
-        { "type": "label", "name": "RoleValue", "widget": { "top": 76, "bottom": 30, "left": 18, "right": 16 }, "styleSlot": "gdv3.label.cardBodySummary" }
+        {
+          "type": "container",
+          "name": "RoleList",
+          "widget": { "top": 42, "left": 14, "right": 14, "bottom": 16 },
+          "children": [
+            {
+              "type": "container",
+              "name": "RoleLine1",
+              "widget": { "top": 0, "left": 0, "right": 0, "height": 20 },
+              "children": [
+                { "type": "label", "name": "RoleBullet1", "widget": { "left": 0, "top": 2 }, "width": 12, "height": 12, "styleSlot": "gdv3.label.listBullet", "text": "•" },
+                { "type": "label", "name": "RoleText1", "widget": { "left": 16, "top": 0, "right": 0 }, "height": 20, "styleSlot": "gdv3.label.listItem" }
+              ]
+            },
+            {
+              "type": "container",
+              "name": "RoleLine2",
+              "widget": { "top": 28, "left": 0, "right": 0, "height": 20 },
+              "children": [
+                { "type": "label", "name": "RoleBullet2", "widget": { "left": 0, "top": 2 }, "width": 12, "height": 12, "styleSlot": "gdv3.label.listBullet", "text": "•" },
+                { "type": "label", "name": "RoleText2", "widget": { "left": 16, "top": 0, "right": 0 }, "height": 20, "styleSlot": "gdv3.label.listItem" }
+              ]
+            }
+          ]
+        }
       ]
     },
     {
       "type": "panel",
       "name": "TraitCard",
-      "width": "33.5%",
-      "height": 188,
-      "skinSlot": "gdv3.module.card",
+      "width": "31%",
+      "height": 176,
+      "skinSlot": "gdv3.summary.miniCard",
       "children": [
         {
           "type": "container",
           "name": "TraitTitleBand",
-          "widget": { "top": 13, "left": 12, "right": 12 },
-          "height": 34,
+          "widget": { "top": 12, "left": 14, "right": 14 },
+          "height": 20,
           "children": [
-            {
-              "type": "image",
-              "name": "TraitTitleBandFill",
-              "widget": { "top": 0, "bottom": 0, "left": 0, "right": 0 },
-              "skinSlot": "gdv3.summary.titleStrip"
-            },
-            {
-              "type": "label",
-              "name": "TraitTitle",
-              "widget": { "left": 14, "right": 14, "vCenter": true },
-              "height": 30,
-              "styleSlot": "gdv3.label.sectionBand"
-            }
+            { "type": "image", "name": "TraitTitleBar", "widget": { "left": 0, "vCenter": true }, "width": 4, "height": 16, "skinSlot": "gdv3.summary.sectionBar" },
+            { "type": "label", "name": "TraitTitle", "widget": { "left": 11, "top": 0 }, "width": 96, "height": 20, "styleSlot": "gdv3.label.summarySection" },
+            { "type": "label", "name": "TraitTitleEn", "widget": { "left": 104, "top": 4 }, "width": 42, "height": 12, "styleSlot": "gdv3.label.summarySectionEn", "text": "TRAITS" }
           ]
         },
-        { "type": "image", "name": "TraitValuePlate", "widget": { "top": 60, "bottom": 16, "left": 12, "right": 12 }, "skinSlot": "gdv3.summary.valuePlate" },
-        { "type": "image", "name": "TraitValueFrame", "widget": { "top": 60, "bottom": 16, "left": 12, "right": 12 }, "skinSlot": "gdv3.summary.valueFrame" },
-        { "type": "label", "name": "TraitValue", "widget": { "top": 72, "bottom": 24, "left": 24, "right": 22 }, "styleSlot": "gdv3.label.cardBodySummary" }
+        {
+          "type": "container",
+          "name": "TraitList",
+          "widget": { "top": 42, "left": 14, "right": 14, "bottom": 16 },
+          "children": [
+            {
+              "type": "container",
+              "name": "TraitLine1",
+              "widget": { "top": 0, "left": 0, "right": 0, "height": 20 },
+              "children": [
+                { "type": "label", "name": "TraitBullet1", "widget": { "left": 0, "top": 2 }, "width": 12, "height": 12, "styleSlot": "gdv3.label.listBullet", "text": "•" },
+                { "type": "label", "name": "TraitText1", "widget": { "left": 16, "top": 0, "right": 0 }, "height": 20, "styleSlot": "gdv3.label.listItem" }
+              ]
+            },
+            {
+              "type": "container",
+              "name": "TraitLine2",
+              "widget": { "top": 28, "left": 0, "right": 0, "height": 20 },
+              "children": [
+                { "type": "label", "name": "TraitBullet2", "widget": { "left": 0, "top": 2 }, "width": 12, "height": 12, "styleSlot": "gdv3.label.listBullet", "text": "•" },
+                { "type": "label", "name": "TraitText2", "widget": { "left": 16, "top": 0, "right": 0 }, "height": 20, "styleSlot": "gdv3.label.listItem" }
+              ]
+            }
+          ]
+        }
       ]
     }
   ]

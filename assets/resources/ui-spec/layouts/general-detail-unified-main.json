@@ -24,12 +24,14 @@
         "type": "button",
         "name": "TopCloseBtn",
         "id": "topCloseBtn",
-        "widget": { "top": 46, "right": 34 },
-        "width": 72,
-        "height": 72,
+        "widget": { "top": 28, "right": 28 },
+        "width": 88,
+        "height": 88,
         "skinSlot": "detail.back.circle",
-        "styleSlot": "detail.label.circleBack",
-        "text": "←"
+        "children": [
+          { "type": "label", "name": "BackArrow", "widget": { "left": 0, "right": 0, "top": 24 }, "height": 28, "styleSlot": "detail.label.backArrow", "text": "←" },
+          { "type": "label", "name": "BackLabel", "widget": { "left": 10, "right": 10, "bottom": 23 }, "height": 11, "styleSlot": "detail.label.backCaption", "text": "返回" }
+        ]
       },
       {
         "type": "panel",
@@ -40,9 +42,9 @@
       {
         "type": "image",
         "name": "PortraitImage",
-        "widget": { "left": 36, "bottom": 56 },
-        "width": "47%",
-        "height": "88%",
+        "widget": { "left": 0, "bottom": 0 },
+        "width": "62%",
+        "height": "100%",
         "skinSlot": "general.portrait.placeholder"
       },
       {
@@ -57,126 +59,83 @@
       {
         "type": "container",
         "name": "RightTabBar",
-        "widget": { "top": 110, "right": 16 },
-        "width": 330,
-        "height": 1000,
-        "layout": { "type": "vertical", "spacing": 20, "paddingTop": 10, "paddingBottom": 10, "paddingLeft": 10, "paddingRight": 10 },
+        "widget": { "top": 150, "bottom": 20, "right": 16 },
+        "width": 160,
+        "layout": { "type": "vertical", "spacing": 20, "paddingTop": 0, "paddingBottom": 0, "paddingLeft": 10, "paddingRight": 16 },
         "children": [
           {
             "type": "button",
             "name": "BtnTabOverview",
-            "width": 290,
-            "height": 290,
+            "width": 128,
+            "height": 128,
             "skinSlot": "detail.tab.circle.overview",
             "children": [
-              { "type": "image", "name": "Badge", "widget": { "top": 24, "right": 24 }, "width": 54, "height": 54, "skinSlot": "detail.tab.circle.badge" },
-              { "type": "label", "name": "BadgeLabel", "widget": { "top": 24, "right": 24 }, "width": 54, "height": 54, "styleSlot": "detail.label.circleTabBadge", "text": "01" },
-              { "type": "image", "name": "IconInactive", "widget": { "top": 42, "hCenter": true }, "width": 126, "height": 126, "skinSlot": "detail.tab.icon.overview.inactive" },
-              { "type": "image", "name": "IconActive", "widget": { "top": 42, "hCenter": true }, "width": 126, "height": 126, "skinSlot": "detail.tab.icon.overview.active" },
-              { "type": "label", "name": "Label", "widget": { "left": 24, "right": 24, "bottom": 30 }, "height": 66, "styleSlot": "detail.label.circleTabLabel", "text": "總覽" }
-            ]
-          },
-          {
-            "type": "button",
-            "name": "BtnTabBasics",
-            "width": 290,
-            "height": 290,
-            "skinSlot": "detail.tab.circle.basics",
-            "children": [
-              { "type": "image", "name": "Badge", "widget": { "top": 24, "right": 24 }, "width": 54, "height": 54, "skinSlot": "detail.tab.circle.badge" },
-              { "type": "label", "name": "BadgeLabel", "widget": { "top": 24, "right": 24 }, "width": 54, "height": 54, "styleSlot": "detail.label.circleTabBadge", "text": "02" },
-              { "type": "image", "name": "IconInactive", "widget": { "top": 42, "hCenter": true }, "width": 126, "height": 126, "skinSlot": "detail.tab.icon.basics.inactive" },
-              { "type": "image", "name": "IconActive", "widget": { "top": 42, "hCenter": true }, "width": 126, "height": 126, "skinSlot": "detail.tab.icon.basics.active" },
-              { "type": "label", "name": "Label", "widget": { "left": 24, "right": 24, "bottom": 30 }, "height": 66, "styleSlot": "detail.label.circleTabLabel", "text": "基本" }
+              { "type": "label", "name": "Label", "widget": { "left": 10, "right": 10, "top": 39 }, "height": 32, "styleSlot": "detail.label.circleTabMain", "text": "將" },
+              { "type": "label", "name": "EnLabel", "widget": { "left": 10, "right": 10, "bottom": 39 }, "height": 12, "styleSlot": "detail.label.circleTabLabel", "text": "GEN" }
             ]
           },
           {
             "type": "button",
             "name": "BtnTabStats",
-            "width": 290,
-            "height": 290,
+            "width": 128,
+            "height": 128,
             "skinSlot": "detail.tab.circle.stats",
             "children": [
-              { "type": "image", "name": "Badge", "widget": { "top": 24, "right": 24 }, "width": 54, "height": 54, "skinSlot": "detail.tab.circle.badge" },
-              { "type": "label", "name": "BadgeLabel", "widget": { "top": 24, "right": 24 }, "width": 54, "height": 54, "styleSlot": "detail.label.circleTabBadge", "text": "03" },
-              { "type": "image", "name": "IconInactive", "widget": { "top": 42, "hCenter": true }, "width": 126, "height": 126, "skinSlot": "detail.tab.icon.stats.inactive" },
-              { "type": "image", "name": "IconActive", "widget": { "top": 42, "hCenter": true }, "width": 126, "height": 126, "skinSlot": "detail.tab.icon.stats.active" },
-              { "type": "label", "name": "Label", "widget": { "left": 24, "right": 24, "bottom": 30 }, "height": 66, "styleSlot": "detail.label.circleTabLabel", "text": "屬性" }
+              { "type": "label", "name": "Label", "widget": { "left": 10, "right": 10, "top": 39 }, "height": 32, "styleSlot": "detail.label.circleTabMain", "text": "屬" },
+              { "type": "label", "name": "EnLabel", "widget": { "left": 10, "right": 10, "bottom": 39 }, "height": 12, "styleSlot": "detail.label.circleTabLabel", "text": "STAT" }
+            ]
+          },
+          {
+            "type": "button",
+            "name": "BtnTabTactics",
+            "width": 128,
+            "height": 128,
+            "skinSlot": "detail.tab.circle.skills",
+            "children": [
+              { "type": "label", "name": "Label", "widget": { "left": 10, "right": 10, "top": 39 }, "height": 32, "styleSlot": "detail.label.circleTabMain", "text": "技" },
+              { "type": "label", "name": "EnLabel", "widget": { "left": 10, "right": 10, "bottom": 39 }, "height": 12, "styleSlot": "detail.label.circleTabLabel", "text": "TACT" }
             ]
           },
           {
             "type": "button",
             "name": "BtnTabBloodline",
-            "width": 290,
-            "height": 290,
+            "width": 128,
+            "height": 128,
             "skinSlot": "detail.tab.circle.bloodline",
             "children": [
-              { "type": "image", "name": "Badge", "widget": { "top": 24, "right": 24 }, "width": 54, "height": 54, "skinSlot": "detail.tab.circle.badge" },
-              { "type": "label", "name": "BadgeLabel", "widget": { "top": 24, "right": 24 }, "width": 54, "height": 54, "styleSlot": "detail.label.circleTabBadge", "text": "04" },
-              { "type": "image", "name": "IconInactive", "widget": { "top": 42, "hCenter": true }, "width": 126, "height": 126, "skinSlot": "detail.tab.icon.bloodline.inactive" },
-              { "type": "image", "name": "IconActive", "widget": { "top": 42, "hCenter": true }, "width": 126, "height": 126, "skinSlot": "detail.tab.icon.bloodline.active" },
-              { "type": "label", "name": "Label", "widget": { "left": 24, "right": 24, "bottom": 30 }, "height": 66, "styleSlot": "detail.label.circleTabLabel", "text": "血脈" }
+              { "type": "label", "name": "Label", "widget": { "left": 10, "right": 10, "top": 39 }, "height": 32, "styleSlot": "detail.label.circleTabMain", "text": "命" },
+              { "type": "label", "name": "EnLabel", "widget": { "left": 10, "right": 10, "bottom": 39 }, "height": 12, "styleSlot": "detail.label.circleTabLabel", "text": "FATE" }
             ]
           },
           {
             "type": "button",
-            "name": "BtnTabSkills",
-            "width": 290,
-            "height": 290,
-            "skinSlot": "detail.tab.circle.skills",
+            "name": "BtnTabEquip",
+            "width": 128,
+            "height": 128,
+            "skinSlot": "detail.tab.circle.basics",
             "children": [
-              { "type": "image", "name": "Badge", "widget": { "top": 24, "right": 24 }, "width": 54, "height": 54, "skinSlot": "detail.tab.circle.badge" },
-              { "type": "label", "name": "BadgeLabel", "widget": { "top": 24, "right": 24 }, "width": 54, "height": 54, "styleSlot": "detail.label.circleTabBadge", "text": "05" },
-              { "type": "image", "name": "IconInactive", "widget": { "top": 42, "hCenter": true }, "width": 126, "height": 126, "skinSlot": "detail.tab.icon.skills.inactive" },
-              { "type": "image", "name": "IconActive", "widget": { "top": 42, "hCenter": true }, "width": 126, "height": 126, "skinSlot": "detail.tab.icon.skills.active" },
-              { "type": "label", "name": "Label", "widget": { "left": 24, "right": 24, "bottom": 30 }, "height": 66, "styleSlot": "detail.label.circleTabLabel", "text": "戰技" }
+              { "type": "label", "name": "Label", "widget": { "left": 10, "right": 10, "top": 39 }, "height": 32, "styleSlot": "detail.label.circleTabMain", "text": "寶" },
+              { "type": "label", "name": "EnLabel", "widget": { "left": 10, "right": 10, "bottom": 39 }, "height": 12, "styleSlot": "detail.label.circleTabLabel", "text": "GEAR" }
             ]
           },
           {
             "type": "button",
             "name": "BtnTabAptitude",
-            "width": 290,
-            "height": 290,
+            "width": 128,
+            "height": 128,
             "skinSlot": "detail.tab.circle.aptitude",
             "children": [
-              { "type": "image", "name": "Badge", "widget": { "top": 24, "right": 24 }, "width": 54, "height": 54, "skinSlot": "detail.tab.circle.badge" },
-              { "type": "label", "name": "BadgeLabel", "widget": { "top": 24, "right": 24 }, "width": 54, "height": 54, "styleSlot": "detail.label.circleTabBadge", "text": "06" },
-              { "type": "image", "name": "IconInactive", "widget": { "top": 42, "hCenter": true }, "width": 126, "height": 126, "skinSlot": "detail.tab.icon.aptitude.inactive" },
-              { "type": "image", "name": "IconActive", "widget": { "top": 42, "hCenter": true }, "width": 126, "height": 126, "skinSlot": "detail.tab.icon.aptitude.active" },
-              { "type": "label", "name": "Label", "widget": { "left": 24, "right": 24, "bottom": 30 }, "height": 66, "styleSlot": "detail.label.circleTabLabel", "text": "適性" }
+              { "type": "label", "name": "Label", "widget": { "left": 10, "right": 10, "top": 39 }, "height": 32, "styleSlot": "detail.label.circleTabMain", "text": "適" },
+              { "type": "label", "name": "EnLabel", "widget": { "left": 10, "right": 10, "bottom": 39 }, "height": 12, "styleSlot": "detail.label.circleTabLabel", "text": "APT" }
             ]
-          },
-          {
-            "type": "button",
-            "name": "BtnTabExtended",
-            "width": 290,
-            "height": 290,
-            "skinSlot": "detail.tab.circle.extended",
-            "children": [
-              { "type": "image", "name": "Badge", "widget": { "top": 24, "right": 24 }, "width": 54, "height": 54, "skinSlot": "detail.tab.circle.badge" },
-              { "type": "label", "name": "BadgeLabel", "widget": { "top": 24, "right": 24 }, "width": 54, "height": 54, "styleSlot": "detail.label.circleTabBadge", "text": "07" },
-              { "type": "image", "name": "IconInactive", "widget": { "top": 42, "hCenter": true }, "width": 126, "height": 126, "skinSlot": "detail.tab.icon.extended.inactive" },
-              { "type": "image", "name": "IconActive", "widget": { "top": 42, "hCenter": true }, "width": 126, "height": 126, "skinSlot": "detail.tab.icon.extended.active" },
-              { "type": "label", "name": "Label", "widget": { "left": 24, "right": 24, "bottom": 30 }, "height": 66, "styleSlot": "detail.label.circleTabLabel", "text": "延伸" }
-            ]
-          },
-          {
-            "type": "button",
-            "name": "BtnClose",
-            "width": 290,
-            "height": 180,
-            "skinSlot": "detail.close.btn",
-            "styleSlot": "detail.label.button",
-            "text": "關閉"
           }
         ]
       },
       {
-        "type": "panel",
+        "type": "container",
         "name": "RightContentArea",
-        "widget": { "top": 280, "bottom": 56, "right": 366 },
-        "width": "38.6%",
-        "skinSlot": "detail.content.bg",
+        "widget": { "top": 50, "bottom": 56, "right": 176 },
+        "width": 540,
         "children": [
           {
             "type": "container",

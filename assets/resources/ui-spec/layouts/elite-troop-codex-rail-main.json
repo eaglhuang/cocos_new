@@ -19,50 +19,6 @@
     },
     "children": [
       {
-        "type": "image",
-        "name": "BackgroundFull",
-        "widget": {
-          "top": 0,
-          "bottom": 0,
-          "left": 0,
-          "right": 0
-        },
-        "skinSlot": "elite.troop.codex.rail.bg.full"
-      },
-      {
-        "type": "panel",
-        "name": "ShellFill",
-        "widget": {
-          "top": 48,
-          "bottom": 48,
-          "left": 56,
-          "right": 56
-        },
-        "skinSlot": "elite.troop.codex.rail.shell.fill"
-      },
-      {
-        "type": "panel",
-        "name": "ShellBleed",
-        "widget": {
-          "top": 48,
-          "bottom": 48,
-          "left": 56,
-          "right": 56
-        },
-        "skinSlot": "elite.troop.codex.rail.shell.bleed"
-      },
-      {
-        "type": "panel",
-        "name": "ShellFrame",
-        "widget": {
-          "top": 48,
-          "bottom": 48,
-          "left": 56,
-          "right": 56
-        },
-        "skinSlot": "elite.troop.codex.rail.shell.frame"
-      },
-      {
         "type": "container",
         "name": "ShellContent",
         "widget": {
@@ -219,26 +175,6 @@
                 "children": [
                   {
                     "type": "panel",
-                    "name": "HeroCard",
-                    "width": "100%",
-                    "height": 260,
-                    "skinSlot": "elite.troop.codex.rail.hero.card",
-                    "children": [
-                      {
-                        "type": "image",
-                        "name": "HeroPortrait",
-                        "widget": {
-                          "top": 18,
-                          "bottom": 18,
-                          "left": 18,
-                          "right": 18
-                        },
-                        "skinSlot": "elite.troop.codex.rail.hero.portrait"
-                      }
-                    ]
-                  },
-                  {
-                    "type": "panel",
                     "name": "DetailCard",
                     "width": "100%",
                     "height": 280,
@@ -330,11 +266,65 @@
                       }
                     ]
                   }
+                ],
+                "skinLayers": [
+                  {
+                    "layerId": "HeroCard",
+                    "slotId": "elite.troop.codex.rail.hero.card",
+                    "zOrder": 0,
+                    "expand": false,
+                    "width": "100%",
+                    "height": 260
+                  }
                 ]
               }
             ]
           }
         ]
+      }
+    ],
+    "skinLayers": [
+      {
+        "layerId": "BackgroundFull",
+        "slotId": "elite.troop.codex.rail.bg.full",
+        "zOrder": 0,
+        "expand": true
+      },
+      {
+        "layerId": "ShellFill",
+        "slotId": "elite.troop.codex.rail.shell.fill",
+        "zOrder": 1,
+        "expand": false,
+        "widget": {
+          "top": 48,
+          "left": 56,
+          "right": 56,
+          "bottom": 48
+        }
+      },
+      {
+        "layerId": "ShellBleed",
+        "slotId": "elite.troop.codex.rail.shell.bleed",
+        "zOrder": 2,
+        "expand": false,
+        "widget": {
+          "top": 48,
+          "left": 56,
+          "right": 56,
+          "bottom": 48
+        }
+      },
+      {
+        "layerId": "ShellFrame",
+        "slotId": "elite.troop.codex.rail.shell.frame",
+        "zOrder": 3,
+        "expand": false,
+        "widget": {
+          "top": 48,
+          "left": 56,
+          "right": 56,
+          "bottom": 48
+        }
       }
     ]
   }

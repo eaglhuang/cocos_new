@@ -1,0 +1,19 @@
+{
+  "screenId": "character-ds3-main",
+  "composites": [
+    {
+      "name": "CharacterDs3Main_svg_1",
+      "sourceTag": "svg",
+      "reason": "svg",
+      "designWidth": 72,
+      "designHeight": 72,
+      "rendererHint": null,
+      "note": "composite slot 需手動掛 RenderTexture / 自繪 component；HTML 端僅保留 placeholder。"
+    }
+  ],
+  "summary": {
+    "total": 1,
+    "svg": 1,
+    "canvas": 0
+  }
+}

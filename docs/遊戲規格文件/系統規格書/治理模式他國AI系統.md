@@ -1,4 +1,10 @@
 <!-- doc_id: doc_spec_0020 -->
+
+> **2026-04-26 覆寫裁定：AI 兵源模型**
+>
+> 1. 他國 AI 的 `troops` 欄位語意收斂為 `City_Troops / 城市兵源`，代表可撥給出征的軍事庫存，不等於人口。
+> 2. AI 出征時同樣使用 `Sortie_Troop_Pool = min(主將帶兵上限, AI 城市兵源, 關卡上限)`；戰後依戰損回扣城市兵源。
+> 3. AI 決策中的「兵力不足」應讀為城市兵源不足或主將帶兵上限不足，不再使用抽象戰備值。
 # 治理模式他國 AI 系統（Governance Mode Rival AI System）
 
 > 本文件定義非玩家勢力（他國 AI）在治理模式中的資源管理、擴張決策、外交行為與武將經營邏輯。
@@ -667,7 +673,7 @@ function getMissionIntelBand(intValue: number): number {
 | season | INT | 當前季度 |
 | food | INT | 糧草 |
 | gold | INT | 黃金 |
-| troops | INT | 兵力 |
+| troops | INT | 城市兵源（City_Troops，相容舊欄位名） |
 | fame | INT | 名聲 |
 | territories | INT | 領地數 |
 | domain_ratio | DECIMAL(5,4) | 領土佔比 |

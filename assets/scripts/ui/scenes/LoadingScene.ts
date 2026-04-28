@@ -3,9 +3,11 @@ import {
     _decorator,
     Component,
     director,
+    ResolutionPolicy,
     sys,
     Enum,
     Label,
+    Button,
     SpriteFrame,
     Sprite,
     Node,
@@ -17,13 +19,20 @@ import {
 import { services } from '../../core/managers/ServiceLoader';
 import { UIScreenPreviewHost } from '../components/UIScreenPreviewHost';
 import { GeneralDetailComposite } from '../components/GeneralDetailComposite';
+import { GeneralListComposite } from '../components/GeneralListComposite';
 import { EliteTroopCodexComposite } from '../components/EliteTroopCodexComposite';
+import { LobbyMissionDetailDialogComposite } from '../components/LobbyMissionDetailDialogComposite';
 import { LobbyScene } from './LobbyScene';
 import { BattleTactic } from '../../core/config/Constants';
 import { DEFAULT_BATTLE_ENTRY_PARAMS, type BattleEntryParams } from '../../battle/models/BattleEntryParams';
 import type { GeneralConfig } from '../../core/models/GeneralUnit';
 import { getUIRarityMarkLabel } from '../core/UIRarityMark';
 import { applyUIPreviewBinderState, type UIPreviewBinderState } from '../core/UIPreviewStateApplicator';
+import { applyUIScreenRuntimeState } from '../core/UIScreenRuntimeStateRegistry';
+import { LocalGachaService } from '../../core/services/LocalGachaService';
+import { PlayerRosterService } from '../../core/services/PlayerRosterService';
+import { UCUFLogger, LogCategory } from '../core/UCUFLogger';
+import { showGachaResults, showGachaHistory, showGachaError, refreshCurrencyDisplay, attachCurrencyCheatPanel, detachCurrencyCheatPanel, detachRosterClearButton, ensureGlobalDevOverlay } from '../dev/GachaDevOverlay';
 
 const { ccclass, property } = _decorator;
 
@@ -38,8 +47,19 @@ enum LoadingPreviewTarget {
     SpiritTallyDetail = 7,
     GeneralList = 8,
     EliteTroopCodex = 9,
+    LobbyMissionDetailDialog = 10,
     GeneralDetailSkills = 12,
+    GeneralDetailStats = 13,
+    GeneralDetailBloodline = 14,
+    GeneralDetailBasics = 15,
+    GeneralDetailAptitude = 16,
+    GachaFromLobby = 17,
+    CharacterDs3 = 18,
+    GeneralDetailFromLobbyGeneralsButton = 19,
+    GeneralDetailFromSceneGeneralListButton = 20,
 }
+
+type GeneralDetailPreviewTab = 'Overview' | 'Basics' | 'Stats' | 'Bloodline' | 'Skills' | 'Aptitude';
 
 /**
  * LoadingScene - 中繼轉場場景
@@ -70,6 +90,10 @@ export class LoadingScene extends Component {
     private _bgNode: Node | null = null;
     private _bgSpriteFrame: SpriteFrame | null = null;
     private _previewHost: UIScreenPreviewHost | null = null;
+    private _previewViewportFitTimer: number | null = null;
+    private readonly _previewGachaService = new LocalGachaService();
+    private _previewGeneralListPanel: GeneralListComposite | null = null;
+    private _generalsCatalog: GeneralConfig[] = [];
 
     private _setCaptureState(status: 'loading' | 'ready' | 'error', screenId: string, error?: unknown): void {
         const globalScope = globalThis as any;
@@ -121,16 +145,33 @@ export class LoadingScene extends Component {
             return 'shop-main-screen';
         case LoadingPreviewTarget.Gacha:
             return 'gacha-main-screen';
+        case LoadingPreviewTarget.GachaFromLobby:
+            return 'gacha-main-screen';
+        case LoadingPreviewTarget.CharacterDs3:
+            return 'character-ds3-main';
+        case LoadingPreviewTarget.GeneralDetailFromLobbyGeneralsButton:
+        case LoadingPreviewTarget.GeneralDetailFromSceneGeneralListButton:
+            return 'character-ds3-main';
         case LoadingPreviewTarget.DuelChallenge:
             return 'duel-challenge-screen';
         case LoadingPreviewTarget.BattleScene:
             return 'battle-scene';
         case LoadingPreviewTarget.GeneralDetailOverview:
             return 'general-detail-unified-screen';
+        case LoadingPreviewTarget.GeneralDetailStats:
+            return 'general-detail-unified-screen';
+        case LoadingPreviewTarget.GeneralDetailBloodline:
+            return 'general-detail-unified-screen';
+        case LoadingPreviewTarget.GeneralDetailBasics:
+            return 'general-detail-unified-screen';
+        case LoadingPreviewTarget.GeneralDetailAptitude:
+            return 'general-detail-unified-screen';
         case LoadingPreviewTarget.GeneralList:
             return 'general-list-screen';
         case LoadingPreviewTarget.EliteTroopCodex:
             return 'elite-troop-codex-screen';
+        case LoadingPreviewTarget.LobbyMissionDetailDialog:
+            return 'lobby-mission-detail-dialog-screen';
         case LoadingPreviewTarget.GeneralDetailSkills:
             return 'general-detail-unified-screen';
         case LoadingPreviewTarget.SpiritTallyDetail:
@@ -186,6 +227,7 @@ export class LoadingScene extends Component {
         }
 
         if (this.previewMode) {
+            this._applyPreviewViewportPolicy();
             this._buildPreviewHost();
             return;
         }
@@ -194,9 +236,21 @@ export class LoadingScene extends Component {
 
     start() {
         if (this.previewMode) {
-            void this._startPreview();
+            void this._startPreview().finally(() => {
+                if (!this.isValid) {
+                    return;
+                }
+                if (this.previewTarget === LoadingPreviewTarget.Gacha) {
+                    ensureGlobalDevOverlay(this._previewGachaService, undefined, () => { PlayerRosterService.clear(); }, () => {
+                        this._refreshPreviewGachaWalletState();
+                    });
+                    return;
+                }
+                ensureGlobalDevOverlay();
+            });
             return;
         }
+        ensureGlobalDevOverlay();
         this._startTransition();
     }
 
@@ -222,6 +276,11 @@ export class LoadingScene extends Component {
 
     private _buildPreviewHost() {
         const root = this._resolveRootNode();
+
+        // Hide the static loading hint in preview mode so it does not cover the preview.
+        const loadingHintLabel = root.getChildByName('LoadingHintLabel');
+        if (loadingHintLabel) loadingHintLabel.active = false;
+
         let previewNode = root.getChildByName('UIScreenPreviewHost');
         if (!previewNode) {
             previewNode = new Node('UIScreenPreviewHost');
@@ -237,6 +296,86 @@ export class LoadingScene extends Component {
         widget.top = widget.bottom = widget.left = widget.right = 0;
 
         this._previewHost = previewNode.getComponent(UIScreenPreviewHost) ?? previewNode.addComponent(UIScreenPreviewHost);
+        this._startPreviewViewportFitLoop();
+    }
+
+    private _startPreviewViewportFitLoop(): void {
+        if (typeof window === 'undefined') return;
+
+        if (this._previewViewportFitTimer !== null) {
+            window.clearInterval(this._previewViewportFitTimer);
+            this._previewViewportFitTimer = null;
+        }
+
+        let attempts = 0;
+        const tick = () => {
+            if (!this.isValid || !this.previewMode) {
+                if (this._previewViewportFitTimer !== null) {
+                    window.clearInterval(this._previewViewportFitTimer);
+                    this._previewViewportFitTimer = null;
+                }
+                return;
+            }
+
+            this._fitPreviewHostToViewport();
+            attempts += 1;
+
+            const wrapper = document.getElementById('GameDiv') as HTMLElement | null;
+            if ((wrapper && wrapper.style.transform && wrapper.style.transform !== 'none') || attempts >= 20) {
+                if (this._previewViewportFitTimer !== null) {
+                    window.clearInterval(this._previewViewportFitTimer);
+                    this._previewViewportFitTimer = null;
+                }
+            }
+        };
+
+        this._previewViewportFitTimer = window.setInterval(tick, 100);
+        tick();
+    }
+
+    private _applyPreviewViewportPolicy(): void {
+        if (typeof window === 'undefined') return;
+
+        try {
+            // Keep the design resolution fixed for editor/browser QA; the host wrapper handles browser fit.
+            director.getScene();
+            const designWidth = 1920;
+            const designHeight = 1080;
+            const view = (globalThis as any).cc?.view ?? null;
+            if (view?.setDesignResolutionSize) {
+                view.setDesignResolutionSize(designWidth, designHeight, ResolutionPolicy.SHOW_ALL);
+            }
+        } catch {
+            // Keep the default flow when cc.view is unavailable in the preview environment.
+        }
+    }
+
+    private _fitPreviewHostToViewport(): void {
+        if (typeof document === 'undefined' || typeof window === 'undefined') return;
+
+        const wrapper = document.getElementById('GameDiv') as HTMLElement | null;
+        const contentWrap = document.querySelector('.contentWrap') as HTMLElement | null;
+        if (!wrapper) return;
+
+        const wrapperRect = wrapper.getBoundingClientRect();
+        if (wrapperRect.width <= 0 || wrapperRect.height <= 0) return;
+
+        const availableWidth = contentWrap?.clientWidth ?? window.innerWidth;
+        const availableHeight = contentWrap?.clientHeight ?? window.innerHeight;
+        if (availableWidth <= 0 || availableHeight <= 0) return;
+
+        const scale = Math.min(1, availableWidth / wrapperRect.width, availableHeight / wrapperRect.height);
+        wrapper.style.transformOrigin = 'top center';
+        wrapper.style.transform = scale < 1 ? `scale(${scale})` : 'none';
+    }
+
+    onDestroy() {
+        if (typeof window !== 'undefined' && this._previewViewportFitTimer !== null) {
+            window.clearInterval(this._previewViewportFitTimer);
+            this._previewViewportFitTimer = null;
+        }
+        detachCurrencyCheatPanel();
+        detachRosterClearButton();
     }
 
     private _resolveRootNode(): Node {
@@ -302,6 +441,14 @@ export class LoadingScene extends Component {
                 await this._previewGacha();
                 this._setCaptureState('ready', 'gacha-main-screen');
                 return;
+            case LoadingPreviewTarget.GachaFromLobby:
+                await this._previewGachaFromLobby();
+                this._setCaptureState('ready', 'gacha-main-screen');
+                return;
+            case LoadingPreviewTarget.CharacterDs3:
+                await this._previewCharacterDs3();
+                this._setCaptureState('ready', 'character-ds3-main');
+                return;
             case LoadingPreviewTarget.DuelChallenge:
                 await this._previewDuelChallenge();
                 this._setCaptureState('ready', 'duel-challenge-screen');
@@ -312,12 +459,34 @@ export class LoadingScene extends Component {
             case LoadingPreviewTarget.GeneralDetailOverview:
                 await this._previewGeneralDetailOverview();
                 return;
+            case LoadingPreviewTarget.GeneralDetailStats:
+                await this._previewGeneralDetailStats();
+                return;
+            case LoadingPreviewTarget.GeneralDetailBloodline:
+                await this._previewGeneralDetailBloodline();
+                return;
+            case LoadingPreviewTarget.GeneralDetailBasics:
+                await this._previewGeneralDetailBasics();
+                return;
+            case LoadingPreviewTarget.GeneralDetailAptitude:
+                await this._previewGeneralDetailAptitude();
+                return;
+            case LoadingPreviewTarget.GeneralDetailFromLobbyGeneralsButton:
+                await this._previewGeneralDetailFromLobbyEntry('ucuf-nav');
+                return;
+            case LoadingPreviewTarget.GeneralDetailFromSceneGeneralListButton:
+                await this._previewGeneralDetailFromLobbyEntry('scene-button');
+                return;
             case LoadingPreviewTarget.GeneralList:
                 await this._previewGeneralList();
                 this._setCaptureState('ready', 'general-list-screen');
                 return;
             case LoadingPreviewTarget.EliteTroopCodex:
                 await this._previewEliteTroopCodex();
+                return;
+            case LoadingPreviewTarget.LobbyMissionDetailDialog:
+                await this._previewLobbyMissionDetailDialog();
+                this._setCaptureState('ready', 'lobby-mission-detail-dialog-screen');
                 return;
             case LoadingPreviewTarget.GeneralDetailSkills:
                 await this._previewGeneralDetailSkills();
@@ -342,6 +511,70 @@ export class LoadingScene extends Component {
     private async _previewLobbyMain(): Promise<void> {
         console.log('[LoadingScene] Preview target -> lobby-main-screen');
         await this._previewHost?.showScreen('lobby-main-screen');
+
+        const binder = this._previewHost?.binder;
+        const gachaButton = binder?.getButton('btnGacha');
+        if (!gachaButton) {
+            throw new Error('[LoadingScene] lobby-main-screen is missing btnGacha binding');
+        }
+
+        gachaButton.node.off(Button.EventType.CLICK, this._onPreviewLobbyGachaClick, this);
+        gachaButton.node.on(Button.EventType.CLICK, this._onPreviewLobbyGachaClick, this);
+
+        // Generals button: show the player roster stored in PlayerRosterService.
+        const generalsButton = binder?.getButton('btnGenerals');
+        if (generalsButton) {
+            generalsButton.node.off(Button.EventType.CLICK, this._onPreviewLobbyGeneralsClick, this);
+            generalsButton.node.on(Button.EventType.CLICK, this._onPreviewLobbyGeneralsClick, this);
+        }
+    }
+
+    private _onPreviewLobbyGeneralsClick(): void {
+        void this._showPreviewGeneralList();
+    }
+
+    private async _showPreviewGeneralList(): Promise<void> {
+        // Prefer the player roster; fall back to the full generals catalog when empty.
+        let roster = PlayerRosterService.getAll();
+        if (roster.length === 0) {
+            if (this._generalsCatalog.length === 0) {
+                try {
+                    const data = await services().resource.loadJson<GeneralConfig[]>('data/generals', { tags: ['GeneralListPreview'] });
+                    this._generalsCatalog = Array.isArray(data) ? data : ((data as any)?.data ?? []);
+                } catch (err) {
+                    UCUFLogger.warn(LogCategory.DATA, '[LoadingScene] Failed to load generals catalog', err);
+                }
+            }
+            roster = this._generalsCatalog;
+        }
+
+        // Lazily create the GeneralListComposite panel.
+        if (!this._previewGeneralListPanel || !this._previewGeneralListPanel.node.isValid) {
+            const root = this._resolveRootNode();
+            const listNode = new Node('GeneralListPanel');
+            listNode.layer = root.layer;
+            root.addChild(listNode);
+
+            const tf = listNode.addComponent(UITransform);
+            tf.setContentSize(1920, 1080);
+            const w = listNode.addComponent(Widget);
+            w.isAlignTop = w.isAlignBottom = w.isAlignLeft = w.isAlignRight = true;
+            w.top = w.bottom = w.left = w.right = 0;
+
+            this._previewGeneralListPanel = listNode.addComponent(GeneralListComposite);
+            this._previewGeneralListPanel.onRequestClose = () => {
+                this._previewGeneralListPanel?.node && (this._previewGeneralListPanel.node.active = false);
+            };
+        }
+
+        this._previewGeneralListPanel.node.active = true;
+        // roster already contains the player roster or the full catalog fallback; always show in all mode.
+        await this._previewGeneralListPanel.show(roster, 'all');
+        UCUFLogger.info(LogCategory.DATA, `[LoadingScene] General list shown with ${roster.length} entries`);
+    }
+
+    private _onPreviewLobbyGachaClick(): void {
+        void this._previewGacha();
     }
 
     private async _previewShopMain(): Promise<void> {
@@ -352,15 +585,216 @@ export class LoadingScene extends Component {
     private async _previewGacha(): Promise<void> {
         console.log('[LoadingScene] Preview target -> gacha-main-screen');
         await this._previewHost?.showScreen('gacha-main-screen');
-        const previewState = await this._loadGachaPreviewState();
-        if (previewState && this._previewHost?.binder) {
-            applyUIPreviewBinderState(this._previewHost.binder, previewState);
+        if (this._previewHost?.binder) {
+            await applyUIScreenRuntimeState(this._previewHost.binder, 'gacha-main-screen', {
+                previewVariant: this.previewVariant,
+                tags: ['LoadingScenePreview'],
+            });
+            this._refreshPreviewGachaWalletState();
+        }
+        // Load the real generals catalog for gacha odds on the first preview only.
+        if (this._generalsCatalog.length === 0) {
+            try {
+                const data = await services().resource.loadJson<GeneralConfig[]>('data/generals', { tags: ['GachaPreview'] });
+                this._generalsCatalog = Array.isArray(data) ? data : ((data as any)?.data ?? []);
+                UCUFLogger.info(LogCategory.DATA, `[LoadingScene] Loaded ${this._generalsCatalog.length} generals for gacha preview`);
+            } catch (err) {
+                UCUFLogger.warn(LogCategory.DATA, '[LoadingScene] Failed to load generals catalog for gacha preview', err);
+            }
+        }
+        this._wireGachaPreviewButtons();
+        attachCurrencyCheatPanel(this._previewGachaService, undefined, () => { PlayerRosterService.clear(); }, () => {
+            this._refreshPreviewGachaWalletState();
+        });
+    }
+
+    private _wireGachaPreviewButtons(): void {
+        const binder = this._previewHost?.binder;
+        if (!binder) return;
+
+        // TopBar is hidden in the layout spec (active:false) to match the HTML
+        // parity baseline, but the preview still needs the BackBtn accessible.
+        const topBar = binder.getNode('TopBar');
+        if (topBar) {
+            topBar.active = true;
+        }
+
+        const btnBindings: Array<[string, () => void]> = [
+            ['Pull1Btn',      () => { void this._onPreviewGachaPull(1); }],
+            ['Pull10Btn',     () => { void this._onPreviewGachaPull(10); }],
+            ['HistoryBtn',    () => { this._onPreviewGachaHistory(); }],
+            ['GoldSummonBtn', () => { void this._onPreviewGoldSummon(); }],
+            ['UseTicketBtn',  () => { void this._onPreviewTicketSummon(); }],
+            ['BackBtn',       () => { void this._onPreviewGachaBack(); }],
+        ];
+        for (const [id, handler] of btnBindings) {
+            const btn = binder.getButton(id);
+            if (!btn) {
+                UCUFLogger.warn(LogCategory.DATA, `[LoadingScene] gacha preview: button not found: ${id}`);
+                continue;
+            }
+            btn.node.on(Button.EventType.CLICK, handler, this);
+        }
+    }
+
+    private _refreshPreviewGachaWalletState(): void {
+        if (!this._previewHost?.binder) {
+            return;
+        }
+
+        const wallet = this._previewGachaService.getWalletSnapshot();
+        this._previewHost.binder.setTexts({
+            CostBalanceValue: `◈ ${wallet.gems.toLocaleString('zh-TW')}`,
+        });
+    }
+
+    private static readonly GEMS_COST_PER_PULL = 100;
+    private static readonly GACHA_POOL_ID = 'GENERAL_STANDARD_01';
+
+    private async _onPreviewGachaPull(count: number): Promise<void> {
+        const cost = LoadingScene.GEMS_COST_PER_PULL * count;
+        try {
+            const results = await this._previewGachaService.performLocalGacha(
+                LoadingScene.GACHA_POOL_ID,
+                count,
+                cost,
+                this._generalsCatalog,
+                { factionFilter: 'all' },
+            );
+            PlayerRosterService.addGenerals(results.map(r => r.general));
+            this._refreshPreviewGachaWalletState();
+            refreshCurrencyDisplay();
+            showGachaResults(
+                count === 1 ? '單抽' : '十連抽',
+                results,
+                () => { void this._onPreviewGachaPull(count); },
+            );
+        } catch (err) {
+            showGachaError(this._formatGachaError(err));
+        }
+    }
+
+    private _onPreviewGachaHistory(): void {
+        void this._previewGachaService.getRecentPullHistory(30).then((data) => {
+            showGachaHistory(data);
+        }).catch(() => {
+            showGachaError('讀取紀錄失敗');
+        });
+    }
+
+    private async _onPreviewGachaBack(): Promise<void> {
+        await this._previewLobbyMain();
+    }
+
+    private async _onPreviewGoldSummon(): Promise<void> {
+        try {
+            const results = await this._previewGachaService.performGoldSummon(
+                1, this._generalsCatalog, { factionFilter: 'all' },
+            );
+            PlayerRosterService.addGenerals(results.map(r => r.general));
+            this._refreshPreviewGachaWalletState();
+            refreshCurrencyDisplay();
+            showGachaResults('金幣召喚', results, () => { void this._onPreviewGoldSummon(); });
+        } catch (err) {
+            showGachaError(this._formatGachaError(err));
+        }
+    }
+
+    private async _onPreviewTicketSummon(): Promise<void> {
+        try {
+            const results = await this._previewGachaService.performTicketSummon(
+                1, this._generalsCatalog, { factionFilter: 'all' },
+            );
+            PlayerRosterService.addGenerals(results.map(r => r.general));
+            this._refreshPreviewGachaWalletState();
+            refreshCurrencyDisplay();
+            showGachaResults('召喚券', results, () => { void this._onPreviewTicketSummon(); });
+        } catch (err) {
+            showGachaError(this._formatGachaError(err));
+        }
+    }
+
+    private _formatGachaError(err: unknown): string {
+        const raw = err instanceof Error ? err.message : String(err);
+        return raw
+            .replace(/^gems\b/, '🔹 鑽石')
+            .replace(/^gold\b/, '🪙 金幣')
+            .replace(/^tickets\b/, '🎫 召喚券');
+    }
+
+    private _emitPreviewToast(message: string): void {
+        UCUFLogger.info(LogCategory.DATA, `[LoadingScene] preview toast: ${message}`);
+        try {
+            services().event.emit('SHOW_TOAST', { message, duration: 2.5 });
+        } catch {
+            // services may not be fully initialized in preview mode yet.
         }
     }
 
     private async _previewDuelChallenge(): Promise<void> {
         console.log('[LoadingScene] Preview target -> duel-challenge-screen');
         await this._previewHost?.showScreen('duel-challenge-screen');
+    }
+
+    private async _previewCharacterDs3(): Promise<void> {
+        UCUFLogger.info(LogCategory.LIFECYCLE, '[LoadingScene] Preview target -> LobbyScene CharacterDs3 smoke route', {
+            previewVariant: this.previewVariant,
+        });
+
+        await new Promise<void>((resolve, reject) => {
+            director.loadScene('LobbyScene', (error) => {
+                if (error) {
+                    reject(error);
+                    return;
+                }
+                resolve();
+            });
+        });
+
+        const lobbyScene = director.getScene()?.getComponentInChildren(LobbyScene) ?? null;
+        if (!lobbyScene) {
+            throw new Error('LobbyScene component not found after CharacterDs3 preview load');
+        }
+
+        const isReady = await lobbyScene.waitForReady(10000);
+        if (!isReady) {
+            throw new Error('[LoadingScene] LobbyScene not ready within 10s (character ds3 smoke route)');
+        }
+
+        await lobbyScene.previewCharacterDs3Smoke(this.previewVariant);
+        await this._delay(180);
+    }
+
+    private async _previewGeneralDetailFromLobbyEntry(source: 'ucuf-nav' | 'scene-button'): Promise<void> {
+        UCUFLogger.info(LogCategory.LIFECYCLE, '[LoadingScene] Preview target -> LobbyScene formal GeneralDetail entry smoke route', {
+            source,
+            previewVariant: this.previewVariant,
+        });
+
+        await new Promise<void>((resolve, reject) => {
+            director.loadScene('LobbyScene', (error) => {
+                if (error) {
+                    reject(error);
+                    return;
+                }
+                resolve();
+            });
+        });
+
+        const lobbyScene = director.getScene()?.getComponentInChildren(LobbyScene) ?? null;
+        if (!lobbyScene) {
+            throw new Error('LobbyScene component not found after formal GeneralDetail entry preview load');
+        }
+
+        const isReady = await lobbyScene.waitForReady(10000);
+        if (!isReady) {
+            throw new Error('[LoadingScene] LobbyScene not ready within 10s (formal GeneralDetail entry route)');
+        }
+
+        await lobbyScene.previewGeneralDetailEntrySmoke(source, this.previewVariant || 'zhang-fei');
+        await this._waitForGeneralDetailVisualReady('Overview');
+        await this._delay(180);
+        this._setCaptureState('ready', 'character-ds3-main');
     }
 
     private async _previewBattleScene(): Promise<void> {
@@ -387,6 +821,22 @@ export class LoadingScene extends Component {
         await this._previewGeneralDetailByTab('Skills');
     }
 
+    private async _previewGeneralDetailStats(): Promise<void> {
+        await this._previewGeneralDetailByTab('Stats');
+    }
+
+    private async _previewGeneralDetailBloodline(): Promise<void> {
+        await this._previewGeneralDetailByTab('Bloodline');
+    }
+
+    private async _previewGeneralDetailBasics(): Promise<void> {
+        await this._previewGeneralDetailByTab('Basics');
+    }
+
+    private async _previewGeneralDetailAptitude(): Promise<void> {
+        await this._previewGeneralDetailByTab('Aptitude');
+    }
+
     private async _previewGeneralList(): Promise<void> {
         console.log('[LoadingScene] Preview target -> LobbyScene GeneralList smoke route');
 
@@ -407,11 +857,44 @@ export class LoadingScene extends Component {
 
         const isReady = await lobbyScene.waitForReady(10000);
         if (!isReady) {
-            throw new Error('[LoadingScene] LobbyScene 未能在 10 秒內完成初始化（generals 尚未載入）');
+            throw new Error('[LoadingScene] LobbyScene not ready within 10s (generals not loaded)');
         }
 
         await lobbyScene.previewGeneralListSmoke();
         await this._delay(180);
+        this._fitPreviewHostToViewport();
+        await this._delay(80);
+        this._fitPreviewHostToViewport();
+    }
+
+    private async _previewGachaFromLobby(): Promise<void> {
+        UCUFLogger.info(LogCategory.LIFECYCLE, '[LoadingScene] Preview target -> LobbyScene GachaMain smoke route');
+
+        await new Promise<void>((resolve, reject) => {
+            director.loadScene('LobbyScene', (error) => {
+                if (error) {
+                    reject(error);
+                    return;
+                }
+                resolve();
+            });
+        });
+
+        const lobbyScene = director.getScene()?.getComponentInChildren(LobbyScene) ?? null;
+        if (!lobbyScene) {
+            throw new Error('LobbyScene component not found after preview load');
+        }
+
+        const isReady = await lobbyScene.waitForReady(10000);
+        if (!isReady) {
+            throw new Error('[LoadingScene] LobbyScene not ready within 10s (gacha hosts not loaded)');
+        }
+
+        await lobbyScene.previewGachaMainSmoke();
+        await this._delay(180);
+        this._fitPreviewHostToViewport();
+        await this._delay(80);
+        this._fitPreviewHostToViewport();
     }
 
     private async _previewEliteTroopCodex(): Promise<void> {
@@ -444,7 +927,35 @@ export class LoadingScene extends Component {
         this._setCaptureState('ready', 'elite-troop-codex-screen');
     }
 
-    private async _previewGeneralDetailByTab(tab: 'Overview' | 'Skills'): Promise<void> {
+    private async _previewLobbyMissionDetailDialog(): Promise<void> {
+        console.log('[LoadingScene] Preview target -> LobbyScene LobbyMissionDetailDialog smoke route');
+
+        await new Promise<void>((resolve, reject) => {
+            director.loadScene('LobbyScene', (error) => {
+                if (error) {
+                    reject(error);
+                    return;
+                }
+                resolve();
+            });
+        });
+
+        const lobbyScene = director.getScene()?.getComponentInChildren(LobbyScene) ?? null;
+        if (!lobbyScene) {
+            throw new Error('LobbyScene component not found after preview load');
+        }
+
+        const isReady = await lobbyScene.waitForReady(10000);
+        if (!isReady) {
+            throw new Error('[LoadingScene] LobbyScene not ready within 10s (mission dialog data not loaded)');
+        }
+
+        await lobbyScene.previewMissionDetailSmoke(this.previewVariant);
+        await this._waitForLobbyMissionDetailDialogVisualReady(this.previewVariant);
+        await this._delay(180);
+    }
+
+    private async _previewGeneralDetailByTab(tab: GeneralDetailPreviewTab): Promise<void> {
         const previewVariant = this.previewVariant.trim();
 
         await new Promise<void>((resolve, reject) => {
@@ -462,16 +973,31 @@ export class LoadingScene extends Component {
             throw new Error('LobbyScene component not found after preview load');
         }
 
-        // 等待 LobbyScene 完成 async start()（generals 資料載入完畢），避免 360ms 固定等待不夠
+        // Wait for async start() so the generals data is fully loaded before smoke routing.
         const isReady = await lobbyScene.waitForReady(10000);
         if (!isReady) {
-            throw new Error('[LoadingScene] LobbyScene 未能在 10 秒內完成初始化（generals 尚未載入）');
+            throw new Error('[LoadingScene] LobbyScene not ready within 10s (generals not loaded)');
         }
 
-        if (tab === 'Skills') {
-            await lobbyScene.onClickGeneralDetailSkillsSmoke(previewVariant);
-        } else {
+        switch (tab) {
+        case 'Overview':
             await lobbyScene.onClickGeneralDetailOverviewSmoke(previewVariant);
+            break;
+        case 'Stats':
+            await lobbyScene.onClickGeneralDetailStatsSmoke(previewVariant);
+            break;
+        case 'Bloodline':
+            await lobbyScene.onClickGeneralDetailBloodlineSmoke(previewVariant);
+            break;
+        case 'Basics':
+            await lobbyScene.onClickGeneralDetailBasicsSmoke(previewVariant);
+            break;
+        case 'Aptitude':
+            await lobbyScene.onClickGeneralDetailAptitudeSmoke(previewVariant);
+            break;
+        case 'Skills':
+            await lobbyScene.onClickGeneralDetailSkillsSmoke(previewVariant);
+            break;
         }
 
         await this._waitForGeneralDetailVisualReady(tab);
@@ -480,7 +1006,7 @@ export class LoadingScene extends Component {
         this._setCaptureState('ready', 'general-detail-unified-screen');
     }
 
-    private async _waitForGeneralDetailVisualReady(tab: 'Overview' | 'Skills'): Promise<void> {
+    private async _waitForGeneralDetailVisualReady(tab: GeneralDetailPreviewTab): Promise<void> {
         const startedAt = Date.now();
         let lastError: Error | null = null;
 
@@ -497,6 +1023,14 @@ export class LoadingScene extends Component {
             try {
                 if (tab === 'Skills') {
                     this._assertGeneralDetailSkillsVisualReady(detailPanel);
+                } else if (tab === 'Stats') {
+                    this._assertGeneralDetailStatsVisualReady(detailPanel);
+                } else if (tab === 'Bloodline') {
+                    this._assertGeneralDetailBloodlineVisualReady(detailPanel);
+                } else if (tab === 'Basics') {
+                    this._assertGeneralDetailBasicsVisualReady(detailPanel);
+                } else if (tab === 'Aptitude') {
+                    this._assertGeneralDetailAptitudeVisualReady(detailPanel);
                 } else {
                     this._assertGeneralDetailOverviewVisualReady(detailPanel);
                 }
@@ -510,6 +1044,93 @@ export class LoadingScene extends Component {
         }
 
         throw lastError ?? new Error(`[LoadingScene] GeneralDetail preview readiness timed out: tab=${tab}`);
+    }
+
+    private async _waitForLobbyMissionDetailDialogVisualReady(previewVariant: string): Promise<void> {
+        const startedAt = Date.now();
+        let lastError: Error | null = null;
+        const highIntelVariant = this._isLobbyMissionDetailHighIntelVariant(previewVariant);
+
+        while (Date.now() - startedAt < 2500) {
+            const dialogPanel = director.getScene()?.getComponentInChildren(LobbyMissionDetailDialogComposite) ?? null;
+            if (!dialogPanel || !dialogPanel.node.activeInHierarchy) {
+                lastError = new Error(
+                    `[LoadingScene] LobbyMissionDetailDialog preview missing active LobbyMissionDetailDialogComposite; active=${dialogPanel?.node?.active ?? false}`,
+                );
+                await this._delay(120);
+                continue;
+            }
+
+            const root = dialogPanel.node.getChildByPath('__safeArea/LobbyMissionDetailDialogRoot')
+                ?? dialogPanel.node.getChildByName('LobbyMissionDetailDialogRoot');
+            if (!root || !root.activeInHierarchy) {
+                lastError = new Error('[LoadingScene] LobbyMissionDetailDialog preview missing LobbyMissionDetailDialogRoot');
+                await this._delay(120);
+                continue;
+            }
+
+            try {
+                this._requireMissionDetailNonEmptyLabel(root, 'DialogCard/HeaderBar/DialogTitleLabel');
+                this._requireMissionDetailNonEmptyLabel(root, 'DialogCard/ScrollView/ScrollContent/OverviewPanel/MissionTitleLabel');
+                this._requireMissionDetailNonEmptyLabel(root, 'DialogCard/ScrollView/ScrollContent/IntelPanel/IntelBodyLabel');
+                this._requireMissionDetailNonEmptyLabel(root, 'DialogCard/ScrollView/ScrollContent/RewardPanel/RewardBaseLabel');
+                this._requireMissionDetailNonEmptyLabel(root, 'DialogCard/ScrollView/ScrollContent/RewardPanel/RewardPerfectLabel');
+                this._requireMissionDetailNode(root, 'DialogCard/FooterBar/AiDelegateToggle');
+                this._requireMissionDetailNode(root, 'DialogCard/ScrollView/ScrollContent/AssignmentPanel/GeneralSelectButton');
+
+                const fogMask = root.getChildByPath('DialogCard/ScrollView/ScrollContent/IntelPanel/IntelFogMask');
+                if (!fogMask) {
+                    throw new Error('[LoadingScene] LobbyMissionDetailDialog preview missing IntelFogMask');
+                }
+                if (highIntelVariant && fogMask.activeInHierarchy) {
+                    throw new Error('[LoadingScene] LobbyMissionDetailDialog preview should hide IntelFogMask in 100% intel mode');
+                }
+                if (!highIntelVariant && !fogMask.activeInHierarchy) {
+                    throw new Error('[LoadingScene] LobbyMissionDetailDialog preview should show IntelFogMask in partial intel mode');
+                }
+
+                return;
+            } catch (error) {
+                lastError = error instanceof Error
+                    ? error
+                    : new Error(String(error));
+                await this._delay(120);
+            }
+        }
+
+        throw lastError ?? new Error('[LoadingScene] LobbyMissionDetailDialog preview readiness timed out');
+    }
+
+    private _requireMissionDetailNode(root: Node, path: string): Node {
+        const node = root.getChildByPath(path);
+        if (!node || !node.activeInHierarchy) {
+            throw new Error(`[LoadingScene] LobbyMissionDetailDialog preview missing active node: ${path}`);
+        }
+        return node;
+    }
+
+    private _requireMissionDetailNonEmptyLabel(root: Node, path: string): void {
+        const node = this._requireMissionDetailNode(root, path);
+        const label = node.getComponent(Label);
+        if (!label || !label.string.trim()) {
+            throw new Error(`[LoadingScene] LobbyMissionDetailDialog preview missing label content: ${path}`);
+        }
+    }
+
+    private _isLobbyMissionDetailHighIntelVariant(previewVariant: string): boolean {
+        const requested = previewVariant.trim().toLowerCase();
+        if (!requested) {
+            return false;
+        }
+
+        const normalized = requested.replace(/[\s_-]/g, '');
+        return requested === 'domestic'
+            || requested === 'revealed'
+            || requested === 'full'
+            || requested === '100'
+            || requested === '100%'
+            || requested === 'smoke-domestic-revealed'
+            || normalized === '100';
     }
 
     private async _waitForEliteTroopCodexVisualReady(): Promise<void> {
@@ -587,27 +1208,14 @@ export class LoadingScene extends Component {
         await this._delay(180);
     }
 
-    private async _loadGachaPreviewState(): Promise<UIPreviewBinderState | null> {
-        try {
-            const content = await services().resource.loadJson<any>(
-                'ui-spec/content/gacha-preview-states-v1',
-                { tags: ['LoadingScenePreview'] },
-            );
-            const defaultState = typeof content?.defaultState === 'string' ? content.defaultState : 'hero';
-            const stateKey = this._resolveGachaPreviewStateKey(defaultState);
-            return content?.states?.[stateKey] ?? content?.states?.[defaultState] ?? null;
-        } catch (error) {
-            console.warn('[LoadingScene] 載入 Gacha preview state 失敗', error);
-            return null;
+    private _toPreviewText(value: unknown): string {
+        if (typeof value === 'string') {
+            return value;
         }
-    }
-
-    private _resolveGachaPreviewStateKey(defaultState: string): string {
-        const requested = this.previewVariant.trim().toLowerCase();
-        if (requested === 'hero' || requested === 'support' || requested === 'limited') {
-            return requested;
+        if (typeof value === 'number') {
+            return String(value);
         }
-        return defaultState;
+        return '';
     }
 
     private async _loadSpiritTallyDetailPreviewState(): Promise<UIPreviewBinderState | null> {
@@ -664,6 +1272,13 @@ export class LoadingScene extends Component {
     }
 
     private _assertGeneralDetailOverviewVisualReady(detailPanel: GeneralDetailComposite): void {
+        // DS3 cutover (2026-04-28)：DS3 layout 沒有 GeneralDetailRoot 等 unified-only 節點，
+        // 偵測到 DS3 layout 已掛載即視為「ready」（chrome wiring 仍待 ChildPanel 補齊）。
+        const ds3Root = detailPanel.node.getChildByName('CharacterDs3Main');
+        if (ds3Root && ds3Root.activeInHierarchy) {
+            return;
+        }
+
         const root = detailPanel.node.getChildByPath('__safeArea/GeneralDetailRoot')
             ?? detailPanel.node.getChildByName('GeneralDetailRoot');
         if (!root) {
@@ -680,12 +1295,9 @@ export class LoadingScene extends Component {
             throw new Error('[LoadingScene] GeneralDetailOverview preview missing active OverviewSlot/OverviewTabContent');
         }
 
-        this._requireNonEmptyLabel(overviewContent, 'HeaderRow/NameTitleColumn/NameLabel');
+        this._requireNonEmptyLabel(overviewContent, 'HeaderRow/NameTitleColumn/NameTitleRow/NameLabel');
         this._requireActiveNode(overviewContent, 'OverviewSummaryModules/CoreStatsCard');
-        this._requireActiveNode(
-            overviewContent,
-            'BloodlineOverviewModules/BloodlineUnifiedCard/BloodlineSummaryCard',
-        );
+        this._requireActiveNode(overviewContent, 'BloodlineOverviewModules');
         this._assertGeneralDetailOverviewPortraitReady(root);
     }
 
@@ -752,8 +1364,61 @@ export class LoadingScene extends Component {
         this._requireNonEmptyDescendantLabel(root, 'SkillNoteValue');
     }
 
+    private _assertGeneralDetailStatsVisualReady(detailPanel: GeneralDetailComposite): void {
+        const root = detailPanel.node.getChildByPath('__safeArea/GeneralDetailRoot')
+            ?? detailPanel.node.getChildByName('GeneralDetailRoot');
+        if (!root) {
+            throw new Error('[LoadingScene] GeneralDetailStats preview missing GeneralDetailRoot');
+        }
+
+        const readyTab = (detailPanel.node as Node & { __generalDetailReadyTab?: string }).__generalDetailReadyTab;
+        if (readyTab !== 'Stats') {
+            throw new Error(`[LoadingScene] GeneralDetail preview not ready for Stats: ${readyTab ?? 'null'}`);
+        }
+    }
+
+    private _assertGeneralDetailBloodlineVisualReady(detailPanel: GeneralDetailComposite): void {
+        const root = detailPanel.node.getChildByPath('__safeArea/GeneralDetailRoot')
+            ?? detailPanel.node.getChildByName('GeneralDetailRoot');
+        if (!root) {
+            throw new Error('[LoadingScene] GeneralDetailBloodline preview missing GeneralDetailRoot');
+        }
+
+        this._requireActiveDescendant(root, 'BloodlineSummaryCard');
+        this._requireNonEmptyDescendantLabel(root, 'EpRatingValue');
+        this._requireNonEmptyDescendantLabel(root, 'AwakeningValue');
+        this._requireActiveDescendant(root, 'AncestorTree');
+    }
+
+    private _assertGeneralDetailBasicsVisualReady(detailPanel: GeneralDetailComposite): void {
+        const root = detailPanel.node.getChildByPath('__safeArea/GeneralDetailRoot')
+            ?? detailPanel.node.getChildByName('GeneralDetailRoot');
+        if (!root) {
+            throw new Error('[LoadingScene] GeneralDetailBasics preview missing GeneralDetailRoot');
+        }
+
+        this._requireNonEmptyDescendantLabel(root, 'UidValue');
+        this._requireNonEmptyDescendantLabel(root, 'NameValue');
+        this._requireNonEmptyDescendantLabel(root, 'RoleValue');
+        this._requireNonEmptyDescendantLabel(root, 'SourceValue');
+    }
+
+    private _assertGeneralDetailAptitudeVisualReady(detailPanel: GeneralDetailComposite): void {
+        const root = detailPanel.node.getChildByPath('__safeArea/GeneralDetailRoot')
+            ?? detailPanel.node.getChildByName('GeneralDetailRoot');
+        if (!root) {
+            throw new Error('[LoadingScene] GeneralDetailAptitude preview missing GeneralDetailRoot');
+        }
+
+        this._requireActiveDescendant(root, 'TroopCard');
+        this._requireNonEmptyDescendantLabel(root, 'TroopValue');
+        this._requireNonEmptyDescendantLabel(root, 'PreferredTerrainValue');
+        this._requireNonEmptyDescendantLabel(root, 'TerrainBonusValue');
+    }
+
     private _requireActiveDescendant(root: Node, nodeName: string): Node {
-        const node = this._findDescendantByName(root, nodeName);
+        const node = this._findActiveDescendantByName(root, nodeName)
+            ?? this._findDescendantByName(root, nodeName);
         if (!node || !node.activeInHierarchy) {
             throw new Error(`[LoadingScene] GeneralDetail preview missing active descendant: ${nodeName}`);
         }
@@ -775,6 +1440,21 @@ export class LoadingScene extends Component {
 
         for (const child of root.children) {
             const match = this._findDescendantByName(child, nodeName);
+            if (match) {
+                return match;
+            }
+        }
+
+        return null;
+    }
+
+    private _findActiveDescendantByName(root: Node, nodeName: string): Node | null {
+        if (root.name === nodeName && root.activeInHierarchy) {
+            return root;
+        }
+
+        for (const child of root.children) {
+            const match = this._findActiveDescendantByName(child, nodeName);
             if (match) {
                 return match;
             }

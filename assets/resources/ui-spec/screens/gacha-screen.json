@@ -11,9 +11,9 @@
       "skin": "gacha-default",
       "data_source": "PlayerGachaState",
       "data_bindings": [
-        { "node": "PoolTabBar/TabHero",    "field": "active_tab",  "eq": "hero",    "effect": "tab-selected" },
-        { "node": "PoolTabBar/TabSupport", "field": "active_tab",  "eq": "support", "effect": "tab-selected" },
-        { "node": "PoolTabBar/TabLimited", "field": "active_tab",  "eq": "limited", "effect": "tab-selected" },
+        { "node": "PoolTabBar/Tab_Hero",    "field": "active_tab",  "eq": "hero",    "effect": "tab-selected" },
+        { "node": "PoolTabBar/Tab_Support", "field": "active_tab",  "eq": "support", "effect": "tab-selected" },
+        { "node": "PoolTabBar/Tab_Limited", "field": "active_tab",  "eq": "limited", "effect": "tab-selected" },
 
         { "node": "BgArt",   "field": "active_tab",  "effect": "slot-variant", "slot": "gacha.bg.pool" },
 
@@ -31,7 +31,7 @@
           "condition": { "eq": "hero", "effect": "visible-if-true" },
           "note": "銅錢符只在英靈名將池顯示" },
 
-        { "node": "DivinationTokenBar/TokenCountLabel", "field": "Player_Currency.Divination_Token" },
+        { "node": "DivinationTokenBar/DivinationCountLabel", "field": "Player_Currency.Divination_Token" },
 
         { "node": "PullButtons/Pull1Btn",
           "field": "pull_cost.single",
@@ -45,9 +45,9 @@
       "actions": [
         { "node": "TopBar/BackBtn",          "type": "tap", "action": "navigate-back" },
         { "node": "TopBar/DestinyShopBtn",   "type": "tap", "action": "open-screen", "target": "gacha-destiny-shop" },
-        { "node": "PoolTabBar/TabHero",      "type": "tap", "action": "set-tab",     "value": "hero" },
-        { "node": "PoolTabBar/TabSupport",   "type": "tap", "action": "set-tab",     "value": "support" },
-        { "node": "PoolTabBar/TabLimited",   "type": "tap", "action": "set-tab",     "value": "limited" },
+        { "node": "PoolTabBar/Tab_Hero",      "type": "tap", "action": "set-tab",     "value": "hero" },
+        { "node": "PoolTabBar/Tab_Support",   "type": "tap", "action": "set-tab",     "value": "support" },
+        { "node": "PoolTabBar/Tab_Limited",   "type": "tap", "action": "set-tab",     "value": "limited" },
         { "node": "RateInfoBtn",             "type": "tap", "action": "open-popup",  "target": "rate-info-popup" },
         { "node": "CurrencyBar/AddCurrencyBtn", "type": "tap", "action": "open-shop" },
         { "node": "PullButtons/Pull1Btn",    "type": "tap", "action": "pull",        "count": 1 },
@@ -98,7 +98,7 @@
 
     {
       "id": "gacha-destiny-shop",
-      "layout": "gacha-main",
+      "layout": "gacha-destiny-shop",
       "skin": "gacha-default",
       "note": "天命商店：天命值200時可依定向取一張指定 SSR",
       "data_bindings": [

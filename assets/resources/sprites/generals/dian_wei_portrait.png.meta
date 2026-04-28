@@ -1,0 +1,156 @@
+{
+  "ver": "1.0.27",
+  "importer": "image",
+  "imported": true,
+  "uuid": "40e7a3ff-01ea-4660-a36d-f904a706e9f6",
+  "files": [
+    ".json",
+    ".png"
+  ],
+  "subMetas": {
+    "6c48a": {
+      "importer": "texture",
+      "uuid": "40e7a3ff-01ea-4660-a36d-f904a706e9f6@6c48a",
+      "displayName": "dian_wei_portrait",
+      "id": "6c48a",
+      "name": "texture",
+      "userData": {
+        "wrapModeS": "clamp-to-edge",
+        "wrapModeT": "clamp-to-edge",
+        "minfilter": "linear",
+        "magfilter": "linear",
+        "mipfilter": "none",
+        "anisotropy": 0,
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "40e7a3ff-01ea-4660-a36d-f904a706e9f6",
+        "visible": false
+      },
+      "ver": "1.0.22",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "f9941": {
+      "importer": "sprite-frame",
+      "uuid": "40e7a3ff-01ea-4660-a36d-f904a706e9f6@f9941",
+      "displayName": "dian_wei_portrait",
+      "id": "f9941",
+      "name": "spriteFrame",
+      "userData": {
+        "pixelsPerUnit": 100,
+        "extrude": 1,
+        "meshType": 0,
+        "pivot": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "offset": {
+          "x": 0,
+          "y": 0
+        },
+        "originalSize": {
+          "width": 512,
+          "height": 768
+        },
+        "trimSize": {
+          "width": 512,
+          "height": 768
+        },
+        "trimOffset": {
+          "x": 0,
+          "y": 0
+        },
+        "trimThreshold": 1,
+        "rotated": false,
+        "offsetX": -4.5,
+        "offsetY": -6,
+        "trimX": 7,
+        "trimY": 76,
+        "width": 489,
+        "height": 628,
+        "rawWidth": 512,
+        "rawHeight": 768,
+        "borderTop": 0,
+        "borderBottom": 0,
+        "borderLeft": 0,
+        "borderRight": 0,
+        "packable": true,
+        "pixelsToUnit": 100,
+        "pivotX": 0.5,
+        "pivotY": 0.5,
+        "vertices": {
+          "rawPosition": [
+            -244.5,
+            -314,
+            0,
+            244.5,
+            -314,
+            0,
+            -244.5,
+            314,
+            0,
+            244.5,
+            314,
+            0
+          ],
+          "indexes": [
+            0,
+            1,
+            2,
+            2,
+            1,
+            3
+          ],
+          "uv": [
+            7,
+            692,
+            496,
+            692,
+            7,
+            64,
+            496,
+            64
+          ],
+          "nuv": [
+            0.013671875,
+            0.08333333333333333,
+            0.96875,
+            0.08333333333333333,
+            0.013671875,
+            0.9010416666666666,
+            0.96875,
+            0.9010416666666666
+          ],
+          "minPos": [
+            -244.5,
+            -314,
+            0
+          ],
+          "maxPos": [
+            244.5,
+            314,
+            0
+          ]
+        },
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "40e7a3ff-01ea-4660-a36d-f904a706e9f6@6c48a",
+        "atlasUuid": "",
+        "trimType": "auto"
+      },
+      "ver": "1.0.12",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    }
+  },
+  "userData": {
+    "type": "sprite-frame",
+    "fixAlphaTransparencyArtifacts": false,
+    "hasAlpha": true,
+    "redirect": "40e7a3ff-01ea-4660-a36d-f904a706e9f6@6c48a"
+  }
+}

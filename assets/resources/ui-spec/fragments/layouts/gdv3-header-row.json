@@ -1,85 +1,80 @@
 {
   "type": "container",
   "name": "HeaderRow",
-  "widget": { "top": 14, "left": 26, "right": 26 },
-  "height": 132,
-  "layout": { "type": "horizontal", "spacing": 6 },
+  "widget": { "top": 18, "left": 20, "right": 20 },
+  "height": 112,
   "children": [
     {
       "type": "container",
       "name": "NameTitleColumn",
-      "width": "51%",
-      "height": 124,
-      "layout": { "type": "vertical", "spacing": 3 },
+      "widget": { "top": 0, "left": 0, "right": 134, "bottom": 12 },
       "children": [
-        { "type": "label", "name": "NameLabel", "width": "100%", "height": 62, "styleSlot": "gdv3.label.headerName" },
-        { "type": "label", "name": "TitleLabel", "width": "100%", "height": 24, "styleSlot": "gdv3.label.headerTitle" }
+        {
+          "type": "container",
+          "name": "NameTitleRow",
+          "widget": { "top": 0, "left": 0, "right": 0 },
+          "height": 62,
+          "children": [
+            { "type": "label", "name": "NameLabel", "widget": { "top": 0, "bottom": 0, "left": 0 }, "width": 218, "styleSlot": "gdv3.label.headerName" },
+            { "type": "label", "name": "TitleLabel", "widget": { "left": 230, "bottom": 12 }, "width": 132, "height": 24, "styleSlot": "gdv3.label.headerTitle" }
+          ]
+        },
+        { "type": "label", "name": "MetaLabel", "widget": { "top": 68, "left": 0, "right": 0 }, "height": 18, "styleSlot": "gdv3.label.headerMeta" }
       ]
     },
     {
       "type": "container",
       "name": "MetaColumn",
-      "width": "33%",
-      "height": 124,
-      "layout": { "type": "vertical", "spacing": 1 },
+      "widget": { "top": 0, "right": 0 },
+      "width": 118,
+      "height": 72,
       "children": [
         {
           "type": "container",
           "name": "RarityBadgeDock",
-          "width": 186,
-          "height": 84,
+          "widget": { "top": 0, "right": 0 },
+          "width": 84,
+          "height": 30,
           "children": [
             {
               "type": "image",
               "name": "RarityOuterGlow",
-              "widget": { "hCenter": true, "vCenter": true },
-              "width": 208,
-              "height": 96,
+              "widget": { "top": 0, "bottom": 0, "left": 0, "right": 0 },
               "skinSlot": "gdv3.rarity.outerGlow"
             },
             {
               "type": "image",
               "name": "RarityInnerHalo",
-              "widget": { "hCenter": true, "vCenter": true },
-              "width": 152,
-              "height": 64,
+              "widget": { "top": 0, "bottom": 0, "left": 0, "right": 0 },
               "skinSlot": "gdv3.rarity.innerHalo"
             },
             {
               "type": "image",
               "name": "RarityTitleChip",
-              "widget": { "top": 0, "hCenter": true },
-              "width": 112,
-              "height": 30,
+              "widget": { "top": 0, "bottom": 0, "left": 0, "right": 0 },
               "skinSlot": "gdv3.rarity.titleChip"
             },
             {
               "type": "label",
               "name": "RarityTitleChipLabel",
-              "widget": { "top": 4, "hCenter": true },
-              "width": 94,
-              "height": 20,
+              "widget": { "top": 0, "bottom": 0, "left": 0, "right": 0 },
               "styleSlot": "gdv3.label.rarityTitleChip",
               "text": "神"
             },
             {
               "type": "image",
               "name": "RarityBadgeUnderlay",
-              "widget": { "hCenter": true, "bottom": 0 },
-              "width": 156,
-              "height": 48,
+              "widget": { "top": 0, "bottom": 0, "left": 0, "right": 0 },
               "skinSlot": "gdv3.rarity.badge.underlay"
             },
             {
               "type": "panel",
               "name": "RarityBadge",
-              "widget": { "hCenter": true, "bottom": 4 },
-              "width": 142,
-              "height": 40,
+              "widget": { "top": 0, "bottom": 0, "left": 0, "right": 0 },
               "skinSlot": "gdv3.rarity.badge",
-              "layout": { "type": "vertical", "paddingTop": 4, "paddingBottom": 4, "paddingLeft": 8, "paddingRight": 8 },
+              "layout": { "type": "vertical", "paddingTop": 3, "paddingBottom": 3, "paddingLeft": 8, "paddingRight": 8 },
               "children": [
-                { "type": "label", "name": "RarityBadgeLabel", "width": "100%", "height": 24, "styleSlot": "gdv3.label.rarityBadge" }
+                { "type": "label", "name": "RarityBadgeLabel", "width": "100%", "height": 22, "styleSlot": "gdv3.label.rarityBadge" }
               ]
             }
           ]
@@ -87,18 +82,20 @@
         {
           "type": "container",
           "name": "RarityStars",
-          "width": 116,
+          "widget": { "top": 38, "right": 0 },
+          "width": 94,
           "height": 20,
-          "layout": { "type": "horizontal", "spacing": 6 },
+          "layout": { "type": "horizontal", "spacing": 3 },
           "children": [
-            { "type": "image", "name": "Star1", "width": 20, "height": 20, "skinSlot": "gdv3.rarity.star" },
-            { "type": "image", "name": "Star2", "width": 20, "height": 20, "skinSlot": "gdv3.rarity.star" },
-            { "type": "image", "name": "Star3", "width": 20, "height": 20, "skinSlot": "gdv3.rarity.star" },
-            { "type": "image", "name": "Star4", "width": 20, "height": 20, "skinSlot": "gdv3.rarity.star" }
+            { "type": "image", "name": "Star1", "width": 16, "height": 16, "skinSlot": "gdv3.rarity.star" },
+            { "type": "image", "name": "Star2", "width": 16, "height": 16, "skinSlot": "gdv3.rarity.star" },
+            { "type": "image", "name": "Star3", "width": 16, "height": 16, "skinSlot": "gdv3.rarity.star" },
+            { "type": "image", "name": "Star4", "width": 16, "height": 16, "skinSlot": "gdv3.rarity.star" },
+            { "type": "image", "name": "Star5", "width": 16, "height": 16, "skinSlot": "gdv3.rarity.star.dim" }
           ]
-        },
-        { "type": "label", "name": "MetaLabel", "width": "100%", "height": 18, "styleSlot": "gdv3.label.headerMeta" }
+        }
       ]
-    }
+    },
+    { "type": "image", "name": "HeaderDivider", "widget": { "left": 0, "right": 0, "bottom": 0 }, "height": 1, "skinSlot": "gdv3.detail.divider" }
   ]
 }

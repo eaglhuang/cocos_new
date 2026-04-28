@@ -45,6 +45,10 @@
    - 定位：卡池 tabs 上緣說明帶、池子切換後的 hero card 上方，或 pity 區旁的說明 chip。
    - 內容：名將池 = `Bloodline_Seed`、支援卡池 = `Nurture_Depth`、死亡傳承另由名將身後結算處理。
    - 限制：不得把 `英靈卡 / 虎符卡` 說成抽卡可得內容，也不回流 `DP` 用語。
+2. `gacha-banner-hero-art-policy`
+   - 定位：`GachaMain` BannerStage 的人物主視覺規則，對應商城轉蛋入口而非一般人物詳情頁。
+   - 內容：短期可重用既有去背武將 PNG，並沿用人物介紹頁 `PortraitSoftMask` 的邊緣 feather；正式商業版優先使用 pool-specific key visual，允許完整不透明構圖。
+   - 限制：不得以 `opacity: 0` 的 layout 節點保留無用人物佔位；不得出現白底外框、半透明矩形或硬切邊緣。
 
 ## 非目標
 

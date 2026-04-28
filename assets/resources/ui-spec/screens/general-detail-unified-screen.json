@@ -19,11 +19,10 @@
   },
   "tabRouting": {
     "Overview":  { "slotId": "OverviewSlot", "fragment": "fragments/layouts/gd-tab-overview" },
-    "Basics":    { "slotId": "ContentSlot", "fragment": "fragments/layouts/gd-tab-basics" },
     "Stats":     { "slotId": "ContentSlot", "fragment": "fragments/layouts/gd-tab-stats" },
+    "Tactics":   { "slotId": "ContentSlot", "fragment": "fragments/layouts/gd-tab-skills" },
     "Bloodline": { "slotId": "ContentSlot", "fragment": "fragments/layouts/gd-tab-bloodline" },
-    "Skills":    { "slotId": "ContentSlot", "fragment": "fragments/layouts/gd-tab-skills" },
-    "Aptitude":  { "slotId": "ContentSlot", "fragment": "fragments/layouts/gd-tab-aptitude" },
-    "Extended":  { "slotId": "ContentSlot", "fragment": "fragments/layouts/gd-tab-extended" }
+    "Equip":     { "slotId": "ContentSlot", "fragment": "fragments/layouts/gd-tab-basics" },
+    "Aptitude":  { "slotId": "ContentSlot", "fragment": "fragments/layouts/gd-tab-aptitude" }
   }
 }

@@ -1,0 +1,12 @@
+{
+  "screenId": "general-detail-main",
+  "generatedAt": "2026-04-26T14:01:22.072Z",
+  "htmlSource": "C:\\Users\\User\\3KLife\\Design System\\design_handoff\\character\\index.html",
+  "layoutSource": "C:\\Users\\User\\3KLife\\assets\\resources\\ui-spec\\layouts\\general-detail-main.json",
+  "skinSource": null,
+  "outputPng": "C:\\Users\\User\\3KLife\\assets\\resources\\ui-spec\\layouts\\general-detail-main.compare.png",
+  "browserPath": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+  "totalWidth": 3840,
+  "totalHeight": 1080,
+  "labels": true
+}

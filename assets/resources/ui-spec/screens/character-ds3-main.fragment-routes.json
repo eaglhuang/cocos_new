@@ -1,0 +1,11 @@
+{
+  "screenId": "character-ds3-main",
+  "lazySlots": [],
+  "tabRoutes": [],
+  "summary": {
+    "lazySlotCount": 0,
+    "tabRouteCount": 0,
+    "missingDefaultFragmentCount": 0,
+    "missingTabTargetCount": 0
+  }
+}

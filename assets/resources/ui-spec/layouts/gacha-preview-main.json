@@ -19,29 +19,10 @@
     },
     "children": [
       {
-        "type": "panel",
-        "name": "Backdrop",
-        "widget": {
-          "top": 0,
-          "left": 0,
-          "right": 0,
-          "bottom": 0
-        },
-        "color": "background"
-      },
-      {
-        "type": "panel",
-        "name": "HeroGlow",
-        "x": 0,
-        "y": 80,
-        "width": 1240,
-        "height": 620,
-        "color": "surfaceSepiaWarm",
-        "opacity": 0.92
-      },
-      {
         "type": "container",
         "name": "TopBar",
+        "active": false,
+        "_comment": "M46: route-only controls retained for binder compatibility, but hidden from the HTML parity visual baseline. Canonical gacha HTML has no top header plaque/back/shop strip.",
         "widget": {
           "top": 24,
           "left": 32,
@@ -71,76 +52,105 @@
             "height": 72,
             "children": [
               {
-                "type": "panel",
-                "name": "TopHeaderPlaqueBase",
-                "widget": { "top": 2, "bottom": 6, "left": 0, "right": 0 },
-                "skinSlot": "widget.header.plaque.base"
-              },
-              {
-                "type": "image",
-                "name": "TopHeaderPlaqueFill",
-                "widget": { "top": 6, "bottom": 10, "left": 0, "right": 0 },
-                "skinSlot": "widget.header.plaque.fill"
-              },
-              {
-                "type": "image",
-                "name": "TopHeaderPlaqueBand",
-                "widget": { "top": 24, "bottom": 24, "left": 18, "right": 18 },
-                "skinSlot": "widget.header.plaque.band"
-              },
-              {
                 "type": "label",
                 "name": "TitleLabel",
-                "widget": { "top": 8, "left": 20 },
+                "widget": {
+                  "top": 8,
+                  "left": 20
+                },
                 "width": 260,
                 "height": 28,
-                "text": "招募",
+                "text": "名將召喚",
                 "styleSlot": "widget.header.plaque.title"
               },
               {
                 "type": "label",
                 "name": "PoolSubtitleLabel",
-                "widget": { "bottom": 10, "left": 20 },
+                "widget": {
+                  "bottom": 10,
+                  "left": 20
+                },
                 "width": 248,
                 "height": 18,
-                "text": "精選卡池",
+                "text": "以血脈為種，召來傳世名將",
                 "styleSlot": "widget.header.plaque.subtitle"
               },
               {
                 "type": "container",
                 "name": "PoolTierDock",
-                "widget": { "right": 10, "vCenter": 0 },
+                "widget": {
+                  "right": 10,
+                  "vCenter": 0
+                },
                 "width": 176,
                 "height": 44,
                 "children": [
                   {
-                    "type": "image",
-                    "name": "PoolTierUnderlay",
-                    "widget": { "hCenter": true, "vCenter": true },
-                    "width": 176,
-                    "height": 40,
-                    "skinSlot": "widget.header.plaque.badge.underlay"
-                  },
-                  {
-                    "type": "panel",
+                    "type": "label",
                     "name": "PoolTierBadge",
-                    "widget": { "hCenter": true, "vCenter": true },
+                    "widget": {
+                      "hCenter": true,
+                      "vCenter": true
+                    },
                     "width": 162,
                     "height": 34,
                     "skinSlot": "widget.header.plaque.badge.fill",
-                    "layout": { "type": "vertical", "paddingTop": 4, "paddingBottom": 4, "paddingLeft": 10, "paddingRight": 10 },
-                    "children": [
-                      {
-                        "type": "label",
-                        "name": "PoolTierLabel",
-                        "width": 142,
-                        "height": 24,
-                        "text": "SSR",
-                        "styleSlot": "widget.header.plaque.badge.label"
-                      }
-                    ]
+                    "text": "常設池",
+                    "styleSlot": "widget.header.plaque.badge.label"
+                  }
+                ],
+                "skinLayers": [
+                  {
+                    "layerId": "PoolTierUnderlay",
+                    "slotId": "widget.header.plaque.badge.underlay",
+                    "zOrder": 0,
+                    "expand": false,
+                    "width": 176,
+                    "height": 40,
+                    "widget": {
+                      "hCenter": true,
+                      "vCenter": true
+                    }
                   }
                 ]
+              }
+            ],
+            "skinLayers": [
+              {
+                "layerId": "TopHeaderPlaqueBase",
+                "slotId": "widget.header.plaque.base",
+                "zOrder": 0,
+                "expand": false,
+                "widget": {
+                  "top": 2,
+                  "left": 0,
+                  "right": 0,
+                  "bottom": 6
+                }
+              },
+              {
+                "layerId": "TopHeaderPlaqueFill",
+                "slotId": "widget.header.plaque.fill",
+                "zOrder": 1,
+                "expand": false,
+                "widget": {
+                  "top": 6,
+                  "left": 0,
+                  "right": 0,
+                  "bottom": 10
+                }
+              },
+              {
+                "layerId": "TopHeaderPlaqueBand",
+                "slotId": "widget.header.plaque.band",
+                "zOrder": 2,
+                "expand": false,
+                "widget": {
+                  "top": 24,
+                  "left": 18,
+                  "right": 18,
+                  "bottom": 24
+                }
               }
             ]
           },
@@ -160,7 +170,7 @@
                 "name": "Label",
                 "width": 140,
                 "height": 36,
-                "text": "天命商店",
+                "text": "命運商店",
                 "styleSlot": "gacha.label.pull_cost"
               }
             ]
@@ -170,215 +180,1486 @@
       {
         "type": "container",
         "name": "FeaturedBanner",
-        "x": 0,
-        "y": 84,
-        "width": 1080,
-        "height": 450,
-        "children": [
-          {
-            "type": "shadow",
-            "name": "BannerShadow",
-            "widget": {
-              "top": -8,
-              "left": -8,
-              "right": -8,
-              "bottom": -8
-            },
-            "skinSlot": "gacha.banner.shadow"
-          },
-          {
-            "type": "panel",
-            "name": "BannerPlate",
-            "widget": {
-              "top": 0,
-              "left": 0,
-              "right": 0,
-              "bottom": 0
-            },
-            "color": "surfaceOliveDark",
-            "opacity": 0.95
-          },
-          {
-            "type": "label",
-            "name": "FeaturedLabel",
-            "x": -320,
-            "y": -166,
-            "width": 420,
-            "height": 40,
-            "text": "限時精選．名將招募",
-            "styleSlot": "gacha.label.featured"
-          },
-          {
-            "type": "label",
-            "name": "TimerLabel",
-            "x": 0,
-            "y": -166,
-            "width": 300,
-            "height": 32,
-            "text": "剩餘 03:12:44",
-            "styleSlot": "gacha.label.timer"
-          }
-        ]
-      },
-      {
-        "type": "container",
-        "name": "PityInfoBar",
-        "x": 0,
-        "y": -180,
-        "width": 1080,
-        "height": 90,
-        "children": [
-          {
-            "type": "panel",
-            "name": "CarrierBg",
-            "widget": {
-              "top": 0,
-              "left": 0,
-              "right": 0,
-              "bottom": 0
-            },
-            "skinSlot": "gacha.pity.carrier.bg"
-          },
-          {
-            "type": "panel",
-            "name": "CarrierFrame",
-            "widget": {
-              "top": 0,
-              "left": 0,
-              "right": 0,
-              "bottom": 0
-            },
-            "skinSlot": "gacha.pity.carrier.frame"
-          },
-          {
-            "type": "label",
-            "name": "SmallPityLabel",
-            "x": -330,
-            "y": 0,
-            "width": 420,
-            "height": 32,
-            "text": "再 8 抽必得 SR+",
-            "styleSlot": "gacha.label.pity_small"
-          },
-          {
-            "type": "label",
-            "name": "BigPityLabel",
-            "x": 300,
-            "y": 0,
-            "width": 320,
-            "height": 32,
-            "text": "天命值 120/200",
-            "styleSlot": "gacha.label.pity_big"
-          }
-        ]
-      },
-      {
-        "type": "container",
-        "name": "PoolPositioningCard",
-        "x": 0,
-        "y": -270,
-        "width": 1080,
-        "height": 64,
-        "children": [
-          {
-            "type": "panel",
-            "name": "PoolPositioningBg",
-            "widget": { "top": 0, "left": 0, "right": 0, "bottom": 0 },
-            "skinSlot": "gacha.pity.carrier.bg"
-          },
-          {
-            "type": "panel",
-            "name": "PoolPositioningFrame",
-            "widget": { "top": 0, "left": 0, "right": 0, "bottom": 0 },
-            "skinSlot": "gacha.pity.carrier.frame"
-          },
-          {
-            "type": "label",
-            "name": "PoolPositioningTitle",
-            "x": -410,
-            "y": 0,
-            "width": 180,
-            "height": 24,
-            "text": "卡池定位",
-            "styleSlot": "widget.header.plaque.subtitle"
-          },
-          {
-            "type": "label",
-            "name": "PoolPositioningBrief",
-            "x": 94,
-            "y": 0,
-            "width": 760,
-            "height": 28,
-            "text": "Bloodline_Seed 專注名將與血脈延續，Nurture_Depth 專注支援與培育深度。",
-            "styleSlot": "gacha.label.pull_cost"
-          }
-        ]
-      },
-      {
-        "type": "container",
-        "name": "PullButtons",
-        "x": 0,
-        "y": -382,
-        "width": 860,
-        "height": 136,
-        "layout": {
-          "type": "horizontal",
-          "spacing": 24,
-          "paddingLeft": 0,
-          "paddingRight": 0
+        "widget": {
+          "top": 0,
+          "left": 0,
+          "right": 460,
+          "bottom": 200
         },
         "children": [
           {
+            "type": "container",
+            "name": "BannerArtArea",
+            "widget": {
+              "hCenter": 18,
+              "bottom": 0
+            },
+            "width": 480,
+            "height": 748,
+            "_comment": "M46: restores HTML .banner-art-placeholder composition anchor (480px ? 85% of 880px banner height) before final transparent character art lands.",
+            "children": [],
+            "skinLayers": [
+              {
+                "layerId": "BannerCharacterArt",
+                "slotId": "gacha.banner.hero.guan_yu",
+                "zOrder": 0,
+                "expand": true
+              },
+              {
+                "layerId": "BannerArtAreaBg",
+                "slotId": "gacha.banner.art.area_bg",
+                "zOrder": 1,
+                "expand": true
+              }
+            ]
+          },
+          {
+            "type": "container",
+            "name": "PoolNameStrip",
+            "widget": {
+              "top": 0,
+              "left": 0,
+              "right": 0
+            },
+            "height": 56,
+            "_comment": "M42: simplified from 2 layers (Top h=34 + Bottom from y=20) to 1 layer. Two layers overlapped at y=20~34 creating visible dual-band. HTML uses single rgba(0,0,0,.75). Now single PoolNameStripBg covers full height.",
+            "children": [
+              {
+                "type": "label",
+                "name": "PoolNameStripLabel",
+                "widget": {
+                  "left": 120,
+                  "vCenter": 0
+                },
+                "width": 80,
+                "height": 16,
+                "text": "當前卡池",
+                "styleSlot": "gacha.label.strip_label"
+              },
+              {
+                "type": "label",
+                "name": "PoolNameStripValue",
+                "widget": {
+                  "left": 214,
+                  "vCenter": 0
+                },
+                "width": 200,
+                "height": 24,
+                "text": "名將召喚",
+                "styleSlot": "gacha.label.strip_value"
+              }
+            ],
+            "skinLayers": [
+              {
+                "layerId": "PoolNameStripBg",
+                "slotId": "gacha.pool.strip.bg",
+                "zOrder": 0,
+                "expand": true
+              }
+            ]
+          },
+          {
+            "type": "container",
+            "name": "PoolBriefChip",
+            "widget": {
+              "top": 16,
+              "left": 20
+            },
+            "width": 280,
+            "height": 64,
+            "children": [
+              {
+                "type": "label",
+                "name": "PoolBriefTagLabel",
+                "widget": {
+                  "top": 10,
+                  "left": 16
+                },
+                "width": 248,
+                "height": 14,
+                "text": "▸ 名將池說明",
+                "styleSlot": "gacha.label.brief_tag"
+              },
+              {
+                "type": "label",
+                "name": "PoolBriefLineLabel",
+                "widget": {
+                  "top": 30,
+                  "left": 16
+                },
+                "width": 248,
+                "height": 24,
+                "text": "本池為 Bloodline_Seed 系列",
+                "styleSlot": "gacha.label.brief_line"
+              }
+            ],
+            "skinLayers": [
+              {
+                "layerId": "PoolBriefChipBg",
+                "slotId": "gacha.pool.brief.bg",
+                "zOrder": 0,
+                "expand": true
+              }
+            ]
+          },
+          {
+            "type": "container",
+            "name": "BannerTitleBlock",
+            "widget": {
+              "left": 52,
+              "bottom": 44
+            },
+            "width": 420,
+            "height": 200,
+            "children": [
+              {
+                "type": "panel",
+                "name": "EventChipBg",
+                "widget": {
+                  "top": 0,
+                  "left": 0
+                },
+                "width": 180,
+                "height": 26,
+                "skinSlot": "gacha.chip.event.bg",
+                "children": [
+                  {
+                    "type": "label",
+                    "name": "EventChipLabel",
+                    "widget": {
+                      "left": 12,
+                      "vCenter": 0
+                    },
+                    "width": 140,
+                    "height": 18,
+                    "text": "★ 名將系列 · 常設",
+                    "styleSlot": "gacha.label.event_chip"
+                  }
+                ]
+              },
+              {
+                "type": "label",
+                "name": "HeroName",
+                "widget": {
+                  "top": 38,
+                  "left": 0
+                },
+                "width": 420,
+                "height": 80,
+                "text": "關　羽",
+                "styleSlot": "gacha.label.banner_name"
+              },
+              {
+                "type": "label",
+                "name": "HeroSubtitle",
+                "widget": {
+                  "top": 126,
+                  "left": 0
+                },
+                "width": 320,
+                "height": 20,
+                "text": "美髯公 · SSR 武將",
+                "styleSlot": "gacha.label.banner_subtitle"
+              },
+              {
+                "type": "panel",
+                "name": "GuaranteeChipBg",
+                "widget": {
+                  "top": 158,
+                  "left": 0
+                },
+                "width": 180,
+                "height": 32,
+                "skinSlot": "gacha.chip.guarantee.bg",
+                "children": [
+                  {
+                    "type": "label",
+                    "name": "GuaranteeChipLabel",
+                    "widget": {
+                      "left": 14,
+                      "vCenter": 0
+                    },
+                    "width": 160,
+                    "height": 20,
+                    "text": "✦ SSR 保底 90 抽",
+                    "styleSlot": "gacha.label.guarantee"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "container",
+            "name": "PoolDots",
+            "widget": {
+              "hCenter": 0,
+              "bottom": 20
+            },
+            "width": 60,
+            "height": 10,
+            "layout": {
+              "type": "horizontal",
+              "spacing": 10,
+              "paddingLeft": 0,
+              "paddingRight": 0
+            },
+            "children": [
+              {
+                "type": "panel",
+                "name": "PoolDot0",
+                "width": 24,
+                "height": 8,
+                "color": "accentGold",
+                "opacity": 1
+              },
+              {
+                "type": "panel",
+                "name": "PoolDot1",
+                "width": 8,
+                "height": 8,
+                "color": "colorWhite",
+                "opacity": 0.22
+              },
+              {
+                "type": "panel",
+                "name": "PoolDot2",
+                "width": 8,
+                "height": 8,
+                "color": "colorWhite",
+                "opacity": 0.22
+              }
+            ]
+          },
+          {
+            "type": "button",
+            "name": "NavArrowPrev",
+            "widget": {
+              "left": 20,
+              "vCenter": 0
+            },
+            "width": 64,
+            "height": 64,
+            "skinSlot": "gacha.btn.nav",
+            "children": [
+              {
+                "type": "label",
+                "name": "NavArrowPrevLabel",
+                "widget": {
+                  "hCenter": 0,
+                  "vCenter": 0
+                },
+                "width": 30,
+                "height": 36,
+                "text": "‹",
+                "styleSlot": "gacha.label.nav_arrow"
+              }
+            ]
+          },
+          {
+            "type": "button",
+            "name": "NavArrowNext",
+            "widget": {
+              "right": 20,
+              "vCenter": 0
+            },
+            "width": 64,
+            "height": 64,
+            "skinSlot": "gacha.btn.nav",
+            "children": [
+              {
+                "type": "label",
+                "name": "NavArrowNextLabel",
+                "widget": {
+                  "hCenter": 0,
+                  "vCenter": 0
+                },
+                "width": 30,
+                "height": 36,
+                "text": "›",
+                "styleSlot": "gacha.label.nav_arrow"
+              }
+            ]
+          }
+        ],
+        "skinLayers": [
+          {
+            "layerId": "BannerBgFill",
+            "slotId": "gacha.banner.bg_fill",
+            "zOrder": 0,
+            "expand": true,
+            "opacity": 1
+          },
+          {
+            "layerId": "BannerFadeRight",
+            "slotId": "gacha.banner.fade.right",
+            "zOrder": 1,
+            "expand": false,
+            "width": 180,
+            "widget": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0
+            }
+          },
+          {
+            "layerId": "BannerFadeBottom",
+            "slotId": "gacha.banner.fade.bottom",
+            "zOrder": 2,
+            "expand": false,
+            "height": 120,
+            "widget": {
+              "left": 0,
+              "right": 0,
+              "bottom": 0
+            }
+          }
+        ]
+      },
+      {
+        "type": "container",
+        "name": "RightPanel",
+        "widget": {
+          "top": 0,
+          "right": 0,
+          "bottom": 200
+        },
+        "width": 460,
+        "children": [
+          {
+            "type": "container",
+            "name": "PoolHeader",
+            "widget": {
+              "top": 28,
+              "left": 26,
+              "right": 26
+            },
+            "height": 96,
+            "children": [
+              {
+                "type": "label",
+                "name": "TitleLabel",
+                "widget": {
+                  "top": 0,
+                  "left": 0,
+                  "right": 120
+                },
+                "height": 40,
+                "text": "名將召喚",
+                "styleSlot": "gacha.label.rail_title"
+              },
+              {
+                "type": "label",
+                "name": "PoolSubtitleLabel",
+                "widget": {
+                  "top": 46,
+                  "left": 0,
+                  "right": 120
+                },
+                "height": 18,
+                "text": "以血脈為種，召來傳世名將",
+                "styleSlot": "gacha.label.rail_subtitle"
+              },
+              {
+                "type": "container",
+                "name": "PoolTierDock",
+                "widget": {
+                  "top": 0,
+                  "right": 0
+                },
+                "width": 112,
+                "height": 34,
+                "children": [
+                  {
+                    "type": "panel",
+                    "name": "PoolTierBadge",
+                    "widget": {
+                      "hCenter": 0,
+                      "vCenter": 0
+                    },
+                    "width": 104,
+                    "height": 24,
+                    "skinSlot": "gacha.badge.pool_tier",
+                    "children": [
+                      {
+                        "type": "label",
+                        "name": "PoolTierLabel",
+                        "widget": {
+                          "hCenter": 0,
+                          "vCenter": 0
+                        },
+                        "width": 86,
+                        "height": 18,
+                        "text": "常設池",
+                        "styleSlot": "gacha.label.pool_tier_badge"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "container",
+            "name": "PitySection",
+            "widget": {
+              "top": 144,
+              "left": 26,
+              "right": 26
+            },
+            "height": 120,
+            "children": [
+              {
+                "type": "panel",
+                "name": "PitySectionBg",
+                "widget": {
+                  "top": 0,
+                  "left": 0,
+                  "right": 0,
+                  "bottom": 0
+                },
+                "color": "surfaceSepiaDeep",
+                "opacity": 0.12
+              },
+              {
+                "type": "label",
+                "name": "PitySectionTitle",
+                "widget": {
+                  "top": 0,
+                  "left": 0,
+                  "right": 110
+                },
+                "height": 18,
+                "text": "SSR 保底進度",
+                "styleSlot": "gacha.label.pity_title"
+              },
+              {
+                "type": "button",
+                "name": "RateInfoBtn",
+                "widget": {
+                  "top": -6,
+                  "right": 0
+                },
+                "width": 86,
+                "height": 30,
+                "skinSlot": "gacha.btn.rate_info",
+                "children": [
+                  {
+                    "type": "label",
+                    "name": "RateInfoLabel",
+                    "widget": {
+                      "hCenter": 0,
+                      "vCenter": 0
+                    },
+                    "width": 72,
+                    "height": 18,
+                    "text": "查看機率 ›",
+                    "styleSlot": "gacha.label.micro_btn"
+                  }
+                ]
+              },
+              {
+                "type": "label",
+                "name": "BigPityLabel",
+                "widget": {
+                  "top": 38,
+                  "right": 10
+                },
+                "width": 96,
+                "height": 22,
+                "text": "62 / 90",
+                "styleSlot": "gacha.label.pity_big"
+              },
+              {
+                "type": "container",
+                "name": "PityScaleRow",
+                "widget": {
+                  "top": 68,
+                  "left": 0,
+                  "right": 0
+                },
+                "height": 18,
+                "children": [
+                  {
+                    "type": "label",
+                    "name": "PityScale0",
+                    "widget": {
+                      "left": 0,
+                      "top": 0
+                    },
+                    "width": 24,
+                    "height": 16,
+                    "text": "0",
+                    "styleSlot": "gacha.label.pity_scale"
+                  },
+                  {
+                    "type": "label",
+                    "name": "PityScale25",
+                    "widget": {
+                      "left": 88,
+                      "top": 0
+                    },
+                    "width": 32,
+                    "height": 16,
+                    "text": "25%",
+                    "styleSlot": "gacha.label.pity_scale"
+                  },
+                  {
+                    "type": "label",
+                    "name": "PityScale50",
+                    "widget": {
+                      "hCenter": 0,
+                      "top": 0
+                    },
+                    "width": 32,
+                    "height": 16,
+                    "text": "50%",
+                    "styleSlot": "gacha.label.pity_scale"
+                  },
+                  {
+                    "type": "label",
+                    "name": "PityScale75",
+                    "widget": {
+                      "right": 78,
+                      "top": 0
+                    },
+                    "width": 32,
+                    "height": 16,
+                    "text": "75%",
+                    "styleSlot": "gacha.label.pity_scale"
+                  },
+                  {
+                    "type": "label",
+                    "name": "PityScaleCap",
+                    "widget": {
+                      "right": 0,
+                      "top": 0
+                    },
+                    "width": 36,
+                    "height": 16,
+                    "text": "保底",
+                    "styleSlot": "gacha.label.pity_scale"
+                  }
+                ]
+              }
+            ],
+            "skinLayers": [
+              {
+                "layerId": "PityTrackBg",
+                "slotId": "gacha.pity.track.border",
+                "zOrder": 0,
+                "expand": false,
+                "height": 30,
+                "widget": {
+                  "top": 34,
+                  "left": 0,
+                  "right": 0
+                }
+              },
+              {
+                "layerId": "PityTrackFill",
+                "slotId": "gacha.pity.fill.general",
+                "zOrder": 1,
+                "expand": false,
+                "width": 288,
+                "height": 30,
+                "widget": {
+                  "top": 34,
+                  "left": 0
+                }
+              }
+            ]
+          },
+          {
+            "type": "container",
+            "name": "RateSection",
+            "widget": {
+              "top": 284,
+              "left": 26,
+              "right": 26
+            },
+            "height": 170,
+            "children": [
+              {
+                "type": "panel",
+                "name": "RateSectionBg",
+                "widget": {
+                  "top": 0,
+                  "left": 0,
+                  "right": 0,
+                  "bottom": 0
+                },
+                "color": "surfaceSepiaDeep",
+                "opacity": 0.2
+              },
+              {
+                "type": "label",
+                "name": "RateSectionTitle",
+                "widget": {
+                  "top": 0,
+                  "left": 0
+                },
+                "width": 120,
+                "height": 18,
+                "text": "召喚機率",
+                "styleSlot": "gacha.label.rate_title"
+              },
+              {
+                "type": "container",
+                "name": "RateList",
+                "widget": {
+                  "top": 28,
+                  "left": 0,
+                  "right": 0
+                },
+                "height": 127,
+                "layout": {
+                  "type": "vertical",
+                  "spacing": 5,
+                  "paddingTop": 0,
+                  "paddingBottom": 0,
+                  "paddingLeft": 0,
+                  "paddingRight": 0
+                },
+                "children": [
+                  {
+                    "type": "panel",
+                    "name": "RateRowN",
+                    "width": 408,
+                    "height": 28,
+                    "color": "surfaceHigh",
+                    "opacity": 0.22,
+                    "children": [
+                      {
+                        "type": "label",
+                        "name": "RateLabelN",
+                        "widget": {
+                          "left": 10,
+                          "vCenter": 0
+                        },
+                        "width": 24,
+                        "height": 16,
+                        "text": "N",
+                        "styleSlot": "gacha.label.rate_rarity"
+                      },
+                      {
+                        "type": "panel",
+                        "name": "RateBarTrackN",
+                        "widget": {
+                          "left": 58,
+                          "right": 64,
+                          "vCenter": 0
+                        },
+                        "height": 6,
+                        "color": "outlineSubtle",
+                        "opacity": 0.45
+                      },
+                      {
+                        "type": "panel",
+                        "name": "RateBarFillN",
+                        "widget": {
+                          "left": 58,
+                          "vCenter": 0
+                        },
+                        "width": 238,
+                        "height": 6,
+                        "color": "rarityWhite",
+                        "opacity": 0.9
+                      },
+                      {
+                        "type": "label",
+                        "name": "RatePctN",
+                        "widget": {
+                          "right": 0,
+                          "vCenter": 0
+                        },
+                        "width": 56,
+                        "height": 16,
+                        "text": "87.0%",
+                        "styleSlot": "gacha.label.rate_pct"
+                      }
+                    ],
+                    "skinLayers": [
+                      {
+                        "layerId": "RateColorBarN",
+                        "slotId": "gacha.rate.border.N",
+                        "zOrder": 0,
+                        "expand": false,
+                        "width": 3,
+                        "widget": {
+                          "top": 0,
+                          "left": 0,
+                          "bottom": 0
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "type": "panel",
+                    "name": "RateRowR",
+                    "width": 408,
+                    "height": 28,
+                    "color": "surfaceHigh",
+                    "opacity": 0.22,
+                    "children": [
+                      {
+                        "type": "label",
+                        "name": "RateLabelR",
+                        "widget": {
+                          "left": 10,
+                          "vCenter": 0
+                        },
+                        "width": 24,
+                        "height": 16,
+                        "text": "R",
+                        "styleSlot": "gacha.label.rate_rarity_green"
+                      },
+                      {
+                        "type": "panel",
+                        "name": "RateBarTrackR",
+                        "widget": {
+                          "left": 58,
+                          "right": 64,
+                          "vCenter": 0
+                        },
+                        "height": 6,
+                        "color": "outlineSubtle",
+                        "opacity": 0.45
+                      },
+                      {
+                        "type": "panel",
+                        "name": "RateBarFillR",
+                        "widget": {
+                          "left": 58,
+                          "vCenter": 0
+                        },
+                        "width": 42,
+                        "height": 6,
+                        "color": "rarityGreen",
+                        "opacity": 0.9
+                      },
+                      {
+                        "type": "label",
+                        "name": "RatePctR",
+                        "widget": {
+                          "right": 0,
+                          "vCenter": 0
+                        },
+                        "width": 56,
+                        "height": 16,
+                        "text": "10.0%",
+                        "styleSlot": "gacha.label.rate_pct_green"
+                      }
+                    ],
+                    "skinLayers": [
+                      {
+                        "layerId": "RateColorBarR",
+                        "slotId": "gacha.rate.border.R",
+                        "zOrder": 0,
+                        "expand": false,
+                        "width": 3,
+                        "widget": {
+                          "top": 0,
+                          "left": 0,
+                          "bottom": 0
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "type": "panel",
+                    "name": "RateRowSR",
+                    "width": 408,
+                    "height": 28,
+                    "color": "surfaceHigh",
+                    "opacity": 0.22,
+                    "children": [
+                      {
+                        "type": "label",
+                        "name": "RateLabelSR",
+                        "widget": {
+                          "left": 10,
+                          "vCenter": 0
+                        },
+                        "width": 32,
+                        "height": 16,
+                        "text": "SR",
+                        "styleSlot": "gacha.label.rate_rarity_blue"
+                      },
+                      {
+                        "type": "panel",
+                        "name": "RateBarTrackSR",
+                        "widget": {
+                          "left": 58,
+                          "right": 64,
+                          "vCenter": 0
+                        },
+                        "height": 6,
+                        "color": "outlineSubtle",
+                        "opacity": 0.45
+                      },
+                      {
+                        "type": "panel",
+                        "name": "RateBarFillSR",
+                        "widget": {
+                          "left": 58,
+                          "vCenter": 0
+                        },
+                        "width": 8,
+                        "height": 6,
+                        "color": "rarityBlue",
+                        "opacity": 0.9
+                      },
+                      {
+                        "type": "label",
+                        "name": "RatePctSR",
+                        "widget": {
+                          "right": 0,
+                          "vCenter": 0
+                        },
+                        "width": 56,
+                        "height": 16,
+                        "text": "2.0%",
+                        "styleSlot": "gacha.label.rate_pct_blue"
+                      }
+                    ],
+                    "skinLayers": [
+                      {
+                        "layerId": "RateColorBarSR",
+                        "slotId": "gacha.rate.border.SR",
+                        "zOrder": 0,
+                        "expand": false,
+                        "width": 3,
+                        "widget": {
+                          "top": 0,
+                          "left": 0,
+                          "bottom": 0
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "type": "panel",
+                    "name": "RateRowSSR",
+                    "width": 408,
+                    "height": 28,
+                    "color": "surfaceHigh",
+                    "opacity": 0.22,
+                    "children": [
+                      {
+                        "type": "label",
+                        "name": "RateLabelSSR",
+                        "widget": {
+                          "left": 10,
+                          "vCenter": 0
+                        },
+                        "width": 34,
+                        "height": 16,
+                        "text": "SSR",
+                        "styleSlot": "gacha.label.rate_rarity_purple"
+                      },
+                      {
+                        "type": "panel",
+                        "name": "RateBarTrackSSR",
+                        "widget": {
+                          "left": 58,
+                          "right": 64,
+                          "vCenter": 0
+                        },
+                        "height": 6,
+                        "color": "outlineSubtle",
+                        "opacity": 0.45
+                      },
+                      {
+                        "type": "panel",
+                        "name": "RateBarFillSSR",
+                        "widget": {
+                          "left": 58,
+                          "vCenter": 0
+                        },
+                        "width": 4,
+                        "height": 6,
+                        "color": "rarityPurple",
+                        "opacity": 0.9
+                      },
+                      {
+                        "type": "label",
+                        "name": "RatePctSSR",
+                        "widget": {
+                          "right": 0,
+                          "vCenter": 0
+                        },
+                        "width": 56,
+                        "height": 16,
+                        "text": "1.0%",
+                        "styleSlot": "gacha.label.rate_pct_purple"
+                      }
+                    ],
+                    "skinLayers": [
+                      {
+                        "layerId": "RateColorBarSSR",
+                        "slotId": "gacha.rate.border.SSR",
+                        "zOrder": 0,
+                        "expand": false,
+                        "width": 3,
+                        "widget": {
+                          "top": 0,
+                          "left": 0,
+                          "bottom": 0
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "container",
+            "name": "CostCard",
+            "widget": {
+              "left": 26,
+              "right": 26,
+              "top": 474
+            },
+            "height": 70,
+            "children": [
+              {
+                "type": "panel",
+                "name": "CostCardBg",
+                "widget": {
+                  "top": 0,
+                  "left": 0,
+                  "right": 0,
+                  "bottom": 0
+                },
+                "color": "colorWhite",
+                "opacity": 0.03,
+                "_comment": "M46: HTML .cost-panel uses a very dark translucent card, not parchment/sepia fill."
+              },
+              {
+                "type": "panel",
+                "name": "CostCardTint",
+                "widget": {
+                  "top": 0,
+                  "left": 0,
+                  "right": 0,
+                  "bottom": 0
+                },
+                "color": "colorWhite",
+                "opacity": 0.02
+              },
+              {
+                "type": "panel",
+                "name": "CostSep1",
+                "widget": {
+                  "left": 134,
+                  "vCenter": 0
+                },
+                "width": 1,
+                "height": 36,
+                "color": "colorWhite",
+                "opacity": 0.08
+              },
+              {
+                "type": "panel",
+                "name": "CostSep2",
+                "widget": {
+                  "left": 268,
+                  "vCenter": 0
+                },
+                "width": 1,
+                "height": 36,
+                "color": "colorWhite",
+                "opacity": 0.08
+              },
+              {
+                "type": "label",
+                "name": "CostSingleLabel",
+                "widget": {
+                  "left": 34,
+                  "top": 14
+                },
+                "width": 56,
+                "height": 14,
+                "text": "單抽",
+                "styleSlot": "gacha.label.cost_kicker"
+              },
+              {
+                "type": "label",
+                "name": "CostSingleValue",
+                "widget": {
+                  "left": 34,
+                  "top": 34
+                },
+                "width": 72,
+                "height": 20,
+                "text": "◈ 30",
+                "styleSlot": "gacha.label.cost_value"
+              },
+              {
+                "type": "label",
+                "name": "CostTenLabel",
+                "widget": {
+                  "hCenter": -6,
+                  "top": 14
+                },
+                "width": 56,
+                "height": 14,
+                "text": "十連",
+                "styleSlot": "gacha.label.cost_kicker"
+              },
+              {
+                "type": "label",
+                "name": "CostTenValue",
+                "widget": {
+                  "hCenter": 0,
+                  "top": 34
+                },
+                "width": 84,
+                "height": 20,
+                "text": "◈ 280",
+                "styleSlot": "gacha.label.cost_value"
+              },
+              {
+                "type": "label",
+                "name": "CostBalanceLabel",
+                "widget": {
+                  "right": 34,
+                  "top": 14
+                },
+                "width": 70,
+                "height": 14,
+                "text": "我的餘額",
+                "styleSlot": "gacha.label.cost_kicker"
+              },
+              {
+                "type": "label",
+                "name": "CostBalanceValue",
+                "widget": {
+                  "right": 34,
+                  "top": 34
+                },
+                "width": 84,
+                "height": 20,
+                "text": "◈ 340",
+                "styleSlot": "gacha.label.cost_value_accent"
+              }
+            ],
+            "skinLayers": [
+              {
+                "layerId": "CostCardFrame",
+                "slotId": "gacha.card.cost.border.dark",
+                "zOrder": 0,
+                "expand": true
+              }
+            ]
+          },
+          {
+            "type": "label",
+            "name": "RulesNote",
+            "widget": {
+              "left": 26,
+              "right": 26,
+              "top": 564
+            },
+            "height": 44,
+            "text": "✦ 十連保證 SR 以上 1 枚  ✦ 限定武將機率加成 ×1.5\\n✦ 保底不跨池累積  ✦ 抽出已擁有武將轉換碎片",
+            "styleSlot": "gacha.label.rules_note"
+          }
+        ],
+        "skinLayers": [
+          {
+            "layerId": "RightPanelBgBottom",
+            "slotId": "gacha.panel.rp_bg_bottom",
+            "zOrder": 0,
+            "expand": true
+          },
+          {
+            "layerId": "RightPanelBgTop",
+            "slotId": "gacha.panel.rp_bg_top",
+            "zOrder": 1,
+            "expand": false,
+            "height": 360,
+            "widget": {
+              "top": 0,
+              "left": 0,
+              "right": 0
+            }
+          },
+          {
+            "layerId": "RightPanelBgBridge",
+            "slotId": "gacha.panel.rp_bg_bridge",
+            "zOrder": 2,
+            "expand": false,
+            "height": 220,
+            "widget": {
+              "top": 300,
+              "left": 0,
+              "right": 0
+            }
+          },
+          {
+            "layerId": "RightPanelPurpleWash",
+            "slotId": "gacha.panel.rp_bg_tint",
+            "zOrder": 3,
+            "expand": true
+          },
+          {
+            "layerId": "RightPanelBorderLeft",
+            "slotId": "gacha.panel.rp_border",
+            "zOrder": 4,
+            "expand": false,
+            "width": 1,
+            "widget": {
+              "top": 0,
+              "left": 0,
+              "bottom": 0
+            }
+          }
+        ]
+      },
+      {
+        "type": "container",
+        "name": "PullBar",
+        "widget": {
+          "left": 0,
+          "right": 0,
+          "bottom": 0
+        },
+        "height": 200,
+        "children": [
+          {
+            "type": "panel",
+            "name": "PullBarBgBottom",
+            "widget": {
+              "top": 0,
+              "left": 0,
+              "right": 0,
+              "bottom": 0
+            },
+            "color": "colorBlack",
+            "opacity": 0.97,
+            "_comment": "M46: HTML .pull-bar bottom is near-black rgba(0,0,0,.97), not gray/sepia."
+          },
+          {
+            "type": "panel",
+            "name": "PullBarBgTopWash",
+            "widget": {
+              "top": 0,
+              "left": 0,
+              "right": 0
+            },
+            "height": 80,
+            "color": "colorBlack",
+            "opacity": 0.8,
+            "_comment": "M46: approximates HTML top of bottom-dock gradient rgba(0,0,0,.8)."
+          },
+          {
+            "type": "panel",
+            "name": "PullBarBorderTop",
+            "widget": {
+              "top": 0,
+              "left": 0,
+              "right": 0
+            },
+            "height": 1,
+            "color": "colorWhite",
+            "opacity": 0.06
+          },
+          {
+            "type": "container",
+            "name": "PullBarPoolInfo",
+            "widget": {
+              "left": 84,
+              "vCenter": 0
+            },
+            "width": 180,
+            "height": 50,
+            "children": [
+              {
+                "type": "label",
+                "name": "PullBarPoolCaption",
+                "widget": {
+                  "top": 0,
+                  "left": 0
+                },
+                "width": 80,
+                "height": 14,
+                "text": "召　喚",
+                "styleSlot": "gacha.label.pullbar_caption"
+              },
+              {
+                "type": "label",
+                "name": "PullBarPoolValue",
+                "widget": {
+                  "top": 18,
+                  "left": 0
+                },
+                "width": 160,
+                "height": 24,
+                "text": "名將召喚",
+                "styleSlot": "gacha.label.pullbar_title"
+              }
+            ]
+          },
+          {
+            "type": "button",
+            "name": "HistoryBtn",
+            "widget": {
+              "left": 356,
+              "vCenter": 0
+            },
+            "width": 184,
+            "height": 79,
+            "skinSlot": "gacha.btn.history",
+            "children": [
+              {
+                "type": "label",
+                "name": "HistoryLabel",
+                "widget": {
+                  "hCenter": 0,
+                  "vCenter": 0
+                },
+                "width": 145,
+                "height": 25,
+                "text": "歷史記錄",
+                "styleSlot": "gacha.label.history_btn"
+              }
+            ]
+          },
+          {
             "type": "button",
             "name": "Pull1Btn",
-            "width": 300,
-            "height": 110,
-            "skinSlot": "gacha.btn.pull1",
+            "widget": {
+              "hCenter": -238,
+              "vCenter": 0
+            },
+            "width": 309,
+            "height": 124,
+            "skinSlot": "gacha.btn.pull_single",
             "children": [
               {
                 "type": "label",
                 "name": "Pull1Label",
-                "y": 16,
-                "width": 180,
-                "height": 34,
-                "text": "1 抽",
+                "widget": {
+                  "hCenter": 0,
+                  "top": 28
+                },
+                "width": 240,
+                "height": 36,
+                "text": "單　抽 ×1",
                 "styleSlot": "gacha.label.pull_btn"
               },
               {
                 "type": "label",
                 "name": "Pull1Cost",
-                "y": -22,
-                "width": 220,
-                "height": 28,
-                "text": "靈玉 ×150",
+                "widget": {
+                  "hCenter": 0,
+                  "bottom": 22
+                },
+                "width": 160,
+                "height": 22,
+                "text": "◈ 30",
                 "styleSlot": "gacha.label.pull_cost"
+              }
+            ],
+            "skinLayers": [
+              {
+                "layerId": "Pull1BottomShadow",
+                "slotId": "gacha.pull1.shadow",
+                "zOrder": 0,
+                "expand": false,
+                "height": 8,
+                "widget": {
+                  "left": 14,
+                  "right": 14,
+                  "bottom": 0
+                }
+              },
+              {
+                "layerId": "Pull1Edge",
+                "slotId": "gacha.pull1.edge",
+                "zOrder": 1,
+                "expand": false,
+                "widget": {
+                  "top": 0,
+                  "left": 0,
+                  "right": 0,
+                  "bottom": 4
+                }
+              },
+              {
+                "layerId": "Pull1CostChipBg",
+                "slotId": "gacha.pull.cost_chip",
+                "zOrder": 2,
+                "expand": false,
+                "width": 120,
+                "height": 24,
+                "widget": {
+                  "bottom": 18,
+                  "hCenter": 0
+                }
               }
             ]
           },
           {
             "type": "button",
             "name": "Pull10Btn",
-            "width": 536,
-            "height": 110,
+            "widget": {
+              "hCenter": 149,
+              "vCenter": 0
+            },
+            "width": 408,
+            "height": 124,
             "skinSlot": "gacha.btn.pull10",
             "children": [
               {
                 "type": "label",
                 "name": "Pull10Label",
-                "y": 16,
-                "width": 240,
-                "height": 34,
-                "text": "10 連",
-                "styleSlot": "gacha.label.pull_btn"
+                "widget": {
+                  "hCenter": 0,
+                  "top": 22
+                },
+                "width": 300,
+                "height": 36,
+                "text": "十　連 ×10",
+                "styleSlot": "gacha.label.pull_btn_gold"
+              },
+              {
+                "type": "label",
+                "name": "Pull10Hint",
+                "widget": {
+                  "hCenter": 0,
+                  "top": 60
+                },
+                "width": 260,
+                "height": 18,
+                "text": "保證 SR 以上 1 枚",
+                "styleSlot": "gacha.label.pull_sub"
               },
               {
                 "type": "label",
                 "name": "Pull10Cost",
-                "y": -22,
-                "width": 360,
-                "height": 28,
-                "text": "靈玉 ×1500",
-                "styleSlot": "gacha.label.pull_cost"
+                "widget": {
+                  "hCenter": 0,
+                  "bottom": 18
+                },
+                "width": 200,
+                "height": 20,
+                "text": "◈ 280   300",
+                "styleSlot": "gacha.label.pull_cost_gold"
+              }
+            ],
+            "skinLayers": [
+              {
+                "layerId": "Pull10BottomShadow",
+                "slotId": "gacha.pull10.shadow",
+                "zOrder": 0,
+                "expand": false,
+                "height": 10,
+                "widget": {
+                  "left": 10,
+                  "right": 10,
+                  "bottom": 0
+                }
+              },
+              {
+                "layerId": "Pull10Edge",
+                "slotId": "gacha.pull10.edge",
+                "zOrder": 1,
+                "expand": false,
+                "widget": {
+                  "top": 0,
+                  "left": 0,
+                  "right": 0,
+                  "bottom": 4
+                }
+              },
+              {
+                "layerId": "Pull10Shine",
+                "slotId": "gacha.pull10.shine",
+                "zOrder": 2,
+                "expand": false,
+                "height": 16,
+                "widget": {
+                  "top": 4,
+                  "left": 15,
+                  "right": 15
+                }
+              },
+              {
+                "layerId": "Pull10CostChipBg",
+                "slotId": "gacha.pull.cost_chip",
+                "zOrder": 3,
+                "expand": false,
+                "width": 140,
+                "height": 26,
+                "widget": {
+                  "bottom": 14,
+                  "hCenter": 0
+                }
+              }
+            ]
+          },
+          {
+            "type": "container",
+            "name": "AltButtonGroup",
+            "widget": {
+              "right": 354,
+              "vCenter": 0
+            },
+            "width": 225,
+            "height": 135,
+            "layout": {
+              "type": "vertical",
+              "spacing": 11,
+              "paddingTop": 0,
+              "paddingBottom": 0,
+              "paddingLeft": 0,
+              "paddingRight": 0
+            },
+            "children": [
+              {
+                "type": "button",
+                "name": "GoldSummonBtn",
+                "width": 225,
+                "height": 62,
+                "skinSlot": "gacha.btn.alt_slim",
+                "children": [
+                  {
+                    "type": "label",
+                    "name": "GoldSummonLabel",
+                    "widget": {
+                      "hCenter": 0,
+                      "vCenter": 0
+                    },
+                    "width": 180,
+                    "height": 25,
+                    "text": "⚡ 用金幣召喚 (×300)",
+                    "styleSlot": "gacha.label.alt_btn"
+                  }
+                ]
+              },
+              {
+                "type": "button",
+                "name": "UseTicketBtn",
+                "width": 225,
+                "height": 62,
+                "skinSlot": "gacha.btn.alt_slim",
+                "children": [
+                  {
+                    "type": "label",
+                    "name": "UseTicketLabel",
+                    "widget": {
+                      "hCenter": 0,
+                      "vCenter": 0
+                    },
+                    "width": 180,
+                    "height": 25,
+                    "text": "🎟 使用召喚券",
+                    "styleSlot": "gacha.label.alt_btn"
+                  }
+                ]
               }
             ]
           }

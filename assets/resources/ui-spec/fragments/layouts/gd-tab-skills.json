@@ -1,18 +1,18 @@
 {
-  "type": "panel",
+  "type": "container",
   "name": "TabSkillsContent",
   "widget": { "top": 0, "bottom": 0, "left": 0, "right": 0 },
-  "layout": { "type": "vertical", "spacing": 16, "paddingTop": 28, "paddingBottom": 28, "paddingLeft": 28, "paddingRight": 28 },
+  "layout": { "type": "vertical", "spacing": 16, "paddingTop": 0, "paddingBottom": 28, "paddingLeft": 28, "paddingRight": 28 },
   "children": [
     {
       "type": "panel",
       "name": "PrimarySkillCard",
       "width": "100%",
       "height": 72,
-      "skinSlot": "detail.skill.primaryCard",
-      "layout": { "type": "vertical", "spacing": 0, "paddingTop": 10, "paddingBottom": 10, "paddingLeft": 14, "paddingRight": 14 },
+      "skinSlot": "detail.section.bg",
+      "layout": { "type": "vertical", "spacing": 0, "paddingTop": 16, "paddingBottom": 16, "paddingLeft": 20, "paddingRight": 20 },
       "children": [
-        { "type": "label", "name": "PrimarySkillValue", "width": "100%", "height": 52, "styleSlot": "detail.label.value" }
+        { "type": "label", "name": "PrimarySkillValue", "width": "100%", "height": 36, "styleSlot": "detail.label.subtitle" }
       ]
     },
     {
@@ -20,10 +20,10 @@
       "name": "LearnedSkillsCard",
       "width": "100%",
       "height": 126,
-      "skinSlot": "detail.skill.groupCard",
-      "layout": { "type": "vertical", "spacing": 0, "paddingTop": 10, "paddingBottom": 10, "paddingLeft": 14, "paddingRight": 14 },
+      "skinSlot": "detail.section.bg",
+      "layout": { "type": "vertical", "spacing": 0, "paddingTop": 16, "paddingBottom": 16, "paddingLeft": 20, "paddingRight": 20 },
       "children": [
-        { "type": "label", "name": "LearnedSkillsValue", "width": "100%", "height": 106, "styleSlot": "detail.label.value", "wrapText": true }
+        { "type": "label", "name": "LearnedSkillsValue", "width": "100%", "height": 94, "styleSlot": "detail.label.valueDense", "wrapText": true }
       ]
     },
     {
@@ -31,10 +31,10 @@
       "name": "InspiredSkillsCard",
       "width": "100%",
       "height": 126,
-      "skinSlot": "detail.skill.groupCard",
-      "layout": { "type": "vertical", "spacing": 0, "paddingTop": 10, "paddingBottom": 10, "paddingLeft": 14, "paddingRight": 14 },
+      "skinSlot": "detail.section.bg",
+      "layout": { "type": "vertical", "spacing": 0, "paddingTop": 16, "paddingBottom": 16, "paddingLeft": 20, "paddingRight": 20 },
       "children": [
-        { "type": "label", "name": "InspiredSkillsValue", "width": "100%", "height": 106, "styleSlot": "detail.label.value", "wrapText": true }
+        { "type": "label", "name": "InspiredSkillsValue", "width": "100%", "height": 94, "styleSlot": "detail.label.valueDense", "wrapText": true }
       ]
     },
     {
@@ -42,10 +42,10 @@
       "name": "LockedSkillsCard",
       "width": "100%",
       "height": 126,
-      "skinSlot": "detail.skill.lockedCard",
-      "layout": { "type": "vertical", "spacing": 0, "paddingTop": 10, "paddingBottom": 10, "paddingLeft": 14, "paddingRight": 14 },
+      "skinSlot": "detail.section.bg",
+      "layout": { "type": "vertical", "spacing": 0, "paddingTop": 16, "paddingBottom": 16, "paddingLeft": 20, "paddingRight": 20 },
       "children": [
-        { "type": "label", "name": "LockedSkillsValue", "width": "100%", "height": 106, "styleSlot": "detail.label.valueDisabled", "wrapText": true }
+        { "type": "label", "name": "LockedSkillsValue", "width": "100%", "height": 94, "styleSlot": "detail.label.valueDense", "wrapText": true }
       ]
     },
     {
@@ -53,10 +53,10 @@
       "name": "SkillNoteCard",
       "width": "100%",
       "height": 76,
-      "skinSlot": "detail.skill.noteCard",
-      "layout": { "type": "vertical", "spacing": 0, "paddingTop": 10, "paddingBottom": 10, "paddingLeft": 14, "paddingRight": 14 },
+      "skinSlot": "detail.section.bg",
+      "layout": { "type": "vertical", "spacing": 0, "paddingTop": 16, "paddingBottom": 16, "paddingLeft": 20, "paddingRight": 20 },
       "children": [
-        { "type": "label", "name": "SkillNoteValue", "width": "100%", "height": 56, "styleSlot": "detail.label.body", "wrapText": true }
+        { "type": "label", "name": "SkillNoteValue", "width": "100%", "height": 44, "styleSlot": "detail.label.note", "wrapText": true }
       ]
     }
   ]

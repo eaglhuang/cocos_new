@@ -1,0 +1,21 @@
+{
+  "screenId": "character-ds3-main",
+  "verdict": "pass",
+  "preserved": [],
+  "broken": [],
+  "manualVerificationRequired": [],
+  "rewriteRequired": [],
+  "errorLogSummary": {
+    "blockerCount": 0,
+    "warningCount": 0,
+    "blockers": [],
+    "warnings": []
+  },
+  "summary": {
+    "baselineFeatureCount": 0,
+    "currentFeatureCount": 3,
+    "preservedCount": 0,
+    "brokenCount": 0,
+    "rewriteRequiredCount": 0
+  }
+}

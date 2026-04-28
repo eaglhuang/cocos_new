@@ -60,8 +60,12 @@ export enum UIID {
     SupportCard = "SupportCard",
     /** 靈符詳情彈窗 */
     SpiritTallyDetail = "SpiritTallyDetail",
+    /** 英靈世家總覽 */
+    SpiritFamilyOverview = "SpiritFamilyOverview",
     /** 精英兵種圖鑑彈窗 */
     EliteTroopCodex = "EliteTroopCodex",
+    /** 大廳任務詳情彈窗 */
+    LobbyMissionDetailDialog = "LobbyMissionDetailDialog",
 
     // ── 對話框層（LayerType.Dialog）── 佇列式、帶遮罩 ────────────────────────
     /** 對決挑戰確認對話框 */
@@ -173,7 +177,7 @@ export const UIConfig: Record<UIID, UIConfigEntry> = {
     [UIID.GeneralDetail]:          {
         layer: LayerType.PopUp,
         prefab: "ui/general-detail",
-        backdrop: { enabled: true, opacity: 180, blocksInput: true, closeOnTap: false },
+        backdrop: { enabled: true, opacity: 255, blocksInput: true, closeOnTap: false },
     },
     [UIID.GeneralDetailBloodline]: { layer: LayerType.PopUp, prefab: "ui/general-detail-bloodline" },
     [UIID.GeneralPortrait]:        { layer: LayerType.PopUp, prefab: "ui/general-portrait" },
@@ -182,7 +186,9 @@ export const UIConfig: Record<UIID, UIConfigEntry> = {
     [UIID.TigerTallyDetailPanel]:  { layer: LayerType.PopUp, prefab: "ui/tiger-tally-detail-panel" },
     [UIID.SupportCard]:            { layer: LayerType.PopUp, prefab: "ui/support-card", backdrop: { enabled: true, opacity: 180, blocksInput: true, closeOnTap: true } },
     [UIID.SpiritTallyDetail]:      { layer: LayerType.PopUp, prefab: "ui/spirit-tally-detail" },
+    [UIID.SpiritFamilyOverview]:   { layer: LayerType.PopUp, backdrop: { enabled: true, opacity: 180, blocksInput: true, closeOnTap: false } },
     [UIID.EliteTroopCodex]:        { layer: LayerType.PopUp, prefab: "ui/elite-troop-codex" },
+    [UIID.LobbyMissionDetailDialog]: { layer: LayerType.PopUp, cache: true },
 
     // ── 對話框層（Dialog 層） ─────────────────────────────────────────────────
     [UIID.DuelChallenge]: { layer: LayerType.Dialog, mask: true, prefab: "ui/duel-challenge" },

@@ -295,7 +295,7 @@ function AI_SelectTally(ai: AIGeneral, availableTallies: TigerTally[]): TigerTal
 ```
 // 防守方接受判定（來自 keep.md (doc_index_0011)）
 duel_score = 0.45 × (currentHP / maxHP)
-           + 0.35 × (場上兵力比)
+           + 0.35 × (場上現存分隊兵力比)
            + 0.20 × (總戰力比)
 
 // 加入微抖動（避免 AI 完全理性）

@@ -553,6 +553,15 @@ export abstract class CompositePanel extends UIPreviewBuilder {
      */
     setCompositeRenderer(renderer: ICompositeRenderer): void {
         this._compositeRenderer = renderer;
+
+        // Backfill already-registered child panels in case renderer is set after registration.
+        const i18n = services().i18n;
+        for (const [, panel] of this.childPanels) {
+            const svc: PanelServices = { renderer: this._compositeRenderer };
+            if (this._scrollVirtualizer) svc.virtualizer = this._scrollVirtualizer;
+            if (i18n) svc.i18n = i18n;
+            panel.setServices(svc);
+        }
     }
 
     /**
@@ -561,6 +570,15 @@ export abstract class CompositePanel extends UIPreviewBuilder {
      */
     setScrollVirtualizer(virtualizer: IScrollVirtualizer): void {
         this._scrollVirtualizer = virtualizer;
+
+        // Backfill already-registered child panels in case virtualizer is set after registration.
+        const i18n = services().i18n;
+        for (const [, panel] of this.childPanels) {
+            const svc: PanelServices = { virtualizer: this._scrollVirtualizer };
+            if (this._compositeRenderer) svc.renderer = this._compositeRenderer;
+            if (i18n) svc.i18n = i18n;
+            panel.setServices(svc);
+        }
     }
 
     /**

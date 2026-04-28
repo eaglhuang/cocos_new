@@ -1,4 +1,4 @@
-<!-- doc_id: doc_tech_0017 -->
+看看是否準確率<!-- doc_id: doc_tech_0017 -->
 # UCUF 技術文件 — Universal Composite UI Framework 架構與原理
 
 > 版本：v1.0（源自 UCUF 規劃書 v1.3）| 日期：2026-04-12

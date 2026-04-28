@@ -1,0 +1,14 @@
+{
+  "screenId": "general-detail-unified-screen",
+  "panelKey": "general-detail",
+  "mountTarget": "<auto>",
+  "componentClass": "GeneralDetailComposite",
+  "featureFlag": "ds3",
+  "fallbackScreen": "general-detail-unified-screen",
+  "variants": {
+    "unified": "general-detail-unified-screen",
+    "ds3": "character-ds3-main"
+  },
+  "paramSchema": null,
+  "generatedAt": "2026-04-26T18:06:43.968Z"
+}

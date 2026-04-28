@@ -1,6 +1,6 @@
 {
   "id": "gacha-main-screen",
-  "version": 1,
+  "version": 2,
   "uiId": "GachaMain",
   "layer": "UI2D",
   "bundle": "lobby_ui",
@@ -10,8 +10,27 @@
     "schemaId": "gacha-main-content",
     "familyId": "gacha-main",
     "requiredFields": [
+      "poolNameStripValue",
       "poolPositioningTitle",
-      "poolPositioningBrief"
+      "poolPositioningBrief",
+      "featuredLabel",
+      "bannerHeroName",
+      "bannerHeroSubtitle",
+      "smallPityLabel",
+      "railTitle",
+      "railSubtitle",
+      "poolTierLabel",
+      "pityValue",
+      "costSingleValue",
+      "costTenValue",
+      "costBalanceValue",
+      "rulesNote",
+      "pullBarPoolValue",
+      "pull1Label",
+      "pull1Cost",
+      "pull10Label",
+      "pull10Hint",
+      "pull10Cost"
     ]
   },
   "content": {
@@ -19,7 +38,7 @@
     "state": "bloodline-seed"
   },
   "validation": {
-    "devices": ["phone-16-9", "phone-19_5-9"],
+    "devices": ["phone-16-9", "phone-19_5-9", "tablet-4_3"],
     "allowMissingSkin": true
   }
 }

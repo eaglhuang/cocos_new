@@ -26,19 +26,19 @@
           {
             "type": "panel",
             "name": "StateBadgePanel",
-            "widget": { "top": 0, "left": "39%", "right": "39%" },
+            "widget": { "top": 0, "left": "38%", "right": "38%" },
             "height": 40,
             "skinSlot": "bml.panel.state"
           },
           {
             "type": "container",
             "name": "StateBadgeRow",
-            "widget": { "top": 6, "left": "40%", "right": "40%" },
+            "widget": { "top": 6, "left": "38%", "right": "38%" },
             "height": 28,
             "layout": { "type": "horizontal", "spacing": 8 },
             "children": [
               { "type": "image", "name": "StateBadgeIcon", "width": 28, "height": 28, "skinSlot": "bml.badge.state" },
-              { "type": "label", "name": "StateBadgeLabel", "flexGrow": 1, "height": 28, "styleSlot": "bml.label.state" }
+              { "type": "label", "name": "StateBadgeLabel", "width": 418, "height": 28, "styleSlot": "bml.label.state" }
             ]
           },
           {
@@ -59,10 +59,10 @@
             "height": 30,
             "layout": { "type": "horizontal", "spacing": 10 },
             "children": [
-              { "type": "label", "name": "PhaseLabel", "flexGrow": 1, "height": 30, "styleSlot": "bml.label.meta" },
-              { "type": "label", "name": "RarityLabel", "flexGrow": 1, "height": 30, "styleSlot": "bml.label.meta" },
-              { "type": "label", "name": "MirrorLabel", "flexGrow": 1, "height": 30, "styleSlot": "bml.label.meta" },
-              { "type": "label", "name": "CrestLabel", "flexGrow": 1, "height": 30, "styleSlot": "bml.label.meta" }
+              { "type": "label", "name": "PhaseLabel", "width": "22%", "height": 30, "styleSlot": "bml.label.meta" },
+              { "type": "label", "name": "RarityLabel", "width": "22%", "height": 30, "styleSlot": "bml.label.meta" },
+              { "type": "label", "name": "MirrorLabel", "width": "22%", "height": 30, "styleSlot": "bml.label.meta" },
+              { "type": "label", "name": "CrestLabel", "width": "22%", "height": 30, "styleSlot": "bml.label.meta" }
             ]
           }
         ]
@@ -109,8 +109,17 @@
             "height": 48,
             "layout": { "type": "horizontal", "spacing": 16 },
             "children": [
-              { "type": "label", "name": "ProgressLabel", "flexGrow": 1, "height": 48, "styleSlot": "bml.label.progress" },
-              { "type": "button", "name": "PrimaryActionButton", "flexGrow": 1, "height": 48, "skinSlot": "bml.button.primary", "styleSlot": "bml.label.button" }
+              { "type": "label", "name": "ProgressLabel", "width": "44%", "height": 48, "styleSlot": "bml.label.progress" },
+              {
+                "type": "button",
+                "name": "PrimaryActionButton",
+                "width": "38%",
+                "height": 48,
+                "skinSlot": "bml.button.primary",
+                "children": [
+                  { "type": "label", "name": "PrimaryActionLabel", "widget": { "vCenter": true, "left": 0, "right": 0 }, "height": 20, "styleSlot": "bml.label.button", "text": "返回" }
+                ]
+              }
             ]
           }
         ]

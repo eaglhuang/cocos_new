@@ -1,0 +1,12 @@
+{
+  "expectedWarningCodes": [],
+  "thresholds": {
+    "minIdempotencyRate": 1,
+    "minStructuralStability": 1,
+    "minTokenCoverage": 0.5,
+    "minWarningPrecision": 0,
+    "minWarningRecall": 0,
+    "minScreenshotZoneConfidence": 1,
+    "requireBaselineMatch": false
+  }
+}

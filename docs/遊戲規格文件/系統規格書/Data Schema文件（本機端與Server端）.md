@@ -1,4 +1,13 @@
 <!-- doc_id: doc_tech_0013 -->
+
+> **2026-04-26 覆寫裁定：無武將 Level / EXP 的兵源資料模型**
+>
+> 1. `Data.Generals[*]` 不新增武將 `Level / Exp / Breakthrough_Level` 作為本體成長欄位。
+> 2. 若需畢業後戰場成長，新增或投影 `General_Fame`、`General_Rank`、`Command_Capacity`；此處 `Command_Capacity` 定義為武將本場可帶出的兵力上限，不回寫 `Prowess_Stats`。
+> 3. `Data.Governance` 或 `Data.Player_Economy` 需支援 `Population`、`Public_Morale`、`City_Troops_Current`、`City_Troops_Cap`、`Recruit_Regen_Per_Turn`、`Food_Output_Bonus_From_Population`。
+> 4. `Data.Battle_State` 需支援 `Sortie_Troop_Pool_Max`、`Sortie_Troop_Pool_Current`、`Field_Unit_Count`、`Field_Unit_Limit`、`Food_Current`、`Food_Max`、`Battle_Troop_Loss_Estimate`。
+> 5. `Data.Battle_Unit_State` 需支援 `Unit_Troop_Cost`、`Current_Troops`、`Returned_Troops`、`Lost_Troops`、`Food_Cost`。`Military_Readiness` 若保留，只能作為舊欄位相容或後台摘要，不作為玩家主顯示資源。
+> 6. `Equipped_Spirit_UID` 的 UI 入口改由人物頁 `Bloodline / 命` 讀取；`Equip / 寶` 只讀一般裝備與 `Equipped_Tally_UID`。
 # Data Schema 文件（事件溯源與 NoSQL 離線同步架構）
 
 > **架構重構警告 (v2026-03-28)**：此文件已從傳統關聯式 SQL 轉型為 **Data-Driven (NoSQL) 與 Event Sourcing (事件溯源)** 架構，完美適配 AI 高產能開發，亦支持「單機離線遊玩、連線對稱驗證」防作弊機制。
@@ -146,12 +155,17 @@
 | **血統** | `Data.Generals[UID].Ancestors_JSON` | 血統理論系統.md (doc_spec_0011) I 區 | 3 代 14 人矩陣、Bloodline_ID |
 | **人物頁呈現** | `Data.Generals[UID].Profile_Presentation` | 武將人物介面規格書.md (doc_ui_0012) | Default_Tab, Crest_State, Story_Strip_Cells |
 | **教官** | `Data.Mentor_Pool` | 教官系統（支援卡）.md (doc_spec_0027) I 區 | Support_ID, TP_Bonus, Skill_Hints[], Stat_Bonus, Current_Star, Role_Boundary |
-| **兵種虎符** | `Data.Talisman_Inventory` | 兵種（虎符）系統.md (doc_spec_0012) I 區 | Tally_ID, TigerTallyScore, Star, Source_Type, Source_General_UID, Equipped_General_UID, Linked_Troop_ID, Is_Displayed |
+| **統一物件庫** | `Data.Inventory_Service` | 武將裝備道具系統.md (doc_spec_0174) | Inventory_ID, Item_Type, Slot_Type, Bound_General_UID, Quantity, Quality, Source_Type, Display_Bucket, Is_Displayed |
+| **兵種虎符** | `Data.Talisman_Inventory` | 兵種（虎符）系統.md (doc_spec_0012) I 區 / `Data.Inventory_Service` projection | Tally_ID, TigerTallyScore, Star, Source_Type, Source_General_UID, Equipped_General_UID, Linked_Troop_ID, Is_Displayed |
+| **英靈卡投影** | `Data.Spirit_Card_Collection` | 英靈世家系統.md (doc_spec_0022) / `Data.Inventory_Service` projection | Spirit_ID, General_Template_ID, Spirit_Family_Key, LineageScore, Resonance_Band, Glow_State, Card_Role, Family_Primary_Flag, Equipped_General_UID, Slot_Type, Display_Bucket, Death_Snapshot |
+| **英靈死亡快照** | `Data.Spirit_Archive_Snapshot` | 英靈世家系統.md (doc_spec_0022) / family display row projection | Spirit_ID, Death_Season, Heroic_Deeds_Summary, Final_Stats_Snapshot, Final_Skills_Snapshot, Final_Equipment_Snapshot, Battle_Record_Ref, Legacy_Quote, Display_Weight |
+| **家族供養池** | `Data.Spirit_Family_State` | 英靈世家系統.md (doc_spec_0022) / family-level read model | Spirit_Family_Key, Family_Contribution_Pool, Family_Fame, Family_Depth, Active_Main_Spirit_UID, Main_Spirit_LineageScore, Contribution_Mode, Featured_Archive_Spirit_UIDs |
 | **戰場適性** | `Data.Generals[UID].Aptitudes` | 戰場適性系統.md (doc_spec_0041) I 區 | Troop_Apt(騎/步/弓/機械), Terrain_Apt, Weather_Aptitude |
-| **戰場部署** | `Data.Battle_State` | 戰場部署系統.md (doc_spec_0040) I 區 | Elite_Deploy_Cap, Active_Elite_Count, Reserved_Tally_Bands, Delegate_AI_Active, Deploy_Result_Code |
+| **出征編制** | `Data.Sortie_Loadout` | 戰場部署系統.md (doc_spec_0040) I 區 | Commander_UID, Strategist_UID（參謀官）, Deputy_UID（後勤官）, Strategist_Max_Tactic_Bonus, Strategist_Start_Tactic_Bonus, Deputy_Food_Cap_Bonus |
+| **戰場部署** | `Data.Battle_State` | 戰場部署系統.md (doc_spec_0040) I 區 | Current_Food, Max_Food, Current_Tactic_Points, Max_Tactic_Points, Elite_Deploy_Cap, Active_Elite_Count, Reserved_Tally_Bands, Strategist_UID（參謀官）, Deputy_UID（後勤官）, Delegate_AI_Active, Deploy_Result_Code |
 | **場景戰法** | `Data.Scene_Gambit_State` | 戰法場景規格書.md (doc_spec_0039) K 區 | Required_Intel_Value, Tile_Preset_ID, Strategist_Energy |
 | **關卡設計** | `Data.Stage_Chain_Progress` | 關卡設計系統.md (doc_spec_0044) I 區 | Stage_ID, Chain_ID, Intel_Summary, Recommended_Loadout_Gap, Stage_Salvage |
-| **經濟** | `Data.Player_Economy` | 經濟系統.md (doc_spec_0032) I 區 | 糧草/黃金/兵力/名聲/精元/結義點 |
+| **經濟** | `Data.Player_Economy` | 經濟系統.md (doc_spec_0032) I 區 | 糧草/黃金/城市兵源/名聲/精元/結義點 |
 | **名將挑戰賽** | `Data.Tournament_Data` | 名將挑戰賽系統.md (doc_spec_0007) I 區 | Current_Season, Player_Tournament, Season_History |
 | **名士預言** | `Data.Oracle_History` | 名士預言系統.md (doc_spec_0006) I 區 | Oracle_Session, Predicted_Type, Accuracy |
 | **轉蛋** | `Data.Gacha_State` | 轉蛋系統.md (doc_spec_0042) I 區 | Pull_Count, Pity_Counter, Bonding_Points, Pool_Positioning |
@@ -188,19 +202,26 @@
 3. 奧義 family 包：`SYS-SKILL-ULT-0001 ~ 0008`
 4. 所有技能卡都必須同時通過 `unit test / 畫面表演 / 數值公式 / 整合演出流程` 四層驗收，才能視為正式完成。
 
-### 2-1. 虎符與戰場 UI 整合欄位約束
+### 2-1. 虎符、英靈卡與戰場 UI 整合欄位約束
 
 1. `Data.Talisman_Inventory` 視為 `TigerTally / PlayerTallyCollection` 的 root-save 掛載別名；正式 persisted 欄位至少需包含：`Tally_ID`、`Quality`、`TigerTallyScore`、`Star`、`Star_Exp`、`Source_Template_ID`、`Source_General_UID`、`Source_Type`、`Linked_Troop_ID`、`Equipped_General_UID`、`Death_Battle_Score`、`Legacy_Quality_Score`、`Acquired_Season`、`Is_Displayed`。
 2. `Source_Type` 只允許 `DeathSettlement / Recruitment / WarConquest` 三種值，對應虎符正式來源三進路；不得再回流「退役產虎符」或「轉蛋產虎符」舊語意。
-3. `Generals[*].Equipped_Tally_UID` 或等價關聯欄位必須表達「一將一符」單裝備槽，供戰場 UI 與武將頁共用查詢入口；同時需支援持有者死亡後退回君主再分配的規則。
-4. `Data.Battle_State` 至少需提供 battle-facing read model：`Elite_Deploy_Cap`、`Active_Elite_Count`、`Reserved_Tally_Bands`、`Delegate_AI_Active`、`Last_Deploy_Result_Code`、`Triggered_Set_Bonus[]`。其中 `Last_Deploy_Result_Code` 供 HUD / TigerTally 卡片顯示 `Ready / FoodShort / CapFull / Downgrade / SetActive / Disabled` 等前端狀態。
-5. `TigerTally.Grain_Cost_Base` 可在 client read model 暫存，供戰場 UI 直接顯示；但 canonical truth 仍以 `TALLY_GRAIN_COST[quality][star]` 為準，不應在多個 persisted schema 重複維護同一份平衡真相。
-6. `TALLY_GRAIN_COST`、`SET_BONUS_DEFS`、委任 AI 釋放公式、`TigerTallyScore` 權重等平衡常數屬於 cross-ref 規則，不應硬寫成玩家存檔欄位；若 battle replay 需要，只記錄結果，如 `Food_Spent`、`Triggered_Set_Bonus`、`Reserved_Tally_Bands`。
-7. 本文件不得新增 `TallyCategory`、`Cooldown_Turns` 等已被 Q61 / Q63 否決的欄位，避免 Data Schema 與母規格重新分裂。
+3. `Generals[*].Equipped_Tally_UID` 或等價關聯欄位必須表達「一將一符」單裝備槽，供戰場 UI 與人物頁 `兵 / Aptitude` 頁共用查詢入口；同時需支援持有者死亡後退回君主再分配的規則。
+4. `Data.Spirit_Card_Collection` 視為英靈卡在 UI / 人物頁的 read model。正式 persisted 欄位至少需包含：`Spirit_ID`、`General_Template_ID`、`Spirit_Family_Key`、`LineageScore`、`Resonance_Band`、`Glow_State`、`Card_Role=MAIN / BACKUP`、`Family_Primary_Flag`、`Equipped_General_UID`、`Slot_Type=DESTINY`、`Display_Bucket=DESTINY_SLOT / CLAN_RELIC`、`DualEquip_Allowed`、`Death_Snapshot`；人物頁裝配入口固定對應 `命 / Bloodline` 頁英靈卡槽。
+4a. `Data.Spirit_Archive_Snapshot` 視為家族層死亡快照 read model，至少需包含 `Spirit_ID`、`Death_Season`、`Heroic_Deeds_Summary`、`Final_Stats_Snapshot`、`Final_Skills_Snapshot`、`Final_Equipment_Snapshot`、`Battle_Record_Ref`、`Legacy_Quote`、`Display_Weight`，供英靈展示列與詳情頁使用。
+4b. `Data.Spirit_Family_State` 視為家族級 read model，至少需包含 `Spirit_Family_Key`、`Family_Contribution_Pool`、`Family_Fame`、`Family_Depth`、`Active_Main_Spirit_UID`、`Main_Spirit_LineageScore`、`Contribution_Mode` 與 `Featured_Archive_Spirit_UIDs`，供主卡切換、展示列排序與家族深度計算使用。
+4c. `英靈陳列室` 頁面的排序與篩選，應由 `Data.Spirit_Archive_Snapshot` + `Data.Spirit_Card_Collection` + `Data.Spirit_Family_State` 組合推導，不新增額外的手工排序欄位；預設排序鍵為 `Display_Weight DESC, Death_Season DESC, Spirit_ID ASC`，篩選鍵為 `Spirit_Family_Key`、`Resonance_Band`、`Card_Role` 與 `Death_Snapshot` 完整度。
+5. `Generals[*].Equipped_Spirit_UID` 或等價關聯欄位必須表達「一將一命槽」單插規則；英靈卡雖由 `Inventory_Service` 管理，但前端不得與普通道具共用格子背包語意，且正式裝配入口固定為人物頁 `命 / Bloodline` 頁特殊槽。
+6. `Data.Sortie_Loadout` 必須明確保存 `Commander_UID`、`Strategist_UID`、`Deputy_UID`，且三者不得重覆；這三個欄位對應的是同一場戰鬥內的角色責任，不是裝備槽。
+7. `Data.Battle_State` 至少需提供 battle-facing read model：`Current_Food`、`Max_Food`、`Current_Tactic_Points`、`Max_Tactic_Points`、`Elite_Deploy_Cap`、`Active_Elite_Count`、`Reserved_Tally_Bands`、`Strategist_UID`、`Deputy_UID`、`Delegate_AI_Active`、`Last_Deploy_Result_Code`、`Triggered_Set_Bonus[]`。其中 `Last_Deploy_Result_Code` 供 HUD / TigerTally 卡片顯示 `Ready / FoodShort / CapFull / Downgrade / SetActive / Disabled` 等前端狀態。
+8. `TigerTally.Grain_Cost_Base` 可在 client read model 暫存，供戰場 UI 直接顯示；但 canonical truth 仍以 `TALLY_GRAIN_COST[quality][star]` 為準，不應在多個 persisted schema 重複維護同一份平衡真相。
+9. `TALLY_GRAIN_COST`、`SET_BONUS_DEFS`、參謀官 / 後勤官支援公式、委任 AI 釋放公式、`TigerTallyScore` 權重等平衡常數屬於 cross-ref 規則，不應硬寫成玩家存檔欄位；若 battle replay 需要，只記錄結果，如 `Food_Spent`、`Triggered_Set_Bonus`、`Reserved_Tally_Bands`。
+10. 本文件不得新增 `TallyCategory`、`Cooldown_Turns` 等已被 Q61 / Q63 否決的欄位，避免 Data Schema 與母規格重新分裂。
+11. `武將裝備道具系統.md` (doc_spec_0174) 是道具 / 一般裝備 / 虎符 / 英靈卡的整併母本；本檔以 `Data.Inventory_Service` 為 canonical truth，`Data.Talisman_Inventory` 與 `Data.Spirit_Card_Collection` 只保留 projection / compatibility read model。
 
-#### 2-1a. 虎符 / 戰場最小 read model 形狀
+#### 2-1a. 虎符 / 英靈卡 / 戰場最小 read model 形狀
 
-以下 shape 為 battle UI 與人物頁查詢虎符時的正式最小讀模型，目的不是重複定義所有平衡規則，而是讓前端知道哪些欄位可以直接讀。
+以下 shape 為 battle UI 與人物頁 `寶 / GEAR` 頁查詢虎符、命槽英靈卡與出征支援時的正式最小讀模型，目的不是重複定義所有平衡規則，而是讓前端知道哪些欄位可以直接讀。
 
 ```json
 {
@@ -224,10 +245,73 @@
         "Is_Displayed": true
       }
     },
+    "Spirit_Card_Collection": {
+    "SPIRIT_0001": {
+      "Spirit_ID": "SPIRIT_0001",
+      "General_Template_ID": "ZHANG_LIAO_V1",
+      "Spirit_Family_Key": "FAMILY_ZHANG",
+      "LineageScore": 185000,
+      "Resonance_Band": "SELF_RESONANCE",
+      "Glow_State": "StrongGlow",
+      "Card_Role": "MAIN",
+      "Family_Primary_Flag": true,
+      "Equipped_General_UID": "G_PLAYER_0017",
+      "Slot_Type": "DESTINY",
+      "Display_Bucket": "DESTINY_SLOT",
+      "DualEquip_Allowed": true,
+      "Death_Snapshot": {
+        "Death_Season": 13,
+        "Heroic_Deeds_Summary": "北伐破陣，七進七出斷後軍",
+        "Final_Stats_Snapshot": {
+          "STR": 91,
+          "INT": 78,
+          "LEA": 86,
+          "POL": 52,
+          "CHA": 74,
+          "LUK": 63
+        },
+        "Final_Skills_Snapshot": [
+          "突襲",
+          "斷後",
+          "破陣"
+        ],
+        "Final_Equipment_Snapshot": [
+          "破軍槍",
+          "玄甲"
+        ],
+        "Battle_Record_Ref": "BATTLE_2026_S13_081",
+        "Legacy_Quote": "死戰不退，護主至終。"
+      }
+      }
+    },
+    "Spirit_Family_State": {
+      "Spirit_Family_Key": "FAMILY_ZHANG",
+      "Family_Contribution_Pool": 1280,
+      "Family_Fame": 54,
+      "Family_Depth": 3,
+      "Active_Main_Spirit_UID": "SPIRIT_0001",
+      "Main_Spirit_LineageScore": 185000,
+      "Contribution_Mode": "ACTIVE_MAIN_CARD",
+      "Featured_Archive_Spirit_UIDs": ["SPIRIT_0001"]
+    },
+    "Sortie_Loadout": {
+      "Commander_UID": "G_PLAYER_0017",
+      "Strategist_UID": "G_PLAYER_0009",
+      "Deputy_UID": "G_PLAYER_0021",
+      "Strategist_Max_Tactic_Bonus": 18,
+      "Strategist_Start_Tactic_Bonus": 9,
+      "Deputy_Food_Cap_Bonus": 1200
+    },
     "Battle_State": {
+      "Current_Food": 9700,
+      "Max_Food": 13200,
+      "Current_Tactic_Points": 21,
+      "Max_Tactic_Points": 48,
       "Elite_Deploy_Cap": 3,
       "Active_Elite_Count": 2,
       "Reserved_Tally_Bands": ["SSR"],
+      "Strategist_UID": "G_PLAYER_0009",
+      "Deputy_UID": "G_PLAYER_0021",
       "Delegate_AI_Active": false,
       "Last_Deploy_Result_Code": "SET_ACTIVE",
       "Triggered_Set_Bonus": ["SET_FIVE_TIGERS"],
@@ -281,15 +365,18 @@
 28. `Generals[*].Talent_Stats.*.Revelation_Level` 只允許 `HIDDEN / TENDENCY / RANGE / EXACT`，供人物頁與培育頁共用揭露狀態。
 29. `Generals[*].Prowess_Stats.Source_Session_ID` 可為空，表示此角色尚未形成正式培育畢業快照；UI 不得因此回填虛構戰力值。
 30. `Generals[*].Profile_Presentation.Story_Strip_Cells` 固定使用 `origin / faction / role / awakening / bloodline / future` 六格語意槽位，不得任意改成流水號 key。
-31. `Generals[*].Profile_Presentation.Default_Tab` 只允許 `Overview / Basics / Stats / Bloodline / Skills / Aptitude / Extended`，確保人物頁路由與 UI 契約一致。
+31. `Generals[*].Profile_Presentation.Default_Tab` 只允許 `Overview / Stats / Bloodline / Tactics / Equip / Aptitude`，確保人物頁路由與 UI 契約一致；本地化顯示分別對應 `將 / 屬 / 命 / 技 / 寶 / 兵`。
+32. `Generals[*].Equipped_Spirit_UID` 若存在，必須能對回 `Data.Spirit_Card_Collection[*].Spirit_ID`，且同一時間一名武將只能掛一張。
+33. `Sortie_Loadout.Strategist_UID` 與 `Sortie_Loadout.Deputy_UID` 不得與 `Commander_UID` 重覆，也不得彼此重覆；若 UI 想支援替換，必須透過顯式確認流程。
+34. `Sortie_Loadout` 的支援角色不參與 `Triggered_Set_Bonus` 判定，也不得回寫成 `Battle_State` 中的在場虎符單位。
 
 ### 2-3. 智慧 NPC 與向量記憶欄位約束
 
-1. `Data.NPC_Memory` 核心儲存方案為 **SQLite-vec**，不使用獨立的 Python 服務中台（符合 Q77-A）。
-2. `SQLite_Vec_DB_Path` 指向本地 SQLite 資料庫，該資料庫包含武將對話的 Embedding 與 Text Snippets。
-3. `Recall_Context` 作為 LLM 推論時的上下文緩存，僅儲存最近或高權重的檢索片段，避免 Action_Records 過大。
-4. 本系統在 MVP 階段僅保留 `Template_Slot_Values`，待第二階段啟用 LLM 語言層時才正式寫入 Vector 數據。
-5. 數據隱私：NPC 記憶應與 `Player_ID` 綁定，確保存檔遷移後對話記憶不遺失。
+1. `Data.NPC_Memory` 的本地核心儲存方案仍為 **SQLite-vec**，用於離線模板、最近互動與高頻 persona cache；連網研發與推論可由 `三國大腦中台規格書.md` (doc_spec_0177) 定義的 FastAPI / Pinecone 服務承接。
+2. `SQLite_Vec_DB_Path` 指向本地 SQLite 資料庫，該資料庫只保存客戶端需要的 Embedding / Text Snippets / Template Slot 快取，不複製中台完整語料庫。
+3. `Recall_Context` 作為 LLM 推論或模板選句時的上下文緩存，僅儲存最近或高權重的檢索片段，避免 Action_Records 過大。
+4. 本系統在 MVP 階段僅保留 `Template_Slot_Values`；第二階段啟用三國大腦中台後，可寫入 `Brain_Service_Profile`、`Persona_Card_Version`、`Recent_Context` 與 `Pending_Unknown_Events` 等摘要欄位。
+5. 數據隱私：NPC 記憶應與 `Player_ID` 綁定，確保存檔遷移後對話記憶不遺失；玩家輸入與未命中事件上傳中台前必須先摘要化，不得上傳完整存檔。
 
 #### 2-3a. NPC 記憶最小 read model 形狀
 
@@ -298,9 +385,13 @@
   "Data": {
     "NPC_Memory": {
       "SQLite_Vec_DB_Path": "save/npc_memory.db",
+      "Brain_Service_Profile": "offline-template",
+      "Persona_Card_Version": "npc-persona-v1",
       "Recall_Context": [
         { "General_UID": "G001", "Vector_ID": "V_0099", "Snippet": "曾於虎牢關共戰", "Last_Met": "2026-04-12" }
-      ]
+      ],
+      "Recent_Context": [],
+      "Pending_Unknown_Events": []
     }
   }
 }
@@ -333,6 +424,36 @@
   }
 ]
 ```
+
+#### 1-1. 轉蛋操作日誌 Payload 詳細 Schema（GachaDrawRecord）
+
+本機轉蛋目前支援三種 Action 代碼，對應不同貨幣召喚路徑。Payload 欄位定義如下：
+
+| Action 代碼 | 說明 | 對應消耗貨幣 | 費用計算 |
+|---|---|---|---|
+| `LOCAL_GACHA_PULL` | 鑽石一般召喚（單抽/十連） | `gems` | 100 × drawCount |
+| `LOCAL_GOLD_SUMMON` | 金幣召喚（單抽） | `gold` | 500 × drawCount |
+| `LOCAL_TICKET_SUMMON` | 召喚券召喚（單抽） | `tickets` | 1 × drawCount |
+
+```typescript
+// GachaDrawRecord — 轉蛋 ActionRecord.Payload 結構（定義於 LocalGachaService）
+interface GachaDrawRecord {
+  poolId:     string;   // 池子識別碼，如 "GENERAL_STANDARD_01"
+  drawCount:  number;   // 本次抽取數量（1 或 10）
+  cost:       number;   // 消耗的貨幣數量
+  localOnly:  true;     // 本機操作標記，尚未上傳 Server
+  results: Array<{
+    id:          string;  // 武將唯一 ID
+    name:        string;  // 武將名稱
+    rarityTier:  string;  // 稀有度 tier（mythic / legendary / epic / rare / common）
+    displayText: string;  // 顯示文字（含序號與 bucket）
+  }>;
+}
+```
+
+> **召喚歷史讀取模型**：`LocalGachaService.getRecentPullHistory(limit)` 讀取 `sync.action-log` 中所有三種 Action 紀錄，以 `Timestamp` 降序（最新到最舊）排列，回傳 `{ total: number; records: GachaHistoryRecord[] }`。`GachaHistoryRecord` 為前端展示層使用的扁平化投影，包含 `seq / timestamp / actionType / drawCount / cost / currencyKey / results`。
+>
+> **時間戳記格式**：`Timestamp` 為 Unix 毫秒整數（`Date.now()` 產生），UI 層顯示格式為 `YYYY/MM/DD HH:mm:ss`（本地時區）。
 
 ### 2. Hash 簽章對稱演算規則
 Client 在離線發生上述行為時，會依照以下公式計算 `Tx_Hash`：

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<style>
+  @keyframes ctaPop {
+    from { opacity:0; transform:scale(.96); }
+    to { opacity:1; transform:scale(1); }
+  }
+  .root { display:flex; flex-direction:column; gap:12px; padding:16px; background:#1a1a1a; }
+  .cta { background:#000000; color:#ffffff; transition: opacity 180ms ease-out, transform 180ms ease-out; animation: ctaPop 180ms ease-out; }
+</style>
+</head>
+<body>
+  <div class="root" data-anchor="fill">
+    <button class="cta" data-name="OpenDialogButton" data-ucuf-id="open-dialog-btn" data-ucuf-action="openPanel" data-target="sample-dialog" data-requires="item.id">開窗</button>
+    <dialog data-name="SampleDialog" data-ucuf-id="sample-dialog" role="dialog">
+      <button data-name="CloseDialogButton" data-ucuf-id="close-dialog-btn" data-action="closeModal" data-target="sample-dialog">關閉</button>
+    </dialog>
+  </div>
+</body>
+</html>

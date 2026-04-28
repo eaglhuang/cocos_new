@@ -1,0 +1,27 @@
+﻿======================================================================
+[capture-ui-screens] Headless capture start
+- host: http://localhost:7456
+- targets: GeneralDetailFromLobbyGeneralsButton
+- output: artifacts\ui-qa\UI-2-0023
+- browser: C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe
+- sceneUuid: 05b67b52-831e-4d74-a8a7-5955746bde7f
+- retries: 1
+======================================================================
+[capture-ui-screens] refreshing asset-db before capture...
+[capture-ui-screens] GeneralDetailFromLobbyGeneralsButton attempt 1/2
+[capture-ui-screens] GeneralDetailFromLobbyGeneralsButton navigating -> http://localhost:7456?previewMode=true&previewTarget=19&previewVariant=zhang-fei&ui=ds3&t=1777355671129&scene=05b67b52-831e-4d74-a8a7-5955746bde7f
+[capture-ui-screens] GeneralDetailFromLobbyGeneralsButton waiting capture ready (character-ds3-main)
+[capture-ui-screens] GeneralDetailFromLobbyGeneralsButton capture ready
+node : [capture-ui-screens] GeneralDetailFromLobbyGeneralsButton runtime guard 
+failed: OverviewSlot missing; RightContentArea missing
+位於 線路:1 字元:1
++ node tools_node/capture-ui-screens.js --target GeneralDetailFromLobby ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ([capture-ui-scr...entArea missing 
+   :String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+[capture-ui-screens] GeneralDetailFromLobbyGeneralsButton writing screenshot -> artifacts\ui-qa\UI-2-0023\GeneralDetailFromLobbyGeneralsButton.png
+[capture-ui-screens] GeneralDetailFromLobbyGeneralsButton screenshot written
+[capture-ui-screens] captured GeneralDetailFromLobbyGeneralsButton -> artifacts\ui-qa\UI-2-0023\GeneralDetailFromLobbyGeneralsButton.png
+[capture-ui-screens] 摰?嚗 1 撘萸?

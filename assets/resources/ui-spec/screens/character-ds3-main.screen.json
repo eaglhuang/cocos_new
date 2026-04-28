@@ -1,0 +1,10 @@
+{
+  "screenId": "character-ds3-main",
+  "layoutRef": "assets/resources/ui-spec/layouts/character-ds3-main.json",
+  "skinRef": "assets/resources/ui-spec/skins/character-ds3-default.json",
+  "meta": {
+    "scaffoldHints": {
+      "useUCUFLogger": true
+    }
+  }
+}

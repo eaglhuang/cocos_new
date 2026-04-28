@@ -1,4 +1,4 @@
-import { Node, Layout, Widget, UITransform } from 'cc';
+import { Node, Layout, Size, Widget } from 'cc';
 import type { UILayoutNodeSpec } from './UISpecTypes';
 import { resolveSize } from './UISpecTypes';
 
@@ -10,6 +10,8 @@ import { resolveSize } from './UISpecTypes';
  *   - setupLayout: 設定 Layout 分組 (Unity: LayoutGroup)
  */
 export class UIPreviewLayoutBuilder {
+
+    private static readonly DEFAULT_GRID_CELL = 100;
 
     /**
      * 套用 Widget 對齊設定到節點。
@@ -70,12 +72,55 @@ export class UIPreviewLayoutBuilder {
             default:           layout.type = Layout.Type.NONE;       break;
         }
 
-        layout.spacingX      = spec.layout.spacing      ?? 0;
-        layout.spacingY      = spec.layout.spacing      ?? 0;
+        layout.spacingX      = spec.layout.spacingX     ?? spec.layout.spacing ?? 0;
+        layout.spacingY      = spec.layout.spacingY     ?? spec.layout.spacing ?? 0;
         layout.paddingLeft   = spec.layout.paddingLeft   ?? 0;
         layout.paddingRight  = spec.layout.paddingRight  ?? 0;
         layout.paddingTop    = spec.layout.paddingTop    ?? 0;
         layout.paddingBottom = spec.layout.paddingBottom ?? 0;
+
+        if (layout.type === Layout.Type.GRID) {
+            const cellWidth = spec.layout.cellWidth ?? UIPreviewLayoutBuilder.DEFAULT_GRID_CELL;
+            const cellHeight = spec.layout.cellHeight ?? UIPreviewLayoutBuilder.DEFAULT_GRID_CELL;
+            layout.cellSize = new Size(cellWidth, cellHeight);
+
+            switch (spec.layout.startAxis) {
+                case 'vertical':
+                    layout.startAxis = Layout.AxisDirection.VERTICAL;
+                    break;
+                default:
+                    layout.startAxis = Layout.AxisDirection.HORIZONTAL;
+                    break;
+            }
+
+            switch (spec.layout.constraint) {
+                case 'fixed-row':
+                    layout.constraint = Layout.Constraint.FIXED_ROW;
+                    break;
+                case 'fixed-col':
+                    layout.constraint = Layout.Constraint.FIXED_COL;
+                    break;
+                default:
+                    layout.constraint = Layout.Constraint.NONE;
+                    break;
+            }
+
+            if (typeof spec.layout.constraintNum === 'number' && spec.layout.constraintNum > 0) {
+                layout.constraintNum = spec.layout.constraintNum;
+            }
+        }
+
+        if (layout.type === Layout.Type.HORIZONTAL) {
+            layout.horizontalDirection = spec.layout.horizontalDirection === 'right-to-left'
+                ? Layout.HorizontalDirection.RIGHT_TO_LEFT
+                : Layout.HorizontalDirection.LEFT_TO_RIGHT;
+        }
+
+        if (layout.type === Layout.Type.VERTICAL) {
+            layout.verticalDirection = spec.layout.verticalDirection === 'bottom-to-top'
+                ? Layout.VerticalDirection.BOTTOM_TO_TOP
+                : Layout.VerticalDirection.TOP_TO_BOTTOM;
+        }
         
         // resizeMode：預設 NONE（僅排位），可由 spec 指定
         //   'container' → 容器自適應子節點總尺寸

@@ -1,0 +1,12 @@
+{
+  "_doc": "doc_id: doc_other_0009 — accuracy baseline for gacha-banner fixture (§40)",
+  "expectedWarningCodes": [],
+  "thresholds": {
+    "minIdempotencyRate": 1.0,
+    "minStructuralStability": 1.0,
+    "minTokenCoverage": 0.5,
+    "minWarningPrecision": 0.0,
+    "minWarningRecall": 0.0,
+    "requireBaselineMatch": false
+  }
+}

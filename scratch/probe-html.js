@@ -1,0 +1,13 @@
+'use strict';
+const fs = require('fs');
+const html = fs.readFileSync('Design System 3/ui_kits/character/index.html', 'utf8');
+console.log('size:', html.length);
+const tabMatches = html.match(/data-tab[^=]*="[^"]+"/g) || [];
+console.log('data-tab markers:', tabMatches.length);
+tabMatches.slice(0, 20).forEach(m => console.log(' ', m));
+const classMatches = (html.match(/class="[^"]*tab[^"]*"/gi) || []).slice(0, 15);
+console.log('\nclass containing tab:');
+classMatches.forEach(m => console.log(' ', m.slice(0, 180)));
+const idMatches = html.match(/id="[^"]*"/g) || [];
+console.log('\nall ids:', idMatches.length);
+idMatches.slice(0, 30).forEach(m => console.log(' ', m));

@@ -1,0 +1,17 @@
+{
+  "input": "assets/resources/ui-spec/layouts/general-detail-bloodline-v3-main.json",
+  "wrappedRoot": true,
+  "passes": 2,
+  "before": 50,
+  "after": 49,
+  "foldedCount": 0,
+  "droppedCount": 0,
+  "absorbedCount": 1,
+  "collapsedCount": 0,
+  "foldedNames": [],
+  "droppedNames": [],
+  "absorbedNames": [
+    "BloodlineDivider"
+  ],
+  "collapsedNames": []
+}

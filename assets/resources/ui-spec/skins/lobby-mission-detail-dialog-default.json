@@ -1,0 +1,276 @@
+{
+  "id": "lobby-mission-detail-dialog-default",
+  "version": 1,
+  "bundle": "lobby_ui",
+  "atlasPolicy": "lobby_ui",
+  "slots": {
+    "mission.dialog.overlay.mask": {
+      "kind": "sprite-frame",
+      "path": "sprites/common/overlay_dark/spriteFrame",
+      "spriteType": "sliced",
+      "border": [1, 1, 1, 1],
+      "allowAutoAtlas": false
+    },
+    "mission.dialog.card.bg": {
+      "kind": "sprite-frame",
+      "path": "sprites/common/popup_card_bg/spriteFrame",
+      "spriteType": "sliced",
+      "border": [40, 40, 40, 40],
+      "allowAutoAtlas": true
+    },
+    "mission.dialog.header.bg": {
+      "kind": "color-rect",
+      "color": "backgroundDeep",
+      "alpha": 252
+    },
+    "mission.dialog.scroll.bg": {
+      "kind": "color-rect",
+      "color": "background",
+      "alpha": 194
+    },
+    "mission.dialog.section.bg": {
+      "kind": "color-rect",
+      "color": "surfaceContainer",
+      "alpha": 202
+    },
+    "mission.dialog.row.bg": {
+      "kind": "color-rect",
+      "color": "backgroundNavyAlt",
+      "alpha": 170
+    },
+    "mission.dialog.footer.bg": {
+      "kind": "color-rect",
+      "color": "backgroundDeep",
+      "alpha": 224
+    },
+    "mission.dialog.reward.base.bg": {
+      "kind": "color-rect",
+      "color": "primary",
+      "alpha": 66
+    },
+    "mission.dialog.reward.perfect.bg": {
+      "kind": "color-rect",
+      "color": "secondary",
+      "alpha": 74
+    },
+    "mission.dialog.badge.type": {
+      "kind": "color-rect",
+      "color": "primary",
+      "alpha": 94
+    },
+    "mission.dialog.badge.intel": {
+      "kind": "color-rect",
+      "color": "warning",
+      "alpha": 94
+    },
+    "mission.dialog.badge.volunteer": {
+      "kind": "color-rect",
+      "color": "success",
+      "alpha": 94
+    },
+    "mission.dialog.dropdown.btn": {
+      "kind": "button-skin",
+      "normal": "sprites/common/btn_secondary_normal/spriteFrame",
+      "pressed": "sprites/common/btn_secondary_pressed/spriteFrame",
+      "disabled": "sprites/common/btn_secondary_disabled/spriteFrame",
+      "spriteType": "sliced",
+      "border": [20, 20, 20, 20],
+      "allowAutoAtlas": true
+    },
+    "mission.dialog.close.btn": {
+      "kind": "button-skin",
+      "normal": "sprites/common/btn_secondary_normal/spriteFrame",
+      "pressed": "sprites/common/btn_secondary_pressed/spriteFrame",
+      "disabled": "sprites/common/btn_secondary_disabled/spriteFrame",
+      "spriteType": "sliced",
+      "border": [20, 20, 20, 20],
+      "allowAutoAtlas": true
+    },
+    "mission.dialog.btn.primary": {
+      "kind": "button-skin",
+      "normal": "sprites/ui_families/common/nav_ink/btn_primary_normal",
+      "pressed": "sprites/ui_families/common/nav_ink/btn_primary_pressed",
+      "disabled": "sprites/ui_families/common/nav_ink/btn_primary_disabled",
+      "spriteType": "sliced",
+      "border": [20, 20, 20, 20],
+      "allowAutoAtlas": true
+    },
+    "mission.dialog.btn.secondary": {
+      "kind": "button-skin",
+      "normal": "sprites/common/btn_secondary_normal/spriteFrame",
+      "pressed": "sprites/common/btn_secondary_pressed/spriteFrame",
+      "disabled": "sprites/common/btn_secondary_disabled/spriteFrame",
+      "spriteType": "sliced",
+      "border": [20, 20, 20, 20],
+      "allowAutoAtlas": true
+    },
+    "mission.dialog.toggle": {
+      "kind": "toggle-style",
+      "normal_bg": "#1B2230",
+      "selected_bg": "#30483D",
+      "normal_text_color": "#9BA6B6",
+      "selected_text_color": "#FFE088",
+      "border_bottom_selected": { "color": "secondary", "thickness": 3 },
+      "fontSize": 20
+    },
+    "mission.dialog.bar.track.food": {
+      "kind": "color-rect",
+      "color": "outlineFaint",
+      "alpha": 180
+    },
+    "mission.dialog.bar.track.troop": {
+      "kind": "color-rect",
+      "color": "outlineFaint",
+      "alpha": 180
+    },
+    "mission.dialog.bar.track.silver": {
+      "kind": "color-rect",
+      "color": "outlineFaint",
+      "alpha": 180
+    },
+    "mission.dialog.bar.track.time": {
+      "kind": "color-rect",
+      "color": "outlineFaint",
+      "alpha": 180
+    },
+    "mission.dialog.bar.fill.food": {
+      "kind": "color-rect",
+      "color": "#D8A54A",
+      "alpha": 224
+    },
+    "mission.dialog.bar.fill.troop": {
+      "kind": "color-rect",
+      "color": "#B85B52",
+      "alpha": 224
+    },
+    "mission.dialog.bar.fill.silver": {
+      "kind": "color-rect",
+      "color": "#A0AFC5",
+      "alpha": 224
+    },
+    "mission.dialog.bar.fill.time": {
+      "kind": "color-rect",
+      "color": "#73C3B6",
+      "alpha": 224
+    },
+    "mission.dialog.fog.mask": {
+      "kind": "color-rect",
+      "color": "colorBlack",
+      "alpha": 110
+    },
+    "mission.dialog.label.header": {
+      "kind": "label-style",
+      "font": "fonts/notosans_tc/font",
+      "fontSize": 26,
+      "lineHeight": 30,
+      "color": "secondaryLight",
+      "isBold": true,
+      "overflow": "CLAMP"
+    },
+    "mission.dialog.label.section": {
+      "kind": "label-style",
+      "font": "fonts/notosans_tc/font",
+      "fontSize": 20,
+      "lineHeight": 24,
+      "color": "secondaryLight",
+      "isBold": true,
+      "overflow": "CLAMP"
+    },
+    "mission.dialog.label.title": {
+      "kind": "label-style",
+      "font": "fonts/notosans_tc/font",
+      "fontSize": 24,
+      "lineHeight": 28,
+      "color": "textOnParchment",
+      "isBold": true,
+      "overflow": "SHRINK"
+    },
+    "mission.dialog.label.body": {
+      "kind": "label-style",
+      "font": "fonts/notosans_tc/font",
+      "fontSize": 16,
+      "lineHeight": 22,
+      "color": "textPrimary",
+      "overflow": "RESIZE_HEIGHT"
+    },
+    "mission.dialog.label.muted": {
+      "kind": "label-style",
+      "font": "fonts/notosans_tc/font",
+      "fontSize": 14,
+      "lineHeight": 20,
+      "color": "secondary",
+      "overflow": "RESIZE_HEIGHT"
+    },
+    "mission.dialog.label.badge": {
+      "kind": "label-style",
+      "font": "fonts/manrope/font",
+      "fontSize": 13,
+      "lineHeight": 16,
+      "color": "secondaryLight",
+      "horizontalAlign": "CENTER",
+      "overflow": "CLAMP"
+    },
+    "mission.dialog.label.metric": {
+      "kind": "label-style",
+      "font": "fonts/manrope/font",
+      "fontSize": 18,
+      "lineHeight": 20,
+      "color": "textOffWhite",
+      "horizontalAlign": "RIGHT",
+      "isBold": true
+    },
+    "mission.dialog.label.dropdown": {
+      "kind": "label-style",
+      "font": "fonts/notosans_tc/font",
+      "fontSize": 18,
+      "lineHeight": 22,
+      "color": "textOffWhite",
+      "isBold": true,
+      "overflow": "SHRINK"
+    },
+    "mission.dialog.label.chevron": {
+      "kind": "label-style",
+      "font": "fonts/notosans_tc/font",
+      "fontSize": 18,
+      "lineHeight": 20,
+      "color": "secondaryLight",
+      "horizontalAlign": "CENTER",
+      "overflow": "CLAMP"
+    },
+    "mission.dialog.label.reward": {
+      "kind": "label-style",
+      "font": "fonts/notosans_tc/font",
+      "fontSize": 15,
+      "lineHeight": 20,
+      "color": "textPrimary",
+      "overflow": "RESIZE_HEIGHT"
+    },
+    "mission.dialog.label.cost": {
+      "kind": "label-style",
+      "font": "fonts/notosans_tc/font",
+      "fontSize": 15,
+      "lineHeight": 18,
+      "color": "textPrimary",
+      "isBold": true
+    },
+    "mission.dialog.label.button": {
+      "kind": "label-style",
+      "font": "fonts/notosans_tc/font",
+      "fontSize": 16,
+      "lineHeight": 20,
+      "color": "secondaryLight",
+      "horizontalAlign": "CENTER",
+      "overflow": "CLAMP"
+    },
+    "mission.dialog.label.close": {
+      "kind": "label-style",
+      "font": "fonts/manrope/font",
+      "fontSize": 18,
+      "lineHeight": 20,
+      "color": "textPrimary",
+      "horizontalAlign": "CENTER",
+      "verticalAlign": "CENTER",
+      "overflow": "CLAMP"
+    }
+  }
+}

@@ -1,0 +1,93 @@
+{
+  "id": "gacha-destiny-shop",
+  "version": 1,
+  "canvas": { "fitWidth": true, "fitHeight": true, "safeArea": true, "designWidth": 1920, "designHeight": 1080 },
+
+  "nodes": [
+    {
+      "name": "GachaDestinyShopRoot",
+      "type": "Node",
+      "w": 1920, "h": 1080,
+      "children": [
+        {
+          "name": "Backdrop",
+          "type": "Sprite",
+          "w": 1920, "h": 1080,
+          "anchorX": 0.5, "anchorY": 0.5,
+          "skinSlot": "gacha.bg.pool",
+          "note": "沿用轉蛋主頁的池背景語言，讓天命商店保持同一個頁面家族"
+        },
+        {
+          "name": "TopBar",
+          "type": "Node",
+          "anchorX": 0.5, "anchorY": 1.0,
+          "offsetTop": 0,
+          "w": 1080, "h": 120,
+          "children": [
+            {
+              "name": "BackBtn",
+              "type": "Button",
+              "w": 88, "h": 88,
+              "anchorX": 0, "anchorY": 0.5,
+              "offsetLeft": 24,
+              "skinSlot": "gacha.btn.back"
+            },
+            {
+              "name": "TitleLabel",
+              "type": "Label",
+              "anchorX": 0.5, "anchorY": 0.5,
+              "skinSlot": "gacha.label.title",
+              "text": "天命商店"
+            }
+          ]
+        },
+        {
+          "name": "DestinyShop",
+          "type": "Node",
+          "anchorX": 0.5, "anchorY": 0.5,
+          "w": 1120, "h": 820,
+          "children": [
+            {
+              "name": "CarrierBg",
+              "type": "Panel",
+              "w": 1120, "h": 820,
+              "anchorX": 0.5, "anchorY": 0.5,
+              "skinSlot": "gacha.pity.carrier.bg"
+            },
+            {
+              "name": "CarrierFrame",
+              "type": "Panel",
+              "w": 1120, "h": 820,
+              "anchorX": 0.5, "anchorY": 0.5,
+              "skinSlot": "gacha.pity.carrier.frame"
+            },
+            {
+              "name": "CounterLabel",
+              "type": "Label",
+              "anchorX": 0, "anchorY": 1.0,
+              "offsetLeft": 40,
+              "offsetTop": -40,
+              "width": 380,
+              "height": 28,
+              "text": "天命積分：0/200",
+              "styleSlot": "gacha.label.pity_big"
+            },
+            {
+              "name": "ShopItemList",
+              "type": "list-scroll",
+              "direction": "vertical",
+              "widget": { "top": 92, "left": 40, "right": 40, "bottom": 40 },
+              "template": "ShopItem"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+
+  "validation": {
+    "touchTargetMin": 44,
+    "safeArea": true,
+    "devices": ["phone-16-9", "phone-19_5-9", "tablet-4_3"]
+  }
+}

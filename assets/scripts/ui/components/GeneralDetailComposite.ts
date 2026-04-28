@@ -3,6 +3,7 @@ import { CompositePanel } from '../core/CompositePanel';
 import type { UITemplateBinder } from '../core/UITemplateBinder';
 import type { ChildPanelBase } from '../core/ChildPanelBase';
 import type { GeneralConfig, GeneralDetailDefaultTab, GeneralDetailRarityTier } from '../../core/models/GeneralUnit';
+import { UIID } from '../../core/config/UIConfig';
 import { services } from '../../core/managers/ServiceLoader';
 import {
     buildGeneralDetailOverviewContentState,
@@ -15,17 +16,21 @@ import { GeneralDetailStatsChild } from './general-detail/GeneralDetailStatsChil
 import { GeneralDetailBloodlineChild } from './general-detail/GeneralDetailBloodlineChild';
 import { GeneralDetailSkillsChild } from './general-detail/GeneralDetailSkillsChild';
 import { GeneralDetailAptitudeChild } from './general-detail/GeneralDetailAptitudeChild';
-import { GeneralDetailExtendedChild } from './general-detail/GeneralDetailExtendedChild';
+import { CharacterDs3OverviewChild } from './character-ds3/CharacterDs3OverviewChild';
 import { applyPortraitSoftMask, fitPortraitSpriteToLogicalFrame, getOrCreatePortraitArtworkSprite } from './portrait/PortraitSoftMask';
 import { UCUFLogger, LogCategory } from '../core/UCUFLogger';
+import { CocosCompositeRenderer } from '../platform/cocos/CocosCompositeRenderer';
+import { UIVariantRouter } from '../core/UIVariantRouter';
+import type { SpiritFamilyOverviewOpenPayload } from '../core/SpiritFamilyOverviewRoute';
 
 const { ccclass } = _decorator;
 
-type TabKey = 'Overview' | 'Basics' | 'Stats' | 'Bloodline' | 'Skills' | 'Aptitude' | 'Extended';
+type TabKey = 'Overview' | 'Stats' | 'Tactics' | 'Bloodline' | 'Equip' | 'Aptitude';
 type UnifiedOverviewContentState = GeneralDetailOverviewContentState;
 
-const TAB_ORDER: TabKey[] = ['Overview', 'Basics', 'Stats', 'Bloodline', 'Skills', 'Aptitude', 'Extended'];
+const TAB_ORDER: TabKey[] = ['Overview', 'Stats', 'Tactics', 'Bloodline', 'Equip', 'Aptitude'];
 const PORTRAIT_ARTWORK_OVERLAY_HOST_NAME = 'PortraitArtworkOverlayHost';
+const SPIRIT_FAMILY_SHORTCUT_ROOT_PATH = 'RightContentArea/ContentSlot/TabBloodlineContent/SpiritFamilyState';
 const PORTRAIT_RARITY_BADGE_PATHS: Record<GeneralDetailRarityTier, string> = {
     common: 'sprites/ui_families/general_detail/icons/v3_parts/badge_rarity_common_flat',
     rare: 'sprites/ui_families/general_detail/icons/v3_parts/badge_rarity_rare_flat',
@@ -33,6 +38,13 @@ const PORTRAIT_RARITY_BADGE_PATHS: Record<GeneralDetailRarityTier, string> = {
     legendary: 'sprites/ui_families/general_detail/icons/v3_parts/badge_rarity_legendary_flat',
     mythic: 'sprites/ui_families/general_detail/icons/v3_parts/badge_rarity_legendary_flat',
 };
+
+interface ResolvedSpiritFamilyState {
+    hasFamilyBranch: boolean;
+    activeBranchUid: string | null;
+    entryLabel: string;
+}
+
 @ccclass('GeneralDetailComposite')
 export class GeneralDetailComposite extends CompositePanel {
     public onRequestClose: (() => void) | null = null;
@@ -44,9 +56,56 @@ export class GeneralDetailComposite extends CompositePanel {
     private _currentPortraitRarityBadgeResource: string | null = null;
     private _gdBinder: UITemplateBinder | null = null;
 
+    /**
+     * 解析要載入的 screen 規格 ID。
+     * 委派到 UIVariantRouter（M31）：先註冊路由，再依下列優先序解析：
+     *   1. globalThis.__UCUF_GENERAL_DETAIL_VARIANT
+     *   2. URL query: ?ui=ds3|unified
+     *   3. localStorage: __ucuf_general_detail_variant === 'ds3'|'unified'
+     * 2026-04-28：DS3 cutover Step 1 完成 layout flip，但因 DS3 ChildPanel data wiring 仍 WIP
+     * 且 HTML vs DS3 視覺對齊尚未達 95%，default 暫時 revert 回 unified；DS3 仍可透過
+     * `?ui=ds3` 或 localStorage 顯式進入做開發測試。Step 2 完成後再 flip default。
+     */
+    private static _resolveScreenId(): string {
+        const LEGACY_SCREEN = 'general-detail-unified-screen';
+        const DS3_SCREEN = 'character-ds3-main';
+        UIVariantRouter.registerRoute('general-detail', {
+            default: LEGACY_SCREEN,
+            variants: { unified: LEGACY_SCREEN, ds3: DS3_SCREEN },
+        });
+        try {
+            return UIVariantRouter.resolve('general-detail', LEGACY_SCREEN);
+        } catch {
+            return LEGACY_SCREEN;
+        }
+    }
+
     protected override _onAfterBuildReady(binder: UITemplateBinder): void {
         this._gdBinder = binder;
+        this.setCompositeRenderer(new CocosCompositeRenderer());
+        if (this._isDs3Active()) {
+            // DS3 cutover (2026-04-28)：DS3 layout 沒有 unified-only 的 GeneralDetailRoot/RightTabBar
+            // 等同名節點，因此跳過 unified-specific 靜態事件綁定。Tab 切換與資料綁定改由
+            // DS3 ChildPanel（CharacterDs3OverviewChild 等，目前為骨架）負責，等 wiring 完成。
+            UCUFLogger.info(LogCategory.LIFECYCLE, '[GeneralDetailComposite] DS3 mode: skip unified static events');
+            return;
+        }
         this._bindStaticEvents();
+    }
+
+    /** 目前 GeneralDetailComposite 是否以 DS3 layout 作為當前 screen。 */
+    private _isDs3Active(): boolean {
+        try {
+            return GeneralDetailComposite._resolveScreenId() === 'character-ds3-main';
+        } catch {
+            return false;
+        }
+    }
+
+    private _clearLegacySceneChildren(): void {
+        for (const child of [...this.node.children]) {
+            child.destroy();
+        }
     }
 
     public async show(config: GeneralConfig): Promise<void> {
@@ -67,13 +126,44 @@ export class GeneralDetailComposite extends CompositePanel {
         this.node.active = true;
 
         if (!this._isMounted) {
-            await this.mount('general-detail-unified-screen');
+            this._clearLegacySceneChildren();
+            const screenId = GeneralDetailComposite._resolveScreenId();
+            await this.mount(screenId);
             this._isMounted = true;
             UCUFLogger.info(LogCategory.LIFECYCLE, '[GeneralDetailComposite] mount completed', {
                 childCount: this.node.children.length,
+                screenId,
             });
         }
         this._currentConfig = config;
+
+        if (this._isDs3Active()) {
+            // DS3 cutover Step-1：layout 已掛載即視為「新畫面」可被使用者看到。
+            // overview chrome / background / tab switching 仍依賴 unified 節點，DS3 不適用，先跳過。
+            // ChildPanel data wiring 將在後續 turn 補齊（CharacterDs3OverviewChild 等目前是骨架）。
+            (this.node as Node & { __generalDetailReadyTab?: string }).__generalDetailReadyTab = 'Overview';
+            // 2026-04-28 (M16 階段 3)：smoke wiring — 直接實例化 CharacterDs3OverviewChild
+            // 並把當前 GeneralConfig 餵進去，用 binder.getLabel(name) 寫到改名後的 Label 節點。
+            // 這條路徑暫不走 fragment / slot 機制，待 layout 補 OverviewSlot 定義後再升級。
+            try {
+                if (this._gdBinder) {
+                    const overviewHost = this._gdBinder.getNode('TabOverviewContent') ?? this.node;
+                    const overviewChild = new CharacterDs3OverviewChild(overviewHost, this.skinResolver, this._gdBinder);
+                    void overviewChild.onMount({}).then(() => {
+                        overviewChild.onDataUpdate(config);
+                    });
+                }
+            } catch (err) {
+                UCUFLogger.warn(LogCategory.LIFECYCLE, '[GeneralDetailComposite] DS3 Overview smoke wiring failed', { err: String(err) });
+            }
+            UCUFLogger.info(LogCategory.LIFECYCLE, '[GeneralDetailComposite] DS3 show complete (chrome wiring pending)', {
+                generalId: config.id,
+                nodeActive: this.node.active,
+                screenId: 'character-ds3-main',
+            });
+            return;
+        }
+
         this._currentBackgroundResource = null;
         const overview = this._buildUnifiedOverviewState(config);
         await this._loadBackground(overview.backgroundResource);
@@ -83,6 +173,7 @@ export class GeneralDetailComposite extends CompositePanel {
             entryTab,
         });
         await this._switchToTab(entryTab);
+        (this.node as Node & { __generalDetailReadyTab?: string }).__generalDetailReadyTab = entryTab;
 
         // 確保 GeneralDetailRoot 的 UIOpacity 為完全不透明
         // playEnterTransition 在 Editor Preview 中 tween 可能不執行，導致 opacity 停在 0
@@ -139,11 +230,6 @@ export class GeneralDetailComposite extends CompositePanel {
     }
 
     private _bindStaticEvents(): void {
-        const tabCloseNode = this.node.getChildByPath(this._mainPath('RightTabBar/BtnClose'));
-        if (tabCloseNode) {
-            tabCloseNode.active = false;
-        }
-
         this._bindOptionalClick('TopCloseBtn', () => {
             this.requestClose();
         });
@@ -205,27 +291,36 @@ export class GeneralDetailComposite extends CompositePanel {
             child.setCustomProp('contentContractRef', OVERVIEW_UNIFIED_CONTENT_CONTRACT_REF);
             return child as unknown as ChildPanelBase;
         }
-        case 'Basics':
-            return new GeneralDetailBasicsChild(slotNode, this.skinResolver, binder) as unknown as ChildPanelBase;
         case 'Stats':
             return new GeneralDetailStatsChild(slotNode, this.skinResolver, binder) as unknown as ChildPanelBase;
         case 'Bloodline':
             return new GeneralDetailBloodlineChild(slotNode, this.skinResolver, binder) as unknown as ChildPanelBase;
-        case 'Skills':
+        case 'Tactics':
             return new GeneralDetailSkillsChild(slotNode, this.skinResolver, binder) as unknown as ChildPanelBase;
+        case 'Equip':
+            return new GeneralDetailBasicsChild(slotNode, this.skinResolver, binder) as unknown as ChildPanelBase;
         case 'Aptitude':
             return new GeneralDetailAptitudeChild(slotNode, this.skinResolver, binder) as unknown as ChildPanelBase;
-        case 'Extended':
-            return new GeneralDetailExtendedChild(slotNode, this.skinResolver, binder) as unknown as ChildPanelBase;
         }
     }
 
     private _resolveEntryTab(config: GeneralConfig): TabKey {
         const preferredTab = config.profilePresentation?.defaultTab as GeneralDetailDefaultTab | undefined;
-        if (preferredTab && TAB_ORDER.includes(preferredTab as TabKey)) {
-            return preferredTab as TabKey;
+        switch (preferredTab) {
+        case 'Overview':
+        case 'Stats':
+        case 'Bloodline':
+        case 'Aptitude':
+            return preferredTab;
+        case 'Basics':
+            return 'Equip';
+        case 'Skills':
+            return 'Tactics';
+        case 'Extended':
+            return 'Aptitude';
+        default:
+            return 'Overview';
         }
-        return 'Overview';
     }
 
     private _buildUnifiedOverviewState(config: GeneralConfig): UnifiedOverviewContentState {
@@ -243,6 +338,7 @@ export class GeneralDetailComposite extends CompositePanel {
             config: this._currentConfig,
             overview,
         });
+        this._syncSpiritFamilyShortcut();
     }
 
     private _applyOverviewChrome(state: UnifiedOverviewContentState): void {
@@ -494,13 +590,92 @@ export class GeneralDetailComposite extends CompositePanel {
     }
 
     private _syncTabVisualState(): void {
+        const activeLabelColor = this.skinResolver.resolveColor('#FFE088');
+        const inactiveLabelColor = this.skinResolver.resolveColor('#B0A880');
+        const activeEnLabelColor = this.skinResolver.resolveColor('#D0C5AF');
+        const inactiveEnLabelColor = this.skinResolver.resolveColor('#6B6456');
+        const activeSpriteColor = this.skinResolver.resolveColor('#FFFFFF');
+        const inactiveSpriteColor = this.skinResolver.resolveColor('#4D4635');
+
         for (const tab of TAB_ORDER) {
             const isActive = tab === this._activeTab;
-            const iconActive = this._requireNode(`RightTabBar/BtnTab${tab}/IconActive`);
-            const iconInactive = this._requireNode(`RightTabBar/BtnTab${tab}/IconInactive`);
-            if (iconActive) iconActive.active = isActive;
-            if (iconInactive) iconInactive.active = !isActive;
+            const button = this._requireNode(`RightTabBar/BtnTab${tab}`);
+            const opacity = button.getComponent(UIOpacity) || button.addComponent(UIOpacity);
+            const label = button.getChildByName('Label')?.getComponent(Label);
+            const enLabel = button.getChildByName('EnLabel')?.getComponent(Label);
+            this.setButtonVisualState(button, isActive ? 'selected' : 'normal');
+            button.setScale(isActive ? 1.06 : 1, isActive ? 1.06 : 1, 1);
+            opacity.opacity = isActive ? 255 : 224;
+            const sprite = button.getComponent(Sprite);
+            if (sprite) {
+                sprite.color = isActive ? activeSpriteColor : inactiveSpriteColor;
+            }
+            if (label) {
+                label.color = isActive ? activeLabelColor : inactiveLabelColor;
+            }
+            if (enLabel) {
+                enLabel.color = isActive ? activeEnLabelColor : inactiveEnLabelColor;
+            }
         }
+    }
+
+    private _syncSpiritFamilyShortcut(): void {
+        const shortcutRoot = this.node.getChildByPath(this._mainPath(SPIRIT_FAMILY_SHORTCUT_ROOT_PATH));
+        if (!shortcutRoot) {
+            return;
+        }
+
+        const spiritFamilyState = this._resolveSpiritFamilyState(this._currentConfig);
+        const shouldShow = this._activeTab === 'Bloodline' && spiritFamilyState.hasFamilyBranch;
+        shortcutRoot.active = shouldShow;
+        if (!shouldShow) {
+            return;
+        }
+
+        const hint = spiritFamilyState.activeBranchUid
+            ? `已形成世家分支，可前往英靈陳列室管理（${spiritFamilyState.activeBranchUid}）。`
+            : '已形成世家分支，可前往英靈陳列室管理。';
+        this._setOptionalLabel(`${SPIRIT_FAMILY_SHORTCUT_ROOT_PATH}/SpiritFamilyHint`, hint);
+        this._setOptionalLabel(
+            `${SPIRIT_FAMILY_SHORTCUT_ROOT_PATH}/SpiritFamilyEntryButton/SpiritFamilyEntryLabel`,
+            spiritFamilyState.entryLabel,
+        );
+
+        const buttonNode = this.node.getChildByPath(
+            this._mainPath(`${SPIRIT_FAMILY_SHORTCUT_ROOT_PATH}/SpiritFamilyEntryButton`),
+        );
+        if (!buttonNode) {
+            return;
+        }
+
+        const button = buttonNode.getComponent(Button) || buttonNode.addComponent(Button);
+        button.node.off(Button.EventType.CLICK, this._onSpiritFamilyShortcutClick, this);
+        button.node.on(Button.EventType.CLICK, this._onSpiritFamilyShortcutClick, this);
+    }
+
+    private _onSpiritFamilyShortcutClick(): void {
+        const spiritFamilyState = this._resolveSpiritFamilyState(this._currentConfig);
+        if (!spiritFamilyState.hasFamilyBranch) {
+            return;
+        }
+
+        const payload: SpiritFamilyOverviewOpenPayload = {
+            origin: 'general-detail',
+            generalName: this._currentConfig?.name,
+            branchUid: spiritFamilyState.activeBranchUid ?? undefined,
+            entryLabel: spiritFamilyState.entryLabel,
+        };
+        void services().ui.open(UIID.SpiritFamilyOverview, payload);
+    }
+
+    private _resolveSpiritFamilyState(config: GeneralConfig | null): ResolvedSpiritFamilyState {
+        const rawState = config?.spiritFamilyState;
+        const activeBranchUid = rawState?.activeBranchUid?.trim() || '';
+        return {
+            hasFamilyBranch: rawState?.hasFamilyBranch ?? activeBranchUid.length > 0,
+            activeBranchUid: activeBranchUid.length > 0 ? activeBranchUid : null,
+            entryLabel: rawState?.entryLabel?.trim() || '查看世家',
+        };
     }
 
     private _bindClick(path: string, handler: () => void): void {
@@ -524,6 +699,13 @@ export class GeneralDetailComposite extends CompositePanel {
 
     private _setLabel(path: string, text: string): void {
         this._requireLabel(path).string = text;
+    }
+
+    private _setOptionalLabel(path: string, text: string): void {
+        const label = this.node.getChildByPath(this._mainPath(path))?.getComponent(Label);
+        if (label) {
+            label.string = text;
+        }
     }
 
     private _resolveMainRoot(): Node | null {

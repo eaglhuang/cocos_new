@@ -1,0 +1,76 @@
+{
+  "_draft": true,
+  "screenId": "general-detail-stats",
+  "proofSource": "ref://character/index.html",
+  "confidence": 0.5,
+  "visualZones": [
+    {
+      "id": "stats_header",
+      "name": "Stats Section Header",
+      "bounds": { "x": 1204, "y": 160, "w": 540, "h": 24 },
+      "family": "summary.section",
+      "confidence": 0.9
+    },
+    {
+      "id": "radar_card",
+      "name": "RadarSummaryCard",
+      "bounds": { "x": 1204, "y": 200, "w": 290, "h": 312 },
+      "family": "detail.card",
+      "confidence": 0.6,
+      "notes": "Target radar frame 290x312; core glyph area ~225x225 centered in frame. Radar is rendered procedurally and the frame keeps the opaque JPG background."
+    },
+    {
+      "id": "stats_value_card",
+      "name": "StatsValueCard",
+      "bounds": { "x": 1510, "y": 200, "w": 234, "h": 312 },
+      "family": "detail.summary",
+      "confidence": 0.6,
+      "notes": "Six HTML-style rows: Chinese label, EN tag, talent badge, arrow, prowess value, and prowess bar; padLeft 12, spacing 10; no role footer."
+    },
+    {
+      "id": "vitals_row",
+      "name": "VitalsRow",
+      "bounds": { "x": 1204, "y": 532, "w": 540, "h": 84 },
+      "family": "detail.card",
+      "confidence": 0.8
+    },
+    {
+      "id": "profile_section",
+      "name": "ProfileSection",
+      "bounds": { "x": 1204, "y": 628, "w": 540, "h": 120 },
+      "family": "detail.card",
+      "confidence": 0.7
+    }
+  ],
+  "spacingRecipe": {
+    "containerPadding": 20,
+    "itemSpacing": 16,
+    "sectionGap": 24,
+    "unitBasis": 8
+  },
+  "componentIntents": [
+    {
+      "zoneId": "radar_card",
+      "intent": "image",
+      "nodeHint": "image",
+      "skinSlot": "detail.field.bg",
+      "notes": "Replace placeholder glyph with runtime radar widget later; ensure glyph area aligns to center."
+    },
+    {
+      "zoneId": "stats_value_card",
+      "intent": "list",
+      "nodeHint": "label_list",
+      "styleSlot": "detail.label.value",
+      "padLeft": 12
+    }
+  ],
+  "contentSlots": [
+    { "id": "str", "type": "number", "label": "STR", "binding": "config.stats.str" },
+    { "id": "int", "type": "number", "label": "INT", "binding": "config.stats.int" },
+    { "id": "lea", "type": "number", "label": "LEA", "binding": "config.stats.lea" },
+    { "id": "pol", "type": "number", "label": "POL", "binding": "config.stats.pol" },
+    { "id": "cha", "type": "number", "label": "CHA", "binding": "config.stats.cha" },
+    { "id": "luk", "type": "number", "label": "LUK", "binding": "config.stats.luk" }
+  ],
+  "notes": "Art Director targets: Radar frame 290×312 (core glyph ~225×225), StatsValueCard width 234. RightContentArea left x=1204 (designWidth 1920, right margin 176). Six HTML-style rows only; no role footer. Radar uses renderer-drawn hex chart. This is a draft (confidence=0.5). Run ui-preview-judge to validate."
+}

@@ -1,0 +1,25 @@
+{
+  "screenId": "character-ds3-main",
+  "version": 1,
+  "firstScreen": {
+    "bundles": [
+      "lobby_ui",
+      "ui_common"
+    ],
+    "spriteFrames": [
+      "sprites/ui_common/placeholder/missing_sprite"
+    ],
+    "fonts": [
+      "fonts/newsreader/font"
+    ],
+    "fragments": []
+  },
+  "deferred": {
+    "lazySlots": []
+  },
+  "counts": {
+    "firstScreenSpriteCount": 1,
+    "deferredSpriteCount": 0
+  },
+  "_warnings": []
+}

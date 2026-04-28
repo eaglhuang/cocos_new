@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<!-- doc_id: doc_other_0009 fixture — gacha banner with nesting + flex + lazy slots + button -->
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<style>
+  .gacha-screen { display: flex; flex-direction: column; gap: 12px; padding: 16px; }
+  .banner { background-color: #1a1a1a; }
+  .title { color: #ffffff; font-size: 32px; line-height: 44px; letter-spacing: 2px; text-align: center; }
+  .badge { background: rgba(0,0,0,0.6); }
+</style>
+</head>
+<body>
+  <div class="gacha-screen" data-anchor="fill">
+    <div class="banner" data-anchor="top-center" style="width:1080px;height:240px">
+      <img src="sprites/ui_gacha/banner/banner_main" data-name="BannerImg" width="1080" height="240">
+      <p class="title" data-name="BannerTitle" data-contract="banner.title">轉蛋活動進行中</p>
+    </div>
+    <div data-slot="featured-list" data-default-fragment="empty-list" data-warmup-hint="next-frame"></div>
+    <div data-slot="history-panel" data-default-fragment="loading" data-warmup-hint="idle"></div>
+    <button data-name="DrawBtn" data-contract="gacha.onDraw" data-skin="gacha.draw_btn">立即抽取</button>
+  </div>
+</body>
+</html>

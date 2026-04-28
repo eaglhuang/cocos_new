@@ -1,0 +1,180 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "schemaId": "lobby-mission-detail-dialog-content",
+  "familyId": "lobby-mission-detail-dialog",
+  "version": 1,
+  "description": "LobbyMissionDetailDialog content contract；軍事 / 內政任務中央詳情彈窗，包含情報度、武將指派、資源耗費、獎勵、AI 委任與可用動作。",
+  "fields": {
+    "missionTypeLabel": {
+      "type": "string",
+      "required": true,
+      "description": "任務類型標籤，例如 軍事任務 / 內政任務。",
+      "bindPath": "HeaderBar/HeaderTitleGroup/HeaderMetaRow/MissionTypeBadge/MissionTypeLabel"
+    },
+    "missionTitle": {
+      "type": "string",
+      "required": true,
+      "description": "任務標題。",
+      "bindPath": "ScrollView/ScrollContent/OverviewPanel/MissionTitleLabel"
+    },
+    "missionBrief": {
+      "type": "string",
+      "required": true,
+      "description": "任務摘要，會在情報不足時呈現模糊感。",
+      "bindPath": "ScrollView/ScrollContent/OverviewPanel/MissionBriefLabel"
+    },
+    "intelRevealPercent": {
+      "type": "number",
+      "required": true,
+      "description": "情報度百分比，50 代表半揭露、100 代表完整揭露。",
+      "bindPath": "HeaderBar/HeaderTitleGroup/HeaderMetaRow/IntelPercentChip/IntelPercentValue"
+    },
+    "intelBody": {
+      "type": "string",
+      "required": true,
+      "description": "目前情報能顯示的任務內容；在 50% 狀態下應配合 fog mask 模糊呈現。",
+      "bindPath": "ScrollView/ScrollContent/IntelPanel/IntelBodyLabel"
+    },
+    "intelFogVisible": {
+      "type": "boolean",
+      "required": true,
+      "description": "情報未完整時顯示模糊遮罩；100% 時應隱藏。",
+      "bindPath": "ScrollView/ScrollContent/IntelPanel/IntelFogMask"
+    },
+    "intelHintLabel": {
+      "type": "string",
+      "required": true,
+      "description": "提示派探子可再探、提升情報度的說明。",
+      "bindPath": "ScrollView/ScrollContent/IntelPanel/IntelFogMask/IntelFogLabel"
+    },
+    "selectedGeneralLabel": {
+      "type": "string",
+      "required": true,
+      "description": "目前下拉選中的行動武將顯示文字。",
+      "bindPath": "ScrollView/ScrollContent/AssignmentPanel/GeneralSelectButton/SelectedGeneralLabel"
+    },
+    "volunteerBadgeVisible": {
+      "type": "boolean",
+      "required": true,
+      "description": "是否顯示武將毛遂自薦標記。",
+      "bindPath": "ScrollView/ScrollContent/AssignmentPanel/VolunteerBadge"
+    },
+    "volunteerBadgeLabel": {
+      "type": "string",
+      "required": true,
+      "description": "毛遂自薦標記文字，例如 關羽 毛遂自薦。",
+      "bindPath": "ScrollView/ScrollContent/AssignmentPanel/VolunteerBadge/VolunteerBadgeLabel"
+    },
+    "generalSelectHintLabel": {
+      "type": "string",
+      "required": true,
+      "description": "說明可下拉選擇武將、以及毛遂自薦提示的輔助文字。",
+      "bindPath": "ScrollView/ScrollContent/AssignmentPanel/GeneralSelectHintLabel"
+    },
+    "costFoodValueLabel": {
+      "type": "string",
+      "required": true,
+      "description": "糧草耗費顯示文字。",
+      "bindPath": "ScrollView/ScrollContent/ResourcePanel/FoodRow/FoodValueLabel"
+    },
+    "costFoodRatio": {
+      "type": "number",
+      "required": true,
+      "description": "糧草視覺條比例，0~1。",
+      "bindPath": "ScrollView/ScrollContent/ResourcePanel/FoodRow/FoodBarTrack/FoodBarFill"
+    },
+    "costTroopValueLabel": {
+      "type": "string",
+      "required": true,
+      "description": "兵力耗費顯示文字。",
+      "bindPath": "ScrollView/ScrollContent/ResourcePanel/TroopRow/TroopValueLabel"
+    },
+    "costTroopRatio": {
+      "type": "number",
+      "required": true,
+      "description": "兵力視覺條比例，0~1。",
+      "bindPath": "ScrollView/ScrollContent/ResourcePanel/TroopRow/TroopBarTrack/TroopBarFill"
+    },
+    "costSilverValueLabel": {
+      "type": "string",
+      "required": true,
+      "description": "銀兩耗費顯示文字。",
+      "bindPath": "ScrollView/ScrollContent/ResourcePanel/SilverRow/SilverValueLabel"
+    },
+    "costSilverRatio": {
+      "type": "number",
+      "required": true,
+      "description": "銀兩視覺條比例，0~1。",
+      "bindPath": "ScrollView/ScrollContent/ResourcePanel/SilverRow/SilverBarTrack/SilverBarFill"
+    },
+    "costTimeValueLabel": {
+      "type": "string",
+      "required": true,
+      "description": "時間耗費顯示文字。",
+      "bindPath": "ScrollView/ScrollContent/ResourcePanel/TimeRow/TimeValueLabel"
+    },
+    "costTimeRatio": {
+      "type": "number",
+      "required": true,
+      "description": "時間視覺條比例，0~1。",
+      "bindPath": "ScrollView/ScrollContent/ResourcePanel/TimeRow/TimeBarTrack/TimeBarFill"
+    },
+    "rewardBaseLabel": {
+      "type": "string",
+      "required": true,
+      "description": "基礎獎勵內容。",
+      "bindPath": "ScrollView/ScrollContent/RewardPanel/BaseRewardCard/RewardBaseLabel"
+    },
+    "rewardPerfectLabel": {
+      "type": "string",
+      "required": true,
+      "description": "完美達成加成內容。",
+      "bindPath": "ScrollView/ScrollContent/RewardPanel/PerfectRewardCard/RewardPerfectLabel"
+    },
+    "aiDelegateChecked": {
+      "type": "boolean",
+      "required": true,
+      "description": "AI 委任勾選狀態。",
+      "bindPath": "FooterBar/AiDelegateRow/AiDelegateToggle"
+    },
+    "aiDelegateHintLabel": {
+      "type": "string",
+      "required": true,
+      "description": "AI 委任的輔助說明。",
+      "bindPath": "FooterBar/AiDelegateRow/AiDelegateHintLabel"
+    },
+    "availableActions": {
+      "type": "array",
+      "required": false,
+      "description": "可用行動清單，預設順序為 再探 / 執行 / 等待 / 委任。",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "requiredFields": [
+    "missionTypeLabel",
+    "missionTitle",
+    "missionBrief",
+    "intelRevealPercent",
+    "intelBody",
+    "intelFogVisible",
+    "intelHintLabel",
+    "selectedGeneralLabel",
+    "volunteerBadgeVisible",
+    "volunteerBadgeLabel",
+    "generalSelectHintLabel",
+    "costFoodValueLabel",
+    "costFoodRatio",
+    "costTroopValueLabel",
+    "costTroopRatio",
+    "costSilverValueLabel",
+    "costSilverRatio",
+    "costTimeValueLabel",
+    "costTimeRatio",
+    "rewardBaseLabel",
+    "rewardPerfectLabel",
+    "aiDelegateChecked",
+    "aiDelegateHintLabel"
+  ]
+}

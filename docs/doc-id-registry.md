@@ -18,8 +18,8 @@
 | 任務卡類 | `doc_task` | 170 |
 | AI Agent 專用 | `doc_ai` | 28 |
 | Agent Skill 專用 | `doc_agentskill` | 37 |
-| 其它類 | `doc_other` | 8 |
-| **合計** | — | **511** |
+| 其它類 | `doc_other` | 12 |
+| **合計** | — | **515** |
 
 ---
 
@@ -583,3 +583,7 @@
 | `doc_other_0006` | docs/UCUF已驗收功能.md | UCUF 已驗收功能索引 |
 | `doc_other_0007` | docs/UCUF規劃書.md | Universal Composite UI Framework (UCUF) — 規劃書 |
 | `doc_other_0008` | docs/UI_PANELS_COMPLETE_INVENTORY.md | 3KLife UI Panels & Components — Complete Inventory |
+| `doc_other_0009` | docs/html_skill_plan.md | HTML Skill Plan |
+| `doc_other_0010` | docs/html_skill_rule-evolution.md | HTML Skill Rule Evolution |
+| `doc_other_0011` | docs/html_skill_plan2.md | HTML Skill Plan 2 |
+| `doc_other_0012` | docs/html_skill_rule-evolution2.md | HTML Skill Rule Evolution 2 |

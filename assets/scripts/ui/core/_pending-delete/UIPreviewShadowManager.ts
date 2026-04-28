@@ -32,6 +32,7 @@ interface DetachedShadowBinding {
     shadow: Node;   // 陰影替身節點
     host: Node;     // 陰影所在的父容器（__DetachedShadowLayer）
     offsetY: number;
+    baseOpacity: number;
 }
 
 export class UIPreviewShadowManager {
@@ -136,9 +137,9 @@ export class UIPreviewShadowManager {
         const elevation = this.tokens?.elevation?.shadowDefault ?? { offsetY: 4, opacity: 0.24 };
         const rawOffsetY = (shadowSlot as any).offsetY ?? elevation.offsetY ?? 4;
         const rawOpacity = (shadowSlot as any).opacity ?? elevation.opacity ?? 0.24;
-        const opacityValue = rawOpacity <= 1 ? Math.round(rawOpacity * 255) : Math.round(rawOpacity);
+        const baseOpacity = this._toByteOpacity(rawOpacity);
         const opacity = shadowNode.getComponent(UIOpacity) || shadowNode.addComponent(UIOpacity);
-        opacity.opacity = Math.max(0, Math.min(255, opacityValue));
+        opacity.opacity = this._resolveAuxLayerOpacity(spec, node, baseOpacity);
 
         if (usesDetachedHost) {
             // 放入 DetachedShadowLayer，每幀由 syncDetachedShadows 追蹤位置
@@ -147,6 +148,7 @@ export class UIPreviewShadowManager {
                 shadow: shadowNode,
                 host: shadowNode.parent,
                 offsetY: rawOffsetY,
+                baseOpacity,
             });
             this._syncDetachedShadowBinding(
                 this._detachedShadowBindings[this._detachedShadowBindings.length - 1],
@@ -204,9 +206,9 @@ export class UIPreviewShadowManager {
         this.styleBuilder.applySpriteSkin(sprite, noiseSlot.spriteType, noiseSlot.border);
 
         const rawOpacity = (noiseSlot as any).opacity ?? 0.12;
-        const opacityValue = rawOpacity <= 1 ? Math.round(rawOpacity * 255) : Math.round(rawOpacity);
+        const baseOpacity = this._toByteOpacity(rawOpacity);
         const opacity = noiseNode.getComponent(UIOpacity) || noiseNode.addComponent(UIOpacity);
-        opacity.opacity = Math.max(0, Math.min(255, opacityValue));
+        opacity.opacity = this._resolveAuxLayerOpacity(spec, node, baseOpacity);
 
         // 僅支援 alpha 混合；其他模式給出警告並回退
         const requestedBlend = (noiseSlot as any).blendMode ?? 'alpha';
@@ -225,12 +227,9 @@ export class UIPreviewShadowManager {
         const candidates: string[] = [];
         const parts = skinSlot.split('.');
 
-        // 完整路徑加後綴
+        // 只允許精準命中：避免 parent-level fallback（例如 gacha.banner.shadow）
+        // 被誤套用到整版 bg_fill，產生巨大深色方塊。
         candidates.push(`${skinSlot}.${suffix}`);
-        // 逐層縮短路徑
-        for (let i = parts.length - 1; i >= 1; i--) {
-            candidates.push(`${parts.slice(0, i).join('.')}.${suffix}`);
-        }
         // 底線後綴的變體（例如 bg_frame → bg.shadow）
         const lastPart = parts[parts.length - 1];
         const underscoredSuffix = /^(.*)_(bg|frame|fill)$/.exec(lastPart);
@@ -287,11 +286,31 @@ export class UIPreviewShadowManager {
             Math.abs(maxLocal.x - minLocal.x),
             Math.abs(maxLocal.y - minLocal.y),
         );
+        const shadowOpacity = binding.shadow.getComponent(UIOpacity) || binding.shadow.addComponent(UIOpacity);
+        shadowOpacity.opacity = this._resolveAuxLayerOpacity(undefined, binding.target, binding.baseOpacity);
         binding.shadow.setPosition(
             (minLocal.x + maxLocal.x) * 0.5,
             (minLocal.y + maxLocal.y) * 0.5 - binding.offsetY,
             binding.target.position.z,
         );
         binding.shadow.active = binding.target.activeInHierarchy;
+    }
+
+    private _toByteOpacity(rawOpacity: unknown): number {
+        if (typeof rawOpacity !== 'number' || Number.isNaN(rawOpacity)) {
+            return 255;
+        }
+        const opacityValue = rawOpacity <= 1 ? Math.round(rawOpacity * 255) : Math.round(rawOpacity);
+        return Math.max(0, Math.min(255, opacityValue));
+    }
+
+    private _resolveAuxLayerOpacity(spec: UILayoutNodeSpec | undefined, targetNode: Node, baseOpacity: number): number {
+        const specOpacity = typeof spec?.opacity === 'number' && !Number.isNaN(spec.opacity)
+            ? this._toByteOpacity(spec.opacity)
+            : 255;
+        const nodeOpacityComp = targetNode.getComponent(UIOpacity);
+        const nodeOpacity = nodeOpacityComp ? Math.max(0, Math.min(255, nodeOpacityComp.opacity)) : 255;
+        const combined = Math.round((baseOpacity / 255) * (specOpacity / 255) * (nodeOpacity / 255) * 255);
+        return Math.max(0, Math.min(255, combined));
     }
 }

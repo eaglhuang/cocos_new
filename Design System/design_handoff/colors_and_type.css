@@ -6,17 +6,17 @@
 
 @font-face {
   font-family: "Newsreader";
-  src: url("fonts/newsreader.ttf") format("truetype");
+  src: url("../../assets/resources/fonts/newsreader/font.ttf") format("truetype");
   font-display: swap;
 }
 @font-face {
   font-family: "NotoSansTC";
-  src: url("fonts/notosans_tc.ttf") format("truetype");
+  src: url("../../assets/resources/fonts/notosans_tc/font.ttf") format("truetype");
   font-display: swap;
 }
 @font-face {
   font-family: "Manrope";
-  src: url("fonts/manrope.ttf") format("truetype");
+  src: url("../../assets/resources/fonts/manrope/font.ttf") format("truetype");
   font-display: swap;
 }
 

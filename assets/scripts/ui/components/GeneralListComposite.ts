@@ -15,13 +15,13 @@ import { _decorator, Node, Label, Button, UITransform, Layout } from 'cc';
 import type { GeneralConfig } from '../../core/models/GeneralUnit';
 import { CompositePanel } from '../core/CompositePanel';
 import { UITemplateBinder } from '../core/UITemplateBinder';
-import { services } from '../../core/managers/ServiceLoader';
 import { UCUFLogger, LogCategory } from '../core/UCUFLogger';
 
 const { ccclass } = _decorator;
 
 // 欄位排序 key（對應 header col name → GeneralConfig 欄位）
 type SortKey = 'name' | 'gender' | 'age' | 'str' | 'int' | 'lea' | 'pol' | 'cha' | 'luk' | 'troop' | 'faction';
+type GeneralFilterMode = 'all' | 'player' | 'enemy';
 
 // 兵種等級順序，供排序比較
 const APTITUDE_ORDER: Record<string, number> = { S: 5, A: 4, B: 3, C: 2, D: 1 };
@@ -70,12 +70,18 @@ const DEFAULT_HEADER_LABELS: Record<SortKey, string> = {
     faction: '陣營',
 };
 
-const LIST_PATH = 'GeneralListRoot/MainContainer/DataList';
-const HEADER_ROW_PATH = 'ColumnHeaderRow';
-const CONTENT_PATH = 'GeneralListRoot/MainContainer/DataList/view/Content';
+const LIST_ROOT_NAME = 'GeneralListRoot';
+const LIST_PANEL_REL_PATH = 'MainContainer/ListPanel';
+const LIST_REL_PATH = `${LIST_PANEL_REL_PATH}/DataList`;
+const HEADER_ROW_REL_PATH = `${LIST_PANEL_REL_PATH}/ColumnHeaderRow`;
+const CONTENT_REL_PATH = `${LIST_REL_PATH}/view/Content`;
 
 @ccclass('GeneralListComposite')
 export class GeneralListComposite extends CompositePanel {
+
+    public static readonly GENERAL_FILTER_ALL = 'all';
+    public static readonly GENERAL_FILTER_PLAYER = 'player';
+    public static readonly GENERAL_FILTER_ENEMY = 'enemy';
 
     /** 選中武將時的回呼，外部（如場景/父面板）設定 */
     public onSelectGeneral: ((config: GeneralConfig) => void) | null = null;
@@ -84,9 +90,11 @@ export class GeneralListComposite extends CompositePanel {
     private _isMounted   = false;
     private _binder:    UITemplateBinder | null = null;
     private _allGenerals: GeneralConfig[] = [];
+    private _filterMode: GeneralFilterMode = 'all';
     private _sortKey: SortKey | null = null;
     private _sortAsc     = false;
     private _headerBaseLabels: Partial<Record<SortKey, string>> = {};
+    private readonly _renderedRowsByGeneralId = new Map<string, Node>();
 
     // ── 生命週期 ─────────────────────────────────────────────
 
@@ -102,12 +110,14 @@ export class GeneralListComposite extends CompositePanel {
      * 顯示武將列表。
      * 初次呼叫時掛載畫面；後續呼叫僅刷新列表。
      */
-    public async show(generals: GeneralConfig[]): Promise<void> {
+    public async show(generals: GeneralConfig[], filterMode: GeneralFilterMode = 'all'): Promise<void> {
         this.node.active = true;
         this._allGenerals = generals;
+        this._filterMode = filterMode;
 
         UCUFLogger.info(LogCategory.LIFECYCLE, '[GeneralListComposite] show start', {
             generalCount: generals.length,
+            filterMode,
             isMounted: this._isMounted,
             nodeActive: this.node.active,
         });
@@ -147,6 +157,33 @@ export class GeneralListComposite extends CompositePanel {
         this.hide();
     }
 
+    public selectGeneralById(generalId: string): boolean {
+        const normalizedId = generalId.trim();
+        if (!normalizedId) {
+            return false;
+        }
+
+        const row = this._renderedRowsByGeneralId.get(normalizedId);
+        if (!row) {
+            UCUFLogger.warn(LogCategory.LIFECYCLE, '[GeneralListComposite] selectGeneralById missing rendered row', {
+                generalId: normalizedId,
+            });
+            return false;
+        }
+
+        UCUFLogger.info(LogCategory.LIFECYCLE, '[GeneralListComposite] selectGeneralById emit row click', {
+            generalId: normalizedId,
+            rowName: row.name,
+        });
+        row.emit(Button.EventType.CLICK);
+        return true;
+    }
+
+    public hasRenderedGeneralById(generalId: string): boolean {
+        const normalizedId = generalId.trim();
+        return !!normalizedId && this._renderedRowsByGeneralId.has(normalizedId);
+    }
+
     // ── CompositePanel 鉤子 ───────────────────────────────────
 
     protected override _onAfterBuildReady(binder: UITemplateBinder): void {
@@ -160,7 +197,8 @@ export class GeneralListComposite extends CompositePanel {
     /** 清空並重新填入列表 */
     private async _repopulate(): Promise<void> {
         const sorted = this._sortedList();
-        const content = this.node.getChildByPath(CONTENT_PATH);
+        this._renderedRowsByGeneralId.clear();
+        const content = this.node.getChildByPath(this._mainPath(CONTENT_REL_PATH));
         if (content) {
             for (const child of [...content.children]) {
                 child.removeFromParent();
@@ -169,11 +207,12 @@ export class GeneralListComposite extends CompositePanel {
         }
         UCUFLogger.info(LogCategory.DATA, '[GeneralListComposite] repopulate', {
             rowCount: sorted.length,
-            listPath: LIST_PATH,
+            listPath: this._mainPath(LIST_REL_PATH),
             sortKey: this._sortKey,
             sortAsc: this._sortAsc,
+            filterMode: this._filterMode,
         });
-        await this.populateList(LIST_PATH, sorted, (g: GeneralConfig, row: Node) => {
+        await this.populateList(this._mainPath(LIST_REL_PATH), sorted, (g: GeneralConfig, row: Node) => {
             const set = (name: string, val: string | number) => {
                 const lbl = this._getRowLabel(row, name);
                 if (lbl) lbl.string = String(val);
@@ -189,6 +228,7 @@ export class GeneralListComposite extends CompositePanel {
             set('Luk',     g.luk   ?? 0);
             set('Troop',   this._bestTroop(g));
             set('Faction', g.faction ?? '—');
+            this._renderedRowsByGeneralId.set(g.id, row);
 
             const button = row.getComponent(Button) ?? row.addComponent(Button);
             button.transition = Button.Transition.NONE;
@@ -202,14 +242,14 @@ export class GeneralListComposite extends CompositePanel {
                 this.onSelectGeneral?.(g);
             }, this);
         });
+        this._syncContentWidth();
         this._updateHeaderLabels();
         this._syncHeaderColumnWidths();
     }
 
     /** 綁定欄頭排序按鈕 */
     private _bindSortHandlers(): void {
-        if (!this._binder) return;
-        const headerRow = this._binder.getNode(HEADER_ROW_PATH);
+        const headerRow = this.node.getChildByPath(this._mainPath(HEADER_ROW_REL_PATH));
         if (!headerRow) return;
 
         for (const colNode of headerRow.children) {
@@ -242,10 +282,24 @@ export class GeneralListComposite extends CompositePanel {
         }
     }
 
+    private _syncContentWidth(): void {
+        const listNode = this.node.getChildByPath(this._mainPath(LIST_REL_PATH));
+        const contentNode = this.node.getChildByPath(this._mainPath(CONTENT_REL_PATH));
+        const listTransform = listNode?.getComponent(UITransform);
+        const contentTransform = contentNode?.getComponent(UITransform);
+        if (!listTransform || !contentTransform) {
+            return;
+        }
+        if (Math.abs(contentTransform.width - listTransform.width) < 0.5) {
+            return;
+        }
+        contentTransform.setContentSize(listTransform.width, contentTransform.height);
+        contentNode.getComponent(Layout)?.updateLayout(true);
+    }
+
     /** 更新欄頭文字顯示當前排序方向 */
     private _updateHeaderLabels(): void {
-        if (!this._binder) return;
-        const headerRow = this._binder.getNode(HEADER_ROW_PATH);
+        const headerRow = this.node.getChildByPath(this._mainPath(HEADER_ROW_REL_PATH));
         if (!headerRow) return;
 
         for (const colNode of headerRow.children) {
@@ -263,9 +317,8 @@ export class GeneralListComposite extends CompositePanel {
     }
 
     private _syncHeaderColumnWidths(): void {
-        if (!this._binder) return;
-        const headerRow = this._binder.getNode(HEADER_ROW_PATH);
-        const contentNode = this.node.getChildByPath(CONTENT_PATH);
+        const headerRow = this.node.getChildByPath(this._mainPath(HEADER_ROW_REL_PATH));
+        const contentNode = this.node.getChildByPath(this._mainPath(CONTENT_REL_PATH));
         const firstRow = contentNode?.children?.[0] ?? null;
         if (!headerRow || !firstRow) return;
 
@@ -290,7 +343,17 @@ export class GeneralListComposite extends CompositePanel {
     // ── 排序 ─────────────────────────────────────────────────
 
     private _sortedList(): GeneralConfig[] {
-        const list = [...this._allGenerals];
+        const list = this._allGenerals.filter((general) => {
+            switch (this._filterMode) {
+                case 'player':
+                    return general.faction === 'player';
+                case 'enemy':
+                    return general.faction === 'enemy';
+                case 'all':
+                default:
+                    return true;
+            }
+        });
         if (!this._sortKey) return list;
         const key = this._sortKey;
         const asc = this._sortAsc;
@@ -327,6 +390,18 @@ export class GeneralListComposite extends CompositePanel {
 
     private _getRowLabel(row: Node, nodeName: string): Label | null {
         return row.getChildByName(nodeName)?.getComponent(Label) ?? null;
+    }
+
+    private _resolveMainRoot(): Node | null {
+        return this.node.getChildByPath(`__safeArea/${LIST_ROOT_NAME}`)
+            ?? this.node.getChildByName(LIST_ROOT_NAME);
+    }
+
+    private _mainPath(path: string): string {
+        const rootPath = this._resolveMainRoot()?.parent?.name === '__safeArea'
+            ? `__safeArea/${LIST_ROOT_NAME}`
+            : LIST_ROOT_NAME;
+        return `${rootPath}/${path}`;
     }
 
     private _genderZh(gender: string | undefined): string {

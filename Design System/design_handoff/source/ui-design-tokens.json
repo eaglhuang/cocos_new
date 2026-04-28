@@ -2,298 +2,2136 @@
   "id": "3klife-v2-integrated",
   "version": 2.2,
   "description": "三國志・生存 — 七重稀有度與水墨鋼鐵融合主題。融合說明：1.稀有度採用白/綠/藍/紫/金/紅/彩七階標準；2.質感為水墨宣紙(Ink & Parchment)與冷冽金屬(Steel)的視覺衝突與融合；3.適用 Cocos Creator 2.5D/3.5D 專案。",
-
   "colors": {
-    "primary":           "#B22222",
-    "primaryLight":      "#FFBFB8",
-    "secondary":         "#D4AF37",
-    "secondaryLight":    "#FFE088",
-    "accentGold":        "#D4AF37",
-    "accent.gold.base":  "#D4AF37",
+    "primary": "#B22222",
+    "primaryLight": "#FFBFB8",
+    "secondary": "#D4AF37",
+    "secondaryLight": "#FFE088",
+    "accentGold": "#D4AF37",
+    "accent.gold.base": "#D4AF37",
     "accent.gold.light": "#FFE088",
-    "tertiary":          "#2E8B57",
-    "tertiaryLight":     "#86E1A5",
-    "error":             "#FF6B6B",
-    "success":           "#86E1A5",
-    "warning":           "#E9C349",
-
-    "background":        "#0F0F0F",
-    "surface":           "#1A1A1A",
-    "surfaceDeep":       "#1A1A1A",
-    "surfaceContainer":  "#20201F",
-    "surfaceHigh":       "#2A2A2A",
-    "surfaceHighest":    "#353535",
-    "surfaceParchment":  "#E8DFD0",
+    "tertiary": "#2E8B57",
+    "tertiaryLight": "#86E1A5",
+    "error": "#FF6B6B",
+    "success": "#86E1A5",
+    "warning": "#E9C349",
+    "background": "#0F0F0F",
+    "surface": "#1A1A1A",
+    "surfaceDeep": "#1A1A1A",
+    "surfaceContainer": "#20201F",
+    "surfaceHigh": "#2A2A2A",
+    "surfaceHighest": "#353535",
+    "surfaceParchment": "#E8DFD0",
     "surfaceParchmentFill": "#F0E8D8",
     "surface.parchment.base": "#E8DFD0",
     "surface.parchment.fill": "#F0E8D8",
-
-    "textPrimary":       "#E5E2E1",
-    "textSecondary":     "#D0C5AF",
-    "textMuted":         "#99907C",
-    "textAccent":        "#FFE088",
-    "textInk":              "#2D2926",
-    "textOnParchment":      "#2D2926",
+    "textPrimary": "#E5E2E1",
+    "textSecondary": "#D0C5AF",
+    "textMuted": "#99907C",
+    "textAccent": "#FFE088",
+    "textInk": "#2D2926",
+    "textOnParchment": "#2D2926",
     "textOnParchmentMuted": "#6B5E4E",
     "text.parchment.primary": "#2D2926",
     "text.parchment.secondary": "#6B5E4E",
-    "textPositive":         "#86E1A5",
-    "textNegative":      "#FF6B6B",
+    "textPositive": "#86E1A5",
+    "textNegative": "#FF6B6B",
     "textPositiveOnParchment": "#1B6B3A",
     "textNegativeOnParchment": "#B22222",
-
-    "outline":           "#4D4635",
-    "outlineSubtle":     "#353535",
-    "divider":           "#2A2A2A",
+    "outline": "#4D4635",
+    "outlineSubtle": "#353535",
+    "divider": "#2A2A2A",
     "dividerOnParchment": "#8C7A66",
     "divider.parchment": "#8C7A66",
-
-    "rarityWhite":       "#E0E0E0",
-    "rarityGreen":       "#4CAF50",
-    "rarityBlue":        "#2196F3",
-    "rarityPurple":      "#9C27B0",
-    "rarityGold":        "#FFC107",
-    "rarityRed":         "#D32F2F",
-    "rarityRainbow":     "#00FBFF",
-
-    "colorBlack":        "#000000",
-    "colorWhite":        "#FFFFFF",
-    "transparent":       "#00000000",
-
-    "backgroundDeep":    "#0A0A0A",
-    "backgroundMid":     "#111111",
-    "backgroundOlive":   "#151513",
-    "backgroundNavy":    "#0A0C14",
+    "rarityWhite": "#E0E0E0",
+    "rarityGreen": "#4CAF50",
+    "rarityBlue": "#2196F3",
+    "rarityPurple": "#9C27B0",
+    "rarityGold": "#FFC107",
+    "rarityRed": "#D32F2F",
+    "rarityRainbow": "#00FBFF",
+    "colorBlack": "#000000",
+    "colorWhite": "#FFFFFF",
+    "transparent": "#00000000",
+    "backgroundDeep": "#0A0A0A",
+    "backgroundMid": "#111111",
+    "backgroundOlive": "#151513",
+    "backgroundNavy": "#0A0C14",
     "backgroundNavyAlt": "#0A0C19",
-
-    "surfaceNavyDeepest":    "#0F1220",
-    "surfaceNavyDark":       "#141830",
+    "surfaceNavyDeepest": "#0F1220",
+    "surfaceNavyDark": "#141830",
     "surfaceNavyDeepHeader": "#121222",
-    "surfaceNavy":           "#1A1A2E",
-    "surfaceNavyMid":        "#333344",
-    "surfaceNavyHigh":       "#2A2A4A",
-    "surfaceNavyBlue":       "#1A2040",
-    "surfaceDeepBlue":       "#1A2030",
-    "surfaceOliveDark":      "#2A2010",
-    "surfaceControl":        "#444444",
-    "surfaceCharcoal":       "#181C22",
-    "surfaceCharcoalBlue":   "#303A4A",
-    "surfaceGreenDeep":      "#2A5A3A",
-    "surfaceBlueDeep":       "#2A3A5A",
-    "surfaceMidGray":        "#3A3A3A",
-    "surfaceInkBlue":        "#202830",
-    "surfaceTeal":           "#24384F",
-    "surfaceSepiaDeep":      "#1C1712",
-
-    "textOffWhite":      "#E8E4DC",
-    "textKhaki":         "#B0A880",
-    "textHintBlue":      "#A0A0B4",
-    "textHintGray":      "#AAAAAA",
-    "textMidGray":       "#CCCCCC",
-    "textLightGray":     "#C8C8C8",
-    "textDarkGray":      "#888888",
-    "textCoolGray":      "#A8B4C4",
-    "textSteelDark":     "#7A8899",
-    "textSteelGray":     "#9AA8B8",
-    "textSteelMid":      "#88AACC",
-    "textSteelLight":    "#C8D4E8",
-    "textSteelLighter":  "#C8D0DC",
-    "textSteelBlue":     "#88AAFF",
-    "textCyan":          "#7EC8F7",
-    "textCyanLight":     "#88CCEE",
-    "textWarmGold":      "#F0E68C",
-    "textEnemyName":     "#F09090",
-    "textHpEnemy":       "#FF8888",
-    "textHpPositive":    "#6BCB77",
-
-    "outlineHeavy":      "#000000CC",
-    "outlineStandard":   "#000000AA",
-    "outlineLight":      "#00000099",
-    "outlineDark":       "#000000D9",
-    "outlineFaint":      "#00000088",
-
-    "mirrorHeroPublic":        "#E4E6E2",
-    "mirrorHeroSpirit":        "#7787E4",
-    "mirrorUnownedBase":       "#0F171A",
-    "mirrorUnownedBadge":      "#D3C29A",
-    "mirrorGate":              "#DDEEEA",
-    "mirrorSigilField":        "#A4D2D0",
-    "mirrorVesselLegendary":   "#F5D67C",
-    "mirrorBadge":             "#D8D3C0",
-    "mirrorStoryRail":         "#A98A60",
-    "mirrorStoryCellMortal":   "#D8CFBE",
-    "mirrorStoryCellRise":     "#D7D9D4",
-    "mirrorStoryCellCrisis":   "#D8C3B0",
-    "mirrorStoryCellAwaken":   "#AFC8D8",
-    "mirrorStoryCellSpirit":   "#B7C3EA",
-    "mirrorLabelHeader":       "#E7D9B0",
-    "mirrorLabelName":         "#EFEAD6",
-    "mirrorLabelRarity":       "#EAC97A",
-    "mirrorLabelButton":       "#F7F3E8",
-    "mirrorLabelPublic":       "#E4E1D3",
-    "mirrorLabelSpirit":       "#D7D9FF",
-    "mirrorLabelUnowned":      "#E5D7B7",
-
-    "gdv3ProgressFill":  "#87C8B3",
-    "gdv3LabelName":     "#E8D8B2",
-    "gdv3LabelTitle":    "#D7C7A2",
-    "gdv3LabelMeta":     "#D3C39D",
-    "gdv3LabelSection":  "#E6D7B4",
-    "gdv3LabelValue":    "#F4EBD4",
-    "gdv3LabelNote":     "#E6D9C0",
+    "surfaceNavy": "#1A1A2E",
+    "surfaceNavyMid": "#333344",
+    "surfaceNavyHigh": "#2A2A4A",
+    "surfaceNavyBlue": "#1A2040",
+    "surfaceDeepBlue": "#1A2030",
+    "surfaceOliveDark": "#2A2010",
+    "surfaceControl": "#444444",
+    "surfaceCharcoal": "#181C22",
+    "surfaceCharcoalBlue": "#303A4A",
+    "surfaceGreenDeep": "#2A5A3A",
+    "surfaceBlueDeep": "#2A3A5A",
+    "surfaceMidGray": "#3A3A3A",
+    "surfaceInkBlue": "#202830",
+    "surfaceTeal": "#24384F",
+    "surfaceSepiaDeep": "#1C1712",
+    "textOffWhite": "#E8E4DC",
+    "textKhaki": "#B0A880",
+    "textHintBlue": "#A0A0B4",
+    "textHintGray": "#AAAAAA",
+    "textMidGray": "#CCCCCC",
+    "textLightGray": "#C8C8C8",
+    "textDarkGray": "#888888",
+    "textCoolGray": "#A8B4C4",
+    "textSteelDark": "#7A8899",
+    "textSteelGray": "#9AA8B8",
+    "textSteelMid": "#88AACC",
+    "textSteelLight": "#C8D4E8",
+    "textSteelLighter": "#C8D0DC",
+    "textSteelBlue": "#88AAFF",
+    "textCyan": "#7EC8F7",
+    "textCyanLight": "#88CCEE",
+    "textWarmGold": "#F0E68C",
+    "textEnemyName": "#F09090",
+    "textHpEnemy": "#FF8888",
+    "textHpPositive": "#6BCB77",
+    "outlineHeavy": "#000000CC",
+    "outlineStandard": "#000000AA",
+    "outlineLight": "#00000099",
+    "outlineDark": "#000000D9",
+    "outlineFaint": "#00000088",
+    "mirrorHeroPublic": "#E4E6E2",
+    "mirrorHeroSpirit": "#7787E4",
+    "mirrorUnownedBase": "#0F171A",
+    "mirrorUnownedBadge": "#D3C29A",
+    "mirrorGate": "#DDEEEA",
+    "mirrorSigilField": "#A4D2D0",
+    "mirrorVesselLegendary": "#F5D67C",
+    "mirrorBadge": "#D8D3C0",
+    "mirrorStoryRail": "#A98A60",
+    "mirrorStoryCellMortal": "#D8CFBE",
+    "mirrorStoryCellRise": "#D7D9D4",
+    "mirrorStoryCellCrisis": "#D8C3B0",
+    "mirrorStoryCellAwaken": "#AFC8D8",
+    "mirrorStoryCellSpirit": "#B7C3EA",
+    "mirrorLabelHeader": "#E7D9B0",
+    "mirrorLabelName": "#EFEAD6",
+    "mirrorLabelRarity": "#EAC97A",
+    "mirrorLabelButton": "#F7F3E8",
+    "mirrorLabelPublic": "#E4E1D3",
+    "mirrorLabelSpirit": "#D7D9FF",
+    "mirrorLabelUnowned": "#E5D7B7",
+    "gdv3ProgressFill": "#87C8B3",
+    "gdv3LabelName": "#E8D8B2",
+    "gdv3LabelTitle": "#D7C7A2",
+    "gdv3LabelMeta": "#D3C39D",
+    "gdv3LabelSection": "#E6D7B4",
+    "gdv3LabelValue": "#F4EBD4",
+    "gdv3LabelNote": "#E6D9C0",
     "gdv3LabelCardBody": "#EDE2C8",
-    "gdv3LabelStory":    "#F0E6D1",
-    "gdv3LabelMode":     "#F4E5C1",
-
-    "stdPanelSpiritCard":  "#10202B",
-    "stdPanelSummary":     "#E7E0D0",
-    "stdPanelModule":      "#EFE9DB",
-    "stdPanelEliteTroop":  "#DCE8E4",
-    "stdArtSpiritCard":    "#2E475E",
-    "stdArtHeroGhost":     "#7F93E9",
-    "stdCrestColor":       "#8CCFC4",
-    "stdArtTroopBanner":   "#B88D5F",
-    "stdArtTroopUnit":     "#A9B8B4",
-    "stdArtTroopCrest":    "#B5D4C4",
-    "stdButtonPrimary":    "#3F6A62",
-    "stdButtonSecondary":  "#6E827E",
-    "accent.jade.base":    "#3F6A62",
-    "accent.jade.light":   "#6E827E",
-    "accent.jade.crest":   "#8CCFC4",
-    "accent.jade.field":   "#A4D2D0",
-    "stdBadgeLock":        "#A49677",
-    "stdLabelName":        "#1F302B",
-    "stdLabelTitle":       "#304D47",
-    "stdLabelRank":        "#866A39",
-    "stdLabelButton":      "#F5F1E8",
-
-    "etcPanelSide":    "#E5E0D3",
-    "etcPanelMain":    "#F0EBDD",
-    "etcPanelDetail":  "#E3ECE8",
+    "gdv3LabelStory": "#F0E6D1",
+    "gdv3LabelMode": "#F4E5C1",
+    "stdPanelSpiritCard": "#10202B",
+    "stdPanelSummary": "#E7E0D0",
+    "stdPanelModule": "#EFE9DB",
+    "stdPanelEliteTroop": "#DCE8E4",
+    "stdArtSpiritCard": "#2E475E",
+    "stdArtHeroGhost": "#7F93E9",
+    "stdCrestColor": "#8CCFC4",
+    "stdArtTroopBanner": "#B88D5F",
+    "stdArtTroopUnit": "#A9B8B4",
+    "stdArtTroopCrest": "#B5D4C4",
+    "stdButtonPrimary": "#3F6A62",
+    "stdButtonSecondary": "#6E827E",
+    "accent.jade.base": "#3F6A62",
+    "accent.jade.light": "#6E827E",
+    "accent.jade.crest": "#8CCFC4",
+    "accent.jade.field": "#A4D2D0",
+    "stdBadgeLock": "#A49677",
+    "stdLabelName": "#1F302B",
+    "stdLabelTitle": "#304D47",
+    "stdLabelRank": "#866A39",
+    "stdLabelButton": "#F5F1E8",
+    "etcPanelSide": "#E5E0D3",
+    "etcPanelMain": "#F0EBDD",
+    "etcPanelDetail": "#E3ECE8",
     "surface.parchment.summary": "#E7E0D0",
-    "surface.parchment.module":  "#EFE9DB",
-    "surface.parchment.main":    "#F0EBDD",
-    "etcCardTroop":    "#C6B08E",
-    "etcArtBanner":    "#AD8762",
-    "etcArtCrest":     "#8EC3B1",
-    "etcPanelModule":  "#F4F1E8",
-
-    "etcrPanelBg":         "#161310",
-    "etcrAccent":          "#B8904A",
-    "etcrCardBg":          "#211913",
-    "etcrCardBg2":         "#201914",
-    "etcrSection":         "#241C16",
-    "etcrDeepBg":          "#100D0A",
-    "etcrLabelPrimary":    "#F3E4C1",
-    "etcrLabelSecondary":  "#EAD3A1",
-    "etcrLabelLight":      "#F8EFD7",
-    "etcrLabelDark":       "#2B1A0E",
-    "etcrLabelMuted":      "#E6DAC7",
-
-    "resourceGold":        "#FFD700",
-    "accent.gold.cta":     "#FFD700",
-    "surfaceSepia":        "#2A2520",
-    "surfaceSepiaWarm":    "#241A0D",
-    "surfaceGray":         "#333333",
-    "hpBarAlly":           "#4488CC",
-    "hpBarEnemy":          "#CC4444"
+    "surface.parchment.module": "#EFE9DB",
+    "surface.parchment.main": "#F0EBDD",
+    "etcCardTroop": "#C6B08E",
+    "etcArtBanner": "#AD8762",
+    "etcArtCrest": "#8EC3B1",
+    "etcPanelModule": "#F4F1E8",
+    "etcrPanelBg": "#161310",
+    "etcrAccent": "#B8904A",
+    "etcrCardBg": "#211913",
+    "etcrCardBg2": "#201914",
+    "etcrSection": "#241C16",
+    "etcrDeepBg": "#100D0A",
+    "etcrLabelPrimary": "#F3E4C1",
+    "etcrLabelSecondary": "#EAD3A1",
+    "etcrLabelLight": "#F8EFD7",
+    "etcrLabelDark": "#2B1A0E",
+    "etcrLabelMuted": "#E6DAC7",
+    "resourceGold": "#FFD700",
+    "accent.gold.cta": "#FFD700",
+    "surfaceSepia": "#2A2520",
+    "surfaceSepiaWarm": "#241A0D",
+    "surfaceGray": "#333333",
+    "hpBarAlly": "#4488CC",
+    "hpBarEnemy": "#CC4444"
   },
-
   "typography": {
-    "headlineFont":  "fonts/newsreader/font",
-    "bodyFont":      "fonts/notosans_tc/font",
-    "labelFont":     "fonts/manrope/font",
-
-    "headlineLg":    { "fontSize": 42, "lineHeight": 50, "fontWeight": "bold" },
-    "headlineMd":    { "fontSize": 34, "lineHeight": 42, "fontWeight": "bold" },
-    "headlineSm":    { "fontSize": 28, "lineHeight": 36, "fontWeight": "bold" },
-    "bodyLg":        { "fontSize": 22, "lineHeight": 30 },
-    "bodyMd":        { "fontSize": 18, "lineHeight": 26 },
-    "bodyOnParchment": { "fontSize": 18, "lineHeight": 26, "outlineWidth": 0 },
-    "bodySm":        { "fontSize": 14, "lineHeight": 20 },
-    "labelLg":       { "fontSize": 16, "lineHeight": 22 },
-    "labelMd":       { "fontSize": 14, "lineHeight": 18 },
-    "labelOnParchment": { "fontSize": 14, "lineHeight": 18, "outlineWidth": 0 },
-    "labelSm":       { "fontSize": 12, "lineHeight": 16 },
-
-    "outlineWidth":  2,
-    "outlineColor":  "#1A1A1A"
+    "headlineFont": "fonts/newsreader/font",
+    "bodyFont": "fonts/notosans_tc/font",
+    "labelFont": "fonts/manrope/font",
+    "headlineLg": {
+      "fontSize": 42,
+      "lineHeight": 50,
+      "fontWeight": "bold"
+    },
+    "headlineMd": {
+      "fontSize": 34,
+      "lineHeight": 42,
+      "fontWeight": "bold"
+    },
+    "headlineSm": {
+      "fontSize": 28,
+      "lineHeight": 36,
+      "fontWeight": "bold"
+    },
+    "bodyLg": {
+      "fontSize": 22,
+      "lineHeight": 30
+    },
+    "bodyMd": {
+      "fontSize": 18,
+      "lineHeight": 26
+    },
+    "bodyOnParchment": {
+      "fontSize": 18,
+      "lineHeight": 26,
+      "outlineWidth": 0
+    },
+    "bodySm": {
+      "fontSize": 14,
+      "lineHeight": 20
+    },
+    "labelLg": {
+      "fontSize": 16,
+      "lineHeight": 22
+    },
+    "labelMd": {
+      "fontSize": 14,
+      "lineHeight": 18
+    },
+    "labelOnParchment": {
+      "fontSize": 14,
+      "lineHeight": 18,
+      "outlineWidth": 0
+    },
+    "labelSm": {
+      "fontSize": 12,
+      "lineHeight": 16
+    },
+    "outlineWidth": 2,
+    "outlineColor": "#1A1A1A"
   },
-
   "spacing": {
-    "xs":      4,
-    "sm":      8,
-    "md":      12,
-    "lg":      16,
-    "xl":      24,
-    "xxl":     32,
+    "xs": 4,
+    "sm": 8,
+    "md": 12,
+    "lg": 16,
+    "xl": 24,
+    "xxl": 32,
     "section": 48
   },
-
   "shape": {
-    "radiusNone":      0,
-    "radiusSm":        4,
-    "radiusMd":        8,
-    "radiusLg":        16,
-    "radiusXl":        24,
-    "radiusFull":      9999,
+    "radiusNone": 0,
+    "radiusSm": 4,
+    "radiusMd": 8,
+    "radiusLg": 16,
+    "radiusXl": 24,
+    "radiusFull": 9999,
     "preferredCorner": "radiusMd"
   },
-
   "opacity": {
-    "overlay":       0.75,
-    "disabled":      0.38,
-    "hover":         0.08,
-    "pressed":       0.12,
+    "overlay": 0.75,
+    "disabled": 0.38,
+    "hover": 0.08,
+    "pressed": 0.12,
     "glassmorphism": 0.75
   },
-
   "elevation": {
-    "shadowColor":  "#000000",
-    "shadowNone":   { "offsetY": 0,  "blur": 0,  "opacity": 0   },
-    "shadowSm":     { "offsetY": 2,  "blur": 4,  "opacity": 0.2 },
-    "shadowMd":     { "offsetY": 4,  "blur": 12, "opacity": 0.3 },
-    "shadowDefault": { "offsetY": 4, "blur": 12, "opacity": 0.24 },
-    "shadowLg":     { "offsetY": 12, "blur": 24, "opacity": 0.4 },
-    "glowGold":     [
-      { "offsetY": 0, "blur": 30, "opacity": 0.75, "color": "#FFC107" },
-      { "offsetY": 0, "blur": 60, "opacity": 0.4, "color": "#FFC107" }
+    "shadowColor": "#000000",
+    "shadowNone": {
+      "offsetY": 0,
+      "blur": 0,
+      "opacity": 0
+    },
+    "shadowSm": {
+      "offsetY": 2,
+      "blur": 4,
+      "opacity": 0.2
+    },
+    "shadowMd": {
+      "offsetY": 4,
+      "blur": 12,
+      "opacity": 0.3
+    },
+    "shadowDefault": {
+      "offsetY": 4,
+      "blur": 12,
+      "opacity": 0.24
+    },
+    "shadowLg": {
+      "offsetY": 12,
+      "blur": 24,
+      "opacity": 0.4
+    },
+    "glowGold": [
+      {
+        "offsetY": 0,
+        "blur": 30,
+        "opacity": 0.75,
+        "color": "#FFC107"
+      },
+      {
+        "offsetY": 0,
+        "blur": 60,
+        "opacity": 0.4,
+        "color": "#FFC107"
+      }
     ],
-    "glowRainbow":  [
-      { "offsetY": 0, "blur": 40, "opacity": 0.9, "color": "#00FBFF" },
-      { "offsetY": 0, "blur": 80, "opacity": 0.5, "color": "#00FBFF" }
+    "glowRainbow": [
+      {
+        "offsetY": 0,
+        "blur": 40,
+        "opacity": 0.9,
+        "color": "#00FBFF"
+      },
+      {
+        "offsetY": 0,
+        "blur": 80,
+        "opacity": 0.5,
+        "color": "#00FBFF"
+      }
     ],
-    "glowJade":     [
-      { "offsetY": 0, "blur": 25, "opacity": 0.7, "color": "#8CCFC4" },
-      { "offsetY": 0, "blur": 50, "opacity": 0.35, "color": "#8CCFC4" }
+    "glowJade": [
+      {
+        "offsetY": 0,
+        "blur": 25,
+        "opacity": 0.7,
+        "color": "#8CCFC4"
+      },
+      {
+        "offsetY": 0,
+        "blur": 50,
+        "opacity": 0.35,
+        "color": "#8CCFC4"
+      }
     ]
   },
-
   "animation": {
-    "durationFast":   0.15,
+    "durationFast": 0.15,
     "durationNormal": 0.25,
-    "durationSlow":   0.4,
-    "easingDefault":  "cubicBezier(0.4, 0, 0.2, 1)",
-    "easingEnter":    "cubicBezier(0, 0, 0.2, 1)",
-    "easingExit":     "cubicBezier(0.4, 0, 1, 1)"
+    "durationSlow": 0.4,
+    "easingDefault": "cubicBezier(0.4, 0, 0.2, 1)",
+    "easingEnter": "cubicBezier(0, 0, 0.2, 1)",
+    "easingExit": "cubicBezier(0.4, 0, 1, 1)"
   },
-
   "interaction": {
     "minTouchTarget": 44,
     "buttonHeightSm": 36,
     "buttonHeightMd": 48,
     "buttonHeightLg": 56,
     "buttonMinWidth": 120,
-    "tooltipDelay":   500
+    "tooltipDelay": 500
   },
-
   "nineSlice": {
-    "defaultBorderSm": [8,  8,  8,  8 ],
-    "defaultBorderMd": [16, 16, 16, 16],
-    "defaultBorderLg": [24, 24, 24, 24],
-    "scrollBorder":    [30, 45, 30, 45],
-    "metalFrame":      [20, 20, 20, 20],
-    "defaultBleed":    4,
-    "safeMargin":      2
+    "defaultBorderSm": [
+      8,
+      8,
+      8,
+      8
+    ],
+    "defaultBorderMd": [
+      16,
+      16,
+      16,
+      16
+    ],
+    "defaultBorderLg": [
+      24,
+      24,
+      24,
+      24
+    ],
+    "scrollBorder": [
+      30,
+      45,
+      30,
+      45
+    ],
+    "metalFrame": [
+      20,
+      20,
+      20,
+      20
+    ],
+    "defaultBleed": 4,
+    "safeMargin": 2
+  },
+  "handoffTextSpacingExtracted": {
+    "generatedAt": "2026-04-26T07:36:14.268Z",
+    "source": "Design System 2/ui_kits/gacha/index.html",
+    "extractedStyleBlockCount": 106,
+    "sourceSummaries": [
+      {
+        "source": "Design System 2/ui_kits/gacha/index.html",
+        "kind": "html",
+        "styleEntryCount": 106
+      }
+    ],
+    "typography": {
+      "fontSize": [
+        {
+          "value": "9px",
+          "count": 8,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 150,
+              "element": "unknown",
+              "raw": "fontSize: 9px"
+            },
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 151,
+              "element": "unknown",
+              "raw": "fontSize: 9px"
+            },
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 160,
+              "element": "unknown",
+              "raw": "fontSize: 9px"
+            },
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 168,
+              "element": "unknown",
+              "raw": "fontSize: 9px"
+            },
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 175,
+              "element": "unknown",
+              "raw": "fontSize: 9px"
+            },
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 193,
+              "element": "unknown",
+              "raw": "fontSize: 9px"
+            },
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 197,
+              "element": "unknown",
+              "raw": "fontSize: 9px"
+            },
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 264,
+              "element": "unknown",
+              "raw": "fontSize: 9px"
+            }
+          ]
+        },
+        {
+          "value": "10px",
+          "count": 5,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 320,
+              "element": "span",
+              "raw": "fontSize: 10px"
+            },
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 45,
+              "element": "unknown",
+              "raw": "fontSize: 10px"
+            },
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 124,
+              "element": "unknown",
+              "raw": "fontSize: 10px"
+            },
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 161,
+              "element": "unknown",
+              "raw": "fontSize: 10px"
+            },
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 181,
+              "element": "unknown",
+              "raw": "fontSize: 10px"
+            }
+          ]
+        },
+        {
+          "value": "11px",
+          "count": 4,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 59,
+              "element": "unknown",
+              "raw": "fontSize: 11px"
+            },
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 86,
+              "element": "unknown",
+              "raw": "fontSize: 11px"
+            },
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 240,
+              "element": "unknown",
+              "raw": "fontSize: 11px"
+            },
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 249,
+              "element": "unknown",
+              "raw": "fontSize: 11px"
+            }
+          ]
+        },
+        {
+          "value": "13px",
+          "count": 3,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 167,
+              "element": "unknown",
+              "raw": "fontSize: 13px"
+            },
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 209,
+              "element": "unknown",
+              "raw": "fontSize: 13px"
+            },
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 246,
+              "element": "unknown",
+              "raw": "fontSize: 13px"
+            }
+          ]
+        },
+        {
+          "value": "12px",
+          "count": 2,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 36,
+              "element": "unknown",
+              "raw": "fontSize: 12px"
+            },
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 184,
+              "element": "unknown",
+              "raw": "fontSize: 12px"
+            }
+          ]
+        },
+        {
+          "value": "18px",
+          "count": 2,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 194,
+              "element": "unknown",
+              "raw": "fontSize: 18px"
+            },
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 265,
+              "element": "unknown",
+              "raw": "fontSize: 18px"
+            }
+          ]
+        },
+        {
+          "value": "72px",
+          "count": 1,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 50,
+              "element": "unknown",
+              "raw": "fontSize: 72px"
+            }
+          ]
+        },
+        {
+          "value": "14px",
+          "count": 1,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 55,
+              "element": "unknown",
+              "raw": "fontSize: 14px"
+            }
+          ]
+        },
+        {
+          "value": "8px",
+          "count": 1,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 85,
+              "element": "unknown",
+              "raw": "fontSize: 8px"
+            }
+          ]
+        },
+        {
+          "value": "26px",
+          "count": 1,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 90,
+              "element": "unknown",
+              "raw": "fontSize: 26px"
+            }
+          ]
+        },
+        {
+          "value": "16px",
+          "count": 1,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 128,
+              "element": "unknown",
+              "raw": "fontSize: 16px"
+            }
+          ]
+        },
+        {
+          "value": "22px",
+          "count": 1,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 149,
+              "element": "unknown",
+              "raw": "fontSize: 22px"
+            }
+          ]
+        },
+        {
+          "value": "20px",
+          "count": 1,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 239,
+              "element": "unknown",
+              "raw": "fontSize: 20px"
+            }
+          ]
+        },
+        {
+          "value": "7px",
+          "count": 1,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 245,
+              "element": "unknown",
+              "raw": "fontSize: 7px"
+            }
+          ]
+        }
+      ],
+      "fontFamily": [
+        {
+          "value": "var(--font-label)",
+          "count": 20,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 36,
+              "element": "unknown",
+              "raw": "fontFamily: var(--font-label)"
+            },
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 45,
+              "element": "unknown",
+              "raw": "fontFamily: var(--font-label)"
+            },
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 55,
+              "element": "unknown",
+              "raw": "fontFamily: var(--font-label)"
+            },
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 59,
+              "element": "unknown",
+              "raw": "fontFamily: var(--font-label)"
+            },
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 85,
+              "element": "unknown",
+              "raw": "fontFamily: var(--font-label)"
+            },
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 86,
+              "element": "unknown",
+              "raw": "fontFamily: var(--font-label)"
+            },
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 124,
+              "element": "unknown",
+              "raw": "fontFamily: var(--font-label)"
+            },
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 150,
+              "element": "unknown",
+              "raw": "fontFamily: var(--font-label)"
+            },
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 151,
+              "element": "unknown",
+              "raw": "fontFamily: var(--font-label)"
+            },
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 160,
+              "element": "unknown",
+              "raw": "fontFamily: var(--font-label)"
+            }
+          ]
+        },
+        {
+          "value": "var(--font-headline)",
+          "count": 4,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 50,
+              "element": "unknown",
+              "raw": "fontFamily: var(--font-headline)"
+            },
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 128,
+              "element": "unknown",
+              "raw": "fontFamily: var(--font-headline)"
+            },
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 149,
+              "element": "unknown",
+              "raw": "fontFamily: var(--font-headline)"
+            },
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 265,
+              "element": "unknown",
+              "raw": "fontFamily: var(--font-headline)"
+            }
+          ]
+        },
+        {
+          "value": "var(--font-num)",
+          "count": 3,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 167,
+              "element": "unknown",
+              "raw": "fontFamily: var(--font-num)"
+            },
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 184,
+              "element": "unknown",
+              "raw": "fontFamily: var(--font-num)"
+            },
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 194,
+              "element": "unknown",
+              "raw": "fontFamily: var(--font-num)"
+            }
+          ]
+        },
+        {
+          "value": "var(--font-body)",
+          "count": 1,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 9,
+              "element": "meta",
+              "raw": "fontFamily: var(--font-body)"
+            }
+          ]
+        }
+      ],
+      "letterSpacing": [
+        {
+          "value": ".08em",
+          "count": 5,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 50,
+              "element": "unknown",
+              "raw": "letterSpacing: .08em"
+            },
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 149,
+              "element": "unknown",
+              "raw": "letterSpacing: .08em"
+            },
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 197,
+              "element": "unknown",
+              "raw": "letterSpacing: .08em"
+            },
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 249,
+              "element": "unknown",
+              "raw": "letterSpacing: .08em"
+            },
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 265,
+              "element": "unknown",
+              "raw": "letterSpacing: .08em"
+            }
+          ]
+        },
+        {
+          "value": ".1em",
+          "count": 4,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 59,
+              "element": "unknown",
+              "raw": "letterSpacing: .1em"
+            },
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 181,
+              "element": "unknown",
+              "raw": "letterSpacing: .1em"
+            },
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 209,
+              "element": "unknown",
+              "raw": "letterSpacing: .1em"
+            },
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 219,
+              "element": "unknown",
+              "raw": "letterSpacing: .1em"
+            }
+          ]
+        },
+        {
+          "value": ".2em",
+          "count": 3,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 45,
+              "element": "unknown",
+              "raw": "letterSpacing: .2em"
+            },
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 85,
+              "element": "unknown",
+              "raw": "letterSpacing: .2em"
+            },
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 175,
+              "element": "unknown",
+              "raw": "letterSpacing: .2em"
+            }
+          ]
+        },
+        {
+          "value": ".18em",
+          "count": 3,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 150,
+              "element": "unknown",
+              "raw": "letterSpacing: .18em"
+            },
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 160,
+              "element": "unknown",
+              "raw": "letterSpacing: .18em"
+            },
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 264,
+              "element": "unknown",
+              "raw": "letterSpacing: .18em"
+            }
+          ]
+        },
+        {
+          "value": ".12em",
+          "count": 2,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 36,
+              "element": "unknown",
+              "raw": "letterSpacing: .12em"
+            },
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 151,
+              "element": "unknown",
+              "raw": "letterSpacing: .12em"
+            }
+          ]
+        },
+        {
+          "value": ".14em",
+          "count": 2,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 128,
+              "element": "unknown",
+              "raw": "letterSpacing: .14em"
+            },
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 193,
+              "element": "unknown",
+              "raw": "letterSpacing: .14em"
+            }
+          ]
+        },
+        {
+          "value": ".06em",
+          "count": 2,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 161,
+              "element": "unknown",
+              "raw": "letterSpacing: .06em"
+            },
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 168,
+              "element": "unknown",
+              "raw": "letterSpacing: .06em"
+            }
+          ]
+        },
+        {
+          "value": ".4em",
+          "count": 1,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 55,
+              "element": "unknown",
+              "raw": "letterSpacing: .4em"
+            }
+          ]
+        },
+        {
+          "value": ".04em",
+          "count": 1,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 86,
+              "element": "unknown",
+              "raw": "letterSpacing: .04em"
+            }
+          ]
+        },
+        {
+          "value": ".22em",
+          "count": 1,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 124,
+              "element": "unknown",
+              "raw": "letterSpacing: .22em"
+            }
+          ]
+        }
+      ],
+      "fontWeight": [
+        {
+          "value": 700,
+          "count": 11,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 124,
+              "element": "unknown",
+              "raw": "fontWeight: 700"
+            },
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 128,
+              "element": "unknown",
+              "raw": "fontWeight: 700"
+            },
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 149,
+              "element": "unknown",
+              "raw": "fontWeight: 700"
+            },
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 160,
+              "element": "unknown",
+              "raw": "fontWeight: 700"
+            },
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 167,
+              "element": "unknown",
+              "raw": "fontWeight: 700"
+            },
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 175,
+              "element": "unknown",
+              "raw": "fontWeight: 700"
+            },
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 184,
+              "element": "unknown",
+              "raw": "fontWeight: 700"
+            },
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 194,
+              "element": "unknown",
+              "raw": "fontWeight: 700"
+            },
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 209,
+              "element": "unknown",
+              "raw": "fontWeight: 700"
+            },
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 249,
+              "element": "unknown",
+              "raw": "fontWeight: 700"
+            }
+          ]
+        },
+        {
+          "value": 800,
+          "count": 7,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 45,
+              "element": "unknown",
+              "raw": "fontWeight: 800"
+            },
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 85,
+              "element": "unknown",
+              "raw": "fontWeight: 800"
+            },
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 151,
+              "element": "unknown",
+              "raw": "fontWeight: 800"
+            },
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 181,
+              "element": "unknown",
+              "raw": "fontWeight: 800"
+            },
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 219,
+              "element": "unknown",
+              "raw": "fontWeight: 800"
+            },
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 245,
+              "element": "unknown",
+              "raw": "fontWeight: 800"
+            },
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 246,
+              "element": "unknown",
+              "raw": "fontWeight: 800"
+            }
+          ]
+        },
+        {
+          "value": 900,
+          "count": 2,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 50,
+              "element": "unknown",
+              "raw": "fontWeight: 900"
+            },
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 90,
+              "element": "unknown",
+              "raw": "fontWeight: 900"
+            }
+          ]
+        }
+      ],
+      "textTransform": [
+        {
+          "value": "uppercase",
+          "count": 8,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 45,
+              "element": "unknown",
+              "raw": "textTransform: uppercase"
+            },
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 85,
+              "element": "unknown",
+              "raw": "textTransform: uppercase"
+            },
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 124,
+              "element": "unknown",
+              "raw": "textTransform: uppercase"
+            },
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 150,
+              "element": "unknown",
+              "raw": "textTransform: uppercase"
+            },
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 160,
+              "element": "unknown",
+              "raw": "textTransform: uppercase"
+            },
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 175,
+              "element": "unknown",
+              "raw": "textTransform: uppercase"
+            },
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 193,
+              "element": "unknown",
+              "raw": "textTransform: uppercase"
+            },
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 264,
+              "element": "unknown",
+              "raw": "textTransform: uppercase"
+            }
+          ]
+        }
+      ],
+      "lineHeight": [
+        {
+          "value": 1,
+          "count": 1,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 50,
+              "element": "unknown",
+              "raw": "lineHeight: 1"
+            }
+          ]
+        },
+        {
+          "value": 1.55,
+          "count": 1,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 86,
+              "element": "unknown",
+              "raw": "lineHeight: 1.55"
+            }
+          ]
+        },
+        {
+          "value": 1.2,
+          "count": 1,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 149,
+              "element": "unknown",
+              "raw": "lineHeight: 1.2"
+            }
+          ]
+        },
+        {
+          "value": 1.7,
+          "count": 1,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 197,
+              "element": "unknown",
+              "raw": "lineHeight: 1.7"
+            }
+          ]
+        }
+      ],
+      "textAlign": [
+        {
+          "value": "right",
+          "count": 1,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 184,
+              "element": "unknown",
+              "raw": "textAlign: right"
+            }
+          ]
+        },
+        {
+          "value": "center",
+          "count": 1,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 192,
+              "element": "unknown",
+              "raw": "textAlign: center"
+            }
+          ]
+        },
+        {
+          "value": "left",
+          "count": 1,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 260,
+              "element": "unknown",
+              "raw": "textAlign: left"
+            }
+          ]
+        }
+      ]
+    },
+    "spacing": {
+      "marginLeft": [
+        {
+          "value": "2px",
+          "count": 1,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 320,
+              "element": "span",
+              "raw": "marginLeft: 2px"
+            }
+          ]
+        },
+        {
+          "value": "14px",
+          "count": 1,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 128,
+              "element": "unknown",
+              "raw": "marginLeft: 14px"
+            }
+          ]
+        }
+      ],
+      "width": [
+        {
+          "value": "${(p.pity.cur/p.pity.max*100).toFixed(1)}%",
+          "count": 1,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 497,
+              "element": "div",
+              "raw": "width: ${(p.pity.cur/p.pity.max*100).toFixed(1)}%"
+            }
+          ]
+        },
+        {
+          "value": "${Math.max(r.pct/70*100,1.5)}%",
+          "count": 1,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 511,
+              "element": "div",
+              "raw": "width: ${Math.max(r.pct/70*100,1.5)}%"
+            }
+          ]
+        },
+        {
+          "value": "1920px",
+          "count": 1,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 9,
+              "element": "meta",
+              "raw": "width: 1920px"
+            }
+          ]
+        },
+        {
+          "value": "480px",
+          "count": 1,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 36,
+              "element": "unknown",
+              "raw": "width: 480px"
+            }
+          ]
+        },
+        {
+          "value": "180px",
+          "count": 1,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 66,
+              "element": "unknown",
+              "raw": "width: 180px"
+            }
+          ]
+        },
+        {
+          "value": "64px",
+          "count": 1,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 90,
+              "element": "unknown",
+              "raw": "width: 64px"
+            }
+          ]
+        },
+        {
+          "value": "8px",
+          "count": 1,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 109,
+              "element": "unknown",
+              "raw": "width: 8px"
+            }
+          ]
+        },
+        {
+          "value": "24px",
+          "count": 1,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 114,
+              "element": "unknown",
+              "raw": "width: 24px"
+            }
+          ]
+        },
+        {
+          "value": "460px",
+          "count": 1,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 134,
+              "element": "unknown",
+              "raw": "width: 460px"
+            }
+          ]
+        },
+        {
+          "value": "1px",
+          "count": 1,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 195,
+              "element": "unknown",
+              "raw": "width: 1px"
+            }
+          ]
+        },
+        {
+          "value": "14px",
+          "count": 1,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 245,
+              "element": "unknown",
+              "raw": "width: 14px"
+            }
+          ]
+        }
+      ],
+      "margin": [
+        {
+          "value": 0,
+          "count": 1,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 8,
+              "element": "unknown",
+              "raw": "margin: 0"
+            }
+          ]
+        }
+      ],
+      "height": [
+        {
+          "value": "56px",
+          "count": 2,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 117,
+              "element": "unknown",
+              "raw": "height: 56px"
+            },
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 209,
+              "element": "unknown",
+              "raw": "height: 56px"
+            }
+          ]
+        },
+        {
+          "value": "100%",
+          "count": 2,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 166,
+              "element": "unknown",
+              "raw": "height: 100%"
+            },
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 183,
+              "element": "unknown",
+              "raw": "height: 100%"
+            }
+          ]
+        },
+        {
+          "value": "1080px",
+          "count": 1,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 9,
+              "element": "meta",
+              "raw": "height: 1080px"
+            }
+          ]
+        },
+        {
+          "value": "85%",
+          "count": 1,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 36,
+              "element": "unknown",
+              "raw": "height: 85%"
+            }
+          ]
+        },
+        {
+          "value": "120px",
+          "count": 1,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 71,
+              "element": "unknown",
+              "raw": "height: 120px"
+            }
+          ]
+        },
+        {
+          "value": "64px",
+          "count": 1,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 90,
+              "element": "unknown",
+              "raw": "height: 64px"
+            }
+          ]
+        },
+        {
+          "value": "8px",
+          "count": 1,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 109,
+              "element": "unknown",
+              "raw": "height: 8px"
+            }
+          ]
+        },
+        {
+          "value": "30px",
+          "count": 1,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 162,
+              "element": "unknown",
+              "raw": "height: 30px"
+            }
+          ]
+        },
+        {
+          "value": "5px",
+          "count": 1,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 182,
+              "element": "unknown",
+              "raw": "height: 5px"
+            }
+          ]
+        },
+        {
+          "value": "36px",
+          "count": 1,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 195,
+              "element": "unknown",
+              "raw": "height: 36px"
+            }
+          ]
+        },
+        {
+          "value": "200px",
+          "count": 1,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 202,
+              "element": "unknown",
+              "raw": "height: 200px"
+            }
+          ]
+        },
+        {
+          "value": "88px",
+          "count": 1,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 219,
+              "element": "unknown",
+              "raw": "height: 88px"
+            }
+          ]
+        },
+        {
+          "value": "14px",
+          "count": 1,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 245,
+              "element": "unknown",
+              "raw": "height: 14px"
+            }
+          ]
+        },
+        {
+          "value": "44px",
+          "count": 1,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 249,
+              "element": "unknown",
+              "raw": "height: 44px"
+            }
+          ]
+        }
+      ],
+      "gap": [
+        {
+          "value": "10px",
+          "count": 4,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 59,
+              "element": "unknown",
+              "raw": "gap: 10px"
+            },
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 105,
+              "element": "unknown",
+              "raw": "gap: 10px"
+            },
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 177,
+              "element": "unknown",
+              "raw": "gap: 10px"
+            },
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 209,
+              "element": "unknown",
+              "raw": "gap: 10px"
+            }
+          ]
+        },
+        {
+          "value": "5px",
+          "count": 3,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 176,
+              "element": "unknown",
+              "raw": "gap: 5px"
+            },
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 219,
+              "element": "unknown",
+              "raw": "gap: 5px"
+            },
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 241,
+              "element": "unknown",
+              "raw": "gap: 5px"
+            }
+          ]
+        },
+        {
+          "value": "20px",
+          "count": 2,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 143,
+              "element": "unknown",
+              "raw": "gap: 20px"
+            },
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 202,
+              "element": "unknown",
+              "raw": "gap: 20px"
+            }
+          ]
+        },
+        {
+          "value": "8px",
+          "count": 2,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 248,
+              "element": "unknown",
+              "raw": "gap: 8px"
+            },
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 249,
+              "element": "unknown",
+              "raw": "gap: 8px"
+            }
+          ]
+        },
+        {
+          "value": 0,
+          "count": 1,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 134,
+              "element": "unknown",
+              "raw": "gap: 0"
+            }
+          ]
+        },
+        {
+          "value": "6px",
+          "count": 1,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 45,
+              "element": "unknown",
+              "raw": "gap: 6px"
+            }
+          ]
+        }
+      ],
+      "marginBottom": [
+        {
+          "value": "4px",
+          "count": 2,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 85,
+              "element": "unknown",
+              "raw": "marginBottom: 4px"
+            },
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 193,
+              "element": "unknown",
+              "raw": "marginBottom: 4px"
+            }
+          ]
+        },
+        {
+          "value": "12px",
+          "count": 1,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 45,
+              "element": "unknown",
+              "raw": "marginBottom: 12px"
+            }
+          ]
+        },
+        {
+          "value": "20px",
+          "count": 1,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 148,
+              "element": "unknown",
+              "raw": "marginBottom: 20px"
+            }
+          ]
+        },
+        {
+          "value": "8px",
+          "count": 1,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 159,
+              "element": "unknown",
+              "raw": "marginBottom: 8px"
+            }
+          ]
+        },
+        {
+          "value": "10px",
+          "count": 1,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 175,
+              "element": "unknown",
+              "raw": "marginBottom: 10px"
+            }
+          ]
+        },
+        {
+          "value": "3px",
+          "count": 1,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 264,
+              "element": "unknown",
+              "raw": "marginBottom: 3px"
+            }
+          ]
+        }
+      ],
+      "padding": [
+        {
+          "value": "4px 12px",
+          "count": 2,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 45,
+              "element": "unknown",
+              "raw": "padding: 4px 12px"
+            },
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 151,
+              "element": "unknown",
+              "raw": "padding: 4px 12px"
+            }
+          ]
+        },
+        {
+          "value": "8px 18px",
+          "count": 1,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 59,
+              "element": "unknown",
+              "raw": "padding: 8px 18px"
+            }
+          ]
+        },
+        {
+          "value": "10px 16px",
+          "count": 1,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 78,
+              "element": "unknown",
+              "raw": "padding: 10px 16px"
+            }
+          ]
+        },
+        {
+          "value": "0 120px",
+          "count": 1,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 117,
+              "element": "unknown",
+              "raw": "padding: 0 120px"
+            }
+          ]
+        },
+        {
+          "value": "28px 26px",
+          "count": 1,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 134,
+              "element": "unknown",
+              "raw": "padding: 28px 26px"
+            }
+          ]
+        },
+        {
+          "value": "6px 10px",
+          "count": 1,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 177,
+              "element": "unknown",
+              "raw": "padding: 6px 10px"
+            }
+          ]
+        },
+        {
+          "value": "12px 16px",
+          "count": 1,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 187,
+              "element": "unknown",
+              "raw": "padding: 12px 16px"
+            }
+          ]
+        },
+        {
+          "value": "0 60px",
+          "count": 1,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 202,
+              "element": "unknown",
+              "raw": "padding: 0 60px"
+            }
+          ]
+        },
+        {
+          "value": "0 24px",
+          "count": 1,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 209,
+              "element": "unknown",
+              "raw": "padding: 0 24px"
+            }
+          ]
+        },
+        {
+          "value": "3px 12px",
+          "count": 1,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 241,
+              "element": "unknown",
+              "raw": "padding: 3px 12px"
+            }
+          ]
+        },
+        {
+          "value": "0 20px",
+          "count": 1,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 249,
+              "element": "unknown",
+              "raw": "padding: 0 20px"
+            }
+          ]
+        }
+      ],
+      "marginTop": [
+        {
+          "value": "10px",
+          "count": 1,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 55,
+              "element": "unknown",
+              "raw": "marginTop: 10px"
+            }
+          ]
+        },
+        {
+          "value": "16px",
+          "count": 1,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 59,
+              "element": "unknown",
+              "raw": "marginTop: 16px"
+            }
+          ]
+        },
+        {
+          "value": "5px",
+          "count": 1,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 150,
+              "element": "unknown",
+              "raw": "marginTop: 5px"
+            }
+          ]
+        },
+        {
+          "value": "4px",
+          "count": 1,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 168,
+              "element": "unknown",
+              "raw": "marginTop: 4px"
+            }
+          ]
+        },
+        {
+          "value": "2px",
+          "count": 1,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 241,
+              "element": "unknown",
+              "raw": "marginTop: 2px"
+            }
+          ]
+        }
+      ],
+      "paddingRight": [
+        {
+          "value": "10px",
+          "count": 1,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 166,
+              "element": "unknown",
+              "raw": "paddingRight: 10px"
+            }
+          ]
+        }
+      ],
+      "minWidth": [
+        {
+          "value": "36px",
+          "count": 1,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 181,
+              "element": "unknown",
+              "raw": "minWidth: 36px"
+            }
+          ]
+        },
+        {
+          "value": "42px",
+          "count": 1,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 184,
+              "element": "unknown",
+              "raw": "minWidth: 42px"
+            }
+          ]
+        },
+        {
+          "value": "220px",
+          "count": 1,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 225,
+              "element": "unknown",
+              "raw": "minWidth: 220px"
+            }
+          ]
+        },
+        {
+          "value": "290px",
+          "count": 1,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 232,
+              "element": "unknown",
+              "raw": "minWidth: 290px"
+            }
+          ]
+        }
+      ]
+    },
+    "customProperties": {
+      "--pool-glow": [
+        {
+          "value": "${p.glowColor}",
+          "count": 1,
+          "samples": [
+            {
+              "source": "Design System 2/ui_kits/gacha/index.html",
+              "line": 455,
+              "element": "div",
+              "raw": "--pool-glow: ${p.glowColor}"
+            }
+          ]
+        }
+      ]
+    },
+    "componentRecipes": {
+      "tabOverview": {
+        "coreStatsBySource": []
+      }
+    }
   }
 }

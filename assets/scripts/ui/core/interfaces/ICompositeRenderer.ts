@@ -51,6 +51,26 @@ export interface RadarChartConfig {
     gridColor?: string;
     /** 軸標籤字型大小（預設 18） */
     labelFontSize?: number;
+    /** 軸標籤顏色（依 axes 順序，hex） */
+    axisLabelColors?: string[];
+    /** 軸標籤距離中心半徑（預設 size + 22） */
+    axisLabelRadius?: number;
+    /** 軸標籤 Y 偏移（預設 +5，對齊 HTML text baseline） */
+    axisLabelOffsetY?: number;
+    /** 是否繪製軸標籤（預設 true） */
+    showAxisLabels?: boolean;
+    /** 每圈格線數（預設 4，對齊 HTML） */
+    gridRings?: number;
+    /** 格線寬度（預設 0.7） */
+    gridLineWidth?: number;
+    /** 軸線寬度（預設 0.7） */
+    axisLineWidth?: number;
+    /** 雷達輪廓寬度（預設 2） */
+    outlineWidth?: number;
+    /** 頂點顏色（依 axes 順序，hex） */
+    markerColors?: string[];
+    /** 頂點半徑（預設 4） */
+    markerRadius?: number;
 }
 
 /** 格狀佈局配置（GridPanel 使用） */

@@ -1,0 +1,892 @@
+{
+  "id": "lobby-mission-detail-dialog-main",
+  "version": 1,
+  "canvas": {
+    "fitWidth": true,
+    "fitHeight": true,
+    "safeArea": true,
+    "safeAreaConstrained": true,
+    "designWidth": 1920,
+    "designHeight": 1080
+  },
+  "root": {
+    "type": "container",
+    "name": "LobbyMissionDetailDialogRoot",
+    "widget": { "top": 0, "bottom": 0, "left": 0, "right": 0 },
+    "transition": { "enter": "scaleIn", "exit": "scaleOut", "duration": 0.22, "easing": "backOut" },
+    "children": [
+      {
+        "type": "button",
+        "name": "OverlayMask",
+        "id": "overlayMask",
+        "widget": { "top": 0, "bottom": 0, "left": 0, "right": 0 },
+        "skinSlot": "mission.dialog.overlay.mask",
+        "onClick": "onClose"
+      },
+      {
+        "type": "panel",
+        "name": "DialogCard",
+        "widget": { "hCenter": 0, "vCenter": 0 },
+        "width": 800,
+        "height": 900,
+        "skinSlot": "mission.dialog.card.bg",
+        "layout": {
+          "type": "vertical",
+          "spacing": 0,
+          "paddingTop": 0,
+          "paddingBottom": 0,
+          "paddingLeft": 0,
+          "paddingRight": 0
+        },
+        "children": [
+          {
+            "type": "panel",
+            "name": "HeaderBar",
+            "width": "100%",
+            "height": 92,
+            "skinSlot": "mission.dialog.header.bg",
+            "layout": {
+              "type": "horizontal",
+              "spacing": 16,
+              "paddingTop": 16,
+              "paddingBottom": 14,
+              "paddingLeft": 28,
+              "paddingRight": 24
+            },
+            "children": [
+              {
+                "type": "container",
+                "name": "HeaderTitleGroup",
+                "width": 680,
+                "height": 62,
+                "layout": {
+                  "type": "vertical",
+                  "spacing": 6
+                },
+                "children": [
+                  {
+                    "type": "label",
+                    "name": "DialogTitleLabel",
+                    "id": "dialogTitleLabel",
+                    "width": "100%",
+                    "height": 24,
+                    "text": "任務詳情",
+                    "styleSlot": "mission.dialog.label.header"
+                  },
+                  {
+                    "type": "container",
+                    "name": "HeaderMetaRow",
+                    "width": "100%",
+                    "height": 26,
+                    "layout": { "type": "horizontal", "spacing": 10 },
+                    "children": [
+                      {
+                        "type": "panel",
+                        "name": "MissionTypeBadge",
+                        "width": 120,
+                        "height": 26,
+                        "skinSlot": "mission.dialog.badge.type",
+                        "children": [
+                          {
+                            "type": "label",
+                            "name": "MissionTypeLabel",
+                            "id": "missionTypeLabel",
+                            "widget": { "top": 4, "left": 0, "right": 0 },
+                            "height": 18,
+                            "styleSlot": "mission.dialog.label.badge",
+                            "bind": "missionTypeLabel"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "panel",
+                        "name": "IntelPercentChip",
+                        "width": 108,
+                        "height": 26,
+                        "skinSlot": "mission.dialog.badge.intel",
+                        "layout": { "type": "horizontal", "spacing": 2, "paddingLeft": 10, "paddingRight": 10 },
+                        "children": [
+                          {
+                            "type": "label",
+                            "name": "IntelPercentValue",
+                            "id": "intelPercentValue",
+                            "width": 54,
+                            "height": 18,
+                            "styleSlot": "mission.dialog.label.badge",
+                            "bind": "intelRevealPercent"
+                          },
+                          {
+                            "type": "label",
+                            "name": "IntelPercentUnit",
+                            "width": 16,
+                            "height": 18,
+                            "text": "%",
+                            "styleSlot": "mission.dialog.label.badge"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "button",
+                "name": "BtnClose",
+                "id": "btnClose",
+                "width": 36,
+                "height": 36,
+                "skinSlot": "mission.dialog.close.btn",
+                "children": [
+                  {
+                    "type": "label",
+                    "name": "CloseLabel",
+                    "width": "100%",
+                    "height": "100%",
+                    "text": "X",
+                    "styleSlot": "mission.dialog.label.close"
+                  }
+                ],
+                "onClick": "onClose"
+              }
+            ]
+          },
+          {
+            "type": "scroll-view",
+            "name": "ScrollView",
+            "id": "scrollView",
+            "width": "100%",
+            "height": 646,
+            "skinSlot": "mission.dialog.scroll.bg",
+            "children": [
+              {
+                "type": "container",
+                "name": "ScrollContent",
+                "id": "scrollContent",
+                "width": "100%",
+                "height": 1120,
+                "layout": {
+                  "type": "vertical",
+                  "spacing": 16,
+                  "paddingTop": 18,
+                  "paddingBottom": 18,
+                  "paddingLeft": 24,
+                  "paddingRight": 24
+                },
+                "children": [
+                  {
+                    "type": "panel",
+                    "name": "OverviewPanel",
+                    "width": "100%",
+                    "height": 140,
+                    "skinSlot": "mission.dialog.section.bg",
+                    "layout": {
+                      "type": "vertical",
+                      "spacing": 8,
+                      "paddingTop": 14,
+                      "paddingBottom": 14,
+                      "paddingLeft": 16,
+                      "paddingRight": 16
+                    },
+                    "children": [
+                      {
+                        "type": "label",
+                        "name": "OverviewTitleLabel",
+                        "width": "100%",
+                        "height": 22,
+                        "text": "任務概要",
+                        "styleSlot": "mission.dialog.label.section"
+                      },
+                      {
+                        "type": "label",
+                        "name": "MissionTitleLabel",
+                        "id": "missionTitleLabel",
+                        "width": "100%",
+                        "height": 28,
+                        "styleSlot": "mission.dialog.label.title",
+                        "bind": "missionTitle"
+                      },
+                      {
+                        "type": "label",
+                        "name": "MissionBriefLabel",
+                        "id": "missionBriefLabel",
+                        "width": "100%",
+                        "height": 44,
+                        "styleSlot": "mission.dialog.label.body",
+                        "bind": "missionBrief"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "panel",
+                    "name": "IntelPanel",
+                    "width": "100%",
+                    "height": 240,
+                    "skinSlot": "mission.dialog.section.bg",
+                    "layout": {
+                      "type": "vertical",
+                      "spacing": 8,
+                      "paddingTop": 14,
+                      "paddingBottom": 14,
+                      "paddingLeft": 16,
+                      "paddingRight": 16
+                    },
+                    "children": [
+                      {
+                        "type": "label",
+                        "name": "IntelTitleLabel",
+                        "width": "100%",
+                        "height": 22,
+                        "text": "情報揭示",
+                        "styleSlot": "mission.dialog.label.section"
+                      },
+                      {
+                        "type": "label",
+                        "name": "IntelBodyLabel",
+                        "id": "intelBodyLabel",
+                        "width": "100%",
+                        "height": 110,
+                        "styleSlot": "mission.dialog.label.body",
+                        "bind": "intelBody"
+                      },
+                      {
+                        "type": "panel",
+                        "name": "IntelFogMask",
+                        "id": "intelFogMask",
+                        "widget": { "left": 16, "right": 16, "bottom": 14 },
+                        "height": 58,
+                        "skinSlot": "mission.dialog.fog.mask",
+                        "_doc": "情報度未滿 100% 時顯示；內容由 intelRevealPercent / intelFogVisible 決定。",
+                        "bind": "intelFogVisible",
+                        "children": [
+                          {
+                            "type": "label",
+                            "name": "IntelFogLabel",
+                            "widget": { "top": 17, "left": 0, "right": 0 },
+                            "height": 20,
+                            "text": "目前情報仍不完整，派探子再探可看得更清楚",
+                            "styleSlot": "mission.dialog.label.muted"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "panel",
+                    "name": "AssignmentPanel",
+                    "width": "100%",
+                    "height": 180,
+                    "skinSlot": "mission.dialog.section.bg",
+                    "layout": {
+                      "type": "vertical",
+                      "spacing": 8,
+                      "paddingTop": 14,
+                      "paddingBottom": 14,
+                      "paddingLeft": 16,
+                      "paddingRight": 16
+                    },
+                    "children": [
+                      {
+                        "type": "label",
+                        "name": "AssignmentTitleLabel",
+                        "width": "100%",
+                        "height": 22,
+                        "text": "行動人物",
+                        "styleSlot": "mission.dialog.label.section"
+                      },
+                      {
+                        "type": "button",
+                        "name": "GeneralSelectButton",
+                        "id": "generalSelectButton",
+                        "width": "100%",
+                        "height": 52,
+                        "skinSlot": "mission.dialog.dropdown.btn",
+                        "onClick": "onOpenGeneralSelect",
+                        "children": [
+                          {
+                            "type": "label",
+                            "name": "SelectedGeneralLabel",
+                            "id": "selectedGeneralLabel",
+                            "widget": { "top": 16, "left": 14, "right": 34 },
+                            "height": 20,
+                            "styleSlot": "mission.dialog.label.dropdown",
+                            "bind": "selectedGeneralLabel"
+                          },
+                          {
+                            "type": "label",
+                            "name": "ChevronLabel",
+                            "widget": { "top": 14, "right": 12 },
+                            "width": 16,
+                            "height": 20,
+                            "text": "▾",
+                            "styleSlot": "mission.dialog.label.chevron"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "panel",
+                        "name": "VolunteerBadge",
+                        "id": "volunteerBadge",
+                        "width": 180,
+                        "height": 28,
+                        "skinSlot": "mission.dialog.badge.volunteer",
+                        "bind": "volunteerBadgeVisible",
+                        "children": [
+                          {
+                            "type": "label",
+                            "name": "VolunteerBadgeLabel",
+                            "id": "volunteerBadgeLabel",
+                            "widget": { "top": 6, "left": 0, "right": 0 },
+                            "height": 16,
+                            "styleSlot": "mission.dialog.label.badge",
+                            "bind": "volunteerBadgeLabel"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "label",
+                        "name": "GeneralSelectHintLabel",
+                        "id": "generalSelectHintLabel",
+                        "width": "100%",
+                        "height": 18,
+                        "styleSlot": "mission.dialog.label.muted",
+                        "bind": "generalSelectHintLabel"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "panel",
+                    "name": "ResourcePanel",
+                    "width": "100%",
+                    "height": 270,
+                    "skinSlot": "mission.dialog.section.bg",
+                    "layout": {
+                      "type": "vertical",
+                      "spacing": 8,
+                      "paddingTop": 14,
+                      "paddingBottom": 14,
+                      "paddingLeft": 16,
+                      "paddingRight": 16
+                    },
+                    "children": [
+                      {
+                        "type": "label",
+                        "name": "ResourceTitleLabel",
+                        "width": "100%",
+                        "height": 22,
+                        "text": "資源耗費",
+                        "styleSlot": "mission.dialog.label.section"
+                      },
+                      {
+                        "type": "panel",
+                        "name": "FoodRow",
+                        "width": "100%",
+                        "height": 46,
+                        "skinSlot": "mission.dialog.row.bg",
+                        "layout": {
+                          "type": "vertical",
+                          "spacing": 4,
+                          "paddingTop": 6,
+                          "paddingBottom": 6,
+                          "paddingLeft": 12,
+                          "paddingRight": 12
+                        },
+                        "children": [
+                          {
+                            "type": "container",
+                            "name": "FoodHeadRow",
+                            "width": "100%",
+                            "height": 18,
+                            "layout": { "type": "horizontal" },
+                            "children": [
+                              {
+                                "type": "label",
+                                "name": "FoodNameLabel",
+                                "width": 84,
+                                "height": 18,
+                                "text": "糧草",
+                                "styleSlot": "mission.dialog.label.cost"
+                              },
+                              {
+                                "type": "spacer",
+                                "name": "FoodHeadSpacer",
+                                "width": 1,
+                                "height": 1
+                              },
+                              {
+                                "type": "label",
+                                "name": "FoodValueLabel",
+                                "id": "costFoodValueLabel",
+                                "width": 96,
+                                "height": 18,
+                                "styleSlot": "mission.dialog.label.metric",
+                                "bind": "costFoodValueLabel"
+                              }
+                            ]
+                          },
+                          {
+                            "type": "panel",
+                            "name": "FoodBarTrack",
+                            "width": "100%",
+                            "height": 10,
+                            "skinSlot": "mission.dialog.bar.track.food",
+                            "children": [
+                              {
+                                "type": "panel",
+                                "name": "FoodBarFill",
+                                "id": "costFoodRatio",
+                                "widget": { "top": 0, "left": 0, "bottom": 0 },
+                                "width": "100%",
+                                "height": 10,
+                                "skinSlot": "mission.dialog.bar.fill.food",
+                                "bind": "costFoodRatio",
+                                "_doc": "TS 依 costFoodRatio 調整填充寬度或 clip。"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "panel",
+                        "name": "TroopRow",
+                        "width": "100%",
+                        "height": 46,
+                        "skinSlot": "mission.dialog.row.bg",
+                        "layout": {
+                          "type": "vertical",
+                          "spacing": 4,
+                          "paddingTop": 6,
+                          "paddingBottom": 6,
+                          "paddingLeft": 12,
+                          "paddingRight": 12
+                        },
+                        "children": [
+                          {
+                            "type": "container",
+                            "name": "TroopHeadRow",
+                            "width": "100%",
+                            "height": 18,
+                            "layout": { "type": "horizontal" },
+                            "children": [
+                              {
+                                "type": "label",
+                                "name": "TroopNameLabel",
+                                "width": 84,
+                                "height": 18,
+                                "text": "兵力",
+                                "styleSlot": "mission.dialog.label.cost"
+                              },
+                              {
+                                "type": "spacer",
+                                "name": "TroopHeadSpacer",
+                                "width": 1,
+                                "height": 1
+                              },
+                              {
+                                "type": "label",
+                                "name": "TroopValueLabel",
+                                "id": "costTroopValueLabel",
+                                "width": 96,
+                                "height": 18,
+                                "styleSlot": "mission.dialog.label.metric",
+                                "bind": "costTroopValueLabel"
+                              }
+                            ]
+                          },
+                          {
+                            "type": "panel",
+                            "name": "TroopBarTrack",
+                            "width": "100%",
+                            "height": 10,
+                            "skinSlot": "mission.dialog.bar.track.troop",
+                            "children": [
+                              {
+                                "type": "panel",
+                                "name": "TroopBarFill",
+                                "id": "costTroopRatio",
+                                "widget": { "top": 0, "left": 0, "bottom": 0 },
+                                "width": "100%",
+                                "height": 10,
+                                "skinSlot": "mission.dialog.bar.fill.troop",
+                                "bind": "costTroopRatio",
+                                "_doc": "TS 依 costTroopRatio 調整填充寬度或 clip。"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "panel",
+                        "name": "SilverRow",
+                        "width": "100%",
+                        "height": 46,
+                        "skinSlot": "mission.dialog.row.bg",
+                        "layout": {
+                          "type": "vertical",
+                          "spacing": 4,
+                          "paddingTop": 6,
+                          "paddingBottom": 6,
+                          "paddingLeft": 12,
+                          "paddingRight": 12
+                        },
+                        "children": [
+                          {
+                            "type": "container",
+                            "name": "SilverHeadRow",
+                            "width": "100%",
+                            "height": 18,
+                            "layout": { "type": "horizontal" },
+                            "children": [
+                              {
+                                "type": "label",
+                                "name": "SilverNameLabel",
+                                "width": 84,
+                                "height": 18,
+                                "text": "銀兩",
+                                "styleSlot": "mission.dialog.label.cost"
+                              },
+                              {
+                                "type": "spacer",
+                                "name": "SilverHeadSpacer",
+                                "width": 1,
+                                "height": 1
+                              },
+                              {
+                                "type": "label",
+                                "name": "SilverValueLabel",
+                                "id": "costSilverValueLabel",
+                                "width": 96,
+                                "height": 18,
+                                "styleSlot": "mission.dialog.label.metric",
+                                "bind": "costSilverValueLabel"
+                              }
+                            ]
+                          },
+                          {
+                            "type": "panel",
+                            "name": "SilverBarTrack",
+                            "width": "100%",
+                            "height": 10,
+                            "skinSlot": "mission.dialog.bar.track.silver",
+                            "children": [
+                              {
+                                "type": "panel",
+                                "name": "SilverBarFill",
+                                "id": "costSilverRatio",
+                                "widget": { "top": 0, "left": 0, "bottom": 0 },
+                                "width": "100%",
+                                "height": 10,
+                                "skinSlot": "mission.dialog.bar.fill.silver",
+                                "bind": "costSilverRatio",
+                                "_doc": "TS 依 costSilverRatio 調整填充寬度或 clip。"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "panel",
+                        "name": "TimeRow",
+                        "width": "100%",
+                        "height": 46,
+                        "skinSlot": "mission.dialog.row.bg",
+                        "layout": {
+                          "type": "vertical",
+                          "spacing": 4,
+                          "paddingTop": 6,
+                          "paddingBottom": 6,
+                          "paddingLeft": 12,
+                          "paddingRight": 12
+                        },
+                        "children": [
+                          {
+                            "type": "container",
+                            "name": "TimeHeadRow",
+                            "width": "100%",
+                            "height": 18,
+                            "layout": { "type": "horizontal" },
+                            "children": [
+                              {
+                                "type": "label",
+                                "name": "TimeNameLabel",
+                                "width": 84,
+                                "height": 18,
+                                "text": "時間",
+                                "styleSlot": "mission.dialog.label.cost"
+                              },
+                              {
+                                "type": "spacer",
+                                "name": "TimeHeadSpacer",
+                                "width": 1,
+                                "height": 1
+                              },
+                              {
+                                "type": "label",
+                                "name": "TimeValueLabel",
+                                "id": "costTimeValueLabel",
+                                "width": 96,
+                                "height": 18,
+                                "styleSlot": "mission.dialog.label.metric",
+                                "bind": "costTimeValueLabel"
+                              }
+                            ]
+                          },
+                          {
+                            "type": "panel",
+                            "name": "TimeBarTrack",
+                            "width": "100%",
+                            "height": 10,
+                            "skinSlot": "mission.dialog.bar.track.time",
+                            "children": [
+                              {
+                                "type": "panel",
+                                "name": "TimeBarFill",
+                                "id": "costTimeRatio",
+                                "widget": { "top": 0, "left": 0, "bottom": 0 },
+                                "width": "100%",
+                                "height": 10,
+                                "skinSlot": "mission.dialog.bar.fill.time",
+                                "bind": "costTimeRatio",
+                                "_doc": "TS 依 costTimeRatio 調整填充寬度或 clip。"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "panel",
+                    "name": "RewardPanel",
+                    "width": "100%",
+                    "height": 208,
+                    "skinSlot": "mission.dialog.section.bg",
+                    "layout": {
+                      "type": "vertical",
+                      "spacing": 8,
+                      "paddingTop": 14,
+                      "paddingBottom": 14,
+                      "paddingLeft": 16,
+                      "paddingRight": 16
+                    },
+                    "children": [
+                      {
+                        "type": "label",
+                        "name": "RewardTitleLabel",
+                        "width": "100%",
+                        "height": 22,
+                        "text": "獎勵",
+                        "styleSlot": "mission.dialog.label.section"
+                      },
+                      {
+                        "type": "panel",
+                        "name": "BaseRewardCard",
+                        "width": "100%",
+                        "height": 68,
+                        "skinSlot": "mission.dialog.reward.base.bg",
+                        "layout": {
+                          "type": "vertical",
+                          "spacing": 2,
+                          "paddingTop": 8,
+                          "paddingBottom": 8,
+                          "paddingLeft": 12,
+                          "paddingRight": 12
+                        },
+                        "children": [
+                          {
+                            "type": "label",
+                            "name": "BaseRewardTitleLabel",
+                            "width": "100%",
+                            "height": 16,
+                            "text": "基礎獎勵",
+                            "styleSlot": "mission.dialog.label.badge"
+                          },
+                          {
+                            "type": "label",
+                            "name": "RewardBaseLabel",
+                            "id": "rewardBaseLabel",
+                            "width": "100%",
+                            "height": 34,
+                            "styleSlot": "mission.dialog.label.reward",
+                            "bind": "rewardBaseLabel"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "panel",
+                        "name": "PerfectRewardCard",
+                        "width": "100%",
+                        "height": 74,
+                        "skinSlot": "mission.dialog.reward.perfect.bg",
+                        "layout": {
+                          "type": "vertical",
+                          "spacing": 2,
+                          "paddingTop": 8,
+                          "paddingBottom": 8,
+                          "paddingLeft": 12,
+                          "paddingRight": 12
+                        },
+                        "children": [
+                          {
+                            "type": "label",
+                            "name": "PerfectRewardTitleLabel",
+                            "width": "100%",
+                            "height": 16,
+                            "text": "完美達成加成",
+                            "styleSlot": "mission.dialog.label.badge"
+                          },
+                          {
+                            "type": "label",
+                            "name": "RewardPerfectLabel",
+                            "id": "rewardPerfectLabel",
+                            "width": "100%",
+                            "height": 40,
+                            "styleSlot": "mission.dialog.label.reward",
+                            "bind": "rewardPerfectLabel"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "panel",
+            "name": "FooterBar",
+            "width": "100%",
+            "height": 162,
+            "skinSlot": "mission.dialog.footer.bg",
+            "layout": {
+              "type": "vertical",
+              "spacing": 12,
+              "paddingTop": 16,
+              "paddingBottom": 18,
+              "paddingLeft": 20,
+              "paddingRight": 20
+            },
+            "children": [
+              {
+                "type": "container",
+                "name": "AiDelegateRow",
+                "width": "100%",
+                "height": 34,
+                "layout": { "type": "horizontal", "spacing": 12 },
+                "children": [
+                  {
+                    "type": "Toggle",
+                    "name": "AiDelegateToggle",
+                    "id": "aiDelegateToggle",
+                    "width": 168,
+                    "height": 32,
+                    "skinSlot": "mission.dialog.toggle",
+                    "text": "AI 委任",
+                    "bind": "aiDelegateChecked"
+                  },
+                  {
+                    "type": "label",
+                    "name": "AiDelegateHintLabel",
+                    "id": "aiDelegateHintLabel",
+                    "width": "100%",
+                    "height": 22,
+                    "styleSlot": "mission.dialog.label.muted",
+                    "bind": "aiDelegateHintLabel"
+                  }
+                ]
+              },
+              {
+                "type": "container",
+                "name": "ActionButtonsRow",
+                "width": "100%",
+                "height": 58,
+                "layout": { "type": "horizontal", "spacing": 10 },
+                "children": [
+                  {
+                    "type": "button",
+                    "name": "BtnScout",
+                    "id": "btnScout",
+                    "width": 176,
+                    "height": 56,
+                    "skinSlot": "mission.dialog.btn.secondary",
+                    "text": "再探",
+                    "children": [
+                      {
+                        "type": "label",
+                        "name": "BtnScoutLabel",
+                        "width": "100%",
+                        "height": "100%",
+                        "styleSlot": "mission.dialog.label.button",
+                        "text": "再探"
+                      }
+                    ],
+                    "onClick": "onScout"
+                  },
+                  {
+                    "type": "button",
+                    "name": "BtnExecute",
+                    "id": "btnExecute",
+                    "width": 176,
+                    "height": 56,
+                    "skinSlot": "mission.dialog.btn.primary",
+                    "text": "執行",
+                    "children": [
+                      {
+                        "type": "label",
+                        "name": "BtnExecuteLabel",
+                        "width": "100%",
+                        "height": "100%",
+                        "styleSlot": "mission.dialog.label.button",
+                        "text": "執行"
+                      }
+                    ],
+                    "onClick": "onExecute"
+                  },
+                  {
+                    "type": "button",
+                    "name": "BtnWait",
+                    "id": "btnWait",
+                    "width": 176,
+                    "height": 56,
+                    "skinSlot": "mission.dialog.btn.secondary",
+                    "text": "等待",
+                    "children": [
+                      {
+                        "type": "label",
+                        "name": "BtnWaitLabel",
+                        "width": "100%",
+                        "height": "100%",
+                        "styleSlot": "mission.dialog.label.button",
+                        "text": "等待"
+                      }
+                    ],
+                    "onClick": "onWait"
+                  },
+                  {
+                    "type": "button",
+                    "name": "BtnAssign",
+                    "id": "btnAssign",
+                    "width": 176,
+                    "height": 56,
+                    "skinSlot": "mission.dialog.btn.primary",
+                    "text": "委任",
+                    "children": [
+                      {
+                        "type": "label",
+                        "name": "BtnAssignLabel",
+                        "width": "100%",
+                        "height": "100%",
+                        "styleSlot": "mission.dialog.label.button",
+                        "text": "委任"
+                      }
+                    ],
+                    "onClick": "onAssign"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

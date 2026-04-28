@@ -14,7 +14,7 @@
     },
     "gdv3.stage.leftShade": {
       "kind": "color-rect",
-      "color": "#0A0D0E",
+      "color": "gdv3BloodlineBgDeep",
       "alpha": 0
     },
     "gdv3.portrait.image": {
@@ -23,7 +23,7 @@
     },
     "gdv3.portrait.backdrop": {
       "kind": "color-rect",
-      "color": "#24302D",
+      "color": "gdv3BloodlineBgMid",
       "alpha": 0
     },
     "gdv3.portrait.shadow": {
@@ -32,7 +32,7 @@
       "spriteType": "simple",
       "allowAutoAtlas": true,
       "opacity": 0.0,
-      "color": "#050607"
+      "color": "gdv3BloodlineBgVoid"
     },
     "gdv3.portrait.wash": {
       "kind": "sprite-frame",
@@ -40,7 +40,7 @@
       "spriteType": "simple",
       "allowAutoAtlas": true,
       "opacity": 0.0,
-      "color": "#94A99E"
+      "color": "gdv3BloodlineTextMuted"
     },
     "gdv3.portrait.rim": {
       "kind": "sprite-frame",
@@ -48,7 +48,7 @@
       "spriteType": "simple",
       "allowAutoAtlas": true,
       "opacity": 0.0,
-      "color": "#E7DFC6"
+      "color": "gdv3BloodlineTextPrimary"
     },
     "gdv3.portrait.frame": {
       "kind": "sprite-frame",
@@ -56,7 +56,7 @@
       "spriteType": "simple",
       "allowAutoAtlas": true,
       "opacity": 0.0,
-      "color": "#D8D0B8"
+      "color": "gdv3BloodlineTextSecondary"
     },
     "gdv3.identity.band": {
       "kind": "sprite-frame",
@@ -65,16 +65,16 @@
       "border": [20, 24, 20, 24],
       "allowAutoAtlas": true,
       "opacity": 0.3,
-      "color": "#3A4F49"
+      "color": "gdv3BloodlineTitle"
     },
     "gdv3.identity.rule": {
       "kind": "color-rect",
-      "color": "#D8BF77",
+      "color": "gdv3BloodlineAccentGold",
       "alpha": 204
     },
     "gdv3.identity.chip": {
       "kind": "color-rect",
-      "color": "#7D6640",
+      "color": "gdv3BloodlineAccentShadow",
       "alpha": 178
     },
     "gdv3.rarity.badge.underlay": {
@@ -92,7 +92,7 @@
       "border": [16, 16, 16, 16],
       "allowAutoAtlas": true,
       "opacity": 0.94,
-      "color": "#FFFFFF"
+      "color": "colorWhite"
     },
     "gdv3.rarity.outerGlow": {
       "kind": "sprite-frame",
@@ -131,7 +131,7 @@
       "allowAutoAtlas": true,
       "opacity": 0.75,
       "blendMode": "alpha",
-      "color": "#FFFFFF"
+      "color": "colorWhite"
     },
     "gdv3.header.ornament.left": {
       "kind": "sprite-frame",
@@ -154,7 +154,7 @@
       "border": [20, 24, 20, 24],
       "allowAutoAtlas": true,
       "opacity": 0.92,
-      "color": "#E7D7A9"
+      "color": "gdv3BloodlineBadgeGold"
     },
     "gdv3.rarity.star": {
       "kind": "sprite-frame",
@@ -180,7 +180,7 @@
       "allowAutoAtlas": true,
       "opacity": 0.75,
       "blendMode": "alpha",
-      "color": "#FFFFFF"
+      "color": "colorWhite"
     },
     "gdv3.summary.valuePlate": {
       "kind": "sprite-frame",
@@ -190,7 +190,7 @@
       "allowAutoAtlas": true,
       "opacity": 1.0,
       "blendMode": "alpha",
-      "color": "#FFFFFF"
+      "color": "colorWhite"
     },
     "gdv3.summary.valueFrame": {
       "kind": "sprite-frame",
@@ -200,7 +200,7 @@
       "allowAutoAtlas": true,
       "opacity": 1.0,
       "blendMode": "alpha",
-      "color": "#FFFFFF"
+      "color": "colorWhite"
     },
     "gdv3.bloodline.card": {
       "kind": "sprite-frame",
@@ -225,7 +225,7 @@
       "border": [20, 24, 20, 24],
       "allowAutoAtlas": true,
       "opacity": 0.96,
-      "color": "#E2CEA1"
+      "color": "gdv3BloodlineLabelWarm"
     },
     "gdv3.bloodline.document.card": {
       "kind": "sprite-frame",
@@ -242,7 +242,7 @@
       "border": [16, 16, 16, 16],
       "allowAutoAtlas": true,
       "opacity": 0.42,
-      "color": "#F1E3C3"
+      "color": "gdv3BloodlineLabelMain"
     },
     "gdv3.bloodline.field.strip": {
       "kind": "sprite-frame",
@@ -251,7 +251,7 @@
       "border": [20, 24, 20, 24],
       "allowAutoAtlas": true,
       "opacity": 0.72,
-      "color": "#D8C08C"
+      "color": "gdv3BloodlineLabelSub"
     },
     "gdv3.bloodline.crest.card": {
       "kind": "sprite-frame",
@@ -268,7 +268,7 @@
       "border": [20, 24, 20, 24],
       "allowAutoAtlas": true,
       "opacity": 0.8,
-      "color": "#DFC797"
+      "color": "gdv3BloodlineLabelAlt"
     },
     "gdv3.bloodline.seal.inset": {
       "kind": "sprite-frame",
@@ -277,7 +277,7 @@
       "border": [18, 18, 18, 18],
       "allowAutoAtlas": true,
       "opacity": 0.56,
-      "color": "#F1E3C3"
+      "color": "gdv3BloodlineLabelMain"
     },
     "gdv3.bloodline.seal.frame": {
       "kind": "sprite-frame",
@@ -286,11 +286,11 @@
       "border": [18, 18, 18, 18],
       "allowAutoAtlas": true,
       "opacity": 0.78,
-      "color": "#DCC38E"
+      "color": "gdv3BloodlineLabelAltSub"
     },
     "gdv3.bloodline.divider": {
       "kind": "color-rect",
-      "color": "#C5AE7E",
+      "color": "gdv3BloodlineOrnament",
       "alpha": 132
     },
     "gdv3.bloodline.crest.glow": {
@@ -382,7 +382,7 @@
       "font": "fonts/notosans_tc/font",
       "fontSize": 18,
       "lineHeight": 22,
-      "color": "#F3E6C9",
+      "color": "gdv3BloodlineNarrative",
       "outlineWidth": 0,
       "horizontalAlign": "LEFT",
       "verticalAlign": "CENTER",
@@ -403,7 +403,7 @@
       "font": "fonts/manrope/font",
       "fontSize": 12,
       "lineHeight": 15,
-      "color": "#E8DCC6",
+      "color": "gdv3BloodlineNarrativeSub",
       "outlineWidth": 0,
       "horizontalAlign": "LEFT",
       "verticalAlign": "CENTER",
@@ -541,7 +541,7 @@
       "font": "fonts/notosans_tc/font",
       "fontSize": 12,
       "lineHeight": 16,
-      "color": "#FFF5DB",
+      "color": "gdv3BloodlineTextGlow",
       "outlineWidth": 0,
       "horizontalAlign": "CENTER",
       "verticalAlign": "CENTER",
@@ -553,7 +553,7 @@
       "font": "fonts/notosans_tc/font",
       "fontSize": 20,
       "lineHeight": 24,
-      "color": "#F5F0E0",
+      "color": "gdv3BloodlineTextSoft",
       "outlineWidth": 0,
       "horizontalAlign": "LEFT",
       "verticalAlign": "TOP",
@@ -565,7 +565,7 @@
       "font": "fonts/manrope/font",
       "fontSize": 11,
       "lineHeight": 14,
-      "color": "#DDD3B7",
+      "color": "gdv3BloodlineTextDim",
       "outlineWidth": 0,
       "horizontalAlign": "LEFT",
       "verticalAlign": "CENTER",
@@ -585,9 +585,9 @@
       "font": "fonts/newsreader/font",
       "fontSize": 22,
       "lineHeight": 24,
-      "color": "#FFF6D6",
+      "color": "gdv3BloodlineCTA",
       "outlineWidth": 1,
-      "outlineColor": "#593714",
+      "outlineColor": "gdv3OutlineDarkWarm",
       "horizontalAlign": "CENTER",
       "verticalAlign": "CENTER",
       "isBold": true
@@ -597,9 +597,9 @@
       "font": "fonts/notosans_tc/font",
       "fontSize": 13,
       "lineHeight": 15,
-      "color": "#FFFBE9",
+      "color": "gdv3TextWarmLight",
       "outlineWidth": 1,
-      "outlineColor": "#3F2309",
+      "outlineColor": "gdv3OutlineWarm",
       "horizontalAlign": "CENTER",
       "verticalAlign": "CENTER",
       "overflow": "SHRINK",

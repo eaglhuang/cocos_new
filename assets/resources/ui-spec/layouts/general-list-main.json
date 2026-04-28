@@ -5,6 +5,7 @@
     "fitWidth": true,
     "fitHeight": true,
     "safeArea": true,
+    "safeAreaConstrained": true,
     "designWidth": 1920,
     "designHeight": 1080
   },
@@ -38,9 +39,9 @@
         "type": "panel",
         "name": "HeaderBar",
         "widget": {
-          "top": 64,
-          "left": 96,
-          "right": 96
+          "top": 40,
+          "left": 48,
+          "right": 48
         },
         "height": 88,
         "skinSlot": "general.header.bar",
@@ -50,10 +51,10 @@
             "type": "label",
             "name": "Title",
             "widget": {
-              "left": 38,
+              "left": 0,
+              "right": 0,
               "vCenter": 0
             },
-            "width": 720,
             "height": 54,
             "text": "武將列表",
             "styleSlot": "general.header.title"
@@ -64,218 +65,240 @@
         "type": "panel",
         "name": "MainContainer",
         "widget": {
-          "top": 176,
-          "left": 96,
-          "right": 96,
-          "bottom": 88
+          "top": 152,
+          "left": 48,
+          "right": 48,
+          "bottom": 40
         },
         "skinSlot": "general.list.bg",
         "zIndex": 20,
         "children": [
           {
             "type": "container",
-            "name": "ColumnHeaderRow",
+            "name": "ListPanel",
             "widget": {
-              "top": 24,
-              "left": 38,
-              "right": 38
-            },
-            "height": 28,
-            "layout": {
-              "type": "horizontal",
-              "spacing": 0
+              "top": 0,
+              "left": 0,
+              "right": 0,
+              "bottom": 0
             },
             "children": [
               {
-                "type": "label",
-                "name": "ColName",
-                "width": "18%",
-                "text": "武將姓名",
-                "styleSlot": "general.label.header"
+                "type": "container",
+                "name": "ColumnHeaderRow",
+                "widget": {
+                  "top": 24,
+                  "left": 24,
+                  "right": 20
+                },
+                "height": 28,
+                "layout": {
+                  "type": "horizontal",
+                  "spacing": 0
+                },
+                "children": [
+                  {
+                    "type": "label",
+                    "name": "ColName",
+                    "width": "18%",
+                    "text": "武將姓名",
+                    "styleSlot": "general.label.header"
+                  },
+                  {
+                    "type": "label",
+                    "name": "ColGender",
+                    "width": "5%",
+                    "text": "性別",
+                    "styleSlot": "general.label.headerCenter"
+                  },
+                  {
+                    "type": "label",
+                    "name": "ColAge",
+                    "width": "5%",
+                    "text": "年齡",
+                    "styleSlot": "general.label.headerCenter"
+                  },
+                  {
+                    "type": "label",
+                    "name": "ColStr",
+                    "width": "6%",
+                    "text": "武力",
+                    "styleSlot": "general.label.headerCenter"
+                  },
+                  {
+                    "type": "label",
+                    "name": "ColInt",
+                    "width": "6%",
+                    "text": "智力",
+                    "styleSlot": "general.label.headerCenter"
+                  },
+                  {
+                    "type": "label",
+                    "name": "ColLea",
+                    "width": "6%",
+                    "text": "統率",
+                    "styleSlot": "general.label.headerCenter"
+                  },
+                  {
+                    "type": "label",
+                    "name": "ColPol",
+                    "width": "6%",
+                    "text": "政治",
+                    "styleSlot": "general.label.headerCenter"
+                  },
+                  {
+                    "type": "label",
+                    "name": "ColCha",
+                    "width": "6%",
+                    "text": "魅力",
+                    "styleSlot": "general.label.headerCenter"
+                  },
+                  {
+                    "type": "label",
+                    "name": "ColLuk",
+                    "width": "6%",
+                    "text": "運氣",
+                    "styleSlot": "general.label.headerCenter"
+                  },
+                  {
+                    "type": "label",
+                    "name": "ColTroop",
+                    "width": "24%",
+                    "text": "最強兵種",
+                    "styleSlot": "general.label.header"
+                  },
+                  {
+                    "type": "label",
+                    "name": "ColFaction",
+                    "width": "12%",
+                    "text": "陣營",
+                    "styleSlot": "general.label.headerCenter"
+                  }
+                ]
               },
               {
-                "type": "label",
-                "name": "ColGender",
-                "width": "5%",
-                "text": "性別",
-                "styleSlot": "general.label.headerCenter"
-              },
-              {
-                "type": "label",
-                "name": "ColAge",
-                "width": "5%",
-                "text": "年齡",
-                "styleSlot": "general.label.headerCenter"
-              },
-              {
-                "type": "label",
-                "name": "ColStr",
-                "width": "6%",
-                "text": "武力",
-                "styleSlot": "general.label.headerCenter"
-              },
-              {
-                "type": "label",
-                "name": "ColInt",
-                "width": "6%",
-                "text": "智力",
-                "styleSlot": "general.label.headerCenter"
-              },
-              {
-                "type": "label",
-                "name": "ColLea",
-                "width": "6%",
-                "text": "統率",
-                "styleSlot": "general.label.headerCenter"
-              },
-              {
-                "type": "label",
-                "name": "ColPol",
-                "width": "6%",
-                "text": "政治",
-                "styleSlot": "general.label.headerCenter"
-              },
-              {
-                "type": "label",
-                "name": "ColCha",
-                "width": "6%",
-                "text": "魅力",
-                "styleSlot": "general.label.headerCenter"
-              },
-              {
-                "type": "label",
-                "name": "ColLuk",
-                "width": "6%",
-                "text": "運氣",
-                "styleSlot": "general.label.headerCenter"
-              },
-              {
-                "type": "label",
-                "name": "ColTroop",
-                "width": "24%",
-                "text": "最強兵種",
-                "styleSlot": "general.label.header"
-              },
-              {
-                "type": "label",
-                "name": "ColFaction",
-                "width": "12%",
-                "text": "陣營",
-                "styleSlot": "general.label.headerCenter"
+                "type": "scroll-list",
+                "name": "DataList",
+                "widget": {
+                  "top": 68,
+                  "left": 0,
+                  "right": 20,
+                  "bottom": 20
+                },
+                "layout": {
+                  "type": "vertical",
+                  "spacing": 8,
+                  "paddingTop": 8,
+                  "paddingBottom": 8,
+                  "paddingLeft": 0,
+                  "paddingRight": 0
+                },
+                "itemTemplate": {
+                  "type": "panel",
+                  "name": "Row",
+                  "height": 60,
+                  "skinSlot": "general.row.bg",
+                  "layout": {
+                    "type": "horizontal",
+                    "spacing": 0,
+                    "paddingLeft": 18,
+                    "paddingRight": 18,
+                    "paddingTop": 10,
+                    "paddingBottom": 10
+                  },
+                  "children": [
+                    {
+                      "type": "label",
+                      "name": "Name",
+                      "width": "18%",
+                      "bind": "name",
+                      "styleSlot": "general.label.name"
+                    },
+                    {
+                      "type": "label",
+                      "name": "Gender",
+                      "width": "5%",
+                      "bind": "gender",
+                      "styleSlot": "general.label.valueCenter"
+                    },
+                    {
+                      "type": "label",
+                      "name": "Age",
+                      "width": "5%",
+                      "bind": "age",
+                      "styleSlot": "general.label.valueCenter"
+                    },
+                    {
+                      "type": "label",
+                      "name": "Str",
+                      "width": "6%",
+                      "bind": "str",
+                      "styleSlot": "general.label.valueCenter"
+                    },
+                    {
+                      "type": "label",
+                      "name": "Int",
+                      "width": "6%",
+                      "bind": "int",
+                      "styleSlot": "general.label.valueCenter"
+                    },
+                    {
+                      "type": "label",
+                      "name": "Lea",
+                      "width": "6%",
+                      "bind": "lea",
+                      "styleSlot": "general.label.valueCenter"
+                    },
+                    {
+                      "type": "label",
+                      "name": "Pol",
+                      "width": "6%",
+                      "bind": "pol",
+                      "styleSlot": "general.label.valueCenter"
+                    },
+                    {
+                      "type": "label",
+                      "name": "Cha",
+                      "width": "6%",
+                      "bind": "cha",
+                      "styleSlot": "general.label.valueCenter"
+                    },
+                    {
+                      "type": "label",
+                      "name": "Luk",
+                      "width": "6%",
+                      "bind": "luk",
+                      "styleSlot": "general.label.valueCenter"
+                    },
+                    {
+                      "type": "label",
+                      "name": "Troop",
+                      "width": "24%",
+                      "bind": "troopAptitude",
+                      "styleSlot": "general.label.value"
+                    },
+                    {
+                      "type": "label",
+                      "name": "Faction",
+                      "width": "12%",
+                      "bind": "faction",
+                      "styleSlot": "general.label.valueCenter"
+                    }
+                  ]
+                },
+                "scrollbar": {
+                  "width": 12,
+                  "right": 4,
+                  "top": 8,
+                  "bottom": 20,
+                  "autoHide": false,
+                  "autoHideTime": 0.15,
+                  "trackSkinSlot": "general.scrollbar.track",
+                  "thumbSkinSlot": "general.scrollbar.thumb"
+                },
+                "zIndex": 25
               }
             ]
-          },
-          {
-            "type": "scroll-list",
-            "name": "DataList",
-            "widget": {
-              "top": 68,
-              "left": 20,
-              "right": 20,
-              "bottom": 20
-            },
-            "layout": {
-              "type": "vertical",
-              "spacing": 8,
-              "paddingTop": 8,
-              "paddingBottom": 8,
-              "paddingLeft": 0,
-              "paddingRight": 0
-            },
-            "itemTemplate": {
-              "type": "panel",
-              "name": "Row",
-              "height": 60,
-              "skinSlot": "general.row.bg",
-              "layout": {
-                "type": "horizontal",
-                "spacing": 0,
-                "paddingLeft": 18,
-                "paddingRight": 18,
-                "paddingTop": 10,
-                "paddingBottom": 10
-              },
-              "children": [
-                {
-                  "type": "label",
-                  "name": "Name",
-                  "width": "18%",
-                  "bind": "name",
-                  "styleSlot": "general.label.name"
-                },
-                {
-                  "type": "label",
-                  "name": "Gender",
-                  "width": "5%",
-                  "bind": "gender",
-                  "styleSlot": "general.label.valueCenter"
-                },
-                {
-                  "type": "label",
-                  "name": "Age",
-                  "width": "5%",
-                  "bind": "age",
-                  "styleSlot": "general.label.valueCenter"
-                },
-                {
-                  "type": "label",
-                  "name": "Str",
-                  "width": "6%",
-                  "bind": "str",
-                  "styleSlot": "general.label.valueCenter"
-                },
-                {
-                  "type": "label",
-                  "name": "Int",
-                  "width": "6%",
-                  "bind": "int",
-                  "styleSlot": "general.label.valueCenter"
-                },
-                {
-                  "type": "label",
-                  "name": "Lea",
-                  "width": "6%",
-                  "bind": "lea",
-                  "styleSlot": "general.label.valueCenter"
-                },
-                {
-                  "type": "label",
-                  "name": "Pol",
-                  "width": "6%",
-                  "bind": "pol",
-                  "styleSlot": "general.label.valueCenter"
-                },
-                {
-                  "type": "label",
-                  "name": "Cha",
-                  "width": "6%",
-                  "bind": "cha",
-                  "styleSlot": "general.label.valueCenter"
-                },
-                {
-                  "type": "label",
-                  "name": "Luk",
-                  "width": "6%",
-                  "bind": "luk",
-                  "styleSlot": "general.label.valueCenter"
-                },
-                {
-                  "type": "label",
-                  "name": "Troop",
-                  "width": "24%",
-                  "bind": "troopAptitude",
-                  "styleSlot": "general.label.value"
-                },
-                {
-                  "type": "label",
-                  "name": "Faction",
-                  "width": "12%",
-                  "bind": "faction",
-                  "styleSlot": "general.label.valueCenter"
-                }
-              ]
-            },
-            "zIndex": 25
           }
         ]
       },

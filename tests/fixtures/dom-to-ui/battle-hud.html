@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<style>
+  .battle-hud { display:flex; flex-direction:row; gap:12px; padding:12px; background:#1a1a1a; width:640px; height:96px; }
+  .meter { width:240px; height:48px; background:#000000; }
+  .label { color:#ffffff; font-size:18px; line-height:26px; }
+</style>
+</head>
+<body>
+  <div class="battle-hud" data-anchor="top-center" data-visual-zone="battle-hud-root">
+    <div class="meter" data-name="MoraleMeter" data-ucuf-id="morale-meter">
+      <span class="label" data-name="MoraleLabel" data-contract="battleState.morale">士氣</span>
+    </div>
+    <div data-panel="battle-command-child" data-name="CommandChild" data-datasource="battleState.commands"></div>
+  </div>
+</body>
+</html>

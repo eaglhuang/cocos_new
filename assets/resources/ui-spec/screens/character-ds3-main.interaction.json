@@ -1,0 +1,27 @@
+{
+  "screenId": "character-ds3-main",
+  "actions": [],
+  "warnings": [
+    {
+      "code": "manual-adapter-required",
+      "detail": "CharacterDs3Main_button_1: inline onclick is not executed; rewrite as data-ucuf-action"
+    },
+    {
+      "code": "manual-adapter-required",
+      "detail": "CharacterDs3Main_button_2: inline onclick is not executed; rewrite as data-ucuf-action"
+    },
+    {
+      "code": "manual-adapter-required",
+      "detail": "CharacterDs3Main_button_3: inline onclick is not executed; rewrite as data-ucuf-action"
+    },
+    {
+      "code": "manual-adapter-required",
+      "detail": "CharacterDs3Main_div_13: inline onclick is not executed; rewrite as data-ucuf-action"
+    }
+  ],
+  "summary": {
+    "actionCount": 0,
+    "missingTargetCount": 0,
+    "manualAdapterCount": 4
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "screenId": "character-ds3-main",
+  "verdict": "manual-required",
+  "metrics": {
+    "screenshotZoneConfidence": 1,
+    "motionPresenceRate": 1,
+    "interactionSuccessRate": 1,
+    "buttonStateLayerCoverage": 0,
+    "compositeReviewCoverage": 1
+  },
+  "zones": [],
+  "stateLayerIssues": [
+    {
+      "node": "CharacterDs3Main_button_1",
+      "skinSlot": "auto.character-ds3-main.characterds3main_button_1"
+    },
+    {
+      "node": "CharacterDs3Main_button_2",
+      "skinSlot": "auto.character-ds3-main.characterds3main_button_2"
+    },
+    {
+      "node": "CharacterDs3Main_button_3",
+      "skinSlot": "auto.character-ds3-main.characterds3main_button_3"
+    }
+  ],
+  "compositeReviewRequired": [],
+  "effectReview": [
+    "css-effect-needs-art-review",
+    "css-transform-manual-layout-risk",
+    "overflow-hidden-clipping-risk"
+  ],
+  "blockers": [
+    "button-state-layer-review-required"
+  ]
+}

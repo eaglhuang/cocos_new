@@ -1,0 +1,19 @@
+{
+  "id": "character-ds3-main",
+  "version": 1,
+  "uiId": "GeneralDetail",
+  "layout": "character-ds3-main",
+  "skin": "character-ds3-default",
+  "layer": "Popup",
+  "bundle": "lobby_ui",
+  "migrationStatus": {
+    "source": "Design System 3/ui_kits/character/index.html",
+    "stage": "runtime-fidelity-preview",
+    "productionReady": false,
+    "notes": [
+      "2026-04-28：layout flip 已驗證可掛載（preview target 19/20 capture pass），但 HTML vs DS3 視覺對齊尚未達 95%，default 暫時保留 unified。",
+      "DS3 ChildPanel (CharacterDs3OverviewChild 等 6 個) 目前是 TODO 骨架；尚需補 data wiring 與 portrait/background loader。",
+      "開發階段可用 ?ui=ds3 或 localStorage __ucuf_general_detail_variant=ds3 顯式測試。"
+    ]
+  }
+}

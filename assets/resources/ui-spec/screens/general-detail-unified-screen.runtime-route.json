@@ -1,0 +1,21 @@
+{
+  "screenId": "general-detail-unified-screen",
+  "panelKey": "general-detail",
+  "mountTarget": "<auto>",
+  "componentClass": "GeneralDetailComposite",
+  "featureFlag": "ds3",
+  "fallbackScreen": "general-detail-unified-screen",
+  "variants": {
+    "unified": "general-detail-unified-screen",
+    "ds3": "character-ds3-main"
+  },
+  "paramSchema": null,
+  "generatedAt": "2026-04-28T05:20:00.000Z",
+  "cutoverBlocked": {
+    "reason": "character-ds3-main 目前缺少 GeneralDetailComposite 正式 shell contract：至少缺 RightTabBar/BtnTab* 語意節點，且 screen JSON 尚未宣告 tabRouting/contentRequirements。直接把產品預設切到 ds3 會在 _bindStaticEvents 階段 fail-fast。",
+    "blockedAt": "2026-04-28T05:07:56.942Z",
+    "verifiedBy": [
+      "node tools_node/capture-ui-screens.js --target GeneralDetailOverviewProd --outDir artifacts/ui-source/character-ds3/validation/GeneralDetailOverviewProd"
+    ]
+  }
+}

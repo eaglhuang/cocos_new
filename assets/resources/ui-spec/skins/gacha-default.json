@@ -15,16 +15,29 @@
     "widget.header.plaque.subtitle": { "kind": "label-style", "fontSize": 16, "lineHeight": 18, "color": "secondary", "outlineWidth": 0, "horizontalAlign": "LEFT" },
     "widget.header.plaque.badge.underlay": { "kind": "sprite-frame", "path": "sprites/ui_families/common/parchment/fill", "spriteType": "sliced", "border": [16, 16, 16, 16], "allowAutoAtlas": true, "opacity": 0.9 },
     "widget.header.plaque.badge.fill": { "kind": "sprite-frame", "path": "sprites/ui_families/common/parchment/fill", "spriteType": "sliced", "border": [16, 16, 16, 16], "allowAutoAtlas": true, "opacity": 0.96 },
-    "widget.header.plaque.badge.label": { "kind": "label-style", "fontSize": 22, "lineHeight": 24, "color": "colorWhite", "outlineWidth": 1, "outlineColor": "outlineHeavy", "horizontalAlign": "CENTER" },
+    "widget.header.plaque.badge.label": { "kind": "label-style", "fontSize": 9, "lineHeight": 12, "color": "colorWhite", "outlineWidth": 1, "outlineColor": "outlineHeavy", "horizontalAlign": "CENTER" },
 
     "gacha.bg.pool": {
       "kind": "sprite-frame",
-      "note": "按池子切換：hero=bg_pool_hero / support=bg_pool_support / limited=bg_pool_limited",
+      "note": "按池子切換：hero=bg_pool_hero_jpg / support=bg_pool_support_jpg / limited=bg_pool_limited_jpg，需維持 JPG 以避免 UI 穿透",
       "frames": {
-        "hero":    "ui/gacha/bg_pool_hero",
-        "support": "ui/gacha/bg_pool_support",
-        "limited": "ui/gacha/bg_pool_limited"
+        "hero":    "sprites/ui_families/general_detail/generated/general_detail_bg_v5_civil",
+        "support": "sprites/ui_families/general_detail/generated/general_detail_bg_v5_civil",
+        "limited": "sprites/ui_families/general_detail/generated/general_detail_bg_v5_civil"
       }
+    },
+    "gacha.preview.bg.full": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/gacha/generated/gacha_preview_bg_full"
+    },
+    "gacha.banner.art.full": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/gacha/generated/gacha_preview_bg_full"
+    },
+    "gacha.banner.hero.guan_yu": {
+      "kind": "sprite-frame",
+      "path": "sprites/generals/guan_yu_portrait",
+      "spriteType": "simple"
     },
     "gacha.banner.shadow": {
       "kind": "sprite-frame",
@@ -78,7 +91,7 @@
     "gacha.label.featured": {
       "kind": "label-style",
       "fontSize": 22,
-      "color": "secondaryLight",
+      "color": "accent.gold.cta",
       "outlineColor": "textOnParchment",
       "outlineWidth": 2
     },
@@ -90,7 +103,615 @@
     "gacha.label.timer": {
       "kind": "label-style",
       "fontSize": 18,
-      "color": "warning",
+      "color": "textWarmGold",
+      "overflow": "SHRINK"
+    },
+
+    "gacha.label.strip_label": {
+      "kind": "label-style",
+      "font": "fonts/manrope/font",
+      "fontSize": 10,
+      "lineHeight": 14,
+      "letterSpacing": 2,
+      "color": "textMuted",
+      "outlineWidth": 0,
+      "horizontalAlign": "LEFT",
+      "note": "HTML .pool-name-label letter-spacing:.22em @10px=2.2px"
+    },
+    "gacha.label.strip_value": {
+      "kind": "label-style",
+      "font": "fonts/newsreader/font",
+      "fontSize": 16,
+      "lineHeight": 20,
+      "letterSpacing": 2,
+      "color": "accent.gold.cta",
+      "outlineWidth": 0,
+      "horizontalAlign": "LEFT",
+      "note": "HTML .pool-name-val font-size:16px letter-spacing:.14em @16px=2.24px"
+    },
+    "gacha.label.banner_chip": {
+      "kind": "label-style",
+      "font": "fonts/manrope/font",
+      "fontSize": 11,
+      "lineHeight": 14,
+      "color": "textWarmGold",
+      "outlineWidth": 0,
+      "horizontalAlign": "LEFT"
+    },
+    "gacha.label.event_chip": {
+      "kind": "label-style",
+      "font": "fonts/manrope/font",
+      "fontSize": 10,
+      "lineHeight": 14,
+      "bold": true,
+      "letterSpacing": 2,
+      "color": "rarityPurple",
+      "outlineWidth": 0,
+      "horizontalAlign": "LEFT",
+      "note": "HTML .banner-event-chip font-weight:800 letter-spacing:.2em @10px=2px; bloodline-seed #CE93D8≈rarityPurple"
+    },
+    "gacha.label.event_chip.gold": {
+      "kind": "label-style",
+      "font": "fonts/manrope/font",
+      "fontSize": 10,
+      "lineHeight": 14,
+      "bold": true,
+      "letterSpacing": 2,
+      "color": "accent.gold.cta",
+      "outlineWidth": 0,
+      "horizontalAlign": "LEFT",
+      "note": "HTML .banner-event-chip letter-spacing:.2em; legendary #FFE088≈accent.gold.cta"
+    },
+    "gacha.label.event_chip.teal": {
+      "kind": "label-style",
+      "font": "fonts/manrope/font",
+      "fontSize": 10,
+      "lineHeight": 14,
+      "bold": true,
+      "letterSpacing": 2,
+      "color": "accent.jade.field",
+      "outlineWidth": 0,
+      "horizontalAlign": "LEFT",
+      "note": "HTML .banner-event-chip letter-spacing:.2em; support #A4D2D0≈accent.jade.field"
+    },
+    "gacha.label.banner_name": {
+      "kind": "label-style",
+      "font": "fonts/newsreader/font",
+      "fontSize": 72,
+      "lineHeight": 72,
+      "letterSpacing": 6,
+      "color": "accent.gold.cta",
+      "outlineWidth": 3,
+      "outlineColor": "outlineDark",
+      "horizontalAlign": "LEFT",
+      "overflow": "SHRINK",
+      "note": "HTML .banner-hero-name letter-spacing:.08em @72px=5.76≈6px"
+    },
+    "gacha.label.banner_subtitle": {
+      "kind": "label-style",
+      "font": "fonts/manrope/font",
+      "fontSize": 14,
+      "lineHeight": 18,
+      "letterSpacing": 6,
+      "color": "rarityPurple",
+      "outlineWidth": 0,
+      "horizontalAlign": "LEFT",
+      "note": "HTML .banner-hero-title letter-spacing:.4em @14px=5.6≈6px; bloodline-seed #BA68C8≈rarityPurple"
+    },
+    "gacha.label.banner_subtitle.gold": {
+      "kind": "label-style",
+      "font": "fonts/manrope/font",
+      "fontSize": 14,
+      "lineHeight": 18,
+      "letterSpacing": 6,
+      "color": "accent.gold.cta",
+      "outlineWidth": 0,
+      "horizontalAlign": "LEFT",
+      "note": "HTML .banner-hero-title letter-spacing:.4em; legendary #FFD700 / support #FFE088≈accent.gold.cta"
+    },
+    "gacha.label.guarantee": {
+      "kind": "label-style",
+      "font": "fonts/manrope/font",
+      "fontSize": 11,
+      "lineHeight": 14,
+      "letterSpacing": 1,
+      "color": "rarityPurple",
+      "outlineWidth": 0,
+      "horizontalAlign": "LEFT",
+      "overflow": "SHRINK",
+      "note": "HTML .banner-guarantee-chip letter-spacing:.1em @11px=1.1≈1px; bloodline-seed #CE93D8≈rarityPurple"
+    },
+    "gacha.label.guarantee.gold": {
+      "kind": "label-style",
+      "font": "fonts/manrope/font",
+      "fontSize": 11,
+      "lineHeight": 14,
+      "letterSpacing": 1,
+      "color": "accent.gold.cta",
+      "outlineWidth": 0,
+      "horizontalAlign": "LEFT",
+      "overflow": "SHRINK",
+      "note": "HTML .banner-guarantee-chip letter-spacing:.1em; legendary #FFE088≈accent.gold.cta"
+    },
+    "gacha.label.guarantee.teal": {
+      "kind": "label-style",
+      "font": "fonts/manrope/font",
+      "fontSize": 11,
+      "lineHeight": 14,
+      "letterSpacing": 1,
+      "color": "accent.jade.field",
+      "outlineWidth": 0,
+      "horizontalAlign": "LEFT",
+      "overflow": "SHRINK",
+      "note": "HTML .banner-guarantee-chip letter-spacing:.1em; support #8CCFC4≈accent.jade.field"
+    },
+    "gacha.label.nav_arrow": {
+      "kind": "label-style",
+      "font": "fonts/newsreader/font",
+      "fontSize": 26,
+      "lineHeight": 28,
+      "color": "textSecondary",
+      "outlineWidth": 0,
+      "horizontalAlign": "CENTER",
+      "note": "HTML .nav-arrow font-size:26px font-weight:900"
+    },
+    "gacha.label.brief_tag": {
+      "kind": "label-style",
+      "font": "fonts/manrope/font",
+      "fontSize": 8,
+      "lineHeight": 12,
+      "bold": true,
+      "letterSpacing": 2,
+      "color": "rarityPurple",
+      "outlineWidth": 0,
+      "horizontalAlign": "LEFT",
+      "note": "HTML .brief-tag font-weight:800 letter-spacing:.2em @8px=1.6≈2px"
+    },
+    "gacha.label.brief_line": {
+      "kind": "label-style",
+      "font": "fonts/manrope/font",
+      "fontSize": 11,
+      "lineHeight": 16,
+      "color": "textSecondary",
+      "outlineWidth": 0,
+      "horizontalAlign": "LEFT",
+      "overflow": "SHRINK"
+    },
+    "gacha.label.art_placeholder": {
+      "kind": "label-style",
+      "font": "fonts/manrope/font",
+      "fontSize": 12,
+      "lineHeight": 16,
+      "color": "textMuted",
+      "outlineWidth": 0,
+      "horizontalAlign": "CENTER"
+    },
+    "gacha.banner.art.area_bg": {
+      "kind": "color-rect",
+      "color": "colorWhite",
+      "opacity": 0.018,
+      "cornerRadius": 20,
+      "borderWidth": 0,
+      "note": "M46: HTML .banner-art-placeholder 480px × 85% composition anchor. Border is intentionally removed because RoundedRect borderColor is opaque and created a hard vertical block in 125px QA."
+    },
+    "gacha.label.rail_title": {
+      "kind": "label-style",
+      "font": "fonts/newsreader/font",
+      "fontSize": 22,
+      "lineHeight": 26,
+      "bold": true,
+      "letterSpacing": 2,
+      "color": "accent.gold.cta",
+      "outlineWidth": 0,
+      "horizontalAlign": "LEFT",
+      "overflow": "SHRINK",
+      "note": "M48: HTML .rp-pool-name letter-spacing:.08em @ 22px = 1.76px"
+    },
+    "gacha.label.rail_subtitle": {
+      "kind": "label-style",
+      "font": "fonts/manrope/font",
+      "fontSize": 9,
+      "lineHeight": 12,
+      "letterSpacing": 2,
+      "color": "colorWhite",
+      "outlineWidth": 0,
+      "horizontalAlign": "LEFT",
+      "overflow": "SHRINK",
+      "note": "M48: HTML .rp-pool-sub letter-spacing:.18em @ 9px = 1.62px"
+    },
+    "gacha.label.rail_subtitle.gold": {
+      "kind": "label-style",
+      "font": "fonts/manrope/font",
+      "fontSize": 9,
+      "lineHeight": 12,
+      "letterSpacing": 2,
+      "color": "accent.gold.cta",
+      "outlineWidth": 0,
+      "horizontalAlign": "LEFT",
+      "overflow": "SHRINK",
+      "note": "legendary rp-pool-sub color #D4AF37; M48 letter-spacing:.18em @ 9px"
+    },
+    "gacha.label.rail_subtitle.teal": {
+      "kind": "label-style",
+      "font": "fonts/manrope/font",
+      "fontSize": 9,
+      "lineHeight": 12,
+      "letterSpacing": 2,
+      "color": "accent.jade.field",
+      "outlineWidth": 0,
+      "horizontalAlign": "LEFT",
+      "overflow": "SHRINK",
+      "note": "support rp-pool-sub color #3F6A62 ≈ accent.jade.field; M48 letter-spacing:.18em @ 9px"
+    },
+    "gacha.label.pity_title": {
+      "kind": "label-style",
+      "font": "fonts/manrope/font",
+      "fontSize": 9,
+      "lineHeight": 12,
+      "bold": true,
+      "letterSpacing": 2,
+      "color": "colorWhite",
+      "outlineWidth": 0,
+      "horizontalAlign": "LEFT",
+      "note": "M46: HTML .pity-title font-size:9px letter-spacing:.18em; bloodline-seed=#9C27B0≈rarityPurple"
+    },
+    "gacha.label.pity_title.gold": {
+      "kind": "label-style",
+      "font": "fonts/manrope/font",
+      "fontSize": 9,
+      "lineHeight": 12,
+      "bold": true,
+      "letterSpacing": 2,
+      "color": "accent.gold.cta",
+      "outlineWidth": 0,
+      "horizontalAlign": "LEFT",
+      "note": "legendary pity.color #D4AF37≈accentGold"
+    },
+    "gacha.label.pity_title.teal": {
+      "kind": "label-style",
+      "font": "fonts/manrope/font",
+      "fontSize": 9,
+      "lineHeight": 12,
+      "bold": true,
+      "letterSpacing": 2,
+      "color": "accent.jade.field",
+      "outlineWidth": 0,
+      "horizontalAlign": "LEFT",
+      "note": "support pity.color #3F6A62≈accent.jade.field"
+    },
+    "gacha.panel.rp_border": {
+      "kind": "color-rect",
+      "color": "rarityPurple",
+      "opacity": 0.12,
+      "note": "HTML rpBorder rgba(156,39,176,.12) for general pool"
+    },
+    "gacha.panel.rp_border.gold": {
+      "kind": "color-rect",
+      "color": "accentGold",
+      "opacity": 0.12,
+      "note": "HTML rpBorder rgba(255,193,7,.12) for legendary pool"
+    },
+    "gacha.panel.rp_border.teal": {
+      "kind": "color-rect",
+      "color": "accent.jade.field",
+      "opacity": 0.10,
+      "note": "HTML rpBorder rgba(140,207,196,.10) for support pool"
+    },
+    "gacha.panel.rp_bg_bottom": {
+      "kind": "color-rect",
+      "color": "surfaceNavyDeepest",
+      "opacity": 0.98,
+      "note": "right panel bottom anchor: HTML gradient end #0a0810"
+    },
+    "gacha.panel.rp_bg_top": {
+      "kind": "color-rect",
+      "color": "surfaceNavy",
+      "opacity": 0.34,
+      "note": "right panel top anchor: HTML gradient start #0e0a16 approx"
+    },
+    "gacha.panel.rp_bg_bridge": {
+      "kind": "color-rect",
+      "color": "surfaceNavy",
+      "opacity": 0.12,
+      "note": "mid bridge to soften top-to-bottom transition"
+    },
+    "gacha.panel.rp_bg_tint": {
+      "kind": "color-rect",
+      "color": "rarityPurple",
+      "opacity": 0.03,
+      "note": "very subtle purple tint to avoid flat ink slab"
+    },
+    "gacha.label.section_title": {
+      "kind": "label-style",
+      "font": "fonts/manrope/font",
+      "fontSize": 10,
+      "lineHeight": 14,
+      "color": "textWarmGold",
+      "outlineWidth": 0,
+      "horizontalAlign": "LEFT"
+    },
+    "gacha.label.rate_title": {
+      "kind": "label-style",
+      "font": "fonts/manrope/font",
+      "fontSize": 9,
+      "lineHeight": 14,
+      "bold": true,
+      "letterSpacing": 2,
+      "color": "textOnParchmentMuted",
+      "outlineWidth": 0,
+      "horizontalAlign": "LEFT"
+    },
+    "gacha.label.micro_btn": {
+      "kind": "label-style",
+      "font": "fonts/manrope/font",
+      "fontSize": 10,
+      "lineHeight": 14,
+      "color": "textMuted",
+      "outlineWidth": 0,
+      "horizontalAlign": "CENTER",
+      "overflow": "SHRINK"
+    },
+    "gacha.label.scale": {
+      "kind": "label-style",
+      "font": "fonts/manrope/font",
+      "fontSize": 9,
+      "lineHeight": 12,
+      "color": "textMuted",
+      "outlineWidth": 0,
+      "horizontalAlign": "CENTER"
+    },
+    "gacha.label.pity_scale": {
+      "kind": "label-style",
+      "font": "fonts/manrope/font",
+      "fontSize": 9,
+      "lineHeight": 13,
+      "letterSpacing": 1,
+      "color": "textMuted",
+      "outlineWidth": 0,
+      "horizontalAlign": "CENTER",
+      "note": "M48-pre-c: REVERT to textMuted(#99907C); HTML #3a3030 was for light context, our dark RightPanel needs readable muted tone"
+    },
+    "gacha.label.pity_scale.gold": {
+      "kind": "label-style",
+      "font": "fonts/manrope/font",
+      "fontSize": 9,
+      "lineHeight": 13,
+      "letterSpacing": 1,
+      "color": "accent.gold.cta",
+      "outlineWidth": 0,
+      "horizontalAlign": "CENTER",
+      "note": "M48-pre-c: REVERT to accent.gold.cta for legendary pool; matches pity bar gold theme"
+    },
+    "gacha.label.pity_scale.teal": {
+      "kind": "label-style",
+      "font": "fonts/manrope/font",
+      "fontSize": 9,
+      "lineHeight": 13,
+      "letterSpacing": 0,
+      "color": "accent.jade.field",
+      "outlineWidth": 0,
+      "horizontalAlign": "CENTER",
+      "note": "support pool pity scale, matches HTML 9px secondary label"
+    },
+    "gacha.label.rate_rarity": {
+      "kind": "label-style",
+      "font": "fonts/manrope/font",
+      "fontSize": 10,
+      "lineHeight": 14,
+      "bold": true,
+      "letterSpacing": 1,
+      "color": "rarityWhite",
+      "outlineWidth": 0,
+      "horizontalAlign": "LEFT"
+    },
+    "gacha.label.rate_rarity_green": {
+      "kind": "label-style",
+      "font": "fonts/manrope/font",
+      "fontSize": 10,
+      "lineHeight": 14,
+      "bold": true,
+      "letterSpacing": 1,
+      "color": "rarityGreen",
+      "outlineWidth": 0,
+      "horizontalAlign": "LEFT"
+    },
+    "gacha.label.rate_rarity_blue": {
+      "kind": "label-style",
+      "font": "fonts/manrope/font",
+      "fontSize": 10,
+      "lineHeight": 14,
+      "bold": true,
+      "letterSpacing": 1,
+      "color": "rarityBlue",
+      "outlineWidth": 0,
+      "horizontalAlign": "LEFT"
+    },
+    "gacha.label.rate_rarity_purple": {
+      "kind": "label-style",
+      "font": "fonts/manrope/font",
+      "fontSize": 10,
+      "lineHeight": 14,
+      "bold": true,
+      "letterSpacing": 1,
+      "color": "rarityPurple",
+      "outlineWidth": 0,
+      "horizontalAlign": "LEFT"
+    },
+    "gacha.label.rate_pct": {
+      "kind": "label-style",
+      "font": "fonts/manrope/font",
+      "fontSize": 12,
+      "lineHeight": 16,
+      "color": "rarityWhite",
+      "outlineWidth": 0,
+      "horizontalAlign": "RIGHT"
+    },
+    "gacha.label.rate_pct_green": {
+      "kind": "label-style",
+      "font": "fonts/manrope/font",
+      "fontSize": 12,
+      "lineHeight": 16,
+      "color": "rarityGreen",
+      "outlineWidth": 0,
+      "horizontalAlign": "RIGHT"
+    },
+    "gacha.label.rate_pct_blue": {
+      "kind": "label-style",
+      "font": "fonts/manrope/font",
+      "fontSize": 12,
+      "lineHeight": 16,
+      "color": "rarityBlue",
+      "outlineWidth": 0,
+      "horizontalAlign": "RIGHT"
+    },
+    "gacha.label.rate_pct_purple": {
+      "kind": "label-style",
+      "font": "fonts/manrope/font",
+      "fontSize": 12,
+      "lineHeight": 16,
+      "color": "rarityPurple",
+      "outlineWidth": 0,
+      "horizontalAlign": "RIGHT"
+    },
+    "gacha.label.cost_kicker": {
+      "kind": "label-style",
+      "font": "fonts/manrope/font",
+      "fontSize": 9,
+      "lineHeight": 11,
+      "letterSpacing": 1,
+      "color": "textMuted",
+      "outlineWidth": 0,
+      "horizontalAlign": "LEFT",
+      "note": "M48: HTML .cost-label letter-spacing:.14em @ 9px = 1.26px"
+    },
+    "gacha.label.pullbar_caption": {
+      "kind": "label-style",
+      "font": "fonts/manrope/font",
+      "fontSize": 9,
+      "lineHeight": 11,
+      "letterSpacing": 2,
+      "color": "#3A3030",
+      "outlineWidth": 0,
+      "horizontalAlign": "LEFT",
+      "overflow": "SHRINK",
+      "note": "M48: HTML .pull-bar-pool-label letter-spacing:.18em @ 9px = 1.62px"
+    },
+    "gacha.label.cost_value": {
+      "kind": "label-style",
+      "font": "fonts/manrope/font",
+      "fontSize": 18,
+      "lineHeight": 20,
+      "color": "textSecondary",
+      "outlineWidth": 0,
+      "horizontalAlign": "LEFT"
+    },
+    "gacha.label.cost_value_accent": {
+      "kind": "label-style",
+      "font": "fonts/manrope/font",
+      "fontSize": 18,
+      "lineHeight": 20,
+      "color": "accent.gold.cta",
+      "outlineWidth": 0,
+      "horizontalAlign": "LEFT"
+    },
+    "gacha.label.rules_note": {
+      "kind": "label-style",
+      "font": "fonts/manrope/font",
+      "fontSize": 9,
+      "lineHeight": 16,
+      "letterSpacing": 1,
+      "color": "textMuted",
+      "outlineWidth": 0,
+      "horizontalAlign": "LEFT",
+      "overflow": "RESIZE_HEIGHT",
+      "note": "M48: HTML .rules-note letter-spacing:.08em @9px=0.72→1; lineHeight:1.7@9px=15.3≈16"
+    },
+    "gacha.label.history_btn": {
+      "kind": "label-style",
+      "font": "fonts/manrope/font",
+      "fontSize": 13,
+      "lineHeight": 18,
+      "letterSpacing": 1,
+      "color": "textSecondary",
+      "outlineWidth": 0,
+      "horizontalAlign": "CENTER",
+      "overflow": "SHRINK",
+      "note": "M48: HTML .btn-history letter-spacing:.1em @13px=1.3→1"
+    },
+    "gacha.label.pullbar_title": {
+      "kind": "label-style",
+      "font": "fonts/newsreader/font",
+      "fontSize": 18,
+      "lineHeight": 22,
+      "letterSpacing": 1,
+      "color": "accent.gold.cta",
+      "outlineWidth": 0,
+      "horizontalAlign": "LEFT",
+      "overflow": "SHRINK",
+      "note": "M48: HTML .pull-bar-pool-name letter-spacing:.08em @18px=1.44→1"
+    },
+    "gacha.label.pull_btn_gold": {
+      "kind": "label-style",
+      "font": "fonts/manrope/font",
+      "fontSize": 20,
+      "lineHeight": 24,
+      "letterSpacing": 2,
+      "color": "textInk",
+      "fontWeight": "bold",
+      "bold": true,
+      "outlineWidth": 0,
+      "horizontalAlign": "CENTER",
+      "overflow": "SHRINK",
+      "note": "M46: HTML .pull-label is 20px / letter-spacing .1em; visual emphasis must come from gold material, not oversized text."
+    },
+    "gacha.label.pull_sub": {
+      "kind": "label-style",
+      "font": "fonts/manrope/font",
+      "fontSize": 11,
+      "lineHeight": 14,
+      "color": "textInk",
+      "outlineWidth": 0,
+      "horizontalAlign": "CENTER",
+      "overflow": "SHRINK"
+    },
+    "gacha.label.pull_cost_gold": {
+      "kind": "label-style",
+      "font": "fonts/manrope/font",
+      "fontSize": 13,
+      "lineHeight": 16,
+      "color": "textInk",
+      "outlineWidth": 0,
+      "horizontalAlign": "CENTER",
+      "overflow": "SHRINK"
+    },
+    "gacha.label.alt_btn": {
+      "kind": "label-style",
+      "font": "fonts/manrope/font",
+      "fontSize": 11,
+      "lineHeight": 14,
+      "letterSpacing": 1,
+      "color": "textSecondary",
+      "outlineWidth": 0,
+      "horizontalAlign": "CENTER",
+      "overflow": "SHRINK",
+      "note": "M48: HTML .btn-alt letter-spacing:.08em @11px=0.88→1"
+    },
+
+    "gacha.label.pool_positioning_title": {
+      "kind": "label-style",
+      "fontSize": 8,
+      "lineHeight": 10,
+      "color": "textWarmGold",
+      "outlineWidth": 0,
+      "horizontalAlign": "LEFT"
+    },
+    "gacha.label.pool_positioning_brief": {
+      "kind": "label-style",
+      "fontSize": 11,
+      "lineHeight": 16,
+      "color": "textSecondary",
+      "outlineWidth": 0,
+      "horizontalAlign": "LEFT",
       "overflow": "SHRINK"
     },
 
@@ -102,8 +723,11 @@
     },
     "gacha.label.pity_big": {
       "kind": "label-style",
-      "fontSize": 20,
-      "color": "secondary",
+      "font": "fonts/manrope/font",
+      "fontSize": 13,
+      "lineHeight": 16,
+      "bold": true,
+      "color": "colorWhite",
       "overflow": "SHRINK"
     },
 
@@ -159,18 +783,105 @@
       "spriteType": "sliced",
       "border": [20,20,20,20],
       "allowAutoAtlas": true,
-      "note": "先對齊 commerce family 消除缺圖 warning；若後續需要凸顯 10 連推薦，再回到 gold-cta / icon badge 流程做差異化。"
+      "note": "十連 CTA 先維持可載入資產，視覺層級由金色文案與版面拉開。"
+    },
+    "gacha.pull10.edge": {
+      "kind": "color-rect",
+      "color": "accent.gold.cta",
+      "opacity": 0.28,
+      "cornerRadius": 14,
+      "borderColor": "#3A2B08",
+      "borderWidth": 2,
+      "note": "pull-ten embossed edge — gold tint trim 0.28 (was 0.16)"
+    },
+    "gacha.pull10.shine": {
+      "kind": "color-rect",
+      "color": "colorWhite",
+      "opacity": 0.42,
+      "cornerRadius": 8,
+      "note": "top shine strip approximating HTML inset 0 1px 0 rgba(255,255,255,.55) — pushed to 0.42 (was 0.22)"
+    },
+    "gacha.pull10.shadow": {
+      "kind": "color-rect",
+      "color": "#3A2B08",
+      "opacity": 0.86,
+      "cornerRadius": 8,
+      "note": "bottom acrylic shadow strip approximating HTML 0 4px 0 #3a2b08"
+    },
+    "gacha.pull1.edge": {
+      "kind": "color-rect",
+      "color": "#1A1918",
+      "opacity": 0.30,
+      "cornerRadius": 14,
+      "borderColor": "#3A3328",
+      "borderWidth": 2,
+      "note": "pull-single dark edge — 0.30 (was 0.18) for more visible dark border"
+    },
+    "gacha.pull1.shadow": {
+      "kind": "color-rect",
+      "color": "colorBlack",
+      "opacity": 0.62,
+      "cornerRadius": 8,
+      "note": "pull-single bottom shadow — 0.62 (was 0.46), HTML 0 4px 14px rgba(0,0,0,.5)"
+    },
+    "gacha.btn.pull_single": {
+      "kind": "button-skin",
+      "normal":   "sprites/common/btn_secondary_normal/spriteFrame",
+      "pressed":  "sprites/common/btn_secondary_pressed/spriteFrame",
+      "disabled": "sprites/common/btn_secondary_disabled/spriteFrame",
+      "spriteType": "sliced",
+      "border": [20,20,20,20],
+      "allowAutoAtlas": true,
+      "note": "HTML: dark gradient #20201f→#111, 2px solid #3a3328; Cocos近似：深色 secondary + edge/shadow overlays"
+    },
+    "gacha.btn.history": {
+      "kind": "button-skin",
+      "normal":   "sprites/common/btn_secondary_normal/spriteFrame",
+      "pressed":  "sprites/common/btn_secondary_pressed/spriteFrame",
+      "disabled": "sprites/common/btn_secondary_disabled/spriteFrame",
+      "spriteType": "sliced",
+      "border": [20,20,20,20],
+      "allowAutoAtlas": true,
+      "note": "HTML: rgba(255,255,255,.04) bg, 1.5px solid #2a2a3a; Cocos近似：半透 secondary"
+    },
+    "gacha.btn.alt_slim": {
+      "kind": "button-skin",
+      "normal":   "sprites/ui_families/common/nav_ink/btn_primary_normal",
+      "pressed":  "sprites/ui_families/common/nav_ink/btn_primary_pressed",
+      "disabled": "sprites/ui_families/common/nav_ink/btn_primary_disabled",
+      "spriteType": "sliced",
+      "border": [12,12,12,12],
+      "allowAutoAtlas": true,
+      "note": "slimmer dark action used for pull-bar alt buttons; closer to HTML 44px / radius 8 secondary chip"
+    },
+    "gacha.pull.cost_chip": {
+      "kind": "color-rect",
+      "color": "colorBlack",
+      "opacity": 0.25,
+      "cornerRadius": 20,
+      "note": "HTML pull cost chip rgba(0,0,0,.25), radius 20"
     },
     "gacha.label.pull_btn": {
       "kind": "label-style",
-      "fontSize": 28,
-      "color": "textPrimary",
-      "fontWeight": "bold"
+      "font": "fonts/manrope/font",
+      "fontSize": 20,
+      "lineHeight": 24,
+      "letterSpacing": 2,
+      "color": "textSecondary",
+      "fontWeight": "bold",
+      "bold": true,
+      "horizontalAlign": "CENTER",
+      "overflow": "SHRINK"
     },
     "gacha.label.pull_cost": {
       "kind": "label-style",
-      "fontSize": 18,
-      "color": "textSecondary"
+      "font": "fonts/manrope/font",
+      "fontSize": 13,
+      "lineHeight": 16,
+      "color": "textSecondary",
+      "horizontalAlign": "CENTER",
+      "overflow": "SHRINK",
+      "note": "M46: HTML pull-cost .pc-num is 13px; cost chips should not read like secondary CTA titles."
     },
 
     "gacha.btn.divination": {
@@ -239,6 +950,23 @@
       "frame": "ui/gacha/destiny_shop_item_bg",
       "border": [10,10,10,10]
     },
+    "gacha.card.cost.border": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/common/parchment/frame",
+      "spriteType": "sliced",
+      "border": [16, 16, 16, 16],
+      "allowAutoAtlas": true,
+      "note": "HTML: border:1px solid rgba(255,255,255,.07), border-radius:10; Cocos\u8fd1\u4f3c\uff1a parchment frame"
+    },
+    "gacha.card.cost.border.dark": {
+      "kind": "color-rect",
+      "color": "colorWhite",
+      "opacity": 0.07,
+      "cornerRadius": 10,
+      "borderColor": "#FFFFFF",
+      "borderWidth": 1,
+      "note": "M46: dark HTML cost-panel border approximation; replaces parchment frame in gacha-preview-main."
+    },
     "gacha.pity.carrier.bg": {
       "kind": "sprite-frame",
       "path": "sprites/ui_families/common/parchment/bg",
@@ -254,6 +982,350 @@
       "spriteType": "sliced",
       "border": [16, 16, 16, 16],
       "allowAutoAtlas": true
+    }
+    ,
+    "gacha.badge.pool.general": {
+      "kind": "color-rect",
+      "color": "rarityPurple",
+      "alpha": 220,
+      "note": "General pool badge (purple)"
+    },
+    "gacha.badge.pool.legendary": {
+      "kind": "color-rect",
+      "color": "accent.gold.cta",
+      "alpha": 220,
+      "note": "Legendary pool badge (gold)"
+    },
+    "gacha.badge.pool.support": {
+      "kind": "color-rect",
+      "color": "accent.jade.field",
+      "alpha": 220,
+      "note": "Support pool badge (jade)"
+    },
+    "gacha.pity.fill.general": {
+      "kind": "color-rect",
+      "color": "rarityPurple",
+      "alpha": 230
+    },
+    "gacha.pity.fill.legendary": {
+      "kind": "color-rect",
+      "color": "accent.gold.cta",
+      "alpha": 230
+    },
+    "gacha.pity.fill.support": {
+      "kind": "color-rect",
+      "color": "accent.jade.field",
+      "alpha": 230
+    },
+    "gacha.pity.track.border": {
+      "kind": "color-rect",
+      "color": "rarityPurple",
+      "opacity": 0.25,
+      "note": "HTML pity-track border approx rgba(pity.color,.25) for general pool"
+    },
+    "gacha.pity.track.border.gold": {
+      "kind": "color-rect",
+      "color": "accent.gold.cta",
+      "opacity": 0.25,
+      "note": "HTML pity-track border approx rgba(pity.color,.25) for legendary pool"
+    },
+    "gacha.pity.track.border.teal": {
+      "kind": "color-rect",
+      "color": "accent.jade.field",
+      "opacity": 0.25,
+      "note": "HTML pity-track border approx rgba(pity.color,.25) for support pool"
+    },
+    "gacha.rate.border.N": {
+      "kind": "color-rect",
+      "color": "textMuted",
+      "opacity": 0.85
+    },
+    "gacha.rate.border.R": {
+      "kind": "color-rect",
+      "color": "rarityGreen",
+      "opacity": 0.85
+    },
+    "gacha.rate.border.SR": {
+      "kind": "color-rect",
+      "color": "rarityBlue",
+      "opacity": 0.85
+    },
+    "gacha.rate.border.SSR": {
+      "kind": "color-rect",
+      "color": "rarityPurple",
+      "opacity": 0.85
+    },
+    "gacha.rate.bar.N": { "kind": "color-rect", "color": "textMuted", "alpha": 200 },
+    "gacha.rate.bar.R": { "kind": "color-rect", "color": "rarityGreen", "alpha": 200 },
+    "gacha.rate.bar.SR": { "kind": "color-rect", "color": "rarityBlue", "alpha": 200 },
+    "gacha.rate.bar.SSR": { "kind": "color-rect", "color": "rarityPurple", "alpha": 200 },
+    "gacha.rate.bar.UR": { "kind": "color-rect", "color": "accent.gold.cta", "alpha": 200 },
+
+    "gacha.btn.nav": {
+      "kind": "button-skin",
+      "normal":   "sprites/ui_families/common/circle_icon/circle_normal/spriteFrame",
+      "pressed":  "sprites/ui_families/common/circle_icon/circle_pressed/spriteFrame",
+      "disabled": "sprites/ui_families/common/circle_icon/circle_disabled/spriteFrame",
+      "spriteType": "simple",
+      "allowAutoAtlas": true,
+      "opacity": 0.56,
+      "note": "HTML: 64×64 circle rgba(0,0,0,.55) + 2px solid rgba(255,255,255,.12); 使用 circle_icon sprite 近似"
+    },
+    "gacha.badge.pool_tier": {
+      "kind": "color-rect",
+      "color": "rarityPurple",
+      "opacity": 0.1,
+      "note": "M48-pre-c: opacity 0.22→0.10 to avoid same-hue low-contrast vs pool color text"
+    },
+    "gacha.label.pool_tier_badge": {
+      "kind": "label-style",
+      "fontSize": 9,
+      "bold": true,
+      "letterSpacing": 1,
+      "color": "colorWhite",
+      "overflow": "SHRINK",
+      "horizontalAlign": "CENTER",
+      "note": "M48-pre-c: white text for readability over tinted pool badge bg"
+    },
+    "gacha.badge.pool_tier.gold": {
+      "kind": "color-rect",
+      "color": "accentGold",
+      "opacity": 0.1,
+      "note": "M48-pre-c: opacity 0.20→0.10 for readability"
+    },
+    "gacha.label.pool_tier_badge.gold": {
+      "kind": "label-style",
+      "fontSize": 9,
+      "bold": true,
+      "letterSpacing": 1,
+      "color": "colorWhite",
+      "overflow": "SHRINK",
+      "horizontalAlign": "CENTER"
+    },
+    "gacha.badge.pool_tier.teal": {
+      "kind": "color-rect",
+      "color": "accent.jade.field",
+      "opacity": 0.1,
+      "note": "M48-pre-c: opacity 0.18→0.10 for readability"
+    },
+    "gacha.label.pool_tier_badge.teal": {
+      "kind": "label-style",
+      "fontSize": 9,
+      "bold": true,
+      "letterSpacing": 1,
+      "color": "colorWhite",
+      "overflow": "SHRINK",
+      "horizontalAlign": "CENTER"
+    },
+    "gacha.banner.bg_fill": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/gacha/generated/gacha_banner_bg_general",
+      "spriteType": "simple",
+      "allowAutoAtlas": false,
+      "note": "M47: proper radial gradient sprite (ellipse 120% 80% at 40% 30%, #1a0a2e 0%, #16061f 40%, #0a0612 100%). Replaces M46 flat color-rect."
+    },
+    "gacha.banner.bg_fill.gold": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/gacha/generated/gacha_banner_bg_gold",
+      "spriteType": "simple",
+      "allowAutoAtlas": false,
+      "note": "M47: proper radial gradient sprite (ellipse 120% 80% at 40% 30%, #2a1a00 0%, #1a0f00 40%, #0a0612 100%)."
+    },
+    "gacha.banner.bg_fill.teal": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/gacha/generated/gacha_banner_bg_teal",
+      "spriteType": "simple",
+      "allowAutoAtlas": false,
+      "note": "M47: proper radial gradient sprite (ellipse 120% 80% at 40% 30%, #062020 0%, #041414 40%, #030a0a 100%)."
+    },
+    "gacha.banner.glow_center": {
+      "kind": "color-rect",
+      "color": "rarityPurple",
+      "opacity": 0.04,
+      "note": "bloodline-seed center glow softened to avoid visible hard rectangle"
+    },
+    "gacha.banner.glow_center.gold": {
+      "kind": "color-rect",
+      "color": "accentGold",
+      "opacity": 0.04,
+      "note": "legendary/limited center glow softened to avoid visible hard rectangle"
+    },
+    "gacha.banner.glow_center.teal": {
+      "kind": "color-rect",
+      "color": "accent.jade.field",
+      "opacity": 0.03,
+      "note": "support center glow softened to avoid visible hard rectangle"
+    },
+    "gacha.banner.hero_glow": {
+      "kind": "color-rect",
+      "color": "rarityPurple",
+      "opacity": 0.03,
+      "note": "bloodline-seed ambient glow softened for cleaner composition"
+    },
+    "gacha.banner.hero_glow.gold": {
+      "kind": "color-rect",
+      "color": "accentGold",
+      "opacity": 0.03,
+      "note": "legendary ambient glow softened for cleaner composition"
+    },
+    "gacha.banner.hero_glow.teal": {
+      "kind": "color-rect",
+      "color": "accent.jade.field",
+      "opacity": 0.03,
+      "note": "support ambient glow softened for cleaner composition"
+    },
+    "gacha.banner.name_bloom.outer": {
+      "kind": "color-rect",
+      "color": "rarityPurple",
+      "opacity": 0.03,
+      "cornerRadius": 30,
+      "note": "outer bloom softened and rounded down to avoid blocky label backplate"
+    },
+    "gacha.banner.name_bloom.inner": {
+      "kind": "color-rect",
+      "color": "rarityPurple",
+      "opacity": 0.05,
+      "cornerRadius": 24,
+      "note": "inner bloom core softened to avoid hard rectangular patch behind hero name"
+    },
+    "gacha.label.banner_name.purple": {
+      "kind": "label-style",
+      "font": "fonts/newsreader/font",
+      "fontSize": 72,
+      "lineHeight": 72,
+      "letterSpacing": 6,
+      "color": "rarityPurple",
+      "outlineWidth": 3,
+      "outlineColor": "outlineDark",
+      "horizontalAlign": "LEFT",
+      "overflow": "SHRINK",
+      "note": "HTML .banner-hero-name letter-spacing:.08em @72px=6px; bloodline-seed #CE93D8"
+    },
+    "gacha.label.banner_name.teal": {
+      "kind": "label-style",
+      "font": "fonts/newsreader/font",
+      "fontSize": 72,
+      "lineHeight": 72,
+      "letterSpacing": 6,
+      "color": "accent.jade.field",
+      "outlineWidth": 3,
+      "outlineColor": "outlineDark",
+      "horizontalAlign": "LEFT",
+      "overflow": "SHRINK",
+      "note": "HTML .banner-hero-name letter-spacing:.08em @72px=6px; support #A4D2D0"
+    },
+    "gacha.chip.guarantee.bg": {
+      "kind": "color-rect",
+      "color": "rarityPurple",
+      "opacity": 0.15,
+      "cornerRadius": 8,
+      "borderColor": "#9C27B0",
+      "borderWidth": 1,
+      "note": "bloodline-seed guaranteeBg rgba(156,39,176,.15); HTML border-radius:8px border:1px solid #9C27B0; was surfaceSepiaDeep/0.45"
+    },
+    "gacha.chip.guarantee.bg.gold": {
+      "kind": "color-rect",
+      "color": "accentGold",
+      "opacity": 0.15,
+      "cornerRadius": 8,
+      "borderColor": "#FFC107",
+      "borderWidth": 1,
+      "note": "legendary guaranteeBg rgba(255,193,7,.15); HTML border-radius:8px border:1px solid rgba(255,193,7,.35)"
+    },
+    "gacha.chip.guarantee.bg.teal": {
+      "kind": "color-rect",
+      "color": "accent.jade.field",
+      "opacity": 0.12,
+      "cornerRadius": 8,
+      "borderColor": "#8CCFC4",
+      "borderWidth": 1,
+      "note": "support guaranteeBg rgba(140,207,196,.12); HTML border-radius:8px border:1px solid rgba(140,207,196,.3)"
+    },
+    "gacha.chip.event.bg": {
+      "kind": "color-rect",
+      "color": "rarityPurple",
+      "opacity": 0.28,
+      "cornerRadius": 4,
+      "borderColor": "#9C27B0",
+      "borderWidth": 1,
+      "note": "bloodline-seed event chip; HTML eventChipBg rgba(156,39,176,.15); border-radius:4px border:1px solid #9C27B0"
+    },
+    "gacha.chip.event.bg.gold": {
+      "kind": "color-rect",
+      "color": "accentGold",
+      "opacity": 0.22,
+      "cornerRadius": 4,
+      "borderColor": "#AA8800",
+      "borderWidth": 1,
+      "note": "legendary event chip; HTML eventChipBg rgba(255,193,7,.15); border-radius:4px border:1px solid #aa8800"
+    },
+    "gacha.chip.event.bg.teal": {
+      "kind": "color-rect",
+      "color": "accent.jade.field",
+      "opacity": 0.14,
+      "cornerRadius": 4,
+      "borderColor": "#8CCFC4",
+      "borderWidth": 1,
+      "note": "support event chip; HTML eventChipBg rgba(140,207,196,.12); border-radius:4px border:1px solid #8CCFC4"
+    },
+    "gacha.banner.fade.right": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/gacha/generated/gacha_banner_fade_right",
+      "spriteType": "simple",
+      "allowAutoAtlas": false,
+      "note": "M47: proper horizontal gradient sprite (transparent left → dark right, max alpha ~0.92). Replaces M43 color-rect fallback per M45-P0-J."
+    },
+    "gacha.banner.fade.bottom.soft": {
+      "kind": "color-rect",
+      "color": "surfaceNavyDeepest",
+      "opacity": 0.12,
+      "note": "[M42 DEPRECATED: removed from layout, replaced by 2-layer system] was full-height soft base causing seam at y=32"
+    },
+    "gacha.banner.fade.bottom.mid": {
+      "kind": "color-rect",
+      "color": "surfaceNavyDeepest",
+      "opacity": 0.20,
+      "note": "M42: now covers full height (top=0); gentle base for fade gradient approximation. Was top=32 causing hard seam."
+    },
+    "gacha.banner.fade.bottom.core": {
+      "kind": "color-rect",
+      "color": "surfaceNavyDeepest",
+      "opacity": 0.52,
+      "note": "M42: opacity 0.34→0.52 to compensate for removed Soft layer; covers bottom 60% (top=48). Effective bottom opacity = 1-(1-0.20)*(1-0.52) ≈ 0.62, close to HTML rgba(#0a0612) deep black."
+    },
+    "gacha.banner.fade.bottom": {
+      "kind": "sprite-frame",
+      "path": "sprites/ui_families/gacha/generated/gacha_banner_fade_bottom",
+      "spriteType": "simple",
+      "allowAutoAtlas": false,
+      "note": "M47: proper vertical gradient sprite (transparent top → black 0.97 bottom, soft entry at 40%). Replaces M43 color-rect fallback per M45-P0-J."
+    },
+    "gacha.pool.brief.bg": {
+      "kind": "color-rect",
+      "color": "surfaceNavyDeepest",
+      "opacity": 0.68,
+      "cornerRadius": 8,
+      "borderColor": "#FFFFFF",
+      "borderWidth": 1,
+      "note": "HTML pool-brief: rgba(0,0,0,.75) + 8px radius + subtle 1px border"
+    },
+    "gacha.pool.strip.bg": {
+      "kind": "color-rect",
+      "color": "colorBlack",
+      "opacity": 0.72,
+      "note": "M46: closer to HTML pool-name-strip top-heavy black band; still a single-layer fallback until gradient sprite lands."
+    },
+    "gacha.pool.strip.top": {
+      "kind": "color-rect",
+      "color": "colorBlack",
+      "opacity": 0.78,
+      "note": "[M42 DEPRECATED in layout: use gacha.pool.strip.bg] pool-name-strip top layer approximates HTML linear-gradient start"
+    },
+    "gacha.pool.strip.bottom": {
+      "kind": "color-rect",
+      "color": "colorBlack",
+      "opacity": 0.16,
+      "note": "[M42 DEPRECATED in layout: removed from PoolNameStrip.children] pool-name-strip tail layer approximates gradient fade-out"
     }
   },
 

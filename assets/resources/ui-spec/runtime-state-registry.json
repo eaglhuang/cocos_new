@@ -1,0 +1,93 @@
+{
+  "version": 1,
+  "description": "UI runtime state 單一入口。所有宣告 content 的 screen 都必須在這裡登記版本與狀態來源，避免 LoadingScene / LobbyScene / capture route 各自套不同資料。",
+  "routes": [
+    {
+      "screenId": "battle-hud-screen",
+      "screenVersion": 1,
+      "provider": "declarative-content",
+      "contentSource": "battle-hud-states-v1",
+      "defaultState": "smoke-default"
+    },
+    {
+      "screenId": "bloodline-mirror-awakening-screen",
+      "screenVersion": 1,
+      "provider": "declarative-content",
+      "contentSource": "bloodline-mirror-states-v1",
+      "defaultState": "awakening"
+    },
+    {
+      "screenId": "bloodline-mirror-loading-screen",
+      "screenVersion": 1,
+      "provider": "declarative-content",
+      "contentSource": "bloodline-mirror-states-v1",
+      "defaultState": "loading"
+    },
+    {
+      "screenId": "elite-troop-codex-screen",
+      "screenVersion": 1,
+      "provider": "declarative-content",
+      "contentSource": "elite-troop-codex-v1",
+      "defaultState": "all"
+    },
+    {
+      "screenId": "gacha-main-screen",
+      "screenVersion": 2,
+      "provider": "gacha-preview-state",
+      "contentSource": "gacha-main-states-v1",
+      "defaultState": "bloodline-seed",
+      "variants": {
+        "hero": "bloodline-seed",
+        "support": "nurture-depth",
+        "limited": "limited-spotlight",
+        "bloodline-seed": "bloodline-seed",
+        "nurture-depth": "nurture-depth",
+        "limited-spotlight": "limited-spotlight"
+      }
+    },
+    {
+      "screenId": "general-detail-bloodline-v3-screen",
+      "screenVersion": 4,
+      "provider": "component-owned",
+      "ownerComponent": "GeneralDetailComposite",
+      "contentSource": "general-detail-overview-states-v1",
+      "defaultState": "smoke-zhang-fei"
+    },
+    {
+      "screenId": "general-detail-unified-screen",
+      "screenVersion": 1,
+      "provider": "component-owned",
+      "ownerComponent": "GeneralDetailComposite",
+      "contentSource": "general-detail-overview-states-v1",
+      "defaultState": "smoke-zhang-fei"
+    },
+    {
+      "screenId": "lobby-main-screen",
+      "screenVersion": 2,
+      "provider": "declarative-content",
+      "contentSource": "lobby-main-states-v1",
+      "defaultState": "smoke-default"
+    },
+    {
+      "screenId": "lobby-mission-detail-dialog-screen",
+      "screenVersion": 1,
+      "provider": "declarative-content",
+      "contentSource": "lobby-mission-detail-dialog-states-v1",
+      "defaultState": "smoke-military-partial"
+    },
+    {
+      "screenId": "nurture-session-screen",
+      "screenVersion": 2,
+      "provider": "declarative-content",
+      "contentSource": "nurture-session-states-v1",
+      "defaultState": "smoke-default"
+    },
+    {
+      "screenId": "tiger-tally-detail-panel-screen",
+      "screenVersion": 1,
+      "provider": "declarative-content",
+      "contentSource": "tiger-tally-detail-states-v1",
+      "defaultState": "smoke-hubaoqi"
+    }
+  ]
+}

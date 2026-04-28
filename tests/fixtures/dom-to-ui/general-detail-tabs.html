@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<style>
+  .detail { display:flex; flex-direction:column; gap:12px; padding:16px; background:#1a1a1a; }
+  .tabs { display:flex; gap:8px; }
+  .tab-btn { background:#000000; color:#ffffff; transition: opacity 120ms ease-out; }
+  .slot { width:900px; height:420px; }
+</style>
+</head>
+<body>
+  <div class="detail" data-anchor="fill" data-visual-zone="detail-root">
+    <div class="tabs" data-name="TabBar" data-ucuf-id="tab-bar">
+      <button class="tab-btn" data-name="OverviewTab" data-ucuf-id="tab-overview" data-action="tabSwitch" data-tab="overview">總覽</button>
+      <button class="tab-btn" data-name="StatsTab" data-ucuf-id="tab-stats" data-action="tabSwitch" data-tab="stats">能力</button>
+    </div>
+    <div class="slot" data-slot="overview" data-ucuf-id="slot-overview" data-default-fragment="gd-tab-overview" data-warmup-hint="next-frame"></div>
+    <div class="slot" data-slot="stats" data-ucuf-id="slot-stats" data-default-fragment="gd-tab-stats" data-warmup-hint="idle"></div>
+  </div>
+</body>
+</html>

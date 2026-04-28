@@ -51,6 +51,7 @@ function printHelp() {
         '  --family       template family（detail-split / dialog-card / rail-list / fullscreen-result）',
         '                 若省略，從 screen spec 的 layout 名稱自動推斷',
         '  --ucuf         [M10] 使用 CompositePanel 骨架模板，同時自動生成 Content Contract JSON',
+        '  --check-ucuf   驗證 --ucuf 端到端骨架契約（建議搭配 --dry-run --no-uiconfig）',
         '  --out          產出 Panel .ts 的目錄，預設 assets/scripts/ui/components',
         '  --name         類別名稱，預設由 screenId 轉 PascalCase + Panel 後綴',
         '  --no-uiconfig  不自動修改 UIConfig.ts',
@@ -267,6 +268,7 @@ function main() {
     const dryRun     = hasFlag('dry-run');
     const noUiConfig = hasFlag('no-uiconfig');
     const ucufMode   = hasFlag('ucuf'); // M10: CompositePanel 骨架模式
+    const checkUcuf  = hasFlag('check-ucuf');
     const outDir     = getArg('out', DEFAULT_OUT_DIR);
 
     if (!screenId) {
@@ -309,6 +311,15 @@ function main() {
     const panelTs = generatePanelTs({ screenId, className, family, uiId, ucufMode, contractFamily: family });
     if (!panelTs) {
         process.exit(1);
+    }
+    if (checkUcuf) {
+        const check = runUcufScaffoldCheck({ screenId, className, family, ucufMode, panelTs });
+        if (check.errors.length > 0) {
+            console.error('[scaffold-ui-component] --check-ucuf failed:');
+            check.errors.forEach(e => console.error(`  - ${e}`));
+            process.exit(2);
+        }
+        console.log(`[scaffold-ui-component] --check-ucuf passed checks=${check.checks.length}`);
     }
     const outPath = path.join(path.isAbsolute(outDir) ? outDir : path.join(PROJECT_ROOT, outDir), `${className}.ts`);
 
@@ -354,6 +365,22 @@ function main() {
             console.log(`  Content Schema → ${contractRelPath}`);
         }
     }
+}
+
+function runUcufScaffoldCheck(options) {
+    const checks = [];
+    const errors = [];
+    if (!options.ucufMode) errors.push('--check-ucuf requires --ucuf');
+    else checks.push('ucuf-flag-present');
+    if (/extends\s+CompositePanel/.test(options.panelTs)) checks.push('extends-composite-panel');
+    else errors.push('generated panel must extend CompositePanel');
+    if (/ContentContractRef/.test(options.panelTs) && /requiredFields/.test(options.panelTs)) checks.push('content-contract-ref-present');
+    else errors.push('generated panel must include ContentContractRef requiredFields skeleton');
+    if (options.panelTs.includes(options.screenId)) checks.push('screen-id-bound');
+    else errors.push('generated panel must embed screenId');
+    if (options.panelTs.includes(options.family)) checks.push('family-bound');
+    else errors.push('generated panel must embed family id');
+    return { checks, errors };
 }
 
 main();

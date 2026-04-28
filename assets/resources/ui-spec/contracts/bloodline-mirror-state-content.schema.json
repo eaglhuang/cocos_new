@@ -69,7 +69,7 @@
       "type": "string",
       "required": true,
       "description": "主操作按鈕文字。",
-      "bindPath": "MirrorStatePanels/ActionRow/PrimaryActionButton"
+      "bindPath": "MirrorStatePanels/ActionRow/PrimaryActionButton/PrimaryActionLabel"
     },
     "crestState": {
       "type": "string",

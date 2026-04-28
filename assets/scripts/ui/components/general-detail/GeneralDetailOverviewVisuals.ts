@@ -11,6 +11,7 @@ import type { Node } from 'cc';
 import type { GeneralDetailCrestState } from '../../../core/models/GeneralUnit';
 import type { GeneralDetailRarityTier } from '../../../core/models/GeneralUnit';
 import type { SpriteFrame } from 'cc';
+import type { UISkinResolver } from '../../core/UISkinResolver';
 import { applyUIRarityMarkToNodes } from '../../core/UIRarityMarkVisual';
 
 type OverviewVisualPassPaths = {
@@ -25,8 +26,11 @@ type OverviewVisualPassPaths = {
     awakeningBarFill: string;
     awakeningBarTrack?: string;
     coreStatsTitle: string;
+    coreStatsTitleEn?: string;
     roleTitle: string;
+    roleTitleEn?: string;
     traitTitle: string;
+    traitTitleEn?: string;
     headerName: string;
     headerTitle: string;
     headerMeta: string;
@@ -34,6 +38,7 @@ type OverviewVisualPassPaths = {
     roleValue: string;
     traitValue: string;
     bloodlineCardTitle?: string;
+    bloodlineCardTitleEn?: string;
     bloodlineTitle?: string;
     bloodlineName: string;
     awakeningLabel: string;
@@ -43,6 +48,8 @@ type OverviewVisualPassPaths = {
     crestTitle: string;
     crestHint: string;
     crestStateLabel?: string;
+    biographyTitle?: string;
+    biographyEnLabel?: string;
     crestGlow?: string;
     crestFill?: string;
     crestCore?: string;
@@ -59,34 +66,6 @@ type OverviewVisualPassOptions = {
     applyRarityMark?: boolean;
 };
 
-const RARITY_VISUAL_STATE: Record<GeneralDetailRarityTier, { accent: Color; soft: Color; title: Color }> = {
-    common: {
-        accent: new Color(125, 131, 138, 255),
-        soft: new Color(186, 191, 198, 255),
-        title: new Color(125, 131, 138, 255),
-    },
-    rare: {
-        accent: new Color(74, 138, 211, 255),
-        soft: new Color(173, 212, 245, 255),
-        title: new Color(74, 138, 211, 255),
-    },
-    epic: {
-        accent: new Color(138, 91, 214, 255),
-        soft: new Color(209, 185, 255, 255),
-        title: new Color(138, 91, 214, 255),
-    },
-    legendary: {
-        accent: new Color(52, 98, 91, 255),
-        soft: new Color(168, 214, 203, 255),
-        title: new Color(208, 236, 227, 255),
-    },
-    mythic: {
-        accent: new Color(255, 215, 0, 255),
-        soft: new Color(255, 248, 180, 255),
-        title: new Color(255, 215, 0, 255),
-    },
-};
-
 const CREST_VISUAL_STATE: Record<GeneralDetailCrestState, { label: string; glow: number; fill: number; crest: number }> = {
     placeholder: { label: '命紋未定', glow: 4, fill: 14, crest: 12 },
     rumored: { label: '傳聞浮現', glow: 16, fill: 36, crest: 56 },
@@ -95,12 +74,51 @@ const CREST_VISUAL_STATE: Record<GeneralDetailCrestState, { label: string; glow:
 };
 
 // ── Ink palette ──
-const strongInk = new Color(232, 216, 178, 255);
-const softInk = new Color(215, 199, 162, 255);
-const quietInk = new Color(211, 195, 157, 255);
-const sectionInk = new Color(230, 215, 180, 255);
-const bodyInk = new Color(237, 226, 200, 255);
-const jadeInk = new Color(244, 229, 193, 255);
+const INK_TOKENS = {
+    strong: 'gdv3LabelName',
+    quiet: 'gdv3LabelMeta',
+    section: 'gdv3LabelSection',
+    body: 'gdv3LabelValue',
+    jade: 'gdv3LabelMode',
+    muted: 'textMuted',
+    badge: 'textPrimary',
+} as const;
+
+type OverviewColorSet = {
+    panelBorder: Color;
+    titlePrimary: Color;
+    titleSecondary: Color;
+    meta: Color;
+    sectionGold: Color;
+    body: Color;
+    teal: Color;
+    tealBright: Color;
+    badgeGold: Color;
+    badgeText: Color;
+};
+
+function resolveOverviewColors(skinResolver: UISkinResolver): OverviewColorSet {
+    return {
+        panelBorder: skinResolver.resolveColor('outline'),
+        titlePrimary: skinResolver.resolveColor('stdLabelButton'),
+        titleSecondary: skinResolver.resolveColor('textMuted'),
+        meta: skinResolver.resolveColor('textOnParchmentMuted'),
+        sectionGold: skinResolver.resolveColor('accent.jade.crest'),
+        body: skinResolver.resolveColor('textSecondary'),
+        teal: skinResolver.resolveColor('accent.jade.base'),
+        tealBright: skinResolver.resolveColor('accent.jade.crest'),
+        badgeGold: skinResolver.resolveColor('accentGold'),
+        badgeText: skinResolver.resolveColor('textOnParchment'),
+    };
+}
+
+const RARITY_BADGE_TEXT: Record<GeneralDetailRarityTier, string> = {
+    common: 'N',
+    rare: 'R',
+    epic: 'SSR',
+    legendary: 'UR',
+    mythic: 'UR',
+};
 
 const UNIFIED_PATHS: OverviewVisualPassPaths = {
     coreStatsCard: 'OverviewSummaryModules/CoreStatsCard',
@@ -109,24 +127,35 @@ const UNIFIED_PATHS: OverviewVisualPassPaths = {
     coreStatsTitleBandFill: 'OverviewSummaryModules/CoreStatsCard/CoreStatsTitleBand/CoreStatsTitleBandFill',
     roleTitleBandFill: 'OverviewSummaryModules/RoleCard/RoleTitleBand/RoleTitleBandFill',
     traitTitleBandFill: 'OverviewSummaryModules/TraitCard/TraitTitleBand/TraitTitleBandFill',
-    bloodlineSummaryCard: 'BloodlineOverviewModules/BloodlineUnifiedCard/BloodlineSummaryCard',
-    bloodlineCrestCard: 'BloodlineOverviewModules/BloodlineUnifiedCard/BloodlineCrestCard',
-    awakeningBarFill: 'BloodlineOverviewModules/BloodlineUnifiedCard/BloodlineSummaryCard/AwakeningProgressGroup/AwakeningBar',
+    bloodlineSummaryCard: 'BloodlineOverviewModules',
+    bloodlineCrestCard: 'BloodlineOverviewModules/BloodlineUnifiedCard/BloodlineRow/BloodlineCrestCard',
+    awakeningBarTrack: 'BloodlineOverviewModules/BloodlineUnifiedCard/BloodlineRow/BloodlineSummaryCard/AwakeningProgressGroup/AwakeningBarTrack',
+    awakeningBarFill: 'BloodlineOverviewModules/BloodlineUnifiedCard/BloodlineRow/BloodlineSummaryCard/AwakeningProgressGroup/AwakeningBarTrack/AwakeningBarFill',
     coreStatsTitle: 'OverviewSummaryModules/CoreStatsCard/CoreStatsTitleBand/CoreStatsTitle',
+    coreStatsTitleEn: 'OverviewSummaryModules/CoreStatsCard/CoreStatsTitleBand/CoreStatsTitleEn',
     roleTitle: 'OverviewSummaryModules/RoleCard/RoleTitleBand/RoleTitle',
+    roleTitleEn: 'OverviewSummaryModules/RoleCard/RoleTitleBand/RoleTitleEn',
     traitTitle: 'OverviewSummaryModules/TraitCard/TraitTitleBand/TraitTitle',
-    headerName: 'HeaderRow/NameTitleColumn/NameLabel',
-    headerTitle: 'HeaderRow/NameTitleColumn/TitleLabel',
-    headerMeta: 'HeaderRow/MetaColumn/MetaLabel',
+    traitTitleEn: 'OverviewSummaryModules/TraitCard/TraitTitleBand/TraitTitleEn',
+    headerName: 'HeaderRow/NameTitleColumn/NameTitleRow/NameLabel',
+    headerTitle: 'HeaderRow/NameTitleColumn/NameTitleRow/TitleLabel',
+    headerMeta: 'HeaderRow/NameTitleColumn/MetaLabel',
     coreStatsValue: 'OverviewSummaryModules/CoreStatsCard/CoreStatsValue',
     roleValue: 'OverviewSummaryModules/RoleCard/RoleValue',
     traitValue: 'OverviewSummaryModules/TraitCard/TraitValue',
-    bloodlineName: 'BloodlineOverviewModules/BloodlineUnifiedCard/BloodlineSummaryCard/BloodlineName',
-    awakeningLabel: 'BloodlineOverviewModules/BloodlineUnifiedCard/BloodlineSummaryCard/AwakeningProgressGroup/AwakeningLabel',
-    personalityValue: 'BloodlineOverviewModules/BloodlineUnifiedCard/BloodlineSummaryCard/PersonalityValue',
-    bloodlineBody: 'BloodlineOverviewModules/BloodlineUnifiedCard/BloodlineSummaryCard/BloodlineBody',
-    crestTitle: 'BloodlineOverviewModules/BloodlineUnifiedCard/BloodlineCrestCard/CrestTitle',
-    crestHint: 'BloodlineOverviewModules/BloodlineUnifiedCard/BloodlineCrestCard/CrestHint',
+    bloodlineName: 'BloodlineOverviewModules/BloodlineUnifiedCard/BloodlineRow/BloodlineSummaryCard/BloodlineName',
+    awakeningLabel: 'BloodlineOverviewModules/BloodlineUnifiedCard/BloodlineRow/BloodlineSummaryCard/AwakeningProgressGroup/AwakeningLabel',
+    personalityValue: 'BloodlineOverviewModules/BloodlineUnifiedCard/BloodlineRow/BloodlineSummaryCard/PersonalityValue',
+    bloodlineBody: 'BloodlineOverviewModules/BloodlineUnifiedCard/BloodlineRow/BloodlineSummaryCard/BloodlineBody',
+    crestTitle: 'BloodlineOverviewModules/BloodlineUnifiedCard/BloodlineRow/BloodlineCrestCard/CrestTitle',
+    crestHint: 'BloodlineOverviewModules/BloodlineUnifiedCard/BloodlineRow/BloodlineCrestCard/CrestHint',
+    crestStateLabel: 'BloodlineOverviewModules/BloodlineUnifiedCard/BloodlineRow/BloodlineCrestCard/BloodlineCrestCarrier/CrestStateLabel',
+    crestGlow: 'BloodlineOverviewModules/BloodlineUnifiedCard/BloodlineRow/BloodlineCrestCard/BloodlineCrestCarrier/BloodlineCrestGlow',
+    crestFill: 'BloodlineOverviewModules/BloodlineUnifiedCard/BloodlineRow/BloodlineCrestCard/BloodlineCrestCarrier/BloodlineCrestFill',
+    crestCore: 'BloodlineOverviewModules/BloodlineUnifiedCard/BloodlineRow/BloodlineCrestCard/BloodlineCrestCarrier/BloodlineCrest',
+    crestFace: 'BloodlineOverviewModules/BloodlineUnifiedCard/BloodlineRow/BloodlineCrestCard/BloodlineCrestCarrier/BloodlineCrestFace',
+    crestGlyphPrimary: 'BloodlineOverviewModules/BloodlineUnifiedCard/BloodlineRow/BloodlineCrestCard/BloodlineCrestCarrier/CrestGlyphPrimary',
+    crestGlyphSecondary: 'BloodlineOverviewModules/BloodlineUnifiedCard/BloodlineRow/BloodlineCrestCard/BloodlineCrestCarrier/CrestGlyphSecondary',
     rarityDock: 'HeaderRow/MetaColumn/RarityBadgeDock',
     rarityUnderlay: 'HeaderRow/MetaColumn/RarityBadgeDock/RarityOuterGlow',
     rarityBadge: 'HeaderRow/MetaColumn/RarityBadgeDock/RarityBadge',
@@ -140,35 +169,41 @@ const SHELL_PATHS: OverviewVisualPassPaths = {
     coreStatsTitleBandFill: 'InfoContent/OverviewSummaryModules/CoreStatsCard/CoreStatsTitleBand/CoreStatsTitleBandFill',
     roleTitleBandFill: 'InfoContent/OverviewSummaryModules/RoleCard/RoleTitleBand/RoleTitleBandFill',
     traitTitleBandFill: 'InfoContent/OverviewSummaryModules/TraitCard/TraitTitleBand/TraitTitleBandFill',
-    bloodlineSummaryCard: 'InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineUnifiedCard/BloodlineSummaryCard',
-    bloodlineCrestCard: 'InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineUnifiedCard/BloodlineCrestCard',
-    awakeningBarTrack: 'InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineUnifiedCard/BloodlineSummaryCard/BloodlineSummaryFields/AwakeningProgressGroup/AwakeningBarTrack',
-    awakeningBarFill: 'InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineUnifiedCard/BloodlineSummaryCard/BloodlineSummaryFields/AwakeningProgressGroup/AwakeningBarTrack/AwakeningBarFill',
+    bloodlineSummaryCard: 'InfoContent/BloodlineOverviewModules',
+    bloodlineCrestCard: 'InfoContent/BloodlineOverviewModules/BloodlineUnifiedCard/BloodlineRow/BloodlineCrestCard',
+    awakeningBarTrack: 'InfoContent/BloodlineOverviewModules/BloodlineUnifiedCard/BloodlineRow/BloodlineSummaryCard/AwakeningProgressGroup/AwakeningBarTrack',
+    awakeningBarFill: 'InfoContent/BloodlineOverviewModules/BloodlineUnifiedCard/BloodlineRow/BloodlineSummaryCard/AwakeningProgressGroup/AwakeningBarTrack/AwakeningBarFill',
     coreStatsTitle: 'InfoContent/OverviewSummaryModules/CoreStatsCard/CoreStatsTitleBand/CoreStatsTitle',
+    coreStatsTitleEn: 'InfoContent/OverviewSummaryModules/CoreStatsCard/CoreStatsTitleBand/CoreStatsTitleEn',
     roleTitle: 'InfoContent/OverviewSummaryModules/RoleCard/RoleTitleBand/RoleTitle',
+    roleTitleEn: 'InfoContent/OverviewSummaryModules/RoleCard/RoleTitleBand/RoleTitleEn',
     traitTitle: 'InfoContent/OverviewSummaryModules/TraitCard/TraitTitleBand/TraitTitle',
-    headerName: 'InfoContent/HeaderRow/NameTitleColumn/NameLabel',
-    headerTitle: 'InfoContent/HeaderRow/NameTitleColumn/TitleLabel',
-    headerMeta: 'InfoContent/HeaderRow/MetaColumn/MetaLabel',
+    traitTitleEn: 'InfoContent/OverviewSummaryModules/TraitCard/TraitTitleBand/TraitTitleEn',
+    headerName: 'InfoContent/HeaderRow/NameTitleColumn/NameTitleRow/NameLabel',
+    headerTitle: 'InfoContent/HeaderRow/NameTitleColumn/NameTitleRow/TitleLabel',
+    headerMeta: 'InfoContent/HeaderRow/NameTitleColumn/MetaLabel',
     coreStatsValue: 'InfoContent/OverviewSummaryModules/CoreStatsCard/CoreStatsValue',
     roleValue: 'InfoContent/OverviewSummaryModules/RoleCard/RoleValue',
     traitValue: 'InfoContent/OverviewSummaryModules/TraitCard/TraitValue',
-    bloodlineCardTitle: 'InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineUnifiedCard/BloodlineCardTitle',
-    bloodlineTitle: 'InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineUnifiedCard/BloodlineSummaryCard/BloodlineSummaryFields/BloodlineTitle',
-    bloodlineName: 'InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineUnifiedCard/BloodlineSummaryCard/BloodlineSummaryFields/BloodlineName',
-    awakeningLabel: 'InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineUnifiedCard/BloodlineSummaryCard/BloodlineSummaryFields/AwakeningProgressGroup/AwakeningLabel',
-    personalityLabel: 'InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineUnifiedCard/BloodlineSummaryCard/BloodlineSummaryFields/PersonalityLabel',
-    personalityValue: 'InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineUnifiedCard/BloodlineSummaryCard/BloodlineSummaryFields/PersonalityValue',
-    bloodlineBody: 'InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineUnifiedCard/BloodlineSummaryCard/BloodlineBody',
-    crestTitle: 'InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineUnifiedCard/BloodlineCrestCard/CrestTitle',
-    crestHint: 'InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineUnifiedCard/BloodlineCrestCard/CrestHint',
-    crestStateLabel: 'InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineUnifiedCard/BloodlineCrestCard/BloodlineCrestCarrier/CrestStateLabel',
-    crestGlow: 'InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineUnifiedCard/BloodlineCrestCard/BloodlineCrestCarrier/BloodlineCrestGlow',
-    crestFill: 'InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineUnifiedCard/BloodlineCrestCard/BloodlineCrestCarrier/BloodlineCrestFill',
-    crestCore: 'InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineUnifiedCard/BloodlineCrestCard/BloodlineCrestCarrier/BloodlineCrest',
-    crestFace: 'InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineUnifiedCard/BloodlineCrestCard/BloodlineCrestCarrier/BloodlineCrestFace',
-    crestGlyphPrimary: 'InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineUnifiedCard/BloodlineCrestCard/BloodlineCrestCarrier/CrestGlyphPrimary',
-    crestGlyphSecondary: 'InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineUnifiedCard/BloodlineCrestCard/BloodlineCrestCarrier/CrestGlyphSecondary',
+    bloodlineCardTitle: 'InfoContent/BloodlineOverviewModules/BloodlineUnifiedCard/BloodlineCardTitle',
+    bloodlineCardTitleEn: 'InfoContent/BloodlineOverviewModules/BloodlineUnifiedCard/BloodlineCardTitleEn',
+    bloodlineTitle: 'InfoContent/BloodlineOverviewModules/BloodlineUnifiedCard/BloodlineRow/BloodlineSummaryCard/BloodlineSummaryFields/BloodlineTitle',
+    bloodlineName: 'InfoContent/BloodlineOverviewModules/BloodlineUnifiedCard/BloodlineRow/BloodlineSummaryCard/BloodlineSummaryFields/BloodlineName',
+    awakeningLabel: 'InfoContent/BloodlineOverviewModules/BloodlineUnifiedCard/BloodlineRow/BloodlineSummaryCard/BloodlineSummaryFields/AwakeningProgressGroup/AwakeningLabel',
+    personalityLabel: 'InfoContent/BloodlineOverviewModules/BloodlineUnifiedCard/BloodlineRow/BloodlineSummaryCard/BloodlineSummaryFields/PersonalityLabel',
+    personalityValue: 'InfoContent/BloodlineOverviewModules/BloodlineUnifiedCard/BloodlineRow/BloodlineSummaryCard/BloodlineSummaryFields/PersonalityValue',
+    bloodlineBody: 'InfoContent/BloodlineOverviewModules/BloodlineUnifiedCard/BloodlineRow/BloodlineSummaryCard/BloodlineBody',
+    crestTitle: 'InfoContent/BloodlineOverviewModules/BloodlineUnifiedCard/BloodlineRow/BloodlineCrestCard/CrestTitle',
+    crestHint: 'InfoContent/BloodlineOverviewModules/BloodlineUnifiedCard/BloodlineRow/BloodlineCrestCard/CrestHint',
+    crestStateLabel: 'InfoContent/BloodlineOverviewModules/BloodlineUnifiedCard/BloodlineRow/BloodlineCrestCard/BloodlineCrestCarrier/CrestStateLabel',
+    biographyTitle: 'InfoContent/BiographyPanel/BiographyHeader/BiographyTitle',
+    biographyEnLabel: 'InfoContent/BiographyPanel/BiographyHeader/BiographyEnLabel',
+    crestGlow: 'InfoContent/BloodlineOverviewModules/BloodlineUnifiedCard/BloodlineRow/BloodlineCrestCard/BloodlineCrestCarrier/BloodlineCrestGlow',
+    crestFill: 'InfoContent/BloodlineOverviewModules/BloodlineUnifiedCard/BloodlineRow/BloodlineCrestCard/BloodlineCrestCarrier/BloodlineCrestFill',
+    crestCore: 'InfoContent/BloodlineOverviewModules/BloodlineUnifiedCard/BloodlineRow/BloodlineCrestCard/BloodlineCrestCarrier/BloodlineCrest',
+    crestFace: 'InfoContent/BloodlineOverviewModules/BloodlineUnifiedCard/BloodlineRow/BloodlineCrestCard/BloodlineCrestCarrier/BloodlineCrestFace',
+    crestGlyphPrimary: 'InfoContent/BloodlineOverviewModules/BloodlineUnifiedCard/BloodlineRow/BloodlineCrestCard/BloodlineCrestCarrier/CrestGlyphPrimary',
+    crestGlyphSecondary: 'InfoContent/BloodlineOverviewModules/BloodlineUnifiedCard/BloodlineRow/BloodlineCrestCard/BloodlineCrestCarrier/CrestGlyphSecondary',
     rarityDock: 'InfoContent/HeaderRow/MetaColumn/RarityBadgeDock',
     rarityUnderlay: 'InfoContent/HeaderRow/MetaColumn/RarityBadgeDock/RarityBadgeUnderlay',
     rarityBadge: 'InfoContent/HeaderRow/MetaColumn/RarityBadgeDock/RarityBadge',
@@ -181,15 +216,15 @@ const SHELL_PATHS: OverviewVisualPassPaths = {
  * @param contentSlot - ContentSlot 節點（其下掛有 OverviewTabContent）
  * @param tier - 目前武將的 rarityTier
  */
-export function applyOverviewVisualPass(contentSlot: Node, tier: GeneralDetailRarityTier): void {
+export function applyOverviewVisualPass(contentSlot: Node, tier: GeneralDetailRarityTier, skinResolver: UISkinResolver): void {
     const root = contentSlot.getChildByName('OverviewTabContent');
     if (!root) return;
 
-    applyOverviewVisualPassToRoot(root, tier, UNIFIED_PATHS, { applyRarityMark: true });
+    applyOverviewVisualPassToRoot(root, tier, UNIFIED_PATHS, skinResolver, { applyRarityMark: false });
 }
 
-export function applyShellOverviewContentVisualPass(shellRoot: Node, tier: GeneralDetailRarityTier): void {
-    applyOverviewVisualPassToRoot(shellRoot, tier, SHELL_PATHS, { applyRarityMark: false });
+export function applyShellOverviewContentVisualPass(shellRoot: Node, tier: GeneralDetailRarityTier, skinResolver: UISkinResolver): void {
+    applyOverviewVisualPassToRoot(shellRoot, tier, SHELL_PATHS, skinResolver, { applyRarityMark: false });
 }
 
 export function applyOverviewAwakeningProgress(contentSlot: Node, progress: number): void {
@@ -197,6 +232,48 @@ export function applyOverviewAwakeningProgress(contentSlot: Node, progress: numb
     if (!root) return;
 
     _applyAwakeningProgressToRoot(root, progress, UNIFIED_PATHS.awakeningBarFill);
+}
+
+export function applyOverviewCrestState(contentSlot: Node, state: GeneralDetailCrestState): void {
+    const root = contentSlot.getChildByName('OverviewTabContent');
+    if (!root) return;
+
+    _applyCrestStateToRoot(root, state, UNIFIED_PATHS);
+}
+
+export function applyOverviewEmptyCrestFace(contentSlot: Node): void {
+    const root = contentSlot.getChildByName('OverviewTabContent');
+    if (!root) return;
+
+    _applyCrestFaceToRoot(root, null, UNIFIED_PATHS);
+}
+
+export function applyOverviewLoadedCrestFace(contentSlot: Node, spriteFrame: SpriteFrame): void {
+    const root = contentSlot.getChildByName('OverviewTabContent');
+    if (!root) return;
+
+    _applyCrestFaceToRoot(root, spriteFrame, UNIFIED_PATHS);
+}
+
+export function applyOverviewFallbackCrestFace(contentSlot: Node): void {
+    const root = contentSlot.getChildByName('OverviewTabContent');
+    if (!root) return;
+
+    if (UNIFIED_PATHS.crestFace) {
+        _setNodeActive(root, UNIFIED_PATHS.crestFace, false);
+    }
+    if (UNIFIED_PATHS.crestFill) {
+        _setNodeOpacity(root, UNIFIED_PATHS.crestFill, 110);
+    }
+    if (UNIFIED_PATHS.crestCore) {
+        _setNodeOpacity(root, UNIFIED_PATHS.crestCore, 124);
+    }
+    if (UNIFIED_PATHS.crestGlyphPrimary) {
+        _setNodeActive(root, UNIFIED_PATHS.crestGlyphPrimary, true);
+    }
+    if (UNIFIED_PATHS.crestGlyphSecondary) {
+        _setNodeActive(root, UNIFIED_PATHS.crestGlyphSecondary, true);
+    }
 }
 
 export function applyShellOverviewAwakeningProgress(shellRoot: Node, progress: number): void {
@@ -237,42 +314,43 @@ function applyOverviewVisualPassToRoot(
     root: Node,
     tier: GeneralDetailRarityTier,
     paths: OverviewVisualPassPaths,
+    skinResolver: UISkinResolver,
     options?: OverviewVisualPassOptions,
 ): void {
-    const visual = RARITY_VISUAL_STATE[tier] ?? RARITY_VISUAL_STATE.common;
+    const colors = resolveOverviewColors(skinResolver);
 
     // ── 三欄資訊卡底板 ──
-    _setSpriteColor(root, paths.coreStatsCard, new Color(251, 247, 239, 255));
-    _setSpriteColor(root, paths.roleCard, new Color(247, 248, 243, 255));
-    _setSpriteColor(root, paths.traitCard, new Color(250, 246, 239, 255));
-    _setNodeOpacity(root, paths.coreStatsCard, 252);
-    _setNodeOpacity(root, paths.roleCard, 248);
-    _setNodeOpacity(root, paths.traitCard, 252);
+    _setSpriteColor(root, paths.coreStatsCard, colors.panelBorder);
+    _setSpriteColor(root, paths.roleCard, colors.panelBorder);
+    _setSpriteColor(root, paths.traitCard, colors.panelBorder);
+    _setNodeOpacity(root, paths.coreStatsCard, 255);
+    _setNodeOpacity(root, paths.roleCard, 255);
+    _setNodeOpacity(root, paths.traitCard, 255);
 
     // Title band fills
-    _setSpriteColor(root, paths.coreStatsTitleBandFill, new Color(240, 228, 204, 255));
-    _setSpriteColor(root, paths.roleTitleBandFill, new Color(228, 234, 222, 255));
-    _setSpriteColor(root, paths.traitTitleBandFill, new Color(239, 230, 210, 255));
-    _setNodeOpacity(root, paths.coreStatsTitleBandFill, 224);
-    _setNodeOpacity(root, paths.roleTitleBandFill, 214);
-    _setNodeOpacity(root, paths.traitTitleBandFill, 220);
+    _setSpriteColor(root, paths.coreStatsTitleBandFill, colors.panelBorder);
+    _setSpriteColor(root, paths.roleTitleBandFill, colors.panelBorder);
+    _setSpriteColor(root, paths.traitTitleBandFill, colors.panelBorder);
+    _setNodeOpacity(root, paths.coreStatsTitleBandFill, 0);
+    _setNodeOpacity(root, paths.roleTitleBandFill, 0);
+    _setNodeOpacity(root, paths.traitTitleBandFill, 0);
 
     // ── 血脈摘要卡底板 ──
-    _setSpriteColor(root, paths.bloodlineSummaryCard, new Color(252, 248, 241, 255));
-    _setSpriteColor(root, paths.bloodlineCrestCard, new Color(247, 247, 241, 255));
-    _setNodeOpacity(root, paths.bloodlineSummaryCard, 252);
-    _setNodeOpacity(root, paths.bloodlineCrestCard, 252);
+    _setSpriteColor(root, paths.bloodlineSummaryCard, colors.teal);
+    _setSpriteColor(root, paths.bloodlineCrestCard, colors.teal);
+    _setNodeOpacity(root, paths.bloodlineSummaryCard, 255);
+    _setNodeOpacity(root, paths.bloodlineCrestCard, 255);
 
     // ── 覺醒進度條 ──
     if (paths.awakeningBarTrack) {
-        _setSpriteColor(root, paths.awakeningBarTrack, new Color(76, 68, 58, 255));
+        _setSpriteColor(root, paths.awakeningBarTrack, colors.panelBorder);
         _setNodeOpacity(root, paths.awakeningBarTrack, 142);
     }
     const awakeningBarFill = root.getChildByPath(paths.awakeningBarFill);
     if (awakeningBarFill) {
         const barSprite = awakeningBarFill.getComponent(Sprite);
         if (barSprite) {
-            const color = visual.accent.clone();
+            const color = colors.teal.clone();
             color.a = 224;
             barSprite.color = color;
             const barOpacity = awakeningBarFill.getComponent(UIOpacity);
@@ -286,42 +364,67 @@ function applyOverviewVisualPassToRoot(
     }
 
     // ── Section 標題 labels（墨綠金色系）──
-    _setLabelColor(root, paths.coreStatsTitle, sectionInk);
-    _setLabelColor(root, paths.roleTitle, sectionInk);
-    _setLabelColor(root, paths.traitTitle, sectionInk);
+    _setLabelColor(root, paths.coreStatsTitle, colors.tealBright);
+    if (paths.coreStatsTitleEn) {
+        _setLabelColor(root, paths.coreStatsTitleEn, colors.meta);
+    }
+    _setLabelColor(root, paths.roleTitle, colors.tealBright);
+    if (paths.roleTitleEn) {
+        _setLabelColor(root, paths.roleTitleEn, colors.meta);
+    }
+    _setLabelColor(root, paths.traitTitle, colors.tealBright);
+    if (paths.traitTitleEn) {
+        _setLabelColor(root, paths.traitTitleEn, colors.meta);
+    }
     if (paths.bloodlineCardTitle) {
-        _setLabelColor(root, paths.bloodlineCardTitle, sectionInk);
+        _setLabelColor(root, paths.bloodlineCardTitle, colors.tealBright);
+    }
+    if (paths.bloodlineCardTitleEn) {
+        _setLabelColor(root, paths.bloodlineCardTitleEn, colors.meta);
     }
 
     // ── Header labels ──
-    _setLabelColor(root, paths.headerName, strongInk);
-    _setLabelColor(root, paths.headerTitle, quietInk);
-    _setLabelColor(root, paths.headerMeta, quietInk);
+    _setLabelColor(root, paths.headerName, colors.titlePrimary);
+    _setLabelColor(root, paths.headerTitle, colors.titleSecondary);
+    _setLabelColor(root, paths.headerMeta, colors.meta);
 
     // ── 數值文字 ──
-    _setLabelColor(root, paths.coreStatsValue, bodyInk);
-    _setLabelColor(root, paths.roleValue, bodyInk);
-    _setLabelColor(root, paths.traitValue, bodyInk);
+    _setLabelColor(root, paths.coreStatsValue, colors.body);
+    _setLabelColor(root, paths.roleValue, colors.body);
+    _setLabelColor(root, paths.traitValue, colors.body);
+    _setNodeOpacity(root, paths.coreStatsValue, 0);
+    _setNodeOpacity(root, paths.roleValue, 0);
+    _setNodeOpacity(root, paths.traitValue, 0);
 
     // ── 血脈區 labels ──
     if (paths.bloodlineTitle) {
-        _setLabelColor(root, paths.bloodlineTitle, quietInk);
+        _setLabelColor(root, paths.bloodlineTitle, colors.teal);
     }
-    _setLabelColor(root, paths.bloodlineName, strongInk);
-    _setLabelColor(root, paths.awakeningLabel, quietInk);
+    _setLabelColor(root, paths.bloodlineName, colors.tealBright);
+    _setLabelColor(root, paths.awakeningLabel, colors.teal);
     if (paths.personalityLabel) {
-        _setLabelColor(root, paths.personalityLabel, quietInk);
+        _setLabelColor(root, paths.personalityLabel, colors.teal);
     }
-    _setLabelColor(root, paths.personalityValue, bodyInk);
-    _setLabelColor(root, paths.bloodlineBody, bodyInk);
+    _setLabelColor(root, paths.personalityValue, colors.body);
+    _setLabelColor(root, paths.bloodlineBody, colors.body);
 
     // ── Crest 卡 labels ──
-    _setLabelColor(root, paths.crestTitle, jadeInk);
-    _setLabelColor(root, paths.crestHint, bodyInk);
+    _setLabelColor(root, paths.crestTitle, colors.teal);
+    _setLabelColor(root, paths.crestHint, colors.body);
     if (paths.crestStateLabel) {
-        _setLabelColor(root, paths.crestStateLabel, new Color(154, 132, 92, 255));
+        _setLabelColor(root, paths.crestStateLabel, colors.meta);
     }
-    _setLabelColor(root, paths.rarityBadgeLabel, new Color(246, 239, 225, 255));
+    if (paths.biographyTitle) {
+        _setLabelColor(root, paths.biographyTitle, colors.sectionGold);
+    }
+    if (paths.biographyEnLabel) {
+        _setLabelColor(root, paths.biographyEnLabel, colors.meta);
+    }
+    _setLabelText(root, paths.rarityBadgeLabel, RARITY_BADGE_TEXT[tier] ?? 'R');
+    _setLabelColor(root, paths.rarityBadgeLabel, colors.badgeText);
+    _setSpriteColor(root, paths.rarityBadge, colors.badgeGold);
+    _setNodeOpacity(root, paths.rarityBadge, 255);
+    _setNodeOpacity(root, paths.rarityUnderlay, 0);
 
     // ── Rarity badge mark ──
     if (options?.applyRarityMark !== false) {

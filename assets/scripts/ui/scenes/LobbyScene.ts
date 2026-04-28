@@ -1,5 +1,5 @@
 // @spec-source → 見 docs/cross-reference-index.md
-import { _decorator, Button, Color, Component, Node, UITransform, Widget } from 'cc';
+import { _decorator, Button, Color, Component, Label, Node, UITransform, Widget } from 'cc';
 import { UIID, LayerType } from '../../core/config/UIConfig';
 import type { GeneralConfig, GeneralDetailDefaultTab } from '../../core/models/GeneralUnit';
 import { services } from '../../core/managers/ServiceLoader';
@@ -12,15 +12,29 @@ import { BattleTactic } from '../../core/config/Constants';
 import { GeneralListComposite } from '../components/GeneralListComposite';
 import { GeneralDetailComposite } from '../components/GeneralDetailComposite';
 import { EliteTroopCodexComposite, type EliteTroopCodexOpenPayload } from '../components/EliteTroopCodexComposite';
+import { LobbyMissionDetailDialogComposite, type LobbyMissionDetailDialogOpenPayload, type MissionGeneralOption } from '../components/LobbyMissionDetailDialogComposite';
+import { LocalGachaService } from '../../core/services/LocalGachaService';
+import { PlayerRosterService } from '../../core/services/PlayerRosterService';
 import { UIScreenPreviewHost } from '../components/UIScreenPreviewHost';
 import { SolidBackground } from '../components/SolidBackground';
 import { ToastMessage } from '../components/ToastMessage';
+import { applyUIPreviewBinderState } from '../core/UIPreviewStateApplicator';
+import { buildSpiritFamilyOverviewDisplayModel, type SpiritFamilyOverviewOpenPayload } from '../core/SpiritFamilyOverviewRoute';
+import { UITemplateBinder } from '../core/UITemplateBinder';
+import { UCUFLogger, LogCategory } from '../core/UCUFLogger';
+import { showGachaHistory, showGachaResults, attachCurrencyCheatPanel, detachCurrencyCheatPanel, detachRosterClearButton, ensureGlobalDevOverlay, refreshCurrencyDisplay } from '../dev/GachaDevOverlay';
 
 const { ccclass } = _decorator;
+
+type GeneralDetailRuntimeTab = 'Overview' | 'Stats' | 'Tactics' | 'Bloodline' | 'Equip' | 'Aptitude';
+type GeneralDetailEntrySmokeSource = 'ucuf-nav' | 'scene-button';
 
 interface GeneralListOpenPayload {
     generals: GeneralConfig[];
     onSelectGeneral: (config: GeneralConfig) => void | Promise<void>;
+    options?: {
+        factionFilter?: 'all' | 'player' | 'enemy';
+    };
 }
 
 interface ScreenButtonBinding {
@@ -39,8 +53,14 @@ export class LobbyScene extends Component {
     private _shopMainHost: UIScreenPreviewHost | null = null;
     private _gachaMainHost: UIScreenPreviewHost | null = null;
     private _gachaHost: UIScreenPreviewHost | null = null;
+    private _spiritFamilyOverviewHost: UIScreenPreviewHost | null = null;
+    private _bloodlineMirrorLoadingHost: UIScreenPreviewHost | null = null;
     private _bloodlineMirrorAwakeningHost: UIScreenPreviewHost | null = null;
+    private _characterDs3Host: UIScreenPreviewHost | null = null;
     private _eliteTroopCodexPanel: EliteTroopCodexComposite | null = null;
+    private _missionDetailDialogPanel: LobbyMissionDetailDialogComposite | null = null;
+    private readonly _singlePlayerModeToggleHandles: Array<{ root: Node; label: Label }> = [];
+    private readonly _localGachaService = new LocalGachaService();
     private _ready = false;
 
     /** 等待 LobbyScene 資料初始化完成（供 headless smoke route 使用） */
@@ -72,7 +92,9 @@ export class LobbyScene extends Component {
 
         await this._mountLobbyMainHub();
         await this._mountSecondaryMainHubs();
+        await this._mountCharacterDs3Host();
         await this._mountEliteTroopCodexPanel();
+        await this._mountLobbyMissionDetailDialogPanel();
         this._registerUIControllers();
         await services().ui.open(UIID.LobbyMain);
 
@@ -107,10 +129,15 @@ export class LobbyScene extends Component {
         }, 1);
 
         this._ready = true;
+        ensureGlobalDevOverlay(this._localGachaService, undefined, () => { PlayerRosterService.clear(); }, () => {
+            this._refreshWalletPreviewState();
+        });
     }
 
     protected onDestroy(): void {
         void services().ui.closeAll();
+        detachCurrencyCheatPanel();
+        detachRosterClearButton();
     }
 
     private async _mountLobbyMainHub(): Promise<void> {
@@ -127,15 +154,20 @@ export class LobbyScene extends Component {
         this._lobbyMainHost = hostNode.getComponent(UIScreenPreviewHost) ?? hostNode.addComponent(UIScreenPreviewHost);
         await this._lobbyMainHost.showScreen('lobby-main-screen');
 
-        const binder = this._lobbyMainHost.binder;
+        this._configureLobbyMainHub(this._lobbyMainHost.binder);
+        hostNode.active = false;
+    }
+
+    private _configureLobbyMainHub(binder: UITemplateBinder | null): void {
         const generalsButton = binder?.getButton('btnGenerals');
         const battleButton = binder?.getButton('btnBattle');
         const shopButton = binder?.getButton('btnShop');
         const gachaButton = binder?.getButton('btnGacha');
         const supportCardButton = binder?.getButton('btnSupportCard');
         const floodBattleButton = binder?.getButton('btnFloodBattle');
+        const spiritFamilyOverviewButton = binder?.getButton('DispatchBoardActionButton');
 
-        if (!generalsButton || !battleButton || !shopButton || !gachaButton || !supportCardButton || !floodBattleButton) {
+        if (!binder || !generalsButton || !battleButton || !shopButton || !gachaButton || !supportCardButton || !floodBattleButton) {
             throw new Error('[LobbyScene] lobby-main-screen 缺少 btnGenerals / btnBattle / btnShop / btnGacha / btnSupportCard / btnFloodBattle 綁定');
         }
 
@@ -157,7 +189,19 @@ export class LobbyScene extends Component {
         floodBattleButton.node.off(Button.EventType.CLICK, this.onClickFloodBattle, this);
         floodBattleButton.node.on(Button.EventType.CLICK, this.onClickFloodBattle, this);
 
-        hostNode.active = false;
+        if (spiritFamilyOverviewButton) {
+            spiritFamilyOverviewButton.node.off(Button.EventType.CLICK, this.onClickSpiritFamilyOverview, this);
+            spiritFamilyOverviewButton.node.on(Button.EventType.CLICK, this.onClickSpiritFamilyOverview, this);
+        }
+
+        binder.setTexts({
+            HeroWallTitle: '世家巡檢',
+            DailyTitle: '今日世家總覽',
+            DailyBody: '從君主層統覽麾下所有世家、主卡狀態與家族深度，再決定要進入哪一支。',
+            DispatchBoardTitle: '世家總覽入口',
+            DispatchBoardBody: '先看總覽，再進各家的英靈陳列室；武將命頁只在已形成分支時提供捷徑。',
+            DispatchBoardActionLabel: '前往世家總覽',
+        });
     }
 
     private async _mountSecondaryMainHubs(): Promise<void> {
@@ -166,17 +210,31 @@ export class LobbyScene extends Component {
         ]);
 
         this._gachaMainHost = await this._mountPreviewScreenHost('GachaMainHost', 'gacha-main-screen', [
-            { buttonId: 'BackBtn', handler: () => { void this._goBackToLobby(); } },
-            { buttonId: 'DestinyShopBtn', handler: () => { void services().ui.open(UIID.ShopMain); } },
-            { buttonId: 'Pull1Btn', handler: () => { this._openUIOnNextTick(UIID.Gacha); } },
-            { buttonId: 'Pull10Btn', handler: () => { this._openUIOnNextTick(UIID.Gacha); } },
+            { buttonId: 'Pull1Btn',      handler: () => { this._openUIOnNextTick(UIID.Gacha); } },
+            { buttonId: 'Pull10Btn',     handler: () => { this._openUIOnNextTick(UIID.Gacha); } },
+            { buttonId: 'HistoryBtn',    handler: () => { void this._showGachaHistory(); } },
+            { buttonId: 'GoldSummonBtn', handler: () => { this._openUIOnNextTick(UIID.Gacha); } },
+            { buttonId: 'UseTicketBtn',  handler: () => { this._openUIOnNextTick(UIID.Gacha); } },
         ]);
 
         this._gachaHost = await this._mountPreviewScreenHost('GachaHost', 'gacha-main-screen', [
-            { buttonId: 'BackBtn', handler: () => { void this._goBackToLobby(); } },
-            { buttonId: 'DestinyShopBtn', handler: () => { void services().ui.open(UIID.ShopMain); } },
-            { buttonId: 'Pull1Btn', handler: () => { void services().ui.goBack(); } },
-            { buttonId: 'Pull10Btn', handler: () => { void services().ui.goBack(); } },
+            { buttonId: 'Pull1Btn',      handler: () => { void this._runLocalGacha(1); } },
+            { buttonId: 'Pull10Btn',     handler: () => { void this._runLocalGacha(10); } },
+            { buttonId: 'HistoryBtn',    handler: () => { void this._showGachaHistory(); } },
+            { buttonId: 'GoldSummonBtn', handler: () => { void this._runGoldSummon(); } },
+            { buttonId: 'UseTicketBtn',  handler: () => { void this._runTicketSummon(); } },
+        ]);
+        attachCurrencyCheatPanel(this._localGachaService, undefined, () => { PlayerRosterService.clear(); }, () => {
+            this._refreshWalletPreviewState();
+        });
+        this._refreshWalletPreviewState();
+
+        this._spiritFamilyOverviewHost = await this._mountPreviewScreenHost('SpiritFamilyOverviewHost', 'bloodline-mirror-loading-screen', [
+            { buttonId: 'PrimaryActionButton', handler: () => { void services().ui.goBack(); } },
+        ]);
+
+        this._bloodlineMirrorLoadingHost = await this._mountPreviewScreenHost('BloodlineMirrorLoadingHost', 'bloodline-mirror-loading-screen', [
+            { buttonId: 'PrimaryActionButton', handler: () => { void services().ui.goBack(); } },
         ]);
 
         this._bloodlineMirrorAwakeningHost = await this._mountPreviewScreenHost('BloodlineMirrorAwakeningHost', 'bloodline-mirror-awakening-screen', [
@@ -196,6 +254,21 @@ export class LobbyScene extends Component {
         panelNode.setSiblingIndex(Math.max(backgroundIndex + 1, panelNode.getSiblingIndex()));
 
         this._eliteTroopCodexPanel = panelNode.getComponent(EliteTroopCodexComposite) ?? panelNode.addComponent(EliteTroopCodexComposite);
+        panelNode.active = false;
+    }
+
+    private async _mountLobbyMissionDetailDialogPanel(): Promise<void> {
+        const panelNode = this.node.getChildByName('LobbyMissionDetailDialogComposite') ?? new Node('LobbyMissionDetailDialogComposite');
+        panelNode.layer = this.node.layer;
+        if (!panelNode.parent) {
+            panelNode.parent = this.node;
+        }
+
+        this._ensureWidget(panelNode);
+        const backgroundIndex = this.node.getChildByName('Background')?.getSiblingIndex() ?? -1;
+        panelNode.setSiblingIndex(Math.max(backgroundIndex + 1, panelNode.getSiblingIndex()));
+
+        this._missionDetailDialogPanel = panelNode.getComponent(LobbyMissionDetailDialogComposite) ?? panelNode.addComponent(LobbyMissionDetailDialogComposite);
         panelNode.active = false;
     }
 
@@ -219,6 +292,10 @@ export class LobbyScene extends Component {
         this._bindScreenButtons(host, bindings);
         hostNode.active = false;
         return host;
+    }
+
+    private async _mountCharacterDs3Host(): Promise<void> {
+        this._characterDs3Host = await this._mountPreviewScreenHost('CharacterDs3Host', 'character-ds3-main');
     }
 
     private _bindScreenButtons(host: UIScreenPreviewHost, bindings: ScreenButtonBinding[]): void {
@@ -249,12 +326,18 @@ export class LobbyScene extends Component {
         const generalListController = this._createGeneralListController();
         const generalDetailController = this._createGeneralDetailController();
         const shopMainController = this._createPreviewScreenController(this._shopMainHost, 'shop-main-screen');
-        const gachaMainController = this._createPreviewScreenController(this._gachaMainHost, 'gacha-main-screen');
+        const gachaMainController = this._createPreviewScreenController(this._gachaMainHost, 'gacha-main-screen', () => {
+            this._refreshWalletPreviewState();
+        });
         const gachaController = this._createPreviewScreenController(this._gachaHost, 'gacha-main-screen', () => {
             this._applyGachaFlowPresentation(this._gachaHost, true);
+            this._refreshWalletPreviewState();
         });
+        const spiritFamilyOverviewController = this._createSpiritFamilyOverviewController();
+        const bloodlineMirrorLoadingController = this._createPreviewScreenController(this._bloodlineMirrorLoadingHost, 'bloodline-mirror-loading-screen');
         const bloodlineMirrorAwakeningController = this._createPreviewScreenController(this._bloodlineMirrorAwakeningHost, 'bloodline-mirror-awakening-screen');
         const eliteTroopCodexController = this._createEliteTroopCodexController();
+        const missionDetailDialogController = this._createLobbyMissionDetailDialogController();
 
         services().ui.register(UIID.LobbyMain, lobbyMainController);
         services().ui.register(UIID.GeneralList, generalListController);
@@ -262,8 +345,11 @@ export class LobbyScene extends Component {
         services().ui.register(UIID.ShopMain, shopMainController);
         services().ui.register(UIID.GachaMain, gachaMainController);
         services().ui.register(UIID.Gacha, gachaController);
+        services().ui.register(UIID.SpiritFamilyOverview, spiritFamilyOverviewController);
+        services().ui.register(UIID.BloodlineMirrorLoading, bloodlineMirrorLoadingController);
         services().ui.register(UIID.BloodlineMirrorAwakening, bloodlineMirrorAwakeningController);
         services().ui.register(UIID.EliteTroopCodex, eliteTroopCodexController);
+        services().ui.register(UIID.LobbyMissionDetailDialog, missionDetailDialogController);
     }
 
     private _createEliteTroopCodexController(): UIManagedController {
@@ -278,6 +364,38 @@ export class LobbyScene extends Component {
             },
             hide: () => {
                 this._eliteTroopCodexPanel!.hide();
+            },
+        };
+    }
+
+    private _createLobbyMissionDetailDialogController(): UIManagedController {
+        if (!this._missionDetailDialogPanel) {
+            throw new Error('[LobbyScene] LobbyMissionDetailDialogComposite cannot be registered before mount');
+        }
+
+        return {
+            node: this._missionDetailDialogPanel.node,
+            show: async (payload?: unknown) => {
+                const dialogPayload = payload as LobbyMissionDetailDialogOpenPayload | undefined;
+                const availableGenerals = dialogPayload?.availableGenerals?.length
+                    ? dialogPayload.availableGenerals
+                    : this._buildMissionDetailGeneralOptions();
+                const resolvedGeneral = this._resolveMissionDetailSmokeGeneral(
+                    dialogPayload?.previewVariant ?? '',
+                    availableGenerals,
+                    dialogPayload,
+                );
+
+                await this._missionDetailDialogPanel!.show({
+                    ...dialogPayload,
+                    availableGenerals,
+                    selectedGeneralId: dialogPayload?.selectedGeneralId ?? resolvedGeneral?.id,
+                    selectedGeneralLabel: dialogPayload?.selectedGeneralLabel ?? resolvedGeneral?.label,
+                    selectedGeneralVolunteer: dialogPayload?.selectedGeneralVolunteer ?? resolvedGeneral?.volunteer,
+                });
+            },
+            hide: () => {
+                this._missionDetailDialogPanel!.hide();
             },
         };
     }
@@ -316,11 +434,32 @@ export class LobbyScene extends Component {
             node: host.node,
             show: async () => {
                 host.node.active = true;
+                this._bringNodeToFront(host.node);
                 await host.showScreen(screenId);
                 onShown?.();
             },
             hide: () => {
                 host.node.active = false;
+            },
+        };
+    }
+
+    private _createSpiritFamilyOverviewController(): UIManagedController {
+        if (!this._spiritFamilyOverviewHost) {
+            throw new Error('[LobbyScene] SpiritFamilyOverviewHost 尚未初始化，無法註冊至 UIManager');
+        }
+
+        return {
+            node: this._spiritFamilyOverviewHost.node,
+            show: async (payload?: unknown) => {
+                const host = this._spiritFamilyOverviewHost!;
+                host.node.active = true;
+                this._bringNodeToFront(host.node);
+                await host.showScreen('bloodline-mirror-loading-screen');
+                this._applySpiritFamilyOverviewState(host.binder, payload as SpiritFamilyOverviewOpenPayload | undefined);
+            },
+            hide: () => {
+                this._spiritFamilyOverviewHost!.node.active = false;
             },
         };
     }
@@ -354,6 +493,69 @@ export class LobbyScene extends Component {
         }
     }
 
+    private _applySpiritFamilyOverviewState(
+        binder: UITemplateBinder | null,
+        payload?: SpiritFamilyOverviewOpenPayload,
+    ): void {
+        if (!binder) {
+            return;
+        }
+
+        const displayModel = buildSpiritFamilyOverviewDisplayModel(payload);
+        applyUIPreviewBinderState(binder, {
+            texts: displayModel.texts,
+            actives: {
+                UnownedVeil: false,
+                PublicHero: true,
+                SpiritHero: true,
+            },
+        });
+
+        const storyPathMap = {
+            origin: 'StoryStrip/StoryCellOrigin',
+            bloodline: 'StoryStrip/StoryCellBloodline',
+            trial: 'StoryStrip/StoryCellTrial',
+            awakening: 'StoryStrip/StoryCellAwakening',
+            future: 'StoryStrip/StoryCellFuture',
+        } as const;
+
+        for (const [key, basePath] of Object.entries(storyPathMap) as Array<[keyof typeof storyPathMap, string]>) {
+            const storyCell = displayModel.storyCells[key];
+            binder.setTextsByPath({
+                [`${basePath}/StoryTitle`]: storyCell.title,
+                [`${basePath}/StoryBody`]: storyCell.body,
+            });
+        }
+    }
+
+    private _bringNodeToFront(node: Node): void {
+        const parent = node.parent;
+        if (!parent) {
+            return;
+        }
+        node.setSiblingIndex(parent.children.length - 1);
+    }
+
+    private _refreshWalletPreviewState(): void {
+        const wallet = this._localGachaService.getWalletSnapshot();
+        const gemText = `玉 ${wallet.gems.toLocaleString('zh-TW')}`;
+        const goldText = `金 ${wallet.gold.toLocaleString('zh-TW')}`;
+        const gachaBalanceText = `◈ ${wallet.gems.toLocaleString('zh-TW')}`;
+
+        this._lobbyMainHost?.binder?.setTexts({
+            ResourceGold: goldText,
+            ResourceGem: gemText,
+        });
+
+        this._gachaMainHost?.binder?.setTexts({
+            CostBalanceValue: gachaBalanceText,
+        });
+
+        this._gachaHost?.binder?.setTexts({
+            CostBalanceValue: gachaBalanceText,
+        });
+    }
+
     private _createLobbyMainController(): UIManagedController {
         if (!this._lobbyMainHost) {
             throw new Error('[LobbyScene] LobbyMainHost 尚未初始化，無法註冊至 UIManager');
@@ -363,7 +565,10 @@ export class LobbyScene extends Component {
             node: this._lobbyMainHost.node,
             show: async () => {
                 this._lobbyMainHost!.node.active = true;
+                this._bringNodeToFront(this._lobbyMainHost!.node);
                 await this._lobbyMainHost!.showScreen('lobby-main-screen');
+                this._configureLobbyMainHub(this._lobbyMainHost!.binder);
+                this._refreshWalletPreviewState();
             },
             hide: () => {
                 this._lobbyMainHost!.node.active = false;
@@ -392,10 +597,12 @@ export class LobbyScene extends Component {
                 const activePayload = lastPayload ?? {
                     generals: this._generals,
                     onSelectGeneral: (config: GeneralConfig) => this._openGeneralDetailDirect(config),
+                    options: { factionFilter: 'all' },
                 };
 
                 this._listPanel!.onSelectGeneral = activePayload.onSelectGeneral;
-                await this._listPanel!.show(activePayload.generals);
+                this._bringNodeToFront(this._listPanel!.node);
+                await this._listPanel!.show(activePayload.generals, activePayload.options?.factionFilter ?? 'all');
             },
             hide: () => {
                 this._listPanel!.node.active = false;
@@ -419,10 +626,12 @@ export class LobbyScene extends Component {
 
     private async _showGeneralListWithHandler(
         onSelectGeneral: (config: GeneralConfig) => void | Promise<void>,
+        options: { factionFilter?: 'all' | 'player' | 'enemy' } = { factionFilter: 'all' },
     ): Promise<void> {
         await services().ui.open(UIID.GeneralList, {
             generals: this._generals,
             onSelectGeneral,
+            options,
         } satisfies GeneralListOpenPayload);
     }
 
@@ -436,14 +645,186 @@ export class LobbyScene extends Component {
         await this._detailPanel.show(config);
     }
 
-    /** 「武將列表」按鈕 */
+    private async _openCharacterDs3FromListSelection(config: GeneralConfig): Promise<void> {
+        if (!this._characterDs3Host) {
+            throw new Error('[LobbyScene] CharacterDs3Host 尚未初始化，無法開啟 DS3 人物頁');
+        }
+
+        if (services().ui.isOpen(UIID.GeneralList)) {
+            await services().ui.closeCurrentUI();
+        } else {
+            this._listPanel?.hide();
+        }
+
+        this._characterDs3Host.node.active = true;
+        this._bringNodeToFront(this._characterDs3Host.node);
+        await this._characterDs3Host.showScreen('character-ds3-main');
+
+        UCUFLogger.info(LogCategory.LIFECYCLE, '[LobbyScene] CharacterDs3 smoke selection opened screen host', {
+            generalId: config.id,
+            generalName: config.name,
+            screenId: 'character-ds3-main',
+        });
+    }
+
+    /** 「武將列表」按鈕：顯示玄家已取得武將（源自轉蛋 / PlayerRosterService） */
     public onClickGeneralList() {
-        void this._showGeneralListWithHandler((config: GeneralConfig) => this._openGeneralDetailDirect(config));
+        const roster = PlayerRosterService.getAll();
+        const displayList = roster.length > 0 ? roster : this._generals;
+        void services().ui.open(UIID.GeneralList, {
+            generals: displayList,
+            onSelectGeneral: (config: GeneralConfig) => this._openGeneralDetailDirect(config),
+            options: { factionFilter: 'all' },
+        } satisfies GeneralListOpenPayload);
     }
 
     /** 供 LoadingScene / headless preview 使用的武將列表 smoke route。 */
     public async previewGeneralListSmoke(): Promise<void> {
-        await this._showGeneralListWithHandler((config: GeneralConfig) => this._openGeneralDetailDirect(config));
+        await this._showGeneralListWithHandler((config: GeneralConfig) => this._openGeneralDetailDirect(config), {
+            factionFilter: 'all',
+        });
+    }
+
+    public async previewGeneralDetailEntrySmoke(source: GeneralDetailEntrySmokeSource, previewVariant = ''): Promise<void> {
+        if (!this._listPanel) {
+            throw new Error('[LobbyScene] GeneralListComposite 尚未初始化，無法執行正式入口 smoke route');
+        }
+
+        const smokeGeneral = this._resolveGeneralDetailSmokeGeneral(previewVariant || 'zhang-fei');
+        if (!smokeGeneral) {
+            throw new Error(`[LobbyScene] 正式入口 smoke route 找不到目標武將 variant=${previewVariant || '(default)'}`);
+        }
+
+        this._ensureSmokeGeneralInPlayerRoster(smokeGeneral);
+        this._openGeneralListFromSmokeEntry(source);
+
+        const opened = await this._waitForManagedUIOpen(UIID.GeneralList, this._listPanel.node);
+        if (!opened) {
+            throw new Error(`[LobbyScene] 正式入口 smoke route 未能從 ${source} 開啟 GeneralList`);
+        }
+
+        const selected = await this._selectRenderedGeneralById(smokeGeneral.id);
+        if (!selected) {
+            throw new Error(`[LobbyScene] 正式入口 smoke route failed to click general row: ${smokeGeneral.id}`);
+        }
+
+        UCUFLogger.info(LogCategory.LIFECYCLE, '[LobbyScene] formal general detail entry smoke selected general', {
+            source,
+            generalId: smokeGeneral.id,
+            generalName: smokeGeneral.name,
+        });
+    }
+
+    private _ensureSmokeGeneralInPlayerRoster(config: GeneralConfig): void {
+        const roster = PlayerRosterService.getAll();
+        if (roster.some((item) => item.id === config.id)) {
+            return;
+        }
+
+        PlayerRosterService.replaceAll([
+            config,
+            ...roster.filter((item) => item.id !== config.id),
+        ]);
+        UCUFLogger.info(LogCategory.DATA, '[LobbyScene] formal general detail smoke seeded target general into preview roster', {
+            generalId: config.id,
+            generalName: config.name,
+        });
+    }
+
+    private async _selectRenderedGeneralById(generalId: string, timeoutMs = 3000): Promise<boolean> {
+        const startedAt = Date.now();
+        while (Date.now() - startedAt < timeoutMs) {
+            if (this._listPanel?.hasRenderedGeneralById(generalId)) {
+                return this._listPanel.selectGeneralById(generalId);
+            }
+            await new Promise<void>((resolve) => setTimeout(resolve, 80));
+        }
+        return false;
+    }
+
+    private _openGeneralListFromSmokeEntry(source: GeneralDetailEntrySmokeSource): void {
+        if (source === 'ucuf-nav') {
+            const host = this._lobbyMainHost;
+            const button = host?.binder?.getButton('btnGenerals') ?? null;
+            if (!host || !button) {
+                throw new Error('[LobbyScene] 正式入口 smoke route 找不到 lobby-main btnGenerals');
+            }
+
+            host.node.active = true;
+            this._bringNodeToFront(host.node);
+            this._configureLobbyMainHub(host.binder);
+            button.node.emit(Button.EventType.CLICK, button);
+            return;
+        }
+
+        const buttonNode = this.node.getChildByName('BtnGeneralList');
+        const button = buttonNode?.getComponent(Button) ?? null;
+        if (!buttonNode || !button) {
+            throw new Error('[LobbyScene] 正式入口 smoke route 找不到 scene-authored BtnGeneralList');
+        }
+
+        const hasInspectorBinding = button.clickEvents.some((event) => (
+            event.component === 'LobbyScene' && event.handler === 'onClickGeneralList'
+        ));
+        if (!hasInspectorBinding) {
+            throw new Error('[LobbyScene] BtnGeneralList 未綁定 LobbyScene.onClickGeneralList');
+        }
+
+        this.onClickGeneralList();
+    }
+
+    public async previewCharacterDs3Smoke(previewVariant = ''): Promise<void> {
+        if (!this._listPanel) {
+            throw new Error('[LobbyScene] GeneralListComposite 尚未初始化，無法執行 CharacterDs3 smoke route');
+        }
+
+        const smokeGeneral = this._resolveCharacterDs3SmokeGeneral(previewVariant);
+        if (!smokeGeneral) {
+            throw new Error(`[LobbyScene] CharacterDs3 smoke route 找不到目標武將 variant=${previewVariant || '(default)'}`);
+        }
+
+        await this._showGeneralListWithHandler(
+            (config: GeneralConfig) => this._openCharacterDs3FromListSelection(config),
+            { factionFilter: 'all' },
+        );
+
+        const opened = await this._waitForManagedUIOpen(UIID.GeneralList, this._listPanel.node);
+        if (!opened) {
+            throw new Error('[LobbyScene] CharacterDs3 smoke route did not open GeneralList within timeout');
+        }
+
+        const selected = this._listPanel.selectGeneralById(smokeGeneral.id);
+        if (!selected) {
+            throw new Error(`[LobbyScene] CharacterDs3 smoke route failed to click general row: ${smokeGeneral.id}`);
+        }
+
+        await this._waitForCharacterDs3HostVisualReady(smokeGeneral);
+    }
+
+    /** 供 LoadingScene / headless preview 使用的大廳轉蛋 smoke route。 */
+    public async previewGachaMainSmoke(): Promise<void> {
+        this.onClickGachaMain();
+        const opened = await this._waitForManagedUIOpen(UIID.GachaMain, this._gachaMainHost?.node ?? null);
+        if (!opened) {
+            throw new Error('[LobbyScene] GachaMain smoke route did not open UIID.GachaMain within timeout');
+        }
+    }
+
+    public async previewMissionDetailSmoke(previewVariant = ''): Promise<void> {
+        if (!this._missionDetailDialogPanel) {
+            throw new Error('[LobbyScene] LobbyMissionDetailDialogComposite 尚未初始化，無法直接開啟大廳任務詳情');
+        }
+
+        const availableGenerals = this._buildMissionDetailGeneralOptions();
+        const selectedGeneral = this._resolveMissionDetailSmokeGeneral(previewVariant, availableGenerals);
+
+        await services().ui.open(UIID.LobbyMissionDetailDialog, {
+            previewVariant,
+            availableGenerals,
+            selectedGeneralId: selectedGeneral?.id,
+            selectedGeneralLabel: selectedGeneral?.label,
+            selectedGeneralVolunteer: selectedGeneral?.volunteer,
+        } satisfies LobbyMissionDetailDialogOpenPayload);
     }
 
     /** 「商城」按鈕 */
@@ -456,10 +837,214 @@ export class LobbyScene extends Component {
         this._openUIOnNextTick(UIID.GachaMain);
     }
 
+    private async _waitForManagedUIOpen(uiId: UIID, hostNode: Node | null, timeoutMs = 2000): Promise<boolean> {
+        const startedAt = Date.now();
+        while (Date.now() - startedAt < timeoutMs) {
+            if (services().ui.isOpen(uiId) && (!hostNode || hostNode.active)) {
+                return true;
+            }
+            await new Promise<void>((resolve) => setTimeout(resolve, 80));
+        }
+        return false;
+    }
+
+    private async _waitForCharacterDs3HostVisualReady(config: GeneralConfig, timeoutMs = 4000): Promise<void> {
+        const startedAt = Date.now();
+        while (Date.now() - startedAt < timeoutMs) {
+            if (this._isCharacterDs3HostVisualReady(config)) {
+                return;
+            }
+            await new Promise<void>((resolve) => setTimeout(resolve, 80));
+        }
+
+        throw new Error(`[LobbyScene] CharacterDs3 smoke route timed out waiting for visual ready: ${config.id}`);
+    }
+
+    private _isCharacterDs3HostVisualReady(config: GeneralConfig): boolean {
+        const hostNode = this._characterDs3Host?.node ?? null;
+        if (!hostNode?.activeInHierarchy) {
+            return false;
+        }
+
+        return this._hasDescendantLabelText(hostNode, config.name)
+            && this._hasDescendantLabelText(hostNode, 'BIOGRAPHY')
+            && this._hasDescendantLabelText(hostNode, '燕人武聖');
+    }
+
+    private _hasDescendantLabelText(root: Node, expectedText: string): boolean {
+        const expected = expectedText.trim();
+        if (!expected) {
+            return false;
+        }
+
+        const label = root.getComponent(Label);
+        if (label?.string.includes(expected)) {
+            return true;
+        }
+
+        for (const child of root.children) {
+            if (this._hasDescendantLabelText(child, expected)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private _mountSinglePlayerModeToggle(host: UIScreenPreviewHost | null): void {
+        if (!host) {
+            return;
+        }
+
+        const rootName = 'SinglePlayerModeToggle';
+        const root = host.node.getChildByName(rootName) ?? new Node(rootName);
+        root.layer = host.node.layer;
+        if (!root.parent) {
+            root.parent = host.node;
+        }
+
+        const transform = root.getComponent(UITransform) ?? root.addComponent(UITransform);
+        transform.setContentSize(280, 56);
+        const widget = root.getComponent(Widget) ?? root.addComponent(Widget);
+        widget.isAlignTop = true;
+        widget.top = 140;
+        widget.isAlignRight = true;
+        widget.right = 24;
+        widget.isAlignLeft = false;
+        widget.isAlignBottom = false;
+
+        const background = root.getComponent(SolidBackground) ?? root.addComponent(SolidBackground);
+        const button = root.getComponent(Button) ?? root.addComponent(Button);
+        button.transition = Button.Transition.NONE;
+        button.node.off(Button.EventType.CLICK, this.onClickSinglePlayerModeToggle, this);
+        button.node.on(Button.EventType.CLICK, this.onClickSinglePlayerModeToggle, this);
+
+        const labelNode = root.getChildByName('Label') ?? new Node('Label');
+        labelNode.layer = host.node.layer;
+        if (!labelNode.parent) {
+            labelNode.parent = root;
+        }
+        const labelTransform = labelNode.getComponent(UITransform) ?? labelNode.addComponent(UITransform);
+        labelTransform.setContentSize(260, 36);
+        const labelWidget = labelNode.getComponent(Widget) ?? labelNode.addComponent(Widget);
+        labelWidget.isAlignHorizontalCenter = true;
+        labelWidget.horizontalCenter = 0;
+        labelWidget.isAlignVerticalCenter = true;
+        labelWidget.verticalCenter = 0;
+        const label = labelNode.getComponent(Label) ?? labelNode.addComponent(Label);
+        label.fontSize = 22;
+        label.lineHeight = 28;
+        label.horizontalAlign = Label.HorizontalAlign.CENTER;
+        label.verticalAlign = Label.VerticalAlign.CENTER;
+
+        this._singlePlayerModeToggleHandles.push({ root, label });
+        this._syncSinglePlayerModeToggleVisual(root, label, background);
+    }
+
+    private _syncSinglePlayerModeToggleVisual(root: Node, label: Label, background: SolidBackground): void {
+        const enabled = this._localGachaService.isSinglePlayerModeEnabled();
+        label.string = enabled ? '單機模式：ON' : '單機模式：OFF';
+        label.color = enabled ? new Color(240, 255, 240, 255) : new Color(255, 230, 220, 255);
+        background.color = enabled ? new Color(52, 92, 58, 220) : new Color(96, 60, 54, 220);
+        root.active = true;
+    }
+
+    private _refreshSinglePlayerModeToggleVisuals(): void {
+        for (const handle of this._singlePlayerModeToggleHandles) {
+            const background = handle.root.getComponent(SolidBackground);
+            if (!background) continue;
+            this._syncSinglePlayerModeToggleVisual(handle.root, handle.label, background);
+        }
+    }
+
+    public onClickSinglePlayerModeToggle(): void {
+        const enabled = this._localGachaService.toggleSinglePlayerModeEnabled();
+        this._refreshSinglePlayerModeToggleVisuals();
+        services().event.emit('SHOW_TOAST', {
+            message: enabled ? '單機模式已開啟' : '單機模式已關閉',
+            duration: 1.6,
+        });
+    }
+
+    private async _showGachaHistory(): Promise<void> {
+        try {
+            const data = await this._localGachaService.getRecentPullHistory(30);
+            showGachaHistory(data);
+        } catch (error) {
+            services().event.emit('SHOW_TOAST', {
+                message: error instanceof Error ? error.message : '讀取紀錄失敗',
+                duration: 2.0,
+            });
+        }
+    }
+
+    private async _runGoldSummon(): Promise<void> {
+        try {
+            const results = await this._localGachaService.performGoldSummon(
+                1, this._generals, { factionFilter: 'player' });
+            showGachaResults('金幣召喚', results, () => { void this._runGoldSummon(); });
+            this._refreshSinglePlayerModeToggleVisuals();
+            this._refreshWalletPreviewState();
+            refreshCurrencyDisplay();
+        } catch (error) {
+            services().event.emit('SHOW_TOAST', {
+                message: error instanceof Error ? error.message : '金幣召喚失敗',
+                duration: 2.5,
+            });
+        }
+    }
+
+    private async _runTicketSummon(): Promise<void> {
+        try {
+            const results = await this._localGachaService.performTicketSummon(
+                1, this._generals, { factionFilter: 'player' });
+            showGachaResults('召喚券', results, () => { void this._runTicketSummon(); });
+            this._refreshSinglePlayerModeToggleVisuals();
+            this._refreshWalletPreviewState();
+            refreshCurrencyDisplay();
+        } catch (error) {
+            services().event.emit('SHOW_TOAST', {
+                message: error instanceof Error ? error.message : '召喚券失敗',
+                duration: 2.5,
+            });
+        }
+    }
+
+    private async _runLocalGacha(drawCount: number): Promise<void> {
+        try {
+            const results = await this._localGachaService.performLocalGacha(
+                'GENERAL_STANDARD_01',
+                drawCount,
+                drawCount * 100,
+                this._generals,
+                { factionFilter: 'player' },
+            );
+            showGachaResults(
+                drawCount === 1 ? '單抽' : '十連抽',
+                results,
+                () => { void this._runLocalGacha(drawCount); },
+            );
+            this._refreshSinglePlayerModeToggleVisuals();
+            this._refreshWalletPreviewState();
+            refreshCurrencyDisplay();
+        } catch (error) {
+            const message = error instanceof Error ? error.message : '單機轉蛋失敗';
+            services().event.emit('SHOW_TOAST', { message, duration: 2.5 });
+        }
+    }
+
     /** 「支援卡」按鈕 */
     public onClickSupportCard() {
         this.scheduleOnce(() => {
             void services().ui.openAsync(UIID.SupportCard);
+        }, 0);
+    }
+
+    public onClickSpiritFamilyOverview() {
+        this.scheduleOnce(() => {
+            void services().ui.open(UIID.SpiritFamilyOverview, {
+                origin: 'lobby',
+            } satisfies SpiritFamilyOverviewOpenPayload);
         }, 0);
     }
 
@@ -474,8 +1059,24 @@ export class LobbyScene extends Component {
         await this._openGeneralDetailSmoke('Overview', previewVariant);
     }
 
+    public async onClickGeneralDetailStatsSmoke(previewVariant = '') {
+        await this._openGeneralDetailSmoke('Stats', previewVariant);
+    }
+
     public async onClickGeneralDetailSkillsSmoke(previewVariant = '') {
         await this._openGeneralDetailSmoke('Skills', previewVariant);
+    }
+
+    public async onClickGeneralDetailBloodlineSmoke(previewVariant = '') {
+        await this._openGeneralDetailSmoke('Bloodline', previewVariant);
+    }
+
+    public async onClickGeneralDetailBasicsSmoke(previewVariant = '') {
+        await this._openGeneralDetailSmoke('Basics', previewVariant);
+    }
+
+    public async onClickGeneralDetailAptitudeSmoke(previewVariant = '') {
+        await this._openGeneralDetailSmoke('Aptitude', previewVariant);
     }
 
     /** 供 LoadingScene / headless preview 使用的虎符圖鑑 smoke route。 */
@@ -504,9 +1105,72 @@ export class LobbyScene extends Component {
         return undefined;
     }
 
+    private _buildMissionDetailGeneralOptions(): MissionGeneralOption[] {
+        return this._generals.map((config) => ({
+            id: config.id,
+            label: config.name,
+            volunteer: this._isMissionDetailVolunteerGeneral(config),
+        }));
+    }
+
+    private _resolveMissionDetailSmokeGeneral(
+        previewVariant: string,
+        options: MissionGeneralOption[],
+        payload?: LobbyMissionDetailDialogOpenPayload,
+    ): MissionGeneralOption | null {
+        const requestedId = payload?.selectedGeneralId?.trim() ?? '';
+        const requestedLabel = payload?.selectedGeneralLabel?.trim() ?? '';
+        const matchedById = requestedId ? options.find((item) => item.id === requestedId) ?? null : null;
+        const matchedByLabel = requestedLabel ? options.find((item) => item.label === requestedLabel) ?? null : null;
+        const matchedByVariant = this._matchMissionDetailGeneralByVariant(previewVariant, options);
+
+        return matchedById
+            ?? matchedByLabel
+            ?? matchedByVariant
+            ?? options[0]
+            ?? null;
+    }
+
+    private _matchMissionDetailGeneralByVariant(
+        previewVariant: string,
+        options: MissionGeneralOption[],
+    ): MissionGeneralOption | null {
+        const requested = previewVariant.trim().toLowerCase();
+        if (!requested) {
+            return null;
+        }
+
+        const normalized = requested.replace(/[\s_-]/g, '');
+        const preferredTokens: string[] = [];
+
+        if (requested === 'guan-yu' || normalized === 'guanyu' || requested === 'smoke-guan-yu' || requested === '關羽') {
+            preferredTokens.push('guan-yu', 'guanyu', '關羽');
+        } else if (requested === 'zhao-yun' || normalized === 'zhaoyun') {
+            preferredTokens.push('zhao-yun', 'zhaoyun', '趙雲');
+        } else if (requested === 'zhang-fei' || normalized === 'zhangfei') {
+            preferredTokens.push('zhang-fei', 'zhangfei', '張飛');
+        } else if (requested !== 'default' && requested !== 'military' && requested !== 'domestic' && requested !== 'partial' && requested !== 'revealed' && requested !== 'full' && requested !== '50' && requested !== '50%' && requested !== '100' && requested !== '100%') {
+            preferredTokens.push(requested, normalized);
+        }
+
+        if (preferredTokens.length === 0) {
+            return null;
+        }
+
+        return options.find((option) => {
+            const optionText = `${option.id} ${option.label}`.toLowerCase();
+            return preferredTokens.some((token) => token && optionText.includes(token.toLowerCase()));
+        }) ?? null;
+    }
+
+    private _isMissionDetailVolunteerGeneral(config: GeneralConfig): boolean {
+        const text = [config.id, config.name, ...(config.alias ?? [])].join(' ').toLowerCase();
+        return text.includes('guan-yu') || text.includes('guanyu') || text.includes('關羽');
+    }
+
     private async _openGeneralDetailSmoke(defaultTab: GeneralDetailDefaultTab, previewVariant = '') {
-        if (!this._listPanel || !this._detailPanel) {
-            console.warn('[LobbyScene] GeneralDetailOverview smoke 失敗：list/detail panel 未就緒');
+        if (!this._detailPanel) {
+            console.warn('[LobbyScene] GeneralDetailOverview smoke 失敗：detail panel 未就緒');
             return;
         }
         if (this._generals.length === 0) {
@@ -520,18 +1184,33 @@ export class LobbyScene extends Component {
             return;
         }
 
-        // smoke route 與正式產品流共用同一段 list-open controller path，避免繞過 LobbyMain → GeneralList 的入口邏輯
-        await this._showGeneralListWithHandler(async (config: GeneralConfig) => {
-            await services().ui.open(UIID.GeneralDetail, {
-                ...config,
-                profilePresentation: {
-                    ...config.profilePresentation,
-                    defaultTab,
-                },
-            });
+        await services().ui.open(UIID.GeneralDetail, {
+            ...smokeGeneral,
+            profilePresentation: {
+                ...smokeGeneral.profilePresentation,
+                defaultTab,
+            },
         });
 
-        await Promise.resolve(this._listPanel.onSelectGeneral?.(smokeGeneral));
+        await this._detailPanel.switchTab(this._resolveGeneralDetailRuntimeTab(defaultTab));
+    }
+
+    private _resolveGeneralDetailRuntimeTab(defaultTab: GeneralDetailDefaultTab): GeneralDetailRuntimeTab {
+        switch (defaultTab) {
+        case 'Overview':
+        case 'Stats':
+        case 'Bloodline':
+        case 'Aptitude':
+            return defaultTab;
+        case 'Basics':
+            return 'Equip';
+        case 'Skills':
+            return 'Tactics';
+        case 'Extended':
+            return 'Aptitude';
+        default:
+            return 'Overview';
+        }
     }
 
     private _resolveGeneralDetailSmokeGeneral(previewVariant: string): GeneralConfig | null {
@@ -551,6 +1230,17 @@ export class LobbyScene extends Component {
         return (preferredId ? this._generals.find((item) => item.id === preferredId) : null)
             ?? this._generals[0]
             ?? null;
+    }
+
+    private _resolveCharacterDs3SmokeGeneral(previewVariant: string): GeneralConfig | null {
+        const requested = previewVariant.trim().toLowerCase();
+        if (requested && requested !== 'default' && requested !== 'ds3' && requested !== 'zhang-fei' && requested !== 'zhangfei' && requested !== 'smoke-zhang-fei') {
+            UCUFLogger.warn(LogCategory.LIFECYCLE, '[LobbyScene] CharacterDs3 smoke route currently renders the DS3 Zhang Fei capture target only; fallback to zhang-fei', {
+                previewVariant,
+            });
+        }
+
+        return this._resolveGeneralDetailSmokeGeneral('zhang-fei');
     }
 
     public onClickEnterBattle() {

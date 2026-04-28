@@ -4,6 +4,7 @@ import { UIPreviewBuilder } from '../core/UIPreviewBuilder';
 import { UISpecLoader } from '../core/UISpecLoader';
 import { services } from '../../core/managers/ServiceLoader';
 import { UITemplateBinder } from '../core/UITemplateBinder';
+import { applyUIScreenRuntimeState } from '../core/UIScreenRuntimeStateRegistry';
 
 const { ccclass, property } = _decorator;
 
@@ -40,6 +41,7 @@ export class UIScreenPreviewHost extends UIPreviewBuilder {
 
         if (this._currentScreenId === screenId && this.node.children.length > 0) {
             console.log(`[UIScreenPreviewHost] screen 已掛載，略過重建: ${screenId}`);
+            await this._applyRuntimeState(screenId);
             return;
         }
 
@@ -53,6 +55,7 @@ export class UIScreenPreviewHost extends UIPreviewBuilder {
 
             await this.buildScreen(layout, skin, i18n, tokens);
             this._currentScreenId = screenId;
+            await this._applyRuntimeState(screenId);
 
             console.log(`[UIScreenPreviewHost] mounted ${screenId} -> ${screen.uiId}`);
         } catch (error) {
@@ -73,5 +76,15 @@ export class UIScreenPreviewHost extends UIPreviewBuilder {
 
     protected onReady(binder: UITemplateBinder): void {
         this._binder = binder;
+    }
+
+    private async _applyRuntimeState(screenId: string): Promise<void> {
+        if (!this._binder) {
+            return;
+        }
+
+        await applyUIScreenRuntimeState(this._binder, screenId, {
+            tags: ['UIScreenPreviewHost'],
+        });
     }
 }

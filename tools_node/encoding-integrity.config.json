@@ -30,7 +30,7 @@
     },
     "assets/scripts/ui/scenes/LoadingScene.ts": {
       "label": "Loading Scene",
-      "baselineNonAscii": 254,
+      "baselineNonAscii": 301,
       "maxNonAsciiDelta": 80
     },
     "assets/scripts/core/systems/ResourceManager.ts": {

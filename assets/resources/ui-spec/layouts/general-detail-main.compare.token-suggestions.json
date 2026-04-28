@@ -1,0 +1,234 @@
+{
+  "colorSuggestions": [
+    {
+      "value": "rgba(20, 20, 18, 0.9)",
+      "occurrences": 1,
+      "nearestExisting": {
+        "token": "backgroundOlive",
+        "value": "#151513",
+        "distance": 2
+      },
+      "suggestedToken": null,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]>div#strip-toggle.strip-toggle[6]",
+          "prop": "background-color"
+        }
+      ]
+    }
+  ],
+  "fontSuggestions": [
+    {
+      "value": "NotoSansTC, \"PingFang TC\", \"Microsoft JhengHei\", sans-serif",
+      "occurrences": 100
+    },
+    {
+      "value": "Newsreader, NotoSansTC, \"Songti TC\", STSong, serif",
+      "occurrences": 49
+    },
+    {
+      "value": "Manrope, NotoSansTC, system-ui, sans-serif",
+      "occurrences": 21
+    },
+    {
+      "value": "Arial",
+      "occurrences": 7
+    },
+    {
+      "value": "Manrope, Newsreader, serif",
+      "occurrences": 7
+    }
+  ],
+  "spacingSuggestions": [
+    {
+      "occurrences": 97,
+      "prop": "font-size",
+      "value": "16px"
+    },
+    {
+      "occurrences": 2,
+      "prop": "font-size",
+      "value": "48px"
+    },
+    {
+      "occurrences": 8,
+      "prop": "font-size",
+      "value": "20px"
+    },
+    {
+      "occurrences": 1,
+      "prop": "letter-spacing",
+      "value": "12px"
+    },
+    {
+      "occurrences": 7,
+      "prop": "font-size",
+      "value": "32px"
+    },
+    {
+      "occurrences": 7,
+      "prop": "font-size",
+      "value": "9px"
+    },
+    {
+      "occurrences": 1,
+      "prop": "letter-spacing",
+      "value": "2.7px"
+    },
+    {
+      "occurrences": 7,
+      "prop": "font-size",
+      "value": "13.3333px"
+    },
+    {
+      "occurrences": 1,
+      "prop": "font-size",
+      "value": "28px"
+    },
+    {
+      "occurrences": 2,
+      "prop": "font-size",
+      "value": "11px"
+    },
+    {
+      "occurrences": 1,
+      "prop": "letter-spacing",
+      "value": "1.65px"
+    },
+    {
+      "occurrences": 1,
+      "prop": "font-size",
+      "value": "54px"
+    },
+    {
+      "occurrences": 1,
+      "prop": "letter-spacing",
+      "value": "5.4px"
+    },
+    {
+      "occurrences": 2,
+      "prop": "letter-spacing",
+      "value": "3px"
+    },
+    {
+      "occurrences": 1,
+      "prop": "letter-spacing",
+      "value": "1.28px"
+    },
+    {
+      "occurrences": 5,
+      "prop": "font-size",
+      "value": "15px"
+    },
+    {
+      "occurrences": 6,
+      "prop": "font-size",
+      "value": "22px"
+    },
+    {
+      "occurrences": 6,
+      "prop": "font-size",
+      "value": "18px"
+    },
+    {
+      "occurrences": 5,
+      "prop": "letter-spacing",
+      "value": "3.6px"
+    },
+    {
+      "occurrences": 5,
+      "prop": "font-size",
+      "value": "10px"
+    },
+    {
+      "occurrences": 5,
+      "prop": "letter-spacing",
+      "value": "2px"
+    },
+    {
+      "occurrences": 10,
+      "prop": "font-size",
+      "value": "17px"
+    },
+    {
+      "occurrences": 10,
+      "prop": "letter-spacing",
+      "value": "1.7px"
+    },
+    {
+      "occurrences": 7,
+      "prop": "font-size",
+      "value": "13px"
+    },
+    {
+      "occurrences": 1,
+      "prop": "letter-spacing",
+      "value": "2.6px"
+    },
+    {
+      "occurrences": 1,
+      "prop": "letter-spacing",
+      "value": "6.6px"
+    },
+    {
+      "occurrences": 1,
+      "prop": "letter-spacing",
+      "value": "1.5px"
+    },
+    {
+      "occurrences": 2,
+      "prop": "letter-spacing",
+      "value": "2.25px"
+    },
+    {
+      "occurrences": 1,
+      "prop": "letter-spacing",
+      "value": "0.9px"
+    },
+    {
+      "occurrences": 1,
+      "prop": "letter-spacing",
+      "value": "9px"
+    },
+    {
+      "occurrences": 7,
+      "prop": "font-size",
+      "value": "12px"
+    },
+    {
+      "occurrences": 6,
+      "prop": "letter-spacing",
+      "value": "1.8px"
+    },
+    {
+      "occurrences": 1,
+      "prop": "letter-spacing",
+      "value": "6.4px"
+    },
+    {
+      "occurrences": 6,
+      "prop": "font-size",
+      "value": "30px"
+    },
+    {
+      "occurrences": 6,
+      "prop": "letter-spacing",
+      "value": "-0.6px"
+    },
+    {
+      "occurrences": 6,
+      "prop": "letter-spacing",
+      "value": "1.95px"
+    },
+    {
+      "occurrences": 6,
+      "prop": "letter-spacing",
+      "value": "1.08px"
+    },
+    {
+      "occurrences": 1,
+      "prop": "letter-spacing",
+      "value": "3.3px"
+    }
+  ]
+}

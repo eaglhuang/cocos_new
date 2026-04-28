@@ -1,8 +1,8 @@
 {
-  "type": "panel",
+  "type": "container",
   "name": "TabBloodlineContent",
   "widget": { "top": 0, "bottom": 0, "left": 0, "right": 0 },
-  "layout": { "type": "vertical", "spacing": 12, "paddingTop": 28, "paddingBottom": 28, "paddingLeft": 28, "paddingRight": 28 },
+  "layout": { "type": "vertical", "spacing": 12, "paddingTop": 0, "paddingBottom": 28, "paddingLeft": 28, "paddingRight": 28 },
   "children": [
     {
       "type": "panel",
@@ -22,48 +22,54 @@
       "type": "panel",
       "name": "AncestorTree",
       "width": "100%",
-      "height": 260,
+      "height": 336,
       "skinSlot": "detail.ancestry.card",
+      "layout": { "type": "vertical", "spacing": 8, "paddingTop": 12, "paddingBottom": 12, "paddingLeft": 16, "paddingRight": 16 },
       "children": [
+        { "type": "label", "name": "TreeTitle", "width": "100%", "height": 24, "text": "家族血統 · 十四人", "styleSlot": "detail.label.section" },
+        { "type": "label", "name": "TreeTitleEn", "width": "100%", "height": 16, "text": "14-PERSON ANCESTRY MATRIX", "styleSlot": "detail.label.meta" },
         {
           "type": "container",
           "name": "Gen1Container",
-          "widget": { "top": 14, "hCenter": true },
-          "height": 55,
-          "layout": { "type": "horizontal", "spacing": 6 },
+          "widget": { "hCenter": true },
+          "height": 60,
+          "layout": { "type": "horizontal", "spacing": 3 },
           "children": [
-            { "type": "panel", "name": "Gen1A", "width": 83, "height": 45, "skinSlot": "detail.ancestor.chip" },
-            { "type": "panel", "name": "Gen1B", "width": 83, "height": 45, "skinSlot": "detail.ancestor.chip" },
-            { "type": "panel", "name": "Gen1C", "width": 83, "height": 45, "skinSlot": "detail.ancestor.chip" },
-            { "type": "panel", "name": "Gen1D", "width": 83, "height": 45, "skinSlot": "detail.ancestor.chip" },
-            { "type": "panel", "name": "Gen1E", "width": 83, "height": 45, "skinSlot": "detail.ancestor.chip" },
-            { "type": "panel", "name": "Gen1F", "width": 83, "height": 45, "skinSlot": "detail.ancestor.chip" },
-            { "type": "panel", "name": "Gen1G", "width": 83, "height": 45, "skinSlot": "detail.ancestor.chip" },
-            { "type": "panel", "name": "Gen1H", "width": 83, "height": 45, "skinSlot": "detail.ancestor.chip" }
+            { "type": "label", "name": "Gen1Label", "width": 56, "height": 60, "text": "曾祖父母\n(8人)", "styleSlot": "detail.label.section" },
+            { "type": "panel", "name": "G1_0", "width": 42, "height": 60, "skinSlot": "detail.ancestor.chip", "children": [{ "type": "label", "name": "Txt", "width": 42, "height": 60, "styleSlot": "detail.label.meta" }] },
+            { "type": "panel", "name": "G1_1", "width": 42, "height": 60, "skinSlot": "detail.ancestor.chip", "children": [{ "type": "label", "name": "Txt", "width": 42, "height": 60, "styleSlot": "detail.label.meta" }] },
+            { "type": "panel", "name": "G1_2", "width": 42, "height": 60, "skinSlot": "detail.ancestor.chip", "children": [{ "type": "label", "name": "Txt", "width": 42, "height": 60, "styleSlot": "detail.label.meta" }] },
+            { "type": "panel", "name": "G1_3", "width": 42, "height": 60, "skinSlot": "detail.ancestor.chip", "children": [{ "type": "label", "name": "Txt", "width": 42, "height": 60, "styleSlot": "detail.label.meta" }] },
+            { "type": "panel", "name": "G1_4", "width": 42, "height": 60, "skinSlot": "detail.ancestor.chip", "children": [{ "type": "label", "name": "Txt", "width": 42, "height": 60, "styleSlot": "detail.label.meta" }] },
+            { "type": "panel", "name": "G1_5", "width": 42, "height": 60, "skinSlot": "detail.ancestor.chip", "children": [{ "type": "label", "name": "Txt", "width": 42, "height": 60, "styleSlot": "detail.label.meta" }] },
+            { "type": "panel", "name": "G1_6", "width": 42, "height": 60, "skinSlot": "detail.ancestor.chip", "children": [{ "type": "label", "name": "Txt", "width": 42, "height": 60, "styleSlot": "detail.label.meta" }] },
+            { "type": "panel", "name": "G1_7", "width": 42, "height": 60, "skinSlot": "detail.ancestor.chip", "children": [{ "type": "label", "name": "Txt", "width": 42, "height": 60, "styleSlot": "detail.label.meta" }] }
           ]
         },
         {
           "type": "container",
           "name": "Gen2Container",
-          "widget": { "top": 87, "hCenter": true },
-          "height": 65,
-          "layout": { "type": "horizontal", "spacing": 10 },
+          "widget": { "hCenter": true },
+          "height": 68,
+          "layout": { "type": "horizontal", "spacing": 3 },
           "children": [
-            { "type": "panel", "name": "Gen2A", "width": 140, "height": 55, "skinSlot": "detail.ancestor.chip" },
-            { "type": "panel", "name": "Gen2B", "width": 140, "height": 55, "skinSlot": "detail.ancestor.chip" },
-            { "type": "panel", "name": "Gen2C", "width": 140, "height": 55, "skinSlot": "detail.ancestor.chip" },
-            { "type": "panel", "name": "Gen2D", "width": 140, "height": 55, "skinSlot": "detail.ancestor.chip" }
+            { "type": "label", "name": "Gen2Label", "width": 56, "height": 68, "text": "祖父母\n(4人)", "styleSlot": "detail.label.section" },
+            { "type": "panel", "name": "G2_0", "width": 84, "height": 68, "skinSlot": "detail.ancestor.chip", "children": [{ "type": "label", "name": "Txt", "width": 84, "height": 68, "styleSlot": "detail.label.meta" }] },
+            { "type": "panel", "name": "G2_1", "width": 84, "height": 68, "skinSlot": "detail.ancestor.chip", "children": [{ "type": "label", "name": "Txt", "width": 84, "height": 68, "styleSlot": "detail.label.meta" }] },
+            { "type": "panel", "name": "G2_2", "width": 84, "height": 68, "skinSlot": "detail.ancestor.chip", "children": [{ "type": "label", "name": "Txt", "width": 84, "height": 68, "styleSlot": "detail.label.meta" }] },
+            { "type": "panel", "name": "G2_3", "width": 84, "height": 68, "skinSlot": "detail.ancestor.chip", "children": [{ "type": "label", "name": "Txt", "width": 84, "height": 68, "styleSlot": "detail.label.meta" }] }
           ]
         },
         {
           "type": "container",
           "name": "Gen3Container",
-          "widget": { "top": 172, "hCenter": true },
-          "height": 75,
-          "layout": { "type": "horizontal", "spacing": 14 },
+          "widget": { "hCenter": true },
+          "height": 84,
+          "layout": { "type": "horizontal", "spacing": 3 },
           "children": [
-            { "type": "panel", "name": "Gen3A", "width": 180, "height": 65, "skinSlot": "detail.ancestor.chip" },
-            { "type": "panel", "name": "Gen3B", "width": 180, "height": 65, "skinSlot": "detail.ancestor.chip" }
+            { "type": "label", "name": "Gen3Label", "width": 56, "height": 84, "text": "父母\n(2人)", "styleSlot": "detail.label.section" },
+            { "type": "panel", "name": "G3_0", "width": 168, "height": 84, "skinSlot": "detail.ancestor.chip", "children": [{ "type": "label", "name": "Txt", "width": 168, "height": 84, "styleSlot": "detail.label.meta" }] },
+            { "type": "panel", "name": "G3_1", "width": 168, "height": 84, "skinSlot": "detail.ancestor.chip", "children": [{ "type": "label", "name": "Txt", "width": 168, "height": 84, "styleSlot": "detail.label.meta" }] }
           ]
         }
       ]
@@ -76,11 +82,11 @@
       "skinSlot": "detail.gene.card",
       "layout": { "type": "vertical", "spacing": 8, "paddingTop": 10, "paddingBottom": 10, "paddingLeft": 14, "paddingRight": 14 },
       "children": [
-        { "type": "label", "name": "Gene1Value", "width": "100%", "height": 28, "styleSlot": "detail.label.value" },
-        { "type": "label", "name": "Gene2Value", "width": "100%", "height": 28, "styleSlot": "detail.label.value" },
-        { "type": "label", "name": "Gene3Value", "width": "100%", "height": 28, "styleSlot": "detail.label.value" },
-        { "type": "label", "name": "Gene4Value", "width": "100%", "height": 28, "styleSlot": "detail.label.value" },
-        { "type": "label", "name": "Gene5Value", "width": "100%", "height": 28, "styleSlot": "detail.label.value" }
+        { "type": "label", "name": "Gene1Value", "width": "100%", "height": 24, "styleSlot": "detail.label.value" },
+        { "type": "label", "name": "Gene2Value", "width": "100%", "height": 24, "styleSlot": "detail.label.value" },
+        { "type": "label", "name": "Gene3Value", "width": "100%", "height": 24, "styleSlot": "detail.label.value" },
+        { "type": "label", "name": "Gene4Value", "width": "100%", "height": 24, "styleSlot": "detail.label.value" },
+        { "type": "label", "name": "Gene5Value", "width": "100%", "height": 24, "styleSlot": "detail.label.value" }
       ]
     },
     {
@@ -92,6 +98,28 @@
       "layout": { "type": "vertical", "spacing": 0, "paddingTop": 8, "paddingBottom": 8, "paddingLeft": 14, "paddingRight": 14 },
       "children": [
         { "type": "label", "name": "AwakeningValue", "width": "100%", "height": 40, "styleSlot": "detail.label.value" }
+      ]
+    },
+    {
+      "type": "panel",
+      "name": "SpiritFamilyState",
+      "width": "100%",
+      "height": 96,
+      "active": false,
+      "skinSlot": "detail.awakening.card",
+      "layout": { "type": "vertical", "spacing": 10, "paddingTop": 10, "paddingBottom": 10, "paddingLeft": 14, "paddingRight": 14 },
+      "children": [
+        { "type": "label", "name": "SpiritFamilyHint", "width": "100%", "height": 18, "styleSlot": "detail.label.meta", "text": "已形成世家分支，可前往英靈陳列室。" },
+        {
+          "type": "button",
+          "name": "SpiritFamilyEntryButton",
+          "width": "100%",
+          "height": 40,
+          "skinSlot": "detail.button.primary",
+          "children": [
+            { "type": "label", "name": "SpiritFamilyEntryLabel", "widget": { "vCenter": true, "left": 0, "right": 0 }, "height": 16, "styleSlot": "detail.label.button", "text": "查看世家" }
+          ]
+        }
       ]
     }
   ]

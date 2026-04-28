@@ -1,5 +1,5 @@
 {
-  "type": "panel",
+  "type": "container",
   "name": "TabExtendedContent",
   "widget": { "top": 0, "bottom": 0, "left": 0, "right": 0 },
   "layout": { "type": "vertical", "spacing": 16, "paddingTop": 28, "paddingBottom": 28, "paddingLeft": 28, "paddingRight": 28 },

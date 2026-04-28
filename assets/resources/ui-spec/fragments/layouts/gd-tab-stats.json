@@ -1,15 +1,334 @@
 {
-  "type": "panel",
+  "type": "container",
   "name": "TabStatsContent",
   "widget": { "top": 0, "bottom": 0, "left": 0, "right": 0 },
-  "layout": { "type": "vertical", "spacing": 18, "paddingTop": 28, "paddingBottom": 28, "paddingLeft": 28, "paddingRight": 28 },
+  "layout": { "type": "vertical", "spacing": 18, "paddingTop": 0, "paddingBottom": 20, "paddingLeft": 0, "paddingRight": 0 },
   "children": [
-    { "type": "label", "name": "StrValue",       "width": "100%", "height": 40, "skinSlot": "detail.field.bg", "styleSlot": "detail.label.value" },
-    { "type": "label", "name": "IntValue",       "width": "100%", "height": 40, "skinSlot": "detail.field.bg", "styleSlot": "detail.label.value" },
-    { "type": "label", "name": "LeaValue",       "width": "100%", "height": 40, "skinSlot": "detail.field.bg", "styleSlot": "detail.label.value" },
-    { "type": "label", "name": "PolValue",       "width": "100%", "height": 40, "skinSlot": "detail.field.bg", "styleSlot": "detail.label.value" },
-    { "type": "label", "name": "ChaValue",       "width": "100%", "height": 40, "skinSlot": "detail.field.bg", "styleSlot": "detail.label.value" },
-    { "type": "label", "name": "LukValue",       "width": "100%", "height": 40, "skinSlot": "detail.field.bg", "styleSlot": "detail.label.value" },
-    { "type": "label", "name": "StatsRoleValue", "width": "100%", "height": 50, "skinSlot": "detail.field.name.bg", "styleSlot": "detail.label.subtitle" }
+    {
+      "type": "container",
+      "name": "StatsSectionHeader",
+      "width": "100%",
+      "height": 24,
+      "children": [
+        { "type": "sprite", "name": "StatsSectionBar", "widget": { "top": 0, "bottom": 0, "left": 0, "right": 0 }, "skinSlot": "gdv3.summary.sectionBar" },
+        { "type": "label", "name": "StatsSectionTitle", "widget": { "left": 12, "top": 3 }, "width": 110, "height": 18, "text": "資質．實力", "styleSlot": "gdv3.label.summarySection" },
+        { "type": "label", "name": "StatsSectionTitleEn", "widget": { "left": 118, "top": 5 }, "width": 170, "height": 14, "text": "DUAL-LAYER ATTRIBUTES", "styleSlot": "gdv3.label.summarySectionEn" }
+      ]
+    },
+    {
+      "type": "container",
+      "name": "StatsOverviewRow",
+      "width": "100%",
+      "height": 352,
+      "layout": { "type": "horizontal", "spacing": 16 },
+      "children": [
+        {
+          "type": "panel",
+          "name": "RadarSummaryCard",
+          "width": 220,
+          "height": 352,
+          "skinSlot": "detail.aptitude.card",
+          "children": [
+            { "type": "label", "name": "RadarCardTitle", "widget": { "top": 16, "left": 0, "right": 0 }, "height": 20, "text": "六維輪廓", "styleSlot": "detail.label.cardTitle" },
+            { "type": "label", "name": "RadarCardTitleEn", "widget": { "top": 39, "left": 0, "right": 0 }, "height": 14, "text": "STAT MAP", "styleSlot": "gdv3.label.summarySectionEn" },
+            {
+              "type": "panel",
+              "name": "RadarGlyphFrame",
+              "widget": { "top": 52, "left": 0, "right": 0, "bottom": 60 },
+              "skinSlot": "detail.field.bg",
+              "children": [
+                { "type": "label", "name": "RadarGlyphTop", "widget": { "top": 16, "left": 0, "right": 0 }, "height": 18, "text": "STR", "styleSlot": "detail.label.meta" },
+                { "type": "label", "name": "RadarGlyphLeftTop", "widget": { "top": 60, "left": 14 }, "width": 42, "height": 18, "text": "INT", "styleSlot": "detail.label.meta" },
+                { "type": "label", "name": "RadarGlyphRightTop", "widget": { "top": 60, "right": 14 }, "width": 42, "height": 18, "text": "LEA", "styleSlot": "detail.label.meta" },
+                { "type": "label", "name": "RadarGlyphCenter", "widget": { "left": 0, "right": 0, "top": 102 }, "height": 26, "text": "六色\n屬性", "styleSlot": "detail.label.cardTitle" },
+                { "type": "label", "name": "RadarGlyphLeftBottom", "widget": { "bottom": 56, "left": 14 }, "width": 42, "height": 18, "text": "POL", "styleSlot": "detail.label.meta" },
+                { "type": "label", "name": "RadarGlyphRightBottom", "widget": { "bottom": 56, "right": 14 }, "width": 42, "height": 18, "text": "CHA", "styleSlot": "detail.label.meta" },
+                { "type": "label", "name": "RadarGlyphBottom", "widget": { "bottom": 16, "left": 0, "right": 0 }, "height": 18, "text": "LUK", "styleSlot": "detail.label.meta" }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "panel",
+          "name": "StatsValueCard",
+          "width": 304,
+          "height": 352,
+          "skinSlot": "detail.aptitude.summaryCard",
+          "layout": { "type": "vertical", "spacing": 8, "paddingTop": 14, "paddingBottom": 14, "paddingLeft": 12, "paddingRight": 12 },
+          "children": [
+            {
+              "type": "panel",
+              "name": "StrRow",
+              "width": 280,
+              "height": 40,
+              "skinSlot": "detail.field.bg",
+              "children": [
+                { "type": "label", "name": "StatLabel", "widget": { "top": 6, "left": 10 }, "width": 42, "height": 18, "text": "武力", "styleSlot": "detail.label.statName" },
+                { "type": "label", "name": "StatEn", "widget": { "top": 8, "left": 54 }, "width": 30, "height": 14, "text": "STR", "styleSlot": "gdv3.label.summarySectionEn" },
+                { "type": "panel", "name": "StatTalentBadge", "widget": { "top": 6, "right": 76 }, "width": 36, "height": 24, "skinSlot": "detail.field.name.bg", "children": [
+                  { "type": "label", "name": "StatTalentValue", "widget": { "left": 0, "right": 0, "top": 4 }, "height": 18, "text": "98", "styleSlot": "detail.label.talentNum" }
+                ] },
+                { "type": "label", "name": "StatArrow", "widget": { "top": 8, "right": 66 }, "width": 10, "height": 14, "text": "→", "styleSlot": "detail.label.dimArrow" },
+                { "type": "label", "name": "StatProwess", "widget": { "top": 6, "right": 10 }, "width": 52, "height": 20, "text": "1,688", "styleSlot": "detail.label.prowessNum" },
+                { "type": "panel", "name": "StatBarBg", "widget": { "left": 10, "right": 10, "bottom": 4 }, "height": 8, "skinSlot": "detail.field.bg" },
+                { "type": "panel", "name": "StatBarFill", "widget": { "left": 10, "bottom": 4 }, "width": 0, "height": 8, "skinSlot": "detail.field.name.bg" }
+              ]
+            },
+            {
+              "type": "panel",
+              "name": "IntRow",
+              "width": 280,
+              "height": 40,
+              "skinSlot": "detail.field.bg",
+              "children": [
+                { "type": "label", "name": "StatLabel", "widget": { "top": 6, "left": 10 }, "width": 42, "height": 18, "text": "智力", "styleSlot": "detail.label.statName" },
+                { "type": "label", "name": "StatEn", "widget": { "top": 8, "left": 54 }, "width": 30, "height": 14, "text": "INT", "styleSlot": "gdv3.label.summarySectionEn" },
+                { "type": "panel", "name": "StatTalentBadge", "widget": { "top": 6, "right": 76 }, "width": 36, "height": 24, "skinSlot": "detail.field.name.bg", "children": [
+                  { "type": "label", "name": "StatTalentValue", "widget": { "left": 0, "right": 0, "top": 4 }, "height": 18, "text": "52", "styleSlot": "detail.label.talentNum" }
+                ] },
+                { "type": "label", "name": "StatArrow", "widget": { "top": 8, "right": 66 }, "width": 10, "height": 14, "text": "→", "styleSlot": "detail.label.dimArrow" },
+                { "type": "label", "name": "StatProwess", "widget": { "top": 6, "right": 10 }, "width": 52, "height": 20, "text": "924", "styleSlot": "detail.label.prowessNum" },
+                { "type": "panel", "name": "StatBarBg", "widget": { "left": 10, "right": 10, "bottom": 4 }, "height": 8, "skinSlot": "detail.field.bg" },
+                { "type": "panel", "name": "StatBarFill", "widget": { "left": 10, "bottom": 4 }, "width": 0, "height": 8, "skinSlot": "detail.field.name.bg" }
+              ]
+            },
+            {
+              "type": "panel",
+              "name": "LeaRow",
+              "width": 280,
+              "height": 40,
+              "skinSlot": "detail.field.bg",
+              "children": [
+                { "type": "label", "name": "StatLabel", "widget": { "top": 6, "left": 10 }, "width": 42, "height": 18, "text": "統率", "styleSlot": "detail.label.statName" },
+                { "type": "label", "name": "StatEn", "widget": { "top": 8, "left": 54 }, "width": 30, "height": 14, "text": "LEA", "styleSlot": "gdv3.label.summarySectionEn" },
+                { "type": "panel", "name": "StatTalentBadge", "widget": { "top": 6, "right": 76 }, "width": 36, "height": 24, "skinSlot": "detail.field.name.bg", "children": [
+                  { "type": "label", "name": "StatTalentValue", "widget": { "left": 0, "right": 0, "top": 4 }, "height": 18, "text": "88", "styleSlot": "detail.label.talentNum" }
+                ] },
+                { "type": "label", "name": "StatArrow", "widget": { "top": 8, "right": 66 }, "width": 10, "height": 14, "text": "→", "styleSlot": "detail.label.dimArrow" },
+                { "type": "label", "name": "StatProwess", "widget": { "top": 6, "right": 10 }, "width": 52, "height": 20, "text": "1,510", "styleSlot": "detail.label.prowessNum" },
+                { "type": "panel", "name": "StatBarBg", "widget": { "left": 10, "right": 10, "bottom": 4 }, "height": 8, "skinSlot": "detail.field.bg" },
+                { "type": "panel", "name": "StatBarFill", "widget": { "left": 10, "bottom": 4 }, "width": 0, "height": 8, "skinSlot": "detail.field.name.bg" }
+              ]
+            },
+            {
+              "type": "panel",
+              "name": "PolRow",
+              "width": 280,
+              "height": 40,
+              "skinSlot": "detail.field.bg",
+              "children": [
+                { "type": "label", "name": "StatLabel", "widget": { "top": 6, "left": 10 }, "width": 42, "height": 18, "text": "政治", "styleSlot": "detail.label.statName" },
+                { "type": "label", "name": "StatEn", "widget": { "top": 8, "left": 54 }, "width": 30, "height": 14, "text": "POL", "styleSlot": "gdv3.label.summarySectionEn" },
+                { "type": "panel", "name": "StatTalentBadge", "widget": { "top": 6, "right": 76 }, "width": 36, "height": 24, "skinSlot": "detail.field.name.bg", "children": [
+                  { "type": "label", "name": "StatTalentValue", "widget": { "left": 0, "right": 0, "top": 4 }, "height": 18, "text": "38", "styleSlot": "detail.label.talentNum" }
+                ] },
+                { "type": "label", "name": "StatArrow", "widget": { "top": 8, "right": 66 }, "width": 10, "height": 14, "text": "→", "styleSlot": "detail.label.dimArrow" },
+                { "type": "label", "name": "StatProwess", "widget": { "top": 6, "right": 10 }, "width": 52, "height": 20, "text": "612", "styleSlot": "detail.label.prowessNum" },
+                { "type": "panel", "name": "StatBarBg", "widget": { "left": 10, "right": 10, "bottom": 4 }, "height": 8, "skinSlot": "detail.field.bg" },
+                { "type": "panel", "name": "StatBarFill", "widget": { "left": 10, "bottom": 4 }, "width": 0, "height": 8, "skinSlot": "detail.field.name.bg" }
+              ]
+            },
+            {
+              "type": "panel",
+              "name": "ChaRow",
+              "width": 280,
+              "height": 40,
+              "skinSlot": "detail.field.bg",
+              "children": [
+                { "type": "label", "name": "StatLabel", "widget": { "top": 6, "left": 10 }, "width": 42, "height": 18, "text": "魅力", "styleSlot": "detail.label.statName" },
+                { "type": "label", "name": "StatEn", "widget": { "top": 8, "left": 54 }, "width": 30, "height": 14, "text": "CHA", "styleSlot": "gdv3.label.summarySectionEn" },
+                { "type": "panel", "name": "StatTalentBadge", "widget": { "top": 6, "right": 76 }, "width": 36, "height": 24, "skinSlot": "detail.field.name.bg", "children": [
+                  { "type": "label", "name": "StatTalentValue", "widget": { "left": 0, "right": 0, "top": 4 }, "height": 18, "text": "74", "styleSlot": "detail.label.talentNum" }
+                ] },
+                { "type": "label", "name": "StatArrow", "widget": { "top": 8, "right": 66 }, "width": 10, "height": 14, "text": "→", "styleSlot": "detail.label.dimArrow" },
+                { "type": "label", "name": "StatProwess", "widget": { "top": 6, "right": 10 }, "width": 52, "height": 20, "text": "1,216", "styleSlot": "detail.label.prowessNum" },
+                { "type": "panel", "name": "StatBarBg", "widget": { "left": 10, "right": 10, "bottom": 4 }, "height": 8, "skinSlot": "detail.field.bg" },
+                { "type": "panel", "name": "StatBarFill", "widget": { "left": 10, "bottom": 4 }, "width": 0, "height": 8, "skinSlot": "detail.field.name.bg" }
+              ]
+            },
+            {
+              "type": "panel",
+              "name": "LukRow",
+              "width": 280,
+              "height": 40,
+              "skinSlot": "detail.field.bg",
+              "children": [
+                { "type": "label", "name": "StatLabel", "widget": { "top": 6, "left": 10 }, "width": 42, "height": 18, "text": "運氣", "styleSlot": "detail.label.statName" },
+                { "type": "label", "name": "StatEn", "widget": { "top": 8, "left": 54 }, "width": 30, "height": 14, "text": "LUK", "styleSlot": "gdv3.label.summarySectionEn" },
+                { "type": "panel", "name": "StatTalentBadge", "widget": { "top": 6, "right": 76 }, "width": 36, "height": 24, "skinSlot": "detail.field.name.bg", "children": [
+                  { "type": "label", "name": "StatTalentValue", "widget": { "left": 0, "right": 0, "top": 4 }, "height": 18, "text": "76", "styleSlot": "detail.label.talentNum" }
+                ] },
+                { "type": "label", "name": "StatArrow", "widget": { "top": 8, "right": 66 }, "width": 10, "height": 14, "text": "→", "styleSlot": "detail.label.dimArrow" },
+                { "type": "label", "name": "StatProwess", "widget": { "top": 6, "right": 10 }, "width": 52, "height": 20, "text": "1,180", "styleSlot": "detail.label.prowessNum" },
+                { "type": "panel", "name": "StatBarBg", "widget": { "left": 10, "right": 10, "bottom": 4 }, "height": 8, "skinSlot": "detail.field.bg" },
+                { "type": "panel", "name": "StatBarFill", "widget": { "left": 10, "bottom": 4 }, "width": 0, "height": 8, "skinSlot": "detail.field.name.bg" }
+              ]
+            },
+            {
+              "type": "panel",
+              "name": "TotalRankRow",
+              "width": 280,
+              "height": 36,
+              "skinSlot": "detail.rank.row",
+              "children": [
+                { "type": "label", "name": "RankLabel", "widget": { "left": 10, "top": 10 }, "width": 76, "height": 16, "text": "總評等級", "styleSlot": "detail.label.vitalLabel" },
+                {
+                  "type": "panel",
+                  "name": "RankBadge",
+                  "widget": { "left": 92, "top": 6, "width": 34, "height": 24 },
+                  "skinSlot": "detail.rank.badge",
+                  "children": [
+                    { "type": "label", "name": "RankBadgeValue", "widget": { "left": 0, "right": 0, "top": 3 }, "height": 18, "text": "A", "styleSlot": "detail.label.talentNum" }
+                  ]
+                },
+                { "type": "label", "name": "RankText", "widget": { "left": 132, "right": 10, "top": 8 }, "height": 20, "text": "良才美質", "styleSlot": "detail.label.prowessNum" }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "container",
+      "name": "VitalsSectionHeader",
+      "width": "100%",
+      "height": 24,
+      "children": [
+        { "type": "sprite", "name": "VitalsSectionBar", "widget": { "top": 0, "bottom": 0, "left": 0, "right": 0 }, "skinSlot": "gdv3.summary.sectionBar" },
+        { "type": "label", "name": "VitalsSectionTitle", "widget": { "left": 12, "top": 3 }, "width": 84, "height": 18, "text": "生命狀態", "styleSlot": "gdv3.label.summarySection" },
+        { "type": "label", "name": "VitalsSectionTitleEn", "widget": { "left": 98, "top": 5 }, "width": 86, "height": 14, "text": "VITALS", "styleSlot": "gdv3.label.summarySectionEn" }
+      ]
+    },
+    {
+      "type": "container",
+      "name": "VitalsRow",
+      "width": "100%",
+      "height": 84,
+      "layout": { "type": "horizontal", "spacing": 10 },
+      "children": [
+        {
+          "type": "panel",
+          "name": "HpCard",
+          "width": 173,
+          "height": 84,
+          "skinSlot": "detail.aptitude.card",
+          "children": [
+            { "type": "label", "name": "HpLabel", "widget": { "top": 10, "left": 12 }, "width": 72, "height": 16, "text": "HP 生命", "styleSlot": "detail.label.vitalLabel" },
+            { "type": "panel", "name": "HpValuePlate", "widget": { "top": 6, "right": 10 }, "width": 70, "height": 24, "skinSlot": "detail.field.bg" },
+            { "type": "label", "name": "HpValue", "widget": { "top": 8, "right": 12 }, "width": 64, "height": 20, "styleSlot": "detail.label.profileValue" },
+            { "type": "panel", "name": "HpBarBg", "widget": { "left": 12, "right": 12, "bottom": 24 }, "height": 10, "skinSlot": "detail.field.name.bg" },
+            { "type": "panel", "name": "HpBarFill", "widget": { "left": 12, "bottom": 24 }, "width": 0, "height": 10, "skinSlot": "detail.field.bg" },
+            { "type": "label", "name": "HpMaxValue", "widget": { "left": 12, "right": 12, "bottom": 8 }, "height": 14, "text": "/ 0", "styleSlot": "detail.label.vitalMax" }
+          ]
+        },
+        {
+          "type": "panel",
+          "name": "SpCard",
+          "width": 173,
+          "height": 84,
+          "skinSlot": "detail.aptitude.card",
+          "children": [
+            { "type": "label", "name": "SpLabel", "widget": { "top": 10, "left": 12 }, "width": 72, "height": 16, "text": "SP 戰氣", "styleSlot": "detail.label.vitalLabel" },
+            { "type": "panel", "name": "SpValuePlate", "widget": { "top": 6, "right": 10 }, "width": 70, "height": 24, "skinSlot": "detail.field.bg" },
+            { "type": "label", "name": "SpValue", "widget": { "top": 8, "right": 12 }, "width": 64, "height": 20, "styleSlot": "detail.label.profileValue" },
+            { "type": "panel", "name": "SpBarBg", "widget": { "left": 12, "right": 12, "bottom": 24 }, "height": 10, "skinSlot": "detail.field.name.bg" },
+            { "type": "panel", "name": "SpBarFill", "widget": { "left": 12, "bottom": 24 }, "width": 0, "height": 10, "skinSlot": "detail.field.bg" },
+            { "type": "label", "name": "SpMaxValue", "widget": { "left": 12, "right": 12, "bottom": 8 }, "height": 14, "text": "/ 0", "styleSlot": "detail.label.vitalMax" }
+          ]
+        },
+        {
+          "type": "panel",
+          "name": "VitalityCard",
+          "width": 174,
+          "height": 84,
+          "skinSlot": "detail.aptitude.card",
+          "children": [
+            { "type": "label", "name": "VitalityLabel", "widget": { "top": 10, "left": 12 }, "width": 72, "height": 16, "text": "精力值", "styleSlot": "detail.label.vitalLabel" },
+            { "type": "panel", "name": "VitalityValuePlate", "widget": { "top": 6, "right": 10 }, "width": 70, "height": 24, "skinSlot": "detail.field.bg" },
+            { "type": "label", "name": "VitalityValue", "widget": { "top": 8, "right": 12 }, "width": 64, "height": 20, "styleSlot": "detail.label.profileValue" },
+            { "type": "panel", "name": "VitalityBarBg", "widget": { "left": 12, "right": 12, "bottom": 24 }, "height": 10, "skinSlot": "detail.field.name.bg" },
+            { "type": "panel", "name": "VitalityBarFill", "widget": { "left": 12, "bottom": 24 }, "width": 0, "height": 10, "skinSlot": "detail.field.bg" },
+            { "type": "label", "name": "VitalityMaxValue", "widget": { "left": 12, "right": 12, "bottom": 8 }, "height": 14, "text": "/ 0", "styleSlot": "detail.label.vitalMax" }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "container",
+      "name": "ProfileSectionHeader",
+      "width": "100%",
+      "height": 24,
+      "children": [
+        { "type": "sprite", "name": "ProfileSectionBar", "widget": { "top": 0, "bottom": 0, "left": 0, "right": 0 }, "skinSlot": "gdv3.summary.sectionBar" },
+        { "type": "label", "name": "ProfileSectionTitle", "widget": { "left": 12, "top": 3 }, "width": 84, "height": 18, "text": "基本資料", "styleSlot": "gdv3.label.summarySection" },
+        { "type": "label", "name": "ProfileSectionTitleEn", "widget": { "left": 98, "top": 5 }, "width": 92, "height": 14, "text": "PROFILE", "styleSlot": "gdv3.label.summarySectionEn" }
+      ]
+    },
+    {
+      "type": "container",
+      "name": "ProfileRowTop",
+      "width": "100%",
+      "height": 56,
+      "layout": { "type": "horizontal", "spacing": 8 },
+      "children": [
+        {
+          "type": "panel",
+          "name": "ProfileAgeCard",
+          "width": 266,
+          "height": 56,
+          "skinSlot": "detail.aptitude.card",
+          "children": [
+            { "type": "panel", "name": "ProfileAgeValuePlate", "widget": { "left": 72, "right": 10, "top": 8, "bottom": 8 }, "skinSlot": "detail.field.bg" },
+            { "type": "label", "name": "ProfileAgeLabel", "widget": { "left": 12, "top": 18 }, "width": 52, "height": 16, "text": "年齡", "styleSlot": "detail.label.profileKey" },
+            { "type": "label", "name": "ProfileAgeValue", "widget": { "left": 76, "right": 12, "top": 14 }, "height": 24, "styleSlot": "detail.label.profileValue" }
+          ]
+        },
+        {
+          "type": "panel",
+          "name": "ProfileLevelCard",
+          "width": 266,
+          "height": 56,
+          "skinSlot": "detail.aptitude.card",
+          "children": [
+            { "type": "panel", "name": "ProfileLevelValuePlate", "widget": { "left": 72, "right": 10, "top": 8, "bottom": 8 }, "skinSlot": "detail.field.bg" },
+            { "type": "label", "name": "ProfileLevelLabel", "widget": { "left": 12, "top": 18 }, "width": 52, "height": 16, "text": "等級", "styleSlot": "detail.label.profileKey" },
+            { "type": "label", "name": "ProfileLevelValue", "widget": { "left": 76, "right": 12, "top": 14 }, "height": 24, "styleSlot": "detail.label.profileValue" }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "container",
+      "name": "ProfileRowBottom",
+      "width": "100%",
+      "height": 56,
+      "layout": { "type": "horizontal", "spacing": 8 },
+      "children": [
+        {
+          "type": "panel",
+          "name": "ProfileStatusCard",
+          "width": 266,
+          "height": 56,
+          "skinSlot": "detail.aptitude.card",
+          "children": [
+            { "type": "panel", "name": "ProfileStatusValuePlate", "widget": { "left": 72, "right": 10, "top": 8, "bottom": 8 }, "skinSlot": "detail.field.bg" },
+            { "type": "label", "name": "ProfileStatusLabel", "widget": { "left": 12, "top": 18 }, "width": 52, "height": 16, "text": "狀態", "styleSlot": "detail.label.profileKey" },
+            { "type": "label", "name": "ProfileStatusValue", "widget": { "left": 76, "right": 12, "top": 14 }, "height": 24, "styleSlot": "detail.label.profileValue" }
+          ]
+        },
+        {
+          "type": "panel",
+          "name": "ProfileVitalityCard",
+          "width": 266,
+          "height": 56,
+          "skinSlot": "detail.aptitude.card",
+          "children": [
+            { "type": "panel", "name": "ProfileVitalityValuePlate", "widget": { "left": 72, "right": 10, "top": 8, "bottom": 8 }, "skinSlot": "detail.field.bg" },
+            { "type": "label", "name": "ProfileVitalityLabel", "widget": { "left": 12, "top": 18 }, "width": 52, "height": 16, "text": "精力", "styleSlot": "detail.label.profileKey" },
+            { "type": "label", "name": "ProfileVitalityValue", "widget": { "left": 76, "right": 12, "top": 14 }, "height": 24, "styleSlot": "detail.label.profileValue" }
+          ]
+        }
+      ]
+    }
   ]
 }

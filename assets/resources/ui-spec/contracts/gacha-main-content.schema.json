@@ -2,22 +2,156 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "schemaId": "gacha-main-content",
   "familyId": "gacha-main",
-  "version": 1,
-  "description": "GachaMain pending contract，補雙池定位摘要帶。",
+  "version": 2,
+  "description": "GachaMain HTML 對齊內容契約，覆蓋左側 banner、右側資訊欄與底部 pull bar 的核心文字。",
   "fields": {
+    "poolNameStripValue": {
+      "type": "string",
+      "required": true,
+      "bindPath": "BannerStage/PoolNameStrip/PoolNameStripValue"
+    },
     "poolPositioningTitle": {
       "type": "string",
       "required": true,
-      "bindPath": "PoolPositioningCard/PoolPositioningTitle"
+      "bindPath": "BannerStage/PoolPositioningCard/PoolPositioningTitle"
     },
     "poolPositioningBrief": {
       "type": "string",
       "required": true,
-      "bindPath": "PoolPositioningCard/PoolPositioningBrief"
+      "bindPath": "BannerStage/PoolPositioningCard/PoolPositioningBrief"
+    },
+    "featuredLabel": {
+      "type": "string",
+      "required": true,
+      "bindPath": "BannerStage/FeaturedLabel"
+    },
+    "bannerHeroName": {
+      "type": "string",
+      "required": true,
+      "bindPath": "BannerStage/BannerHeroName"
+    },
+    "bannerHeroSubtitle": {
+      "type": "string",
+      "required": true,
+      "bindPath": "BannerStage/TimerLabel"
+    },
+    "smallPityLabel": {
+      "type": "string",
+      "required": true,
+      "bindPath": "BannerStage/SmallPityLabel"
+    },
+    "railTitle": {
+      "type": "string",
+      "required": true,
+      "bindPath": "RightPanel/PoolHeader/TitleLabel"
+    },
+    "railSubtitle": {
+      "type": "string",
+      "required": true,
+      "bindPath": "RightPanel/PoolHeader/PoolSubtitleLabel"
+    },
+    "poolTierLabel": {
+      "type": "string",
+      "required": true,
+      "bindPath": "RightPanel/PoolHeader/PoolTierDock/PoolTierBadge/PoolTierLabel"
+    },
+    "pityValue": {
+      "type": "string",
+      "required": true,
+      "bindPath": "RightPanel/PitySection/BigPityLabel"
+    },
+    "costSingleValue": {
+      "type": "string",
+      "required": true,
+      "bindPath": "RightPanel/CostCard/CostSingleValue"
+    },
+    "costTenValue": {
+      "type": "string",
+      "required": true,
+      "bindPath": "RightPanel/CostCard/CostTenValue"
+    },
+    "costBalanceValue": {
+      "type": "string",
+      "required": true,
+      "bindPath": "RightPanel/CostCard/CostBalanceValue"
+    },
+    "rulesNote": {
+      "type": "string",
+      "required": true,
+      "bindPath": "RightPanel/RulesNote"
+    },
+    "pullBarPoolValue": {
+      "type": "string",
+      "required": true,
+      "bindPath": "PullBar/PullBarPoolInfo/PullBarPoolValue"
+    },
+    "pull1Label": {
+      "type": "string",
+      "required": true,
+      "bindPath": "PullBar/Pull1Btn/Pull1Label"
+    },
+    "pull1Cost": {
+      "type": "string",
+      "required": true,
+      "bindPath": "PullBar/Pull1Btn/Pull1Cost"
+    },
+    "pull10Label": {
+      "type": "string",
+      "required": true,
+      "bindPath": "PullBar/Pull10Btn/Pull10Label"
+    },
+    "pull10Hint": {
+      "type": "string",
+      "required": true,
+      "bindPath": "PullBar/Pull10Btn/Pull10Hint"
+    },
+    "pull10Cost": {
+      "type": "string",
+      "required": true,
+      "bindPath": "PullBar/Pull10Btn/Pull10Cost"
+    },
+    "poolTheme": {
+      "type": "string",
+      "required": false
+    },
+    "poolBadgeSkin": {
+      "type": "string",
+      "required": false
+    },
+    "pityFillSkin": {
+      "type": "string",
+      "required": false
+    },
+    "eventChipSkin": {
+      "type": "string",
+      "required": false
+    },
+    "poolAccentColor": {
+      "type": "string",
+      "required": false
     }
   },
   "requiredFields": [
+    "poolNameStripValue",
     "poolPositioningTitle",
-    "poolPositioningBrief"
+    "poolPositioningBrief",
+    "featuredLabel",
+    "bannerHeroName",
+    "bannerHeroSubtitle",
+    "smallPityLabel",
+    "railTitle",
+    "railSubtitle",
+    "poolTierLabel",
+    "pityValue",
+    "costSingleValue",
+    "costTenValue",
+    "costBalanceValue",
+    "rulesNote",
+    "pullBarPoolValue",
+    "pull1Label",
+    "pull1Cost",
+    "pull10Label",
+    "pull10Hint",
+    "pull10Cost"
   ]
 }

@@ -1,0 +1,18 @@
+{
+  "R25_specVersion": {
+    "status": "pass",
+    "specVersion": 1
+  },
+  "R27_nineSliceFamily": {
+    "status": "pass"
+  },
+  "R28_localeTraditional": {
+    "status": "pass"
+  },
+  "forbiddenNodeType": {
+    "status": "pass"
+  },
+  "unmappedToken": {
+    "status": "warn"
+  }
+}

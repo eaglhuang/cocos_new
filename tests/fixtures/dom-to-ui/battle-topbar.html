@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="zh-TW" data-canvas-width="1920" data-canvas-height="160">
+<head>
+<meta charset="utf-8">
+<title>Battle Topbar Fixture</title>
+<style>
+/* ── CSS variable fallbacks (normally from colors_and_type.css) ── */
+:root {
+  --font-headline: "Noto Serif TC", "Source Han Serif", Georgia, serif;
+  --font-label:    "Noto Sans TC", "Source Han Sans", Arial, sans-serif;
+  --font-body:     "Noto Sans TC", "Source Han Sans", Arial, sans-serif;
+  --font-num:      "Roboto Mono", "Courier New", monospace;
+  --text-primary:  #E8E4DC;
+  --dur-fast:      80ms;
+  --ease-default:  cubic-bezier(.4,0,.2,1);
+}
+* { box-sizing: border-box; margin:0; padding:0; }
+html, body {
+  width: 1920px; height: 160px; overflow: hidden;
+  font-family: var(--font-body); color: var(--text-primary);
+  background: #090c14;
+}
+
+/* ── Top Bar ── */
+.topbar {
+  position: absolute; top:0; left:0; right:0;
+  background: linear-gradient(180deg,rgba(6,6,10,.97),rgba(6,6,10,.85));
+  border-bottom: 1.5px solid rgba(212,175,55,.5);
+  box-shadow: 0 6px 18px rgba(0,0,0,.6);
+}
+/* scene pill (top-left) */
+.scene-pill {
+  position:absolute; left:0; top:0;
+  background:linear-gradient(180deg,rgba(10,12,22,.96),rgba(10,12,22,.88));
+  border-right:1px solid rgba(212,175,55,.35);
+  border-bottom:1px solid rgba(212,175,55,.35);
+  border-radius:0 0 12px 0;
+  padding:10px 16px; display:flex; flex-direction:column; gap:6px;
+  z-index:2; min-width:220px;
+}
+.scene-loc {
+  font-family:var(--font-headline); font-size:20px; font-weight:800;
+  color:#FFE088; letter-spacing:.3em;
+}
+.scene-tags { display:flex; gap:6px; align-items:center; }
+.scene-tag {
+  padding:2px 9px; border-radius:4px; font-family:var(--font-label);
+  font-size:10px; font-weight:800; letter-spacing:.18em;
+}
+.tag-weather { background:rgba(164,210,208,.18); color:#A4D2D0; border:1px solid rgba(164,210,208,.4);}
+.tag-gambit  { background:rgba(58,143,217,.22); color:#7EC8F7; border:1px solid rgba(58,143,217,.45); cursor:pointer;}
+/* system buttons (top-right) */
+.sys-btns {
+  position:absolute; right:0; top:0;
+  background:linear-gradient(180deg,rgba(10,12,22,.96),rgba(10,12,22,.88));
+  border-left:1px solid rgba(212,175,55,.35);
+  border-bottom:1px solid rgba(212,175,55,.35);
+  border-radius:0 0 0 12px;
+  padding:10px 16px; display:flex; align-items:center; gap:10px; z-index:2;
+}
+.sys-btn {
+  height:44px; padding:0 18px; border-radius:8px; cursor:pointer;
+  font-family:var(--font-headline); font-weight:800; font-size:14px; letter-spacing:.2em;
+  border:1.5px solid var(--bc,#4D4635);
+  background:linear-gradient(180deg,var(--b1,#2a2a2a),var(--b2,#111));
+  color:var(--tx,#E8E4DC);
+  display:flex; align-items:center; gap:8px;
+}
+.sys-btn.on { --b1:#FFE088; --b2:#D4AF37; --bc:#8A6E1F; --tx:#2D1E00; }
+.sys-btn.speed { --b1:#243a5a; --b2:#101828; --bc:#3A8FD9; --tx:#A4D2D0;}
+.sys-btn.surrender { --b1:#5a1a14; --b2:#2a0a08; --bc:#D94A3A; --tx:#FFBFB8;}
+.sys-btn .dot { width:8px; height:8px; border-radius:50%; background:currentColor; }
+/* main topbar content */
+.topbar-main {
+  padding:0 340px 0 250px; height:130px;
+  display:grid; grid-template-columns:1fr auto 1fr;
+  align-items:center; gap:0;
+}
+/* general sides */
+.gen-side { display:flex; align-items:center; gap:12px; padding:0 14px; }
+.gen-side.right { flex-direction:row-reverse; }
+.portrait-wrap { position:relative; flex-shrink:0; }
+.portrait {
+  width:76px; height:76px; border-radius:50%; overflow:hidden;
+  border:2.5px solid var(--pc,#D4AF37);
+  box-shadow:0 0 14px rgba(212,175,55,.45);
+  background:#0a0a0a; cursor:pointer; flex-shrink:0;
+}
+.portrait img { width:100%; height:100%; object-fit:cover; object-position:center top; }
+.portrait.enemy { --pc:#D94A3A; }
+.gen-info { display:flex; flex-direction:column; gap:3px; }
+.gen-info.right { align-items:flex-end; }
+.gen-name { font-family:var(--font-headline); font-size:22px; font-weight:800; color:#FFE088; letter-spacing:.2em; }
+.gen-side.right .gen-name { color:#FFBFB8; }
+.gen-title { font-family:var(--font-label); font-size:11px; letter-spacing:.3em; color:#B0A880; }
+.gen-hp { display:flex; align-items:baseline; gap:8px; }
+.gen-hpnum {
+  font-family:var(--font-num); font-weight:800; font-size:24px;
+  color:#FFE088; font-variant-numeric:tabular-nums;
+}
+.gen-side.right .gen-hpnum { color:#FFBFB8; }
+.gen-delta { font-family:var(--font-num); font-size:13px; font-weight:700; color:#86E1A5; }
+.gen-delta.neg { color:#FF8070; }
+.e-sp-wrap { position:absolute; bottom:-6px; left:50%; transform:translateX(-50%); width:64px; }
+.e-sp { height:5px; background:rgba(0,0,0,.6); border:1px solid rgba(155,109,255,.5); border-radius:3px; overflow:hidden; }
+.e-sp i { display:block; height:100%; background:linear-gradient(90deg,#6d5dff,#9b6dff); }
+/* center */
+.topbar-center { display:flex; flex-direction:column; align-items:center; gap:4px; flex:1; }
+.turn-badge {
+  font-family:var(--font-headline); font-size:22px; font-weight:800;
+  color:#FFE088; letter-spacing:.5em;
+}
+.turn-phase { font-family:var(--font-label); font-size:12px; letter-spacing:.5em; color:#D4AF37; }
+.fortress-row {
+  display:grid; grid-template-columns:1fr 44px 1fr;
+  align-items:center; gap:8px; width:460px;
+}
+.fbar {
+  height:14px; border-radius:7px; background:#080812;
+  border:1px solid #4D4635; overflow:hidden; position:relative;
+}
+.fbar i { display:block; height:100%; border-radius:7px; }
+.fbar.me i { background:linear-gradient(90deg,#3F6A62,#86E1A5); float:right; }
+.fbar.en i { background:linear-gradient(90deg,#FF6B6B,#B22222); }
+.vs {
+  font-family:var(--font-headline); font-size:24px; font-weight:800;
+  color:#D4AF37; text-align:center;
+}
+.food-line { font-family:var(--font-num); font-size:11px; color:#F0E68C; display:flex; align-items:center; gap:6px; }
+.food-ico { font-family:var(--font-headline); font-size:15px; color:#D4AF37; }
+</style>
+</head>
+<body>
+  <header class="topbar"
+    data-anchor="top-stretch"
+    data-name="BattleTopBar"
+    data-ucuf-id="battle-topbar"
+    data-visual-zone="battle-topbar">
+
+    <!-- scene pill -->
+    <div class="scene-pill"
+      data-name="ScenePill"
+      data-ucuf-id="scenePill"
+      data-visual-zone="scene-pill">
+      <div class="scene-loc"
+        data-name="SceneLocLabel"
+        data-ucuf-id="sceneLocLabel"
+        data-contract="battleState.sceneName">赤 壁 之 戰</div>
+      <div class="scene-tags">
+        <span class="scene-tag tag-weather"
+          data-name="WeatherTag"
+          data-ucuf-id="weatherTag"
+          data-contract="battleState.weatherLabel">大 霧</span>
+        <span class="scene-tag tag-gambit"
+          data-name="GambitTag"
+          data-ucuf-id="gambitTag"
+          data-ucuf-action="openPanel"
+          data-target="battle-gambit-dialog"
+          data-contract="battleState.gambitLabel">火 攻 之 計</span>
+      </div>
+    </div>
+
+    <!-- system buttons -->
+    <div class="sys-btns"
+      data-name="SysButtonsBar"
+      data-ucuf-id="sysButtonsBar"
+      data-visual-zone="sys-buttons">
+      <button class="sys-btn on"
+        data-name="AutoBtn"
+        data-ucuf-id="autoBtn"
+        data-ucuf-action="toggleBattleAuto"
+        data-target="battle-auto-toggle">
+        <span class="dot"></span>自 動
+      </button>
+      <button class="sys-btn speed"
+        data-name="SpeedBtn"
+        data-ucuf-id="speedBtn"
+        data-ucuf-action="toggleBattleSpeed"
+        data-target="battle-speed-toggle">×2 倍速</button>
+      <button class="sys-btn surrender"
+        data-name="SurrenderBtn"
+        data-ucuf-id="surrenderBtn"
+        data-ucuf-action="openPanel"
+        data-target="battle-surrender-dialog">⚑ 投 降</button>
+    </div>
+
+    <!-- main row: player | center | enemy -->
+    <div class="topbar-main"
+      data-name="TopBarMain"
+      data-ucuf-id="topbarMain"
+      data-visual-zone="topbar-main">
+
+      <!-- player general -->
+      <div class="gen-side left"
+        data-name="PlayerSide"
+        data-ucuf-id="playerSide"
+        data-visual-zone="player-info">
+        <div class="portrait-wrap">
+          <div class="portrait"
+            data-name="PlayerPortrait"
+            data-ucuf-id="playerPortrait"
+            data-contract="battleState.playerAvatar"
+            data-ucuf-action="openPanel"
+            data-target="battle-general-detail-player">
+            <img src="" alt="我方武將">
+          </div>
+        </div>
+        <div class="gen-info"
+          data-name="PlayerInfo"
+          data-ucuf-id="playerInfo">
+          <div class="gen-name"
+            data-name="PlayerName"
+            data-ucuf-id="playerName"
+            data-contract="battleState.playerName">趙 雲</div>
+          <div class="gen-title"
+            data-name="PlayerTitle"
+            data-ucuf-id="playerTitle"
+            data-contract="battleState.playerTitle">蜀 · 五虎上將 · LV 42</div>
+          <div class="gen-hp">
+            <span class="gen-hpnum"
+              data-name="PlayerHpLabel"
+              data-ucuf-id="playerHpLabel"
+              data-contract="battleState.playerFortressHp">1,688 / 1,688</span>
+            <span class="gen-delta"
+              data-name="PlayerBonusLabel"
+              data-ucuf-id="playerBonusLabel"
+              data-contract="battleState.playerBonusLabel">+20% 騎</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- center: turn + fortress bars + food -->
+      <div class="topbar-center"
+        data-name="CenterInfo"
+        data-ucuf-id="centerInfo"
+        data-visual-zone="center-info">
+        <div class="turn-badge"
+          data-name="TurnLabel"
+          data-ucuf-id="turnLabel"
+          data-contract="battleState.turnCount">第 5 回合</div>
+        <div class="turn-phase"
+          data-name="TurnPhaseLabel"
+          data-ucuf-id="turnPhaseLabel"
+          data-contract="battleState.turnPhase">我方行動</div>
+        <div class="fortress-row"
+          data-name="FortressBarRow"
+          data-ucuf-id="fortressBarRow"
+          data-visual-zone="fortress-bars">
+          <div class="fbar me"
+            data-name="PlayerFortressBar"
+            data-ucuf-id="playerFortressBar"
+            data-contract="battleState.playerFortressHpRatio"><i style="width:86%"></i></div>
+          <div class="vs"
+            data-name="VsLabel"
+            data-ucuf-id="vsLabel">VS</div>
+          <div class="fbar en"
+            data-name="EnemyFortressBar"
+            data-ucuf-id="enemyFortressBar"
+            data-contract="battleState.enemyFortressHpRatio"><i style="width:72%"></i></div>
+        </div>
+        <div class="food-line"
+          data-name="FoodLabel"
+          data-ucuf-id="foodLabel"
+          data-contract="battleState.food">
+          <span class="food-ico">糧</span>糧草 8,500 / 12,000
+        </div>
+      </div>
+
+      <!-- enemy general -->
+      <div class="gen-side right"
+        data-name="EnemySide"
+        data-ucuf-id="enemySide"
+        data-visual-zone="enemy-info">
+        <div class="gen-info right"
+          data-name="EnemyInfo"
+          data-ucuf-id="enemyInfo">
+          <div class="gen-name"
+            data-name="EnemyName"
+            data-ucuf-id="enemyName"
+            data-contract="battleState.enemyName">曹 操</div>
+          <div class="gen-title"
+            data-name="EnemyTitle"
+            data-ucuf-id="enemyTitle"
+            data-contract="battleState.enemyTitle">魏 · 主公 · LV 44</div>
+          <div class="gen-hp" style="justify-content:flex-end">
+            <span class="gen-delta neg"
+              data-name="EnemyDeltaLabel"
+              data-ucuf-id="enemyDeltaLabel"
+              data-contract="battleState.enemyBonusLabel">−18%</span>
+            <span class="gen-hpnum"
+              data-name="EnemyHpLabel"
+              data-ucuf-id="enemyHpLabel"
+              data-contract="battleState.enemyFortressHp">1,692 / 2,060</span>
+          </div>
+        </div>
+        <div class="portrait-wrap">
+          <div class="portrait enemy"
+            data-name="EnemyPortrait"
+            data-ucuf-id="enemyPortrait"
+            data-contract="battleState.enemyAvatar"
+            data-ucuf-action="openPanel"
+            data-target="battle-general-detail-enemy">
+            <img src="" alt="敵方武將">
+          </div>
+          <div class="e-sp-wrap">
+            <div class="e-sp"
+              data-name="EnemySpBar"
+              data-ucuf-id="enemySpBar"
+              data-contract="battleState.enemySpRatio"><i style="width:62%"></i></div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /topbar-main -->
+  </header>
+</body>
+</html>

@@ -15,8 +15,8 @@
       "id": "6c48a",
       "name": "texture",
       "userData": {
-        "wrapModeS": "repeat",
-        "wrapModeT": "repeat",
+        "wrapModeS": "clamp-to-edge",
+        "wrapModeT": "clamp-to-edge",
         "minfilter": "linear",
         "magfilter": "linear",
         "mipfilter": "none",
@@ -31,10 +31,102 @@
         ".json"
       ],
       "subMetas": {}
+    },
+    "f9941": {
+      "importer": "sprite-frame",
+      "uuid": "72883b36-64bb-48a2-8f21-72a5a2c0a99e@f9941",
+      "displayName": "zhen_ji_portrait",
+      "id": "f9941",
+      "name": "spriteFrame",
+      "userData": {
+        "trimThreshold": 1,
+        "rotated": false,
+        "offsetX": 3.5,
+        "offsetY": -1.5,
+        "trimX": 7,
+        "trimY": 3,
+        "width": 440,
+        "height": 556,
+        "rawWidth": 447,
+        "rawHeight": 559,
+        "borderTop": 0,
+        "borderBottom": 0,
+        "borderLeft": 0,
+        "borderRight": 0,
+        "packable": true,
+        "pixelsToUnit": 100,
+        "pivotX": 0.5,
+        "pivotY": 0.5,
+        "meshType": 0,
+        "vertices": {
+          "rawPosition": [
+            -220,
+            -278,
+            0,
+            220,
+            -278,
+            0,
+            -220,
+            278,
+            0,
+            220,
+            278,
+            0
+          ],
+          "indexes": [
+            0,
+            1,
+            2,
+            2,
+            1,
+            3
+          ],
+          "uv": [
+            7,
+            556,
+            447,
+            556,
+            7,
+            0,
+            447,
+            0
+          ],
+          "nuv": [
+            0.015659955257270694,
+            0,
+            1,
+            0,
+            0.015659955257270694,
+            0.9946332737030411,
+            1,
+            0.9946332737030411
+          ],
+          "minPos": [
+            -220,
+            -278,
+            0
+          ],
+          "maxPos": [
+            220,
+            278,
+            0
+          ]
+        },
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "72883b36-64bb-48a2-8f21-72a5a2c0a99e@6c48a",
+        "atlasUuid": "",
+        "trimType": "auto"
+      },
+      "ver": "1.0.12",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
     }
   },
   "userData": {
-    "type": "texture",
+    "type": "sprite-frame",
     "fixAlphaTransparencyArtifacts": false,
     "hasAlpha": true,
     "redirect": "72883b36-64bb-48a2-8f21-72a5a2c0a99e@6c48a"

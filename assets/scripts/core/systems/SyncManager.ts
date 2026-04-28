@@ -1,7 +1,27 @@
 import { sys } from 'cc';
 import { EventSystem } from './EventSystem';
 import { NetworkService, EVENT_NETWORK_ONLINE } from './NetworkService';
-import { ActionRecord, SyncRequest, SyncResponse } from '../../../../shared/protocols';
+import type { ActionRecord, SyncRequest, SyncResponse } from '../../../../shared/protocols';
+import { IndexedDbAdapter } from '../storage/IndexedDbAdapter';
+import { DataStorageAdapter } from '../storage/DataStorageAdapter';
+import { UCUFLogger, LogCategory } from '../../ui/core/UCUFLogger';
+
+interface SyncLocalMeta {
+    currentSeq: number;
+    deviceId: string;
+    sessionSecret: string;
+    lastHash: string;
+}
+
+export interface SyncDebugSnapshot {
+    storageMode: string;
+    deviceId: string;
+    currentSeq: number;
+    lastHash: string;
+    pendingCount: number;
+    isHydrated: boolean;
+    records: ActionRecord[];
+}
 
 function computeSyncDigest(data: string, secret: string): string {
     let stateA = 0x811c9dc5;
@@ -26,10 +46,21 @@ export const EVENT_OFFLINE_REMINDER = 'EVENT_OFFLINE_REMINDER';
 
 export enum SyncActionType {
     DEFERRABLE = 'DEFERRABLE',               // 可延遲上傳 (本機先算 Hash 存佇列，等連線後背景上傳)
-    IMMEDIATE_REQUIRED = 'IMMEDIATE_REQUIRED' // 必即時上傳 (若斷線則直接阻擋操作，如：課金購買)
+    IMMEDIATE_REQUIRED = 'IMMEDIATE_REQUIRED' // 必即時上傳 (若斷線則直接阻擋操作，如：轉蛋 / 商城 / 課金)
 }
 
 export class SyncManager {
+    private static readonly ONLINE_ONLY_ACTION_PATTERNS: RegExp[] = [
+        /^GACHA_/i,
+        /^SHOP_(BUY|PURCHASE|REFRESH)/i,
+        /^STORE_/i,
+        /^PURCHASE_/i,
+        /^IAP_/i,
+        /^PAY(MENT)?_/i,
+        /^RECHARGE_/i,
+        /^BILLING_/i,
+    ];
+
     private eventSystem: EventSystem | null = null;
     private network: NetworkService | null = null;
 
@@ -42,16 +73,50 @@ export class SyncManager {
     private isSyncing: boolean = false;
     private reminderTimer: any = null;
 
-    private readonly STORAGE_KEY = 'OFFLINE_ACTION_LOGS';
+    private storageAdapter: DataStorageAdapter | null = null;
+    private storageInitPromise: Promise<DataStorageAdapter | null> | null = null;
+    private restorePromise: Promise<void> | null = null;
+    private hasHydratedLocalState = false;
+
+    private readonly LEGACY_STORAGE_KEY = 'OFFLINE_ACTION_LOGS';
     private readonly DEVICE_KEY = 'CLIENT_DEVICE_ID';
+    private readonly ACTION_LOG_STORAGE_KEY = 'sync.action-log';
+    private readonly META_STORAGE_KEY = 'sync.meta';
     private readonly SERVER_URL = 'http://localhost:3000'; // 模擬伺服器位址
+
+    public getActionRecords(): ActionRecord[] {
+        return [...this.actionRecords];
+    }
+
+    public getActionRecordCount(): number {
+        return this.actionRecords.length;
+    }
+
+    public getStorageModeLabel(): string {
+        if (this.storageAdapter) {
+            return this.storageAdapter.adapterName;
+        }
+        return sys.isNative ? 'localStorage(native)' : 'localStorage(fallback)';
+    }
+
+    public getActionLogSnapshot(): SyncDebugSnapshot {
+        return {
+            storageMode: this.getStorageModeLabel(),
+            deviceId: this.deviceId,
+            currentSeq: this.currentSeq,
+            lastHash: this.lastHash,
+            pendingCount: this.actionRecords.length,
+            isHydrated: this.hasHydratedLocalState,
+            records: [...this.actionRecords],
+        };
+    }
 
     public setup(eventSystem: EventSystem, network: NetworkService): void {
         this.eventSystem = eventSystem;
         this.network = network;
 
         this.initDeviceId();
-        this.loadLocalActions();
+        this.restorePromise = this.restoreLocalState();
 
         // 當底層 Service 通知網路復原時，立刻喚醒背景同步
         this.eventSystem.on(EVENT_NETWORK_ONLINE, this.handleNetworkRestored.bind(this));
@@ -68,24 +133,154 @@ export class SyncManager {
         }
     }
 
-    private loadLocalActions(): void {
-        const stored = sys.localStorage.getItem(this.STORAGE_KEY);
-        if (stored) {
-            try {
-                this.actionRecords = JSON.parse(stored);
-                this.currentSeq = this.actionRecords.length > 0 
-                    ? Math.max(...this.actionRecords.map(r => r.Seq)) 
-                    : 0;
-                console.log(`[SyncManager] Loaded ${this.actionRecords.length} actions from local storage.`);
-            } catch (e) {
-                console.error('[SyncManager] Failed to parse local actions:', e);
-                this.actionRecords = [];
+    private async restoreLocalState(): Promise<void> {
+        const legacyRecords = this.loadLegacyActions();
+        const adapter = await this.ensureStorageAdapter();
+
+        try {
+            const storedMeta = adapter
+                ? await adapter.get<SyncLocalMeta>(this.META_STORAGE_KEY)
+                : null;
+            const storedRecords = adapter
+                ? (await adapter.get<ActionRecord[]>(this.ACTION_LOG_STORAGE_KEY)) ?? []
+                : [];
+
+            this.actionRecords = this.mergeActionRecords(storedRecords, legacyRecords, this.actionRecords);
+            this.currentSeq = Math.max(
+                storedMeta?.currentSeq ?? 0,
+                ...this.actionRecords.map((record) => record.Seq),
+                0,
+            );
+
+            if (storedMeta?.sessionSecret) {
+                this.sessionSecret = storedMeta.sessionSecret;
             }
+            if (storedMeta?.lastHash) {
+                this.lastHash = storedMeta.lastHash;
+            }
+            if (storedMeta?.deviceId && storedMeta.deviceId !== this.deviceId) {
+                UCUFLogger.warn(
+                    LogCategory.DATA,
+                    '[SyncManager] 偵測到不同裝置快取，沿用 bootstrap deviceId。',
+                    { bootstrapDeviceId: this.deviceId, storedDeviceId: storedMeta.deviceId },
+                );
+            }
+
+            this.hasHydratedLocalState = true;
+            UCUFLogger.info(
+                LogCategory.DATA,
+                `[SyncManager] 本地同步狀態已還原，pending actions=${this.actionRecords.length}`,
+            );
+
+            if (legacyRecords.length > 0 || !storedMeta || storedMeta.deviceId !== this.deviceId) {
+                this.queuePersistLocalState();
+            }
+
+            if (this.network?.isOnline && this.actionRecords.length > 0) {
+                void this.syncNow();
+            }
+        } catch (error) {
+            UCUFLogger.error(LogCategory.DATA, '[SyncManager] 還原本地同步狀態失敗。', error);
         }
     }
 
-    private saveLocalActions(): void {
-        sys.localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.actionRecords));
+    private loadLegacyActions(): ActionRecord[] {
+        const stored = sys.localStorage.getItem(this.LEGACY_STORAGE_KEY);
+        if (!stored) {
+            return [];
+        }
+
+        try {
+            const parsed = JSON.parse(stored) as ActionRecord[];
+            return Array.isArray(parsed) ? parsed : [];
+        } catch (error) {
+            UCUFLogger.error(LogCategory.DATA, '[SyncManager] 舊版 localStorage action log 解析失敗，已忽略。', error);
+            return [];
+        }
+    }
+
+    private mergeActionRecords(...batches: ActionRecord[][]): ActionRecord[] {
+        const merged = new Map<string, ActionRecord>();
+        for (const batch of batches) {
+            for (const record of batch) {
+                const key = `${record.Seq}:${record.Tx_Hash}`;
+                if (!merged.has(key)) {
+                    merged.set(key, record);
+                }
+            }
+        }
+
+        return [...merged.values()].sort((left, right) => left.Seq - right.Seq);
+    }
+
+    private queuePersistLocalState(): void {
+        void this.persistLocalState();
+    }
+
+    private async persistLocalState(): Promise<void> {
+        const meta: SyncLocalMeta = {
+            currentSeq: this.currentSeq,
+            deviceId: this.deviceId,
+            sessionSecret: this.sessionSecret,
+            lastHash: this.lastHash,
+        };
+        const adapter = await this.ensureStorageAdapter();
+
+        if (adapter) {
+            try {
+                await adapter.set(this.META_STORAGE_KEY, meta);
+                await adapter.set(this.ACTION_LOG_STORAGE_KEY, this.actionRecords);
+                sys.localStorage.removeItem(this.LEGACY_STORAGE_KEY);
+                return;
+            } catch (error) {
+                UCUFLogger.warn(LogCategory.DATA, '[SyncManager] IndexedDB 寫入失敗，回退 legacy storage。', error);
+            }
+        }
+
+        sys.localStorage.setItem(this.LEGACY_STORAGE_KEY, JSON.stringify(this.actionRecords));
+    }
+
+    private async ensureStorageAdapter(): Promise<DataStorageAdapter | null> {
+        if (this.storageAdapter) {
+            return this.storageAdapter;
+        }
+        if (!this.storageInitPromise) {
+            this.storageInitPromise = this.createStorageAdapter();
+        }
+        return this.storageInitPromise;
+    }
+
+    private async createStorageAdapter(): Promise<DataStorageAdapter | null> {
+        if (sys.isNative) {
+            UCUFLogger.warn(
+                LogCategory.DATA,
+                '[SyncManager] Native SQLite 尚未接線，暫以 bootstrap localStorage 維持最小同步狀態。',
+            );
+            return null;
+        }
+
+        const adapter = new IndexedDbAdapter();
+        try {
+            await adapter.init();
+            this.storageAdapter = adapter;
+            return adapter;
+        } catch (error) {
+            UCUFLogger.warn(LogCategory.DATA, '[SyncManager] IndexedDB 初始化失敗，回退 legacy storage。', error);
+            return null;
+        }
+    }
+
+    public isOnlineOnlyAction(actionName: string): boolean {
+        return SyncManager.ONLINE_ONLY_ACTION_PATTERNS.some((pattern) => pattern.test(actionName));
+    }
+
+    private resolveActionType(actionName: string, requestedType: SyncActionType): SyncActionType {
+        if (requestedType === SyncActionType.IMMEDIATE_REQUIRED) {
+            return requestedType;
+        }
+        return this.isOnlineOnlyAction(actionName)
+            ? SyncActionType.IMMEDIATE_REQUIRED
+            : requestedType;
     }
 
     /**
@@ -93,8 +288,14 @@ export class SyncManager {
      * 如果是 IMMEDIATE_REQUIRED 且斷線，回傳 false 並拒絕執行，保障資料一致性。
      */
     public pushAction(actionName: string, payload: any, type: SyncActionType = SyncActionType.DEFERRABLE): boolean {
-        if (!this.network?.isOnline && type === SyncActionType.IMMEDIATE_REQUIRED) {
-            this.eventSystem?.emit('SHOW_TOAST', { message: '此操作涉及到帳戶變動，請連接網路後再試' });
+        const effectiveType = this.resolveActionType(actionName, type);
+        if (!this.network?.isOnline && effectiveType === SyncActionType.IMMEDIATE_REQUIRED) {
+            const isFinancialAction = this.isOnlineOnlyAction(actionName);
+            this.eventSystem?.emit('SHOW_TOAST', {
+                message: isFinancialAction
+                    ? '轉蛋、商城與金流相關操作需連網後才能執行。'
+                    : '此操作涉及到帳戶變動，請連接網路後再試',
+            });
             return false;
         }
 
@@ -125,12 +326,21 @@ export class SyncManager {
         };
 
         this.actionRecords.push(record);
-        this.saveLocalActions(); 
+        this.queuePersistLocalState();
         
-        console.log(`[SyncManager] Action Logged: ${actionName} (Hash: ${calculatedHash.substring(0, 8)}...)`);
+        if (!this.hasHydratedLocalState) {
+            UCUFLogger.warn(LogCategory.DATA, '[SyncManager] action log 在本地狀態完成 hydration 前被寫入。', {
+                actionName,
+                pendingCount: this.actionRecords.length,
+            });
+        }
+        UCUFLogger.debug(
+            LogCategory.DATA,
+            `[SyncManager] Action Logged: ${actionName} (${calculatedHash.substring(0, 8)}...)`,
+        );
 
         if (this.network?.isOnline) {
-            this.syncNow();
+            void this.syncNow();
         }
 
         return true;
@@ -149,9 +359,10 @@ export class SyncManager {
     }
 
     private handleNetworkRestored(): void {
+        void this.handleDeltaQueueOnRestore();
         if (this.actionRecords.length > 0) {
-            console.log('[SyncManager] Network restored. Resuming pending actions...');
-            this.syncNow();
+            UCUFLogger.info(LogCategory.DATA, '[SyncManager] Network restored. Resuming pending actions...');
+            void this.syncNow();
         }
     }
 
@@ -168,7 +379,7 @@ export class SyncManager {
             Previous_Hash: this.lastHash // 實務應為存檔快照的最後雜湊錨點
         };
 
-        console.log(`[SyncManager] Requesting Sync for ${this.actionRecords.length} records...`);
+        UCUFLogger.info(LogCategory.DATA, `[SyncManager] Requesting Sync for ${this.actionRecords.length} records...`);
 
         try {
             const response = await fetch(`${this.SERVER_URL}/sync`, {
@@ -180,20 +391,20 @@ export class SyncManager {
             const result: SyncResponse = await response.json();
 
             if (result.Success) {
-                console.log('[SyncManager] Sync OK. New Secret issued.');
+                UCUFLogger.info(LogCategory.DATA, '[SyncManager] Sync OK. New Secret issued.');
                 this.actionRecords = []; 
-                sys.localStorage.removeItem(this.STORAGE_KEY);
                 
                 this.sessionSecret = result.New_Session_Secret!;
                 this.lastHash = result.New_Hash!; // 以此為下次離線的第一個雜湊鎖
+                this.queuePersistLocalState();
                 this.isSyncing = false;
                 this.eventSystem?.emit(EVENT_SYNC_COMPLETE);
             } else {
-                console.error(`[SyncManager] Sync Rejected: ${result.Message}`);
+                UCUFLogger.error(LogCategory.DATA, `[SyncManager] Sync Rejected: ${result.Message}`);
                 this.isSyncing = false;
             }
         } catch (e) {
-            console.error('[SyncManager] API Call Failed (Network Error?):', e);
+            UCUFLogger.error(LogCategory.DATA, '[SyncManager] API Call Failed (Network Error?).', e);
             this.isSyncing = false;
         }
     }
@@ -213,7 +424,7 @@ export class SyncManager {
     public async syncDelta(baseSave: object, currentSave: object): Promise<void> {
         if (this.isSyncing) return;
         if (!this.network?.isOnline) {
-            console.log('[SyncManager] offline - queuing delta patch');
+            UCUFLogger.info(LogCategory.DATA, '[SyncManager] offline - queuing delta patch');
             this._enqueueDeltaPatch(baseSave, currentSave);
             return;
         }
@@ -243,7 +454,7 @@ export class SyncManager {
 
             if (response.status === 409) {
                 // hash 衝突 → fallback 全量同步
-                console.warn('[SyncManager] delta conflict (409) - falling back to full sync');
+                UCUFLogger.warn(LogCategory.DATA, '[SyncManager] delta conflict (409) - falling back to full sync');
                 this.isSyncing = false;
                 await this.syncFull(currentSave);
                 return;
@@ -253,16 +464,16 @@ export class SyncManager {
                 const result = await response.json();
                 this.lastHash = result.newHash ?? this.lastHash;
                 this.actionRecords = [];
-                sys.localStorage.removeItem(this.STORAGE_KEY);
                 this.deltaPatchQueue = [];
+                this.queuePersistLocalState();
                 this.eventSystem?.emit(EVENT_SYNC_COMPLETE);
-                console.log('[SyncManager] delta sync OK');
+                UCUFLogger.info(LogCategory.DATA, '[SyncManager] delta sync OK');
             } else {
-                console.error(`[SyncManager] delta sync failed: ${response.status}`);
+                UCUFLogger.error(LogCategory.DATA, `[SyncManager] delta sync failed: ${response.status}`);
                 this._enqueueDeltaPatch(baseSave, currentSave);
             }
         } catch (e) {
-            console.error('[SyncManager] delta sync error:', e);
+            UCUFLogger.error(LogCategory.DATA, '[SyncManager] delta sync error:', e);
             this._enqueueDeltaPatch(baseSave, currentSave);
         } finally {
             this.isSyncing = false;
@@ -295,15 +506,15 @@ export class SyncManager {
                 const result = await response.json();
                 this.lastHash = result.newHash ?? this.lastHash;
                 this.actionRecords = [];
-                sys.localStorage.removeItem(this.STORAGE_KEY);
                 this.deltaPatchQueue = [];
+                this.queuePersistLocalState();
                 this.eventSystem?.emit(EVENT_SYNC_COMPLETE);
-                console.log('[SyncManager] full sync OK');
+                UCUFLogger.info(LogCategory.DATA, '[SyncManager] full sync OK');
             } else {
-                console.error(`[SyncManager] full sync failed: ${response.status}`);
+                UCUFLogger.error(LogCategory.DATA, `[SyncManager] full sync failed: ${response.status}`);
             }
         } catch (e) {
-            console.error('[SyncManager] full sync error:', e);
+            UCUFLogger.error(LogCategory.DATA, '[SyncManager] full sync error:', e);
         } finally {
             this.isSyncing = false;
         }
@@ -312,7 +523,7 @@ export class SyncManager {
     private _enqueueDeltaPatch(base: object, current: object): void {
         this.deltaPatchQueue.push({ base, current, ts: Date.now() });
         if (this.deltaPatchQueue.length > this.DELTA_QUEUE_MAX) {
-            console.warn('[SyncManager] delta queue full (>10) - will trigger full sync on next online');
+            UCUFLogger.warn(LogCategory.DATA, '[SyncManager] delta queue full (>10) - will trigger full sync on next online');
             this.deltaPatchQueue = [];
         }
     }
@@ -349,12 +560,15 @@ export class SyncManager {
             });
 
             if (response.ok) {
-                console.log(`[SyncManager] flushed ${this.actionRecords.length} actions (compressed)`);
+                UCUFLogger.info(
+                    LogCategory.DATA,
+                    `[SyncManager] flushed ${this.actionRecords.length} actions (compressed)`,
+                );
                 this.actionRecords = [];
-                sys.localStorage.removeItem(this.STORAGE_KEY);
+                this.queuePersistLocalState();
             }
         } catch (e) {
-            console.error('[SyncManager] flushCompressedActions error:', e);
+            UCUFLogger.error(LogCategory.DATA, '[SyncManager] flushCompressedActions error:', e);
         }
     }
 
@@ -378,7 +592,7 @@ export class SyncManager {
      */
     public async retrySync(saveFn: () => Promise<void>): Promise<void> {
         if (this._retryCount >= this.MAX_RETRY) {
-            console.warn('[SyncManager] max retries reached - notifying player');
+            UCUFLogger.warn(LogCategory.DATA, '[SyncManager] max retries reached - notifying player');
             this.eventSystem?.emit('SHOW_TOAST', { message: '同步失敗，請稍後手動儲存或重連網路。' });
             this._retryCount = 0;
             return;
@@ -386,7 +600,7 @@ export class SyncManager {
 
         const delayMs = Math.pow(2, this._retryCount) * 1000; // 1s, 2s, 4s
         this._retryCount++;
-        console.log(`[SyncManager] retry #${this._retryCount} in ${delayMs}ms`);
+        UCUFLogger.info(LogCategory.DATA, `[SyncManager] retry #${this._retryCount} in ${delayMs}ms`);
 
         this._retryTimer = setTimeout(async () => {
             if (this.network?.isOnline) {
@@ -409,7 +623,7 @@ export class SyncManager {
     private async handleDeltaQueueOnRestore(): Promise<void> {
         // 佇列非空 → 觸發全量同步
         if (this.deltaPatchQueue.length > 0 && this._pendingSaveForOnline) {
-            console.log('[SyncManager] network restored with pending delta queue - full sync');
+            UCUFLogger.info(LogCategory.DATA, '[SyncManager] network restored with pending delta queue - full sync');
             await this.syncFull(this._pendingSaveForOnline);
             this._pendingSaveForOnline = null;
         }

@@ -1,0 +1,72 @@
+{
+  "version": "1.0.0",
+  "entries": [
+    {
+      "generalId": "zhang-yi-shu",
+      "alias": ["張翼", "伯恭"]
+    },
+    {
+      "generalId": "zhang-ren",
+      "name": "張任",
+      "faction": "enemy",
+      "title": "【張任】",
+      "alias": []
+    },
+    {
+      "generalId": "li-jue",
+      "name": "李傕",
+      "faction": "enemy",
+      "title": "【李傕】",
+      "alias": []
+    },
+    {
+      "generalId": "cao-zhen",
+      "name": "曹真",
+      "faction": "wei",
+      "title": "【曹真】",
+      "alias": ["子丹"]
+    },
+    {
+      "generalId": "yan-yan",
+      "name": "嚴顏",
+      "faction": "shu",
+      "title": "【嚴顏】",
+      "alias": []
+    },
+    {
+      "generalId": "yang-feng",
+      "name": "楊奉",
+      "faction": "enemy",
+      "title": "【楊奉】",
+      "alias": []
+    },
+    {
+      "generalId": "wu-yi",
+      "name": "吳懿",
+      "faction": "shu",
+      "title": "【吳懿】",
+      "alias": []
+    },
+    {
+      "generalId": "chen-gong",
+      "name": "陳宮",
+      "faction": "enemy",
+      "title": "【陳宮】",
+      "alias": ["公台"]
+    },
+    {
+      "generalId": "xiahou-mao",
+      "name": "夏侯楙",
+      "faction": "wei",
+      "title": "【夏侯楙】",
+      "alias": ["子林"]
+    },
+    {
+      "generalId": "xiahou-ba",
+      "name": "夏侯霸",
+      "faction": "wei",
+      "title": "【夏侯霸】",
+      "alias": ["仲權"]
+    }
+  ]
+}

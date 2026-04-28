@@ -1,0 +1,42 @@
+{
+  "screenId": "character-ds3-main",
+  "generatedAt": "2026-04-26T18:25:06.082Z",
+  "tabs": [
+    {
+      "id": "Overview",
+      "mount": "TabOverviewContent",
+      "lifecycle": "lazy",
+      "childPanelClass": "CharacterDs3OverviewChild"
+    },
+    {
+      "id": "Stats",
+      "mount": "TabStatsContent",
+      "lifecycle": "lazy",
+      "childPanelClass": "CharacterDs3StatsChild"
+    },
+    {
+      "id": "Tactics",
+      "mount": "TabTacticsContent",
+      "lifecycle": "lazy",
+      "childPanelClass": "CharacterDs3TacticsChild"
+    },
+    {
+      "id": "Bloodline",
+      "mount": "TabBloodlineContent",
+      "lifecycle": "lazy",
+      "childPanelClass": "CharacterDs3BloodlineChild"
+    },
+    {
+      "id": "Equip",
+      "mount": "TabEquipContent",
+      "lifecycle": "lazy",
+      "childPanelClass": "CharacterDs3EquipChild"
+    },
+    {
+      "id": "Aptitude",
+      "mount": "TabAptitudeContent",
+      "lifecycle": "lazy",
+      "childPanelClass": "CharacterDs3AptitudeChild"
+    }
+  ]
+}

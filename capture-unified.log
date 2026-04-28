@@ -1,0 +1,19 @@
+﻿======================================================================
+[capture-ui-screens] Headless capture start
+- host: http://localhost:7456
+- targets: GeneralDetailOverview
+- output: artifacts\ui-qa\UI-2-0023
+- browser: C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe
+- sceneUuid: 05b67b52-831e-4d74-a8a7-5955746bde7f
+- retries: 1
+======================================================================
+[capture-ui-screens] refreshing asset-db before capture...
+[capture-ui-screens] GeneralDetailOverview attempt 1/2
+[capture-ui-screens] GeneralDetailOverview navigating -> http://localhost:7456?previewMode=true&previewTarget=6&ui=unified&t=1777355745631&scene=05b67b52-831e-4d74-a8a7-5955746bde7f
+[capture-ui-screens] GeneralDetailOverview waiting capture ready (general-detail-unified-screen)
+[capture-ui-screens] GeneralDetailOverview capture ready
+[capture-ui-screens] GeneralDetailOverview writing screenshot -> artifacts\ui-qa\UI-2-0023\GeneralDetailOverview.png
+[capture-ui-screens] GeneralDetailOverview screenshot written
+[capture-ui-screens] resized to max 125px wide: GeneralDetailOverview.png
+[capture-ui-screens] captured GeneralDetailOverview -> artifacts\ui-qa\UI-2-0023\GeneralDetailOverview.png
+[capture-ui-screens] 摰?嚗 1 撘萸?

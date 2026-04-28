@@ -15,6 +15,7 @@
  * Unity 對照：相當於 UIStyleApplier + UILayoutHelper 的組合
  */
 import { Node, Sprite, UITransform, Label, Button, Font, Color } from 'cc';
+import { RoundedRectBackground } from '../components/RoundedRectBackground';
 import { SolidBackground } from '../components/SolidBackground';
 import { UISkinResolver, ResolvedButtonSkin, ResolvedLabelStyle } from './UISkinResolver';
 import type { UILayoutNodeSpec } from './UISpecTypes';
@@ -49,7 +50,6 @@ export class UIPreviewStyleBuilder {
 
         // 純色背景
         if (slot && (slot.kind === 'color-rect' || (slot as any).kind === 'color')) {
-            const bg = node.getComponent(SolidBackground) || node.addComponent(SolidBackground);
             const resolvedColor = this.skinResolver.resolveColor((slot as any).color);
             const alpha = resolveOpacity((slot as any).alpha ?? (slot as any).opacity);
             // alpha / opacity 直接寫入 SolidBackground 的 color.a，避免 UIOpacity cascade 影響子節點（Labels 等）
@@ -57,6 +57,51 @@ export class UIPreviewStyleBuilder {
             if (alpha !== null) {
                 resolvedColor.a = alpha;
             }
+            const borderWidthRaw = (slot as any).borderWidth ?? (slot as any).strokeWidth;
+            const borderWidth = typeof borderWidthRaw === 'number' && !Number.isNaN(borderWidthRaw)
+                ? Math.max(0, borderWidthRaw)
+                : 0;
+            const cornerRadiusRaw = (slot as any).cornerRadius;
+            const cornerRadius = typeof cornerRadiusRaw === 'number' && !Number.isNaN(cornerRadiusRaw)
+                ? Math.max(0, cornerRadiusRaw)
+                : 0;
+            const borderColorKey = (slot as any).borderColor ?? (slot as any).strokeColor;
+            const usesRoundedRect = cornerRadius > 0 || borderWidth > 0 || typeof borderColorKey === 'string';
+
+            if (usesRoundedRect) {
+                const sprite = node.getComponent(Sprite);
+                if (sprite) {
+                    sprite.enabled = false;
+                }
+
+                const solid = node.getComponent(SolidBackground);
+                if (solid) {
+                    solid.enabled = false;
+                }
+
+                const roundedRect = node.getComponent(RoundedRectBackground) || node.addComponent(RoundedRectBackground);
+                roundedRect.enabled = true;
+                roundedRect.fillColor = resolvedColor;
+                roundedRect.cornerRadius = cornerRadius;
+                roundedRect.borderWidth = borderWidth;
+                roundedRect.borderColor = typeof borderColorKey === 'string'
+                    ? this.skinResolver.resolveColor(borderColorKey)
+                    : new Color(0, 0, 0, 0);
+                return true;
+            }
+
+            const roundedRect = node.getComponent(RoundedRectBackground);
+            if (roundedRect) {
+                roundedRect.enabled = false;
+            }
+
+            const sprite = node.getComponent(Sprite);
+            if (sprite) {
+                sprite.enabled = true;
+            }
+
+            const bg = node.getComponent(SolidBackground) || node.addComponent(SolidBackground);
+            bg.enabled = true;
             bg.color = resolvedColor;
             return true;
         }
@@ -180,6 +225,12 @@ export class UIPreviewStyleBuilder {
         // CLAMP(1)、RESIZE_HEIGHT(3) 同樣安全，准許使用。
         // Unity 對照：TextMeshPro 永遠啟用 AutoSize 作為底線
         label.overflow = style.overflow === 0 ? 2 : style.overflow;
+        if (style.outlineColor) {
+            label.outlineColor = style.outlineColor;
+        }
+        if (style.outlineWidth !== undefined) {
+            label.outlineWidth = style.outlineWidth;
+        }
         if (style.isBold) label.isBold = true;
         if (style.fontPath) {
             const font = this.fontCache.get(style.fontPath);

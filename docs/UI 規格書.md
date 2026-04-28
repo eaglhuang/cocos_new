@@ -1,4 +1,12 @@
 <!-- doc_id: doc_ui_0027 -->
+
+> **2026-04-26 覆寫裁定：人物頁與治理 UI**
+>
+> 1. 武將人物頁不顯示武將 `Level / EXP / 突破`。
+> 2. `命 / Bloodline` 頁顯示英靈卡命槽、主卡切換、共鳴光效、14 人祖先血統圖與世家入口。
+> 3. `寶 / GEAR` 頁顯示一般裝備六槽、傳家寶、道具與裝備評價；`兵 / Aptitude` 頁顯示兵種 / 地形 / 天氣適性、戰鬥定位與虎符槽。
+> 4. 戰場 HUD 顯示軍勢、糧草、計謀點與場上部隊數；部隊卡顯示投入兵力與糧草消耗。
+> 5. 治理頁以人口核心儀表盤呈現人口對金錢、糧草、城市兵源上限與補兵速度的貢獻。
 # UI 規格書
 
 ## 1. 文件目的
@@ -116,6 +124,9 @@
 - `血脈逸聞` 屬於人物頁的故事層，可掛在日常人物頁的固定故事條或抽屜，不取代 `GeneralDetail` 主體
 - `血脈命鏡頁` 正式母型為：左表象面、右血脈面、中央命鏡裂隙、中央定心者、下方 5 格命運故事帶
 - `GeneralDetail` 的 tab bar 屬於導航 chrome，不應把 `日常人物頁` 首頁殼層縮成右側窄欄子卡
+- `GeneralDetail` 正式 chrome 收斂為 `將 / 屬 / 命 / 技 / 寶 / 兵` 六頁；`命 / Bloodline` 是英靈卡與血脈頁，`寶 / GEAR` 是一般裝備 / 傳家寶 / 道具頁，`兵 / Aptitude` 是虎符與戰場適性頁
+- overview 不再承接英靈卡 / 虎符摘要卡，這些資訊正式移到 `命` 頁與 `兵` 頁的正式模組區
+- `英靈陳列室` 與家族英靈展示列必須保留死亡快照，讓玩家可直接查看英勇事蹟、完整屬性與技能記錄，且頁面需支援排序與篩選
 - 其他 tab 預設沿用同一個人物頁母型與 frame family，優先切換內容模組，不預設為每個 tab 各畫一套全新正式畫面
 
 ## 7. UI 驗收重點
@@ -135,7 +146,9 @@
 - 許願 / 商城相關畫面優先包裝為「誠心祭壇 / 奏摺 / 家祠」等世界觀內 UI，而非直接使用現代商城風格。
 - 主戰場、小兵支援列與大廳中的可互動角色，盡量維持一致的 2.5D 立牌 / 半平面角色語彙，降低美術風格斷裂。
 - 大廳中的雙牆任務、世界沙盤與官職進度，應視為同一個中樞畫面的三個正式資訊層，不得拆成彼此無關的雜散按鈕頁。
+- 大廳雙牆任務點擊後必須打開中央任務詳情視窗，視窗以 800×900px 的 `dialog-card` / `Modal` 呈現，並支援情報度、武將下拉、獎勵 / 耗費、四個行動按鈕與 X / ESC / 背景點擊關閉。
 - 大廳武將的「自告奮勇」預設只作彩蛋互動與氛圍強化，不應在母 UI 規格中硬寫固定成功率或固定獎勵公式。
+- 武將的「自告奮勇 / 毛遂自薦」只作指派提示與視覺標記，不應改寫任務結算公式；若有自薦者，應在任務詳情視窗中優先提示。
 - 武將日誌、晨報摘要與派遣整備屬於同一條「生活感 / 離線互動」資訊線，正式入口優先掛在 `LobbyMain` 與人物頁抽屜，不預設另起平行人物系統。
 - 所有延伸 UI 若要正式落地，仍需回寫各自對應文件，如 `主戰場UI規格書.md` (doc_ui_0001)、`UI技術規格書.md` (doc_ui_0049) 與相關 ui-spec JSON。
 
@@ -147,18 +160,21 @@
 |---|---|---|---|
 | 名士預言系統 | 「占卜結果」面板（從結緣 / 大廳進入） | `oracle-result-main.json` | 名士預言系統.md (doc_spec_0006) H 節 UI 字串 |
 | 大廳系統 | 「幕府大廳」主入口與雙牆 / 沙盤 / 官職掛點 | `lobby-main-main.json` | 大廳系統.md (doc_spec_0002)、官職系統.md (doc_spec_0014) |
+| 大廳任務詳情彈窗 | 「軍事 / 內政任務詳情」中央彈窗；固定 800×900、`dialog-card` / `Modal`、情報度模糊與武將指派 | `lobby-mission-detail-dialog-screen.json` | 大廳系統.md (doc_spec_0002) |
 | 名將挑戰賽 | 「賽季卡 / 月度場景賽掛點」；本輪先維持 pending contract，不先寫死獨立 fullscreen | `pending contract: tournament-season-card` | 名將挑戰賽系統.md (doc_spec_0007)、UI 規格補遺_2026-04-11_大廳晨報與人物日誌pending.md (doc_ui_0030) |
 | 經濟保底提示 | 「地窖保護 / 每日補貼提示」；本輪先維持大廳 banner / badge contract | `pending contract: economy-subsidy-banner` | 經濟系統.md (doc_spec_0032)、UI 規格補遺_2026-04-11_大廳晨報與人物日誌pending.md (doc_ui_0030) |
-| 轉蛋系統 | 「雙池定位導覽 / 死亡傳承提示」；維持在既有 `GachaMain` 主畫面內，不另開平行說明頁 | `pending contract: gacha-pool-positioning-brief` | 轉蛋系統.md (doc_spec_0042)、UI 規格補遺_2026-04-11_培育戰場轉蛋pending.md (doc_ui_0031) |
+| 轉蛋系統 | 「雙池定位導覽 / 死亡傳承提示 / Banner 商業主視覺」；維持在既有 `GachaMain` 主畫面內，不另開平行說明頁 | `pending contract: gacha-pool-positioning-brief / gacha-banner-hero-art-policy` | 轉蛋系統.md (doc_spec_0042)、UI 規格補遺_2026-04-11_培育戰場轉蛋pending.md (doc_ui_0031) |
 | 許願池商城 | 「誠心祭壇」全屏畫面 | `shop-wishpool-main.json` | 經濟系統.md (doc_spec_0032)、keep.md (doc_index_0011) |
 | 虎符圖鑑 | 「虎符圖鑑」正式頁面（34 筆名錄已接入正式區） | `elite-troop-codex-screen.json` | 兵種（虎符）系統.md (doc_spec_0012) 功能清單 #11 / 卡圖正式區 |
 | 培育系統 | 「培育 36 回合」主畫面；三階段學年與畢業標籤先定義成可共用 contract，不先承諾額外 fullscreen | `nurture-session-main.json` + `pending contract: nurture-phase-block-header / graduation-tags-strip` | 培育系統.md (doc_spec_0026) E 節、UI 規格補遺_2026-04-11_培育戰場轉蛋pending.md (doc_ui_0031) |
 | 結緣系統 | 「結緣配置」面板；`Peace_Lineage` 模式與退役保種資格先收斂成摘要 chip / note，不另開宗廟或家系子頁 | `bonding-setup-main.json` + `pending contract: bonding-lineage-mode-chip` | 結緣系統（配種）.md (doc_spec_0028) E 節、UI 規格補遺_2026-04-11_培育戰場轉蛋pending.md (doc_ui_0031) |
 | 戰場部署 | 已有 DeployPanel（scene 手動綁定） | — (已實現於 BattleScene) | 戰場部署系統.md (doc_spec_0040) |
-| 關卡設計 / 戰前偵查 | 「軍師 HUD 摘要 / 關卡回收摘要」；先維持 pending contract，不直接拆出新 fullscreen | `pending contract: strategist-hud-summary / stage-salvage-summary` | 關卡設計系統.md (doc_spec_0044)、主戰場UI規格書.md (doc_ui_0001)、UI 規格補遺_2026-04-11_培育戰場轉蛋pending.md (doc_ui_0031) |
+| 關卡設計 / 戰前偵查 | 「參謀官 HUD 摘要 / 後勤官補給摘要 / 關卡回收摘要」；先維持 pending contract，不直接拆出新 fullscreen | `pending contract: strategist-hud-summary / stage-salvage-summary` | 關卡設計系統.md (doc_spec_0044)、主戰場UI規格書.md (doc_ui_0001)、UI 規格補遺_2026-04-11_培育戰場轉蛋pending.md (doc_ui_0031) |
 | 奧義演出 | 全屏演出層（覆蓋戰場） | `ultimate-cutscene-main.json` | 奧義系統.md (doc_spec_0030) F 節 |
+| 武將人物頁 | 「將 / 屬 / 命 / 技 / 寶 / 兵」六分頁；`命` 頁承接英靈卡與血脈、`寶` 頁承接一般裝備 / 傳家寶 / 道具、`兵` 頁承接虎符與戰場適性 | `general-detail-unified-screen.json` | 武將人物介面規格書.md (doc_ui_0012)、武將裝備道具系統.md (doc_spec_0174)、英靈世家系統.md (doc_spec_0022)、兵種（虎符）系統.md (doc_spec_0012) |
 | 血脈逸聞 | 「歷史趣聞 / 血脈傳聞」抽屜 | `general-bloodline-vignette-main.json` | 武將人物介面規格書.md (doc_ui_0012) § 8.4 |
-| 英靈虎符詳情 | 「英靈虎符 / 血脈卡」詳情頁 | `spirit-tally-detail-main.json` | 兵種（虎符）系統.md (doc_spec_0012) |
+| 命槽英靈卡 / 虎符詳情 | 「命槽英靈卡 / 虎符」詳情頁 | `spirit-tally-detail-main.json` | 兵種（虎符）系統.md (doc_spec_0012)、英靈世家系統.md (doc_spec_0022) |
+| 英靈陳列室 / 家族展示列 | 「家族英靈展示列」；每張卡都帶死亡快照、英勇事蹟、完整屬性與技能；支援排序與篩選 | `spirit-collection-room-main.json` | 英靈世家系統.md (doc_spec_0022)、武將人物介面規格書.md (doc_ui_0012) |
 | 血脈命鏡過場 | 「Loading / 覺醒 / 升星 / 未持有預覽」命格展示頁，優先共用 `bloodline-mirror-states-v1` content contract，並透過 `bloodline-mirror-state-content` schema 驗證 | `bloodline-mirror-loading-main.json` | 血脈命鏡過場載入規格書.md (doc_ui_0005) |
 | 武將日誌與離線互動 | 「晨報摘要 / 武將日誌抽屜 / 派遣整備掛點」；本輪先維持 pending contract，不先寫死是否獨立成 fullscreen，並與大廳賽季卡 / 經濟保底提示共用待定補遺 | `pending contract: morning-report / general-journal / dispatch-board` | 武將日誌與離線互動系統.md (doc_spec_0015)、UI 規格補遺_2026-04-11_大廳晨報與人物日誌pending.md (doc_ui_0030) |
 

@@ -8,50 +8,108 @@
     {
       "type": "container",
       "name": "BloodlineOverviewModules",
-      "widget": { "top": 346, "left": 0, "right": 0, "bottom": 0 },
+      "widget": { "top": 336, "left": 20, "right": 20 },
+      "height": 216,
+      "skinSlot": "gdv3.bloodline.card",
       "children": [
         {
           "type": "container",
           "name": "BloodlineUnifiedCard",
-          "widget": { "top": 0, "bottom": 0, "left": 22, "right": 22 },
+          "widget": { "top": 0, "bottom": 0, "left": 0, "right": 0 },
           "children": [
+            { "type": "image", "name": "BloodlineCardTitleBar", "widget": { "top": 8, "left": 12 }, "width": 4, "height": 16, "skinSlot": "gdv3.summary.sectionBar" },
+            { "type": "label", "name": "BloodlineCardTitle", "widget": { "top": 4, "left": 24 }, "width": 96, "height": 22, "styleSlot": "gdv3.label.summarySection" },
+            { "type": "label", "name": "BloodlineCardTitleEn", "widget": { "top": 8, "left": 124 }, "width": 76, "height": 12, "styleSlot": "gdv3.label.summarySectionEn", "text": "BLOODLINE" },
             {
               "type": "container",
-              "name": "BloodlineCrestCard",
-              "widget": { "top": 0, "bottom": 0, "left": 0 },
-              "width": 198,
+              "name": "BloodlineRow",
+              "widget": { "top": 36, "left": 14, "right": 14, "bottom": 12 },
               "children": [
-                { "type": "image", "name": "CrestCardBackground", "widget": { "top": 0, "bottom": 0, "left": 0, "right": 0 }, "skinSlot": "detail.crest.panel" },
-                { "type": "label", "name": "CrestTitle", "widget": { "top": 16, "left": 12, "right": 12 }, "height": 28, "styleSlot": "detail.label.cardTitle" },
-                { "type": "image", "name": "CrestIconPrimary", "widget": { "top": 52, "hCenter": true }, "width": 80, "height": 80, "skinSlot": "general.crest.primary" },
-                { "type": "image", "name": "CrestIconSecondary", "widget": { "top": 140, "hCenter": true }, "width": 48, "height": 48, "skinSlot": "general.crest.secondary" },
-                { "type": "label", "name": "CrestHint", "widget": { "bottom": 20, "left": 8, "right": 8 }, "height": 22, "styleSlot": "detail.label.cardHint", "text": "—" }
-              ]
-            },
-            {
-              "type": "container",
-              "name": "BloodlineSummaryCard",
-              "widget": { "top": 0, "bottom": 0, "left": 214, "right": 0 },
-              "children": [
-                { "type": "image", "name": "SummaryCardBackground", "widget": { "top": 0, "bottom": 0, "left": 0, "right": 0 }, "skinSlot": "detail.bloodline.summaryPanel" },
-                { "type": "label", "name": "BloodlineName", "widget": { "top": 14, "left": 16, "right": 16 }, "height": 34, "styleSlot": "detail.label.bloodlineName" },
                 {
                   "type": "container",
-                  "name": "AwakeningProgressGroup",
-                  "widget": { "top": 56, "left": 16, "right": 16 },
-                  "height": 28,
+                  "name": "BloodlineCrestCard",
+                  "widget": { "top": 0, "bottom": 0, "left": 0 },
+                  "width": 112,
                   "children": [
-                    { "type": "label", "name": "AwakeningLabel", "widget": { "top": 0, "bottom": 0, "left": 0 }, "width": "40%", "styleSlot": "detail.label.meta" },
-                    { "type": "image", "name": "AwakeningBar", "widget": { "top": 4, "bottom": 4, "left": "42%", "right": 0 }, "skinSlot": "detail.awakening.progressBar" }
+                    {
+                      "type": "container",
+                      "name": "BloodlineCrestCarrier",
+                      "widget": { "top": 8, "left": 0, "right": 0 },
+                      "height": 132,
+                      "children": [
+                        { "type": "image", "name": "BloodlineCrestGlow", "widget": { "hCenter": true, "vCenter": 8 }, "width": 88, "height": 88, "skinSlot": "gdv3.bloodline.crest.glow" },
+                        { "type": "image", "name": "BloodlineCrestFill", "widget": { "hCenter": true, "vCenter": 8 }, "width": 80, "height": 80, "skinSlot": "gdv3.bloodline.crest.fill" },
+                        { "type": "image", "name": "BloodlineCrestInnerRing", "widget": { "hCenter": true, "vCenter": 8 }, "width": 84, "height": 84, "skinSlot": "gdv3.bloodline.crest.inner" },
+                        { "type": "image", "name": "BloodlineCrest", "widget": { "hCenter": true, "vCenter": 8 }, "width": 70, "height": 70, "skinSlot": "gdv3.bloodline.crest" },
+                        { "type": "label", "name": "CrestGlyphSecondary", "widget": { "top": 14, "left": 12, "right": 12 }, "height": 14, "styleSlot": "gdv3.label.crestGlyphSecondary" },
+                        { "type": "label", "name": "CrestGlyphPrimary", "widget": { "top": 26, "bottom": 34, "left": 14, "right": 14 }, "styleSlot": "gdv3.label.crestGlyphPrimary" },
+                        { "type": "image", "name": "BloodlineCrestFrame", "widget": { "hCenter": true, "vCenter": 8 }, "width": 92, "height": 92, "skinSlot": "gdv3.bloodline.crest.frame" },
+                        { "type": "image", "name": "BloodlineCrestFace", "widget": { "hCenter": true, "vCenter": 8 }, "width": 62, "height": 62, "skinSlot": "gdv3.bloodline.crest.face" },
+                        { "type": "label", "name": "CrestStateLabel", "widget": { "left": 8, "right": 8, "bottom": 2 }, "height": 16, "styleSlot": "gdv3.label.crestState" }
+                      ]
+                    },
+                    { "type": "label", "name": "CrestTitle", "widget": { "top": 144, "left": 0, "right": 0 }, "height": 20, "styleSlot": "detail.label.cardHint", "text": "—" },
+                    { "type": "label", "name": "CrestHint", "widget": { "top": 164, "left": 6, "right": 6 }, "height": 16, "styleSlot": "gdv3.label.summarySectionEn", "active": false, "text": "—" }
                   ]
                 },
-                { "type": "label", "name": "PersonalityValue", "widget": { "top": 92, "left": 16, "right": 16 }, "height": 28, "styleSlot": "detail.label.value" },
-                { "type": "label", "name": "BloodlineBody", "widget": { "top": 132, "bottom": 18, "left": 16, "right": 16 }, "styleSlot": "detail.label.body", "wrapText": true }
+                {
+                  "type": "container",
+                  "name": "BloodlineSummaryCard",
+                  "widget": { "top": 0, "bottom": 0, "left": 132, "right": 0 },
+                  "children": [
+                    { "type": "label", "name": "BloodlineName", "widget": { "top": 0, "left": 0, "right": 0 }, "height": 30, "styleSlot": "detail.label.bloodlineName" },
+                    {
+                      "type": "container",
+                      "name": "AwakeningProgressGroup",
+                      "widget": { "top": 36, "left": 0, "right": 0 },
+                      "height": 28,
+                      "children": [
+                        { "type": "label", "name": "AwakeningLabel", "widget": { "top": 0, "bottom": 0, "left": 0 }, "width": 68, "styleSlot": "detail.label.meta" },
+                        {
+                          "type": "panel",
+                          "name": "AwakeningBarTrack",
+                          "widget": { "top": 4, "bottom": 4, "left": 78, "right": 0 },
+                          "skinSlot": "gdv3.progress.track",
+                          "children": [
+                            { "type": "image", "name": "AwakeningBarFill", "widget": { "top": 0, "bottom": 0, "left": 0 }, "width": "100%", "skinSlot": "detail.awakening.progressBar" }
+                          ]
+                        }
+                      ]
+                    },
+                    { "type": "label", "name": "BloodlineTitle", "widget": { "top": 72, "left": 0 }, "width": 68, "height": 20, "styleSlot": "detail.label.meta" },
+                    { "type": "label", "name": "BloodlineBody", "widget": { "top": 72, "left": 74, "right": 0 }, "height": 20, "styleSlot": "detail.label.body" },
+                    { "type": "label", "name": "PersonalityLabel", "widget": { "top": 100, "left": 0 }, "width": 68, "height": 20, "styleSlot": "detail.label.meta" },
+                    { "type": "label", "name": "PersonalityValue", "widget": { "top": 100, "left": 74, "right": 0 }, "height": 20, "styleSlot": "detail.label.body" }
+                  ]
+                }
               ]
             }
           ]
         }
       ]
-    }
+    },
+    {
+      "type": "panel",
+      "name": "BiographyPanel",
+      "widget": { "top": 580, "left": 20, "right": 20 },
+      "height": 124,
+      "skinSlot": "gdv3.biography.card",
+      "children": [
+        {
+          "type": "container",
+          "name": "BiographyHeader",
+          "widget": { "top": 12, "left": 16, "right": 16 },
+          "height": 22,
+          "children": [
+            { "type": "image", "name": "BiographyTitleBar", "widget": { "left": 0, "vCenter": true }, "width": 3, "height": 14, "skinSlot": "gdv3.summary.sectionBar" },
+            { "type": "label", "name": "BiographyTitle", "widget": { "left": 11, "top": 0 }, "width": 96, "height": 20, "styleSlot": "gdv3.label.summarySection", "text": "人物傳記" },
+            { "type": "label", "name": "BiographyEnLabel", "widget": { "left": 116, "top": 4 }, "width": 72, "height": 12, "styleSlot": "gdv3.label.summarySectionEn", "text": "BIOGRAPHY" }
+          ]
+        },
+        { "type": "label", "name": "BiographyBody", "widget": { "top": 44, "bottom": 14, "left": 16, "right": 16 }, "styleSlot": "gdv3.label.biographyBody", "wrapText": true }
+      ]
+    },
+    { "type": "image", "name": "FooterDivider", "widget": { "left": 20, "right": 20, "bottom": 36 }, "height": 1, "skinSlot": "gdv3.detail.divider" },
+    { "type": "label", "name": "FooterTitle", "widget": { "left": 20, "right": 20, "bottom": 8 }, "height": 22, "styleSlot": "gdv3.label.footerTitle" }
   ]
 }

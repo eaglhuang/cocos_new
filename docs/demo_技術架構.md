@@ -147,7 +147,7 @@ tools/sprite-pipeline/
 
 ### 4.2 BattleSystem（回合狀態機）
 - 管理 5 個階段循環：`PlayerDeploy → AutoMove → BattleResolve → SpecialResolve → TurnEnd`
-- 管理戰場部署資源（糧草）、兵種冷卻與普通小兵降級產出的相關狀態
+- 管理戰場部署資源（出征軍勢、糧草）、兵種冷卻與低耗部隊改派建議的相關狀態
 - `nextTurn()` 推進回合計數、重置回合型冷卻或階段狀態，並回到 `PlayerDeploy`（由 BattleController 呼叫）
 - `advancePhase()` 逐階段推進（保留接口，目前未使用）
 - 階段變化時透過 EventSystem 發送 `TurnPhaseChanged` 通知
@@ -442,7 +442,7 @@ DEPRECATED_RULES 現有規則：
       → DeployPanel 發出 "playerDeployed" → BattleScene 自動呼叫 advanceTurn()
       → BattleLogPanel 新增一筆部署紀錄
     → 若部署失敗（糧草不足 / 格位被佔用 / 本回合已部署）
-      → 若允許降級產出，改派普通小兵並記錄品質為 BASIC
+      → 若有可用低耗部隊，顯示改派建議；玩家確認後才部署並記錄品質為 BASIC
       → DeployPanel 以 Toast 顯示失敗原因
 
 [玩家點擊「結束回合」（本回合選擇不部署）]

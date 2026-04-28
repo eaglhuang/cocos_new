@@ -32,14 +32,30 @@ const targets = [
     { id: 'LobbyMain', screenId: 'lobby-main-screen', targetIndex: 1, uiSourceDir: 'lobby-main', runtimeScreenId: 'LobbyMain' },
     { id: 'ShopMain', screenId: 'shop-main-screen', targetIndex: 2, uiSourceDir: 'shop-main', runtimeScreenId: 'ShopMain' },
     { id: 'Gacha', screenId: 'gacha-main-screen', targetIndex: 3, uiSourceDir: 'gacha-main', runtimeScreenId: 'GachaMain' },
+    { id: 'GachaFromLobby', screenId: 'gacha-main-screen', targetIndex: 17, uiSourceDir: 'gacha-main', runtimeScreenId: 'GachaMain' },
+    { id: 'CharacterDs3', screenId: 'character-ds3-main', targetIndex: 18, previewVariant: 'zhang-fei', uiSourceDir: 'character-ds3', runtimeScreenId: 'character-ds3-main' },
     { id: 'GachaHero', screenId: 'gacha-main-screen', targetIndex: 3, previewVariant: 'hero' },
     { id: 'GachaSupport', screenId: 'gacha-main-screen', targetIndex: 3, previewVariant: 'support' },
     { id: 'GachaLimited', screenId: 'gacha-main-screen', targetIndex: 3, previewVariant: 'limited' },
     { id: 'DuelChallenge', screenId: 'duel-challenge-screen', targetIndex: 4 },
     { id: 'BattleScene', screenId: 'battle-scene', targetIndex: 5, uiSourceDir: 'battle-hud', runtimeScreenId: 'BattleHUD' },
-    { id: 'GeneralDetailOverview', screenId: 'general-detail-unified-screen', targetIndex: 6, uiSourceDir: 'general-detail-overview', runtimeScreenId: 'GeneralDetailOverview' },
-    { id: 'GeneralDetailSkills', screenId: 'general-detail-unified-screen', targetIndex: 12, uiSourceDir: 'general-detail-skills', runtimeScreenId: 'GeneralDetailSkills' },
-    { id: 'GeneralDetailOverviewZhenJi', screenId: 'general-detail-unified-screen', targetIndex: 6, previewVariant: 'zhen-ji', uiSourceDir: 'general-detail-overview', runtimeScreenId: 'GeneralDetailOverview' },
+    { id: 'GeneralDetailOverview', screenId: 'general-detail-unified-screen', targetIndex: 6, uiVariant: 'unified', uiSourceDir: 'general-detail-overview', runtimeScreenId: 'GeneralDetailOverview' },
+    { id: 'GeneralDetailOverviewProd', screenId: 'general-detail-unified-screen', targetIndex: 6, previewVariant: 'zhang-fei', uiSourceDir: 'character-ds3', runtimeScreenId: 'character-ds3-main' },
+    { id: 'GeneralDetailOverviewDs3', screenId: 'general-detail-unified-screen', targetIndex: 6, uiVariant: 'ds3', previewVariant: 'zhang-fei', uiSourceDir: 'character-ds3', runtimeScreenId: 'character-ds3-main' },
+    { id: 'GeneralDetailFromLobbyGeneralsButton', screenId: 'character-ds3-main', targetIndex: 19, uiVariant: 'ds3', previewVariant: 'zhang-fei', uiSourceDir: 'general-detail-overview', runtimeScreenId: 'GeneralDetailOverview' },
+    { id: 'GeneralDetailFromSceneGeneralListButton', screenId: 'character-ds3-main', targetIndex: 20, uiVariant: 'ds3', previewVariant: 'zhang-fei', uiSourceDir: 'general-detail-overview', runtimeScreenId: 'GeneralDetailOverview' },
+    { id: 'GeneralDetailSkills', screenId: 'general-detail-unified-screen', targetIndex: 12, uiVariant: 'unified', uiSourceDir: 'general-detail-skills', runtimeScreenId: 'GeneralDetailSkills' },
+    { id: 'GeneralDetailSkillsDs3', screenId: 'general-detail-unified-screen', targetIndex: 12, uiVariant: 'ds3', previewVariant: 'zhang-fei', uiSourceDir: 'character-ds3', runtimeScreenId: 'character-ds3-main' },
+    { id: 'GeneralDetailStats', screenId: 'general-detail-unified-screen', targetIndex: 13, uiVariant: 'unified', uiSourceDir: 'general-detail-stats', runtimeScreenId: 'GeneralDetailStats' },
+    { id: 'GeneralDetailStatsDs3', screenId: 'general-detail-unified-screen', targetIndex: 13, uiVariant: 'ds3', previewVariant: 'zhang-fei', uiSourceDir: 'character-ds3', runtimeScreenId: 'character-ds3-main' },
+    { id: 'GeneralDetailBloodline', screenId: 'general-detail-unified-screen', targetIndex: 14, uiVariant: 'unified', uiSourceDir: 'general-detail-bloodline', runtimeScreenId: 'GeneralDetailBloodline' },
+    { id: 'GeneralDetailBloodlineUnified', screenId: 'general-detail-unified-screen', targetIndex: 14, uiVariant: 'unified', uiSourceDir: 'general-detail-bloodline', runtimeScreenId: 'GeneralDetailBloodline' },
+    { id: 'GeneralDetailBloodlineDs3', screenId: 'general-detail-unified-screen', targetIndex: 14, uiVariant: 'ds3', previewVariant: 'zhang-fei', uiSourceDir: 'character-ds3', runtimeScreenId: 'character-ds3-main' },
+    { id: 'GeneralDetailBasics', screenId: 'general-detail-unified-screen', targetIndex: 15, uiVariant: 'unified', uiSourceDir: 'general-detail-basics', runtimeScreenId: 'GeneralDetailBasics' },
+    { id: 'GeneralDetailBasicsDs3', screenId: 'general-detail-unified-screen', targetIndex: 15, uiVariant: 'ds3', previewVariant: 'zhang-fei', uiSourceDir: 'character-ds3', runtimeScreenId: 'character-ds3-main' },
+    { id: 'GeneralDetailAptitude', screenId: 'general-detail-unified-screen', targetIndex: 16, uiVariant: 'unified', uiSourceDir: 'general-detail-aptitude', runtimeScreenId: 'GeneralDetailAptitude' },
+    { id: 'GeneralDetailAptitudeDs3', screenId: 'general-detail-unified-screen', targetIndex: 16, uiVariant: 'ds3', previewVariant: 'zhang-fei', uiSourceDir: 'character-ds3', runtimeScreenId: 'character-ds3-main' },
+    { id: 'GeneralDetailOverviewZhenJi', screenId: 'general-detail-unified-screen', targetIndex: 6, uiVariant: 'unified', previewVariant: 'zhen-ji', uiSourceDir: 'general-detail-overview', runtimeScreenId: 'GeneralDetailOverview' },
     { id: 'GeneralDetailBloodlineV3', screenId: 'general-detail-bloodline-v3-screen', targetIndex: 6, uiSourceDir: 'general-detail-bloodline-v3', runtimeScreenId: 'GeneralDetailBloodlineV3', hiddenAlias: true },
     { id: 'SpiritTallyDetail', screenId: 'spirit-tally-detail-screen', targetIndex: 7, uiSourceDir: 'spirit-tally-detail', runtimeScreenId: 'SpiritTallyDetail' },
     { id: 'GeneralList', screenId: 'general-list-screen', targetIndex: 8, uiSourceDir: 'general-list', runtimeScreenId: 'GeneralList' },
@@ -368,7 +384,12 @@ function writeRuntimeVerdictForTarget(target, outDir, metadata) {
 }
 
 async function collectTargetRuntimeGuard(page, target) {
-    if (target.id !== 'GeneralDetailOverview' && target.id !== 'GeneralDetailOverviewZhenJi') {
+    if (target.id !== 'GeneralDetailOverview'
+        && target.id !== 'GeneralDetailOverviewProd'
+        && target.id !== 'GeneralDetailOverviewZhenJi'
+        && target.id !== 'GeneralDetailOverviewDs3'
+        && target.id !== 'GeneralDetailFromLobbyGeneralsButton'
+        && target.id !== 'GeneralDetailFromSceneGeneralListButton') {
         return null;
     }
 
@@ -446,7 +467,12 @@ async function collectTargetRuntimeGuard(page, target) {
 async function captureOne(browser, baseUrl, outputDir, target, timeoutMs, sceneUuid) {
     const page = await browser.newPage();
     const diagnostics = createPageDiagnostics(page);
-    const effectiveTimeoutMs = target.id === 'GeneralDetailOverview' || target.id === 'GeneralDetailOverviewZhenJi'
+    const effectiveTimeoutMs = target.id === 'GeneralDetailOverview'
+        || target.id === 'GeneralDetailOverviewProd'
+        || target.id === 'GeneralDetailOverviewZhenJi'
+        || target.id === 'GeneralDetailOverviewDs3'
+        || target.id === 'GeneralDetailFromLobbyGeneralsButton'
+        || target.id === 'GeneralDetailFromSceneGeneralListButton'
         ? Math.max(timeoutMs, 70000)
         : timeoutMs;
 
@@ -457,7 +483,7 @@ async function captureOne(browser, baseUrl, outputDir, target, timeoutMs, sceneU
         Expires: '0',
     });
 
-    await page.evaluateOnNewDocument((targetIndex, previewVariant, debugHidePaths) => {
+    await page.evaluateOnNewDocument((targetIndex, previewVariant, debugHidePaths, uiVariant) => {
         localStorage.setItem('PREVIEW_MODE', 'true');
         localStorage.setItem('PREVIEW_TARGET', String(targetIndex));
         if (previewVariant) {
@@ -465,18 +491,26 @@ async function captureOne(browser, baseUrl, outputDir, target, timeoutMs, sceneU
         } else {
             localStorage.removeItem('PREVIEW_VARIANT');
         }
+        if (uiVariant) {
+            localStorage.setItem('__ucuf_general_detail_variant', uiVariant);
+        } else {
+            localStorage.removeItem('__ucuf_general_detail_variant');
+        }
         if (debugHidePaths) {
             localStorage.setItem('GENERAL_DETAIL_OVERVIEW_HIDE_PATHS', debugHidePaths);
         } else {
             localStorage.removeItem('GENERAL_DETAIL_OVERVIEW_HIDE_PATHS');
         }
-    }, target.targetIndex, target.previewVariant ?? '', target.debugHidePaths ?? '');
+    }, target.targetIndex, target.previewVariant ?? '', target.debugHidePaths ?? '', target.uiVariant ?? '');
 
     const query = new URLSearchParams();
     query.set('previewMode', 'true');
     query.set('previewTarget', String(target.targetIndex));
     if (target.previewVariant) {
         query.set('previewVariant', target.previewVariant);
+    }
+    if (target.uiVariant) {
+        query.set('ui', target.uiVariant);
     }
     if (target.debugHidePaths) {
         query.set('debugHidePaths', target.debugHidePaths);

@@ -40,10 +40,12 @@
     "report:ui-factory-throughput": "node tools_node/report-ui-factory-throughput.js",
     "report:ui-runtime-residuals": "node tools_node/report-ui-runtime-residuals.js",
     "audit:legacy-sprite-buttons": "node tools_node/audit-legacy-sprite-buttons.js",
+    "tokens:backfill-handoff-text-spacing:all": "node tools_node/backfill-handoff-text-spacing-tokens.js --source \"Design System/design_handoff\"",
     "check:general-detail": "node tools_node/validate-general-detail-ui.js",
     "check:general-detail-overview": "node tools_node/check-general-detail-overview-regression.js",
     "check:general-detail-overview-browser": "node tools_node/check-general-detail-overview-browser.js",
     "check:general-detail-lobby-flow": "node tools_node/check-general-detail-lobby-flow-smoke.js",
+    "check:ui-runtime-state-registry": "node tools_node/check-ui-runtime-state-registry.js",
     "check:general-data-tooling": "node tools_node/validate-general-data-tooling.js",
     "check:layered-frames": "node tools_node/validate-layered-frame-assets.js",
     "check:acceptance": "node tools_node/run-acceptance.js",
@@ -56,9 +58,11 @@
     "prepare:high-risk-edit": "node tools_node/prepare-high-risk-edit.js",
     "prepare:view-image": "node tools_node/prepare-view-image.js",
     "prepare:view-image-progressive": "node tools_node/prepare-view-image-progressive.js",
+    "dom-to-ui:compare": "node tools_node/dom-to-ui-compare.js",
     "install:hooks": "node tools_node/install-git-hooks.js",
     "capture:ui": "node tools_node/capture-ui-screens.js",
-    "qa:vfx-browser": "node tools_node/run-vfx-browser-qa.js"
+    "qa:vfx-browser": "node tools_node/run-vfx-browser-qa.js",
+    "tokens:backfill-handoff-text-spacing": "node tools_node/backfill-handoff-text-spacing-tokens.js"
   },
   "devDependencies": {
     "@types/chai": "^5.2.3",

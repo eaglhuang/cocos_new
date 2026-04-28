@@ -214,6 +214,12 @@ export interface GeneralTrainingProfileConfig {
   graduationTags?: string[];
 }
 
+export interface SpiritFamilyStateConfig {
+  hasFamilyBranch?: boolean;
+  activeBranchUid?: string;
+  entryLabel?: string;
+}
+
 /** 角色分類（世界觀標籤，與 rarityTier 獨立）*/
 export type CharacterCategory =
   | 'civilian'
@@ -277,6 +283,7 @@ export interface GeneralConfig {
   dualLayerStats?: Partial<Record<keyof GeneralStatsConfig, GeneralDualLayerStatConfig>>;
   profilePresentation?: GeneralProfilePresentationConfig;
   trainingProfile?: GeneralTrainingProfileConfig;
+  spiritFamilyState?: SpiritFamilyStateConfig;
   coreTags?: string[];
   generatorProfile?: GeneralGeneratorProfileConfig;
   bloodlineProfile?: GeneralBloodlineProfileConfig;

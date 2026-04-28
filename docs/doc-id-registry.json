@@ -1,5 +1,5 @@
 {
-  "generated": "2026-04-17",
+  "generated": "2026-04-28",
   "note": "doc_id 系統唯一真相來源。文件路徑異動後 doc_id 不變。Agent 可用 `grep -r \"doc_id: <id>\"` 或 `node tools_node/resolve-doc-id.js <id>` 定位文件。",
   "registry": {
     "doc_tech_0001": {
@@ -2555,6 +2555,26 @@
     "doc_other_0008": {
       "path": "docs/UI_PANELS_COMPLETE_INVENTORY.md",
       "title": "3KLife UI Panels & Components — Complete Inventory",
+      "category": "other"
+    },
+    "doc_other_0009": {
+      "path": "docs/html_skill_plan.md",
+      "title": "HTML Skill Plan",
+      "category": "other"
+    },
+    "doc_other_0010": {
+      "path": "docs/html_skill_rule-evolution.md",
+      "title": "HTML Skill Rule Evolution",
+      "category": "other"
+    },
+    "doc_other_0011": {
+      "path": "docs/html_skill_plan2.md",
+      "title": "HTML Skill Plan 2",
+      "category": "other"
+    },
+    "doc_other_0012": {
+      "path": "docs/html_skill_rule-evolution2.md",
+      "title": "HTML Skill Rule Evolution 2",
       "category": "other"
     }
   }

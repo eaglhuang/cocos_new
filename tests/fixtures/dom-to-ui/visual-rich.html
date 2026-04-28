@@ -1,0 +1,68 @@
+<!doctype html>
+<html data-canvas-width="320" data-canvas-height="180">
+<head>
+  <meta charset="utf-8">
+  <style>
+    html, body {
+      margin: 0;
+      width: 320px;
+      height: 180px;
+      background: #10131a;
+      font-family: "Unmapped Display", Arial, sans-serif;
+    }
+    .stage {
+      position: relative;
+      width: 320px;
+      height: 180px;
+      overflow: hidden;
+      background-image: linear-gradient(135deg, #6d5dff 0%, #151924 70%), url("./missing-banner.png");
+      background-size: 120% 120%, cover;
+      background-position: center, center;
+      background-repeat: no-repeat, no-repeat;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, .45);
+      border: 2px solid #6d5dff;
+      border-radius: 16px 6px 16px 6px;
+      filter: brightness(1.05);
+      clip-path: inset(0 round 12px);
+    }
+    .badge {
+      position: absolute;
+      left: 24px;
+      top: 24px;
+      width: 96px;
+      height: 44px;
+      background: rgba(255, 255, 255, .12);
+      transform: rotate(-4deg);
+      opacity: .92;
+      mix-blend-mode: screen;
+    }
+    .badge::before {
+      content: "";
+      position: absolute;
+      left: -8px;
+      top: 18px;
+      width: 112px;
+      height: 2px;
+      background: #6d5dff;
+    }
+    .title {
+      position: absolute;
+      left: 24px;
+      top: 88px;
+      color: #6d5dff;
+      font-size: 24px;
+      line-height: 32px;
+      letter-spacing: 1px;
+      text-decoration-line: underline;
+      text-decoration-color: #6d5dff;
+      text-decoration-thickness: 2px;
+    }
+  </style>
+</head>
+<body>
+  <div class="stage" data-anchor="fill" data-name="VisualRichStage" data-ucuf-id="visual-rich.stage">
+    <div class="badge" data-name="RareBadge" data-ucuf-id="visual-rich.badge"></div>
+    <p class="title" data-name="VisualRichTitle" data-contract="title">高保真驗收</p>
+  </div>
+</body>
+</html>

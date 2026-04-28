@@ -282,7 +282,7 @@
     },
     "detail.tab.circle.badge": {
       "kind": "color-rect",
-      "color": "#C8A25E",
+      "color": "gdv3TabBadgeFill",
       "alpha": 242
     },
     "detail.tab.icon.active": {
@@ -695,7 +695,7 @@
       "font": "fonts/notosans_tc/font",
       "fontSize": 12,
       "lineHeight": 15,
-      "color": "#F1E3C5",
+      "color": "gdv3TitleWarm",
       "outlineWidth": 0,
       "horizontalAlign": "CENTER",
       "verticalAlign": "CENTER",
@@ -707,7 +707,7 @@
       "font": "fonts/manrope/font",
       "fontSize": 9,
       "lineHeight": 11,
-      "color": "#342819",
+      "color": "gdv3TabBadgeText",
       "outlineWidth": 0,
       "horizontalAlign": "CENTER",
       "verticalAlign": "CENTER",

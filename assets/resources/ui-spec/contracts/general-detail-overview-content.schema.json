@@ -2,26 +2,26 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "schemaId": "general-detail-overview-content",
   "familyId": "detail-split",
-  "version": 2,
+  "version": 3,
   "description": "GeneralDetailBloodlineV3 overview shell 的內容契約，提供標題列、摘要模組、血脈模組、故事帶與立繪資源的可驗證欄位。",
   "fields": {
     "headerTitle": {
       "type": "string",
       "required": true,
       "description": "人物稱號。",
-      "bindPath": "InfoContent/HeaderRow/NameTitleColumn/TitleLabel"
+      "bindPath": "InfoContent/HeaderRow/NameTitleColumn/NameTitleRow/TitleLabel"
     },
     "headerName": {
       "type": "string",
       "required": true,
       "description": "人物名稱。",
-      "bindPath": "InfoContent/HeaderRow/NameTitleColumn/NameLabel"
+      "bindPath": "InfoContent/HeaderRow/NameTitleColumn/NameTitleRow/NameLabel"
     },
     "headerMeta": {
       "type": "string",
       "required": true,
       "description": "陣營 / 角色定位 / 狀態摘要。",
-      "bindPath": "InfoContent/HeaderRow/MetaColumn/MetaLabel"
+      "bindPath": "InfoContent/HeaderRow/NameTitleColumn/MetaLabel"
     },
     "backgroundResource": {
       "type": "string",
@@ -130,6 +130,18 @@
       "description": "血脈摘要卡內文。",
       "bindPath": "InfoContent/BloodlineOverviewModules/BloodlineRow/BloodlineUnifiedCard/BloodlineSummaryCard/BloodlineBody"
     },
+    "biographyBody": {
+      "type": "string",
+      "required": true,
+      "description": "人物傳記區塊內文。",
+      "bindPath": "InfoContent/BiographyPanel/BiographyBody"
+    },
+    "footerTitle": {
+      "type": "string",
+      "required": true,
+      "description": "右側內容區底部稱號收尾。",
+      "bindPath": "InfoContent/FooterTitle"
+    },
     "crestTitle": {
       "type": "string",
       "required": true,
@@ -220,6 +232,8 @@
     "personalityValue",
     "bloodlineCardTitle",
     "bloodlineBody",
+    "biographyBody",
+    "footerTitle",
     "crestTitle",
     "crestHint",
     "crestState",

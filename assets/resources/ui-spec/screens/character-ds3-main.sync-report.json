@@ -1,0 +1,73 @@
+{
+  "screenId": "character-ds3-main",
+  "mergeMode": "html-authoritative",
+  "summary": {
+    "fieldChangeCount": 12,
+    "conflictCount": 0,
+    "manualEdits": 0,
+    "lockedPreserved": 0,
+    "preservedExisting": 0,
+    "added": 5,
+    "removedFromHtml": 0,
+    "overwrittenByHtml": 7
+  },
+  "before": {
+    "nodeCount": 1,
+    "maxDepth": 1
+  },
+  "after": {
+    "nodeCount": 23,
+    "maxDepth": 5
+  },
+  "fieldChanges": [
+    {
+      "path": "node.canvas",
+      "kind": "overwritten-by-html"
+    },
+    {
+      "path": "node.type",
+      "kind": "added"
+    },
+    {
+      "path": "node.name",
+      "kind": "added"
+    },
+    {
+      "path": "node.widget",
+      "kind": "added"
+    },
+    {
+      "path": "CharacterDs3Main.CharacterDs3Main_div_1",
+      "kind": "added"
+    },
+    {
+      "path": "skin.slots.auto.character-ds3-main.characterds3main_button_1",
+      "kind": "overwritten-by-html"
+    },
+    {
+      "path": "skin.slots.auto.character-ds3-main.characterds3main_button_2",
+      "kind": "overwritten-by-html"
+    },
+    {
+      "path": "skin.slots.auto.character-ds3-main.characterds3main_button_3",
+      "kind": "overwritten-by-html"
+    },
+    {
+      "path": "skin.slots.auto.character-ds3-main.characterds3main_div_10",
+      "kind": "added"
+    },
+    {
+      "path": "skin.slots.auto.character-ds3-main.characterds3main_span_5",
+      "kind": "overwritten-by-html"
+    },
+    {
+      "path": "skin.slots.auto.character-ds3-main.characterds3main_span_6",
+      "kind": "overwritten-by-html"
+    },
+    {
+      "path": "skin.slots.auto.character-ds3-main.characterds3main_div_13",
+      "kind": "overwritten-by-html"
+    }
+  ],
+  "conflicts": []
+}

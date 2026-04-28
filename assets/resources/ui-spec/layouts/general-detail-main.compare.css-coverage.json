@@ -1,0 +1,970 @@
+{
+  "totalNodes": 171,
+  "pseudoNodes": 13,
+  "capturedProperties": {
+    "background-color": {
+      "occurrences": 13,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]",
+          "value": "rgb(10, 10, 10)"
+        },
+        {
+          "path": "div#stage.stage[0]>div.right-shell[4]>div#right-content.right-content[0]>div[0]>div[0]>div[1]>span[0]",
+          "value": "rgb(255, 193, 7)"
+        },
+        {
+          "path": "div#stage.stage[0]>div.right-shell[4]>div#right-content.right-content[0]>div[0]>div[1]>div[0]",
+          "value": "rgba(255, 255, 255, 0.03)"
+        }
+      ]
+    },
+    "color": {
+      "occurrences": 184,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]",
+          "value": "rgb(229, 226, 225)"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]",
+          "value": "rgb(229, 226, 225)"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]::after",
+          "value": "rgb(229, 226, 225)"
+        }
+      ]
+    },
+    "font-size": {
+      "occurrences": 184,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]",
+          "value": "16px"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]",
+          "value": "16px"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]::after",
+          "value": "16px"
+        }
+      ]
+    },
+    "font-family": {
+      "occurrences": 184,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]",
+          "value": "NotoSansTC, \"PingFang TC\", \"Microsoft JhengHei\", sans-serif"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]",
+          "value": "NotoSansTC, \"PingFang TC\", \"Microsoft JhengHei\", sans-serif"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]::after",
+          "value": "NotoSansTC, \"PingFang TC\", \"Microsoft JhengHei\", sans-serif"
+        }
+      ]
+    },
+    "font-weight": {
+      "occurrences": 184,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]",
+          "value": "400"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]",
+          "value": "400"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]::after",
+          "value": "400"
+        }
+      ]
+    },
+    "line-height": {
+      "occurrences": 184,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]",
+          "value": "normal"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]",
+          "value": "normal"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]::after",
+          "value": "normal"
+        }
+      ]
+    },
+    "letter-spacing": {
+      "occurrences": 184,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]",
+          "value": "normal"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]",
+          "value": "normal"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]::after",
+          "value": "normal"
+        }
+      ]
+    },
+    "text-align": {
+      "occurrences": 184,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]",
+          "value": "start"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]",
+          "value": "start"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]::after",
+          "value": "start"
+        }
+      ]
+    },
+    "border-top-color": {
+      "occurrences": 184,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]",
+          "value": "rgb(229, 226, 225)"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]",
+          "value": "rgb(229, 226, 225)"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]::after",
+          "value": "rgb(229, 226, 225)"
+        }
+      ]
+    },
+    "border-right-color": {
+      "occurrences": 184,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]",
+          "value": "rgb(229, 226, 225)"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]",
+          "value": "rgb(229, 226, 225)"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]::after",
+          "value": "rgb(229, 226, 225)"
+        }
+      ]
+    },
+    "border-bottom-color": {
+      "occurrences": 184,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]",
+          "value": "rgb(229, 226, 225)"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]",
+          "value": "rgb(229, 226, 225)"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]::after",
+          "value": "rgb(229, 226, 225)"
+        }
+      ]
+    },
+    "border-left-color": {
+      "occurrences": 184,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]",
+          "value": "rgb(229, 226, 225)"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]",
+          "value": "rgb(229, 226, 225)"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]::after",
+          "value": "rgb(229, 226, 225)"
+        }
+      ]
+    },
+    "transform": {
+      "occurrences": 5,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]",
+          "value": "matrix(1, 0, 0, 1, 0, 0)"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]>button.portrait-nav.left[0]",
+          "value": "matrix(1, 0, 0, 1, 0, -48)"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]>img.portrait-img[1]",
+          "value": "matrix(1, 0, 0, 1, -267.905, 0)"
+        }
+      ]
+    },
+    "transform-origin": {
+      "occurrences": 184,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]",
+          "value": "0px 0px"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]",
+          "value": "595.195px 540px"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]::after",
+          "value": "595.195px 540px"
+        }
+      ]
+    },
+    "text-decoration-color": {
+      "occurrences": 184,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]",
+          "value": "rgb(229, 226, 225)"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]",
+          "value": "rgb(229, 226, 225)"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]::after",
+          "value": "rgb(229, 226, 225)"
+        }
+      ]
+    },
+    "text-decoration-style": {
+      "occurrences": 184,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]",
+          "value": "solid"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]",
+          "value": "solid"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]::after",
+          "value": "solid"
+        }
+      ]
+    },
+    "text-decoration-thickness": {
+      "occurrences": 184,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]",
+          "value": "auto"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]",
+          "value": "auto"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]::after",
+          "value": "auto"
+        }
+      ]
+    },
+    "-webkit-text-stroke-color": {
+      "occurrences": 184,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]",
+          "value": "rgb(229, 226, 225)"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]",
+          "value": "rgb(229, 226, 225)"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]::after",
+          "value": "rgb(229, 226, 225)"
+        }
+      ]
+    },
+    "font-feature-settings": {
+      "occurrences": 184,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]",
+          "value": "normal"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]",
+          "value": "normal"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]::after",
+          "value": "normal"
+        }
+      ]
+    },
+    "font-variant": {
+      "occurrences": 184,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]",
+          "value": "normal"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]",
+          "value": "normal"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]::after",
+          "value": "normal"
+        }
+      ]
+    },
+    "flex-direction": {
+      "occurrences": 184,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]",
+          "value": "row"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]",
+          "value": "row"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]::after",
+          "value": "row"
+        }
+      ]
+    },
+    "flex-wrap": {
+      "occurrences": 184,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]",
+          "value": "nowrap"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]",
+          "value": "nowrap"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]::after",
+          "value": "nowrap"
+        }
+      ]
+    },
+    "align-items": {
+      "occurrences": 184,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]",
+          "value": "normal"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]",
+          "value": "normal"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]::after",
+          "value": "normal"
+        }
+      ]
+    },
+    "align-content": {
+      "occurrences": 184,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]",
+          "value": "normal"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]",
+          "value": "normal"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]::after",
+          "value": "normal"
+        }
+      ]
+    },
+    "align-self": {
+      "occurrences": 184,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]",
+          "value": "auto"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]",
+          "value": "auto"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]::after",
+          "value": "auto"
+        }
+      ]
+    },
+    "justify-content": {
+      "occurrences": 184,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]",
+          "value": "normal"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]",
+          "value": "normal"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]::after",
+          "value": "normal"
+        }
+      ]
+    },
+    "justify-items": {
+      "occurrences": 184,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]",
+          "value": "normal"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]",
+          "value": "normal"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]::after",
+          "value": "normal"
+        }
+      ]
+    },
+    "justify-self": {
+      "occurrences": 184,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]",
+          "value": "auto"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]",
+          "value": "auto"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]::after",
+          "value": "auto"
+        }
+      ]
+    },
+    "gap": {
+      "occurrences": 184,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]",
+          "value": "normal"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]",
+          "value": "normal"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]::after",
+          "value": "normal"
+        }
+      ]
+    },
+    "row-gap": {
+      "occurrences": 184,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]",
+          "value": "normal"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]",
+          "value": "normal"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]::after",
+          "value": "normal"
+        }
+      ]
+    },
+    "column-gap": {
+      "occurrences": 184,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]",
+          "value": "normal"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]",
+          "value": "normal"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]::after",
+          "value": "normal"
+        }
+      ]
+    },
+    "vertical-align": {
+      "occurrences": 184,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]",
+          "value": "baseline"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]",
+          "value": "baseline"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]::after",
+          "value": "baseline"
+        }
+      ]
+    },
+    "white-space": {
+      "occurrences": 184,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]",
+          "value": "normal"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]",
+          "value": "normal"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]::after",
+          "value": "normal"
+        }
+      ]
+    },
+    "text-overflow": {
+      "occurrences": 184,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]",
+          "value": "clip"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]",
+          "value": "clip"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]::after",
+          "value": "clip"
+        }
+      ]
+    },
+    "background-image": {
+      "occurrences": 38,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]",
+          "value": "radial-gradient(at 30% 40%, rgba(139, 98, 42, 0.3), rgba(0, 0, 0, 0) 55%), radial-gradient(at 80% 70%, rgba(44, 58, 66, 0.25), rgba(0, 0, 0, 0) 60%), linear-gradient(rgb(42, 39, 32) 0%, rgb(26, 24, 20) 40%, rgb(16, 14, 10) 100%)"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]::after",
+          "value": "linear-gradient(90deg, rgba(0, 0, 0, 0) 45%, rgba(10, 10, 10, 0.7) 75%, rgb(10, 10, 10) 100%)"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]>button.portrait-nav.left[0]",
+          "value": "linear-gradient(135deg, rgba(212, 175, 55, 0.18), rgba(138, 110, 31, 0.1))"
+        }
+      ]
+    },
+    "border-top-width": {
+      "occurrences": 25,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]>button.portrait-nav.left[0]",
+          "value": "3px"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]>button.portrait-nav.right[2]",
+          "value": "3px"
+        },
+        {
+          "path": "div#stage.stage[0]>div.rank-badge[2]",
+          "value": "2px"
+        }
+      ]
+    },
+    "border-right-width": {
+      "occurrences": 24,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]>button.portrait-nav.left[0]",
+          "value": "3px"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]>button.portrait-nav.right[2]",
+          "value": "3px"
+        },
+        {
+          "path": "div#stage.stage[0]>div.rank-badge[2]",
+          "value": "2px"
+        }
+      ]
+    },
+    "border-bottom-width": {
+      "occurrences": 24,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]>button.portrait-nav.left[0]",
+          "value": "3px"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]>button.portrait-nav.right[2]",
+          "value": "3px"
+        },
+        {
+          "path": "div#stage.stage[0]>div.rank-badge[2]",
+          "value": "2px"
+        }
+      ]
+    },
+    "border-left-width": {
+      "occurrences": 24,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]>button.portrait-nav.left[0]",
+          "value": "3px"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]>button.portrait-nav.right[2]",
+          "value": "3px"
+        },
+        {
+          "path": "div#stage.stage[0]>div.rank-badge[2]",
+          "value": "2px"
+        }
+      ]
+    },
+    "border-top-style": {
+      "occurrences": 25,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]>button.portrait-nav.left[0]",
+          "value": "solid"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]>button.portrait-nav.right[2]",
+          "value": "solid"
+        },
+        {
+          "path": "div#stage.stage[0]>div.rank-badge[2]",
+          "value": "solid"
+        }
+      ]
+    },
+    "border-right-style": {
+      "occurrences": 24,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]>button.portrait-nav.left[0]",
+          "value": "solid"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]>button.portrait-nav.right[2]",
+          "value": "solid"
+        },
+        {
+          "path": "div#stage.stage[0]>div.rank-badge[2]",
+          "value": "solid"
+        }
+      ]
+    },
+    "border-bottom-style": {
+      "occurrences": 24,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]>button.portrait-nav.left[0]",
+          "value": "solid"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]>button.portrait-nav.right[2]",
+          "value": "solid"
+        },
+        {
+          "path": "div#stage.stage[0]>div.rank-badge[2]",
+          "value": "solid"
+        }
+      ]
+    },
+    "border-left-style": {
+      "occurrences": 24,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]>button.portrait-nav.left[0]",
+          "value": "solid"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]>button.portrait-nav.right[2]",
+          "value": "solid"
+        },
+        {
+          "path": "div#stage.stage[0]>div.rank-badge[2]",
+          "value": "solid"
+        }
+      ]
+    },
+    "border-top-left-radius": {
+      "occurrences": 29,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]>button.portrait-nav.left[0]",
+          "value": "50%"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]>button.portrait-nav.right[2]",
+          "value": "50%"
+        },
+        {
+          "path": "div#stage.stage[0]>div.rank-badge[2]",
+          "value": "16px"
+        }
+      ]
+    },
+    "border-top-right-radius": {
+      "occurrences": 29,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]>button.portrait-nav.left[0]",
+          "value": "50%"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]>button.portrait-nav.right[2]",
+          "value": "50%"
+        },
+        {
+          "path": "div#stage.stage[0]>div.rank-badge[2]",
+          "value": "16px"
+        }
+      ]
+    },
+    "border-bottom-right-radius": {
+      "occurrences": 28,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]>button.portrait-nav.left[0]",
+          "value": "50%"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]>button.portrait-nav.right[2]",
+          "value": "50%"
+        },
+        {
+          "path": "div#stage.stage[0]>div.rank-badge[2]",
+          "value": "16px"
+        }
+      ]
+    },
+    "border-bottom-left-radius": {
+      "occurrences": 28,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]>button.portrait-nav.left[0]",
+          "value": "50%"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]>button.portrait-nav.right[2]",
+          "value": "50%"
+        },
+        {
+          "path": "div#stage.stage[0]>div.rank-badge[2]",
+          "value": "16px"
+        }
+      ]
+    },
+    "box-shadow": {
+      "occurrences": 10,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]>button.portrait-nav.left[0]",
+          "value": "rgba(212, 175, 55, 0.1) 0px 0px 16px 0px inset, rgba(212, 175, 55, 0.2) 0px 0px 24px 0px"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]>button.portrait-nav.right[2]",
+          "value": "rgba(212, 175, 55, 0.1) 0px 0px 16px 0px inset, rgba(212, 175, 55, 0.2) 0px 0px 24px 0px"
+        },
+        {
+          "path": "div#stage.stage[0]>div.rank-badge[2]",
+          "value": "rgba(0, 0, 0, 0.5) 0px 6px 20px 0px, rgba(140, 207, 196, 0.15) 0px 0px 20px 0px inset"
+        }
+      ]
+    },
+    "filter": {
+      "occurrences": 1,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]>img.portrait-img[1]",
+          "value": "drop-shadow(rgba(0, 0, 0, 0.7) 0px 20px 40px)"
+        }
+      ]
+    },
+    "text-shadow": {
+      "occurrences": 7,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]>div.right-shell[4]>div#right-content.right-content[0]>div[0]>div[0]>div[0]>div[0]>span[0]",
+          "value": "rgba(0, 0, 0, 0.6) 0px 2px 6px"
+        },
+        {
+          "path": "div#stage.stage[0]>div#strip-wrap.story-strip-wrap[5]>div#strip-cells.strip[1]>div.cell[0]>div.cell-label[2]>div.t[0]",
+          "value": "rgb(0, 0, 0) 0px 1px 0px, rgba(0, 0, 0, 0.9) 0px 0px 10px"
+        },
+        {
+          "path": "div#stage.stage[0]>div#strip-wrap.story-strip-wrap[5]>div#strip-cells.strip[1]>div.cell[1]>div.cell-label[2]>div.t[0]",
+          "value": "rgb(0, 0, 0) 0px 1px 0px, rgba(0, 0, 0, 0.9) 0px 0px 10px"
+        }
+      ]
+    },
+    "clip-path": {
+      "occurrences": 5,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]>div#strip-wrap.story-strip-wrap[5]>div#strip-cells.strip[1]>div.cell[0]",
+          "value": "polygon(0px 0px, 100% 0px, 100% 86%, 91% 100%, 0px 100%)"
+        },
+        {
+          "path": "div#stage.stage[0]>div#strip-wrap.story-strip-wrap[5]>div#strip-cells.strip[1]>div.cell[1]",
+          "value": "polygon(0px 0px, 100% 0px, 100% 86%, 91% 100%, 0px 100%)"
+        },
+        {
+          "path": "div#stage.stage[0]>div#strip-wrap.story-strip-wrap[5]>div#strip-cells.strip[1]>div.cell[2]",
+          "value": "polygon(0px 0px, 100% 0px, 100% 86%, 91% 100%, 0px 100%)"
+        }
+      ]
+    },
+    "-webkit-clip-path": {
+      "occurrences": 5,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]>div#strip-wrap.story-strip-wrap[5]>div#strip-cells.strip[1]>div.cell[0]",
+          "value": "polygon(0px 0px, 100% 0px, 100% 86%, 91% 100%, 0px 100%)"
+        },
+        {
+          "path": "div#stage.stage[0]>div#strip-wrap.story-strip-wrap[5]>div#strip-cells.strip[1]>div.cell[1]",
+          "value": "polygon(0px 0px, 100% 0px, 100% 86%, 91% 100%, 0px 100%)"
+        },
+        {
+          "path": "div#stage.stage[0]>div#strip-wrap.story-strip-wrap[5]>div#strip-cells.strip[1]>div.cell[2]",
+          "value": "polygon(0px 0px, 100% 0px, 100% 86%, 91% 100%, 0px 100%)"
+        }
+      ]
+    }
+  },
+  "droppedProperties": {
+    "background-size": {
+      "occurrences": 184,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]",
+          "value": "auto"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]",
+          "value": "auto, auto, auto"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]::after",
+          "value": "auto"
+        }
+      ]
+    },
+    "background-position": {
+      "occurrences": 184,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]",
+          "value": "0% 0%"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]",
+          "value": "0% 0%, 0% 0%, 0% 0%"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]::after",
+          "value": "0% 0%"
+        }
+      ]
+    },
+    "background-repeat": {
+      "occurrences": 184,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]",
+          "value": "repeat"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]",
+          "value": "repeat, repeat, repeat"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]::after",
+          "value": "repeat"
+        }
+      ]
+    },
+    "text-decoration-line": {
+      "occurrences": 184,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]",
+          "value": "none"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]",
+          "value": "none"
+        },
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]::after",
+          "value": "none"
+        }
+      ]
+    },
+    "content": {
+      "occurrences": 13,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]>div.portrait-bg[0]::after",
+          "value": "\"\""
+        },
+        {
+          "path": "div#stage.stage[0]>div#strip-wrap.story-strip-wrap[5]>div#strip-cells.strip[1]>div.cell[0]::before",
+          "value": "\"\""
+        },
+        {
+          "path": "div#stage.stage[0]>div#strip-wrap.story-strip-wrap[5]>div#strip-cells.strip[1]>div.cell[0]::after",
+          "value": "\"\""
+        }
+      ]
+    }
+  },
+  "coveragePercent": 0.8934414568217385
+}

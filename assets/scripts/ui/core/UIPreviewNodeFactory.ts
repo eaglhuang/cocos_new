@@ -15,7 +15,7 @@
  *
  * Unity 對照：相當於 UI 元件工廠（UIFactory / UIComponentBuilder helper class）
  */
-import { Node, Label, Sprite, UITransform, Widget, Layout, ScrollView, Color, Button, Mask } from 'cc';
+import { Node, Label, Sprite, UITransform, Widget, Layout, ScrollView, ScrollBar, Color, Button, Mask } from 'cc';
 import { SolidBackground } from '../components/SolidBackground';
 import { UISkinResolver } from './UISkinResolver';
 import { UIPreviewStyleBuilder } from './UIPreviewStyleBuilder';
@@ -193,6 +193,56 @@ export class UIPreviewNodeFactory {
         }
 
         sv.content = content;
+
+        if (spec.scrollbar) {
+            const barWidth = spec.scrollbar.width ?? 12;
+            const barRight = spec.scrollbar.right ?? 4;
+            const barTop = spec.scrollbar.top ?? 8;
+            const barBottom = spec.scrollbar.bottom ?? 8;
+
+            const barNode = new Node('VerticalScrollBar');
+            barNode.layer = node.layer;
+            barNode.parent = node;
+
+            const barTransform = barNode.addComponent(UITransform);
+            barTransform.setContentSize(barWidth, Math.max(0, height - barTop - barBottom));
+            barTransform.setAnchorPoint(1, 1);
+
+            const barWidget = barNode.addComponent(Widget);
+            barWidget.isAlignTop = true;
+            barWidget.isAlignBottom = true;
+            barWidget.isAlignRight = true;
+            barWidget.isAlignLeft = false;
+            barWidget.top = barTop;
+            barWidget.bottom = barBottom;
+            barWidget.right = barRight;
+            barWidget.left = 0;
+
+            const trackSlot = spec.scrollbar.trackSkinSlot ?? 'general.scrollbar.track';
+            const thumbSlot = spec.scrollbar.thumbSkinSlot ?? 'general.scrollbar.thumb';
+            await this.buildPanel(barNode, { ...spec, skinSlot: trackSlot });
+
+            const handleNode = new Node('Handle');
+            handleNode.layer = node.layer;
+            handleNode.parent = barNode;
+            const handleTransform = handleNode.addComponent(UITransform);
+            handleTransform.setContentSize(Math.max(4, barWidth - 4), 48);
+            handleTransform.setAnchorPoint(0.5, 1);
+            await this.buildPanel(handleNode, { ...spec, skinSlot: thumbSlot });
+
+            const scrollBar = barNode.addComponent(ScrollBar);
+            scrollBar.direction = ScrollBar.Direction.VERTICAL;
+            scrollBar.enableAutoHide = spec.scrollbar.autoHide ?? true;
+            scrollBar.autoHideTime = spec.scrollbar.autoHideTime ?? 1.2;
+            const handleSprite = handleNode.getComponent(Sprite);
+            if (handleSprite) {
+                scrollBar.handle = handleSprite;
+            }
+            sv.verticalScrollBar = scrollBar;
+            scrollBar.setScrollView(sv);
+            scrollBar.show();
+        }
+
         // 儲存 itemTemplate，供 onBuildComplete 動態生成列項時取用
         (node as any)._itemTemplate = spec.itemTemplate;
     }

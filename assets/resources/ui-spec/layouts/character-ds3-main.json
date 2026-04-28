@@ -1,0 +1,1490 @@
+{
+  "id": "character-ds3-main",
+  "version": 1,
+  "specVersion": 1,
+  "canvas": {
+    "designWidth": 1920,
+    "designHeight": 1080
+  },
+  "root": {
+    "type": "container",
+    "name": "CharacterDs3Main",
+    "widget": {
+      "top": 0,
+      "left": 0,
+      "right": 0,
+      "bottom": 0
+    },
+    "children": [
+      {
+        "type": "panel",
+        "name": "CharacterDs3Main_div_1",
+        "widget": {
+          "top": 0,
+          "left": 0
+        },
+        "width": 1920,
+        "height": 1080,
+        "skinSlot": "auto.character-ds3-main.characterds3main_div_1",
+        "children": [
+          {
+            "type": "panel",
+            "name": "CharacterDs3Main_div_2",
+            "widget": {
+              "top": 0,
+              "left": 0,
+              "bottom": 0
+            },
+            "_ucufId": "character-ds3-main.portrait-bg",
+            "_visualZone": "portrait",
+            "width": "62%",
+            "_motionId": "character-ds3main_div_2.transition",
+            "skinSlot": "auto.character-ds3-main.characterds3main_div_2",
+            "children": [
+              {
+                "type": "button",
+                "name": "CharacterDs3Main_button_1",
+                "widget": {
+                  "left": 24
+                },
+                "_ucufId": "character-ds3-main.portrait-nav",
+                "_visualZone": "portrait",
+                "width": 96,
+                "height": 96,
+                "_interactionId": "character-ds3main_button_1.tab-switch",
+                "_motionId": "character-ds3main_button_1.transition",
+                "layout": {
+                  "type": "grid",
+                  "cellHeight": 96
+                },
+                "skinSlot": "auto.character-ds3-main.characterds3main_button_1"
+              },
+              {
+                "type": "image",
+                "name": "CharacterDs3Main_img_1",
+                "widget": {
+                  "bottom": 0
+                },
+                "_ucufId": "character-ds3-main.portrait-img",
+                "_visualZone": "portrait",
+                "height": "98%",
+                "skinSlot": "auto.character-ds3-main.characterds3main_img_1"
+              },
+              {
+                "type": "button",
+                "name": "CharacterDs3Main_button_2",
+                "widget": {
+                  "right": 24
+                },
+                "_ucufId": "character-ds3-main.portrait-nav-2",
+                "_visualZone": "portrait",
+                "width": 96,
+                "height": 96,
+                "_interactionId": "character-ds3main_button_2.tab-switch",
+                "_motionId": "character-ds3main_button_2.transition",
+                "layout": {
+                  "type": "grid",
+                  "cellHeight": 96
+                },
+                "skinSlot": "auto.character-ds3-main.characterds3main_button_2"
+              }
+            ]
+          },
+          {
+            "type": "label",
+            "name": "CharacterDs3Main_div_3",
+            "widget": {
+              "left": 36,
+              "bottom": 36
+            },
+            "_ucufId": "character-ds3-main.portrait-title",
+            "_visualZone": "portrait",
+            "text": "燕 人 武 聖",
+            "styleSlot": "auto.character-ds3-main.characterds3main_div_3"
+          },
+          {
+            "type": "panel",
+            "name": "CharacterDs3Main_div_4",
+            "widget": {
+              "top": 28,
+              "left": 28
+            },
+            "width": 90,
+            "height": 90,
+            "layout": {
+              "type": "vertical",
+              "spacingY": 2
+            },
+            "skinSlot": "auto.character-ds3-main.characterds3main_div_4",
+            "children": [
+              {
+                "type": "label",
+                "name": "CharacterDs3Main_span_1",
+                "text": "傳",
+                "styleSlot": "auto.character-ds3-main.characterds3main_span_1"
+              },
+              {
+                "type": "label",
+                "name": "CharacterDs3Main_span_2",
+                "text": "LEGEND",
+                "styleSlot": "auto.character-ds3-main.characterds3main_span_2"
+              }
+            ]
+          },
+          {
+            "type": "panel",
+            "name": "CharacterDs3Main_div_5",
+            "widget": {
+              "top": 0,
+              "left": 0,
+              "bottom": 0
+            },
+            "active": false,
+            "opacity": 0,
+            "_ucufId": "character-ds3-main.bloodline-fullscreen",
+            "_visualZone": "bloodline",
+            "width": "62%",
+            "_motionId": "character-ds3main_div_5.transition",
+            "skinSlot": "auto.character-ds3-main.characterds3main_div_5"
+          },
+          {
+            "type": "button",
+            "name": "CharacterDs3Main_button_3",
+            "widget": {
+              "top": 28,
+              "right": 28
+            },
+            "width": 88,
+            "height": 88,
+            "_motionId": "character-ds3main_button_3.transition",
+            "layout": {
+              "type": "vertical",
+              "spacingY": 2
+            },
+            "skinSlot": "auto.character-ds3-main.characterds3main_button_3",
+            "children": [
+              {
+                "type": "label",
+                "name": "CharacterDs3Main_span_3",
+                "text": "←",
+                "styleSlot": "auto.character-ds3-main.characterds3main_span_3"
+              },
+              {
+                "type": "label",
+                "name": "CharacterDs3Main_span_4",
+                "text": "返回",
+                "styleSlot": "auto.character-ds3-main.characterds3main_span_4"
+              }
+            ]
+          },
+          {
+            "type": "container",
+            "name": "CharacterDs3Main_div_7",
+            "widget": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0
+            },
+            "width": 720,
+            "layout": {
+              "type": "horizontal"
+            },
+            "children": [
+              {
+                "type": "container",
+                "name": "CharacterDs3Main_div_8",
+                "layout": {
+                  "type": "vertical",
+                  "paddingTop": 50,
+                  "paddingRight": 20,
+                  "paddingBottom": 60,
+                  "paddingLeft": 20
+                },
+                "children": [
+                  {
+                    "type": "container",
+                    "name": "TabOverviewContent",
+                    "layout": {
+                      "type": "vertical",
+                      "spacingY": 12
+                    },
+                    "children": [
+                      {
+                        "type": "container",
+                        "name": "CharacterDs3Main_div_10",
+                        "layout": {
+                          "type": "horizontal"
+                        },
+                        "children": [
+                          {
+                            "type": "container",
+                            "name": "CharacterDs3Main_div_11",
+                            "layout": {
+                              "type": "vertical"
+                            },
+                            "children": [
+                              {
+                                "type": "container",
+                                "name": "CharacterDs3Main_div_12",
+                                "layout": {
+                                  "type": "horizontal",
+                                  "spacingX": 12
+                                },
+                                "children": [
+                                  {
+                                    "type": "label",
+                                    "name": "OverviewName",
+                                    "text": "張飛",
+                                    "styleSlot": "auto.character-ds3-main.characterds3main_span_5"
+                                  },
+                                  {
+                                    "type": "label",
+                                    "name": "CharacterDs3Main_span_6",
+                                    "text": "【燕人】",
+                                    "styleSlot": "auto.character-ds3-main.characterds3main_span_6"
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "label",
+                                "name": "OverviewRoleBadge",
+                                "text": "翼德 · 蜀 · 先鋒",
+                                "styleSlot": "auto.character-ds3-main.characterds3main_div_13"
+                              }
+                            ]
+                          },
+                          {
+                            "type": "container",
+                            "name": "CharacterDs3Main_div_14",
+                            "layout": {
+                              "type": "vertical",
+                              "spacingY": 6
+                            },
+                            "children": [
+                              {
+                                "type": "label",
+                                "name": "OverviewRarityTier",
+                                "text": "UR",
+                                "styleSlot": "auto.character-ds3-main.characterds3main_span_7"
+                              },
+                              {
+                                "type": "container",
+                                "name": "OverviewRarityStars",
+                                "layout": {
+                                  "type": "horizontal",
+                                  "spacingX": 3
+                                },
+                                "children": [
+                                  {
+                                    "type": "label",
+                                    "name": "CharacterDs3Main_span_8",
+                                    "text": "★",
+                                    "styleSlot": "auto.character-ds3-main.characterds3main_span_8"
+                                  },
+                                  {
+                                    "type": "label",
+                                    "name": "CharacterDs3Main_span_9",
+                                    "text": "★",
+                                    "styleSlot": "auto.character-ds3-main.characterds3main_span_9"
+                                  },
+                                  {
+                                    "type": "label",
+                                    "name": "CharacterDs3Main_span_10",
+                                    "text": "★",
+                                    "styleSlot": "auto.character-ds3-main.characterds3main_span_10"
+                                  },
+                                  {
+                                    "type": "label",
+                                    "name": "CharacterDs3Main_span_11",
+                                    "text": "★",
+                                    "styleSlot": "auto.character-ds3-main.characterds3main_span_11"
+                                  },
+                                  {
+                                    "type": "label",
+                                    "name": "CharacterDs3Main_span_12",
+                                    "text": "★",
+                                    "styleSlot": "auto.character-ds3-main.characterds3main_span_12"
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "container",
+                        "name": "CharacterDs3Main_div_16",
+                        "layout": {
+                          "type": "grid",
+                          "spacingX": 10,
+                          "spacingY": 10,
+                          "constraint": "fixed-col",
+                          "constraintNum": 3,
+                          "cellWidth": 160,
+                          "cellHeight": 96
+                        },
+                        "children": [
+                          {
+                            "type": "panel",
+                            "name": "CharacterDs3Main_div_17",
+                            "layout": {
+                              "type": "vertical",
+                              "paddingTop": 12,
+                              "paddingRight": 14,
+                              "paddingBottom": 12,
+                              "paddingLeft": 14,
+                              "spacingY": 10
+                            },
+                            "skinSlot": "auto.character-ds3-main.characterds3main_div_17",
+                            "children": [
+                              {
+                                "type": "container",
+                                "name": "CharacterDs3Main_div_18",
+                                "layout": {
+                                  "type": "horizontal",
+                                  "spacingX": 8
+                                },
+                                "children": [
+                                  {
+                                    "type": "label",
+                                    "name": "CharacterDs3Main_span_13",
+                                    "text": "核心屬性",
+                                    "styleSlot": "auto.character-ds3-main.characterds3main_span_13"
+                                  },
+                                  {
+                                    "type": "label",
+                                    "name": "CharacterDs3Main_span_14",
+                                    "text": "CORE",
+                                    "styleSlot": "auto.character-ds3-main.characterds3main_span_14"
+                                  }
+                                ],
+                                "skinLayers": [
+                                  {
+                                    "layerId": "CharacterDs3Main_div_19",
+                                    "slotId": "auto.character-ds3-main.characterds3main_div_19",
+                                    "zOrder": 0,
+                                    "expand": false,
+                                    "width": 4,
+                                    "height": 16
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "container",
+                                "name": "CharacterDs3Main_div_20",
+                                "layout": {
+                                  "type": "grid",
+                                  "spacingX": 12,
+                                  "spacingY": 4,
+                                  "constraint": "fixed-col",
+                                  "constraintNum": 2,
+                                  "cellWidth": 120,
+                                  "cellHeight": 96
+                                },
+                                "children": [
+                                  {
+                                    "type": "container",
+                                    "name": "CharacterDs3Main_div_21",
+                                    "layout": {
+                                      "type": "horizontal",
+                                      "spacingX": 6
+                                    },
+                                    "children": [
+                                      {
+                                        "type": "label",
+                                        "name": "CharacterDs3Main_span_15",
+                                        "text": "武",
+                                        "styleSlot": "auto.character-ds3-main.characterds3main_span_15"
+                                      },
+                                      {
+                                        "type": "label",
+                                        "name": "CharacterDs3Main_span_16",
+                                        "text": "98",
+                                        "styleSlot": "auto.character-ds3-main.characterds3main_span_16"
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "type": "container",
+                                    "name": "CharacterDs3Main_div_22",
+                                    "layout": {
+                                      "type": "horizontal",
+                                      "spacingX": 6
+                                    },
+                                    "children": [
+                                      {
+                                        "type": "label",
+                                        "name": "CharacterDs3Main_span_17",
+                                        "text": "統",
+                                        "styleSlot": "auto.character-ds3-main.characterds3main_span_17"
+                                      },
+                                      {
+                                        "type": "label",
+                                        "name": "CharacterDs3Main_span_18",
+                                        "text": "88",
+                                        "styleSlot": "auto.character-ds3-main.characterds3main_span_18"
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "type": "container",
+                                    "name": "CharacterDs3Main_div_23",
+                                    "layout": {
+                                      "type": "horizontal",
+                                      "spacingX": 6
+                                    },
+                                    "children": [
+                                      {
+                                        "type": "label",
+                                        "name": "CharacterDs3Main_span_19",
+                                        "text": "魅",
+                                        "styleSlot": "auto.character-ds3-main.characterds3main_span_19"
+                                      },
+                                      {
+                                        "type": "label",
+                                        "name": "CharacterDs3Main_span_20",
+                                        "text": "74",
+                                        "styleSlot": "auto.character-ds3-main.characterds3main_span_20"
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "type": "container",
+                                    "name": "CharacterDs3Main_div_24",
+                                    "layout": {
+                                      "type": "horizontal",
+                                      "spacingX": 6
+                                    },
+                                    "children": [
+                                      {
+                                        "type": "label",
+                                        "name": "CharacterDs3Main_span_21",
+                                        "text": "智",
+                                        "styleSlot": "auto.character-ds3-main.characterds3main_span_21"
+                                      },
+                                      {
+                                        "type": "label",
+                                        "name": "CharacterDs3Main_span_22",
+                                        "text": "52",
+                                        "styleSlot": "auto.character-ds3-main.characterds3main_span_22"
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "type": "container",
+                                    "name": "CharacterDs3Main_div_25",
+                                    "layout": {
+                                      "type": "horizontal",
+                                      "spacingX": 6
+                                    },
+                                    "children": [
+                                      {
+                                        "type": "label",
+                                        "name": "CharacterDs3Main_span_23",
+                                        "text": "政",
+                                        "styleSlot": "auto.character-ds3-main.characterds3main_span_23"
+                                      },
+                                      {
+                                        "type": "label",
+                                        "name": "CharacterDs3Main_span_24",
+                                        "text": "38",
+                                        "styleSlot": "auto.character-ds3-main.characterds3main_span_24"
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "type": "container",
+                                    "name": "CharacterDs3Main_div_26",
+                                    "layout": {
+                                      "type": "horizontal",
+                                      "spacingX": 6
+                                    },
+                                    "children": [
+                                      {
+                                        "type": "label",
+                                        "name": "CharacterDs3Main_span_25",
+                                        "text": "運",
+                                        "styleSlot": "auto.character-ds3-main.characterds3main_span_25"
+                                      },
+                                      {
+                                        "type": "label",
+                                        "name": "CharacterDs3Main_span_26",
+                                        "text": "76",
+                                        "styleSlot": "auto.character-ds3-main.characterds3main_span_26"
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "type": "panel",
+                            "name": "CharacterDs3Main_div_27",
+                            "layout": {
+                              "type": "vertical",
+                              "paddingTop": 12,
+                              "paddingRight": 14,
+                              "paddingBottom": 12,
+                              "paddingLeft": 14,
+                              "spacingY": 10
+                            },
+                            "skinSlot": "auto.character-ds3-main.characterds3main_div_27",
+                            "children": [
+                              {
+                                "type": "container",
+                                "name": "CharacterDs3Main_div_28",
+                                "layout": {
+                                  "type": "horizontal",
+                                  "spacingX": 8
+                                },
+                                "children": [
+                                  {
+                                    "type": "label",
+                                    "name": "CharacterDs3Main_span_27",
+                                    "text": "戰場定位",
+                                    "styleSlot": "auto.character-ds3-main.characterds3main_span_27"
+                                  },
+                                  {
+                                    "type": "label",
+                                    "name": "CharacterDs3Main_span_28",
+                                    "text": "ROLE",
+                                    "styleSlot": "auto.character-ds3-main.characterds3main_span_28"
+                                  }
+                                ],
+                                "skinLayers": [
+                                  {
+                                    "layerId": "CharacterDs3Main_div_29",
+                                    "slotId": "auto.character-ds3-main.characterds3main_div_29",
+                                    "zOrder": 0,
+                                    "expand": false,
+                                    "width": 4,
+                                    "height": 16
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "container",
+                                "name": "CharacterDs3Main_div_30",
+                                "layout": {
+                                  "type": "horizontal",
+                                  "spacingX": 8
+                                },
+                                "children": [
+                                  {
+                                    "type": "label",
+                                    "name": "CharacterDs3Main_span_29",
+                                    "width": 8,
+                                    "height": 8,
+                                    "styleSlot": "auto.character-ds3-main.characterds3main_span_29"
+                                  },
+                                  {
+                                    "type": "label",
+                                    "name": "CharacterDs3Main_span_30",
+                                    "text": "前排突破",
+                                    "styleSlot": "auto.character-ds3-main.characterds3main_span_30"
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "container",
+                                "name": "CharacterDs3Main_div_31",
+                                "layout": {
+                                  "type": "horizontal",
+                                  "spacingX": 8
+                                },
+                                "children": [
+                                  {
+                                    "type": "label",
+                                    "name": "CharacterDs3Main_span_31",
+                                    "width": 8,
+                                    "height": 8,
+                                    "styleSlot": "auto.character-ds3-main.characterds3main_span_31"
+                                  },
+                                  {
+                                    "type": "label",
+                                    "name": "CharacterDs3Main_span_32",
+                                    "text": "破陣主攻",
+                                    "styleSlot": "auto.character-ds3-main.characterds3main_span_32"
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "type": "panel",
+                            "name": "CharacterDs3Main_div_32",
+                            "layout": {
+                              "type": "vertical",
+                              "paddingTop": 12,
+                              "paddingRight": 14,
+                              "paddingBottom": 12,
+                              "paddingLeft": 14,
+                              "spacingY": 10
+                            },
+                            "skinSlot": "auto.character-ds3-main.characterds3main_div_32",
+                            "children": [
+                              {
+                                "type": "container",
+                                "name": "CharacterDs3Main_div_33",
+                                "layout": {
+                                  "type": "horizontal",
+                                  "spacingX": 8
+                                },
+                                "children": [
+                                  {
+                                    "type": "label",
+                                    "name": "CharacterDs3Main_span_33",
+                                    "text": "性格氣質",
+                                    "styleSlot": "auto.character-ds3-main.characterds3main_span_33"
+                                  },
+                                  {
+                                    "type": "label",
+                                    "name": "CharacterDs3Main_span_34",
+                                    "text": "TRAITS",
+                                    "styleSlot": "auto.character-ds3-main.characterds3main_span_34"
+                                  }
+                                ],
+                                "skinLayers": [
+                                  {
+                                    "layerId": "CharacterDs3Main_div_34",
+                                    "slotId": "auto.character-ds3-main.characterds3main_div_34",
+                                    "zOrder": 0,
+                                    "expand": false,
+                                    "width": 4,
+                                    "height": 16
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "container",
+                                "name": "CharacterDs3Main_div_35",
+                                "layout": {
+                                  "type": "horizontal",
+                                  "spacingX": 8
+                                },
+                                "children": [
+                                  {
+                                    "type": "label",
+                                    "name": "CharacterDs3Main_span_35",
+                                    "width": 8,
+                                    "height": 8,
+                                    "styleSlot": "auto.character-ds3-main.characterds3main_span_35"
+                                  },
+                                  {
+                                    "type": "label",
+                                    "name": "CharacterDs3Main_span_36",
+                                    "text": "戰意特聚",
+                                    "styleSlot": "auto.character-ds3-main.characterds3main_span_36"
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "container",
+                                "name": "CharacterDs3Main_div_36",
+                                "layout": {
+                                  "type": "horizontal",
+                                  "spacingX": 8
+                                },
+                                "children": [
+                                  {
+                                    "type": "label",
+                                    "name": "CharacterDs3Main_span_37",
+                                    "width": 8,
+                                    "height": 8,
+                                    "styleSlot": "auto.character-ds3-main.characterds3main_span_37"
+                                  },
+                                  {
+                                    "type": "label",
+                                    "name": "CharacterDs3Main_span_38",
+                                    "text": "平原適性",
+                                    "styleSlot": "auto.character-ds3-main.characterds3main_span_38"
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "panel",
+                        "name": "CharacterDs3Main_div_37",
+                        "layout": {
+                          "type": "vertical",
+                          "paddingTop": 14,
+                          "paddingRight": 16,
+                          "paddingBottom": 14,
+                          "paddingLeft": 16,
+                          "spacingY": 10
+                        },
+                        "skinSlot": "auto.character-ds3-main.characterds3main_div_37",
+                        "children": [
+                          {
+                            "type": "container",
+                            "name": "CharacterDs3Main_div_38",
+                            "layout": {
+                              "type": "horizontal",
+                              "spacingX": 8
+                            },
+                            "children": [
+                              {
+                                "type": "label",
+                                "name": "CharacterDs3Main_span_39",
+                                "text": "血脈",
+                                "styleSlot": "auto.character-ds3-main.characterds3main_span_39"
+                              },
+                              {
+                                "type": "label",
+                                "name": "CharacterDs3Main_span_40",
+                                "text": "BLOODLINE",
+                                "styleSlot": "auto.character-ds3-main.characterds3main_span_40"
+                              }
+                            ],
+                            "skinLayers": [
+                              {
+                                "layerId": "CharacterDs3Main_div_39",
+                                "slotId": "auto.character-ds3-main.characterds3main_div_39",
+                                "zOrder": 0,
+                                "expand": false,
+                                "width": 4,
+                                "height": 16
+                              }
+                            ]
+                          },
+                          {
+                            "type": "container",
+                            "name": "CharacterDs3Main_div_40",
+                            "layout": {
+                              "type": "grid",
+                              "spacingX": 16,
+                              "spacingY": 16,
+                              "constraint": "fixed-col",
+                              "constraintNum": 2,
+                              "cellWidth": 120,
+                              "cellHeight": 96
+                            },
+                            "children": [
+                              {
+                                "type": "container",
+                                "name": "CharacterDs3Main_div_41",
+                                "layout": {
+                                  "type": "vertical",
+                                  "spacingY": 6
+                                },
+                                "children": [
+                                  {
+                                    "type": "panel",
+                                    "name": "CharacterDs3Main_div_42",
+                                    "width": 84,
+                                    "height": 84,
+                                    "layout": {
+                                      "type": "grid",
+                                      "cellHeight": 84
+                                    },
+                                    "skinSlot": "auto.character-ds3-main.characterds3main_div_42",
+                                    "children": [
+                                      {
+                                        "type": "composite",
+                                        "name": "CharacterDs3Main_svg_1",
+                                        "width": 72,
+                                        "height": 72,
+                                        "layout": {
+                                          "type": "vertical"
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "type": "label",
+                                    "name": "CharacterDs3Main_span_41",
+                                    "text": "命紋顯現",
+                                    "styleSlot": "auto.character-ds3-main.characterds3main_span_41"
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "container",
+                                "name": "CharacterDs3Main_div_43",
+                                "layout": {
+                                  "type": "vertical",
+                                  "spacingY": 8
+                                },
+                                "children": [
+                                  {
+                                    "type": "label",
+                                    "name": "CharacterDs3Main_div_44",
+                                    "text": "燕血脈",
+                                    "styleSlot": "auto.character-ds3-main.characterds3main_div_44"
+                                  },
+                                  {
+                                    "type": "container",
+                                    "name": "CharacterDs3Main_div_45",
+                                    "layout": {
+                                      "type": "horizontal",
+                                      "spacingX": 10
+                                    },
+                                    "children": [
+                                      {
+                                        "type": "label",
+                                        "name": "CharacterDs3Main_span_42",
+                                        "text": "覺醒傾向",
+                                        "styleSlot": "auto.character-ds3-main.characterds3main_span_42"
+                                      },
+                                      {
+                                        "type": "label",
+                                        "name": "CharacterDs3Main_span_43",
+                                        "text": "58%",
+                                        "styleSlot": "auto.character-ds3-main.characterds3main_span_43"
+                                      }
+                                    ],
+                                    "skinLayers": [
+                                      {
+                                        "layerId": "CharacterDs3Main_div_46",
+                                        "slotId": "auto.character-ds3-main.characterds3main_div_46",
+                                        "zOrder": 0,
+                                        "expand": false,
+                                        "height": 10
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "type": "container",
+                                    "name": "CharacterDs3Main_div_48",
+                                    "layout": {
+                                      "type": "horizontal",
+                                      "spacingX": 10
+                                    },
+                                    "children": [
+                                      {
+                                        "type": "label",
+                                        "name": "CharacterDs3Main_span_44",
+                                        "text": "祖紋",
+                                        "styleSlot": "auto.character-ds3-main.characterds3main_span_44"
+                                      },
+                                      {
+                                        "type": "label",
+                                        "name": "CharacterDs3Main_span_45",
+                                        "text": "已建立 14 人血統圖",
+                                        "styleSlot": "auto.character-ds3-main.characterds3main_span_45"
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "type": "container",
+                                    "name": "CharacterDs3Main_div_49",
+                                    "layout": {
+                                      "type": "horizontal",
+                                      "spacingX": 10
+                                    },
+                                    "children": [
+                                      {
+                                        "type": "label",
+                                        "name": "CharacterDs3Main_span_46",
+                                        "text": "印象",
+                                        "styleSlot": "auto.character-ds3-main.characterds3main_span_46"
+                                      },
+                                      {
+                                        "type": "label",
+                                        "name": "CharacterDs3Main_span_47",
+                                        "text": "燕地酒坊流傳",
+                                        "styleSlot": "auto.character-ds3-main.characterds3main_span_47"
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "panel",
+                        "name": "CharacterDs3Main_div_50",
+                        "layout": {
+                          "type": "vertical",
+                          "paddingTop": 14,
+                          "paddingRight": 18,
+                          "paddingBottom": 14,
+                          "paddingLeft": 18,
+                          "spacingY": 10
+                        },
+                        "skinSlot": "auto.character-ds3-main.characterds3main_div_50",
+                        "children": [
+                          {
+                            "type": "container",
+                            "name": "CharacterDs3Main_div_51",
+                            "layout": {
+                              "type": "horizontal",
+                              "spacingX": 8
+                            },
+                            "children": [
+                              {
+                                "type": "label",
+                                "name": "CharacterDs3Main_span_48",
+                                "text": "人物傳記",
+                                "styleSlot": "auto.character-ds3-main.characterds3main_span_48"
+                              },
+                              {
+                                "type": "label",
+                                "name": "CharacterDs3Main_span_49",
+                                "text": "BIOGRAPHY",
+                                "styleSlot": "auto.character-ds3-main.characterds3main_span_49"
+                              }
+                            ],
+                            "skinLayers": [
+                              {
+                                "layerId": "CharacterDs3Main_div_52",
+                                "slotId": "auto.character-ds3-main.characterds3main_div_52",
+                                "zOrder": 0,
+                                "expand": false,
+                                "width": 4,
+                                "height": 16
+                              }
+                            ]
+                          },
+                          {
+                            "type": "label",
+                            "name": "CharacterDs3Main_div_53",
+                            "text": "張飛，字翼德，幽州涿郡人。少年以屠豬賣酒為業，後於桃園與劉備、關羽義結金蘭，誓同生死。性烈如火，勇猛無雙——長坂橋前單槍匹馬，一聲怒吼令曹軍百萬退散；義釋嚴顏一事，足見其粗中有細，智勇兼備。然酒後失德，醉鞭督卒，終命喪部將之手，令千古扼腕。其一生豪烈，血脈中燕地武人的剛猛之氣，至今仍在後裔身上延燃。",
+                            "styleSlot": "auto.character-ds3-main.characterds3main_div_53"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "label",
+                        "name": "CharacterDs3Main_div_54",
+                        "text": "燕人武聖",
+                        "styleSlot": "auto.character-ds3-main.characterds3main_div_54"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "container",
+                "name": "CharacterDs3Main_div_55",
+                "width": 160,
+                "layout": {
+                  "type": "vertical",
+                  "spacingY": 20
+                },
+                "children": [
+                  {
+                    "type": "button",
+                    "name": "CharacterDs3Main_button_4",
+                    "width": 128,
+                    "height": 128,
+                    "_motionId": "character-ds3main_button_4.transition",
+                    "layout": {
+                      "type": "vertical"
+                    },
+                    "skinSlot": "auto.character-ds3-main.characterds3main_button_4",
+                    "children": [
+                      {
+                        "type": "label",
+                        "name": "CharacterDs3Main_span_50",
+                        "text": "將",
+                        "styleSlot": "auto.character-ds3-main.characterds3main_span_50"
+                      },
+                      {
+                        "type": "label",
+                        "name": "CharacterDs3Main_span_51",
+                        "text": "GEN",
+                        "styleSlot": "auto.character-ds3-main.characterds3main_span_51"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "button",
+                    "name": "CharacterDs3Main_button_5",
+                    "width": 128,
+                    "height": 128,
+                    "_motionId": "character-ds3main_button_5.transition",
+                    "layout": {
+                      "type": "vertical"
+                    },
+                    "skinSlot": "auto.character-ds3-main.characterds3main_button_5",
+                    "children": [
+                      {
+                        "type": "label",
+                        "name": "CharacterDs3Main_span_52",
+                        "text": "屬",
+                        "styleSlot": "auto.character-ds3-main.characterds3main_span_52"
+                      },
+                      {
+                        "type": "label",
+                        "name": "CharacterDs3Main_span_53",
+                        "text": "STAT",
+                        "styleSlot": "auto.character-ds3-main.characterds3main_span_53"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "button",
+                    "name": "CharacterDs3Main_button_6",
+                    "width": 128,
+                    "height": 128,
+                    "_motionId": "character-ds3main_button_6.transition",
+                    "layout": {
+                      "type": "vertical"
+                    },
+                    "skinSlot": "auto.character-ds3-main.characterds3main_button_6",
+                    "children": [
+                      {
+                        "type": "label",
+                        "name": "CharacterDs3Main_span_54",
+                        "text": "技",
+                        "styleSlot": "auto.character-ds3-main.characterds3main_span_54"
+                      },
+                      {
+                        "type": "label",
+                        "name": "CharacterDs3Main_span_55",
+                        "text": "TACT",
+                        "styleSlot": "auto.character-ds3-main.characterds3main_span_55"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "button",
+                    "name": "CharacterDs3Main_button_7",
+                    "width": 128,
+                    "height": 128,
+                    "_motionId": "character-ds3main_button_7.transition",
+                    "layout": {
+                      "type": "vertical"
+                    },
+                    "skinSlot": "auto.character-ds3-main.characterds3main_button_7",
+                    "children": [
+                      {
+                        "type": "label",
+                        "name": "CharacterDs3Main_span_56",
+                        "text": "命",
+                        "styleSlot": "auto.character-ds3-main.characterds3main_span_56"
+                      },
+                      {
+                        "type": "label",
+                        "name": "CharacterDs3Main_span_57",
+                        "text": "FATE",
+                        "styleSlot": "auto.character-ds3-main.characterds3main_span_57"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "button",
+                    "name": "CharacterDs3Main_button_8",
+                    "width": 128,
+                    "height": 128,
+                    "_motionId": "character-ds3main_button_8.transition",
+                    "layout": {
+                      "type": "vertical"
+                    },
+                    "skinSlot": "auto.character-ds3-main.characterds3main_button_8",
+                    "children": [
+                      {
+                        "type": "label",
+                        "name": "CharacterDs3Main_span_58",
+                        "text": "寶",
+                        "styleSlot": "auto.character-ds3-main.characterds3main_span_58"
+                      },
+                      {
+                        "type": "label",
+                        "name": "CharacterDs3Main_span_59",
+                        "text": "GEAR",
+                        "styleSlot": "auto.character-ds3-main.characterds3main_span_59"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "button",
+                    "name": "CharacterDs3Main_button_9",
+                    "width": 128,
+                    "height": 128,
+                    "_motionId": "character-ds3main_button_9.transition",
+                    "layout": {
+                      "type": "vertical"
+                    },
+                    "skinSlot": "auto.character-ds3-main.characterds3main_button_9",
+                    "children": [
+                      {
+                        "type": "label",
+                        "name": "CharacterDs3Main_span_60",
+                        "text": "適",
+                        "styleSlot": "auto.character-ds3-main.characterds3main_span_60"
+                      },
+                      {
+                        "type": "label",
+                        "name": "CharacterDs3Main_span_61",
+                        "text": "APT",
+                        "styleSlot": "auto.character-ds3-main.characterds3main_span_61"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "panel",
+            "name": "CharacterDs3Main_div_56",
+            "widget": {
+              "left": 0,
+              "right": 780,
+              "bottom": 0
+            },
+            "height": 0,
+            "_motionId": "character-ds3main_div_56.transition",
+            "skinSlot": "auto.character-ds3-main.characterds3main_div_56",
+            "children": [
+              {
+                "type": "container",
+                "name": "CharacterDs3Main_div_57",
+                "layout": {
+                  "type": "horizontal",
+                  "spacingX": 12,
+                  "paddingTop": 14,
+                  "paddingRight": 28,
+                  "paddingBottom": 8,
+                  "paddingLeft": 28
+                },
+                "children": [
+                  {
+                    "type": "label",
+                    "name": "CharacterDs3Main_h4_1",
+                    "text": "逸 事",
+                    "styleSlot": "auto.character-ds3-main.characterds3main_h4_1"
+                  },
+                  {
+                    "type": "label",
+                    "name": "CharacterDs3Main_span_62",
+                    "text": "Chronicles",
+                    "styleSlot": "auto.character-ds3-main.characterds3main_span_62"
+                  },
+                  {
+                    "type": "label",
+                    "name": "CharacterDs3Main_span_63",
+                    "height": 1,
+                    "styleSlot": "auto.character-ds3-main.characterds3main_span_63"
+                  }
+                ]
+              },
+              {
+                "type": "container",
+                "name": "CharacterDs3Main_div_58",
+                "height": 168,
+                "layout": {
+                  "type": "grid",
+                  "spacingX": 4,
+                  "spacingY": 4,
+                  "constraint": "fixed-col",
+                  "constraintNum": 6,
+                  "cellWidth": 160,
+                  "cellHeight": 168
+                },
+                "children": [
+                  {
+                    "type": "container",
+                    "name": "CharacterDs3Main_div_59",
+                    "_motionId": "character-ds3main_div_59.transition",
+                    "children": [
+                      {
+                        "type": "label",
+                        "name": "CharacterDs3Main_span_64",
+                        "widget": {
+                          "top": 0,
+                          "left": 0
+                        },
+                        "text": "01",
+                        "styleSlot": "auto.character-ds3-main.characterds3main_span_64"
+                      },
+                      {
+                        "type": "container",
+                        "name": "CharacterDs3Main_div_61",
+                        "widget": {
+                          "left": 0,
+                          "right": 0,
+                          "bottom": 0
+                        },
+                        "children": [
+                          {
+                            "type": "label",
+                            "name": "CharacterDs3Main_div_62",
+                            "text": "涿 郡 屠 戶",
+                            "styleSlot": "auto.character-ds3-main.characterds3main_div_62"
+                          },
+                          {
+                            "type": "label",
+                            "name": "CharacterDs3Main_span_65",
+                            "text": "Butcher of Zhuo",
+                            "styleSlot": "auto.character-ds3-main.characterds3main_span_65"
+                          }
+                        ]
+                      }
+                    ],
+                    "skinLayers": [
+                      {
+                        "layerId": "CharacterDs3Main_div_60",
+                        "slotId": "auto.character-ds3-main.characterds3main_div_60",
+                        "zOrder": 0,
+                        "expand": true
+                      }
+                    ]
+                  },
+                  {
+                    "type": "container",
+                    "name": "CharacterDs3Main_div_63",
+                    "_motionId": "character-ds3main_div_63.transition",
+                    "children": [
+                      {
+                        "type": "label",
+                        "name": "CharacterDs3Main_span_66",
+                        "widget": {
+                          "top": 0,
+                          "left": 0
+                        },
+                        "text": "02",
+                        "styleSlot": "auto.character-ds3-main.characterds3main_span_66"
+                      },
+                      {
+                        "type": "container",
+                        "name": "CharacterDs3Main_div_65",
+                        "widget": {
+                          "left": 0,
+                          "right": 0,
+                          "bottom": 0
+                        },
+                        "children": [
+                          {
+                            "type": "label",
+                            "name": "CharacterDs3Main_div_66",
+                            "text": "桃 園 結 義",
+                            "styleSlot": "auto.character-ds3-main.characterds3main_div_66"
+                          },
+                          {
+                            "type": "label",
+                            "name": "CharacterDs3Main_span_67",
+                            "text": "Oath of the Peach Garden",
+                            "styleSlot": "auto.character-ds3-main.characterds3main_span_67"
+                          }
+                        ]
+                      }
+                    ],
+                    "skinLayers": [
+                      {
+                        "layerId": "CharacterDs3Main_div_64",
+                        "slotId": "auto.character-ds3-main.characterds3main_div_64",
+                        "zOrder": 0,
+                        "expand": true
+                      }
+                    ]
+                  },
+                  {
+                    "type": "container",
+                    "name": "CharacterDs3Main_div_67",
+                    "_motionId": "character-ds3main_div_67.transition",
+                    "children": [
+                      {
+                        "type": "label",
+                        "name": "CharacterDs3Main_span_68",
+                        "widget": {
+                          "top": 0,
+                          "left": 0
+                        },
+                        "text": "03",
+                        "styleSlot": "auto.character-ds3-main.characterds3main_span_68"
+                      },
+                      {
+                        "type": "container",
+                        "name": "CharacterDs3Main_div_69",
+                        "widget": {
+                          "left": 0,
+                          "right": 0,
+                          "bottom": 0
+                        },
+                        "children": [
+                          {
+                            "type": "label",
+                            "name": "CharacterDs3Main_div_70",
+                            "text": "長 坂 怒 吼",
+                            "styleSlot": "auto.character-ds3-main.characterds3main_div_70"
+                          },
+                          {
+                            "type": "label",
+                            "name": "CharacterDs3Main_span_69",
+                            "text": "Roar at Changban",
+                            "styleSlot": "auto.character-ds3-main.characterds3main_span_69"
+                          }
+                        ]
+                      }
+                    ],
+                    "skinLayers": [
+                      {
+                        "layerId": "CharacterDs3Main_div_68",
+                        "slotId": "auto.character-ds3-main.characterds3main_div_68",
+                        "zOrder": 0,
+                        "expand": true
+                      }
+                    ]
+                  },
+                  {
+                    "type": "container",
+                    "name": "CharacterDs3Main_div_71",
+                    "_motionId": "character-ds3main_div_71.transition",
+                    "children": [
+                      {
+                        "type": "label",
+                        "name": "CharacterDs3Main_span_70",
+                        "widget": {
+                          "top": 0,
+                          "left": 0
+                        },
+                        "text": "04",
+                        "styleSlot": "auto.character-ds3-main.characterds3main_span_70"
+                      },
+                      {
+                        "type": "container",
+                        "name": "CharacterDs3Main_div_73",
+                        "widget": {
+                          "left": 0,
+                          "right": 0,
+                          "bottom": 0
+                        },
+                        "children": [
+                          {
+                            "type": "label",
+                            "name": "CharacterDs3Main_div_74",
+                            "text": "義 釋 嚴 顏",
+                            "styleSlot": "auto.character-ds3-main.characterds3main_div_74"
+                          },
+                          {
+                            "type": "label",
+                            "name": "CharacterDs3Main_span_71",
+                            "text": "Mercy to Yan Yan",
+                            "styleSlot": "auto.character-ds3-main.characterds3main_span_71"
+                          }
+                        ]
+                      }
+                    ],
+                    "skinLayers": [
+                      {
+                        "layerId": "CharacterDs3Main_div_72",
+                        "slotId": "auto.character-ds3-main.characterds3main_div_72",
+                        "zOrder": 0,
+                        "expand": true
+                      }
+                    ]
+                  },
+                  {
+                    "type": "container",
+                    "name": "CharacterDs3Main_div_75",
+                    "_motionId": "character-ds3main_div_75.transition",
+                    "children": [
+                      {
+                        "type": "label",
+                        "name": "CharacterDs3Main_span_72",
+                        "widget": {
+                          "top": 0,
+                          "left": 0
+                        },
+                        "text": "05",
+                        "styleSlot": "auto.character-ds3-main.characterds3main_span_72"
+                      },
+                      {
+                        "type": "container",
+                        "name": "CharacterDs3Main_div_77",
+                        "widget": {
+                          "left": 0,
+                          "right": 0,
+                          "bottom": 0
+                        },
+                        "children": [
+                          {
+                            "type": "label",
+                            "name": "CharacterDs3Main_div_78",
+                            "text": "醉 後 鞭 督",
+                            "styleSlot": "auto.character-ds3-main.characterds3main_div_78"
+                          },
+                          {
+                            "type": "label",
+                            "name": "CharacterDs3Main_span_73",
+                            "text": "Drunken Discipline",
+                            "styleSlot": "auto.character-ds3-main.characterds3main_span_73"
+                          }
+                        ]
+                      }
+                    ],
+                    "skinLayers": [
+                      {
+                        "layerId": "CharacterDs3Main_div_76",
+                        "slotId": "auto.character-ds3-main.characterds3main_div_76",
+                        "zOrder": 0,
+                        "expand": true
+                      }
+                    ]
+                  },
+                  {
+                    "type": "container",
+                    "name": "CharacterDs3Main_div_79",
+                    "_motionId": "character-ds3main_div_79.transition",
+                    "children": [
+                      {
+                        "type": "label",
+                        "name": "CharacterDs3Main_span_74",
+                        "widget": {
+                          "top": 0,
+                          "left": 0
+                        },
+                        "text": "06",
+                        "styleSlot": "auto.character-ds3-main.characterds3main_span_74"
+                      },
+                      {
+                        "type": "container",
+                        "name": "CharacterDs3Main_div_81",
+                        "widget": {
+                          "left": 0,
+                          "right": 0,
+                          "bottom": 0
+                        },
+                        "children": [
+                          {
+                            "type": "label",
+                            "name": "CharacterDs3Main_div_82",
+                            "text": "燕 血 傳 承",
+                            "styleSlot": "auto.character-ds3-main.characterds3main_div_82"
+                          },
+                          {
+                            "type": "label",
+                            "name": "CharacterDs3Main_span_75",
+                            "text": "Legacy of Yan Blood",
+                            "styleSlot": "auto.character-ds3-main.characterds3main_span_75"
+                          }
+                        ]
+                      }
+                    ],
+                    "skinLayers": [
+                      {
+                        "layerId": "CharacterDs3Main_div_80",
+                        "slotId": "auto.character-ds3-main.characterds3main_div_80",
+                        "zOrder": 0,
+                        "expand": true
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "label",
+            "name": "CharacterDs3Main_div_83",
+            "widget": {
+              "bottom": 0
+            },
+            "_motionId": "character-ds3main_div_83.transition",
+            "text": "▲ 逸 事 ▲",
+            "styleSlot": "auto.character-ds3-main.characterds3main_div_83"
+          }
+        ]
+      }
+    ]
+  }
+}

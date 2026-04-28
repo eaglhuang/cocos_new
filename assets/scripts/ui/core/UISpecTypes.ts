@@ -56,10 +56,26 @@ export interface WidgetDef {
 export interface LayoutDef {
     type: 'horizontal' | 'vertical' | 'grid';
     spacing?: number;
+    spacingX?: number;
+    spacingY?: number;
     paddingLeft?: number;
     paddingRight?: number;
     paddingTop?: number;
     paddingBottom?: number;
+    /** Grid / flex 的主軸起始方向。 */
+    startAxis?: 'horizontal' | 'vertical';
+    /** Grid 固定欄數 / 固定列數約束。 */
+    constraint?: 'none' | 'fixed-col' | 'fixed-row';
+    /** 搭配 constraint 使用的限定值。 */
+    constraintNum?: number;
+    /** Grid cell 寬度。 */
+    cellWidth?: number;
+    /** Grid cell 高度。 */
+    cellHeight?: number;
+    /** 水平排列方向。 */
+    horizontalDirection?: 'left-to-right' | 'right-to-left';
+    /** 垂直排列方向。 */
+    verticalDirection?: 'top-to-bottom' | 'bottom-to-top';
     /**
      * 子節點尺寸策略（Cocos Layout.ResizeMode）：
      *   - 'none'：Layout 僅排位，不調整子節點尺寸（預設）
@@ -68,6 +84,18 @@ export interface LayoutDef {
      * Unity 對照：ContentSizeFitter / LayoutGroup.childForceExpand
      */
     resizeMode?: 'none' | 'container' | 'children';
+}
+
+/** ScrollBar 設定（scroll-list 使用） */
+export interface ScrollBarDef {
+    width?: number;
+    right?: number;
+    top?: number;
+    bottom?: number;
+    autoHide?: boolean;
+    autoHideTime?: number;
+    trackSkinSlot?: string;
+    thumbSkinSlot?: string;
 }
 
 /** 過渡動畫定義（保留參數，UIPreviewBuilder 提供預設值） */
@@ -104,6 +132,12 @@ export interface SkinLayerDef {
     zOrder: number;
     /** true = 此圖層自動展開填滿父節點尺寸（預設 true） */
     expand?: boolean;
+    /** 指定圖層自己的 Widget 幾何；用於吸收 HTML overlay 子節點。 */
+    widget?: WidgetDef;
+    /** 圖層指定寬度；未設定時依 expand / sprite 大小回推。 */
+    width?: number;
+    /** 圖層指定高度；未設定時依 expand / sprite 大小回推。 */
+    height?: number;
     /** 混合模式 */
     blendMode?: 'alpha' | 'overlay' | 'multiply';
     /** 圖層不透明度 0~1 */
@@ -189,6 +223,8 @@ export interface UILayoutNodeSpec {
     onClick?: string;
     /** 節點初始 active 狀態（預設 true；false = 隱藏，由 TS 控制顯示）*/
     active?: boolean;
+    /** 節點整體透明度；0~1 視為比例，>1 視為 0~255 alpha。 */
+    opacity?: number;
     /** 節點識別 ID（文件用途；不被 UIPreviewBuilder 解析） */
     id?: string;
     /** 按鈕/圖片是否可互動（Button.interactable） */
@@ -260,6 +296,8 @@ export interface UILayoutNodeSpec {
     $ref?: string;
     /** 列表項目模板（type=scroll-list 時使用） */
     itemTemplate?: UILayoutNodeSpec;
+    /** ScrollBar 設定（type=scroll-list 時使用） */
+    scrollbar?: ScrollBarDef;
     /** 按鈕群組項目（type=button-group 時使用） */
     items?: ButtonGroupItem[];
 }
@@ -344,6 +382,11 @@ export interface SkinLabelSlot {
 export interface SkinColorRectSlot {
     kind: 'color-rect';
     color: string;
+    alpha?: number;
+    opacity?: number;
+    cornerRadius?: number;
+    borderColor?: string;
+    borderWidth?: number;
 }
 
 /** Skin Slot 聯合型別 */

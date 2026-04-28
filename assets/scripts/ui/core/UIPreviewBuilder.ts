@@ -246,8 +246,8 @@ export class UIPreviewBuilder extends Component {
         UIPreviewDiagnostics.populateListStart(listPath, data.length);
         const contentT = content.getComponent(UITransform);
         // Row 子欄位的百分比間距應相對於 Row 內容區（扣掉 Row 自身的 paddingLeft/paddingRight）。
-        // Content.width は Layout.CONTAINER+no-children pass で paddingL+R だけに縮んでしまう。
-        // viewPort (view) は Widget(all=0) で DataList 全体を埋めるため post-Widget 後も正確。
+        // Content.width 在 Layout.CONTAINER 且尚未建立子節點時，可能只剩 paddingLeft + paddingRight。
+        // viewPort（view）本身是 Widget(all=0) 撐滿 DataList，post-Widget 後尺寸會更可靠。
         const viewNode = listNode.getChildByName('view');
         const viewT    = viewNode?.getComponent(UITransform);
         const listT    = listNode.getComponent(UITransform);
@@ -280,16 +280,21 @@ export class UIPreviewBuilder extends Component {
         node.layer   = parent.layer;  // 繼承 UI_2D layer，確保 2D 攝影機下可見
         node.parent  = parent;
 
+        const flowChildInLayout = this._isLayoutFlowChild(spec, parent);
+        const widgetDef = flowChildInLayout ? undefined : spec.widget;
+        const parentLayout = parent.getComponent(Layout);
+        const parentLayoutType = parentLayout?.type;
+
         if (spec.active === false) node.active = false;
 
         // UITransform（Unity 對照：RectTransform）
         const transform = node.addComponent(UITransform);
-        const w = resolveSize(spec.width,  parentWidth);
-        const h = resolveSize(spec.height, parentHeight);
+        const w = this._resolveNodeSize(spec.width, parentWidth, flowChildInLayout, spec, 'width', parentLayoutType, parentWidth);
+        const h = this._resolveNodeSize(spec.height, parentHeight, flowChildInLayout, spec, 'height', parentLayoutType, w || parentWidth);
         transform.setContentSize(w, h);
 
         // Widget 對齊（Unity 對照：RectTransform anchor / stretch）
-        if (spec.widget) this.layoutBuilder.applyWidget(node, spec.widget, parentWidth, parentHeight);
+        if (widgetDef) this.layoutBuilder.applyWidget(node, widgetDef, parentWidth, parentHeight);
 
         // Layout（Unity 對照：LayoutGroup 系列元件）
         const isScrollListRoot = spec.type === 'scroll-list' || spec.type === 'scroll-view';
@@ -309,7 +314,6 @@ export class UIPreviewBuilder extends Component {
             case 'scroll-view': {
                 let scrollW = w;
                 let scrollH = h;
-                const widgetDef = spec.widget;
                 if (widgetDef) {
                     if (widgetDef.left !== undefined && widgetDef.right !== undefined) {
                         scrollW = Math.max(
@@ -342,6 +346,8 @@ export class UIPreviewBuilder extends Component {
             await this._applySkinLayers(node, spec.skinLayers);
         }
 
+        this._applySpecOpacity(node, spec.opacity);
+
         // lazySlot：延遲載入插槽 — 建立空容器後停止遞迴（由 CompositePanel._onLazySlotCreated 接管）
         if (spec.lazySlot === true) {
             this._onLazySlotCreated(spec, node, w, h);
@@ -357,7 +363,6 @@ export class UIPreviewBuilder extends Component {
             const nodeT      = node.getComponent(UITransform);
             let effectiveW = nodeT && nodeT.width  > 0 ? nodeT.width  : w;
             let effectiveH = nodeT && nodeT.height > 0 ? nodeT.height : h;
-            const widgetDef = spec.widget;
             if (widgetDef) {
                 if (widgetDef.left !== undefined && widgetDef.right !== undefined) {
                     effectiveW = Math.max(
@@ -387,9 +392,11 @@ export class UIPreviewBuilder extends Component {
                     0,
                 );
             }
+            const childWidthAllocations = this._allocateHorizontalFlowWidths(spec, effectiveW);
             for (const child of spec.children) {
-                await this._buildNode(child, node, effectiveW, effectiveH);
+                await this._buildNode(child, node, childWidthAllocations.get(child) ?? effectiveW, effectiveH);
             }
+            this._resizeFlowNodeToContent(node, spec, flowChildInLayout);
         }
 
         return node;
@@ -404,6 +411,225 @@ export class UIPreviewBuilder extends Component {
      */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     protected _onLazySlotCreated(_spec: UILayoutNodeSpec, _node: Node, _w: number, _h: number): void { /* no-op */ }
+
+    private _allocateHorizontalFlowWidths(parentSpec: UILayoutNodeSpec, availableWidth: number): Map<UILayoutNodeSpec, number> {
+        const allocations = new Map<UILayoutNodeSpec, number>();
+        if (!parentSpec.children || parentSpec.layout?.type !== 'horizontal' || availableWidth <= 0) {
+            return allocations;
+        }
+
+        const flowChildren = parentSpec.children.filter(child =>
+            !child.widget || this._isSyntheticFillWidget(child.widget)
+        );
+        if (flowChildren.length === 0) return allocations;
+
+        const spacing = parentSpec.layout.spacingX ?? parentSpec.layout.spacing ?? 0;
+        const totalSpacing = Math.max(0, flowChildren.length - 1) * spacing;
+        let fixedWidth = 0;
+        const flexibleChildren: UILayoutNodeSpec[] = [];
+        for (const child of flowChildren) {
+            if (child.width !== undefined) {
+                fixedWidth += resolveSize(child.width, availableWidth);
+            } else {
+                flexibleChildren.push(child);
+            }
+        }
+        if (flexibleChildren.length === 0) return allocations;
+
+        const flexibleWidth = Math.max(1, (availableWidth - fixedWidth - totalSpacing) / flexibleChildren.length);
+        for (const child of flexibleChildren) {
+            allocations.set(child, flexibleWidth);
+        }
+        return allocations;
+    }
+
+    private _isLayoutFlowChild(spec: UILayoutNodeSpec, parent: Node): boolean {
+        const parentLayout = parent.getComponent(Layout);
+        if (!parentLayout || parentLayout.type === Layout.Type.NONE) {
+            return false;
+        }
+        if (!spec.widget) {
+            return true;
+        }
+        return this._isSyntheticFillWidget(spec.widget);
+    }
+
+    private _isSyntheticFillWidget(widgetDef: UILayoutNodeSpec['widget'] | undefined): boolean {
+        if (!widgetDef || typeof widgetDef !== 'object' || Array.isArray(widgetDef)) {
+            return false;
+        }
+
+        const normalized = {
+            top: widgetDef.top,
+            left: widgetDef.left,
+            right: widgetDef.right,
+            bottom: widgetDef.bottom,
+            hCenter: (widgetDef as any).hCenter,
+            vCenter: (widgetDef as any).vCenter,
+        };
+
+        return normalized.top === 0
+            && normalized.left === 0
+            && normalized.right === 0
+            && normalized.bottom === 0
+            && normalized.hCenter === undefined
+            && normalized.vCenter === undefined;
+    }
+
+    private _resolveNodeSize(
+        rawValue: number | string | undefined,
+        parentSize: number,
+        flowChildInLayout: boolean,
+        spec?: UILayoutNodeSpec,
+        axis?: 'width' | 'height',
+        parentLayoutType?: number,
+        availableWidth?: number,
+    ): number {
+        if (rawValue !== undefined) {
+            return resolveSize(rawValue, parentSize);
+        }
+        if (flowChildInLayout && spec && parentLayoutType === Layout.Type.VERTICAL && axis === 'width') {
+            return Math.max(1, parentSize);
+        }
+        if (flowChildInLayout && spec && parentLayoutType === Layout.Type.HORIZONTAL && axis === 'width') {
+            return Math.max(1, parentSize);
+        }
+        if (flowChildInLayout && spec && axis) {
+            return this._estimateFlowNodeSize(spec, axis, availableWidth);
+        }
+        return flowChildInLayout ? 0 : parentSize;
+    }
+
+    private _estimateFlowNodeSize(spec: UILayoutNodeSpec, axis: 'width' | 'height', availableWidth?: number): number {
+        if (spec.type !== 'label' && spec.type !== 'resource-counter') {
+            return 0;
+        }
+
+        const style = spec.styleSlot ? this.skinResolver.getLabelStyle(spec.styleSlot) : null;
+        const fontSize = style?.fontSize ?? 16;
+        const lineHeight = style?.lineHeight ?? Math.ceil(fontSize * 1.4);
+        const text = this._resolveSpecText(spec);
+        const slot = spec.styleSlot ? this.skinResolver.getSlot(spec.styleSlot) : null;
+        const letterSpacing = typeof (slot as any)?.letterSpacing === 'number'
+            ? (slot as any).letterSpacing
+            : 0;
+        const chars = Array.from(text || ' ');
+        const textWidth = chars.reduce((sum, char) => {
+            const isWideChar = char.charCodeAt(0) > 255;
+            return sum + (isWideChar ? fontSize : fontSize * 0.62);
+        }, 0);
+        const spacingWidth = Math.max(0, chars.length - 1) * letterSpacing;
+        const estimatedWidth = Math.max(1, Math.ceil(textWidth + spacingWidth + 2));
+
+        if (axis === 'height') {
+            const wrapWidth = Math.max(0, availableWidth ?? 0);
+            if (wrapWidth > 0 && estimatedWidth > wrapWidth) {
+                const lines = Math.max(1, Math.ceil(estimatedWidth / wrapWidth));
+                return Math.max(1, Math.ceil(lines * lineHeight));
+            }
+            return Math.max(1, lineHeight);
+        }
+
+        return estimatedWidth;
+    }
+
+    private _resolveSpecText(spec: UILayoutNodeSpec): string {
+        if (spec.textKey) {
+            return this.i18nStrings[spec.textKey] ?? spec.textKey;
+        }
+        if ((spec as any).text !== undefined) {
+            return String((spec as any).text);
+        }
+        if (spec.bind) {
+            return `{${spec.bind}}`;
+        }
+        return '';
+    }
+
+    private _resizeFlowNodeToContent(node: Node, spec: UILayoutNodeSpec, flowChildInLayout: boolean): void {
+        if (!flowChildInLayout || (spec.width !== undefined && spec.height !== undefined)) {
+            return;
+        }
+
+        const transform = node.getComponent(UITransform);
+        if (!transform) return;
+
+        const activeChildren = node.children.filter(child =>
+            child.active &&
+            child.getComponent(UITransform) &&
+            !child.name.startsWith('skinLayer_')
+        );
+        if (activeChildren.length === 0) return;
+
+        const layout = node.getComponent(Layout);
+        let contentWidth = 0;
+        let contentHeight = 0;
+
+        if (layout && layout.type === Layout.Type.GRID) {
+            const itemCount = activeChildren.length;
+            const fixedCols = layout.constraint === Layout.Constraint.FIXED_COL && layout.constraintNum > 0;
+            const fixedRows = layout.constraint === Layout.Constraint.FIXED_ROW && layout.constraintNum > 0;
+            const columns = fixedCols
+                ? layout.constraintNum
+                : fixedRows
+                    ? Math.max(1, Math.ceil(itemCount / layout.constraintNum))
+                    : Math.max(1, itemCount);
+            const rows = fixedRows
+                ? layout.constraintNum
+                : Math.max(1, Math.ceil(itemCount / columns));
+
+            contentWidth = columns * layout.cellSize.width
+                + Math.max(0, columns - 1) * layout.spacingX
+                + layout.paddingLeft
+                + layout.paddingRight;
+            contentHeight = rows * layout.cellSize.height
+                + Math.max(0, rows - 1) * layout.spacingY
+                + layout.paddingTop
+                + layout.paddingBottom;
+        } else if (layout && layout.type !== Layout.Type.NONE) {
+            const isVertical = layout.type === Layout.Type.VERTICAL;
+            const spacing = isVertical ? layout.spacingY : layout.spacingX;
+            const spacingTotal = Math.max(0, activeChildren.length - 1) * spacing;
+            for (const child of activeChildren) {
+                const childTransform = child.getComponent(UITransform)!;
+                if (isVertical) {
+                    contentWidth = Math.max(contentWidth, childTransform.width);
+                    contentHeight += childTransform.height;
+                } else {
+                    contentWidth += childTransform.width;
+                    contentHeight = Math.max(contentHeight, childTransform.height);
+                }
+            }
+            if (isVertical) {
+                contentHeight += spacingTotal + layout.paddingTop + layout.paddingBottom;
+                contentWidth += layout.paddingLeft + layout.paddingRight;
+            } else {
+                contentWidth += spacingTotal + layout.paddingLeft + layout.paddingRight;
+                contentHeight += layout.paddingTop + layout.paddingBottom;
+            }
+        } else {
+            for (const child of activeChildren) {
+                const childTransform = child.getComponent(UITransform)!;
+                contentWidth = Math.max(contentWidth, childTransform.width);
+                contentHeight = Math.max(contentHeight, childTransform.height);
+            }
+        }
+
+        const nextWidth = spec.width === undefined ? Math.max(1, Math.ceil(Math.max(contentWidth, transform.width))) : transform.width;
+        const nextHeight = spec.height === undefined ? Math.max(1, Math.ceil(Math.max(contentHeight, transform.height))) : transform.height;
+        transform.setContentSize(nextWidth, nextHeight);
+    }
+
+    private _applySpecOpacity(node: Node, rawOpacity: number | undefined): void {
+        if (typeof rawOpacity !== 'number' || Number.isNaN(rawOpacity)) {
+            return;
+        }
+
+        const resolvedOpacity = rawOpacity <= 1 ? Math.round(rawOpacity * 255) : Math.round(rawOpacity);
+        const clampedOpacity = Math.max(0, Math.min(255, resolvedOpacity));
+        const opacity = node.getComponent(UIOpacity) ?? node.addComponent(UIOpacity);
+        opacity.opacity = clampedOpacity;
+    }
 
     /**
      * composite-image 節點：將 compositeImageLayers 依 zOrder 排序後，
@@ -452,34 +678,53 @@ export class UIPreviewBuilder extends Component {
             console.warn(`[UIPreviewBuilder] skinLayers count (${skinLayers.length}) exceeds recommended max 12`);
         }
 
-        const sorted = [...skinLayers].sort((a, b) => a.zOrder - b.zOrder);
+        const sorted = [...skinLayers].sort((a, b) => this._resolveSkinLayerZOrder(a) - this._resolveSkinLayerZOrder(b));
         const ut = node.getComponent(UITransform);
+        const parentWidth = ut ? ut.width : 0;
+        const parentHeight = ut ? ut.height : 0;
 
         for (const layer of sorted) {
-            const frame = await this.skinResolver.getSpriteFrame(layer.slotId);
-            if (!frame) continue;
-
             const child = new Node(`skinLayer_${layer.layerId}`);
             node.addChild(child);
 
             const childT = child.addComponent(UITransform);
-            if (layer.expand && ut) {
-                childT.width  = ut.width;
+            const hasExplicitGeometry = layer.width !== undefined || layer.height !== undefined;
+            if (hasExplicitGeometry) {
+                childT.width = layer.width ?? parentWidth;
+                childT.height = layer.height ?? parentHeight;
+            } else if (layer.expand !== false && ut) {
+                childT.width = ut.width;
                 childT.height = ut.height;
             } else {
-                childT.width  = frame.width;
-                childT.height = frame.height;
+                const frame = await this.skinResolver.getSpriteFrame(layer.slotId);
+                childT.width = frame ? frame.width : parentWidth;
+                childT.height = frame ? frame.height : parentHeight;
             }
 
-            const sprite       = child.addComponent(Sprite);
-            sprite.sizeMode    = Sprite.SizeMode.CUSTOM;
-            sprite.spriteFrame = frame;
+            if (layer.widget) {
+                this.layoutBuilder.applyWidget(child, layer.widget, parentWidth, parentHeight);
+            } else if (layer.expand !== false) {
+                this.layoutBuilder.applyWidget(child, { top: 0, left: 0, right: 0, bottom: 0 }, parentWidth, parentHeight);
+            }
+
+            const applied = await this.styleBuilder.applyBackgroundSkin(child, layer.slotId);
+            if (!applied) {
+                child.destroy();
+                continue;
+            }
 
             if (layer.opacity !== undefined && layer.opacity < 1) {
                 const op = child.addComponent(UIOpacity);
                 op.opacity = Math.round(layer.opacity * 255);
             }
         }
+    }
+
+    private _resolveSkinLayerZOrder(layer: SkinLayerDef): number {
+        const legacyOrder = (layer as SkinLayerDef & { order?: number }).order;
+        if (typeof layer.zOrder === 'number' && !Number.isNaN(layer.zOrder)) return layer.zOrder;
+        if (typeof legacyOrder === 'number' && !Number.isNaN(legacyOrder)) return legacyOrder;
+        return 0;
     }
 
     /**

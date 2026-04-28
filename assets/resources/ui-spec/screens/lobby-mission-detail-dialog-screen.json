@@ -1,0 +1,46 @@
+{
+  "id": "lobby-mission-detail-dialog-screen",
+  "version": 1,
+  "uiId": "LobbyMissionDetailDialog",
+  "layer": "Popup",
+  "bundle": "lobby_ui",
+  "layout": "lobby-mission-detail-dialog-main",
+  "skin": "lobby-mission-detail-dialog-default",
+  "contentRequirements": {
+    "schemaId": "lobby-mission-detail-dialog-content",
+    "familyId": "lobby-mission-detail-dialog",
+    "requiredFields": [
+      "missionTypeLabel",
+      "missionTitle",
+      "missionBrief",
+      "intelRevealPercent",
+      "intelBody",
+      "intelFogVisible",
+      "intelHintLabel",
+      "selectedGeneralLabel",
+      "volunteerBadgeVisible",
+      "volunteerBadgeLabel",
+      "generalSelectHintLabel",
+      "costFoodValueLabel",
+      "costFoodRatio",
+      "costTroopValueLabel",
+      "costTroopRatio",
+      "costSilverValueLabel",
+      "costSilverRatio",
+      "costTimeValueLabel",
+      "costTimeRatio",
+      "rewardBaseLabel",
+      "rewardPerfectLabel",
+      "aiDelegateChecked",
+      "aiDelegateHintLabel"
+    ]
+  },
+  "content": {
+    "source": "lobby-mission-detail-dialog-states-v1",
+    "state": "smoke-military-partial"
+  },
+  "validation": {
+    "devices": ["phone-16-9", "phone-19_5-9", "tablet-4-3"],
+    "allowMissingSkin": false
+  }
+}

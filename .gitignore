@@ -32,6 +32,24 @@ temp.ts
 temp_workspace/
 test-parser*.js
 
+# Local agent / workspace scratch
+.claude/settings.local.json
+.tmp_agent_encoding_check.txt
+Design System 2/
+Design System 3/
+*.zip
+Design System/design_handoff/PLAN.md
+server/npc-brain/pipelines/sanguo-rag/tmp/
+
+#//////////////////////////
+# Python
+#//////////////////////////
+.env
+.venv/
+__pycache__/
+*.pyc
+.cache/
+
 #//////////////////////////
 # Generated QA / Preview Artifacts
 #//////////////////////////

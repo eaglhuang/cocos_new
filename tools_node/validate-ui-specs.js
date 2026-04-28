@@ -16,6 +16,7 @@
 const fs = require('fs');
 const path = require('path');
 const config = require('./lib/project-config');
+const { isKnownKind } = require('./lib/dom-to-ui/skin-kinds');
 
 function getArgValue(flag) {
     const index = process.argv.indexOf(flag);
@@ -63,6 +64,36 @@ function listJsonFiles(dir) {
     return fs.readdirSync(dir)
         .filter((file) => file.endsWith('.json'))
         .map((file) => path.join(dir, file));
+}
+
+// Canonical spec files: <basename>.json with no extra dots in basename.
+// Sidecars like *.compare-meta.json, *.runtime-route.json, *.tab-routing.json,
+// *.composite.json, etc. are excluded.
+function listCanonicalSpecFiles(dir) {
+    return listJsonFiles(dir).filter((p) => !path.basename(p, '.json').includes('.'));
+}
+
+function collectRuntimeRouteKnownScreenIds(screenDir, canonicalScreenIds) {
+    const screenSet = new Set(canonicalScreenIds);
+    for (const filePath of listJsonFiles(screenDir)) {
+        if (!filePath.endsWith('.screen.json')) {
+            continue;
+        }
+        try {
+            const json = readJson(filePath);
+            const screenId = typeof json.screenId === 'string'
+                ? json.screenId.trim()
+                : typeof json.id === 'string'
+                    ? json.id.trim()
+                    : '';
+            if (screenId.length > 0) {
+                screenSet.add(screenId);
+            }
+        } catch (_) {
+            // 交給原本的主流程處理 JSON 解析；runtime-route 名單收集只做 best-effort。
+        }
+    }
+    return screenSet;
 }
 
 function readJson(filePath) {
@@ -311,8 +342,10 @@ function validateLayoutStrict(layoutJson, filePath, allSkinSlots, failures, warn
         if (node.type === 'container') {
             const hasChildren = Array.isArray(node.children) && node.children.length > 0;
             const hasSkinSlot = typeof node.skinSlot === 'string' && node.skinSlot.trim().length > 0;
-            if (!hasChildren && !hasSkinSlot) {
-                strictFail('no-empty-container', `${loc} 是空容器（無子節點且無 skinSlot）`, failures, exceptions);
+            const hasSkinLayers = Array.isArray(node.skinLayers) && node.skinLayers.length > 0;
+            const hasCompositeImageLayers = Array.isArray(node.compositeImageLayers) && node.compositeImageLayers.length > 0;
+            if (!hasChildren && !hasSkinSlot && !hasSkinLayers && !hasCompositeImageLayers) {
+                strictFail('no-empty-container', `${loc} 是空容器（無子節點且無 skinSlot / skinLayers / compositeImageLayers）`, failures, exceptions);
             }
         }
 
@@ -415,8 +448,10 @@ function validateLayoutStrict(layoutJson, filePath, allSkinSlots, failures, warn
             }
         }
 
-        // R21: no-duplicate-widget-siblings — 同一 parent 下不允許超過 2 個節點有完全相同的 widget
-        if (Array.isArray(node.children) && node.children.length > 2) {
+        // R21: no-duplicate-widget-siblings — 同一 parent 下不允許超過 2 個節點有完全相同的 widget。
+        // 例外：若 parent 已宣告 layout，子節點同 widget 通常只是交由 Layout 做合法堆疊，不代表視覺重疊。
+        const parentUsesLayout = !!(node.layout && typeof node.layout === 'object' && node.layout.type && node.layout.type !== 'none');
+        if (!parentUsesLayout && Array.isArray(node.children) && node.children.length > 2) {
             const widgetMap = new Map();
             for (const child of node.children) {
                 if (child.widget && typeof child.widget === 'object') {
@@ -427,7 +462,11 @@ function validateLayoutStrict(layoutJson, filePath, allSkinSlots, failures, warn
                 }
             }
             for (const [key, names] of widgetMap) {
+                const isTabRouteGroup = names.length > 1 && names.every((name) => /^Tab[A-Z]/.test(name));
                 if (names.length > 2) {
+                    if (isTabRouteGroup) {
+                        continue;
+                    }
                     strictWarn('no-duplicate-widget-siblings',
                         `${loc} 下有 ${names.length} 個子節點共用相同 widget ${key}：${names.join(', ')}（疑似手動疊加，建議改用 skinLayers）`,
                         warnings, exceptions);
@@ -506,6 +545,23 @@ function validateLayoutStrict(layoutJson, filePath, allSkinSlots, failures, warn
             if (!hasDefault) {
                 strictWarn('lazy-slot-has-fragment',
                     `${loc} lazySlot 節點缺少 defaultFragment 宣告，可能造成 CompositePanel 初始化時白版面`,
+                    warnings, exceptions);
+            }
+        }
+
+        // R27: button-squat-aspect — button 高寬比不得低於 0.25
+        // 目的：防止 Canvas 座標系換算遺漏導致高度縮水 29%（M48-pre-f Pull1Btn/Pull10Btn 事故）。
+        // 理論依據：比例是座標系無關的，visual_h/visual_w = canvas_h/canvas_w，可直接在 canvas units 上比對。
+        if (node.type === 'button' &&
+            typeof node.width  === 'number' && node.width  > 0 &&
+            typeof node.height === 'number' && node.height > 0) {
+            const ratio = node.height / node.width;
+            if (ratio < 0.25) {
+                strictWarn('button-squat-aspect',
+                    `${loc} button 高寬比 ${ratio.toFixed(3)} < 0.25` +
+                    `（height=${node.height}, width=${node.width}），` +
+                    `可能是 HTML visual px 未換算為 Canvas units（正確公式：html_px × 1920/1366），` +
+                    `請確認 height 欄位已乘以縮放係數`,
                     warnings, exceptions);
             }
         }
@@ -815,7 +871,7 @@ const skinJsons = new Map();   // skinId → parsed JSON（R24 等 strict 規則
 const allSkinSlots = new Set();
 const screens = [];
 
-for (const filePath of listJsonFiles(layoutDir)) {
+for (const filePath of listCanonicalSpecFiles(layoutDir)) {
     try {
         const json = readJson(filePath);
         const okId = assertNonEmptyString(json.id, 'layout.id', filePath, failures);
@@ -845,7 +901,7 @@ for (const filePath of listJsonFiles(layoutDir)) {
     }
 }
 
-for (const filePath of listJsonFiles(skinDir)) {
+for (const filePath of listCanonicalSpecFiles(skinDir)) {
     try {
         const json = readJson(filePath);
         const okId = assertNonEmptyString(json.id, 'skin.id', filePath, failures);
@@ -862,6 +918,17 @@ for (const filePath of listJsonFiles(skinDir)) {
                 skinJsons.set(json.id, json);
                 if (json.slots && typeof json.slots === 'object') {
                     for (const key of Object.keys(json.slots)) { allSkinSlots.add(key); }
+                }
+            }
+        }
+        if (json.slots && typeof json.slots === 'object' && !Array.isArray(json.slots)) {
+            for (const [slotId, slot] of Object.entries(json.slots)) {
+                if (!slot || typeof slot !== 'object') continue;
+                if (typeof slot.$ref === 'string' && !slot.kind) continue;
+                if (typeof slot.kind !== 'string' || slot.kind.trim().length === 0) {
+                    fail(`${relative(filePath)} - skin slot "${slotId}" 缺少 kind`, failures);
+                } else if (!isKnownKind(slot.kind)) {
+                    fail(`[forbidden-skin-kind] ${relative(filePath)} - skin slot "${slotId}" kind="${slot.kind}" 不在允許列表`, failures);
                 }
             }
         }
@@ -916,7 +983,7 @@ if (strictMode) {
     // R25: specVersion forward-compat guard — screen / layout specVersion 超過引擎支援上限
     // 目的：提早偵測「此規格檔需要更新版引擎」的前向不相容問題
     const CURRENT_SPEC_VERSION = 1;
-    for (const filePath of listJsonFiles(screenDir)) {
+    for (const filePath of listCanonicalSpecFiles(screenDir)) {
         try {
             const json = readJson(filePath);
             const screens = Array.isArray(json.screens) ? json.screens : [json];
@@ -929,7 +996,9 @@ if (strictMode) {
             }
         } catch (_) { /* 解析錯誤已在前面收集 */ }
     }
-    for (const filePath of listJsonFiles(layoutDir)) {
+    for (const filePath of listCanonicalSpecFiles(layoutDir)) {
+        const baseName = path.basename(filePath, '.json');
+        if (baseName.includes('.')) continue;
         try {
             const json = readJson(filePath);
             if (typeof json.specVersion === 'number' && json.specVersion > CURRENT_SPEC_VERSION) {
@@ -947,7 +1016,7 @@ const contracts = (checkContentContract || strictMode) ? loadContracts(failures)
 const recipes = loadRecipes(failures);
 
 // skin recipeRef 驗證（第二輪，現在 recipes 已就緒）
-for (const filePath of listJsonFiles(skinDir)) {
+for (const filePath of listCanonicalSpecFiles(skinDir)) {
     try {
         const json = readJson(filePath);
         if (json.recipeRef) {
@@ -956,7 +1025,7 @@ for (const filePath of listJsonFiles(skinDir)) {
     } catch (_) { /* JSON 解析錯誤已在第一輪收集 */ }
 }
 
-for (const filePath of listJsonFiles(screenDir)) {
+for (const filePath of listCanonicalSpecFiles(screenDir)) {
     try {
         const json = readJson(filePath);
         const okId = assertNonEmptyString(json.id, 'screen.id', filePath, failures);
@@ -1009,6 +1078,59 @@ for (const filePath of listJsonFiles(screenDir)) {
         }
     } catch (error) {
         fail(`${relative(filePath)} - JSON 解析失敗：${error.message}`, failures);
+    }
+}
+
+// R29 runtime-route-sidecar — Phase B (M31): scan *.runtime-route.json sidecars
+//   - referenced screenId / fallbackScreen / variants[*] must point to known screens
+//   - componentClass should exist somewhere under assets/scripts/ui/components/
+//     (component existence check is a soft warning — string match only, not type-check)
+{
+    const screenSet = collectRuntimeRouteKnownScreenIds(screenDir, screens);
+    const componentsRoot = path.join(__dirname, '..', 'assets', 'scripts', 'ui', 'components');
+    let componentSourceCorpus = '';
+    try {
+        const walkComponents = (dir) => {
+            for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+                const full = path.join(dir, entry.name);
+                if (entry.isDirectory()) walkComponents(full);
+                else if (entry.isFile() && entry.name.endsWith('.ts')) {
+                    componentSourceCorpus += fs.readFileSync(full, 'utf8') + '\n';
+                }
+            }
+        };
+        if (fs.existsSync(componentsRoot)) walkComponents(componentsRoot);
+    } catch (_) { /* best-effort */ }
+
+    for (const filePath of listJsonFiles(screenDir)) {
+        if (!filePath.endsWith('.runtime-route.json')) continue;
+        try {
+            const route = readJson(filePath);
+            const refScreens = new Set();
+            if (route.screenId) refScreens.add(route.screenId);
+            if (route.fallbackScreen) refScreens.add(route.fallbackScreen);
+            if (route.variants && typeof route.variants === 'object') {
+                for (const v of Object.values(route.variants)) {
+                    if (typeof v === 'string') refScreens.add(v);
+                }
+            }
+            for (const id of refScreens) {
+                if (!screenSet.has(id)) {
+                    strictWarn('runtime-route-sidecar',
+                        `${relative(filePath)} runtime-route 引用未知 screenId "${id}"（screens/ 找不到對應 spec）`,
+                        warnings, null);
+                }
+            }
+            if (typeof route.componentClass === 'string' && route.componentClass.length > 0
+                && componentSourceCorpus.length > 0
+                && !componentSourceCorpus.includes(`class ${route.componentClass}`)) {
+                strictWarn('runtime-route-sidecar',
+                    `${relative(filePath)} runtime-route.componentClass="${route.componentClass}" 在 assets/scripts/ui/components/ 找不到對應 class 宣告`,
+                    warnings, null);
+            }
+        } catch (error) {
+            fail(`${relative(filePath)} - runtime-route.json 解析失敗：${error.message}`, failures);
+        }
     }
 }
 

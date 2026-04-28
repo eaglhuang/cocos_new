@@ -31,6 +31,7 @@ export interface GeneralDetailOverviewData {
         awakeningProgress: number;
         personalityValue: string;
         bloodlineBody: string;
+        biographyBody: string;
         crestTitle: string;
         crestHint: string;
         crestState: GeneralDetailCrestState;
@@ -60,6 +61,8 @@ export interface GeneralDetailOverviewContentState {
     personalityValue: string;
     bloodlineCardTitle: string;
     bloodlineBody: string;
+    biographyBody: string;
+    footerTitle: string;
     crestTitle: string;
     crestHint: string;
     crestState: GeneralDetailCrestState;
@@ -182,12 +185,13 @@ export function buildGeneralDetailOverview(config: GeneralConfig): GeneralDetail
             ].join(' / '),
             roleSummary: buildRoleSummary(str, int, lea),
             traitSummary: buildTraitSummary(config, currentSp, maxSp),
-            bloodlineTitle: '血脈概覽',
+                bloodlineTitle: '祖紋',
             bloodlineName: formatBloodlineDisplayName(config.bloodlineId, '震雷先鋒'),
             awakeningLabel: '覺醒傾向',
             awakeningProgress: resolveAwakeningProgress(config.ep),
             personalityValue: buildPersonalitySummary(config),
             bloodlineBody: buildBloodlineBody(config),
+            biographyBody: buildBiographyBody(config),
             crestTitle: CREST_TITLE_DISPLAY[crestState],
             crestHint: buildCrestHint(config, crestState),
             crestState,
@@ -218,10 +222,12 @@ export function buildGeneralDetailOverviewContentState(config: GeneralConfig): G
         bloodlineName: overview.cards.bloodlineName,
         awakeningLabel: overview.cards.awakeningLabel,
         awakeningProgress: overview.cards.awakeningProgress,
-        personalityLabel: '血脈性格',
+        personalityLabel: '印象',
         personalityValue: overview.cards.personalityValue,
         bloodlineCardTitle: '血脈',
         bloodlineBody: overview.cards.bloodlineBody,
+        biographyBody: overview.cards.biographyBody,
+        footerTitle: overview.header.title,
         crestTitle: overview.cards.crestTitle,
         crestHint: overview.cards.crestHint,
         crestState,
@@ -330,7 +336,6 @@ function resolveGeneralDetailBackgroundResource(config: GeneralConfig): string {
     if (isCivilDetailProfile(config)) {
         return 'sprites/ui_families/general_detail/generated/general_detail_bg_v5_civil';
     }
-
     return 'sprites/ui_families/general_detail/generated/general_detail_bg_v10_martial';
 }
 
@@ -448,22 +453,36 @@ function buildPersonalitySummary(config: GeneralConfig): string {
 }
 
 function buildBloodlineBody(config: GeneralConfig): string {
-    const ancestorLine = shortenText(config.ancestorsSummary, 12);
-    const impressionLine = shortenText(config.bloodlineRumor || config.historicalAnecdote, 14);
-    const displayName = formatBloodlineDisplayName(config.bloodlineId, '');
-    const lines: string[] = [];
-
+    const ancestorLine = shortenText(config.ancestorsSummary, 16);
     if (ancestorLine) {
-        lines.push(`祖紋：${ancestorLine}`);
-    } else if (displayName) {
-        lines.push(`族脈：${displayName}`);
+        return ancestorLine;
     }
 
-    if (impressionLine) {
-        lines.push(`印象：${impressionLine}`);
+    const rumorLine = shortenText(config.bloodlineRumor || config.historicalAnecdote, 18);
+    if (rumorLine) {
+        return rumorLine;
     }
 
-    return lines.slice(0, 2).join('\n');
+    return formatBloodlineDisplayName(config.bloodlineId, '血脈未定');
+}
+
+function buildBiographyBody(config: GeneralConfig): string {
+    const normalized = [config.historicalAnecdote, config.bloodlineRumor, config.parentsSummary]
+        .filter((value): value is string => typeof value === 'string' && value.trim() !== '')
+        .map((value) => value
+            .replace(/[\uD800-\uDFFF]/g, '')
+            .replace(/\s+/g, ' ')
+            .trim())
+        .join(' ')
+        .trim();
+
+    if (normalized !== '') {
+        return normalized;
+    }
+
+    const role = formatRole(config.role);
+    const faction = formatFaction(config.faction);
+    return `${mask(config.name, '名將')}以${role}之姿活躍於${faction}戰局，人物傳記待補。`;
 }
 
 function resolveCrestState(config: GeneralConfig): GeneralDetailCrestState {

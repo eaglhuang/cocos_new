@@ -1,0 +1,31 @@
+{
+  "input": "assets/resources/ui-spec/layouts/character-ds3-main.json",
+  "wrappedRoot": true,
+  "passes": 2,
+  "before": 156,
+  "after": 141,
+  "foldedCount": 0,
+  "droppedCount": 0,
+  "absorbedCount": 15,
+  "collapsedCount": 0,
+  "foldedNames": [],
+  "droppedNames": [],
+  "absorbedNames": [
+    "CharacterDs3Main_div_5",
+    "CharacterDs3Main_div_19",
+    "CharacterDs3Main_div_29",
+    "CharacterDs3Main_div_34",
+    "CharacterDs3Main_div_39",
+    "CharacterDs3Main_div_47",
+    "CharacterDs3Main_div_46",
+    "CharacterDs3Main_div_52",
+    "CharacterDs3Main_div_60",
+    "CharacterDs3Main_div_64",
+    "CharacterDs3Main_div_68",
+    "CharacterDs3Main_div_72",
+    "CharacterDs3Main_div_76",
+    "CharacterDs3Main_div_80",
+    "CharacterDs3Main_div_83"
+  ],
+  "collapsedNames": []
+}

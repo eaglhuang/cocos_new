@@ -27,6 +27,7 @@ import { BattleUIBridge, createBattleSceneContext } from './BattleUIBridge';
 import { TurnFlowManager } from './TurnFlowManager';
 import { setupCameraForBoard, initSceneBackground, addBackgroundSwitchUI, resolveSceneBackgroundId } from './BattleSceneSetup';
 import { ensureDeployPanelRuntime, ensureHUD, ensureBattleLogPanel, ensureBattleScenePanel, ensureBoardRenderer, ensureUnitRenderer } from './BattleUIInitializer';
+import { ensureGlobalDevOverlay } from '../../ui/dev/GachaDevOverlay';
 
 const { ccclass, property } = _decorator;
 
@@ -138,6 +139,7 @@ export class BattleScene extends Component {
       // 1. 初始化服務容器（必須在所有 services() 呼叫之前）
       // 傳入 this.node 作為 hostNode，讓 AudioSystem 得以掛載 AudioSource
       services().initialize(this.node);
+      ensureGlobalDevOverlay();
       console.log("[BattleScene] ServiceLoader 初始化完成");
 
       // 2. 建立控制器，載入兵種表

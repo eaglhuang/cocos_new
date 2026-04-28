@@ -1,0 +1,2396 @@
+{
+  "totalNodes": 171,
+  "pseudoNodes": 13,
+  "capturedProperties": {
+    "background-color": {
+      "occurrences": 13,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]",
+          "value": "rgb(10, 10, 10)"
+        },
+        {
+          "path": "div#stage.stage[0]>div.right-shell[5]>div#right-content.right-content[0]>div[0]>div[0]>div[1]>span[0]",
+          "value": "rgb(255, 193, 7)"
+        },
+        {
+          "path": "div#stage.stage[0]>div.right-shell[5]>div#right-content.right-content[0]>div[0]>div[1]>div[0]",
+          "value": "rgba(255, 255, 255, 0.03)"
+        }
+      ]
+    },
+    "color": {
+      "occurrences": 184,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]",
+          "value": "rgb(229, 226, 225)"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+          "value": "rgb(229, 226, 225)"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]::after",
+          "value": "rgb(229, 226, 225)"
+        }
+      ]
+    },
+    "font-size": {
+      "occurrences": 184,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]",
+          "value": "16px"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+          "value": "16px"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]::after",
+          "value": "16px"
+        }
+      ]
+    },
+    "font-family": {
+      "occurrences": 184,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]",
+          "value": "NotoSansTC, \"PingFang TC\", \"Microsoft JhengHei\", sans-serif"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+          "value": "NotoSansTC, \"PingFang TC\", \"Microsoft JhengHei\", sans-serif"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]::after",
+          "value": "NotoSansTC, \"PingFang TC\", \"Microsoft JhengHei\", sans-serif"
+        }
+      ]
+    },
+    "font-weight": {
+      "occurrences": 184,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]",
+          "value": "400"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+          "value": "400"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]::after",
+          "value": "400"
+        }
+      ]
+    },
+    "line-height": {
+      "occurrences": 184,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]",
+          "value": "normal"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+          "value": "normal"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]::after",
+          "value": "normal"
+        }
+      ]
+    },
+    "letter-spacing": {
+      "occurrences": 184,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]",
+          "value": "normal"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+          "value": "normal"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]::after",
+          "value": "normal"
+        }
+      ]
+    },
+    "text-align": {
+      "occurrences": 184,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]",
+          "value": "start"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+          "value": "start"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]::after",
+          "value": "start"
+        }
+      ]
+    },
+    "border-top-color": {
+      "occurrences": 184,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]",
+          "value": "rgb(229, 226, 225)"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+          "value": "rgb(229, 226, 225)"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]::after",
+          "value": "rgb(229, 226, 225)"
+        }
+      ]
+    },
+    "border-right-color": {
+      "occurrences": 184,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]",
+          "value": "rgb(229, 226, 225)"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+          "value": "rgb(229, 226, 225)"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]::after",
+          "value": "rgb(229, 226, 225)"
+        }
+      ]
+    },
+    "border-bottom-color": {
+      "occurrences": 184,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]",
+          "value": "rgb(229, 226, 225)"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+          "value": "rgb(229, 226, 225)"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]::after",
+          "value": "rgb(229, 226, 225)"
+        }
+      ]
+    },
+    "border-left-color": {
+      "occurrences": 184,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]",
+          "value": "rgb(229, 226, 225)"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+          "value": "rgb(229, 226, 225)"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]::after",
+          "value": "rgb(229, 226, 225)"
+        }
+      ]
+    },
+    "transform": {
+      "occurrences": 5,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]",
+          "value": "matrix(0.694444, 0, 0, 0.694444, 0.333333, 0)"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]>button.portrait-nav.left[0]",
+          "value": "matrix(1, 0, 0, 1, 0, -48)"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]>img.portrait-img[1]",
+          "value": "matrix(1, 0, 0, 1, -267.905, 0)"
+        }
+      ]
+    },
+    "transform-origin": {
+      "occurrences": 184,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]",
+          "value": "0px 0px"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+          "value": "595.195px 540px"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]::after",
+          "value": "595.195px 540px"
+        }
+      ]
+    },
+    "text-decoration-color": {
+      "occurrences": 184,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]",
+          "value": "rgb(229, 226, 225)"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+          "value": "rgb(229, 226, 225)"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]::after",
+          "value": "rgb(229, 226, 225)"
+        }
+      ]
+    },
+    "text-decoration-style": {
+      "occurrences": 184,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]",
+          "value": "solid"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+          "value": "solid"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]::after",
+          "value": "solid"
+        }
+      ]
+    },
+    "text-decoration-thickness": {
+      "occurrences": 184,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]",
+          "value": "auto"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+          "value": "auto"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]::after",
+          "value": "auto"
+        }
+      ]
+    },
+    "-webkit-text-stroke-color": {
+      "occurrences": 184,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]",
+          "value": "rgb(229, 226, 225)"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+          "value": "rgb(229, 226, 225)"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]::after",
+          "value": "rgb(229, 226, 225)"
+        }
+      ]
+    },
+    "font-feature-settings": {
+      "occurrences": 184,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]",
+          "value": "normal"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+          "value": "normal"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]::after",
+          "value": "normal"
+        }
+      ]
+    },
+    "font-variant": {
+      "occurrences": 184,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]",
+          "value": "normal"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+          "value": "normal"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]::after",
+          "value": "normal"
+        }
+      ]
+    },
+    "overflow": {
+      "occurrences": 13,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]",
+          "value": "hidden"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+          "value": "hidden"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]>img.portrait-img[1]",
+          "value": "clip"
+        }
+      ]
+    },
+    "overflow-x": {
+      "occurrences": 13,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]",
+          "value": "hidden"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+          "value": "hidden"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]>img.portrait-img[1]",
+          "value": "clip"
+        }
+      ]
+    },
+    "overflow-y": {
+      "occurrences": 13,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]",
+          "value": "hidden"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+          "value": "hidden"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]>img.portrait-img[1]",
+          "value": "clip"
+        }
+      ]
+    },
+    "flex-direction": {
+      "occurrences": 184,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]",
+          "value": "row"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+          "value": "row"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]::after",
+          "value": "row"
+        }
+      ]
+    },
+    "flex-wrap": {
+      "occurrences": 184,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]",
+          "value": "nowrap"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+          "value": "nowrap"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]::after",
+          "value": "nowrap"
+        }
+      ]
+    },
+    "align-items": {
+      "occurrences": 184,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]",
+          "value": "normal"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+          "value": "normal"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]::after",
+          "value": "normal"
+        }
+      ]
+    },
+    "align-content": {
+      "occurrences": 184,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]",
+          "value": "normal"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+          "value": "normal"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]::after",
+          "value": "normal"
+        }
+      ]
+    },
+    "align-self": {
+      "occurrences": 184,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]",
+          "value": "auto"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+          "value": "auto"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]::after",
+          "value": "auto"
+        }
+      ]
+    },
+    "justify-content": {
+      "occurrences": 184,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]",
+          "value": "normal"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+          "value": "normal"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]::after",
+          "value": "normal"
+        }
+      ]
+    },
+    "justify-items": {
+      "occurrences": 184,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]",
+          "value": "normal"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+          "value": "normal"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]::after",
+          "value": "normal"
+        }
+      ]
+    },
+    "justify-self": {
+      "occurrences": 184,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]",
+          "value": "auto"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+          "value": "auto"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]::after",
+          "value": "auto"
+        }
+      ]
+    },
+    "gap": {
+      "occurrences": 184,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]",
+          "value": "normal"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+          "value": "normal"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]::after",
+          "value": "normal"
+        }
+      ]
+    },
+    "row-gap": {
+      "occurrences": 184,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]",
+          "value": "normal"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+          "value": "normal"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]::after",
+          "value": "normal"
+        }
+      ]
+    },
+    "column-gap": {
+      "occurrences": 184,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]",
+          "value": "normal"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+          "value": "normal"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]::after",
+          "value": "normal"
+        }
+      ]
+    },
+    "vertical-align": {
+      "occurrences": 184,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]",
+          "value": "baseline"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+          "value": "baseline"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]::after",
+          "value": "baseline"
+        }
+      ]
+    },
+    "white-space": {
+      "occurrences": 184,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]",
+          "value": "normal"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+          "value": "normal"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]::after",
+          "value": "normal"
+        }
+      ]
+    },
+    "text-overflow": {
+      "occurrences": 184,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]",
+          "value": "clip"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+          "value": "clip"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]::after",
+          "value": "clip"
+        }
+      ]
+    },
+    "background-image": {
+      "occurrences": 38,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+          "value": "radial-gradient(at 30% 40%, rgba(139, 98, 42, 0.3), rgba(0, 0, 0, 0) 55%), radial-gradient(at 80% 70%, rgba(44, 58, 66, 0.25), rgba(0, 0, 0, 0) 60%), linear-gradient(rgb(42, 39, 32) 0%, rgb(26, 24, 20) 40%, rgb(16, 14, 10) 100%)"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]::after",
+          "value": "linear-gradient(90deg, rgba(0, 0, 0, 0) 45%, rgba(10, 10, 10, 0.7) 75%, rgb(10, 10, 10) 100%)"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]>button.portrait-nav.left[0]",
+          "value": "linear-gradient(135deg, rgba(212, 175, 55, 0.18), rgba(138, 110, 31, 0.1))"
+        }
+      ]
+    },
+    "border-top-width": {
+      "occurrences": 25,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]>button.portrait-nav.left[0]",
+          "value": "3px"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]>button.portrait-nav.right[2]",
+          "value": "3px"
+        },
+        {
+          "path": "div#stage.stage[0]>div#rank-badge.rank-badge[2]",
+          "value": "2px"
+        }
+      ]
+    },
+    "border-right-width": {
+      "occurrences": 24,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]>button.portrait-nav.left[0]",
+          "value": "3px"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]>button.portrait-nav.right[2]",
+          "value": "3px"
+        },
+        {
+          "path": "div#stage.stage[0]>div#rank-badge.rank-badge[2]",
+          "value": "2px"
+        }
+      ]
+    },
+    "border-bottom-width": {
+      "occurrences": 24,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]>button.portrait-nav.left[0]",
+          "value": "3px"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]>button.portrait-nav.right[2]",
+          "value": "3px"
+        },
+        {
+          "path": "div#stage.stage[0]>div#rank-badge.rank-badge[2]",
+          "value": "2px"
+        }
+      ]
+    },
+    "border-left-width": {
+      "occurrences": 24,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]>button.portrait-nav.left[0]",
+          "value": "3px"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]>button.portrait-nav.right[2]",
+          "value": "3px"
+        },
+        {
+          "path": "div#stage.stage[0]>div#rank-badge.rank-badge[2]",
+          "value": "2px"
+        }
+      ]
+    },
+    "border-top-style": {
+      "occurrences": 25,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]>button.portrait-nav.left[0]",
+          "value": "solid"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]>button.portrait-nav.right[2]",
+          "value": "solid"
+        },
+        {
+          "path": "div#stage.stage[0]>div#rank-badge.rank-badge[2]",
+          "value": "solid"
+        }
+      ]
+    },
+    "border-right-style": {
+      "occurrences": 24,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]>button.portrait-nav.left[0]",
+          "value": "solid"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]>button.portrait-nav.right[2]",
+          "value": "solid"
+        },
+        {
+          "path": "div#stage.stage[0]>div#rank-badge.rank-badge[2]",
+          "value": "solid"
+        }
+      ]
+    },
+    "border-bottom-style": {
+      "occurrences": 24,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]>button.portrait-nav.left[0]",
+          "value": "solid"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]>button.portrait-nav.right[2]",
+          "value": "solid"
+        },
+        {
+          "path": "div#stage.stage[0]>div#rank-badge.rank-badge[2]",
+          "value": "solid"
+        }
+      ]
+    },
+    "border-left-style": {
+      "occurrences": 24,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]>button.portrait-nav.left[0]",
+          "value": "solid"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]>button.portrait-nav.right[2]",
+          "value": "solid"
+        },
+        {
+          "path": "div#stage.stage[0]>div#rank-badge.rank-badge[2]",
+          "value": "solid"
+        }
+      ]
+    },
+    "border-top-left-radius": {
+      "occurrences": 29,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]>button.portrait-nav.left[0]",
+          "value": "50%"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]>button.portrait-nav.right[2]",
+          "value": "50%"
+        },
+        {
+          "path": "div#stage.stage[0]>div#rank-badge.rank-badge[2]",
+          "value": "16px"
+        }
+      ]
+    },
+    "border-top-right-radius": {
+      "occurrences": 29,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]>button.portrait-nav.left[0]",
+          "value": "50%"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]>button.portrait-nav.right[2]",
+          "value": "50%"
+        },
+        {
+          "path": "div#stage.stage[0]>div#rank-badge.rank-badge[2]",
+          "value": "16px"
+        }
+      ]
+    },
+    "border-bottom-right-radius": {
+      "occurrences": 28,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]>button.portrait-nav.left[0]",
+          "value": "50%"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]>button.portrait-nav.right[2]",
+          "value": "50%"
+        },
+        {
+          "path": "div#stage.stage[0]>div#rank-badge.rank-badge[2]",
+          "value": "16px"
+        }
+      ]
+    },
+    "border-bottom-left-radius": {
+      "occurrences": 28,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]>button.portrait-nav.left[0]",
+          "value": "50%"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]>button.portrait-nav.right[2]",
+          "value": "50%"
+        },
+        {
+          "path": "div#stage.stage[0]>div#rank-badge.rank-badge[2]",
+          "value": "16px"
+        }
+      ]
+    },
+    "box-shadow": {
+      "occurrences": 10,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]>button.portrait-nav.left[0]",
+          "value": "rgba(212, 175, 55, 0.1) 0px 0px 16px 0px inset, rgba(212, 175, 55, 0.2) 0px 0px 24px 0px"
+        },
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]>button.portrait-nav.right[2]",
+          "value": "rgba(212, 175, 55, 0.1) 0px 0px 16px 0px inset, rgba(212, 175, 55, 0.2) 0px 0px 24px 0px"
+        },
+        {
+          "path": "div#stage.stage[0]>div#rank-badge.rank-badge[2]",
+          "value": "rgba(0, 0, 0, 0.5) 0px 6px 20px 0px, rgba(140, 207, 196, 0.15) 0px 0px 20px 0px inset"
+        }
+      ]
+    },
+    "filter": {
+      "occurrences": 1,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]>img.portrait-img[1]",
+          "value": "drop-shadow(rgba(0, 0, 0, 0.7) 0px 20px 40px)"
+        }
+      ]
+    },
+    "object-fit": {
+      "occurrences": 1,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]>img.portrait-img[1]",
+          "value": "contain"
+        }
+      ]
+    },
+    "object-position": {
+      "occurrences": 1,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]>img.portrait-img[1]",
+          "value": "50% 100%"
+        }
+      ]
+    },
+    "text-shadow": {
+      "occurrences": 7,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]>div.right-shell[5]>div#right-content.right-content[0]>div[0]>div[0]>div[0]>div[0]>span[0]",
+          "value": "rgba(0, 0, 0, 0.6) 0px 2px 6px"
+        },
+        {
+          "path": "div#stage.stage[0]>div#strip-wrap.story-strip-wrap[6]>div#strip-cells.strip[1]>div.cell[0]>div.cell-label[2]>div.t[0]",
+          "value": "rgb(0, 0, 0) 0px 1px 0px, rgba(0, 0, 0, 0.9) 0px 0px 10px"
+        },
+        {
+          "path": "div#stage.stage[0]>div#strip-wrap.story-strip-wrap[6]>div#strip-cells.strip[1]>div.cell[1]>div.cell-label[2]>div.t[0]",
+          "value": "rgb(0, 0, 0) 0px 1px 0px, rgba(0, 0, 0, 0.9) 0px 0px 10px"
+        }
+      ]
+    },
+    "clip-path": {
+      "occurrences": 5,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]>div#strip-wrap.story-strip-wrap[6]>div#strip-cells.strip[1]>div.cell[0]",
+          "value": "polygon(0px 0px, 100% 0px, 100% 86%, 91% 100%, 0px 100%)"
+        },
+        {
+          "path": "div#stage.stage[0]>div#strip-wrap.story-strip-wrap[6]>div#strip-cells.strip[1]>div.cell[1]",
+          "value": "polygon(0px 0px, 100% 0px, 100% 86%, 91% 100%, 0px 100%)"
+        },
+        {
+          "path": "div#stage.stage[0]>div#strip-wrap.story-strip-wrap[6]>div#strip-cells.strip[1]>div.cell[2]",
+          "value": "polygon(0px 0px, 100% 0px, 100% 86%, 91% 100%, 0px 100%)"
+        }
+      ]
+    },
+    "-webkit-clip-path": {
+      "occurrences": 5,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]>div#strip-wrap.story-strip-wrap[6]>div#strip-cells.strip[1]>div.cell[0]",
+          "value": "polygon(0px 0px, 100% 0px, 100% 86%, 91% 100%, 0px 100%)"
+        },
+        {
+          "path": "div#stage.stage[0]>div#strip-wrap.story-strip-wrap[6]>div#strip-cells.strip[1]>div.cell[1]",
+          "value": "polygon(0px 0px, 100% 0px, 100% 86%, 91% 100%, 0px 100%)"
+        },
+        {
+          "path": "div#stage.stage[0]>div#strip-wrap.story-strip-wrap[6]>div#strip-cells.strip[1]>div.cell[2]",
+          "value": "polygon(0px 0px, 100% 0px, 100% 86%, 91% 100%, 0px 100%)"
+        }
+      ]
+    }
+  },
+  "droppedProperties": {
+    "background-size": {
+      "occurrences": 1,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+          "value": "auto, auto, auto"
+        }
+      ]
+    },
+    "background-position": {
+      "occurrences": 1,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+          "value": "0% 0%, 0% 0%, 0% 0%"
+        }
+      ]
+    },
+    "background-repeat": {
+      "occurrences": 1,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+          "value": "repeat, repeat, repeat"
+        }
+      ]
+    },
+    "content": {
+      "occurrences": 13,
+      "samples": [
+        {
+          "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]::after",
+          "value": "\"\""
+        },
+        {
+          "path": "div#stage.stage[0]>div#strip-wrap.story-strip-wrap[6]>div#strip-cells.strip[1]>div.cell[0]::before",
+          "value": "\"\""
+        },
+        {
+          "path": "div#stage.stage[0]>div#strip-wrap.story-strip-wrap[6]>div#strip-cells.strip[1]>div.cell[0]::after",
+          "value": "\"\""
+        }
+      ]
+    }
+  },
+  "cssCapability": {
+    "summary": {
+      "supported": 6250,
+      "assetize": 58,
+      "unsupported": 29,
+      "unknown": 0
+    },
+    "topOffenders": [
+      {
+        "property": "background-image",
+        "capability": "assetize",
+        "occurrences": 38,
+        "samples": [
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+            "value": "radial-gradient(at 30% 40%, rgba(139, 98, 42, 0.3), rgba(0, 0, 0, 0) 55%), radial-gradient(at 80% 70%, rgba(44, 58, 66, 0.25), rgba(0, 0, 0, 0) 60%), linear-gradient(rgb(42, 39, 32) 0%, rgb(26, 24, 20) 40%, rgb(16, 14, 10) 100%)"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]::after",
+            "value": "linear-gradient(90deg, rgba(0, 0, 0, 0) 45%, rgba(10, 10, 10, 0.7) 75%, rgb(10, 10, 10) 100%)"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]>button.portrait-nav.left[0]",
+            "value": "linear-gradient(135deg, rgba(212, 175, 55, 0.18), rgba(138, 110, 31, 0.1))"
+          }
+        ]
+      },
+      {
+        "property": "content",
+        "capability": "unsupported",
+        "occurrences": 13,
+        "samples": [
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]::after",
+            "value": "\"\""
+          },
+          {
+            "path": "div#stage.stage[0]>div#strip-wrap.story-strip-wrap[6]>div#strip-cells.strip[1]>div.cell[0]::before",
+            "value": "\"\""
+          },
+          {
+            "path": "div#stage.stage[0]>div#strip-wrap.story-strip-wrap[6]>div#strip-cells.strip[1]>div.cell[0]::after",
+            "value": "\"\""
+          }
+        ]
+      },
+      {
+        "property": "box-shadow",
+        "capability": "assetize",
+        "occurrences": 10,
+        "samples": [
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]>button.portrait-nav.left[0]",
+            "value": "rgba(212, 175, 55, 0.1) 0px 0px 16px 0px inset, rgba(212, 175, 55, 0.2) 0px 0px 24px 0px"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]>button.portrait-nav.right[2]",
+            "value": "rgba(212, 175, 55, 0.1) 0px 0px 16px 0px inset, rgba(212, 175, 55, 0.2) 0px 0px 24px 0px"
+          },
+          {
+            "path": "div#stage.stage[0]>div#rank-badge.rank-badge[2]",
+            "value": "rgba(0, 0, 0, 0.5) 0px 6px 20px 0px, rgba(140, 207, 196, 0.15) 0px 0px 20px 0px inset"
+          }
+        ]
+      },
+      {
+        "property": "text-shadow",
+        "capability": "assetize",
+        "occurrences": 7,
+        "samples": [
+          {
+            "path": "div#stage.stage[0]>div.right-shell[5]>div#right-content.right-content[0]>div[0]>div[0]>div[0]>div[0]>span[0]",
+            "value": "rgba(0, 0, 0, 0.6) 0px 2px 6px"
+          },
+          {
+            "path": "div#stage.stage[0]>div#strip-wrap.story-strip-wrap[6]>div#strip-cells.strip[1]>div.cell[0]>div.cell-label[2]>div.t[0]",
+            "value": "rgb(0, 0, 0) 0px 1px 0px, rgba(0, 0, 0, 0.9) 0px 0px 10px"
+          },
+          {
+            "path": "div#stage.stage[0]>div#strip-wrap.story-strip-wrap[6]>div#strip-cells.strip[1]>div.cell[1]>div.cell-label[2]>div.t[0]",
+            "value": "rgb(0, 0, 0) 0px 1px 0px, rgba(0, 0, 0, 0.9) 0px 0px 10px"
+          }
+        ]
+      },
+      {
+        "property": "-webkit-clip-path",
+        "capability": "unsupported",
+        "occurrences": 5,
+        "samples": [
+          {
+            "path": "div#stage.stage[0]>div#strip-wrap.story-strip-wrap[6]>div#strip-cells.strip[1]>div.cell[0]",
+            "value": "polygon(0px 0px, 100% 0px, 100% 86%, 91% 100%, 0px 100%)"
+          },
+          {
+            "path": "div#stage.stage[0]>div#strip-wrap.story-strip-wrap[6]>div#strip-cells.strip[1]>div.cell[1]",
+            "value": "polygon(0px 0px, 100% 0px, 100% 86%, 91% 100%, 0px 100%)"
+          },
+          {
+            "path": "div#stage.stage[0]>div#strip-wrap.story-strip-wrap[6]>div#strip-cells.strip[1]>div.cell[2]",
+            "value": "polygon(0px 0px, 100% 0px, 100% 86%, 91% 100%, 0px 100%)"
+          }
+        ]
+      },
+      {
+        "property": "clip-path",
+        "capability": "unsupported",
+        "occurrences": 5,
+        "samples": [
+          {
+            "path": "div#stage.stage[0]>div#strip-wrap.story-strip-wrap[6]>div#strip-cells.strip[1]>div.cell[0]",
+            "value": "polygon(0px 0px, 100% 0px, 100% 86%, 91% 100%, 0px 100%)"
+          },
+          {
+            "path": "div#stage.stage[0]>div#strip-wrap.story-strip-wrap[6]>div#strip-cells.strip[1]>div.cell[1]",
+            "value": "polygon(0px 0px, 100% 0px, 100% 86%, 91% 100%, 0px 100%)"
+          },
+          {
+            "path": "div#stage.stage[0]>div#strip-wrap.story-strip-wrap[6]>div#strip-cells.strip[1]>div.cell[2]",
+            "value": "polygon(0px 0px, 100% 0px, 100% 86%, 91% 100%, 0px 100%)"
+          }
+        ]
+      },
+      {
+        "property": "transform",
+        "capability": "unsupported",
+        "occurrences": 5,
+        "samples": [
+          {
+            "path": "div#stage.stage[0]",
+            "value": "matrix(0.694444, 0, 0, 0.694444, 0.333333, 0)"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]>button.portrait-nav.left[0]",
+            "value": "matrix(1, 0, 0, 1, 0, -48)"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]>img.portrait-img[1]",
+            "value": "matrix(1, 0, 0, 1, -267.905, 0)"
+          }
+        ]
+      },
+      {
+        "property": "background-position",
+        "capability": "assetize",
+        "occurrences": 1,
+        "samples": [
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+            "value": "0% 0%, 0% 0%, 0% 0%"
+          }
+        ]
+      },
+      {
+        "property": "background-repeat",
+        "capability": "assetize",
+        "occurrences": 1,
+        "samples": [
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+            "value": "repeat, repeat, repeat"
+          }
+        ]
+      },
+      {
+        "property": "background-size",
+        "capability": "assetize",
+        "occurrences": 1,
+        "samples": [
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+            "value": "auto, auto, auto"
+          }
+        ]
+      },
+      {
+        "property": "filter",
+        "capability": "unsupported",
+        "occurrences": 1,
+        "samples": [
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]>img.portrait-img[1]",
+            "value": "drop-shadow(rgba(0, 0, 0, 0.7) 0px 20px 40px)"
+          }
+        ]
+      }
+    ],
+    "assetizeHints": [
+      {
+        "property": "background-image",
+        "capability": "assetize",
+        "occurrences": 38,
+        "samples": [
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+            "value": "radial-gradient(at 30% 40%, rgba(139, 98, 42, 0.3), rgba(0, 0, 0, 0) 55%), radial-gradient(at 80% 70%, rgba(44, 58, 66, 0.25), rgba(0, 0, 0, 0) 60%), linear-gradient(rgb(42, 39, 32) 0%, rgb(26, 24, 20) 40%, rgb(16, 14, 10) 100%)"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]::after",
+            "value": "linear-gradient(90deg, rgba(0, 0, 0, 0) 45%, rgba(10, 10, 10, 0.7) 75%, rgb(10, 10, 10) 100%)"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]>button.portrait-nav.left[0]",
+            "value": "linear-gradient(135deg, rgba(212, 175, 55, 0.18), rgba(138, 110, 31, 0.1))"
+          }
+        ],
+        "suggestedTask": "assetize-css-effect"
+      },
+      {
+        "property": "box-shadow",
+        "capability": "assetize",
+        "occurrences": 10,
+        "samples": [
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]>button.portrait-nav.left[0]",
+            "value": "rgba(212, 175, 55, 0.1) 0px 0px 16px 0px inset, rgba(212, 175, 55, 0.2) 0px 0px 24px 0px"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]>button.portrait-nav.right[2]",
+            "value": "rgba(212, 175, 55, 0.1) 0px 0px 16px 0px inset, rgba(212, 175, 55, 0.2) 0px 0px 24px 0px"
+          },
+          {
+            "path": "div#stage.stage[0]>div#rank-badge.rank-badge[2]",
+            "value": "rgba(0, 0, 0, 0.5) 0px 6px 20px 0px, rgba(140, 207, 196, 0.15) 0px 0px 20px 0px inset"
+          }
+        ],
+        "suggestedTask": "assetize-css-effect"
+      },
+      {
+        "property": "text-shadow",
+        "capability": "assetize",
+        "occurrences": 7,
+        "samples": [
+          {
+            "path": "div#stage.stage[0]>div.right-shell[5]>div#right-content.right-content[0]>div[0]>div[0]>div[0]>div[0]>span[0]",
+            "value": "rgba(0, 0, 0, 0.6) 0px 2px 6px"
+          },
+          {
+            "path": "div#stage.stage[0]>div#strip-wrap.story-strip-wrap[6]>div#strip-cells.strip[1]>div.cell[0]>div.cell-label[2]>div.t[0]",
+            "value": "rgb(0, 0, 0) 0px 1px 0px, rgba(0, 0, 0, 0.9) 0px 0px 10px"
+          },
+          {
+            "path": "div#stage.stage[0]>div#strip-wrap.story-strip-wrap[6]>div#strip-cells.strip[1]>div.cell[1]>div.cell-label[2]>div.t[0]",
+            "value": "rgb(0, 0, 0) 0px 1px 0px, rgba(0, 0, 0, 0.9) 0px 0px 10px"
+          }
+        ],
+        "suggestedTask": "assetize-css-effect"
+      },
+      {
+        "property": "background-position",
+        "capability": "assetize",
+        "occurrences": 1,
+        "samples": [
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+            "value": "0% 0%, 0% 0%, 0% 0%"
+          }
+        ],
+        "suggestedTask": "assetize-css-effect"
+      },
+      {
+        "property": "background-repeat",
+        "capability": "assetize",
+        "occurrences": 1,
+        "samples": [
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+            "value": "repeat, repeat, repeat"
+          }
+        ],
+        "suggestedTask": "assetize-css-effect"
+      },
+      {
+        "property": "background-size",
+        "capability": "assetize",
+        "occurrences": 1,
+        "samples": [
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+            "value": "auto, auto, auto"
+          }
+        ],
+        "suggestedTask": "assetize-css-effect"
+      }
+    ],
+    "items": [
+      {
+        "property": "-webkit-text-stroke-color",
+        "capability": "supported",
+        "occurrences": 184,
+        "samples": [
+          {
+            "path": "div#stage.stage[0]",
+            "value": "rgb(229, 226, 225)"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+            "value": "rgb(229, 226, 225)"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]::after",
+            "value": "rgb(229, 226, 225)"
+          }
+        ]
+      },
+      {
+        "property": "align-content",
+        "capability": "supported",
+        "occurrences": 184,
+        "samples": [
+          {
+            "path": "div#stage.stage[0]",
+            "value": "normal"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+            "value": "normal"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]::after",
+            "value": "normal"
+          }
+        ]
+      },
+      {
+        "property": "align-items",
+        "capability": "supported",
+        "occurrences": 184,
+        "samples": [
+          {
+            "path": "div#stage.stage[0]",
+            "value": "normal"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+            "value": "normal"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]::after",
+            "value": "normal"
+          }
+        ]
+      },
+      {
+        "property": "align-self",
+        "capability": "supported",
+        "occurrences": 184,
+        "samples": [
+          {
+            "path": "div#stage.stage[0]",
+            "value": "auto"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+            "value": "auto"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]::after",
+            "value": "auto"
+          }
+        ]
+      },
+      {
+        "property": "border-bottom-color",
+        "capability": "supported",
+        "occurrences": 184,
+        "samples": [
+          {
+            "path": "div#stage.stage[0]",
+            "value": "rgb(229, 226, 225)"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+            "value": "rgb(229, 226, 225)"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]::after",
+            "value": "rgb(229, 226, 225)"
+          }
+        ]
+      },
+      {
+        "property": "border-left-color",
+        "capability": "supported",
+        "occurrences": 184,
+        "samples": [
+          {
+            "path": "div#stage.stage[0]",
+            "value": "rgb(229, 226, 225)"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+            "value": "rgb(229, 226, 225)"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]::after",
+            "value": "rgb(229, 226, 225)"
+          }
+        ]
+      },
+      {
+        "property": "border-right-color",
+        "capability": "supported",
+        "occurrences": 184,
+        "samples": [
+          {
+            "path": "div#stage.stage[0]",
+            "value": "rgb(229, 226, 225)"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+            "value": "rgb(229, 226, 225)"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]::after",
+            "value": "rgb(229, 226, 225)"
+          }
+        ]
+      },
+      {
+        "property": "border-top-color",
+        "capability": "supported",
+        "occurrences": 184,
+        "samples": [
+          {
+            "path": "div#stage.stage[0]",
+            "value": "rgb(229, 226, 225)"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+            "value": "rgb(229, 226, 225)"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]::after",
+            "value": "rgb(229, 226, 225)"
+          }
+        ]
+      },
+      {
+        "property": "color",
+        "capability": "supported",
+        "occurrences": 184,
+        "samples": [
+          {
+            "path": "div#stage.stage[0]",
+            "value": "rgb(229, 226, 225)"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+            "value": "rgb(229, 226, 225)"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]::after",
+            "value": "rgb(229, 226, 225)"
+          }
+        ]
+      },
+      {
+        "property": "column-gap",
+        "capability": "supported",
+        "occurrences": 184,
+        "samples": [
+          {
+            "path": "div#stage.stage[0]",
+            "value": "normal"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+            "value": "normal"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]::after",
+            "value": "normal"
+          }
+        ]
+      },
+      {
+        "property": "flex-direction",
+        "capability": "supported",
+        "occurrences": 184,
+        "samples": [
+          {
+            "path": "div#stage.stage[0]",
+            "value": "row"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+            "value": "row"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]::after",
+            "value": "row"
+          }
+        ]
+      },
+      {
+        "property": "flex-wrap",
+        "capability": "supported",
+        "occurrences": 184,
+        "samples": [
+          {
+            "path": "div#stage.stage[0]",
+            "value": "nowrap"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+            "value": "nowrap"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]::after",
+            "value": "nowrap"
+          }
+        ]
+      },
+      {
+        "property": "font-family",
+        "capability": "supported",
+        "occurrences": 184,
+        "samples": [
+          {
+            "path": "div#stage.stage[0]",
+            "value": "NotoSansTC, \"PingFang TC\", \"Microsoft JhengHei\", sans-serif"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+            "value": "NotoSansTC, \"PingFang TC\", \"Microsoft JhengHei\", sans-serif"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]::after",
+            "value": "NotoSansTC, \"PingFang TC\", \"Microsoft JhengHei\", sans-serif"
+          }
+        ]
+      },
+      {
+        "property": "font-feature-settings",
+        "capability": "supported",
+        "occurrences": 184,
+        "samples": [
+          {
+            "path": "div#stage.stage[0]",
+            "value": "normal"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+            "value": "normal"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]::after",
+            "value": "normal"
+          }
+        ]
+      },
+      {
+        "property": "font-size",
+        "capability": "supported",
+        "occurrences": 184,
+        "samples": [
+          {
+            "path": "div#stage.stage[0]",
+            "value": "16px"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+            "value": "16px"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]::after",
+            "value": "16px"
+          }
+        ]
+      },
+      {
+        "property": "font-variant",
+        "capability": "supported",
+        "occurrences": 184,
+        "samples": [
+          {
+            "path": "div#stage.stage[0]",
+            "value": "normal"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+            "value": "normal"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]::after",
+            "value": "normal"
+          }
+        ]
+      },
+      {
+        "property": "font-weight",
+        "capability": "supported",
+        "occurrences": 184,
+        "samples": [
+          {
+            "path": "div#stage.stage[0]",
+            "value": "400"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+            "value": "400"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]::after",
+            "value": "400"
+          }
+        ]
+      },
+      {
+        "property": "gap",
+        "capability": "supported",
+        "occurrences": 184,
+        "samples": [
+          {
+            "path": "div#stage.stage[0]",
+            "value": "normal"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+            "value": "normal"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]::after",
+            "value": "normal"
+          }
+        ]
+      },
+      {
+        "property": "justify-content",
+        "capability": "supported",
+        "occurrences": 184,
+        "samples": [
+          {
+            "path": "div#stage.stage[0]",
+            "value": "normal"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+            "value": "normal"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]::after",
+            "value": "normal"
+          }
+        ]
+      },
+      {
+        "property": "justify-items",
+        "capability": "supported",
+        "occurrences": 184,
+        "samples": [
+          {
+            "path": "div#stage.stage[0]",
+            "value": "normal"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+            "value": "normal"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]::after",
+            "value": "normal"
+          }
+        ]
+      },
+      {
+        "property": "justify-self",
+        "capability": "supported",
+        "occurrences": 184,
+        "samples": [
+          {
+            "path": "div#stage.stage[0]",
+            "value": "auto"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+            "value": "auto"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]::after",
+            "value": "auto"
+          }
+        ]
+      },
+      {
+        "property": "letter-spacing",
+        "capability": "supported",
+        "occurrences": 184,
+        "samples": [
+          {
+            "path": "div#stage.stage[0]",
+            "value": "normal"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+            "value": "normal"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]::after",
+            "value": "normal"
+          }
+        ]
+      },
+      {
+        "property": "line-height",
+        "capability": "supported",
+        "occurrences": 184,
+        "samples": [
+          {
+            "path": "div#stage.stage[0]",
+            "value": "normal"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+            "value": "normal"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]::after",
+            "value": "normal"
+          }
+        ]
+      },
+      {
+        "property": "row-gap",
+        "capability": "supported",
+        "occurrences": 184,
+        "samples": [
+          {
+            "path": "div#stage.stage[0]",
+            "value": "normal"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+            "value": "normal"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]::after",
+            "value": "normal"
+          }
+        ]
+      },
+      {
+        "property": "text-align",
+        "capability": "supported",
+        "occurrences": 184,
+        "samples": [
+          {
+            "path": "div#stage.stage[0]",
+            "value": "start"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+            "value": "start"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]::after",
+            "value": "start"
+          }
+        ]
+      },
+      {
+        "property": "text-decoration-color",
+        "capability": "supported",
+        "occurrences": 184,
+        "samples": [
+          {
+            "path": "div#stage.stage[0]",
+            "value": "rgb(229, 226, 225)"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+            "value": "rgb(229, 226, 225)"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]::after",
+            "value": "rgb(229, 226, 225)"
+          }
+        ]
+      },
+      {
+        "property": "text-decoration-style",
+        "capability": "supported",
+        "occurrences": 184,
+        "samples": [
+          {
+            "path": "div#stage.stage[0]",
+            "value": "solid"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+            "value": "solid"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]::after",
+            "value": "solid"
+          }
+        ]
+      },
+      {
+        "property": "text-decoration-thickness",
+        "capability": "supported",
+        "occurrences": 184,
+        "samples": [
+          {
+            "path": "div#stage.stage[0]",
+            "value": "auto"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+            "value": "auto"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]::after",
+            "value": "auto"
+          }
+        ]
+      },
+      {
+        "property": "text-overflow",
+        "capability": "supported",
+        "occurrences": 184,
+        "samples": [
+          {
+            "path": "div#stage.stage[0]",
+            "value": "clip"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+            "value": "clip"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]::after",
+            "value": "clip"
+          }
+        ]
+      },
+      {
+        "property": "transform-origin",
+        "capability": "supported",
+        "occurrences": 184,
+        "samples": [
+          {
+            "path": "div#stage.stage[0]",
+            "value": "0px 0px"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+            "value": "595.195px 540px"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]::after",
+            "value": "595.195px 540px"
+          }
+        ]
+      },
+      {
+        "property": "vertical-align",
+        "capability": "supported",
+        "occurrences": 184,
+        "samples": [
+          {
+            "path": "div#stage.stage[0]",
+            "value": "baseline"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+            "value": "baseline"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]::after",
+            "value": "baseline"
+          }
+        ]
+      },
+      {
+        "property": "white-space",
+        "capability": "supported",
+        "occurrences": 184,
+        "samples": [
+          {
+            "path": "div#stage.stage[0]",
+            "value": "normal"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+            "value": "normal"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]::after",
+            "value": "normal"
+          }
+        ]
+      },
+      {
+        "property": "background-image",
+        "capability": "assetize",
+        "occurrences": 38,
+        "samples": [
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+            "value": "radial-gradient(at 30% 40%, rgba(139, 98, 42, 0.3), rgba(0, 0, 0, 0) 55%), radial-gradient(at 80% 70%, rgba(44, 58, 66, 0.25), rgba(0, 0, 0, 0) 60%), linear-gradient(rgb(42, 39, 32) 0%, rgb(26, 24, 20) 40%, rgb(16, 14, 10) 100%)"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]::after",
+            "value": "linear-gradient(90deg, rgba(0, 0, 0, 0) 45%, rgba(10, 10, 10, 0.7) 75%, rgb(10, 10, 10) 100%)"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]>button.portrait-nav.left[0]",
+            "value": "linear-gradient(135deg, rgba(212, 175, 55, 0.18), rgba(138, 110, 31, 0.1))"
+          }
+        ]
+      },
+      {
+        "property": "border-top-left-radius",
+        "capability": "supported",
+        "occurrences": 29,
+        "samples": [
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]>button.portrait-nav.left[0]",
+            "value": "50%"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]>button.portrait-nav.right[2]",
+            "value": "50%"
+          },
+          {
+            "path": "div#stage.stage[0]>div#rank-badge.rank-badge[2]",
+            "value": "16px"
+          }
+        ]
+      },
+      {
+        "property": "border-top-right-radius",
+        "capability": "supported",
+        "occurrences": 29,
+        "samples": [
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]>button.portrait-nav.left[0]",
+            "value": "50%"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]>button.portrait-nav.right[2]",
+            "value": "50%"
+          },
+          {
+            "path": "div#stage.stage[0]>div#rank-badge.rank-badge[2]",
+            "value": "16px"
+          }
+        ]
+      },
+      {
+        "property": "border-bottom-left-radius",
+        "capability": "supported",
+        "occurrences": 28,
+        "samples": [
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]>button.portrait-nav.left[0]",
+            "value": "50%"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]>button.portrait-nav.right[2]",
+            "value": "50%"
+          },
+          {
+            "path": "div#stage.stage[0]>div#rank-badge.rank-badge[2]",
+            "value": "16px"
+          }
+        ]
+      },
+      {
+        "property": "border-bottom-right-radius",
+        "capability": "supported",
+        "occurrences": 28,
+        "samples": [
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]>button.portrait-nav.left[0]",
+            "value": "50%"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]>button.portrait-nav.right[2]",
+            "value": "50%"
+          },
+          {
+            "path": "div#stage.stage[0]>div#rank-badge.rank-badge[2]",
+            "value": "16px"
+          }
+        ]
+      },
+      {
+        "property": "border-top-style",
+        "capability": "supported",
+        "occurrences": 25,
+        "samples": [
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]>button.portrait-nav.left[0]",
+            "value": "solid"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]>button.portrait-nav.right[2]",
+            "value": "solid"
+          },
+          {
+            "path": "div#stage.stage[0]>div#rank-badge.rank-badge[2]",
+            "value": "solid"
+          }
+        ]
+      },
+      {
+        "property": "border-top-width",
+        "capability": "supported",
+        "occurrences": 25,
+        "samples": [
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]>button.portrait-nav.left[0]",
+            "value": "3px"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]>button.portrait-nav.right[2]",
+            "value": "3px"
+          },
+          {
+            "path": "div#stage.stage[0]>div#rank-badge.rank-badge[2]",
+            "value": "2px"
+          }
+        ]
+      },
+      {
+        "property": "border-bottom-style",
+        "capability": "supported",
+        "occurrences": 24,
+        "samples": [
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]>button.portrait-nav.left[0]",
+            "value": "solid"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]>button.portrait-nav.right[2]",
+            "value": "solid"
+          },
+          {
+            "path": "div#stage.stage[0]>div#rank-badge.rank-badge[2]",
+            "value": "solid"
+          }
+        ]
+      },
+      {
+        "property": "border-bottom-width",
+        "capability": "supported",
+        "occurrences": 24,
+        "samples": [
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]>button.portrait-nav.left[0]",
+            "value": "3px"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]>button.portrait-nav.right[2]",
+            "value": "3px"
+          },
+          {
+            "path": "div#stage.stage[0]>div#rank-badge.rank-badge[2]",
+            "value": "2px"
+          }
+        ]
+      },
+      {
+        "property": "border-left-style",
+        "capability": "supported",
+        "occurrences": 24,
+        "samples": [
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]>button.portrait-nav.left[0]",
+            "value": "solid"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]>button.portrait-nav.right[2]",
+            "value": "solid"
+          },
+          {
+            "path": "div#stage.stage[0]>div#rank-badge.rank-badge[2]",
+            "value": "solid"
+          }
+        ]
+      },
+      {
+        "property": "border-left-width",
+        "capability": "supported",
+        "occurrences": 24,
+        "samples": [
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]>button.portrait-nav.left[0]",
+            "value": "3px"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]>button.portrait-nav.right[2]",
+            "value": "3px"
+          },
+          {
+            "path": "div#stage.stage[0]>div#rank-badge.rank-badge[2]",
+            "value": "2px"
+          }
+        ]
+      },
+      {
+        "property": "border-right-style",
+        "capability": "supported",
+        "occurrences": 24,
+        "samples": [
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]>button.portrait-nav.left[0]",
+            "value": "solid"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]>button.portrait-nav.right[2]",
+            "value": "solid"
+          },
+          {
+            "path": "div#stage.stage[0]>div#rank-badge.rank-badge[2]",
+            "value": "solid"
+          }
+        ]
+      },
+      {
+        "property": "border-right-width",
+        "capability": "supported",
+        "occurrences": 24,
+        "samples": [
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]>button.portrait-nav.left[0]",
+            "value": "3px"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]>button.portrait-nav.right[2]",
+            "value": "3px"
+          },
+          {
+            "path": "div#stage.stage[0]>div#rank-badge.rank-badge[2]",
+            "value": "2px"
+          }
+        ]
+      },
+      {
+        "property": "background-color",
+        "capability": "supported",
+        "occurrences": 13,
+        "samples": [
+          {
+            "path": "div#stage.stage[0]",
+            "value": "rgb(10, 10, 10)"
+          },
+          {
+            "path": "div#stage.stage[0]>div.right-shell[5]>div#right-content.right-content[0]>div[0]>div[0]>div[1]>span[0]",
+            "value": "rgb(255, 193, 7)"
+          },
+          {
+            "path": "div#stage.stage[0]>div.right-shell[5]>div#right-content.right-content[0]>div[0]>div[1]>div[0]",
+            "value": "rgba(255, 255, 255, 0.03)"
+          }
+        ]
+      },
+      {
+        "property": "content",
+        "capability": "unsupported",
+        "occurrences": 13,
+        "samples": [
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]::after",
+            "value": "\"\""
+          },
+          {
+            "path": "div#stage.stage[0]>div#strip-wrap.story-strip-wrap[6]>div#strip-cells.strip[1]>div.cell[0]::before",
+            "value": "\"\""
+          },
+          {
+            "path": "div#stage.stage[0]>div#strip-wrap.story-strip-wrap[6]>div#strip-cells.strip[1]>div.cell[0]::after",
+            "value": "\"\""
+          }
+        ]
+      },
+      {
+        "property": "overflow",
+        "capability": "supported",
+        "occurrences": 13,
+        "samples": [
+          {
+            "path": "div#stage.stage[0]",
+            "value": "hidden"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+            "value": "hidden"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]>img.portrait-img[1]",
+            "value": "clip"
+          }
+        ]
+      },
+      {
+        "property": "overflow-x",
+        "capability": "supported",
+        "occurrences": 13,
+        "samples": [
+          {
+            "path": "div#stage.stage[0]",
+            "value": "hidden"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+            "value": "hidden"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]>img.portrait-img[1]",
+            "value": "clip"
+          }
+        ]
+      },
+      {
+        "property": "overflow-y",
+        "capability": "supported",
+        "occurrences": 13,
+        "samples": [
+          {
+            "path": "div#stage.stage[0]",
+            "value": "hidden"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+            "value": "hidden"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]>img.portrait-img[1]",
+            "value": "clip"
+          }
+        ]
+      },
+      {
+        "property": "box-shadow",
+        "capability": "assetize",
+        "occurrences": 10,
+        "samples": [
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]>button.portrait-nav.left[0]",
+            "value": "rgba(212, 175, 55, 0.1) 0px 0px 16px 0px inset, rgba(212, 175, 55, 0.2) 0px 0px 24px 0px"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]>button.portrait-nav.right[2]",
+            "value": "rgba(212, 175, 55, 0.1) 0px 0px 16px 0px inset, rgba(212, 175, 55, 0.2) 0px 0px 24px 0px"
+          },
+          {
+            "path": "div#stage.stage[0]>div#rank-badge.rank-badge[2]",
+            "value": "rgba(0, 0, 0, 0.5) 0px 6px 20px 0px, rgba(140, 207, 196, 0.15) 0px 0px 20px 0px inset"
+          }
+        ]
+      },
+      {
+        "property": "text-shadow",
+        "capability": "assetize",
+        "occurrences": 7,
+        "samples": [
+          {
+            "path": "div#stage.stage[0]>div.right-shell[5]>div#right-content.right-content[0]>div[0]>div[0]>div[0]>div[0]>span[0]",
+            "value": "rgba(0, 0, 0, 0.6) 0px 2px 6px"
+          },
+          {
+            "path": "div#stage.stage[0]>div#strip-wrap.story-strip-wrap[6]>div#strip-cells.strip[1]>div.cell[0]>div.cell-label[2]>div.t[0]",
+            "value": "rgb(0, 0, 0) 0px 1px 0px, rgba(0, 0, 0, 0.9) 0px 0px 10px"
+          },
+          {
+            "path": "div#stage.stage[0]>div#strip-wrap.story-strip-wrap[6]>div#strip-cells.strip[1]>div.cell[1]>div.cell-label[2]>div.t[0]",
+            "value": "rgb(0, 0, 0) 0px 1px 0px, rgba(0, 0, 0, 0.9) 0px 0px 10px"
+          }
+        ]
+      },
+      {
+        "property": "-webkit-clip-path",
+        "capability": "unsupported",
+        "occurrences": 5,
+        "samples": [
+          {
+            "path": "div#stage.stage[0]>div#strip-wrap.story-strip-wrap[6]>div#strip-cells.strip[1]>div.cell[0]",
+            "value": "polygon(0px 0px, 100% 0px, 100% 86%, 91% 100%, 0px 100%)"
+          },
+          {
+            "path": "div#stage.stage[0]>div#strip-wrap.story-strip-wrap[6]>div#strip-cells.strip[1]>div.cell[1]",
+            "value": "polygon(0px 0px, 100% 0px, 100% 86%, 91% 100%, 0px 100%)"
+          },
+          {
+            "path": "div#stage.stage[0]>div#strip-wrap.story-strip-wrap[6]>div#strip-cells.strip[1]>div.cell[2]",
+            "value": "polygon(0px 0px, 100% 0px, 100% 86%, 91% 100%, 0px 100%)"
+          }
+        ]
+      },
+      {
+        "property": "clip-path",
+        "capability": "unsupported",
+        "occurrences": 5,
+        "samples": [
+          {
+            "path": "div#stage.stage[0]>div#strip-wrap.story-strip-wrap[6]>div#strip-cells.strip[1]>div.cell[0]",
+            "value": "polygon(0px 0px, 100% 0px, 100% 86%, 91% 100%, 0px 100%)"
+          },
+          {
+            "path": "div#stage.stage[0]>div#strip-wrap.story-strip-wrap[6]>div#strip-cells.strip[1]>div.cell[1]",
+            "value": "polygon(0px 0px, 100% 0px, 100% 86%, 91% 100%, 0px 100%)"
+          },
+          {
+            "path": "div#stage.stage[0]>div#strip-wrap.story-strip-wrap[6]>div#strip-cells.strip[1]>div.cell[2]",
+            "value": "polygon(0px 0px, 100% 0px, 100% 86%, 91% 100%, 0px 100%)"
+          }
+        ]
+      },
+      {
+        "property": "transform",
+        "capability": "unsupported",
+        "occurrences": 5,
+        "samples": [
+          {
+            "path": "div#stage.stage[0]",
+            "value": "matrix(0.694444, 0, 0, 0.694444, 0.333333, 0)"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]>button.portrait-nav.left[0]",
+            "value": "matrix(1, 0, 0, 1, 0, -48)"
+          },
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]>img.portrait-img[1]",
+            "value": "matrix(1, 0, 0, 1, -267.905, 0)"
+          }
+        ]
+      },
+      {
+        "property": "background-position",
+        "capability": "assetize",
+        "occurrences": 1,
+        "samples": [
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+            "value": "0% 0%, 0% 0%, 0% 0%"
+          }
+        ]
+      },
+      {
+        "property": "background-repeat",
+        "capability": "assetize",
+        "occurrences": 1,
+        "samples": [
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+            "value": "repeat, repeat, repeat"
+          }
+        ]
+      },
+      {
+        "property": "background-size",
+        "capability": "assetize",
+        "occurrences": 1,
+        "samples": [
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]",
+            "value": "auto, auto, auto"
+          }
+        ]
+      },
+      {
+        "property": "filter",
+        "capability": "unsupported",
+        "occurrences": 1,
+        "samples": [
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]>img.portrait-img[1]",
+            "value": "drop-shadow(rgba(0, 0, 0, 0.7) 0px 20px 40px)"
+          }
+        ]
+      },
+      {
+        "property": "object-fit",
+        "capability": "supported",
+        "occurrences": 1,
+        "samples": [
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]>img.portrait-img[1]",
+            "value": "contain"
+          }
+        ]
+      },
+      {
+        "property": "object-position",
+        "capability": "supported",
+        "occurrences": 1,
+        "samples": [
+          {
+            "path": "div#stage.stage[0]>div#portrait-bg.portrait-bg[0]>img.portrait-img[1]",
+            "value": "50% 100%"
+          }
+        ]
+      }
+    ]
+  },
+  "coveragePercent": 0.9974751459681237
+}

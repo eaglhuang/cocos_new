@@ -1,20 +1,216 @@
 {
-  "type": "panel",
+  "type": "container",
   "name": "TabBasicsContent",
   "widget": { "top": 0, "bottom": 0, "left": 0, "right": 0 },
-  "layout": { "type": "vertical", "spacing": 12, "paddingTop": 28, "paddingBottom": 28, "paddingLeft": 28, "paddingRight": 28 },
+  "layout": { "type": "vertical", "spacing": 12, "paddingTop": 0, "paddingBottom": 24, "paddingLeft": 20, "paddingRight": 20 },
   "children": [
-    { "type": "label", "name": "UidValue",       "width": "100%", "height": 30, "skinSlot": "detail.field.bg", "styleSlot": "detail.label.value" },
-    { "type": "label", "name": "NameValue",      "width": "100%", "height": 30, "skinSlot": "detail.field.bg", "styleSlot": "detail.label.value" },
-    { "type": "label", "name": "TitleValue",     "width": "100%", "height": 30, "skinSlot": "detail.field.bg", "styleSlot": "detail.label.value" },
-    { "type": "label", "name": "TemplateValue",  "width": "100%", "height": 30, "skinSlot": "detail.field.bg", "styleSlot": "detail.label.value" },
-    { "type": "label", "name": "FactionValue",   "width": "100%", "height": 30, "skinSlot": "detail.field.bg", "styleSlot": "detail.label.value" },
-    { "type": "label", "name": "GenderValue",    "width": "100%", "height": 30, "skinSlot": "detail.field.bg", "styleSlot": "detail.label.value" },
-    { "type": "label", "name": "AgeValue",       "width": "100%", "height": 30, "skinSlot": "detail.field.bg", "styleSlot": "detail.label.value" },
-    { "type": "label", "name": "RoleValue",      "width": "100%", "height": 30, "skinSlot": "detail.field.bg", "styleSlot": "detail.label.value" },
-    { "type": "label", "name": "StatusValue",    "width": "100%", "height": 30, "skinSlot": "detail.field.bg", "styleSlot": "detail.label.value" },
-    { "type": "label", "name": "LifespanValue",  "width": "100%", "height": 30, "skinSlot": "detail.field.bg", "styleSlot": "detail.label.value" },
-    { "type": "label", "name": "VitalityValue",  "width": "100%", "height": 30, "skinSlot": "detail.field.bg", "styleSlot": "detail.label.value" },
-    { "type": "label", "name": "SourceValue",    "width": "100%", "height": 30, "skinSlot": "detail.field.bg", "styleSlot": "detail.label.value" }
+    {
+      "type": "container",
+      "name": "IdentitySectionHeader",
+      "width": "100%",
+      "height": 24,
+      "children": [
+        { "type": "sprite", "name": "IdentitySectionBar", "widget": { "top": 0, "bottom": 0, "left": 0, "right": 0 }, "skinSlot": "gdv3.summary.sectionBar" },
+        { "type": "label", "name": "IdentitySectionTitle", "widget": { "left": 12, "top": 3 }, "width": 96, "height": 18, "text": "人物檔案", "styleSlot": "gdv3.label.summarySection" },
+        { "type": "label", "name": "IdentitySectionTitleEn", "widget": { "left": 112, "top": 5 }, "width": 122, "height": 14, "text": "IDENTITY DOSSIER", "styleSlot": "gdv3.label.summarySectionEn" }
+      ]
+    },
+    {
+      "type": "container",
+      "name": "IdentityRowOne",
+      "width": "100%",
+      "height": 72,
+      "layout": { "type": "horizontal", "spacing": 12 },
+      "children": [
+        {
+          "type": "panel",
+          "name": "UidCard",
+          "width": 244,
+          "height": 72,
+          "skinSlot": "detail.aptitude.card",
+          "children": [
+            { "type": "label", "name": "UidLabel", "widget": { "top": 10, "left": 12, "right": 12 }, "height": 16, "text": "UID", "styleSlot": "detail.label.meta" },
+            { "type": "label", "name": "UidValue", "widget": { "left": 12, "right": 12, "bottom": 10 }, "height": 26, "styleSlot": "detail.label.value" }
+          ]
+        },
+        {
+          "type": "panel",
+          "name": "NameCard",
+          "width": 244,
+          "height": 72,
+          "skinSlot": "detail.aptitude.card",
+          "children": [
+            { "type": "label", "name": "NameLabel", "widget": { "top": 10, "left": 12, "right": 12 }, "height": 16, "text": "名稱", "styleSlot": "detail.label.meta" },
+            { "type": "label", "name": "NameValue", "widget": { "left": 12, "right": 12, "bottom": 10 }, "height": 26, "styleSlot": "detail.label.value" }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "container",
+      "name": "IdentityRowTwo",
+      "width": "100%",
+      "height": 72,
+      "layout": { "type": "horizontal", "spacing": 12 },
+      "children": [
+        {
+          "type": "panel",
+          "name": "TitleCard",
+          "width": 244,
+          "height": 72,
+          "skinSlot": "detail.aptitude.card",
+          "children": [
+            { "type": "label", "name": "TitleLabel", "widget": { "top": 10, "left": 12, "right": 12 }, "height": 16, "text": "稱號", "styleSlot": "detail.label.meta" },
+            { "type": "label", "name": "TitleValue", "widget": { "left": 12, "right": 12, "bottom": 10 }, "height": 26, "styleSlot": "detail.label.value" }
+          ]
+        },
+        {
+          "type": "panel",
+          "name": "TemplateCard",
+          "width": 244,
+          "height": 72,
+          "skinSlot": "detail.aptitude.card",
+          "children": [
+            { "type": "label", "name": "TemplateLabel", "widget": { "top": 10, "left": 12, "right": 12 }, "height": 16, "text": "模板 ID", "styleSlot": "detail.label.meta" },
+            { "type": "label", "name": "TemplateValue", "widget": { "left": 12, "right": 12, "bottom": 10 }, "height": 26, "styleSlot": "detail.label.value" }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "container",
+      "name": "IdentityRowThree",
+      "width": "100%",
+      "height": 72,
+      "layout": { "type": "horizontal", "spacing": 12 },
+      "children": [
+        {
+          "type": "panel",
+          "name": "FactionCard",
+          "width": 244,
+          "height": 72,
+          "skinSlot": "detail.aptitude.card",
+          "children": [
+            { "type": "label", "name": "FactionLabel", "widget": { "top": 10, "left": 12, "right": 12 }, "height": 16, "text": "陣營", "styleSlot": "detail.label.meta" },
+            { "type": "label", "name": "FactionValue", "widget": { "left": 12, "right": 12, "bottom": 10 }, "height": 26, "styleSlot": "detail.label.value" }
+          ]
+        },
+        {
+          "type": "panel",
+          "name": "GenderCard",
+          "width": 244,
+          "height": 72,
+          "skinSlot": "detail.aptitude.card",
+          "children": [
+            { "type": "label", "name": "GenderLabel", "widget": { "top": 10, "left": 12, "right": 12 }, "height": 16, "text": "性別", "styleSlot": "detail.label.meta" },
+            { "type": "label", "name": "GenderValue", "widget": { "left": 12, "right": 12, "bottom": 10 }, "height": 26, "styleSlot": "detail.label.value" }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "container",
+      "name": "StatusSectionHeader",
+      "width": "100%",
+      "height": 24,
+      "children": [
+        { "type": "sprite", "name": "StatusSectionBar", "widget": { "top": 0, "bottom": 0, "left": 0, "right": 0 }, "skinSlot": "gdv3.summary.sectionBar" },
+        { "type": "label", "name": "StatusSectionTitle", "widget": { "left": 12, "top": 3 }, "width": 96, "height": 18, "text": "狀態履歷", "styleSlot": "gdv3.label.summarySection" },
+        { "type": "label", "name": "StatusSectionTitleEn", "widget": { "left": 112, "top": 5 }, "width": 126, "height": 14, "text": "STATUS ARCHIVE", "styleSlot": "gdv3.label.summarySectionEn" }
+      ]
+    },
+    {
+      "type": "container",
+      "name": "StatusRowOne",
+      "width": "100%",
+      "height": 72,
+      "layout": { "type": "horizontal", "spacing": 12 },
+      "children": [
+        {
+          "type": "panel",
+          "name": "AgeCard",
+          "width": 244,
+          "height": 72,
+          "skinSlot": "detail.aptitude.card",
+          "children": [
+            { "type": "label", "name": "AgeLabel", "widget": { "top": 10, "left": 12, "right": 12 }, "height": 16, "text": "年齡", "styleSlot": "detail.label.meta" },
+            { "type": "label", "name": "AgeValue", "widget": { "left": 12, "right": 12, "bottom": 10 }, "height": 26, "styleSlot": "detail.label.value" }
+          ]
+        },
+        {
+          "type": "panel",
+          "name": "RoleCard",
+          "width": 244,
+          "height": 72,
+          "skinSlot": "detail.aptitude.card",
+          "children": [
+            { "type": "label", "name": "RoleLabel", "widget": { "top": 10, "left": 12, "right": 12 }, "height": 16, "text": "職能", "styleSlot": "detail.label.meta" },
+            { "type": "label", "name": "RoleValue", "widget": { "left": 12, "right": 12, "bottom": 10 }, "height": 26, "styleSlot": "detail.label.value" }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "container",
+      "name": "StatusRowTwo",
+      "width": "100%",
+      "height": 72,
+      "layout": { "type": "horizontal", "spacing": 12 },
+      "children": [
+        {
+          "type": "panel",
+          "name": "StatusCard",
+          "width": 244,
+          "height": 72,
+          "skinSlot": "detail.aptitude.card",
+          "children": [
+            { "type": "label", "name": "StatusLabel", "widget": { "top": 10, "left": 12, "right": 12 }, "height": 16, "text": "狀態", "styleSlot": "detail.label.meta" },
+            { "type": "label", "name": "StatusValue", "widget": { "left": 12, "right": 12, "bottom": 10 }, "height": 26, "styleSlot": "detail.label.value" }
+          ]
+        },
+        {
+          "type": "panel",
+          "name": "VitalityCard",
+          "width": 244,
+          "height": 72,
+          "skinSlot": "detail.aptitude.card",
+          "children": [
+            { "type": "label", "name": "VitalityLabel", "widget": { "top": 10, "left": 12, "right": 12 }, "height": 16, "text": "精力", "styleSlot": "detail.label.meta" },
+            { "type": "label", "name": "VitalityValue", "widget": { "left": 12, "right": 12, "bottom": 10 }, "height": 26, "styleSlot": "detail.label.value" }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "container",
+      "name": "StatusRowThree",
+      "width": "100%",
+      "height": 72,
+      "layout": { "type": "horizontal", "spacing": 12 },
+      "children": [
+        {
+          "type": "panel",
+          "name": "LifespanCard",
+          "width": 244,
+          "height": 72,
+          "skinSlot": "detail.aptitude.card",
+          "children": [
+            { "type": "label", "name": "LifespanLabel", "widget": { "top": 10, "left": 12, "right": 12 }, "height": 16, "text": "天命值", "styleSlot": "detail.label.meta" },
+            { "type": "label", "name": "LifespanValue", "widget": { "left": 12, "right": 12, "bottom": 10 }, "height": 26, "styleSlot": "detail.label.value" }
+          ]
+        },
+        {
+          "type": "panel",
+          "name": "SourceCard",
+          "width": 244,
+          "height": 72,
+          "skinSlot": "detail.aptitude.card",
+          "children": [
+            { "type": "label", "name": "SourceLabel", "widget": { "top": 10, "left": 12, "right": 12 }, "height": 16, "text": "來源", "styleSlot": "detail.label.meta" },
+            { "type": "label", "name": "SourceValue", "widget": { "left": 12, "right": 12, "bottom": 10 }, "height": 26, "styleSlot": "detail.label.value" }
+          ]
+        }
+      ]
+    }
   ]
 }

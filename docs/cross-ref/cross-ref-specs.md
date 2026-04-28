@@ -10,13 +10,15 @@
 ## A. 規格書索引（文件 → 相關文件）
 
 > 只列出明確的依賴 / 引用關係，不列模糊的主題重疊。
+>
+> **2026-04-26 兵源鏈補充**：`doc_spec_0037`（領地治理）、`doc_spec_0032`（經濟）、`doc_spec_0014`（官職）、`doc_spec_0040`（戰場部署）、`doc_spec_0012`（虎符）、`doc_ui_0001`（主戰場 UI）、`doc_ui_0012`（武將人物介面）、`doc_tech_0014`（Data Schema）共同採用 `人口 -> 城市兵源 -> 出征軍勢 -> 場上分隊`。
 
 ### 核心基礎系統
 
 | 規格書 |被依賴（下游系統）|依賴（上游系統）|
 |---|---|---|
 | doc_data_0001 |doc_spec_0012、doc_spec_0016、doc_data_0002、doc_spec_0041、doc_spec_0040、doc_spec_0043|—|
-| doc_spec_0016 |doc_spec_0043、doc_spec_0029、doc_spec_0018、doc_spec_0017、doc_spec_0021、doc_ui_0012、doc_spec_0038、doc_spec_0030|doc_data_0001、doc_spec_0034、doc_spec_0008、doc_spec_0038、doc_spec_0030|
+| doc_spec_0016 |doc_spec_0043、doc_spec_0029、doc_spec_0018、doc_spec_0017、doc_spec_0021、doc_ui_0012、doc_spec_0038、doc_spec_0030、doc_spec_0174|doc_data_0001、doc_spec_0034、doc_spec_0008、doc_spec_0038、doc_spec_0030、doc_spec_0174|
 | doc_spec_0008 |全系統（UID/Bloodline_ID/Gene/Status 統一定義）|—|
 
 ### 血統 + 因子系統族群
@@ -48,7 +50,7 @@
 | 規格書 |被依賴|依賴|
 |---|---|---|
 | doc_spec_0040 |doc_spec_0007、doc_spec_0044、doc_ui_0001|doc_spec_0032、doc_spec_0012、doc_data_0001、doc_spec_0019、doc_spec_0039|
-| doc_spec_0012 |doc_spec_0040、doc_spec_0007、doc_ui_0012、doc_ui_0001|doc_spec_0043、doc_spec_0038、doc_spec_0011、doc_spec_0022、doc_spec_0005|
+| doc_spec_0012 |doc_spec_0040、doc_spec_0007、doc_ui_0012、doc_ui_0001、doc_spec_0174|doc_spec_0043、doc_spec_0038、doc_spec_0011、doc_spec_0022、doc_spec_0005、doc_spec_0174|
 | doc_spec_0041 |—|doc_spec_0010、doc_spec_0038、doc_data_0001|
 | doc_spec_0038 |doc_spec_0041、doc_spec_0039（格子戰法定義）、doc_spec_0016、doc_ui_0012、doc_ui_0001、doc_spec_0040|doc_spec_0010、doc_spec_0026、doc_spec_0027、doc_spec_0016|
 | doc_spec_0019 |doc_spec_0040|doc_spec_0042|
@@ -63,11 +65,12 @@
 
 | 規格書 |被依賴|依賴|
 |---|---|---|
-| doc_spec_0032 |doc_spec_0040、道具系統、doc_spec_0007、doc_spec_0002|doc_spec_0033、doc_spec_0037|
+| doc_spec_0032 |doc_spec_0040、道具系統、doc_spec_0007、doc_spec_0002、doc_spec_0174|doc_spec_0033、doc_spec_0037、doc_spec_0174|
+| doc_spec_0174 |doc_spec_0036、doc_spec_0017、doc_spec_0012、doc_spec_0016、doc_spec_0032、doc_tech_0014、doc_ui_0012|doc_spec_0036、doc_spec_0017、doc_spec_0012、doc_spec_0016、doc_spec_0032、doc_spec_0001、doc_data_0001、doc_ui_0012、doc_tech_0014、doc_spec_0155、doc_spec_0119、doc_spec_0061、doc_spec_0104、doc_spec_0107、doc_spec_0117、doc_spec_0118、doc_spec_0111、doc_spec_0115、doc_spec_0106、doc_spec_0063|
 | doc_spec_0037 |doc_spec_0032|doc_spec_0034|
 | doc_spec_0014 |doc_spec_0002、doc_spec_0020|doc_spec_0037、doc_spec_0034|
 | doc_spec_0033 |doc_spec_0028、doc_spec_0026、doc_spec_0032|doc_spec_0018|
-| doc_spec_0036 |—|doc_spec_0032、結緣系統、傭兵系統、doc_spec_0026、doc_spec_0037|
+| doc_spec_0036 |doc_spec_0174|doc_spec_0032、結緣系統、傭兵系統、doc_spec_0026、doc_spec_0037、doc_spec_0174|
 | doc_spec_0034 |doc_spec_0018、doc_spec_0037、doc_spec_0026|—|
 
 ### 社交 & 留存
@@ -76,18 +79,20 @@
 |---|---|---|
 | doc_spec_0029 |doc_spec_0027、doc_spec_0003|doc_spec_0042|
 | doc_spec_0025 |—|doc_spec_0029、doc_spec_0027|
-| doc_spec_0015 |doc_tech_0013、doc_ui_0027|doc_spec_0002、doc_spec_0025、doc_spec_0040|
+| doc_spec_0015 |doc_tech_0014、doc_ui_0027、doc_spec_0176、doc_spec_0177|doc_spec_0002、doc_spec_0025、doc_spec_0040|
+| doc_spec_0176 |doc_spec_0177、doc_tech_0014|doc_spec_0015、doc_spec_0016、doc_spec_0026、doc_tech_0014、doc_spec_0177|
+| doc_spec_0177 |doc_spec_0176、doc_tech_0014、doc_ui_0012|doc_spec_0176、doc_spec_0015、doc_tech_0012、doc_tech_0014|
 | doc_spec_0006 |doc_spec_0028|doc_spec_0009|
 | doc_spec_0003 |—|doc_spec_0028、doc_spec_0029、doc_spec_0021、doc_spec_0026|
 | doc_spec_0021 |doc_spec_0003|doc_spec_0032、doc_spec_0016|
-| doc_spec_0017 |—|doc_spec_0043、doc_spec_0029|
+| doc_spec_0017 |doc_spec_0174|doc_spec_0043、doc_spec_0029、doc_spec_0174|
 
 ### 樞紐 & 規劃文件
 
 | 規格書 |被依賴|依賴|
 |---|---|---|
 | doc_spec_0045 |—|doc_spec_0016、doc_spec_0028、doc_spec_0026、doc_spec_0011、doc_spec_0010、doc_spec_0040|
-| doc_tech_0013 |—|全系統（匯總所有 I 區 Schema）、doc_spec_0002、doc_spec_0020、doc_spec_0014、doc_spec_0015、doc_spec_0007、doc_spec_0032、doc_spec_0039、doc_spec_0026、doc_spec_0022、doc_ui_0012|
+| doc_tech_0014 |doc_spec_0174、doc_spec_0176、doc_spec_0177|全系統（匯總所有 I 區 Schema）、doc_spec_0002、doc_spec_0020、doc_spec_0014、doc_spec_0015、doc_spec_0007、doc_spec_0032、doc_spec_0039、doc_spec_0026、doc_spec_0022、doc_ui_0012、doc_spec_0174、doc_spec_0176、doc_spec_0177|
 | doc_spec_0031 |doc_spec_0004、doc_ui_0027|doc_spec_0042、doc_spec_0011、doc_spec_0009、doc_spec_0036|
 | doc_spec_0004 |—|doc_spec_0031、doc_ui_0027|
 | doc_ui_0005 |doc_ui_0027|doc_spec_0011、doc_ui_0012|
@@ -104,9 +109,9 @@
 | doc_spec_0159 |doc_index_0011|doc_index_0005|
 | doc_spec_0001 |doc_index_0011|doc_spec_0159、doc_index_0005|
 | doc_tech_0008 |—|doc_spec_0031、doc_spec_0011、doc_spec_0042|
-| doc_tech_0009 |doc_tech_0015、doc_tech_0013、doc_spec_0008、doc_spec_0010、doc_spec_0011| — |
+| doc_tech_0009 |doc_tech_0015、doc_tech_0014、doc_spec_0008、doc_spec_0010、doc_spec_0011| — |
 | doc_ui_0027 |doc_spec_0004、doc_ui_0049、doc_ui_0012、doc_ui_0009|doc_spec_0031、doc_tech_0008、doc_spec_0011、doc_spec_0012、doc_spec_0015、doc_spec_0007、doc_spec_0032|
-| doc_ui_0012 |doc_ui_0049、doc_spec_0016、doc_spec_0011、doc_spec_0038、doc_spec_0041、doc_spec_0012、doc_spec_0026、doc_spec_0022、doc_tech_0013|doc_spec_0030|
+| doc_ui_0012 |doc_ui_0049、doc_spec_0016、doc_spec_0011、doc_spec_0038、doc_spec_0041、doc_spec_0012、doc_spec_0026、doc_spec_0022、doc_tech_0014、doc_spec_0174|doc_spec_0030、doc_spec_0174|
 | doc_ui_0011 |doc_ui_0012、doc_ui_0049|—|
 | doc_ui_0001 |doc_ui_0049|doc_spec_0161、doc_spec_0040、doc_spec_0012、doc_spec_0038、doc_spec_0030、doc_spec_0039（§ 6 場景視覺主題）、doc_art_0002|
 | doc_art_0003 |doc_ui_0049、doc_tech_0015|doc_index_0011|
@@ -120,6 +125,6 @@
 | doc_ui_0036 |doc_ui_0032|doc_index_0012、doc_ui_0049、doc_ui_0050、doc_art_0002、doc_ui_0001|
 | doc_ui_0035 |—|doc_ui_0051 § 8、doc_index_0011、doc_art_0003|
 | doc_ui_0049 |doc_agentskill_0022、doc_agentskill_0029、doc_agentskill_0027、doc_agentskill_0011|doc_index_0011、doc_ui_0027、doc_ui_0001、doc_art_0003、doc_ui_0012、doc_ui_0011|
-| doc_tech_0012 |—|doc_tech_0013|
+| doc_tech_0012 |doc_spec_0177|doc_tech_0014|
 
 ---

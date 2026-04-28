@@ -1,0 +1,15 @@
+{
+  "screenId": "character-ds3-main",
+  "currentBundle": "lobby_ui",
+  "distribution": [
+    {
+      "bundle": "generals",
+      "spriteCount": 1
+    }
+  ],
+  "suggestion": {
+    "primary": "generals",
+    "confidence": "high",
+    "reason": "current=lobby_ui 但實際資產主要落在 generals (1)"
+  }
+}

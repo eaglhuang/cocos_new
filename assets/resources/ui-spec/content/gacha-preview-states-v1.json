@@ -1,16 +1,30 @@
 {
   "id": "gacha-preview-states-v1",
-  "version": 1,
+  "version": 2,
   "defaultState": "hero",
   "states": {
     "hero": {
       "texts": {
-        "TitleLabel": "英靈名將池",
-        "PoolSubtitleLabel": "常設精選招募",
-        "FeaturedLabel": "當期主打．關羽 / 張飛 / 趙雲",
-        "TimerLabel": "常設卡池",
-        "SmallPityLabel": "再 8 抽必得 SSR+",
-        "BigPityLabel": "天命值 120/200"
+        "PoolNameStripValue": "名將召喚",
+        "TitleLabel": "名將召喚",
+        "PoolSubtitleLabel": "以血脈為種，召來傳世名將",
+        "PoolTierLabel": "SSR",
+        "FeaturedLabel": "★ 名將系列 · 常設",
+        "BannerHeroName": "關　羽",
+        "TimerLabel": "美髯公 · SSR 武將",
+        "SmallPityLabel": "SSR 保底 90 抽",
+        "BigPityLabel": "62 / 90",
+        "PoolPositioningBrief": "本池為 Bloodline_Seed 系列，英靈卡與虎符卡不會在此池掉落，主打 SSR 武將與血脈相連的傳世名將。",
+        "CostSingleValue": "◈ 30",
+        "CostTenValue": "◈ 280",
+        "CostBalanceValue": "◈ 340",
+        "RulesNote": "✦ 十連保證 SR 以上 1 枚  ✦ 名將池 SSR 角色機率額外提升\n✦ 保底不跨池累積  ✦ 重複角色轉為武魂碎片",
+        "PullBarPoolValue": "名將召喚",
+        "Pull1Label": "單 抽 ×1",
+        "Pull1Cost": "◈ 30",
+        "Pull10Label": "十 連 ×10",
+        "Pull10Hint": "保證 SR 以上 1 枚",
+        "Pull10Cost": "◈ 280   300"
       },
       "rarityDocks": [
         {
@@ -26,12 +40,26 @@
     },
     "support": {
       "texts": {
-        "TitleLabel": "策謀紅顏池",
-        "PoolSubtitleLabel": "支援卡精選招募",
-        "FeaturedLabel": "當期主打．黃月英 / 甄姬 / 大喬",
-        "TimerLabel": "常設支援池",
-        "SmallPityLabel": "再 10 抽必得 SR+",
-        "BigPityLabel": "天命值 64/200"
+        "PoolNameStripValue": "策士召喚",
+        "TitleLabel": "策士召喚",
+        "PoolSubtitleLabel": "策謀紅顏與輔佐奇才更易登場",
+        "PoolTierLabel": "SR",
+        "FeaturedLabel": "★ 謀臣系列 · 常設",
+        "BannerHeroName": "黃月英",
+        "TimerLabel": "機巧奇才 · SR 謀臣",
+        "SmallPityLabel": "SR 保底 10 抽",
+        "BigPityLabel": "18 / 60",
+        "PoolPositioningBrief": "本池為 Nurture_Depth 系列，偏重策士與輔佐型將領，較容易補齊後勤、控場與育成關鍵支援位。",
+        "CostSingleValue": "◈ 20",
+        "CostTenValue": "◈ 180",
+        "CostBalanceValue": "◈ 340",
+        "RulesNote": "✦ 十連保證 R 以上 3 枚  ✦ 支援型將領與後勤卡獲得率提升\n✦ 本池保底獨立計算  ✦ 轉換碎片可直接兌換輔佐道具",
+        "PullBarPoolValue": "策士召喚",
+        "Pull1Label": "單 抽 ×1",
+        "Pull1Cost": "◈ 20",
+        "Pull10Label": "十 連 ×10",
+        "Pull10Hint": "保證 R 以上 3 枚",
+        "Pull10Cost": "◈ 180   200"
       },
       "rarityDocks": [
         {
@@ -47,12 +75,26 @@
     },
     "limited": {
       "texts": {
-        "TitleLabel": "期間限定池",
-        "PoolSubtitleLabel": "限時精選招募",
-        "FeaturedLabel": "當期主打．呂布 / 貂蟬 / 諸葛亮",
-        "TimerLabel": "剩餘 03:12:44",
-        "SmallPityLabel": "再 5 抽必得 UR+",
-        "BigPityLabel": "天命值 180/200"
+        "PoolNameStripValue": "期間限定",
+        "TitleLabel": "期間限定",
+        "PoolSubtitleLabel": "限時加成，盛典角色僅於活動期間登場",
+        "PoolTierLabel": "UR",
+        "FeaturedLabel": "★ 期間限定 · 盛典",
+        "BannerHeroName": "呂　布",
+        "TimerLabel": "鬼神降世 · UR 武將",
+        "SmallPityLabel": "UR 保底 120 抽",
+        "BigPityLabel": "88 / 120",
+        "PoolPositioningBrief": "期間限定池只在活動檔期開放，限定角色與主題皮膚只會於本輪盛典出現，活動結束後不保證回歸。",
+        "CostSingleValue": "◈ 50",
+        "CostTenValue": "◈ 450",
+        "CostBalanceValue": "◈ 340",
+        "RulesNote": "✦ 十連保證 SR 以上 2 枚  ✦ 限定角色額外享有活動加成\n✦ UR 保底僅在本池生效  ✦ 活動結束後轉為紀念兌換資源",
+        "PullBarPoolValue": "期間限定",
+        "Pull1Label": "限定單抽",
+        "Pull1Cost": "◈ 50",
+        "Pull10Label": "限定十連",
+        "Pull10Hint": "保證 SR 以上 2 枚",
+        "Pull10Cost": "◈ 450   500"
       },
       "rarityDocks": [
         {

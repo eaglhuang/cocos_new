@@ -1,0 +1,19 @@
+{
+  "input": "assets/resources/ui-spec/layouts/elite-troop-codex-rail-main.json",
+  "wrappedRoot": true,
+  "passes": 2,
+  "before": 28,
+  "after": 25,
+  "foldedCount": 0,
+  "droppedCount": 0,
+  "absorbedCount": 3,
+  "collapsedCount": 0,
+  "foldedNames": [],
+  "droppedNames": [],
+  "absorbedNames": [
+    "ShellFill",
+    "ShellBleed",
+    "ShellFrame"
+  ],
+  "collapsedNames": []
+}
