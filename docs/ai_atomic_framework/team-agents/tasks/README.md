@@ -264,3 +264,6 @@ Practical captain rule:
 
 - Phase 0 sidecar reads the Markdown task card, prepares the brief, and does not mutate source.
 - Phase 1 builder follows the same card's `allowed_files_strict` / `forbidden_files` fence and uses ATM ledger status only for claim / close lifecycle.
+
+| [TASK-TEAM-0086](./TASK-TEAM-0086-paid-provider-preflight-probe.task.md) | M10X | Opt-in paid provider quota preflight probe | done | `TASK-TEAM-0050`, `TASK-TEAM-0051` | Team provider preflight / execution gate |
+| [TASK-TEAM-0087](./TASK-TEAM-0087-sync-0086-planning-projections.task.md) | Team Broker Maintainability | Sync completed TASK-TEAM-0086 planning projections | planned | `TASK-TEAM-0086` | Planning projection maintenance |
