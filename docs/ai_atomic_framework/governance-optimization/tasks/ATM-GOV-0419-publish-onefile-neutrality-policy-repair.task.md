@@ -1,7 +1,7 @@
 ---
 task_id: ATM-GOV-0419
 title: Publish onefile neutrality policy repair through the runner-sync steward
-status: planned
+status: done
 owner: atm-release
 priority: P1
 depends_on: []
@@ -65,6 +65,15 @@ atomizationImpact:
   ownerAtomOrMap: atm.release-build-map
   mapUpdates: []
   extractionCandidates: []
+completed_at: "2026-09-06T23:38:50.015Z"
+completed_by_agent: "codex-captain"
+closedAt: "2026-09-06T23:38:50.015Z"
+closedByActor: "codex-captain"
+closedByCommand: atm tasks close
+lastTransitionId: "2026-09-06T23-38-50-015Z-close-62cb0c683f68"
+lastTransitionAt: "2026-09-06T23:38:50.015Z"
+ledgerContractVersion: task-ledger/v1
+delivery_commit: "41e88ba06a1c6e0611303d454d7496ef5508657f"
 ---
 
 ## Acceptance

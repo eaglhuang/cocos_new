@@ -1,0 +1,15 @@
+{
+  "schemaId": "atm.taskTransition.v1",
+  "specVersion": "0.1.0",
+  "transitionId": "2026-09-06T23-38-50-015Z-close-62cb0c683f68",
+  "taskId": "ATM-GOV-0419",
+  "action": "close",
+  "actorId": "codex-captain",
+  "sessionId": null,
+  "fromStatus": "planned",
+  "toStatus": "done",
+  "taskPath": "docs/ai_atomic_framework/governance-optimization/tasks/ATM-GOV-0419-publish-onefile-neutrality-policy-repair.task.md",
+  "taskSha256": "sha256:26bba78e595f4db9b6ee331934cb6a230286d31f883b8320cf6bc4ca19abb076",
+  "createdAt": "2026-09-06T23:38:50.015Z",
+  "command": "node atm.mjs tasks close --task ATM-GOV-0419 --actor codex-captain"
+}
