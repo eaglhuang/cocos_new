@@ -1,0 +1,15 @@
+{
+  "schemaId": "atm.taskTransition.v1",
+  "specVersion": "0.1.0",
+  "transitionId": "2026-09-06T20-36-30-256Z-close-776487d7d7cf",
+  "taskId": "TASK-TEAM-0086",
+  "action": "close",
+  "actorId": "codex-captain",
+  "sessionId": null,
+  "fromStatus": "planned",
+  "toStatus": "done",
+  "taskPath": "docs/ai_atomic_framework/team-agents/tasks/TASK-TEAM-0086-paid-provider-preflight-probe.task.md",
+  "taskSha256": "sha256:674bcac8be13c55c42c8828dc014fe32c10dfd9861b83037f2f6a55e27a199c5",
+  "createdAt": "2026-09-06T20:36:30.256Z",
+  "command": "node atm.mjs tasks close --task TASK-TEAM-0086 --actor codex-captain"
+}
