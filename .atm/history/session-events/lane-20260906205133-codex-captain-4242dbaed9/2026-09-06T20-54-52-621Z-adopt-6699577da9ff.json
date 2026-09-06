@@ -1,0 +1,26 @@
+{
+  "schemaId": "atm.laneSessionEvent.v1",
+  "specVersion": "0.1.0",
+  "eventId": "2026-09-06T20-54-52-621Z-adopt-6699577da9ff",
+  "laneId": "lane-20260906205133-codex-captain-4242dbaed9",
+  "sequence": 1,
+  "action": "adopt",
+  "actorId": "codex-captain",
+  "createdAt": "2026-09-06T20:54:52.621Z",
+  "details": {
+    "previousActorId": "codex-captain",
+    "previousStatus": "active",
+    "reason": "Resume TASK-TEAM-0087 closeout after interrupted command",
+    "authorization": "confirm",
+    "ttlPhaseBefore": "fresh",
+    "reboundSessionIds": [
+      "session-20260906205133-codex-captain-TASK-TEAM-0087-01ace4f7ed"
+    ],
+    "reboundTaskIds": [
+      "TASK-TEAM-0087"
+    ],
+    "preservedLeaseIds": [
+      "lease-f9e5f27c4da1"
+    ]
+  }
+}

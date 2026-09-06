@@ -1,0 +1,263 @@
+{
+  "schemaVersion": "atm.workItem.v0.2",
+  "workItemId": "TASK-TEAM-0088",
+  "title": "Commit local governance reports from TASK-TEAM-0087 recovery",
+  "status": "running",
+  "milestone": "Team Broker Maintainability",
+  "dependencies": [],
+  "acceptance": [
+    "All three declared records are committed through the governed ATM route.",
+    "`git diff --check` passes.",
+    "No other working-tree path is staged or changed by this task."
+  ],
+  "deliverables": [
+    ".atm/history/reports/task-import/2026-09-06T20-44-04-866Z.json",
+    ".atm/history/reports/task-import/2026-09-06T20-51-26-080Z.json",
+    ".atm/history/session-events/lane-20260906205133-codex-captain-4242dbaed9/2026-09-06T20-54-52-621Z-adopt-6699577da9ff.json"
+  ],
+  "scopePaths": [
+    ".atm/history/reports/task-import/2026-09-06T20-44-04-866Z.json",
+    ".atm/history/reports/task-import/2026-09-06T20-51-26-080Z.json",
+    ".atm/history/session-events/lane-20260906205133-codex-captain-4242dbaed9/2026-09-06T20-54-52-621Z-adopt-6699577da9ff.json"
+  ],
+  "validators": [
+    "git diff --check"
+  ],
+  "planningRepo": "3KLife",
+  "targetRepo": "3KLife",
+  "closureAuthority": "target_repo",
+  "planningReadOnlyPaths": [],
+  "planningMirrorPaths": [],
+  "planningArtifacts": [],
+  "outOfScope": [],
+  "nonGoals": [],
+  "evidenceRequired": "command-backed",
+  "rollbackStrategy": "revert-commit",
+  "rollbackNotes": "Revert only these locally generated governance records if retention policy changes.",
+  "atomizationImpact": {
+    "ownerAtomOrMap": "atm.team-agents-runtime",
+    "atomCid": null,
+    "mapUpdates": []
+  },
+  "legacyImportAliases": {},
+  "importDiagnostics": [
+    {
+      "code": "ATM_TASK_IMPORT_LEGACY_VALIDATOR_PROJECTION",
+      "severity": "warning",
+      "field": "validators",
+      "message": "Command-only validators were projected to 1 advisory legacy case id(s) for migration. Prefer requiredTestCaseIds / testContributions for new cards."
+    }
+  ],
+  "tags": [],
+  "notes": null,
+  "source": {
+    "planPath": "team-agents/tasks/TASK-TEAM-0088-commit-local-governance-reports.task.md",
+    "sectionTitle": "TASK-TEAM-0088",
+    "headingLine": 57,
+    "hash": "0cb9abdc880e2649",
+    "planningSourceSeal": {
+      "schemaId": "atm.planningSourceSeal.v1",
+      "repoIdentity": "https://github.com/eaglhuang/3klife.git",
+      "repoRoot": "C:/Users/User/3KLife",
+      "taskCardPath": "team-agents/tasks/TASK-TEAM-0088-commit-local-governance-reports.task.md",
+      "planningCommitSha": null,
+      "contentDigest": "sha256:0cb9abdc880e2649e1bc05a2035442aec1a784ecf455124e86ca1ef0051940fa",
+      "amendmentEpoch": 0,
+      "sealedAt": "2026-09-06T20:57:07.859Z"
+    }
+  },
+  "importedAt": "2026-09-06T20:57:07.859Z",
+  "workAdmission": {
+    "recoveryMode": "auto",
+    "resolvedRecoveryMode": "disabled",
+    "policyDigest": "sha256:0dfda5eb6854c584791820720e4004b612d5ed31b9bfabd1654a9a85257c47bb"
+  },
+  "causalGraph": {
+    "causalDependencies": [],
+    "startConditions": [
+      "The three paths are locally generated governance records and are not foreign work."
+    ],
+    "softRelations": [
+      "TASK-TEAM-0087"
+    ],
+    "changedPublicSeams": [],
+    "causalImpactEdges": [
+      "governance-record-retention"
+    ],
+    "parallelFrontierInputs": [],
+    "validatorReferences": [
+      "git-diff-check"
+    ],
+    "phaseOwner": "atm-team"
+  },
+  "testContributions": [],
+  "requiredTestCaseIds": [],
+  "phaseTestCaseIds": [],
+  "advisoryTestCaseIds": [],
+  "legacyValidatorProjection": [
+    {
+      "schemaId": "atm.validatorExecutionContract.v1",
+      "specVersion": "0.1.0",
+      "responsibility": "advisory",
+      "caseId": "legacy_cmd_git.diff.check",
+      "command": "git diff --check",
+      "legacyProjection": true,
+      "acceptanceIds": [],
+      "impactEdges": []
+    }
+  ],
+  "dependencyClassification": {
+    "schemaId": "atm.taskDependencyClassification.v1",
+    "semantics": "legacy",
+    "edges": []
+  },
+  "frontmatterFidelity": {
+    "schemaId": "atm.taskFrontmatterFidelity.v1",
+    "specVersion": "0.1.0",
+    "ok": true,
+    "checkedFields": [
+      "causalGraph",
+      "causalGraph.causalDependencies",
+      "causalGraph.startConditions",
+      "causalGraph.softRelations",
+      "causalGraph.changedPublicSeams",
+      "causalGraph.causalImpactEdges",
+      "causalGraph.parallelFrontierInputs",
+      "causalGraph.validatorReferences",
+      "causalGraph.phaseOwner",
+      "dependencies",
+      "atomizationImpact",
+      "testContributions",
+      "requiredTestCaseIds",
+      "advisoryTestCaseIds",
+      "phaseTestCaseIds"
+    ],
+    "findings": []
+  },
+  "lastTransitionId": "2026-09-06T21-30-41-911Z-claim-1aa9517a88c0",
+  "lastTransitionAt": "2026-09-06T21:30:41.911Z",
+  "ledgerContractVersion": "task-ledger/v1",
+  "owner": "codex-captain",
+  "reservedAt": "2026-09-06T21:30:41.332Z",
+  "promotedAt": "2026-09-06T21:30:41.336Z",
+  "claim": {
+    "actorId": "codex-captain",
+    "leaseId": "lease-48f8528c17bb",
+    "claimedAt": "2026-09-06T21:30:41.341Z",
+    "heartbeatAt": "2026-09-06T21:30:41.341Z",
+    "ttlSeconds": 1800,
+    "files": [
+      ".atm/history/tasks/TASK-TEAM-0088.json",
+      ".atm/history/evidence/TASK-TEAM-0088.*",
+      ".atm/history/reports/task-import/2026-09-06T20-44-04-866Z.json",
+      ".atm/history/reports/task-import/2026-09-06T20-51-26-080Z.json",
+      ".atm/history/session-events/lane-20260906205133-codex-captain-4242dbaed9/2026-09-06T20-54-52-621Z-adopt-6699577da9ff.json",
+      ".atm/history/task-events/TASK-TEAM-0088/**"
+    ],
+    "state": "active",
+    "intent": "write",
+    "laneSession": {
+      "laneSessionId": "lane-20260906213041-codex-captain-714239a2f0",
+      "status": "active",
+      "source": "minted",
+      "exportHint": "export ATM_LANE_SESSION_ID=\"lane-20260906213041-codex-captain-714239a2f0\""
+    }
+  },
+  "startedAt": "2026-09-06T20:57:17.934Z",
+  "startedByActor": "codex-captain",
+  "workAdmissionTicket": {
+    "schemaId": "atm.workAdmissionTicket.v1",
+    "specVersion": "0.1.0",
+    "ticketId": "wat-d5caa1198a010ea9",
+    "ticketDigest": "sha256:d5caa1198a010ea9b00d65d26440febf3ba15632ef37102866217e93db747d83",
+    "taskId": "TASK-TEAM-0088",
+    "origin": "claim",
+    "actorId": "codex-captain",
+    "laneSessionId": "lane-20260906213041-codex-captain-714239a2f0",
+    "claimGeneration": "lease-48f8528c17bb",
+    "issuedAt": "2026-09-06T21:30:41.341Z",
+    "expiresAt": "2026-09-06T22:00:41.341Z",
+    "scopeDigest": "sha256:3880c837428610f1698e5afd2c74e89bc1f9b45b16100472e690b120f6b81a03",
+    "runnerSelection": {
+      "runnerKind": "frozen",
+      "runnerRef": "release/atm-onefile/atm.mjs",
+      "selectedAt": "2026-09-06T21:30:41.341Z"
+    },
+    "grants": [
+      {
+        "kind": "file-write",
+        "values": [
+          ".atm/history/evidence/TASK-TEAM-0088.*",
+          ".atm/history/reports/task-import/2026-09-06T20-44-04-866Z.json",
+          ".atm/history/reports/task-import/2026-09-06T20-51-26-080Z.json",
+          ".atm/history/session-events/lane-20260906205133-codex-captain-4242dbaed9/2026-09-06T20-54-52-621Z-adopt-6699577da9ff.json",
+          ".atm/history/task-events/TASK-TEAM-0088/**",
+          ".atm/history/tasks/TASK-TEAM-0088.json"
+        ],
+        "digest": "sha256:9cc6472a91344901da719f45bd993f036c1d37c985abeb1696f767756d9cf294"
+      },
+      {
+        "kind": "lifecycle-operation",
+        "values": [
+          "close",
+          "commit",
+          "push",
+          "stage",
+          "write"
+        ],
+        "digest": "sha256:a2f98ae20b476885ded7ed9f79b94ad99cf2b615779e9a8cc266680fc60f009f"
+      },
+      {
+        "kind": "process-manifest",
+        "values": [],
+        "digest": "sha256:706ceedd89f6ac8c08a76e915fa88ba979c4552a0890c95d8f9e01cc090afb8f"
+      }
+    ],
+    "deferredForeignResidue": [],
+    "recovery": {
+      "requestedMode": "auto",
+      "resolvedMode": "disabled",
+      "reasons": [
+        "low-risk-task"
+      ],
+      "maxSavePoints": 0,
+      "perTaskByteBudget": 0,
+      "repositoryByteBudget": 0,
+      "handoffTtlSeconds": 0,
+      "tempRoot": ".atm/runtime/work-admission-temp",
+      "policyDigest": "sha256:0dfda5eb6854c584791820720e4004b612d5ed31b9bfabd1654a9a85257c47bb"
+    }
+  },
+  "startedBySessionId": "session-20260906213041-codex-captain-TASK-TEAM-0088-0a5dad6c65",
+  "taskDirectionLock": {
+    "schemaId": "atm.taskDirectionLock.v1",
+    "specVersion": "0.1.0",
+    "taskId": "TASK-TEAM-0088",
+    "batchId": null,
+    "scopeKey": null,
+    "queueId": null,
+    "queueIndex": null,
+    "allowedFiles": [
+      ".atm/history/evidence/TASK-TEAM-0088.*",
+      ".atm/history/reports/task-import/2026-09-06T20-44-04-866Z.json",
+      ".atm/history/reports/task-import/2026-09-06T20-51-26-080Z.json",
+      ".atm/history/session-events/lane-20260906205133-codex-captain-4242dbaed9/2026-09-06T20-54-52-621Z-adopt-6699577da9ff.json",
+      ".atm/history/task-events/TASK-TEAM-0088/**",
+      ".atm/history/tasks/TASK-TEAM-0088.json"
+    ],
+    "planningReadOnlyPaths": [],
+    "planningMirrorPaths": [],
+    "allowPlanningMirror": false,
+    "promptHash": "f67143381e32e49f28e4ad3b96f0716b6c0d19f3e27c9ea9a8637dbe1bf162a9",
+    "actorId": "codex-captain",
+    "sessionId": "session-20260906213041-codex-captain-TASK-TEAM-0088-0a5dad6c65",
+    "laneSession": {
+      "laneSessionId": "lane-20260906213041-codex-captain-714239a2f0",
+      "status": "active",
+      "source": "minted",
+      "exportHint": "export ATM_LANE_SESSION_ID=\"lane-20260906213041-codex-captain-714239a2f0\""
+    },
+    "createdAt": "2026-09-06T21:30:41.910Z",
+    "status": "active"
+  }
+}

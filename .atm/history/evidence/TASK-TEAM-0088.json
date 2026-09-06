@@ -1,0 +1,103 @@
+{
+  "taskId": "TASK-TEAM-0088",
+  "updatedAt": "2026-09-06T20:57:26.493Z",
+  "evidence": [
+    {
+      "evidenceKind": "validation",
+      "evidenceType": "test",
+      "summary": "Auto-run: git diff --check",
+      "artifactPaths": [],
+      "evidenceFreshness": "fresh",
+      "producedBy": "codex-captain",
+      "sessionId": "session-20260906205717-codex-captain-TASK-TEAM-0088-82468b281b",
+      "createdAt": "2026-09-06T20:57:26.493Z",
+      "details": {
+        "actorId": "codex-captain",
+        "sessionId": "session-20260906205717-codex-captain-TASK-TEAM-0088-82468b281b",
+        "kind": "test",
+        "freshness": "fresh",
+        "validationPasses": [
+          "git diff --check"
+        ],
+        "atomHealthClaims": [
+          {
+            "atomOrMapId": "atm.team-agents-runtime",
+            "kind": "owner",
+            "generatedByTask": true,
+            "validatorHealthy": true
+          }
+        ],
+        "commandRuns": [
+          {
+            "command": "git diff --check",
+            "exitCode": 0,
+            "stdoutSha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stderrSha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "startedAt": "2026-09-06T20:57:26.239Z",
+            "finishedAt": "2026-09-06T20:57:26.493Z",
+            "durationMs": 254,
+            "cached": false,
+            "validators": [
+              "git diff --check"
+            ],
+            "cwd": ".",
+            "runnerKind": "dev-source",
+            "sourceCommit": "213ab417b8ee870cc6e27ee9a7decce3cd97d8fa",
+            "cacheKey": "sha256:8eadfbf3ce187d46956b9a7fa153438c738250cdf437912094a35dff5e345cce",
+            "generatedAt": "2026-09-06T20:57:26.493Z",
+            "canonicalObservation": {
+              "schemaId": "atm.telemetryObservation.v1",
+              "specVersion": "0.1.0",
+              "migration": {
+                "strategy": "none",
+                "fromVersion": null,
+                "notes": "Canonical telemetry observation contract."
+              },
+              "observationId": "sha256:8eadfbf3ce187d46956b9a7fa153438c738250cdf437912094a35dff5e345cce",
+              "producerId": "evidence.command-runs",
+              "producerVersion": "0.1.0",
+              "observationKind": "command-run",
+              "status": "canonical",
+              "source": "evidence-command-run-normalizer",
+              "sourceAvailability": "available",
+              "storagePolicy": "tracked-compact-digest",
+              "generatedAt": "2026-09-06T20:57:26.493Z",
+              "observedAt": "2026-09-06T20:57:26.493Z",
+              "startedAt": "2026-09-06T20:57:26.239Z",
+              "finishedAt": "2026-09-06T20:57:26.493Z",
+              "durationMs": 254,
+              "laneSessionId": null,
+              "taskId": "TASK-TEAM-0088",
+              "batchId": null,
+              "waveId": null,
+              "inputDigest": "sha256:e2e056a18b22ccba15e0176619b1d9423fa888b4093014d4c9f6394d32f8ed56",
+              "outputDigest": "sha256:73b4db795a7055d8fd5aadf94d2963333f0d33cd9a13d51041d00710dad53e5b",
+              "cache": {
+                "key": "sha256:8eadfbf3ce187d46956b9a7fa153438c738250cdf437912094a35dff5e345cce",
+                "hit": false
+              },
+              "extensions": {
+                "command": "git diff --check",
+                "cwd": ".",
+                "exitCode": 0,
+                "validators": [
+                  "git diff --check"
+                ],
+                "runnerKind": "dev-source",
+                "sourceCommit": "213ab417b8ee870cc6e27ee9a7decce3cd97d8fa",
+                "runnerVersion": null
+              }
+            }
+          }
+        ],
+        "commandRunCache": {
+          "schemaId": "atm.commandRunCache.v1",
+          "cacheKey": "sha256:9623b9c83dafcf9f21f534e8fb30e40e94e0d016cba1d7f2ea06b9f611404c62",
+          "reusedRunCount": 0,
+          "runCount": 1,
+          "sourcePath": null
+        }
+      }
+    }
+  ]
+}
