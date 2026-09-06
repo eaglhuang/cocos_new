@@ -1,0 +1,200 @@
+{
+  "taskId": "TASK-TEAM-0087",
+  "updatedAt": "2026-09-06T20:51:46.432Z",
+  "evidence": [
+    {
+      "evidenceKind": "validation",
+      "evidenceType": "test",
+      "summary": "Auto-run: git diff --check",
+      "artifactPaths": [],
+      "evidenceFreshness": "fresh",
+      "producedBy": "codex-captain",
+      "sessionId": null,
+      "createdAt": "2026-09-06T20:45:20.429Z",
+      "details": {
+        "actorId": "codex-captain",
+        "sessionId": null,
+        "kind": "test",
+        "freshness": "fresh",
+        "validationPasses": [
+          "git diff --check"
+        ],
+        "atomHealthClaims": [
+          {
+            "atomOrMapId": "atm.team-agents-runtime",
+            "kind": "owner",
+            "generatedByTask": true,
+            "validatorHealthy": true
+          }
+        ],
+        "commandRuns": [
+          {
+            "command": "git diff --check",
+            "exitCode": 0,
+            "stdoutSha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stderrSha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "startedAt": "2026-09-06T20:45:20.169Z",
+            "finishedAt": "2026-09-06T20:45:20.428Z",
+            "durationMs": 259,
+            "cached": false,
+            "validators": [
+              "git diff --check"
+            ],
+            "cwd": ".",
+            "runnerKind": "dev-source",
+            "sourceCommit": "e34bd8374b05ea12c3618918de5711d928086bca",
+            "cacheKey": "sha256:6047571ee01577dd52aa69de9823c0585123773bd7fa4327081570f89a845898",
+            "generatedAt": "2026-09-06T20:45:20.428Z",
+            "canonicalObservation": {
+              "schemaId": "atm.telemetryObservation.v1",
+              "specVersion": "0.1.0",
+              "migration": {
+                "strategy": "none",
+                "fromVersion": null,
+                "notes": "Canonical telemetry observation contract."
+              },
+              "observationId": "sha256:6047571ee01577dd52aa69de9823c0585123773bd7fa4327081570f89a845898",
+              "producerId": "evidence.command-runs",
+              "producerVersion": "0.1.0",
+              "observationKind": "command-run",
+              "status": "canonical",
+              "source": "evidence-command-run-normalizer",
+              "sourceAvailability": "available",
+              "storagePolicy": "tracked-compact-digest",
+              "generatedAt": "2026-09-06T20:45:20.428Z",
+              "observedAt": "2026-09-06T20:45:20.428Z",
+              "startedAt": "2026-09-06T20:45:20.169Z",
+              "finishedAt": "2026-09-06T20:45:20.428Z",
+              "durationMs": 259,
+              "laneSessionId": null,
+              "taskId": "TASK-TEAM-0087",
+              "batchId": null,
+              "waveId": null,
+              "inputDigest": "sha256:18c3bcea9fe8697252295d787d01d12b803974b4af9c4cd8727517b6743c3d34",
+              "outputDigest": "sha256:73b4db795a7055d8fd5aadf94d2963333f0d33cd9a13d51041d00710dad53e5b",
+              "cache": {
+                "key": "sha256:6047571ee01577dd52aa69de9823c0585123773bd7fa4327081570f89a845898",
+                "hit": false
+              },
+              "extensions": {
+                "command": "git diff --check",
+                "cwd": ".",
+                "exitCode": 0,
+                "validators": [
+                  "git diff --check"
+                ],
+                "runnerKind": "dev-source",
+                "sourceCommit": "e34bd8374b05ea12c3618918de5711d928086bca",
+                "runnerVersion": null
+              }
+            }
+          }
+        ],
+        "commandRunCache": {
+          "schemaId": "atm.commandRunCache.v1",
+          "cacheKey": "sha256:0aa901768e8458ca0ddfff1748456dda94a93d71985bcc136df37609c89422e6",
+          "reusedRunCount": 0,
+          "runCount": 1,
+          "sourcePath": null
+        }
+      }
+    },
+    {
+      "evidenceKind": "validation",
+      "evidenceType": "test",
+      "summary": "Auto-run: git diff --check",
+      "artifactPaths": [],
+      "evidenceFreshness": "fresh",
+      "producedBy": "codex-captain",
+      "sessionId": "session-20260906205133-codex-captain-TASK-TEAM-0087-01ace4f7ed",
+      "createdAt": "2026-09-06T20:51:46.432Z",
+      "details": {
+        "actorId": "codex-captain",
+        "sessionId": "session-20260906205133-codex-captain-TASK-TEAM-0087-01ace4f7ed",
+        "kind": "test",
+        "freshness": "fresh",
+        "validationPasses": [
+          "git diff --check"
+        ],
+        "atomHealthClaims": [
+          {
+            "atomOrMapId": "atm.team-agents-runtime",
+            "kind": "owner",
+            "generatedByTask": true,
+            "validatorHealthy": true
+          }
+        ],
+        "commandRuns": [
+          {
+            "command": "git diff --check",
+            "exitCode": 0,
+            "stdoutSha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stderrSha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "startedAt": "2026-09-06T20:51:46.173Z",
+            "finishedAt": "2026-09-06T20:51:46.431Z",
+            "durationMs": 258,
+            "cached": false,
+            "validators": [
+              "git diff --check"
+            ],
+            "cwd": ".",
+            "runnerKind": "dev-source",
+            "sourceCommit": "e34bd8374b05ea12c3618918de5711d928086bca",
+            "cacheKey": "sha256:6047571ee01577dd52aa69de9823c0585123773bd7fa4327081570f89a845898",
+            "generatedAt": "2026-09-06T20:51:46.431Z",
+            "canonicalObservation": {
+              "schemaId": "atm.telemetryObservation.v1",
+              "specVersion": "0.1.0",
+              "migration": {
+                "strategy": "none",
+                "fromVersion": null,
+                "notes": "Canonical telemetry observation contract."
+              },
+              "observationId": "sha256:6047571ee01577dd52aa69de9823c0585123773bd7fa4327081570f89a845898",
+              "producerId": "evidence.command-runs",
+              "producerVersion": "0.1.0",
+              "observationKind": "command-run",
+              "status": "canonical",
+              "source": "evidence-command-run-normalizer",
+              "sourceAvailability": "available",
+              "storagePolicy": "tracked-compact-digest",
+              "generatedAt": "2026-09-06T20:51:46.431Z",
+              "observedAt": "2026-09-06T20:51:46.431Z",
+              "startedAt": "2026-09-06T20:51:46.173Z",
+              "finishedAt": "2026-09-06T20:51:46.431Z",
+              "durationMs": 258,
+              "laneSessionId": null,
+              "taskId": "TASK-TEAM-0087",
+              "batchId": null,
+              "waveId": null,
+              "inputDigest": "sha256:18c3bcea9fe8697252295d787d01d12b803974b4af9c4cd8727517b6743c3d34",
+              "outputDigest": "sha256:73b4db795a7055d8fd5aadf94d2963333f0d33cd9a13d51041d00710dad53e5b",
+              "cache": {
+                "key": "sha256:6047571ee01577dd52aa69de9823c0585123773bd7fa4327081570f89a845898",
+                "hit": false
+              },
+              "extensions": {
+                "command": "git diff --check",
+                "cwd": ".",
+                "exitCode": 0,
+                "validators": [
+                  "git diff --check"
+                ],
+                "runnerKind": "dev-source",
+                "sourceCommit": "e34bd8374b05ea12c3618918de5711d928086bca",
+                "runnerVersion": null
+              }
+            }
+          }
+        ],
+        "commandRunCache": {
+          "schemaId": "atm.commandRunCache.v1",
+          "cacheKey": "sha256:0aa901768e8458ca0ddfff1748456dda94a93d71985bcc136df37609c89422e6",
+          "reusedRunCount": 0,
+          "runCount": 1,
+          "sourcePath": null
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "schemaId": "atm.evidenceBundleManifest.v1",
+  "taskId": "TASK-TEAM-0087",
+  "updatedAt": "2026-09-06T20:51:46.432Z",
+  "updatedBy": "codex-captain",
+  "freshValidationPasses": [
+    "git diff --check"
+  ],
+  "staleValidationPasses": [],
+  "commandRuns": [
+    {
+      "command": "git diff --check",
+      "exitCode": 0,
+      "stdoutSha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderrSha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "validators": [
+        "git diff --check"
+      ],
+      "generatedAt": "2026-09-06T20:45:20.428Z",
+      "startedAt": "2026-09-06T20:45:20.169Z",
+      "finishedAt": "2026-09-06T20:45:20.428Z",
+      "durationMs": 259,
+      "runnerKind": "dev-source",
+      "sourceCommit": "e34bd8374b05ea12c3618918de5711d928086bca",
+      "cached": false
+    },
+    {
+      "command": "git diff --check",
+      "exitCode": 0,
+      "stdoutSha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderrSha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "validators": [
+        "git diff --check"
+      ],
+      "generatedAt": "2026-09-06T20:51:46.431Z",
+      "startedAt": "2026-09-06T20:51:46.173Z",
+      "finishedAt": "2026-09-06T20:51:46.431Z",
+      "durationMs": 258,
+      "runnerKind": "dev-source",
+      "sourceCommit": "e34bd8374b05ea12c3618918de5711d928086bca",
+      "cached": false
+    }
+  ],
+  "artifactPaths": []
+}

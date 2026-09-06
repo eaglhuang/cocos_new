@@ -1,0 +1,20 @@
+{
+  "schemaId": "atm.taskTransition.v1",
+  "specVersion": "0.1.0",
+  "transitionId": "2026-09-06T20-52-31-495Z-scope-amendment-a830fd551636",
+  "taskId": "TASK-TEAM-0087",
+  "action": "scope-amendment",
+  "actorId": "codex-captain",
+  "sessionId": null,
+  "fromStatus": "running",
+  "toStatus": "running",
+  "taskPath": ".atm/history/tasks/TASK-TEAM-0087.json",
+  "taskSha256": "sha256:5344170b7bcb212d67b7acc648362efe404d27929b93f6ac41fade03b07485d4",
+  "createdAt": "2026-09-06T20:52:31.495Z",
+  "command": "node atm.mjs tasks scope add --task TASK-TEAM-0087 --actor codex-captain --add \"docs/ai_atomic_framework/team-agents/tasks/README.md,docs/ai_atomic_framework/team-agents/團隊自動化代理分工計畫.md\" --json",
+  "amendmentMetadata": {
+    "amendmentClass": "linked-surface",
+    "amendmentPhase": "during-implementation",
+    "amendmentMode": "normal"
+  }
+}

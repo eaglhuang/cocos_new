@@ -1,0 +1,18 @@
+{
+  "schemaId": "atm.taskflowSealAndCommitReceipt.v1",
+  "taskId": "TASK-TEAM-0087",
+  "actorId": "codex-captain",
+  "createdAt": "2026-09-06T20:55:30.601Z",
+  "targetHeadBeforeCommit": "d688bd606aeb9f4325bdc16a59954366567f119c",
+  "planningHeadBeforeCommit": "d688bd606aeb9f4325bdc16a59954366567f119c",
+  "historicalDeliveryRefs": [
+    "d688bd606aeb9f4325bdc16a59954366567f119c"
+  ],
+  "historicalBatchRef": null,
+  "manifestPath": ".atm/history/evidence/TASK-TEAM-0087.seal-and-commit.json",
+  "targetPayloadDigest": "sha256:4c4a9b1c826f526da27401e7605e4eea762b6795318ec931bba70930dc8aa965",
+  "targetEvidenceDigest": "sha256:6ca9b5458e2e137563f06c4485b691740553b91502139da6e0a3e95d7fa66f6b",
+  "planningPayloadDigest": "sha256:ce7398aa3cf34e506349e97b624585d71b2c6084d75446111774191ce721b550",
+  "planningEvidenceDigest": "sha256:37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+  "sealDigest": "sha256:355eb0e9214c1f5b7d003bf2520554915e773ded1cdc7a9f183a2c0375843770"
+}

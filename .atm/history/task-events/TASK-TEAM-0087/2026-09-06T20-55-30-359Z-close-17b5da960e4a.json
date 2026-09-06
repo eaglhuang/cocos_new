@@ -1,0 +1,15 @@
+{
+  "schemaId": "atm.taskTransition.v1",
+  "specVersion": "0.1.0",
+  "transitionId": "2026-09-06T20-55-30-359Z-close-17b5da960e4a",
+  "taskId": "TASK-TEAM-0087",
+  "action": "close",
+  "actorId": "codex-captain",
+  "sessionId": null,
+  "fromStatus": "planned",
+  "toStatus": "done",
+  "taskPath": "docs/ai_atomic_framework/team-agents/tasks/TASK-TEAM-0087-sync-0086-planning-projections.task.md",
+  "taskSha256": "sha256:9f7a19e96d72a794e29df29465612ffbe10f982962c3161bac71f21091489331",
+  "createdAt": "2026-09-06T20:55:30.359Z",
+  "command": "node atm.mjs tasks close --task TASK-TEAM-0087 --actor codex-captain"
+}
