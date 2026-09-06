@@ -1,0 +1,28 @@
+{
+  "schemaId": "atm.liveIndexReconciliation.v1",
+  "headAdvanced": true,
+  "reconciledPaths": [
+    ".atm/history/evidence/TASK-TEAM-0088.json",
+    ".atm/history/session-events/lane-20260906205133-codex-captain-4242dbaed9/2026-09-06T20-54-52-621Z-adopt-6699577da9ff.json",
+    ".atm/history/task-events/TASK-TEAM-0088/2026-09-06T20-57-08-144Z-import-1f8bee6cdda6.json",
+    ".atm/history/task-events/TASK-TEAM-0088/2026-09-06T20-57-17-923Z-reserve-95812432cba9.json",
+    ".atm/history/task-events/TASK-TEAM-0088/2026-09-06T20-57-17-928Z-promote-9e23e59d94c2.json",
+    ".atm/history/task-events/TASK-TEAM-0088/2026-09-06T20-57-18-499Z-claim-4e165a7559f3.json",
+    ".atm/history/task-events/TASK-TEAM-0088/2026-09-06T20-59-42-977Z-release-1e90d0b7f406.json",
+    ".atm/history/task-events/TASK-TEAM-0088/2026-09-06T21-30-41-332Z-reserve-907e77c64252.json",
+    ".atm/history/task-events/TASK-TEAM-0088/2026-09-06T21-30-41-336Z-promote-4a40cc81e758.json",
+    ".atm/history/task-events/TASK-TEAM-0088/2026-09-06T21-30-41-911Z-claim-1aa9517a88c0.json",
+    ".atm/history/tasks/TASK-TEAM-0088.json"
+  ],
+  "retainedPaths": [
+    {
+      "path": ".atm/history/evidence/git-head.jsonl",
+      "reason": "worktree-diverged",
+      "firstUnreconciledCommit": "d1f265dfee20186fea1d63a1d7aed20648fc02c1"
+    }
+  ],
+  "clean": false,
+  "failure": null,
+  "taskId": "TASK-TEAM-0088",
+  "createdAt": "2026-09-06T21:31:04.275Z"
+}
